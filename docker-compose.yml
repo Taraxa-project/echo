@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  tdlib:
+    image: wcsiu/tdlib:latest
+    container_name: 'tdlib'
+    stdin_open: true
+    tty: true
+    volumes:
+      - tdlib/:/usr/local/lib/
+
+  dart-api:
+    container_name: 'dart-api'
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    volumes:
+      - tdlib/:/tdlib/
+
+volumes:
+  tdlib:
+
+# /usr/local/lib/libtdjson.so || libtdjson.so.1.8.0
