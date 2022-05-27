@@ -7,7 +7,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - tdlib/:/usr/local/lib/
+      - tdlib:/usr/local/lib/
 
   dart-api:
     container_name: 'dart-api'
@@ -17,9 +17,10 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - tdlib/:/tdlib/
+      - tdlib:/tdlib/
 
 volumes:
   tdlib:
+  dart_api:
 
-# /usr/local/lib/libtdjson.so || libtdjson.so.1.8.0
+# libtdjson.so || libtdjson.so.1.8.0
