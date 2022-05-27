@@ -17,7 +17,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - tdlib:/tdlib/
+      - /tdlib:/tdlib/
 
 volumes:
   tdlib:
