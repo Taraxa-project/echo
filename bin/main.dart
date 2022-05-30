@@ -1,39 +1,27 @@
 library td_lib;
 
-//import 'dart:ffi' as ffi;
-//import 'package:ffi/ffi.dart';
-//import 'dart:convert';
-//import '../bindings/bindings.dart';
-import 'dart:io';
+import 'dart:ffi' as ffi;
+import 'package:ffi/ffi.dart';
+import 'dart:convert';
+import '../bindings/bindings.dart';
 
-/*
 ffi.Pointer client = td_json.client_create();
 
 Object td_execute(Object query) {
-  return json.decode(Utf8.fromUtf8(
-      td_json.client_execute(client, Utf8.toUtf8(json.encode(query)))));
+  return json.decode(td_json
+      .client_execute(client, json.encode(query).toNativeUtf8())
+      .toDartString());
 }
 
 void td_send(Object query) {
-  td_json.client_send(client, Utf8.toUtf8(json.encode(query)));
+  td_json.client_send(client, json.encode(query).toNativeUtf8());
 }
 
 Object td_receive() {
-  dynamic result = td_json.client_receive(client, 1.0);
-  if (result != null) {
-    result = json.decode(Utf8.fromUtf8(result));
-  }
-  return result;
+  return json.decode(td_json.client_receive(client, 1.0).toDartString());
 }
-*/
 
-void main() async {
-  print(
-      'Current dir ${Directory.current} ... tdlib ${Directory('../../tdlib')}');
-  final dir = Directory('../../');
-  final List<FileSystemEntity> entities = await dir.list().toList();
-  print(entities.toString());
-  /*
+void main() {
   td_json.client_destroy(client);
 
   client = td_json.client_create();
@@ -53,5 +41,4 @@ void main() async {
   }
 
   td_json.client_destroy(client);
-  */
 }

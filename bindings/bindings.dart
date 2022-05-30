@@ -3,17 +3,18 @@ import 'package:ffi/ffi.dart';
 import 'signatures.dart';
 
 class _TDJsonBindings {
-  ffi.Pointer Function() client_create;
+  late ffi.Pointer Function() client_create;
 
-  ffi.Pointer<Utf8> Function(ffi.Pointer, double) client_receive;
+  late ffi.Pointer<Utf8> Function(ffi.Pointer, double) client_receive;
 
-  void Function(ffi.Pointer, ffi.Pointer<Utf8>) client_send;
+  late void Function(ffi.Pointer, ffi.Pointer<Utf8>) client_send;
 
-  ffi.Pointer<Utf8> Function(ffi.Pointer, ffi.Pointer<Utf8>) client_execute;
+  late ffi.Pointer<Utf8> Function(ffi.Pointer, ffi.Pointer<Utf8>)
+      client_execute;
 
-  void Function(ffi.Pointer) client_destroy;
+  late void Function(ffi.Pointer) client_destroy;
 
-  _TDJsonBindings({String path = '../tdlib/'}) {
+  _TDJsonBindings({String path = '/dart_api/lib/'}) {
     final libtdjson = ffi.DynamicLibrary.open(path + 'libtdjson.so');
 
     client_create = libtdjson
@@ -43,5 +44,5 @@ class _TDJsonBindings {
   }
 }
 
-_TDJsonBindings _cachedBindings;
+_TDJsonBindings? _cachedBindings;
 _TDJsonBindings get td_json => _cachedBindings ??= _TDJsonBindings();

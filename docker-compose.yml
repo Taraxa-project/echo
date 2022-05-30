@@ -17,10 +17,9 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - /tdlib:/tdlib/
+      - tdlib:/dart_api/lib/
 
 volumes:
   tdlib:
-  dart_api:
 
 # libtdjson.so || libtdjson.so.1.8.0
