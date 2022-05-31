@@ -17,7 +17,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - tdlib:/dart_api/lib/
+      - tdlib:/dart_api/tdlib/
 
 volumes:
   tdlib:

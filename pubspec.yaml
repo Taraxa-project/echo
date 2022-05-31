@@ -1,14 +1,20 @@
-name: Echo
-description: Social Listen Application.
-version: 1.0.0
-# homepage: https://www.example.com
+name: telegram_client
+description: telegram client library to make bot or userbot Support Telegram Api and Support Tdlib Telegram Database Library.
+version: 0.2.1
+homepage: https://github.com/azkadev/telegram_client/tree/main/dart/telegram_client/docs
+repository: https://github.com/azkadev/telegram_client/tree/main/dart/telegram_client
+issue_tracker: https://github.com/azkadev/telegram_client/issues
 
 environment:
-  sdk: '>=2.15.0-116.0.dev <3.0.0'
-
-
-dependencies:
-  ffi: ^2.0.0
+  sdk: '>=2.14.4 <3.0.0'
 
 dev_dependencies:
   lints: ^1.0.0
+
+dependencies: 
+  ffi: ^1.1.2
+  hexaminate: ^0.1.2
+  http: ^0.13.4
+
+executables:
+  tg_cli: tg_cli
