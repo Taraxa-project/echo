@@ -1,112 +1,105 @@
-// ignore_for_file: unused_local_variable
+import 'dart:convert';
 
-import 'dart:io';
+import 'package:hexaminate/hexaminate.dart';
 import 'package:telegram_client/telegram_client.dart';
+import 'dart:io';
+import 'dart:developer' as developer;
 
 void main() async {
-  String path = Directory.current.path;
-  var option = {
-    'api_id': 7230930,
-    'api_hash': '4e23bcf61a861db95806c819551e3937',
-    'database_directory': "$path/bost",
-    'files_directory': "$path/bost",
-  };
-  print(option.containsKey("api_id"));
-  Map<String, dynamic> _optionTdlibDefault = {
-    '@type': 'tdlibParameters',
-    'api_id': 7230930,
-    'api_hash': '4e23bcf61a861db95806c819551e3937',
-    'database_directory': "",
-    'files_directory': "",
-    "use_file_database": true,
-    "use_chat_info_database": true,
-    "use_message_database": true,
-    "use_secret_chats": true,
-    'enable_storage_optimizer': true,
-    'system_language_code': 'en',
-    'new_verbosity_level': 0,
-    'application_version': 'v1',
-    'device_model': 'Telegram Client Hexaminate',
-    'system_version': Platform.operatingSystem,
-    "database_key": "",
-    "start": true
-  };
-  Tdlib tg = Tdlib("/dart_api/tdlib/libtdjson.so", option);
-  tg.on("update", (UpdateTd update) async {
-    if (update.raw["@extra"] != null) {}
-    print(update.raw);
-    if (update.message.is_found) {
-      if (update.message.text != null) {
-        if (update.message.text!.isNotEmpty) {}
-        if (RegExp("^/ping", caseSensitive: false)
-            .hasMatch(update.message.text ?? "")) {
-          tg.requestSendApi(
-              "sendMessage",
-              tg.makeParameters("sendMessage", {
+  print('Starting main');
+  try {
+    var path = Directory.current.path;
+    developer.log('Starting main, path: $path');
+    var option = {
+      'api_id': 1917085,
+      'api_hash': 'a612212e6ac3ff1f97a99b2e0f050894',
+      'database_directory': "$path/user",
+      'files_directory': "$path/user",
+    };
+    //var tdlibpath = Directory('../dart_api/tdlib/');
+    //print(await tdlibpath.list().toList());
+    Tdlib tg = Tdlib("/dart_api/tdlib/libtdjson.so", option);
+    print('Tdlib initialized');
+    tg.on("update", (UpdateTd update) async {
+      try {
+        print("Update received:  ${update.raw.toString()}");
+        if (update.raw["@type"] == "updateAuthorizationState") {
+          if (typeof(update.raw["authorization_state"]) == "object") {
+            var authStateType = update.raw["authorization_state"]["@type"];
+            if (authStateType == "authorizationStateWaitPhoneNumber") {
+              // stdout.write("Phone number: ");
+              // var phoneNumber = stdin.readLineSync().toString();
+              // your phone number here
+              var phoneNumber = '';
+              print(await tg.requestApi("setAuthenticationPhoneNumber",
+                  {"phone_number": phoneNumber}));
+            }
+            if (authStateType == "authorizationStateWaitCode") {
+              print("ada update code");
+              stdout.write("Code: ");
+              var code = stdin.readLineSync().toString();
+              print(await tg
+                  .requestApi("checkAuthenticationCode", {"code": code}));
+            }
+            if (authStateType == "authorizationStateWaitPassword") {
+              var code = "Azkariani90";
+              print(await tg.requestApi(
+                  "checkAuthenticationPassword", {"password": code}));
+            }
+            if (authStateType == "authorizationStateReady") {
+              print("Login success");
+            }
+          }
+        }
+
+        /*
+        if (update.message.is_found) {
+          if (update.message.text != null) {
+            if (!update.message.is_outgoing) {
+              const Duration(seconds: 60);
+              String username = "@lpmsanbox";
+              String message =
+                  "Lo pm gk pernah di tap? coba lpm ini\n$username $username $username\n$username $username $username\n$username $username $username\n\nJaseb: @hexaminate";
+
+              try {
+                await tg.requestApi("sendMessage", {
+                  "chat_id": update.message.chat.id,
+                  
+                  "reply_to_message_id": update.raw["message"]["id"],
+                  
+                  "input_message_content": {
+                    "@type": "inputMessageText",
+                    "text": {
+                      "@type": "formattedText",
+                      "text": message,
+                      "entitiees": []
+                    },
+                    "disableWebPagePreview": false,
+                    "clearDraft": false
+                  }
+                });
+              } catch (e) {}
+            }
+            if (RegExp("^/ping", caseSensitive: false)
+                .hasMatch(update.message.text ?? "")) {
+              return await tg.request("sendMessage",
+                  {"chat_id": update.message.chat.id, "text": "Pong"});
+            }
+            if (update.message.text == "/start") {
+              return await tg.request("sendMessage", {
                 "chat_id": update.message.chat.id,
-                "text": "Hello from Dart"
-              }));
-        }
-        if (update.message.text == "/stop") {
-          tg.stop();
-        }
+                "text": "Hello saya adalah bot"
+              });
+            }
+          }
+        }*/
+      } catch (e) {
+        print(e.toString());
       }
-    }
-/*
-    if (updateOrigin["@type"] == "updateAuthorizationState") {
-      var authState = updateOrigin["authorization_state"];
-
-      if (typeData(authState) == "object") {
-        if (authState["@type"] == "authorizationStateWaitTdlibParameters") {
-          var optin = {
-            "@type": 'setTdlibParameters',
-            'parameters': _optionTdlibDefault
-          };
-
-          tg.requestApi("setTdlibParameters", optin);
-        }
-        if (authState["@type"] == "authorizationStateWaitEncryptionKey") {
-          /*
-          tg.requestApi("checkDatabaseEncryptionKey",
-              {'encryption_key': _optionTdlibDefault["database_key"]});
-              */
-        }
-      }
-    }
-    if (updateOrigin["@type"] == "updateConnectionState" &&
-        updateOrigin["state"]["@type"] == "connectionStateReady") {
-      /*
-      tg.requestApi("checkAuthenticationBotToken",
-          {"token": "2123043767:AAEY0KTdVYo0JTRmFF5S4QPBnvoCdpe2yPI"});
-    
-    */
-      print(updateOrigin);
-    }
-    */
-  });
-  tg.initIsolate();
-  /*
-  tg.on("update", (UpdateTd update) async {
-    if (update.message.is_found) {
-      if (update.message.text != null) {
-        if (update.message.text!.isNotEmpty) {}
-        if (RegExp("^/ping", caseSensitive: false)
-            .hasMatch(update.message.text ?? "")) {
-          tg.emitter.emit("update", null, {"@type": "azka"});
-          return await tg.request("sendMessage",
-              {"chat_id": update.message.chat.id, "text": "Pong!!"});
-        }
-        if (update.message.text == "/start") {
-          return await tg.request("sendMessage", {
-            "chat_id": update.message.chat.id,
-            "text": "Hello saya adalah bot"
-          });
-        }
-      }
-    }
-  });
-  await tg.bot("2123043767:AAEY0KTdVYo0JTRmFF5S4QPBnvoCdpe2yPI");
-  */
-  await tg.bot("2123043767:AAEY0KTdVYo0JTRmFF5S4QPBnvoCdpe2yPI");
-  print("update");
+    });
+    await tg.initIsolate();
+    await tg.user();
+  } catch (e) {
+    print(e.toString());
+  }
 }
