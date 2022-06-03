@@ -42,7 +42,7 @@ class Tdlib {
     'system_language_code': 'en',
     'new_verbosity_level': 0,
     'application_version': 'v1',
-    'device_model': 'Telegram Client Hexaminate',
+    'device_model': 'Telegram Client',
     'system_version': Platform.operatingSystem,
     "database_key": "",
     "start": true
@@ -74,6 +74,7 @@ class Tdlib {
     _td_set_log_verbosity_level.call(optionTdlibDefault['new_verbosity_level']);
     on("update", (UpdateTd update) async {
       try {
+        //print('Update raw: ${update.raw.toString()}');
         Map updateOrigin = update.raw;
 
         if (updateOrigin["@type"] == "updateAuthorizationState") {
@@ -231,7 +232,7 @@ class Tdlib {
     }
     _client_send(client, convert.json.encode(data).toNativeUtf8());
     while (true) {
-      var receive = await clienReceive(1.0);
+      var receive = await clientReceive(1.0);
       if (typeData(receive) == "string") {
         var update = convert.json.decode(receive);
         if (typeData(update) == "object") {
@@ -249,7 +250,7 @@ class Tdlib {
     return _client_destroy(client);
   }
 
-  Future<String> clienReceive([double timeout = 10.0]) async {
+  Future<String> clientReceive([double timeout = 10.0]) async {
     try {
       return _client_receive(client, timeout).toDartString();
     } catch (e) {
@@ -1471,7 +1472,7 @@ class Tdlib {
               }
             }
           }
-          
+
           if (!is_super_detail) {
             if (from_json["type"] != "private") {
               from_json.remove("first_name");

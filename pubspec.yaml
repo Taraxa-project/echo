@@ -12,6 +12,7 @@ dev_dependencies:
   lints: ^1.0.0
 
 dependencies: 
+  dotenv: ^4.0.1
   ffi: ^1.1.2
   hexaminate: ^0.1.2
   http: ^0.13.4
