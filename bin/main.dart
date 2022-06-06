@@ -21,7 +21,8 @@ void main() async {
     tg.on("update", (UpdateTd update) async {
       try {
         //print("Update received:  ${update.raw.toString()}");
-        switch (update.raw["@type"]) {
+        final updateType = update.raw["@type"];
+        switch (updateType) {
           case "updateAuthorizationState":
             if (typeof(update.raw["authorization_state"]) != "object") {
               throw 'ERROR: Invalid update type.';
@@ -31,9 +32,23 @@ void main() async {
             if (phone == null || phone.isEmpty) {
               throw 'ERROR: Phone number is empty.';
             }
-            await handleAuthUpdate(tg, authStateType, phone);
+            if (authStateType == "authorizationStateWaitPhoneNumber") {
+              print(await tg.requestApi("setAuthenticationPhoneNumber", {
+                "phone_number": phone,
+              }));
+            }
+            await handleUpdate(tg, authStateType, null);
             break;
           case "updateNewMessage":
+            final payload = update.raw["message"];
+            await handleUpdate(tg, updateType, payload);
+            break;
+          case "updateChatTitle":
+            final payload = {
+              "chat_id": update.raw["chat_id"],
+              "title": update.raw["title"]
+            };
+            await handleUpdate(tg, updateType, payload);
             break;
           default:
             break;
