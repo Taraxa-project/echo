@@ -1,0 +1,10 @@
+name: sl_cli
+version: 0.0.1
+environment:
+  sdk: '>=2.17.0 <3.0.0'
+publish_to: none
+dependencies:
+  ffi: ^1.2.1
+  path: ^1.8.0
+  td_json_lib:
+    path: ../td_json_lib

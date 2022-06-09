@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+
+  sl_cli:
+    volumes:
+      - ./packages/:/app/packages/
+      - ./td/:/app/td/
+      # - ./:/app/

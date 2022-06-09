@@ -1,0 +1,20 @@
+name: td_json_lib
+version: 0.0.1
+environment:
+  sdk: '>=2.17.0 <3.0.0'
+dependencies:
+  ffi: ^1.2.1
+
+dev_dependencies:
+  ffigen: ^5.0.0
+  lints: ^1.0.1
+ffigen:
+  name: TDJsonLib
+  description: Generate binding to tdlib JSON
+  output: 'lib/td_json_lib.dart'
+  headers:
+    entry-points:
+      # - '/app/td/tdlib/include/td/telegram/tdjson_export.h'
+      - '/app/td/tdlib/include/td/telegram/td_json_client.h'
+    # include-directives:
+    #   - '/app/td/tdlib/include/td/telegram/*.h'
