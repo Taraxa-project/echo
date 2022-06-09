@@ -40,6 +40,7 @@ void main() async {
             await handleUpdate(tg, authStateType, null);
             break;
           case "updateNewMessage":
+            print("Message received:  ${update.raw.toString()}");
             final payload = update.raw["message"];
             await handleUpdate(tg, updateType, payload);
             break;

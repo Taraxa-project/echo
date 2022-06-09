@@ -15,6 +15,10 @@ Future<void> handleUpdate(Tdlib client, update, payload) async {
     case "updateNewMessage":
       if (payload != null) {
         // TODO: save message here
+        final message = payload['content']['text']['text']
+            ? payload['content']['text']['text']
+            : null;
+        print('>>>> Handle update, new message text: ' + message.toString());
       }
       break;
     case "updateChatTitle":

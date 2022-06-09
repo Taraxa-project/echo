@@ -18,8 +18,10 @@ services:
     tty: true
     volumes:
       - tdlib:/dart_api/tdlib/
+      - deps:/root/.pub-cache/
 
 volumes:
   tdlib:
+  deps:
 
 # libtdjson.so || libtdjson.so.1.8.0
