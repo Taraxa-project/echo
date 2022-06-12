@@ -2,7 +2,6 @@ import 'dart:io' as io;
 import 'dart:convert' as convert;
 import 'dart:ffi' as ffi;
 import 'package:ffi/ffi.dart' as ffi_ext;
-import 'package:path/path.dart' as path;
 
 import 'package:td_json_lib/td_json_lib.dart';
 
