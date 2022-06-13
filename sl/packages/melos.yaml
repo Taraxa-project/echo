@@ -1,0 +1,13 @@
+name: sl
+
+packages:
+  - sl_cli/**
+  - sl_td_lib/**
+
+scripts:
+  analyze:
+    exec: dart analyze .
+  get:
+    exec: dart pub get
+
+# td_json_lib/

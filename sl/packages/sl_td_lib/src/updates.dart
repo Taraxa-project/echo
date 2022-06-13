@@ -1,4 +1,4 @@
-import 'package:telegram_client/telegram_client.dart';
+import '../telegram_client.dart';
 import 'dart:io';
 
 Future<void> handleUpdate(Tdlib client, update, payload) async {

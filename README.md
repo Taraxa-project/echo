@@ -50,6 +50,7 @@ Add env file and vars:
 dart pub global activate dotenv
 dart pub global run dotenv:new
 printf 'API_ID=""\nAPI_HASH=""\nPHONE=""\n' >> .env
+printf 'cp .env env.local'
 ```
 
 Start App:

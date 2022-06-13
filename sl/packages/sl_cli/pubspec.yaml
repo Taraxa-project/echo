@@ -1,4 +1,4 @@
-name: telegram_client
+name: sl_cli
 description: telegram client library to make bot or userbot Support Telegram Api and Support Tdlib Telegram Database Library.
 version: 0.2.1
 homepage: https://github.com/azkadev/telegram_client/tree/main/dart/telegram_client/docs

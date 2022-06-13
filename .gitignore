@@ -20,3 +20,4 @@ example
 
 .env*
 *.log
+*.local

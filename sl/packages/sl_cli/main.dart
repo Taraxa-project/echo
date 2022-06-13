@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:dotenv/dotenv.dart';
 import 'package:hexaminate/hexaminate.dart';
-import 'package:telegram_client/src/updates.dart';
-import 'package:telegram_client/telegram_client.dart';
+import '../sl_td_lib/telegram_client.dart';
+import '../sl_td_lib/src/updates.dart';
 import 'dart:io';
 import 'dart:developer' as developer;
 
 void main() async {
-  final env = DotEnv(includePlatformEnvironment: true)..load();
+  final env = DotEnv(includePlatformEnvironment: true);
   try {
     var path = Directory.current.path;
     developer.log('Starting main, path: $path');
@@ -17,7 +17,7 @@ void main() async {
       'database_directory': "$path/user",
       'files_directory': "$path/user",
     };
-    Tdlib tg = Tdlib("/dart_api/tdlib/libtdjson.so", option);
+    Tdlib tg = Tdlib(env['PATH_TD_JSON_LIB'].toString(), option);
     tg.on("update", (UpdateTd update) async {
       try {
         //print("Update received:  ${update.raw.toString()}");

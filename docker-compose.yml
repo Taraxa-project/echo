@@ -17,8 +17,10 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - tdlib:/dart_api/tdlib/
+      - tdlib:/dart_api/sl_td_lib/
       - deps:/root/.pub-cache/
+    env_file:
+      - env.local
 
 volumes:
   tdlib:
