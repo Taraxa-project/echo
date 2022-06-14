@@ -2,7 +2,7 @@
 # See https://dart.dev/tools/pub/glossary#lockfile
 packages:
   ffi:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: ffi
       url: "https://pub.dartlang.org"
@@ -15,10 +15,17 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.2"
-  td_json_lib:
+  td_json_client:
+    dependency: "direct overridden"
+    description:
+      path: "../td_json_client"
+      relative: true
+    source: path
+    version: "0.0.1"
+  telegram_client:
     dependency: "direct main"
     description:
-      path: "../td_json_lib"
+      path: "../telegram_client"
       relative: true
     source: path
     version: "0.0.1"

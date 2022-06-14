@@ -5,5 +5,9 @@
 # Conventional directory for build output.
 build/
 
+# IDE files
 .idea/
 .vscode/
+
+# melos generated files
+*.iml

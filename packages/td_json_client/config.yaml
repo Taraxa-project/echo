@@ -1,5 +1,5 @@
 ffigen:
-  output: 'td_json_lib.dart'
+  output: 'td_json_client.dart'
   headers:
     entry-points:
       - '/root/td/tdlib/include/td/telegram/td_json_client.h'
