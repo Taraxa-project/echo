@@ -1,7 +1,5 @@
-// import 'dart:io' as io;
-import 'package:echo_cli/telegram_config.dart' as telegram_config;
-
 import 'package:telegram_client/telegram_client.dart';
+import 'package:echo_cli/telegram_config.dart' as telegram_config;
 
 void main() {
   final telegramClient = TelegramClient();
