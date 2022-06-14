@@ -21,7 +21,7 @@ class TelegramClient {
     if (io.Platform.isMacOS) {
       return 'libtdjson.dylib';
     } else if (io.Platform.isWindows) {
-      return 'libtdjson.dylib';
+      return 'libtdjson.dll';
     } else {
       return 'libtdjson.so';
     }
