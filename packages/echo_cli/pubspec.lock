@@ -15,13 +15,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.2"
-  td_json_client:
-    dependency: "direct overridden"
-    description:
-      path: "../td_json_client"
-      relative: true
-    source: path
-    version: "0.0.1"
   telegram_client:
     dependency: "direct main"
     description:

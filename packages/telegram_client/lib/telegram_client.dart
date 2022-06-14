@@ -3,7 +3,7 @@ import 'dart:ffi' as ffi;
 // import 'dart:ffi' as ffi;
 // import 'package:ffi/ffi.dart' as ffi_ext;
 
-import 'package:td_json_client/td_json_client.dart';
+import 'package:telegram_client/src/td_json_client.dart';
 
 class TelegramClient {
   var _tdJsonClient;

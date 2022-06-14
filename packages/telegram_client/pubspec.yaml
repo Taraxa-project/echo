@@ -6,5 +6,3 @@ publish_to: none
 dependencies:
   ffi: ^1.2.1
   path: ^1.8.0
-  td_json_client:
-    path: ../td_json_client
