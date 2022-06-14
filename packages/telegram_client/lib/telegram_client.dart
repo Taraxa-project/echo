@@ -6,6 +6,8 @@ import 'dart:convert' as convert;
 import 'package:telegram_client/src/lib_td_json.dart';
 
 class TelegramClient {
+  final String _libtdjsonPath;
+
   final int _apiId;
   final String _apiHash;
   final String _phoneNumber;
@@ -14,8 +16,12 @@ class TelegramClient {
   late final int _tdClientId;
 
   TelegramClient(
-      int this._apiId, String this._apiHash, String this._phoneNumber) {
-    _libTdJson = LibTdJson(ffi.DynamicLibrary.open(_getTdLibPath()));
+    String this._libtdjsonPath,
+    int this._apiId,
+    String this._apiHash,
+    String this._phoneNumber,
+  ) {
+    _libTdJson = LibTdJson(ffi.DynamicLibrary.open(_libtdjsonPath));
     _tdClientId = this._libTdJson.td_create_client_id();
   }
 
@@ -28,13 +34,16 @@ class TelegramClient {
       if (tdResponse == ffi.nullptr) {
         continue;
       }
+
       var response =
           convert.jsonDecode(tdResponse.cast<ffi_ext.Utf8>().toDartString());
+
       switch (response['@type']) {
         case 'updateAuthorizationState':
           switch (response['authorization_state']) {
             case 'authorizationStateClosed':
               break;
+
             case 'authorizationStateReady':
               break;
           }
@@ -101,13 +110,15 @@ class TelegramClient {
     }
   }
 
-  String _getTdLibPath() {
-    if (io.Platform.isMacOS) {
-      return 'libtdjson.dylib';
-    } else if (io.Platform.isWindows) {
-      return 'libtdjson.dll';
-    } else {
-      return 'libtdjson.so';
-    }
-  }
+  // String _getTdLibPath() {
+  //   if (_libtdjsonPath != null) {
+  //     return _libtdjsonPath;
+  //   } else if (io.Platform.isMacOS) {
+  //     return 'libtdjson.dylib';
+  //   } else if (io.Platform.isWindows) {
+  //     return 'libtdjson.dll';
+  //   } else {
+  //     return 'libtdjson.so';
+  //   }
+  // }
 }

@@ -7,9 +7,14 @@ void main(List<String> arguments) {
   final CommandRunner commandRunner =
       CommandRunner("echo", "A dart implementation of Telegram scrapper.");
   commandRunner.argParser
-    ..addOption('api-id', mandatory: true, help: 'Telegram api_id')
-    ..addOption('api-hash', mandatory: true, help: 'Telegram api_hash')
-    ..addOption('phone-number', mandatory: true, help: 'Phone number')
+    ..addOption('api-id',
+        mandatory: true,
+        help: 'Telegram api_id (https://my.telegram.org/apps/)')
+    ..addOption('api-hash',
+        mandatory: true,
+        help: 'Telegram api_hash (https://my.telegram.org/apps/)')
+    ..addOption('phone-number', mandatory: true, help: 'Your phone number')
+    ..addOption('libtdjson-path', mandatory: true, help: 'libtdjson full path')
     ..addOption('proxy');
   commandRunner
     ..addCommand(CommandSignup())
