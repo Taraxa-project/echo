@@ -1,4 +1,3 @@
-import 'dart:io' as io;
 import 'dart:ffi' as ffi;
 import 'package:ffi/ffi.dart' as ffi_ext;
 import 'dart:convert' as convert;
@@ -6,119 +5,113 @@ import 'dart:convert' as convert;
 import 'package:telegram_client/src/lib_td_json.dart';
 
 class TelegramClient {
-  final String _libtdjsonPath;
+  final String libtdjsonPath;
 
-  final int _apiId;
-  final String _apiHash;
-  final String _phoneNumber;
+  final int apiId;
+  final String apiHash;
+  final String phoneNumber;
 
   late final LibTdJson _libTdJson;
   late final int _tdClientId;
 
-  TelegramClient(
-    String this._libtdjsonPath,
-    int this._apiId,
-    String this._apiHash,
-    String this._phoneNumber,
-  ) {
-    _libTdJson = LibTdJson(ffi.DynamicLibrary.open(_libtdjsonPath));
+  bool _authorized = false;
+  bool _closed = false;
+
+  bool get authorized {
+    return _authorized;
+  }
+
+  bool get closed {
+    return _closed;
+  }
+
+  TelegramClient({
+    required String this.libtdjsonPath,
+    required int this.apiId,
+    required String this.apiHash,
+    required String this.phoneNumber,
+  }) {
+    _libTdJson = LibTdJson(ffi.DynamicLibrary.open(libtdjsonPath));
     _tdClientId = this._libTdJson.td_create_client_id();
   }
 
-  void signUp() {
-    dynamic request;
-    const double waitTimeout = 10.0;
+  void signUp(String Function() readTelegramCode) {
+    execute({'@type': 'setLogVerbosityLevel', 'new_verbosity_level': 5});
+    execute({'@type': 'getAuthorizationState'});
 
     while (true) {
-      ffi.Pointer<ffi.Int> tdResponse = _libTdJson.td_receive(waitTimeout);
-      if (tdResponse == ffi.nullptr) {
+      var response = receive();
+      print(response);
+
+      if (response == null) {
         continue;
       }
 
-      var response =
-          convert.jsonDecode(tdResponse.cast<ffi_ext.Utf8>().toDartString());
-
       switch (response['@type']) {
         case 'updateAuthorizationState':
-          switch (response['authorization_state']) {
+          switch (response['authorization_state']['@type']) {
             case 'authorizationStateClosed':
+              _closed = true;
               break;
-
             case 'authorizationStateReady':
+              _authorized = true;
+              break;
+            case 'authorizationStateWaitTdlibParameters':
+              send({
+                '@type': 'setTdlibParameters',
+                'parameters': {
+                  'api_id': apiId,
+                  'api_hash': apiHash,
+                  'system_language_code': 'en',
+                  'use_message_database': false,
+                  'device_model': 'Desktop',
+                  'application_version': '1.0',
+                }
+              });
+              break;
+            case 'authorizationStateWaitEncryptionKey':
+              send({
+                '@type': 'checkDatabaseEncryptionKey',
+                'encryption_key': '',
+              });
+              break;
+            case 'authorizationStateWaitPhoneNumber':
+              send({
+                '@type': 'setAuthenticationPhoneNumber',
+                'phone_number': phoneNumber,
+              });
+              break;
+            case 'authorizationStateWaitCode':
+              send({
+                '@type': 'checkAuthenticationCode',
+                'code': readTelegramCode(),
+              });
               break;
           }
           break;
         default:
       }
 
-      //   if (tdResponse != ffi.nullptr) {
-      //     var response =
-      //         convert.jsonDecode(tdResponse.cast<ffi_ext.Utf8>().toDartString());
-
-      //     if (response['@type'] == 'updateAuthorizationState') {
-      //       var authorization_state = response['authorization_state'];
-
-      //       if (authorization_state['@type'] == 'authorizationStateClosed') {
-      //         break;
-      //       }
-
-      //       if (authorization_state['@type'] ==
-      //           'authorizationStateWaitTdlibParameters') {
-      //         request = {
-      //           '@type': 'setTdlibParameters',
-      //           'parameters': {
-      //             'api_id': apiId,
-      //             'api_hash': apiHash,
-      //             'system_language_code': 'en',
-      //             'use_message_database': false,
-      //             'device_model': 'Desktop',
-      //             'application_version': '1.0',
-      //           }
-      //         };
-      //         this._libTdJson.td_json_client_send(
-      //             this._tdJsonClient.cast<ffi.Void>(),
-      //             convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
-      //       }
-
-      //       if (authorization_state['@type'] ==
-      //           'authorizationStateWaitTdlibParameters') {
-      //         request = {
-      //           '@type': 'checkDatabaseEncryptionKey',
-      //           'encryption_key': '',
-      //         };
-      //         this._libTdJson.td_json_client_send(
-      //             this._tdJsonClient.cast<ffi.Void>(),
-      //             convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
-      //       }
-
-      //       if (authorization_state['@type'] ==
-      //           'authorizationStateWaitPhoneNumber') {
-      //         request = {
-      //           '@type': 'setAuthenticationPhoneNumber',
-      //           'phone_number': phoneNumber,
-      //         };
-      //         this._libTdJson.td_json_client_send(
-      //             this._tdJsonClient.cast<ffi.Void>(),
-      //             convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
-      //       }
-
-      //       if (authorization_state['@type'] == 'authorizationStateReady') {
-      //         break;
-      //       }
-      //     }
-      //   }
+      if (_closed || _authorized) {
+        break;
+      }
     }
   }
 
-  // String _getTdLibPath() {
-  //   if (_libtdjsonPath != null) {
-  //     return _libtdjsonPath;
-  //   } else if (io.Platform.isMacOS) {
-  //     return 'libtdjson.dylib';
-  //   } else if (io.Platform.isWindows) {
-  //     return 'libtdjson.dll';
-  //   } else {
-  //     return 'libtdjson.so';
-  //   }
-  // }
+  void execute(dynamic request) {
+    _libTdJson.td_execute(
+        convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
+  }
+
+  void send(dynamic request) {
+    _libTdJson.td_send(_tdClientId,
+        convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
+  }
+
+  dynamic receive({double waitTimeout = 10.0}) {
+    ffi.Pointer<ffi.Int> tdResponse = _libTdJson.td_receive(waitTimeout);
+    if (tdResponse != ffi.nullptr) {
+      return convert.jsonDecode(tdResponse.cast<ffi_ext.Utf8>().toDartString());
+    }
+  }
 }

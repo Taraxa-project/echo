@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:echo_cli/command_signup.dart';
+import 'package:echo_cli/src/command_signup.dart';
 
 void main(List<String> arguments) {
   final CommandRunner commandRunner =

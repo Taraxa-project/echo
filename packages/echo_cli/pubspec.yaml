@@ -8,3 +8,5 @@ dependencies:
   args: ^2.3.1
   telegram_client:
     path: ../telegram_client
+    version: ^0.0.1
+dev_dependencies: {lints: ^2.0.0}
