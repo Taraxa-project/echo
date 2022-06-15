@@ -6,4 +6,10 @@ publish_to: none
 dependencies:
   ffi: ^2.0.0
   path: ^1.8.0
+  ffigen: ^6.0.1
 dev_dependencies: {lints: ^2.0.0}
+ffigen:
+  output: 'lib/src/lib_td_json.dart'
+  headers:
+    entry-points:
+      - '${HOME}/td/tdlib/include/td/telegram/td_json_client.h'
