@@ -14,16 +14,8 @@ class TelegramClient {
   late final LibTdJson _libTdJson;
   late final int _tdClientId;
 
-  bool _authorized = false;
-  bool _closed = false;
-
-  bool get authorized {
-    return _authorized;
-  }
-
-  bool get closed {
-    return _closed;
-  }
+  bool authorized = false;
+  bool closed = false;
 
   TelegramClient({
     required String this.libtdjsonPath,
@@ -51,10 +43,10 @@ class TelegramClient {
         case 'updateAuthorizationState':
           switch (response['authorization_state']['@type']) {
             case 'authorizationStateClosed':
-              _closed = true;
+              closed = true;
               break;
             case 'authorizationStateReady':
-              _authorized = true;
+              authorized = true;
               break;
             case 'authorizationStateWaitTdlibParameters':
               send({
@@ -92,7 +84,7 @@ class TelegramClient {
         default:
       }
 
-      if (_closed || _authorized) {
+      if (closed || authorized) {
         break;
       }
     }
