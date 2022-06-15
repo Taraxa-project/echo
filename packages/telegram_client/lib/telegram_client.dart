@@ -32,12 +32,12 @@ class TelegramClient {
     required String this.phoneNumber,
   }) {
     _libTdJson = LibTdJson(ffi.DynamicLibrary.open(libtdjsonPath));
-    _tdClientId = this._libTdJson.td_create_client_id();
+    _tdClientId = _libTdJson.td_create_client_id();
   }
 
   void signUp(String Function() readTelegramCode) {
     execute({'@type': 'setLogVerbosityLevel', 'new_verbosity_level': 5});
-    execute({'@type': 'getAuthorizationState'});
+    send({'@type': 'getAuthorizationState'});
 
     while (true) {
       var response = receive();
