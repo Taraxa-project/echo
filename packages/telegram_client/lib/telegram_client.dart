@@ -29,12 +29,11 @@ class TelegramClient {
 
   void signUp(String Function() readTelegramCode) {
     execute({'@type': 'setLogVerbosityLevel', 'new_verbosity_level': 1});
+
     send({'@type': 'getAuthorizationState'});
 
     while (true) {
       var response = receive();
-      print(response);
-
       if (response == null) {
         continue;
       }
