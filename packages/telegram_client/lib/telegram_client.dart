@@ -36,7 +36,7 @@ class TelegramClient {
   }
 
   void signUp(String Function() readTelegramCode) {
-    execute({'@type': 'setLogVerbosityLevel', 'new_verbosity_level': 5});
+    execute({'@type': 'setLogVerbosityLevel', 'new_verbosity_level': 1});
     send({'@type': 'getAuthorizationState'});
 
     while (true) {
@@ -63,6 +63,7 @@ class TelegramClient {
                   'api_id': apiId,
                   'api_hash': apiHash,
                   'system_language_code': 'en',
+                  'database_directory': 'tdlib',
                   'use_message_database': false,
                   'device_model': 'Desktop',
                   'application_version': '1.0',
@@ -89,7 +90,6 @@ class TelegramClient {
               break;
           }
           break;
-        default:
       }
 
       if (_closed || _authorized) {
