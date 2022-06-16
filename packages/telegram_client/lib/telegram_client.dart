@@ -39,17 +39,17 @@ class TelegramClient with TelegramClientLoggy {
       required String this.apiHash,
       required String this.phoneNumber,
       int this.libtdjsonLoglevel = 1}) {
-    loggy.debug('Loading libdtjson from ${libtdjsonPath}...');
+    loggy.debug('Loading libdtjson from $libtdjsonPath...');
     _libTdJson = LibTdJson(ffi.DynamicLibrary.open(libtdjsonPath));
     loggy.debug('Loaded libdtjson.');
 
     loggy.debug('Creating libdtjson client id...');
     _tdClientId = _libTdJson.td_create_client_id();
-    loggy.debug('Created libtdjson client id ${_tdClientId}');
+    loggy.debug('Created libtdjson client id $_tdClientId');
   }
 
   void signUp(int Function() readTelegramCode) {
-    loggy.debug('Setting libtdjson log level to ${libtdjsonLoglevel}..');
+    loggy.debug('Setting libtdjson log level to $libtdjsonLoglevel..');
     execute({
       '@type': 'setLogVerbosityLevel',
       'new_verbosity_level': libtdjsonLoglevel
@@ -116,13 +116,13 @@ class TelegramClient with TelegramClientLoggy {
 
   void execute(dynamic request) {
     String requestJson = convert.jsonEncode(request);
-    loggy.info('Executing ${requestJson}...');
+    loggy.info('Executing $requestJson...');
     _libTdJson.td_execute(requestJson.toNativeUtf8().cast<ffi.Char>());
   }
 
   void send(dynamic request) {
     String requestJson = convert.jsonEncode(request);
-    loggy.info('Sending ${requestJson} from client id ${_tdClientId}...');
+    loggy.info('Sending $requestJson from client id $_tdClientId...');
     _libTdJson.td_send(_tdClientId,
         convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
   }
@@ -131,7 +131,7 @@ class TelegramClient with TelegramClientLoggy {
     ffi.Pointer<ffi.Int> tdResponse = _libTdJson.td_receive(waitTimeout);
     if (tdResponse != ffi.nullptr) {
       String responseJson = tdResponse.cast<ffi_ext.Utf8>().toDartString();
-      loggy.info('Received ${responseJson} to client id ${_tdClientId}.');
+      loggy.info('Received $responseJson to client id $_tdClientId.');
       return convert.jsonDecode(responseJson);
     }
   }
