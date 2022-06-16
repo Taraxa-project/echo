@@ -6,6 +6,7 @@ import 'package:echo_cli/src/command_signup.dart';
 void main(List<String> arguments) {
   final CommandRunner commandRunner =
       CommandRunner("echo", "A dart implementation of Telegram scrapper.");
+
   commandRunner.argParser
     ..addOption('api-id',
         mandatory: true,
@@ -14,8 +15,13 @@ void main(List<String> arguments) {
         mandatory: true,
         help: 'Telegram api_hash (https://my.telegram.org/apps/)')
     ..addOption('phone-number', mandatory: true, help: 'Your phone number')
-    ..addOption('libtdjson-path', mandatory: true, help: 'libtdjson full path')
-    ..addOption('proxy');
+    ..addOption('libtdjson-path', mandatory: true, help: 'libtdjson path')
+    ..addOption('libtdjson-loglevel',
+        help: 'libtdjson log level', defaultsTo: '1')
+    ..addOption('database-path',
+        help: 'tdlib database path', defaultsTo: 'tdlib')
+    ..addOption('loglevel', help: 'Log level', defaultsTo: 'All');
+
   commandRunner
     ..addCommand(CommandSignup())
     ..run(arguments).catchError((error) {

@@ -1,11 +1,19 @@
 import 'dart:ffi' as ffi;
 import 'package:ffi/ffi.dart' as ffi_ext;
 import 'dart:convert' as convert;
+import 'package:loggy/loggy.dart';
 
 import 'package:telegram_client/src/lib_td_json.dart';
 
-class TelegramClient {
+mixin TelegramClientLoggy implements LoggyType {
+  @override
+  Loggy<TelegramClientLoggy> get loggy =>
+      Loggy<TelegramClientLoggy>('Telegram Client - $runtimeType');
+}
+
+class TelegramClient with TelegramClientLoggy {
   final String libtdjsonPath;
+  final int libtdjsonLoglevel;
 
   final int apiId;
   final String apiHash;
@@ -14,26 +22,43 @@ class TelegramClient {
   late final LibTdJson _libTdJson;
   late final int _tdClientId;
 
-  bool authorized = false;
-  bool closed = false;
+  bool _isAuthorized = false;
+  bool _isClosed = false;
 
-  TelegramClient({
-    required String this.libtdjsonPath,
-    required int this.apiId,
-    required String this.apiHash,
-    required String this.phoneNumber,
-  }) {
+  bool get isAuthorized {
+    return _isAuthorized;
+  }
+
+  bool get isClosed {
+    return _isClosed;
+  }
+
+  TelegramClient(
+      {required String this.libtdjsonPath,
+      required int this.apiId,
+      required String this.apiHash,
+      required String this.phoneNumber,
+      int this.libtdjsonLoglevel = 1}) {
+    loggy.debug('Loading libdtjson from ${libtdjsonPath}...');
     _libTdJson = LibTdJson(ffi.DynamicLibrary.open(libtdjsonPath));
+    loggy.debug('Loaded libdtjson.');
+
+    loggy.debug('Creating libdtjson client id...');
     _tdClientId = _libTdJson.td_create_client_id();
+    loggy.debug('Created libtdjson client id ${_tdClientId}');
   }
 
   void signUp(String Function() readTelegramCode) {
-    execute({'@type': 'setLogVerbosityLevel', 'new_verbosity_level': 1});
+    loggy.debug('Setting libtdjson log level to ${libtdjsonLoglevel}..');
+    execute({
+      '@type': 'setLogVerbosityLevel',
+      'new_verbosity_level': libtdjsonLoglevel
+    });
 
     send({'@type': 'getAuthorizationState'});
 
     while (true) {
-      var response = receive();
+      dynamic response = receive();
       if (response == null) {
         continue;
       }
@@ -42,10 +67,10 @@ class TelegramClient {
         case 'updateAuthorizationState':
           switch (response['authorization_state']['@type']) {
             case 'authorizationStateClosed':
-              closed = true;
+              _isClosed = true;
               break;
             case 'authorizationStateReady':
-              authorized = true;
+              _isAuthorized = true;
               break;
             case 'authorizationStateWaitTdlibParameters':
               send({
@@ -83,18 +108,21 @@ class TelegramClient {
           break;
       }
 
-      if (closed || authorized) {
+      if (_isClosed || _isAuthorized) {
         break;
       }
     }
   }
 
   void execute(dynamic request) {
-    _libTdJson.td_execute(
-        convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
+    String requestJson = convert.jsonEncode(request);
+    loggy.info('Executing ${requestJson}...');
+    _libTdJson.td_execute(requestJson.toNativeUtf8().cast<ffi.Char>());
   }
 
   void send(dynamic request) {
+    String requestJson = convert.jsonEncode(request);
+    loggy.info('Sending ${requestJson} from client id ${_tdClientId}...');
     _libTdJson.td_send(_tdClientId,
         convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
   }
@@ -102,7 +130,9 @@ class TelegramClient {
   dynamic receive({double waitTimeout = 10.0}) {
     ffi.Pointer<ffi.Int> tdResponse = _libTdJson.td_receive(waitTimeout);
     if (tdResponse != ffi.nullptr) {
-      return convert.jsonDecode(tdResponse.cast<ffi_ext.Utf8>().toDartString());
+      String responseJson = tdResponse.cast<ffi_ext.Utf8>().toDartString();
+      loggy.info('Received ${responseJson} to client id ${_tdClientId}.');
+      return convert.jsonDecode(responseJson);
     }
   }
 }
