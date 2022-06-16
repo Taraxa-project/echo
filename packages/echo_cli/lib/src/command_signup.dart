@@ -24,21 +24,14 @@ class CommandSignup extends Command {
         libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']));
 
     int readTelegramCode() {
-      const String prompt = 'Enter Telegram code:';
-      print(prompt);
-
+      final RegExp fiveDigitsRegExp = RegExp(r"^\d{5}$");
       while (true) {
-        String? inputLine = stdin.readLineSync();
-        if (inputLine == null) {
-          continue;
+        print('Enter Telegram code:');
+        String inputLine = stdin.readLineSync() ?? '';
+        if (fiveDigitsRegExp.hasMatch(inputLine)) {
+          return int.parse(inputLine);
         }
-        final RegExp exp = RegExp(r"^\d{5}$");
-        if (!exp.hasMatch(inputLine)) {
-          print('Telegram code must be a five digits number.');
-          print(prompt);
-          continue;
-        }
-        return int.parse(inputLine);
+        print('Telegram code must be a five digits number.');
       }
     }
 
