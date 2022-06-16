@@ -48,7 +48,7 @@ class TelegramClient with TelegramClientLoggy {
     loggy.debug('Created libtdjson client id ${_tdClientId}');
   }
 
-  void signUp(String Function() readTelegramCode) {
+  void signUp(int Function() readTelegramCode) {
     loggy.debug('Setting libtdjson log level to ${libtdjsonLoglevel}..');
     execute({
       '@type': 'setLogVerbosityLevel',
