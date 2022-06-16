@@ -23,10 +23,23 @@ class CommandSignup extends Command {
         phoneNumber: globalResults!['phone-number'],
         libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']));
 
-    String readTelegramCode() {
-      print("Enter Telegram code:");
-      String? telegramCode = stdin.readLineSync();
-      return telegramCode ?? readTelegramCode();
+    int readTelegramCode() {
+      const String prompt = 'Enter Telegram code:';
+      print(prompt);
+
+      while (true) {
+        String? inputLine = stdin.readLineSync();
+        if (inputLine == null) {
+          continue;
+        }
+        final RegExp exp = RegExp(r"^\d{5}$");
+        if (!exp.hasMatch(inputLine)) {
+          print('Telegram code must be a five digits number.');
+          print(prompt);
+          continue;
+        }
+        return int.parse(inputLine);
+      }
     }
 
     telegramClient.signUp(readTelegramCode);
