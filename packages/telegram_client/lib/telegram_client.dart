@@ -56,10 +56,12 @@ class TelegramClient with TelegramClientLoggy {
         .where((event) => event['@type'] == 'updateAuthorizationState')) {
       switch (response['authorization_state']['@type']) {
         case 'authorizationStateClosed':
+          loggy.warning('Authorization state closed.');
           _isClosed = true;
           break;
         case 'authorizationStateReady':
           _isAuthorized = true;
+          loggy.info('Logged in successfuly');
           break;
         case 'authorizationStateWaitTdlibParameters':
           send({
@@ -101,6 +103,38 @@ class TelegramClient with TelegramClientLoggy {
     }
   }
 
+  Stream<dynamic> getChats() async* {
+    send({
+      '@type': 'loadChats',
+      'limit': 1000,
+    });
+    await for (var response in receive(doBreak: true)) {
+      switch (response['@type']) {
+        case 'updateNewChat':
+          yield {
+            'id': response['chat']['id'],
+            'name': response['chat']['title'],
+            'type': response['chat']['@type'],
+          };
+          break;
+        case 'updateSupergroup':
+          yield {
+            'id': response['supergroup']['id'],
+            'name': response['supergroup']['username'],
+            'type': response['supergroup']['@type'],
+          };
+          break;
+        case 'updateBasicGroup':
+          yield {
+            'id': response['basic_group']['id'],
+            // 'name': response['basicGroup']['username'] ?? '',
+            'type': response['basic_group']['@type'],
+          };
+          break;
+      }
+    }
+  }
+
   void execute(dynamic request) {
     String requestJson = convert.jsonEncode(request);
     loggy.info('Executing $requestJson...');
@@ -114,19 +148,26 @@ class TelegramClient with TelegramClientLoggy {
         convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
   }
 
-  Stream<dynamic> receive({double waitTimeout = 10.0}) async* {
+  Stream<dynamic> receive(
+      {double waitTimeout = 5.0, bool doBreak = false}) async* {
     while (true) {
       final ffi.Pointer<ffi.Int> tdResponse =
           _libTdJson.td_receive(waitTimeout);
-      if (tdResponse != ffi.nullptr) {
-        final String responseJson =
-            tdResponse.cast<ffi_ext.Utf8>().toDartString();
-        loggy.info('Received $responseJson to client id $_tdClientId.');
-
-        final response = convert.jsonDecode(responseJson);
-        if (response != null) {
-          yield response;
+      if (tdResponse == ffi.nullptr) {
+        if (doBreak) {
+          break;
+        } else {
+          continue;
         }
+      }
+
+      final String responseJson =
+          tdResponse.cast<ffi_ext.Utf8>().toDartString();
+      loggy.info('Received $responseJson to client id $_tdClientId.');
+
+      final response = convert.jsonDecode(responseJson);
+      if (response != null) {
+        yield response;
       }
     }
   }

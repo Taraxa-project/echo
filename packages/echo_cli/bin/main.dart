@@ -4,6 +4,7 @@ import 'package:args/command_runner.dart';
 import 'package:echo_cli/src/tg/tg_input.dart';
 import 'package:echo_cli/src/tg/tg_command_runner.dart';
 import 'package:echo_cli/src/tg/tg_command_signup.dart';
+import 'package:echo_cli/src/tg/tg_command_chats.dart';
 
 void main(List<String> arguments) {
   final TelegramCommandRunner commandRunner = TelegramCommandRunner(
@@ -26,7 +27,8 @@ void main(List<String> arguments) {
 
   commandRunner
     ..readTelegramCode = readTelegramCode
-    ..addCommand(CommandSignup())
+    ..addCommand(TelegramCommandSignup())
+    ..addCommand(TelegramCommandsChats())
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
       print(error);
