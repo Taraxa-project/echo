@@ -1,5 +1,5 @@
-import 'package:echo_cli/src/tg_command.dart';
-import 'package:echo_cli/src/tg_command_runner.dart';
+import 'package:echo_cli/src/tg/tg_command.dart';
+import 'package:echo_cli/src/tg/tg_command_runner.dart';
 
 import 'package:telegram_client/telegram_client.dart';
 
