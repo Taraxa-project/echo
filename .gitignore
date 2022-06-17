@@ -11,3 +11,6 @@ build/
 
 # melos generated files
 *.iml
+
+# tdlib generated files
+*.binlog
