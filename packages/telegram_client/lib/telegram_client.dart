@@ -42,7 +42,7 @@ class TelegramClient with TelegramClientLoggy {
     _tdClientId = _libTdJson.td_create_client_id();
     loggy.debug('Created libtdjson client id $_tdClientId');
 
-    loggy.debug('Setting libtdjson log level to $libtdjsonLoglevel..');
+    loggy.debug('Setting libtdjson log level to $libtdjsonLoglevel...');
     execute({
       '@type': 'setLogVerbosityLevel',
       'new_verbosity_level': libtdjsonLoglevel
