@@ -25,13 +25,8 @@ class TelegramClient with TelegramClientLoggy {
   bool _isAuthorized = false;
   bool _isClosed = false;
 
-  bool get isAuthorized {
-    return _isAuthorized;
-  }
-
-  bool get isClosed {
-    return _isClosed;
-  }
+  bool get isAuthorized => _isAuthorized;
+  bool get isClosed => _isClosed;
 
   TelegramClient(
       {required String this.libtdjsonPath,
@@ -46,65 +41,57 @@ class TelegramClient with TelegramClientLoggy {
     loggy.debug('Creating libdtjson client id...');
     _tdClientId = _libTdJson.td_create_client_id();
     loggy.debug('Created libtdjson client id $_tdClientId');
-  }
 
-  void signUp(int Function() readTelegramCode) {
     loggy.debug('Setting libtdjson log level to $libtdjsonLoglevel..');
     execute({
       '@type': 'setLogVerbosityLevel',
       'new_verbosity_level': libtdjsonLoglevel
     });
+  }
 
-    send({'@type': 'getAuthorizationState'});
+  Future<void> signUp(String Function() readTelegramCode) async {
+    await send({'@type': 'getAuthorizationState'});
 
-    while (true) {
-      dynamic response = receive();
-      if (response == null) {
-        continue;
-      }
-
-      switch (response['@type']) {
-        case 'updateAuthorizationState':
-          switch (response['authorization_state']['@type']) {
-            case 'authorizationStateClosed':
-              _isClosed = true;
-              break;
-            case 'authorizationStateReady':
-              _isAuthorized = true;
-              break;
-            case 'authorizationStateWaitTdlibParameters':
-              send({
-                '@type': 'setTdlibParameters',
-                'parameters': {
-                  'api_id': apiId,
-                  'api_hash': apiHash,
-                  'system_language_code': 'en',
-                  'database_directory': 'tdlib',
-                  'use_message_database': false,
-                  'device_model': 'Desktop',
-                  'application_version': '1.0',
-                }
-              });
-              break;
-            case 'authorizationStateWaitEncryptionKey':
-              send({
-                '@type': 'checkDatabaseEncryptionKey',
-                'encryption_key': '',
-              });
-              break;
-            case 'authorizationStateWaitPhoneNumber':
-              send({
-                '@type': 'setAuthenticationPhoneNumber',
-                'phone_number': phoneNumber,
-              });
-              break;
-            case 'authorizationStateWaitCode':
-              send({
-                '@type': 'checkAuthenticationCode',
-                'code': readTelegramCode(),
-              });
-              break;
-          }
+    await for (var response in receive()
+        .where((event) => event['@type'] == 'updateAuthorizationState')) {
+      switch (response['authorization_state']['@type']) {
+        case 'authorizationStateClosed':
+          _isClosed = true;
+          break;
+        case 'authorizationStateReady':
+          _isAuthorized = true;
+          break;
+        case 'authorizationStateWaitTdlibParameters':
+          send({
+            '@type': 'setTdlibParameters',
+            'parameters': {
+              'api_id': apiId,
+              'api_hash': apiHash,
+              'system_language_code': 'en',
+              'database_directory': 'tdlib',
+              'use_message_database': false,
+              'device_model': 'Desktop',
+              'application_version': '1.0',
+            }
+          });
+          break;
+        case 'authorizationStateWaitEncryptionKey':
+          send({
+            '@type': 'checkDatabaseEncryptionKey',
+            'encryption_key': '',
+          });
+          break;
+        case 'authorizationStateWaitPhoneNumber':
+          send({
+            '@type': 'setAuthenticationPhoneNumber',
+            'phone_number': phoneNumber,
+          });
+          break;
+        case 'authorizationStateWaitCode':
+          send({
+            '@type': 'checkAuthenticationCode',
+            'code': readTelegramCode(),
+          });
           break;
       }
 
@@ -120,19 +107,27 @@ class TelegramClient with TelegramClientLoggy {
     _libTdJson.td_execute(requestJson.toNativeUtf8().cast<ffi.Char>());
   }
 
-  void send(dynamic request) {
+  Future<void> send(dynamic request) async {
     String requestJson = convert.jsonEncode(request);
     loggy.info('Sending $requestJson from client id $_tdClientId...');
     _libTdJson.td_send(_tdClientId,
         convert.jsonEncode(request).toNativeUtf8().cast<ffi.Char>());
   }
 
-  dynamic receive({double waitTimeout = 10.0}) {
-    ffi.Pointer<ffi.Int> tdResponse = _libTdJson.td_receive(waitTimeout);
-    if (tdResponse != ffi.nullptr) {
-      String responseJson = tdResponse.cast<ffi_ext.Utf8>().toDartString();
-      loggy.info('Received $responseJson to client id $_tdClientId.');
-      return convert.jsonDecode(responseJson);
+  Stream<dynamic> receive({double waitTimeout = 10.0}) async* {
+    while (true) {
+      final ffi.Pointer<ffi.Int> tdResponse =
+          _libTdJson.td_receive(waitTimeout);
+      if (tdResponse != ffi.nullptr) {
+        final String responseJson =
+            tdResponse.cast<ffi_ext.Utf8>().toDartString();
+        loggy.info('Received $responseJson to client id $_tdClientId.');
+
+        final response = convert.jsonDecode(responseJson);
+        if (response != null) {
+          yield response;
+        }
+      }
     }
   }
 }

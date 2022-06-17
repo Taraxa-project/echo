@@ -8,7 +8,7 @@ class CommandSignup extends Command {
   final name = 'signup';
   final description = 'Sign up a Telegram account.';
 
-  void run() {
+  void run() async {
     var logLevel = LogLevel.values.firstWhere(
         (element) => element.name == globalResults!['loglevel'],
         orElse: () => LogLevel.all);
@@ -23,18 +23,24 @@ class CommandSignup extends Command {
         phoneNumber: globalResults!['phone-number'],
         libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']));
 
-    int readTelegramCode() {
+    String readTelegramCode() {
       final RegExp fiveDigitsRegExp = RegExp(r"^\d{5}$");
       while (true) {
         print('Enter Telegram code:');
         String inputLine = stdin.readLineSync() ?? '';
         if (fiveDigitsRegExp.hasMatch(inputLine)) {
-          return int.parse(inputLine);
+          return inputLine;
         }
         print('Telegram code must be a five digits number.');
       }
     }
 
-    telegramClient.signUp(readTelegramCode);
+    await telegramClient.signUp(readTelegramCode);
+    if (telegramClient.isAuthorized) {
+      print('Signed up successfully.');
+    }
+    if (telegramClient.isClosed) {
+      print('Server closed connection.');
+    }
   }
 }
