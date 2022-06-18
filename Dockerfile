@@ -36,7 +36,8 @@ RUN cmake --build . --target install
 FROM dart:stable
 
 # Copy tdlib binaries
-COPY --from=builder /tmp/td/tdlib /usr/local/bin/tdlib
+COPY --from=builder /tmp/td/tdlib/include /usr/local/include/
+COPY --from=builder /tmp/td/tdlib/lib /usr/local/lib/
 
 
 
