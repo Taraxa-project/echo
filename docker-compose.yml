@@ -6,14 +6,5 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    stdin_open: true
-    tty: true
-    volumes:
-      - deps:/root/.pub-cache/
     env_file:
       - env.local
-
-volumes:
-  deps:
-
-# libtdjson.so || libtdjson.so.1.8.0
