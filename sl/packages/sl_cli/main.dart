@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:dotenv/dotenv.dart';
 import 'package:hexaminate/hexaminate.dart';
-import '../sl_td_lib/telegram_client.dart';
-import '../sl_td_lib/src/updates.dart';
+import 'package:telegram_client/telegram_client.dart';
 import 'dart:io';
 import 'dart:developer' as developer;
 
@@ -59,7 +58,7 @@ void main() async {
       }
     });
     await tg.initIsolate();
-    await tg.user();
+    // await tg.user();
   } catch (e) {
     print(e.toString());
   }

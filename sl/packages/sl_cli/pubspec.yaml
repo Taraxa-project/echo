@@ -16,6 +16,7 @@ dependencies:
   ffi: ^1.1.2
   hexaminate: ^0.1.2
   http: ^0.13.4
+  telegram_client: ^0.3.5
 
 executables:
   tg_cli: tg_cli
