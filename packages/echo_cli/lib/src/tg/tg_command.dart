@@ -14,6 +14,9 @@ abstract class TelegramCommand extends Command with TelegramCommandLoggy {
         orElse: () => LogLevel.all);
     var logOptions = LogOptions(logLevel);
 
-    Loggy.initLoggy(logPrinter: const PrettyPrinter(), logOptions: logOptions);
+    Loggy.initLoggy(
+        logPrinter: const PrettyPrinter(),
+        logOptions: logOptions,
+        hierarchicalLogging: true);
   }
 }

@@ -23,7 +23,7 @@ void main(List<String> arguments) {
         help: 'libtdjson log level', defaultsTo: '1')
     ..addOption('database-path',
         help: 'tdlib database path', defaultsTo: 'tdlib')
-    ..addOption('loglevel', help: 'Log level', defaultsTo: 'All');
+    ..addOption('loglevel', help: 'Log level', defaultsTo: 'Error');
 
   commandRunner
     ..readTelegramCode = readTelegramCode

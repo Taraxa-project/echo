@@ -36,7 +36,10 @@ class TelegramClient with TelegramClientLoggy {
       required String this.apiHash,
       required String this.phoneNumber,
       required String this.databasePath,
-      int this.libtdjsonLoglevel = 1}) {
+      int this.libtdjsonLoglevel = 1,
+      logLevelName = 'Error'}) {
+    initLogger(logLevelName);
+
     loggy.debug('Loading libdtjson from $libtdjsonPath...');
     _libTdJson = LibTdJson(ffi.DynamicLibrary.open(libtdjsonPath));
     loggy.debug('Loaded libdtjson.');
@@ -103,12 +106,12 @@ class TelegramClient with TelegramClientLoggy {
   }
 
   Stream<dynamic> getChats() async* {
-    send(LoadChats(limit: 100));
+    send(GetChats(limit: 1000));
 
     await for (var response in receive().where((event) =>
-        event.runtimeType is UpdateNewChat ||
-        event.runtimeType is UpdateBasicGroup ||
-        event.runtimeType is UpdateSupergroup)) {
+        event is UpdateSupergroupFullInfo ||
+        event is UpdateBasicGroupFullInfo ||
+        event is UpdateUserFullInfo)) {
       yield response;
     }
   }
@@ -126,8 +129,7 @@ class TelegramClient with TelegramClientLoggy {
         _tdClientId, requestJson.toNativeUtf8().cast<ffi.Char>());
   }
 
-  Stream<dynamic> receive(
-      {double waitTimeout = 5.0, bool doBreak = false}) async* {
+  Stream<dynamic> receive({double waitTimeout = 5.0}) async* {
     while (true) {
       final ffi.Pointer<ffi.Int> tdResponse =
           _libTdJson.td_receive(waitTimeout);
@@ -149,5 +151,19 @@ class TelegramClient with TelegramClientLoggy {
         }
       }
     }
+  }
+
+  void initLogger(String logLevelName) {
+    var logLevel = LogLevel.values.firstWhere(
+        (element) => element.name == logLevelName,
+        orElse: () => LogLevel.all);
+    var logOptions = LogOptions(logLevel);
+
+    Loggy.initLoggy(
+        logPrinter: const PrettyPrinter(),
+        logOptions: logOptions,
+        hierarchicalLogging: true);
+
+    loggy.level = logOptions;
   }
 }
