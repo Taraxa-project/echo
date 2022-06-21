@@ -29,7 +29,7 @@ extension ListMap on List {
 }
 
 abstract class TlObject {
-  String get tlType;
+  // String get tlType;
 
   TlObject();
   TlObject.fromMap(Map<String, dynamic> map);
@@ -66,7 +66,6 @@ class Error extends TdObject {
     string? this.message,
   });
 
-  @override
   Error.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -74,7 +73,6 @@ class Error extends TdObject {
     message = map.containsKey('message') ? map['message'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -101,13 +99,11 @@ class Ok extends TdObject {
     int? this.client_id,
   });
 
-  @override
   Ok.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -162,7 +158,6 @@ class TdlibParameters extends TdObject {
     Bool? this.ignore_file_names,
   });
 
-  @override
   TdlibParameters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -200,7 +195,6 @@ class TdlibParameters extends TdObject {
         map.containsKey('ignore_file_names') ? map['ignore_file_names'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -244,14 +238,12 @@ class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
     int32? this.length,
   });
 
-  @override
   AuthenticationCodeTypeTelegramMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     length = map.containsKey('length') ? map['length'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -279,14 +271,12 @@ class AuthenticationCodeTypeSms extends AuthenticationCodeType {
     int32? this.length,
   });
 
-  @override
   AuthenticationCodeTypeSms.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     length = map.containsKey('length') ? map['length'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -314,14 +304,12 @@ class AuthenticationCodeTypeCall extends AuthenticationCodeType {
     int32? this.length,
   });
 
-  @override
   AuthenticationCodeTypeCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     length = map.containsKey('length') ? map['length'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -349,14 +337,12 @@ class AuthenticationCodeTypeFlashCall extends AuthenticationCodeType {
     string? this.pattern,
   });
 
-  @override
   AuthenticationCodeTypeFlashCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     pattern = map.containsKey('pattern') ? map['pattern'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -386,7 +372,6 @@ class AuthenticationCodeTypeMissedCall extends AuthenticationCodeType {
     int32? this.length,
   });
 
-  @override
   AuthenticationCodeTypeMissedCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -396,7 +381,6 @@ class AuthenticationCodeTypeMissedCall extends AuthenticationCodeType {
     length = map.containsKey('length') ? map['length'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -431,7 +415,6 @@ class AuthenticationCodeInfo extends TdObject {
     int32? this.timeout,
   });
 
-  @override
   AuthenticationCodeInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -445,7 +428,6 @@ class AuthenticationCodeInfo extends TdObject {
     timeout = map.containsKey('timeout') ? map['timeout'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -478,7 +460,6 @@ class EmailAddressAuthenticationCodeInfo extends TdObject {
     int32? this.length,
   });
 
-  @override
   EmailAddressAuthenticationCodeInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -488,7 +469,6 @@ class EmailAddressAuthenticationCodeInfo extends TdObject {
     length = map.containsKey('length') ? map['length'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -522,7 +502,6 @@ class TextEntity extends TdObject {
     TextEntityType? this.type,
   });
 
-  @override
   TextEntity.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -533,7 +512,6 @@ class TextEntity extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -563,7 +541,6 @@ class TextEntities extends TdObject {
     vector<TextEntity>? this.entities,
   });
 
-  @override
   TextEntities.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -577,7 +554,6 @@ class TextEntities extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -607,7 +583,6 @@ class FormattedText extends TdObject {
     vector<TextEntity>? this.entities,
   });
 
-  @override
   FormattedText.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -622,7 +597,6 @@ class FormattedText extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -655,7 +629,6 @@ class TermsOfService extends TdObject {
     Bool? this.show_popup,
   });
 
-  @override
   TermsOfService.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -666,7 +639,6 @@ class TermsOfService extends TdObject {
     show_popup = map.containsKey('show_popup') ? map['show_popup'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -694,13 +666,11 @@ class AuthorizationStateWaitTdlibParameters extends AuthorizationState {
     int? this.client_id,
   });
 
-  @override
   AuthorizationStateWaitTdlibParameters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -727,14 +697,12 @@ class AuthorizationStateWaitEncryptionKey extends AuthorizationState {
     Bool? this.is_encrypted,
   });
 
-  @override
   AuthorizationStateWaitEncryptionKey.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     is_encrypted = map.containsKey('is_encrypted') ? map['is_encrypted'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -760,13 +728,11 @@ class AuthorizationStateWaitPhoneNumber extends AuthorizationState {
     int? this.client_id,
   });
 
-  @override
   AuthorizationStateWaitPhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -793,7 +759,6 @@ class AuthorizationStateWaitCode extends AuthorizationState {
     AuthenticationCodeInfo? this.code_info,
   });
 
-  @override
   AuthorizationStateWaitCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -802,7 +767,6 @@ class AuthorizationStateWaitCode extends AuthorizationState {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -830,7 +794,6 @@ class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
     string? this.link,
   });
 
-  @override
   AuthorizationStateWaitOtherDeviceConfirmation.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
@@ -838,7 +801,6 @@ class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
     link = map.containsKey('link') ? map['link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -866,7 +828,6 @@ class AuthorizationStateWaitRegistration extends AuthorizationState {
     TermsOfService? this.terms_of_service,
   });
 
-  @override
   AuthorizationStateWaitRegistration.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -875,7 +836,6 @@ class AuthorizationStateWaitRegistration extends AuthorizationState {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -907,7 +867,6 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
     string? this.recovery_email_address_pattern,
   });
 
-  @override
   AuthorizationStateWaitPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -922,7 +881,6 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -952,13 +910,11 @@ class AuthorizationStateReady extends AuthorizationState {
     int? this.client_id,
   });
 
-  @override
   AuthorizationStateReady.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -983,13 +939,11 @@ class AuthorizationStateLoggingOut extends AuthorizationState {
     int? this.client_id,
   });
 
-  @override
   AuthorizationStateLoggingOut.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1014,13 +968,11 @@ class AuthorizationStateClosing extends AuthorizationState {
     int? this.client_id,
   });
 
-  @override
   AuthorizationStateClosing.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1045,13 +997,11 @@ class AuthorizationStateClosed extends AuthorizationState {
     int? this.client_id,
   });
 
-  @override
   AuthorizationStateClosed.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1088,7 +1038,6 @@ class PasswordState extends TdObject {
     int32? this.pending_reset_date,
   });
 
-  @override
   PasswordState.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1110,7 +1059,6 @@ class PasswordState extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1145,7 +1093,6 @@ class RecoveryEmailAddress extends TdObject {
     string? this.recovery_email_address,
   });
 
-  @override
   RecoveryEmailAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1154,7 +1101,6 @@ class RecoveryEmailAddress extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1185,7 +1131,6 @@ class TemporaryPasswordState extends TdObject {
     int32? this.valid_for,
   });
 
-  @override
   TemporaryPasswordState.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1193,7 +1138,6 @@ class TemporaryPasswordState extends TdObject {
     valid_for = map.containsKey('valid_for') ? map['valid_for'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1236,7 +1180,6 @@ class LocalFile extends TdObject {
     int32? this.downloaded_size,
   });
 
-  @override
   LocalFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1260,7 +1203,6 @@ class LocalFile extends TdObject {
         map.containsKey('downloaded_size') ? map['downloaded_size'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1306,7 +1248,6 @@ class RemoteFile extends TdObject {
     int32? this.uploaded_size,
   });
 
-  @override
   RemoteFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1322,7 +1263,6 @@ class RemoteFile extends TdObject {
         map.containsKey('uploaded_size') ? map['uploaded_size'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1363,7 +1303,6 @@ class File extends TdObject {
     RemoteFile? this.remote,
   });
 
-  @override
   File.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1379,7 +1318,6 @@ class File extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1411,14 +1349,12 @@ class InputFileId extends InputFile {
     int32? this.id,
   });
 
-  @override
   InputFileId.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     id = map.containsKey('id') ? map['id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1446,14 +1382,12 @@ class InputFileRemote extends InputFile {
     string? this.id,
   });
 
-  @override
   InputFileRemote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     id = map.containsKey('id') ? map['id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1481,14 +1415,12 @@ class InputFileLocal extends InputFile {
     string? this.path,
   });
 
-  @override
   InputFileLocal.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     path = map.containsKey('path') ? map['path'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1520,7 +1452,6 @@ class InputFileGenerated extends InputFile {
     int32? this.expected_size,
   });
 
-  @override
   InputFileGenerated.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1531,7 +1462,6 @@ class InputFileGenerated extends InputFile {
         map.containsKey('expected_size') ? map['expected_size'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1569,7 +1499,6 @@ class PhotoSize extends TdObject {
     vector<int32>? this.progressive_sizes,
   });
 
-  @override
   PhotoSize.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1588,7 +1517,6 @@ class PhotoSize extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1624,7 +1552,6 @@ class Minithumbnail extends TdObject {
     bytes? this.data,
   });
 
-  @override
   Minithumbnail.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1633,7 +1560,6 @@ class Minithumbnail extends TdObject {
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1661,13 +1587,11 @@ class ThumbnailFormatJpeg extends ThumbnailFormat {
     int? this.client_id,
   });
 
-  @override
   ThumbnailFormatJpeg.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1692,13 +1616,11 @@ class ThumbnailFormatPng extends ThumbnailFormat {
     int? this.client_id,
   });
 
-  @override
   ThumbnailFormatPng.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1723,13 +1645,11 @@ class ThumbnailFormatWebp extends ThumbnailFormat {
     int? this.client_id,
   });
 
-  @override
   ThumbnailFormatWebp.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1754,13 +1674,11 @@ class ThumbnailFormatGif extends ThumbnailFormat {
     int? this.client_id,
   });
 
-  @override
   ThumbnailFormatGif.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1785,13 +1703,11 @@ class ThumbnailFormatTgs extends ThumbnailFormat {
     int? this.client_id,
   });
 
-  @override
   ThumbnailFormatTgs.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1816,13 +1732,11 @@ class ThumbnailFormatMpeg4 extends ThumbnailFormat {
     int? this.client_id,
   });
 
-  @override
   ThumbnailFormatMpeg4.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1855,7 +1769,6 @@ class Thumbnail extends TdObject {
     File? this.file,
   });
 
-  @override
   Thumbnail.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -1867,7 +1780,6 @@ class Thumbnail extends TdObject {
     file = map.containsKey('file') ? TlMap.fromMap(map['file']) as File : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1896,13 +1808,11 @@ class MaskPointForehead extends MaskPoint {
     int? this.client_id,
   });
 
-  @override
   MaskPointForehead.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1927,13 +1837,11 @@ class MaskPointEyes extends MaskPoint {
     int? this.client_id,
   });
 
-  @override
   MaskPointEyes.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1958,13 +1866,11 @@ class MaskPointMouth extends MaskPoint {
     int? this.client_id,
   });
 
-  @override
   MaskPointMouth.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -1989,13 +1895,11 @@ class MaskPointChin extends MaskPoint {
     int? this.client_id,
   });
 
-  @override
   MaskPointChin.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2028,7 +1932,6 @@ class MaskPosition extends TdObject {
     double? this.scale,
   });
 
-  @override
   MaskPosition.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2040,7 +1943,6 @@ class MaskPosition extends TdObject {
     scale = map.containsKey('scale') ? map['scale'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2071,7 +1973,6 @@ class ClosedVectorPath extends TdObject {
     vector<VectorPathCommand>? this.commands,
   });
 
-  @override
   ClosedVectorPath.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2084,7 +1985,6 @@ class ClosedVectorPath extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2120,7 +2020,6 @@ class PollOption extends TdObject {
     Bool? this.is_being_chosen,
   });
 
-  @override
   PollOption.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2133,7 +2032,6 @@ class PollOption extends TdObject {
         map.containsKey('is_being_chosen') ? map['is_being_chosen'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2165,7 +2063,6 @@ class PollTypeRegular extends PollType {
     Bool? this.allow_multiple_answers,
   });
 
-  @override
   PollTypeRegular.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2174,7 +2071,6 @@ class PollTypeRegular extends PollType {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2205,7 +2101,6 @@ class PollTypeQuiz extends PollType {
     FormattedText? this.explanation,
   });
 
-  @override
   PollTypeQuiz.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2216,7 +2111,6 @@ class PollTypeQuiz extends PollType {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2261,7 +2155,6 @@ class Animation extends TdObject {
     File? this.animation,
   });
 
-  @override
   Animation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2282,7 +2175,6 @@ class Animation extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2332,7 +2224,6 @@ class Audio extends TdObject {
     File? this.audio,
   });
 
-  @override
   Audio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2351,7 +2242,6 @@ class Audio extends TdObject {
         map.containsKey('audio') ? TlMap.fromMap(map['audio']) as File : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2396,7 +2286,6 @@ class Document extends TdObject {
     File? this.document,
   });
 
-  @override
   Document.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2413,7 +2302,6 @@ class Document extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2449,7 +2337,6 @@ class Photo extends TdObject {
     vector<PhotoSize>? this.sizes,
   });
 
-  @override
   Photo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2467,7 +2354,6 @@ class Photo extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2515,7 +2401,6 @@ class Sticker extends TdObject {
     File? this.sticker,
   });
 
-  @override
   Sticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2544,7 +2429,6 @@ class Sticker extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2599,7 +2483,6 @@ class Video extends TdObject {
     File? this.video,
   });
 
-  @override
   Video.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2622,7 +2505,6 @@ class Video extends TdObject {
         map.containsKey('video') ? TlMap.fromMap(map['video']) as File : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2667,7 +2549,6 @@ class VideoNote extends TdObject {
     File? this.video,
   });
 
-  @override
   VideoNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2683,7 +2564,6 @@ class VideoNote extends TdObject {
         map.containsKey('video') ? TlMap.fromMap(map['video']) as File : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2721,7 +2601,6 @@ class VoiceNote extends TdObject {
     File? this.voice,
   });
 
-  @override
   VoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2732,7 +2611,6 @@ class VoiceNote extends TdObject {
         map.containsKey('voice') ? TlMap.fromMap(map['voice']) as File : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2767,7 +2645,6 @@ class AnimatedEmoji extends TdObject {
     File? this.sound,
   });
 
-  @override
   AnimatedEmoji.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2780,7 +2657,6 @@ class AnimatedEmoji extends TdObject {
         map.containsKey('sound') ? TlMap.fromMap(map['sound']) as File : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2818,7 +2694,6 @@ class Contact extends TdObject {
     int53? this.user_id,
   });
 
-  @override
   Contact.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2829,7 +2704,6 @@ class Contact extends TdObject {
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2865,7 +2739,6 @@ class Location extends TdObject {
     double? this.horizontal_accuracy,
   });
 
-  @override
   Location.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2876,7 +2749,6 @@ class Location extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2916,7 +2788,6 @@ class Venue extends TdObject {
     string? this.type,
   });
 
-  @override
   Venue.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2930,7 +2801,6 @@ class Venue extends TdObject {
     type = map.containsKey('type') ? map['type'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -2975,7 +2845,6 @@ class Game extends TdObject {
     Animation? this.animation,
   });
 
-  @override
   Game.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -2993,7 +2862,6 @@ class Game extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3045,7 +2913,6 @@ class Poll extends TdObject {
     Bool? this.is_closed,
   });
 
-  @override
   Poll.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3077,7 +2944,6 @@ class Poll extends TdObject {
     is_closed = map.containsKey('is_closed') ? map['is_closed'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3123,7 +2989,6 @@ class ProfilePhoto extends TdObject {
     Bool? this.has_animation,
   });
 
-  @override
   ProfilePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3138,7 +3003,6 @@ class ProfilePhoto extends TdObject {
         map.containsKey('has_animation') ? map['has_animation'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3176,7 +3040,6 @@ class ChatPhotoInfo extends TdObject {
     Bool? this.has_animation,
   });
 
-  @override
   ChatPhotoInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3190,7 +3053,6 @@ class ChatPhotoInfo extends TdObject {
         map.containsKey('has_animation') ? map['has_animation'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3219,13 +3081,11 @@ class UserTypeRegular extends UserType {
     int? this.client_id,
   });
 
-  @override
   UserTypeRegular.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3250,13 +3110,11 @@ class UserTypeDeleted extends UserType {
     int? this.client_id,
   });
 
-  @override
   UserTypeDeleted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3291,7 +3149,6 @@ class UserTypeBot extends UserType {
     Bool? this.need_location,
   });
 
-  @override
   UserTypeBot.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3308,7 +3165,6 @@ class UserTypeBot extends UserType {
         map.containsKey('need_location') ? map['need_location'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3340,13 +3196,11 @@ class UserTypeUnknown extends UserType {
     int? this.client_id,
   });
 
-  @override
   UserTypeUnknown.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3375,7 +3229,6 @@ class BotCommand extends TdObject {
     string? this.description,
   });
 
-  @override
   BotCommand.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3383,7 +3236,6 @@ class BotCommand extends TdObject {
     description = map.containsKey('description') ? map['description'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3414,7 +3266,6 @@ class BotCommands extends TdObject {
     vector<BotCommand>? this.commands,
   });
 
-  @override
   BotCommands.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3429,7 +3280,6 @@ class BotCommands extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3460,7 +3310,6 @@ class ChatLocation extends TdObject {
     string? this.address,
   });
 
-  @override
   ChatLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3470,7 +3319,6 @@ class ChatLocation extends TdObject {
     address = map.containsKey('address') ? map['address'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3503,7 +3351,6 @@ class AnimatedChatPhoto extends TdObject {
     double? this.main_frame_timestamp,
   });
 
-  @override
   AnimatedChatPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3514,7 +3361,6 @@ class AnimatedChatPhoto extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3552,7 +3398,6 @@ class ChatPhoto extends TdObject {
     AnimatedChatPhoto? this.animation,
   });
 
-  @override
   ChatPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3574,7 +3419,6 @@ class ChatPhoto extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3608,7 +3452,6 @@ class ChatPhotos extends TdObject {
     vector<ChatPhoto>? this.photos,
   });
 
-  @override
   ChatPhotos.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3623,7 +3466,6 @@ class ChatPhotos extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3652,7 +3494,6 @@ class InputChatPhotoPrevious extends InputChatPhoto {
     int64? this.chat_photo_id,
   });
 
-  @override
   InputChatPhotoPrevious.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3660,7 +3501,6 @@ class InputChatPhotoPrevious extends InputChatPhoto {
         map.containsKey('chat_photo_id') ? map['chat_photo_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3688,7 +3528,6 @@ class InputChatPhotoStatic extends InputChatPhoto {
     InputFile? this.photo,
   });
 
-  @override
   InputChatPhotoStatic.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3697,7 +3536,6 @@ class InputChatPhotoStatic extends InputChatPhoto {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3727,7 +3565,6 @@ class InputChatPhotoAnimation extends InputChatPhoto {
     double? this.main_frame_timestamp,
   });
 
-  @override
   InputChatPhotoAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3739,7 +3576,6 @@ class InputChatPhotoAnimation extends InputChatPhoto {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3800,7 +3636,6 @@ class User extends TdObject {
     string? this.language_code,
   });
 
-  @override
   User.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3832,7 +3667,6 @@ class User extends TdObject {
         map.containsKey('language_code') ? map['language_code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3898,7 +3732,6 @@ class UserFullInfo extends TdObject {
     vector<BotCommand>? this.commands,
   });
 
-  @override
   UserFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3936,7 +3769,6 @@ class UserFullInfo extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -3979,7 +3811,6 @@ class Users extends TdObject {
     vector<int53>? this.user_ids,
   });
 
-  @override
   Users.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -3993,7 +3824,6 @@ class Users extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4026,7 +3856,6 @@ class ChatAdministrator extends TdObject {
     Bool? this.is_owner,
   });
 
-  @override
   ChatAdministrator.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4035,7 +3864,6 @@ class ChatAdministrator extends TdObject {
     is_owner = map.containsKey('is_owner') ? map['is_owner'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4065,7 +3893,6 @@ class ChatAdministrators extends TdObject {
     vector<ChatAdministrator>? this.administrators,
   });
 
-  @override
   ChatAdministrators.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4079,7 +3906,6 @@ class ChatAdministrators extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4121,7 +3947,6 @@ class ChatPermissions extends TdObject {
     Bool? this.can_pin_messages,
   });
 
-  @override
   ChatPermissions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4146,7 +3971,6 @@ class ChatPermissions extends TdObject {
         map.containsKey('can_pin_messages') ? map['can_pin_messages'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4188,7 +4012,6 @@ class ChatMemberStatusCreator extends ChatMemberStatus {
     Bool? this.is_member,
   });
 
-  @override
   ChatMemberStatusCreator.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4197,7 +4020,6 @@ class ChatMemberStatusCreator extends ChatMemberStatus {
     is_member = map.containsKey('is_member') ? map['is_member'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4251,7 +4073,6 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
     Bool? this.is_anonymous,
   });
 
-  @override
   ChatMemberStatusAdministrator.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4285,7 +4106,6 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
     is_anonymous = map.containsKey('is_anonymous') ? map['is_anonymous'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4324,13 +4144,11 @@ class ChatMemberStatusMember extends ChatMemberStatus {
     int? this.client_id,
   });
 
-  @override
   ChatMemberStatusMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4361,7 +4179,6 @@ class ChatMemberStatusRestricted extends ChatMemberStatus {
     ChatPermissions? this.permissions,
   });
 
-  @override
   ChatMemberStatusRestricted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4374,7 +4191,6 @@ class ChatMemberStatusRestricted extends ChatMemberStatus {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4403,13 +4219,11 @@ class ChatMemberStatusLeft extends ChatMemberStatus {
     int? this.client_id,
   });
 
-  @override
   ChatMemberStatusLeft.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4436,7 +4250,6 @@ class ChatMemberStatusBanned extends ChatMemberStatus {
     int32? this.banned_until_date,
   });
 
-  @override
   ChatMemberStatusBanned.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4444,7 +4257,6 @@ class ChatMemberStatusBanned extends ChatMemberStatus {
         map.containsKey('banned_until_date') ? map['banned_until_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4478,7 +4290,6 @@ class ChatMember extends TdObject {
     ChatMemberStatus? this.status,
   });
 
-  @override
   ChatMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4494,7 +4305,6 @@ class ChatMember extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4527,7 +4337,6 @@ class ChatMembers extends TdObject {
     vector<ChatMember>? this.members,
   });
 
-  @override
   ChatMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4542,7 +4351,6 @@ class ChatMembers extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4569,13 +4377,11 @@ class ChatMembersFilterContacts extends ChatMembersFilter {
     int? this.client_id,
   });
 
-  @override
   ChatMembersFilterContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4600,13 +4406,11 @@ class ChatMembersFilterAdministrators extends ChatMembersFilter {
     int? this.client_id,
   });
 
-  @override
   ChatMembersFilterAdministrators.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4631,13 +4435,11 @@ class ChatMembersFilterMembers extends ChatMembersFilter {
     int? this.client_id,
   });
 
-  @override
   ChatMembersFilterMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4664,7 +4466,6 @@ class ChatMembersFilterMention extends ChatMembersFilter {
     int53? this.message_thread_id,
   });
 
-  @override
   ChatMembersFilterMention.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -4672,7 +4473,6 @@ class ChatMembersFilterMention extends ChatMembersFilter {
         map.containsKey('message_thread_id') ? map['message_thread_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4698,13 +4498,11 @@ class ChatMembersFilterRestricted extends ChatMembersFilter {
     int? this.client_id,
   });
 
-  @override
   ChatMembersFilterRestricted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4729,13 +4527,11 @@ class ChatMembersFilterBanned extends ChatMembersFilter {
     int? this.client_id,
   });
 
-  @override
   ChatMembersFilterBanned.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4760,13 +4556,11 @@ class ChatMembersFilterBots extends ChatMembersFilter {
     int? this.client_id,
   });
 
-  @override
   ChatMembersFilterBots.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4791,13 +4585,11 @@ class SupergroupMembersFilterRecent extends SupergroupMembersFilter {
     int? this.client_id,
   });
 
-  @override
   SupergroupMembersFilterRecent.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4824,14 +4616,12 @@ class SupergroupMembersFilterContacts extends SupergroupMembersFilter {
     string? this.query,
   });
 
-  @override
   SupergroupMembersFilterContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     query = map.containsKey('query') ? map['query'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4857,13 +4647,11 @@ class SupergroupMembersFilterAdministrators extends SupergroupMembersFilter {
     int? this.client_id,
   });
 
-  @override
   SupergroupMembersFilterAdministrators.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4890,14 +4678,12 @@ class SupergroupMembersFilterSearch extends SupergroupMembersFilter {
     string? this.query,
   });
 
-  @override
   SupergroupMembersFilterSearch.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     query = map.containsKey('query') ? map['query'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4925,14 +4711,12 @@ class SupergroupMembersFilterRestricted extends SupergroupMembersFilter {
     string? this.query,
   });
 
-  @override
   SupergroupMembersFilterRestricted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     query = map.containsKey('query') ? map['query'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4960,14 +4744,12 @@ class SupergroupMembersFilterBanned extends SupergroupMembersFilter {
     string? this.query,
   });
 
-  @override
   SupergroupMembersFilterBanned.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     query = map.containsKey('query') ? map['query'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -4997,7 +4779,6 @@ class SupergroupMembersFilterMention extends SupergroupMembersFilter {
     int53? this.message_thread_id,
   });
 
-  @override
   SupergroupMembersFilterMention.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5006,7 +4787,6 @@ class SupergroupMembersFilterMention extends SupergroupMembersFilter {
         map.containsKey('message_thread_id') ? map['message_thread_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5033,13 +4813,11 @@ class SupergroupMembersFilterBots extends SupergroupMembersFilter {
     int? this.client_id,
   });
 
-  @override
   SupergroupMembersFilterBots.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5088,7 +4866,6 @@ class ChatInviteLink extends TdObject {
     Bool? this.is_revoked,
   });
 
-  @override
   ChatInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5112,7 +4889,6 @@ class ChatInviteLink extends TdObject {
     is_revoked = map.containsKey('is_revoked') ? map['is_revoked'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5154,7 +4930,6 @@ class ChatInviteLinks extends TdObject {
     vector<ChatInviteLink>? this.invite_links,
   });
 
-  @override
   ChatInviteLinks.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5169,7 +4944,6 @@ class ChatInviteLinks extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5202,7 +4976,6 @@ class ChatInviteLinkCount extends TdObject {
     int32? this.revoked_invite_link_count,
   });
 
-  @override
   ChatInviteLinkCount.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5214,7 +4987,6 @@ class ChatInviteLinkCount extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5245,7 +5017,6 @@ class ChatInviteLinkCounts extends TdObject {
     vector<ChatInviteLinkCount>? this.invite_link_counts,
   });
 
-  @override
   ChatInviteLinkCounts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5260,7 +5031,6 @@ class ChatInviteLinkCounts extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5292,7 +5062,6 @@ class ChatInviteLinkMember extends TdObject {
     int53? this.approver_user_id,
   });
 
-  @override
   ChatInviteLinkMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5303,7 +5072,6 @@ class ChatInviteLinkMember extends TdObject {
         map.containsKey('approver_user_id') ? map['approver_user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5335,7 +5103,6 @@ class ChatInviteLinkMembers extends TdObject {
     vector<ChatInviteLinkMember>? this.members,
   });
 
-  @override
   ChatInviteLinkMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5350,7 +5117,6 @@ class ChatInviteLinkMembers extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5397,7 +5163,6 @@ class ChatInviteLinkInfo extends TdObject {
     Bool? this.is_public,
   });
 
-  @override
   ChatInviteLinkInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5425,7 +5190,6 @@ class ChatInviteLinkInfo extends TdObject {
     is_public = map.containsKey('is_public') ? map['is_public'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5466,7 +5230,6 @@ class ChatJoinRequest extends TdObject {
     string? this.bio,
   });
 
-  @override
   ChatJoinRequest.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5475,7 +5238,6 @@ class ChatJoinRequest extends TdObject {
     bio = map.containsKey('bio') ? map['bio'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5507,7 +5269,6 @@ class ChatJoinRequests extends TdObject {
     vector<ChatJoinRequest>? this.requests,
   });
 
-  @override
   ChatJoinRequests.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5522,7 +5283,6 @@ class ChatJoinRequests extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5553,7 +5313,6 @@ class ChatJoinRequestsInfo extends TdObject {
     vector<int53>? this.user_ids,
   });
 
-  @override
   ChatJoinRequestsInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5567,7 +5326,6 @@ class ChatJoinRequestsInfo extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5604,7 +5362,6 @@ class BasicGroup extends TdObject {
     int53? this.upgraded_to_supergroup_id,
   });
 
-  @override
   BasicGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5619,7 +5376,6 @@ class BasicGroup extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5662,7 +5418,6 @@ class BasicGroupFullInfo extends TdObject {
     vector<BotCommands>? this.bot_commands,
   });
 
-  @override
   BasicGroupFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5693,7 +5448,6 @@ class BasicGroupFullInfo extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5754,7 +5508,6 @@ class Supergroup extends TdObject {
     Bool? this.is_fake,
   });
 
-  @override
   Supergroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5785,7 +5538,6 @@ class Supergroup extends TdObject {
     is_fake = map.containsKey('is_fake') ? map['is_fake'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5867,7 +5619,6 @@ class SupergroupFullInfo extends TdObject {
     int53? this.upgraded_from_max_message_id,
   });
 
-  @override
   SupergroupFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -5930,7 +5681,6 @@ class SupergroupFullInfo extends TdObject {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -5980,13 +5730,11 @@ class SecretChatStatePending extends SecretChatState {
     int? this.client_id,
   });
 
-  @override
   SecretChatStatePending.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6011,13 +5759,11 @@ class SecretChatStateReady extends SecretChatState {
     int? this.client_id,
   });
 
-  @override
   SecretChatStateReady.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6042,13 +5788,11 @@ class SecretChatStateClosed extends SecretChatState {
     int? this.client_id,
   });
 
-  @override
   SecretChatStateClosed.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6085,7 +5829,6 @@ class SecretChat extends TdObject {
     int32? this.layer,
   });
 
-  @override
   SecretChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6099,7 +5842,6 @@ class SecretChat extends TdObject {
     layer = map.containsKey('layer') ? map['layer'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6132,14 +5874,12 @@ class MessageSenderUser extends MessageSender {
     int53? this.user_id,
   });
 
-  @override
   MessageSenderUser.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6167,14 +5907,12 @@ class MessageSenderChat extends MessageSender {
     int53? this.chat_id,
   });
 
-  @override
   MessageSenderChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6204,7 +5942,6 @@ class MessageSenders extends TdObject {
     vector<MessageSender>? this.senders,
   });
 
-  @override
   MessageSenders.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6219,7 +5956,6 @@ class MessageSenders extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6248,7 +5984,6 @@ class MessageForwardOriginUser extends MessageForwardOrigin {
     int53? this.sender_user_id,
   });
 
-  @override
   MessageForwardOriginUser.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6256,7 +5991,6 @@ class MessageForwardOriginUser extends MessageForwardOrigin {
         map.containsKey('sender_user_id') ? map['sender_user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6286,7 +6020,6 @@ class MessageForwardOriginChat extends MessageForwardOrigin {
     string? this.author_signature,
   });
 
-  @override
   MessageForwardOriginChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6296,7 +6029,6 @@ class MessageForwardOriginChat extends MessageForwardOrigin {
         map.containsKey('author_signature') ? map['author_signature'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6325,14 +6057,12 @@ class MessageForwardOriginHiddenUser extends MessageForwardOrigin {
     string? this.sender_name,
   });
 
-  @override
   MessageForwardOriginHiddenUser.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     sender_name = map.containsKey('sender_name') ? map['sender_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6364,7 +6094,6 @@ class MessageForwardOriginChannel extends MessageForwardOrigin {
     string? this.author_signature,
   });
 
-  @override
   MessageForwardOriginChannel.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6374,7 +6103,6 @@ class MessageForwardOriginChannel extends MessageForwardOrigin {
         map.containsKey('author_signature') ? map['author_signature'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6404,14 +6132,12 @@ class MessageForwardOriginMessageImport extends MessageForwardOrigin {
     string? this.sender_name,
   });
 
-  @override
   MessageForwardOriginMessageImport.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     sender_name = map.containsKey('sender_name') ? map['sender_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6447,7 +6173,6 @@ class MessageForwardInfo extends TdObject {
     int53? this.from_message_id,
   });
 
-  @override
   MessageForwardInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6464,7 +6189,6 @@ class MessageForwardInfo extends TdObject {
         map.containsKey('from_message_id') ? map['from_message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6505,7 +6229,6 @@ class MessageReplyInfo extends TdObject {
     int53? this.last_message_id,
   });
 
-  @override
   MessageReplyInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6529,7 +6252,6 @@ class MessageReplyInfo extends TdObject {
         map.containsKey('last_message_id') ? map['last_message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6567,7 +6289,6 @@ class MessageInteractionInfo extends TdObject {
     MessageReplyInfo? this.reply_info,
   });
 
-  @override
   MessageInteractionInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6579,7 +6300,6 @@ class MessageInteractionInfo extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6607,13 +6327,11 @@ class MessageSendingStatePending extends MessageSendingState {
     int? this.client_id,
   });
 
-  @override
   MessageSendingStatePending.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6648,7 +6366,6 @@ class MessageSendingStateFailed extends MessageSendingState {
     double? this.retry_after,
   });
 
-  @override
   MessageSendingStateFailed.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6662,7 +6379,6 @@ class MessageSendingStateFailed extends MessageSendingState {
     retry_after = map.containsKey('retry_after') ? map['retry_after'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6760,7 +6476,6 @@ class Message extends TdObject {
     ReplyMarkup? this.reply_markup,
   });
 
-  @override
   Message.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6845,7 +6560,6 @@ class Message extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6914,7 +6628,6 @@ class Messages extends TdObject {
     vector<Message>? this.messages,
   });
 
-  @override
   Messages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6929,7 +6642,6 @@ class Messages extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -6962,7 +6674,6 @@ class FoundMessages extends TdObject {
     string? this.next_offset,
   });
 
-  @override
   FoundMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -6978,7 +6689,6 @@ class FoundMessages extends TdObject {
     next_offset = map.containsKey('next_offset') ? map['next_offset'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7012,7 +6722,6 @@ class MessagePosition extends TdObject {
     int32? this.date,
   });
 
-  @override
   MessagePosition.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7021,7 +6730,6 @@ class MessagePosition extends TdObject {
     date = map.containsKey('date') ? map['date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7053,7 +6761,6 @@ class MessagePositions extends TdObject {
     vector<MessagePosition>? this.positions,
   });
 
-  @override
   MessagePositions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7068,7 +6775,6 @@ class MessagePositions extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7099,7 +6805,6 @@ class MessageCalendarDay extends TdObject {
     Message? this.message,
   });
 
-  @override
   MessageCalendarDay.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7109,7 +6814,6 @@ class MessageCalendarDay extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7140,7 +6844,6 @@ class MessageCalendar extends TdObject {
     vector<MessageCalendarDay>? this.days,
   });
 
-  @override
   MessageCalendar.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7155,7 +6858,6 @@ class MessageCalendar extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7190,7 +6892,6 @@ class SponsoredMessage extends TdObject {
     MessageContent? this.content,
   });
 
-  @override
   SponsoredMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7205,7 +6906,6 @@ class SponsoredMessage extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7234,13 +6934,11 @@ class NotificationSettingsScopePrivateChats extends NotificationSettingsScope {
     int? this.client_id,
   });
 
-  @override
   NotificationSettingsScopePrivateChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7265,13 +6963,11 @@ class NotificationSettingsScopeGroupChats extends NotificationSettingsScope {
     int? this.client_id,
   });
 
-  @override
   NotificationSettingsScopeGroupChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7296,13 +6992,11 @@ class NotificationSettingsScopeChannelChats extends NotificationSettingsScope {
     int? this.client_id,
   });
 
-  @override
   NotificationSettingsScopeChannelChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7347,7 +7041,6 @@ class ChatNotificationSettings extends TdObject {
     Bool? this.disable_mention_notifications,
   });
 
-  @override
   ChatNotificationSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7380,7 +7073,6 @@ class ChatNotificationSettings extends TdObject {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7432,7 +7124,6 @@ class ScopeNotificationSettings extends TdObject {
     Bool? this.disable_mention_notifications,
   });
 
-  @override
   ScopeNotificationSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7449,7 +7140,6 @@ class ScopeNotificationSettings extends TdObject {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7487,7 +7177,6 @@ class DraftMessage extends TdObject {
     InputMessageContent? this.input_message_text,
   });
 
-  @override
   DraftMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7500,7 +7189,6 @@ class DraftMessage extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7530,14 +7218,12 @@ class ChatTypePrivate extends ChatType {
     int53? this.user_id,
   });
 
-  @override
   ChatTypePrivate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7565,7 +7251,6 @@ class ChatTypeBasicGroup extends ChatType {
     int53? this.basic_group_id,
   });
 
-  @override
   ChatTypeBasicGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7573,7 +7258,6 @@ class ChatTypeBasicGroup extends ChatType {
         map.containsKey('basic_group_id') ? map['basic_group_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7603,7 +7287,6 @@ class ChatTypeSupergroup extends ChatType {
     Bool? this.is_channel,
   });
 
-  @override
   ChatTypeSupergroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7612,7 +7295,6 @@ class ChatTypeSupergroup extends ChatType {
     is_channel = map.containsKey('is_channel') ? map['is_channel'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7643,7 +7325,6 @@ class ChatTypeSecret extends ChatType {
     int53? this.user_id,
   });
 
-  @override
   ChatTypeSecret.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7652,7 +7333,6 @@ class ChatTypeSecret extends ChatType {
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7705,7 +7385,6 @@ class ChatFilter extends TdObject {
     Bool? this.include_channels,
   });
 
-  @override
   ChatFilter.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7751,7 +7430,6 @@ class ChatFilter extends TdObject {
         map.containsKey('include_channels') ? map['include_channels'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7795,7 +7473,6 @@ class ChatFilterInfo extends TdObject {
     string? this.icon_name,
   });
 
-  @override
   ChatFilterInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7804,7 +7481,6 @@ class ChatFilterInfo extends TdObject {
     icon_name = map.containsKey('icon_name') ? map['icon_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7836,7 +7512,6 @@ class RecommendedChatFilter extends TdObject {
     string? this.description,
   });
 
-  @override
   RecommendedChatFilter.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7846,7 +7521,6 @@ class RecommendedChatFilter extends TdObject {
     description = map.containsKey('description') ? map['description'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7875,7 +7549,6 @@ class RecommendedChatFilters extends TdObject {
     vector<RecommendedChatFilter>? this.chat_filters,
   });
 
-  @override
   RecommendedChatFilters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7889,7 +7562,6 @@ class RecommendedChatFilters extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7915,13 +7587,11 @@ class ChatListMain extends ChatList {
     int? this.client_id,
   });
 
-  @override
   ChatListMain.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7946,13 +7616,11 @@ class ChatListArchive extends ChatList {
     int? this.client_id,
   });
 
-  @override
   ChatListArchive.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -7979,7 +7647,6 @@ class ChatListFilter extends ChatList {
     int32? this.chat_filter_id,
   });
 
-  @override
   ChatListFilter.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -7987,7 +7654,6 @@ class ChatListFilter extends ChatList {
         map.containsKey('chat_filter_id') ? map['chat_filter_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8015,7 +7681,6 @@ class ChatLists extends TdObject {
     vector<ChatList>? this.chat_lists,
   });
 
-  @override
   ChatLists.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8029,7 +7694,6 @@ class ChatLists extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8055,13 +7719,11 @@ class ChatSourceMtprotoProxy extends ChatSource {
     int? this.client_id,
   });
 
-  @override
   ChatSourceMtprotoProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8090,7 +7752,6 @@ class ChatSourcePublicServiceAnnouncement extends ChatSource {
     string? this.text,
   });
 
-  @override
   ChatSourcePublicServiceAnnouncement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8098,7 +7759,6 @@ class ChatSourcePublicServiceAnnouncement extends ChatSource {
     text = map.containsKey('text') ? map['text'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8133,7 +7793,6 @@ class ChatPosition extends TdObject {
     ChatSource? this.source,
   });
 
-  @override
   ChatPosition.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8146,7 +7805,6 @@ class ChatPosition extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8181,7 +7839,6 @@ class VideoChat extends TdObject {
     MessageSender? this.default_participant_id,
   });
 
-  @override
   VideoChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8194,7 +7851,6 @@ class VideoChat extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8281,7 +7937,6 @@ class Chat extends TdObject {
     string? this.client_data,
   });
 
-  @override
   Chat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8367,7 +8022,6 @@ class Chat extends TdObject {
     client_data = map.containsKey('client_data') ? map['client_data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8435,7 +8089,6 @@ class Chats extends TdObject {
     vector<int53>? this.chat_ids,
   });
 
-  @override
   Chats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8449,7 +8102,6 @@ class Chats extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8480,7 +8132,6 @@ class ChatNearby extends TdObject {
     int32? this.distance,
   });
 
-  @override
   ChatNearby.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8488,7 +8139,6 @@ class ChatNearby extends TdObject {
     distance = map.containsKey('distance') ? map['distance'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8519,7 +8169,6 @@ class ChatsNearby extends TdObject {
     vector<ChatNearby>? this.supergroups_nearby,
   });
 
-  @override
   ChatsNearby.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8542,7 +8191,6 @@ class ChatsNearby extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8569,13 +8217,11 @@ class PublicChatTypeHasUsername extends PublicChatType {
     int? this.client_id,
   });
 
-  @override
   PublicChatTypeHasUsername.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8600,13 +8246,11 @@ class PublicChatTypeIsLocationBased extends PublicChatType {
     int? this.client_id,
   });
 
-  @override
   PublicChatTypeIsLocationBased.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8633,7 +8277,6 @@ class ChatActionBarReportSpam extends ChatActionBar {
     Bool? this.can_unarchive,
   });
 
-  @override
   ChatActionBarReportSpam.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8641,7 +8284,6 @@ class ChatActionBarReportSpam extends ChatActionBar {
         map.containsKey('can_unarchive') ? map['can_unarchive'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8667,13 +8309,11 @@ class ChatActionBarReportUnrelatedLocation extends ChatActionBar {
     int? this.client_id,
   });
 
-  @override
   ChatActionBarReportUnrelatedLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8698,13 +8338,11 @@ class ChatActionBarInviteMembers extends ChatActionBar {
     int? this.client_id,
   });
 
-  @override
   ChatActionBarInviteMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8733,7 +8371,6 @@ class ChatActionBarReportAddBlock extends ChatActionBar {
     int32? this.distance,
   });
 
-  @override
   ChatActionBarReportAddBlock.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8742,7 +8379,6 @@ class ChatActionBarReportAddBlock extends ChatActionBar {
     distance = map.containsKey('distance') ? map['distance'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8769,13 +8405,11 @@ class ChatActionBarAddContact extends ChatActionBar {
     int? this.client_id,
   });
 
-  @override
   ChatActionBarAddContact.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8800,13 +8434,11 @@ class ChatActionBarSharePhoneNumber extends ChatActionBar {
     int? this.client_id,
   });
 
-  @override
   ChatActionBarSharePhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8837,7 +8469,6 @@ class ChatActionBarJoinRequest extends ChatActionBar {
     int32? this.request_date,
   });
 
-  @override
   ChatActionBarJoinRequest.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8846,7 +8477,6 @@ class ChatActionBarJoinRequest extends ChatActionBar {
     request_date = map.containsKey('request_date') ? map['request_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8874,13 +8504,11 @@ class KeyboardButtonTypeText extends KeyboardButtonType {
     int? this.client_id,
   });
 
-  @override
   KeyboardButtonTypeText.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8905,13 +8533,11 @@ class KeyboardButtonTypeRequestPhoneNumber extends KeyboardButtonType {
     int? this.client_id,
   });
 
-  @override
   KeyboardButtonTypeRequestPhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8936,13 +8562,11 @@ class KeyboardButtonTypeRequestLocation extends KeyboardButtonType {
     int? this.client_id,
   });
 
-  @override
   KeyboardButtonTypeRequestLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -8971,7 +8595,6 @@ class KeyboardButtonTypeRequestPoll extends KeyboardButtonType {
     Bool? this.force_quiz,
   });
 
-  @override
   KeyboardButtonTypeRequestPoll.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -8980,7 +8603,6 @@ class KeyboardButtonTypeRequestPoll extends KeyboardButtonType {
     force_quiz = map.containsKey('force_quiz') ? map['force_quiz'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9011,7 +8633,6 @@ class KeyboardButton extends TdObject {
     KeyboardButtonType? this.type,
   });
 
-  @override
   KeyboardButton.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9021,7 +8642,6 @@ class KeyboardButton extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9050,14 +8670,12 @@ class InlineKeyboardButtonTypeUrl extends InlineKeyboardButtonType {
     string? this.url,
   });
 
-  @override
   InlineKeyboardButtonTypeUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9089,7 +8707,6 @@ class InlineKeyboardButtonTypeLoginUrl extends InlineKeyboardButtonType {
     string? this.forward_text,
   });
 
-  @override
   InlineKeyboardButtonTypeLoginUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9098,7 +8715,6 @@ class InlineKeyboardButtonTypeLoginUrl extends InlineKeyboardButtonType {
     forward_text = map.containsKey('forward_text') ? map['forward_text'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9128,14 +8744,12 @@ class InlineKeyboardButtonTypeCallback extends InlineKeyboardButtonType {
     bytes? this.data,
   });
 
-  @override
   InlineKeyboardButtonTypeCallback.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9164,7 +8778,6 @@ class InlineKeyboardButtonTypeCallbackWithPassword
     bytes? this.data,
   });
 
-  @override
   InlineKeyboardButtonTypeCallbackWithPassword.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
@@ -9172,7 +8785,6 @@ class InlineKeyboardButtonTypeCallbackWithPassword
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9198,13 +8810,11 @@ class InlineKeyboardButtonTypeCallbackGame extends InlineKeyboardButtonType {
     int? this.client_id,
   });
 
-  @override
   InlineKeyboardButtonTypeCallbackGame.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9233,7 +8843,6 @@ class InlineKeyboardButtonTypeSwitchInline extends InlineKeyboardButtonType {
     Bool? this.in_current_chat,
   });
 
-  @override
   InlineKeyboardButtonTypeSwitchInline.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9242,7 +8851,6 @@ class InlineKeyboardButtonTypeSwitchInline extends InlineKeyboardButtonType {
         map.containsKey('in_current_chat') ? map['in_current_chat'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9269,13 +8877,11 @@ class InlineKeyboardButtonTypeBuy extends InlineKeyboardButtonType {
     int? this.client_id,
   });
 
-  @override
   InlineKeyboardButtonTypeBuy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9302,14 +8908,12 @@ class InlineKeyboardButtonTypeUser extends InlineKeyboardButtonType {
     int53? this.user_id,
   });
 
-  @override
   InlineKeyboardButtonTypeUser.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9339,7 +8943,6 @@ class InlineKeyboardButton extends TdObject {
     InlineKeyboardButtonType? this.type,
   });
 
-  @override
   InlineKeyboardButton.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9349,7 +8952,6 @@ class InlineKeyboardButton extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9378,14 +8980,12 @@ class ReplyMarkupRemoveKeyboard extends ReplyMarkup {
     Bool? this.is_personal,
   });
 
-  @override
   ReplyMarkupRemoveKeyboard.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     is_personal = map.containsKey('is_personal') ? map['is_personal'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9415,7 +9015,6 @@ class ReplyMarkupForceReply extends ReplyMarkup {
     string? this.input_field_placeholder,
   });
 
-  @override
   ReplyMarkupForceReply.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9425,7 +9024,6 @@ class ReplyMarkupForceReply extends ReplyMarkup {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9463,7 +9061,6 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
     string? this.input_field_placeholder,
   });
 
-  @override
   ReplyMarkupShowKeyboard.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9488,7 +9085,6 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9521,7 +9117,6 @@ class ReplyMarkupInlineKeyboard extends ReplyMarkup {
     vector<vector<InlineKeyboardButton>>? this.rows,
   });
 
-  @override
   ReplyMarkupInlineKeyboard.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9539,7 +9134,6 @@ class ReplyMarkupInlineKeyboard extends ReplyMarkup {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9569,7 +9163,6 @@ class LoginUrlInfoOpen extends LoginUrlInfo {
     Bool? this.skip_confirm,
   });
 
-  @override
   LoginUrlInfoOpen.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9577,7 +9170,6 @@ class LoginUrlInfoOpen extends LoginUrlInfo {
     skip_confirm = map.containsKey('skip_confirm') ? map['skip_confirm'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9612,7 +9204,6 @@ class LoginUrlInfoRequestConfirmation extends LoginUrlInfo {
     Bool? this.request_write_access,
   });
 
-  @override
   LoginUrlInfoRequestConfirmation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9624,7 +9215,6 @@ class LoginUrlInfoRequestConfirmation extends LoginUrlInfo {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9665,7 +9255,6 @@ class MessageThreadInfo extends TdObject {
     DraftMessage? this.draft_message,
   });
 
-  @override
   MessageThreadInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9691,7 +9280,6 @@ class MessageThreadInfo extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9724,14 +9312,12 @@ class RichTextPlain extends RichText {
     string? this.text,
   });
 
-  @override
   RichTextPlain.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     text = map.containsKey('text') ? map['text'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9759,7 +9345,6 @@ class RichTextBold extends RichText {
     RichText? this.text,
   });
 
-  @override
   RichTextBold.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9767,7 +9352,6 @@ class RichTextBold extends RichText {
         map.containsKey('text') ? TlMap.fromMap(map['text']) as RichText : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9795,7 +9379,6 @@ class RichTextItalic extends RichText {
     RichText? this.text,
   });
 
-  @override
   RichTextItalic.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9803,7 +9386,6 @@ class RichTextItalic extends RichText {
         map.containsKey('text') ? TlMap.fromMap(map['text']) as RichText : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9831,7 +9413,6 @@ class RichTextUnderline extends RichText {
     RichText? this.text,
   });
 
-  @override
   RichTextUnderline.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9839,7 +9420,6 @@ class RichTextUnderline extends RichText {
         map.containsKey('text') ? TlMap.fromMap(map['text']) as RichText : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9867,7 +9447,6 @@ class RichTextStrikethrough extends RichText {
     RichText? this.text,
   });
 
-  @override
   RichTextStrikethrough.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9875,7 +9454,6 @@ class RichTextStrikethrough extends RichText {
         map.containsKey('text') ? TlMap.fromMap(map['text']) as RichText : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9903,7 +9481,6 @@ class RichTextFixed extends RichText {
     RichText? this.text,
   });
 
-  @override
   RichTextFixed.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9911,7 +9488,6 @@ class RichTextFixed extends RichText {
         map.containsKey('text') ? TlMap.fromMap(map['text']) as RichText : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9943,7 +9519,6 @@ class RichTextUrl extends RichText {
     Bool? this.is_cached,
   });
 
-  @override
   RichTextUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9953,7 +9528,6 @@ class RichTextUrl extends RichText {
     is_cached = map.containsKey('is_cached') ? map['is_cached'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -9985,7 +9559,6 @@ class RichTextEmailAddress extends RichText {
     string? this.email_address,
   });
 
-  @override
   RichTextEmailAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -9995,7 +9568,6 @@ class RichTextEmailAddress extends RichText {
         map.containsKey('email_address') ? map['email_address'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10024,7 +9596,6 @@ class RichTextSubscript extends RichText {
     RichText? this.text,
   });
 
-  @override
   RichTextSubscript.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10032,7 +9603,6 @@ class RichTextSubscript extends RichText {
         map.containsKey('text') ? TlMap.fromMap(map['text']) as RichText : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10060,7 +9630,6 @@ class RichTextSuperscript extends RichText {
     RichText? this.text,
   });
 
-  @override
   RichTextSuperscript.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10068,7 +9637,6 @@ class RichTextSuperscript extends RichText {
         map.containsKey('text') ? TlMap.fromMap(map['text']) as RichText : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10096,7 +9664,6 @@ class RichTextMarked extends RichText {
     RichText? this.text,
   });
 
-  @override
   RichTextMarked.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10104,7 +9671,6 @@ class RichTextMarked extends RichText {
         map.containsKey('text') ? TlMap.fromMap(map['text']) as RichText : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10134,7 +9700,6 @@ class RichTextPhoneNumber extends RichText {
     string? this.phone_number,
   });
 
-  @override
   RichTextPhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10143,7 +9708,6 @@ class RichTextPhoneNumber extends RichText {
     phone_number = map.containsKey('phone_number') ? map['phone_number'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10176,7 +9740,6 @@ class RichTextIcon extends RichText {
     int32? this.height,
   });
 
-  @override
   RichTextIcon.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10187,7 +9750,6 @@ class RichTextIcon extends RichText {
     height = map.containsKey('height') ? map['height'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10221,7 +9783,6 @@ class RichTextReference extends RichText {
     string? this.url,
   });
 
-  @override
   RichTextReference.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10231,7 +9792,6 @@ class RichTextReference extends RichText {
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10261,14 +9821,12 @@ class RichTextAnchor extends RichText {
     string? this.name,
   });
 
-  @override
   RichTextAnchor.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     name = map.containsKey('name') ? map['name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10300,7 +9858,6 @@ class RichTextAnchorLink extends RichText {
     string? this.url,
   });
 
-  @override
   RichTextAnchorLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10310,7 +9867,6 @@ class RichTextAnchorLink extends RichText {
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10340,7 +9896,6 @@ class RichTexts extends RichText {
     vector<RichText>? this.texts,
   });
 
-  @override
   RichTexts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10354,7 +9909,6 @@ class RichTexts extends RichText {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10384,7 +9938,6 @@ class PageBlockCaption extends TdObject {
     RichText? this.credit,
   });
 
-  @override
   PageBlockCaption.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10395,7 +9948,6 @@ class PageBlockCaption extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10426,7 +9978,6 @@ class PageBlockListItem extends TdObject {
     vector<PageBlock>? this.page_blocks,
   });
 
-  @override
   PageBlockListItem.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10440,7 +9991,6 @@ class PageBlockListItem extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10467,13 +10017,11 @@ class PageBlockHorizontalAlignmentLeft extends PageBlockHorizontalAlignment {
     int? this.client_id,
   });
 
-  @override
   PageBlockHorizontalAlignmentLeft.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10498,13 +10046,11 @@ class PageBlockHorizontalAlignmentCenter extends PageBlockHorizontalAlignment {
     int? this.client_id,
   });
 
-  @override
   PageBlockHorizontalAlignmentCenter.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10529,13 +10075,11 @@ class PageBlockHorizontalAlignmentRight extends PageBlockHorizontalAlignment {
     int? this.client_id,
   });
 
-  @override
   PageBlockHorizontalAlignmentRight.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10560,13 +10104,11 @@ class PageBlockVerticalAlignmentTop extends PageBlockVerticalAlignment {
     int? this.client_id,
   });
 
-  @override
   PageBlockVerticalAlignmentTop.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10591,13 +10133,11 @@ class PageBlockVerticalAlignmentMiddle extends PageBlockVerticalAlignment {
     int? this.client_id,
   });
 
-  @override
   PageBlockVerticalAlignmentMiddle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10622,13 +10162,11 @@ class PageBlockVerticalAlignmentBottom extends PageBlockVerticalAlignment {
     int? this.client_id,
   });
 
-  @override
   PageBlockVerticalAlignmentBottom.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10665,7 +10203,6 @@ class PageBlockTableCell extends TdObject {
     PageBlockVerticalAlignment? this.valign,
   });
 
-  @override
   PageBlockTableCell.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10682,7 +10219,6 @@ class PageBlockTableCell extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10725,7 +10261,6 @@ class PageBlockRelatedArticle extends TdObject {
     int32? this.publish_date,
   });
 
-  @override
   PageBlockRelatedArticle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10738,7 +10273,6 @@ class PageBlockRelatedArticle extends TdObject {
     publish_date = map.containsKey('publish_date') ? map['publish_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10771,7 +10305,6 @@ class PageBlockTitle extends PageBlock {
     RichText? this.title,
   });
 
-  @override
   PageBlockTitle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10780,7 +10313,6 @@ class PageBlockTitle extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10808,7 +10340,6 @@ class PageBlockSubtitle extends PageBlock {
     RichText? this.subtitle,
   });
 
-  @override
   PageBlockSubtitle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10817,7 +10348,6 @@ class PageBlockSubtitle extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10847,7 +10377,6 @@ class PageBlockAuthorDate extends PageBlock {
     int32? this.publish_date,
   });
 
-  @override
   PageBlockAuthorDate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10857,7 +10386,6 @@ class PageBlockAuthorDate extends PageBlock {
     publish_date = map.containsKey('publish_date') ? map['publish_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10886,7 +10414,6 @@ class PageBlockHeader extends PageBlock {
     RichText? this.header,
   });
 
-  @override
   PageBlockHeader.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10895,7 +10422,6 @@ class PageBlockHeader extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10923,7 +10449,6 @@ class PageBlockSubheader extends PageBlock {
     RichText? this.subheader,
   });
 
-  @override
   PageBlockSubheader.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10932,7 +10457,6 @@ class PageBlockSubheader extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10960,7 +10484,6 @@ class PageBlockKicker extends PageBlock {
     RichText? this.kicker,
   });
 
-  @override
   PageBlockKicker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -10969,7 +10492,6 @@ class PageBlockKicker extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -10997,7 +10519,6 @@ class PageBlockParagraph extends PageBlock {
     RichText? this.text,
   });
 
-  @override
   PageBlockParagraph.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11005,7 +10526,6 @@ class PageBlockParagraph extends PageBlock {
         map.containsKey('text') ? TlMap.fromMap(map['text']) as RichText : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11035,7 +10555,6 @@ class PageBlockPreformatted extends PageBlock {
     string? this.language,
   });
 
-  @override
   PageBlockPreformatted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11044,7 +10563,6 @@ class PageBlockPreformatted extends PageBlock {
     language = map.containsKey('language') ? map['language'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11073,7 +10591,6 @@ class PageBlockFooter extends PageBlock {
     RichText? this.footer,
   });
 
-  @override
   PageBlockFooter.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11082,7 +10599,6 @@ class PageBlockFooter extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11108,13 +10624,11 @@ class PageBlockDivider extends PageBlock {
     int? this.client_id,
   });
 
-  @override
   PageBlockDivider.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11141,14 +10655,12 @@ class PageBlockAnchor extends PageBlock {
     string? this.name,
   });
 
-  @override
   PageBlockAnchor.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     name = map.containsKey('name') ? map['name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11176,7 +10688,6 @@ class PageBlockList extends PageBlock {
     vector<PageBlockListItem>? this.items,
   });
 
-  @override
   PageBlockList.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11190,7 +10701,6 @@ class PageBlockList extends PageBlock {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11220,7 +10730,6 @@ class PageBlockBlockQuote extends PageBlock {
     RichText? this.credit,
   });
 
-  @override
   PageBlockBlockQuote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11231,7 +10740,6 @@ class PageBlockBlockQuote extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11262,7 +10770,6 @@ class PageBlockPullQuote extends PageBlock {
     RichText? this.credit,
   });
 
-  @override
   PageBlockPullQuote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11273,7 +10780,6 @@ class PageBlockPullQuote extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11306,7 +10812,6 @@ class PageBlockAnimation extends PageBlock {
     Bool? this.need_autoplay,
   });
 
-  @override
   PageBlockAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11320,7 +10825,6 @@ class PageBlockAnimation extends PageBlock {
         map.containsKey('need_autoplay') ? map['need_autoplay'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11352,7 +10856,6 @@ class PageBlockAudio extends PageBlock {
     PageBlockCaption? this.caption,
   });
 
-  @override
   PageBlockAudio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11363,7 +10866,6 @@ class PageBlockAudio extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11396,7 +10898,6 @@ class PageBlockPhoto extends PageBlock {
     string? this.url,
   });
 
-  @override
   PageBlockPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11408,7 +10909,6 @@ class PageBlockPhoto extends PageBlock {
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11444,7 +10944,6 @@ class PageBlockVideo extends PageBlock {
     Bool? this.is_looped,
   });
 
-  @override
   PageBlockVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11458,7 +10957,6 @@ class PageBlockVideo extends PageBlock {
     is_looped = map.containsKey('is_looped') ? map['is_looped'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11491,7 +10989,6 @@ class PageBlockVoiceNote extends PageBlock {
     PageBlockCaption? this.caption,
   });
 
-  @override
   PageBlockVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11503,7 +11000,6 @@ class PageBlockVoiceNote extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11532,7 +11028,6 @@ class PageBlockCover extends PageBlock {
     PageBlock? this.cover,
   });
 
-  @override
   PageBlockCover.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11541,7 +11036,6 @@ class PageBlockCover extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11583,7 +11077,6 @@ class PageBlockEmbedded extends PageBlock {
     Bool? this.allow_scrolling,
   });
 
-  @override
   PageBlockEmbedded.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11603,7 +11096,6 @@ class PageBlockEmbedded extends PageBlock {
         map.containsKey('allow_scrolling') ? map['allow_scrolling'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11648,7 +11140,6 @@ class PageBlockEmbeddedPost extends PageBlock {
     PageBlockCaption? this.caption,
   });
 
-  @override
   PageBlockEmbeddedPost.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11671,7 +11162,6 @@ class PageBlockEmbeddedPost extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11706,7 +11196,6 @@ class PageBlockCollage extends PageBlock {
     PageBlockCaption? this.caption,
   });
 
-  @override
   PageBlockCollage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11723,7 +11212,6 @@ class PageBlockCollage extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11754,7 +11242,6 @@ class PageBlockSlideshow extends PageBlock {
     PageBlockCaption? this.caption,
   });
 
-  @override
   PageBlockSlideshow.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11771,7 +11258,6 @@ class PageBlockSlideshow extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11804,7 +11290,6 @@ class PageBlockChatLink extends PageBlock {
     string? this.username,
   });
 
-  @override
   PageBlockChatLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11815,7 +11300,6 @@ class PageBlockChatLink extends PageBlock {
     username = map.containsKey('username') ? map['username'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11851,7 +11335,6 @@ class PageBlockTable extends PageBlock {
     Bool? this.is_striped,
   });
 
-  @override
   PageBlockTable.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11874,7 +11357,6 @@ class PageBlockTable extends PageBlock {
     is_striped = map.containsKey('is_striped') ? map['is_striped'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11909,7 +11391,6 @@ class PageBlockDetails extends PageBlock {
     Bool? this.is_open,
   });
 
-  @override
   PageBlockDetails.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11927,7 +11408,6 @@ class PageBlockDetails extends PageBlock {
     is_open = map.containsKey('is_open') ? map['is_open'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -11959,7 +11439,6 @@ class PageBlockRelatedArticles extends PageBlock {
     vector<PageBlockRelatedArticle>? this.articles,
   });
 
-  @override
   PageBlockRelatedArticles.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -11976,7 +11455,6 @@ class PageBlockRelatedArticles extends PageBlock {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12013,7 +11491,6 @@ class PageBlockMap extends PageBlock {
     PageBlockCaption? this.caption,
   });
 
-  @override
   PageBlockMap.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12028,7 +11505,6 @@ class PageBlockMap extends PageBlock {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12070,7 +11546,6 @@ class WebPageInstantView extends TdObject {
     InternalLinkType? this.feedback_link,
   });
 
-  @override
   WebPageInstantView.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12091,7 +11566,6 @@ class WebPageInstantView extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12164,7 +11638,6 @@ class WebPage extends TdObject {
     int32? this.instant_view_version,
   });
 
-  @override
   WebPage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12208,7 +11681,6 @@ class WebPage extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12264,7 +11736,6 @@ class CountryInfo extends TdObject {
     vector<string>? this.calling_codes,
   });
 
-  @override
   CountryInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12281,7 +11752,6 @@ class CountryInfo extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12313,7 +11783,6 @@ class Countries extends TdObject {
     vector<CountryInfo>? this.countries,
   });
 
-  @override
   Countries.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12327,7 +11796,6 @@ class Countries extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12359,7 +11827,6 @@ class PhoneNumberInfo extends TdObject {
     string? this.formatted_phone_number,
   });
 
-  @override
   PhoneNumberInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12374,7 +11841,6 @@ class PhoneNumberInfo extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12407,7 +11873,6 @@ class BankCardActionOpenUrl extends TdObject {
     string? this.url,
   });
 
-  @override
   BankCardActionOpenUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12415,7 +11880,6 @@ class BankCardActionOpenUrl extends TdObject {
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12446,7 +11910,6 @@ class BankCardInfo extends TdObject {
     vector<BankCardActionOpenUrl>? this.actions,
   });
 
-  @override
   BankCardInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12461,7 +11924,6 @@ class BankCardInfo extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12500,7 +11962,6 @@ class Address extends TdObject {
     string? this.postal_code,
   });
 
-  @override
   Address.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12512,7 +11973,6 @@ class Address extends TdObject {
     postal_code = map.containsKey('postal_code') ? map['postal_code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12547,7 +12007,6 @@ class LabeledPricePart extends TdObject {
     int53? this.amount,
   });
 
-  @override
   LabeledPricePart.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12555,7 +12014,6 @@ class LabeledPricePart extends TdObject {
     amount = map.containsKey('amount') ? map['amount'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12606,7 +12064,6 @@ class Invoice extends TdObject {
     Bool? this.is_flexible,
   });
 
-  @override
   Invoice.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12650,7 +12107,6 @@ class Invoice extends TdObject {
     is_flexible = map.containsKey('is_flexible') ? map['is_flexible'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12699,7 +12155,6 @@ class OrderInfo extends TdObject {
     Address? this.shipping_address,
   });
 
-  @override
   OrderInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12712,7 +12167,6 @@ class OrderInfo extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12747,7 +12201,6 @@ class ShippingOption extends TdObject {
     vector<LabeledPricePart>? this.price_parts,
   });
 
-  @override
   ShippingOption.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12763,7 +12216,6 @@ class ShippingOption extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12795,7 +12247,6 @@ class SavedCredentials extends TdObject {
     string? this.title,
   });
 
-  @override
   SavedCredentials.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12803,7 +12254,6 @@ class SavedCredentials extends TdObject {
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12832,7 +12282,6 @@ class InputCredentialsSaved extends InputCredentials {
     string? this.saved_credentials_id,
   });
 
-  @override
   InputCredentialsSaved.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12841,7 +12290,6 @@ class InputCredentialsSaved extends InputCredentials {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12871,7 +12319,6 @@ class InputCredentialsNew extends InputCredentials {
     Bool? this.allow_save,
   });
 
-  @override
   InputCredentialsNew.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12879,7 +12326,6 @@ class InputCredentialsNew extends InputCredentials {
     allow_save = map.containsKey('allow_save') ? map['allow_save'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12908,14 +12354,12 @@ class InputCredentialsApplePay extends InputCredentials {
     string? this.data,
   });
 
-  @override
   InputCredentialsApplePay.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12943,14 +12387,12 @@ class InputCredentialsGooglePay extends InputCredentials {
     string? this.data,
   });
 
-  @override
   InputCredentialsGooglePay.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -12984,7 +12426,6 @@ class PaymentsProviderStripe extends TdObject {
     Bool? this.need_cardholder_name,
   });
 
-  @override
   PaymentsProviderStripe.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -12998,7 +12439,6 @@ class PaymentsProviderStripe extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13039,7 +12479,6 @@ class PaymentFormTheme extends TdObject {
     int32? this.button_text_color,
   });
 
-  @override
   PaymentFormTheme.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -13053,7 +12492,6 @@ class PaymentFormTheme extends TdObject {
         map.containsKey('button_text_color') ? map['button_text_color'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13104,7 +12542,6 @@ class PaymentForm extends TdObject {
     Bool? this.need_password,
   });
 
-  @override
   PaymentForm.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -13135,7 +12572,6 @@ class PaymentForm extends TdObject {
         map.containsKey('need_password') ? map['need_password'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13175,7 +12611,6 @@ class ValidatedOrderInfo extends TdObject {
     vector<ShippingOption>? this.shipping_options,
   });
 
-  @override
   ValidatedOrderInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -13192,7 +12627,6 @@ class ValidatedOrderInfo extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13223,7 +12657,6 @@ class PaymentResult extends TdObject {
     string? this.verification_url,
   });
 
-  @override
   PaymentResult.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -13232,7 +12665,6 @@ class PaymentResult extends TdObject {
         map.containsKey('verification_url') ? map['verification_url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13281,7 +12713,6 @@ class PaymentReceipt extends TdObject {
     int53? this.tip_amount,
   });
 
-  @override
   PaymentReceipt.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -13310,7 +12741,6 @@ class PaymentReceipt extends TdObject {
     tip_amount = map.containsKey('tip_amount') ? map['tip_amount'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13351,7 +12781,6 @@ class DatedFile extends TdObject {
     int32? this.date,
   });
 
-  @override
   DatedFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -13359,7 +12788,6 @@ class DatedFile extends TdObject {
     date = map.containsKey('date') ? map['date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13386,13 +12814,11 @@ class PassportElementTypePersonalDetails extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypePersonalDetails.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13417,13 +12843,11 @@ class PassportElementTypePassport extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypePassport.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13448,13 +12872,11 @@ class PassportElementTypeDriverLicense extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypeDriverLicense.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13479,13 +12901,11 @@ class PassportElementTypeIdentityCard extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypeIdentityCard.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13510,13 +12930,11 @@ class PassportElementTypeInternalPassport extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypeInternalPassport.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13541,13 +12959,11 @@ class PassportElementTypeAddress extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypeAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13572,13 +12988,11 @@ class PassportElementTypeUtilityBill extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypeUtilityBill.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13603,13 +13017,11 @@ class PassportElementTypeBankStatement extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypeBankStatement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13634,13 +13046,11 @@ class PassportElementTypeRentalAgreement extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypeRentalAgreement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13665,13 +13075,11 @@ class PassportElementTypePassportRegistration extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypePassportRegistration.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13696,13 +13104,11 @@ class PassportElementTypeTemporaryRegistration extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypeTemporaryRegistration.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13727,13 +13133,11 @@ class PassportElementTypePhoneNumber extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypePhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13758,13 +13162,11 @@ class PassportElementTypeEmailAddress extends PassportElementType {
     int? this.client_id,
   });
 
-  @override
   PassportElementTypeEmailAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13795,7 +13197,6 @@ class Date extends TdObject {
     int32? this.year,
   });
 
-  @override
   Date.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -13804,7 +13205,6 @@ class Date extends TdObject {
     year = map.containsKey('year') ? map['year'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13852,7 +13252,6 @@ class PersonalDetails extends TdObject {
     string? this.residence_country_code,
   });
 
-  @override
   PersonalDetails.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -13876,7 +13275,6 @@ class PersonalDetails extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13924,7 +13322,6 @@ class IdentityDocument extends TdObject {
     vector<DatedFile>? this.translation,
   });
 
-  @override
   IdentityDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -13951,7 +13348,6 @@ class IdentityDocument extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -13994,7 +13390,6 @@ class InputIdentityDocument extends TdObject {
     vector<InputFile>? this.translation,
   });
 
-  @override
   InputIdentityDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14021,7 +13416,6 @@ class InputIdentityDocument extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14056,7 +13450,6 @@ class PersonalDocument extends TdObject {
     vector<DatedFile>? this.translation,
   });
 
-  @override
   PersonalDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14078,7 +13471,6 @@ class PersonalDocument extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14109,7 +13501,6 @@ class InputPersonalDocument extends TdObject {
     vector<InputFile>? this.translation,
   });
 
-  @override
   InputPersonalDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14131,7 +13522,6 @@ class InputPersonalDocument extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14160,7 +13550,6 @@ class PassportElementPersonalDetails extends PassportElement {
     PersonalDetails? this.personal_details,
   });
 
-  @override
   PassportElementPersonalDetails.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14169,7 +13558,6 @@ class PassportElementPersonalDetails extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14197,7 +13585,6 @@ class PassportElementPassport extends PassportElement {
     IdentityDocument? this.passport,
   });
 
-  @override
   PassportElementPassport.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14206,7 +13593,6 @@ class PassportElementPassport extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14234,7 +13620,6 @@ class PassportElementDriverLicense extends PassportElement {
     IdentityDocument? this.driver_license,
   });
 
-  @override
   PassportElementDriverLicense.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14243,7 +13628,6 @@ class PassportElementDriverLicense extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14271,7 +13655,6 @@ class PassportElementIdentityCard extends PassportElement {
     IdentityDocument? this.identity_card,
   });
 
-  @override
   PassportElementIdentityCard.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14280,7 +13663,6 @@ class PassportElementIdentityCard extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14308,7 +13690,6 @@ class PassportElementInternalPassport extends PassportElement {
     IdentityDocument? this.internal_passport,
   });
 
-  @override
   PassportElementInternalPassport.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14317,7 +13698,6 @@ class PassportElementInternalPassport extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14345,7 +13725,6 @@ class PassportElementAddress extends PassportElement {
     Address? this.address,
   });
 
-  @override
   PassportElementAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14354,7 +13733,6 @@ class PassportElementAddress extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14382,7 +13760,6 @@ class PassportElementUtilityBill extends PassportElement {
     PersonalDocument? this.utility_bill,
   });
 
-  @override
   PassportElementUtilityBill.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14391,7 +13768,6 @@ class PassportElementUtilityBill extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14419,7 +13795,6 @@ class PassportElementBankStatement extends PassportElement {
     PersonalDocument? this.bank_statement,
   });
 
-  @override
   PassportElementBankStatement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14428,7 +13803,6 @@ class PassportElementBankStatement extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14456,7 +13830,6 @@ class PassportElementRentalAgreement extends PassportElement {
     PersonalDocument? this.rental_agreement,
   });
 
-  @override
   PassportElementRentalAgreement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14465,7 +13838,6 @@ class PassportElementRentalAgreement extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14493,7 +13865,6 @@ class PassportElementPassportRegistration extends PassportElement {
     PersonalDocument? this.passport_registration,
   });
 
-  @override
   PassportElementPassportRegistration.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14502,7 +13873,6 @@ class PassportElementPassportRegistration extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14531,7 +13901,6 @@ class PassportElementTemporaryRegistration extends PassportElement {
     PersonalDocument? this.temporary_registration,
   });
 
-  @override
   PassportElementTemporaryRegistration.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14540,7 +13909,6 @@ class PassportElementTemporaryRegistration extends PassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14569,14 +13937,12 @@ class PassportElementPhoneNumber extends PassportElement {
     string? this.phone_number,
   });
 
-  @override
   PassportElementPhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     phone_number = map.containsKey('phone_number') ? map['phone_number'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14604,7 +13970,6 @@ class PassportElementEmailAddress extends PassportElement {
     string? this.email_address,
   });
 
-  @override
   PassportElementEmailAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14612,7 +13977,6 @@ class PassportElementEmailAddress extends PassportElement {
         map.containsKey('email_address') ? map['email_address'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14640,7 +14004,6 @@ class InputPassportElementPersonalDetails extends InputPassportElement {
     PersonalDetails? this.personal_details,
   });
 
-  @override
   InputPassportElementPersonalDetails.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14649,7 +14012,6 @@ class InputPassportElementPersonalDetails extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14677,7 +14039,6 @@ class InputPassportElementPassport extends InputPassportElement {
     InputIdentityDocument? this.passport,
   });
 
-  @override
   InputPassportElementPassport.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14686,7 +14047,6 @@ class InputPassportElementPassport extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14714,7 +14074,6 @@ class InputPassportElementDriverLicense extends InputPassportElement {
     InputIdentityDocument? this.driver_license,
   });
 
-  @override
   InputPassportElementDriverLicense.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14723,7 +14082,6 @@ class InputPassportElementDriverLicense extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14751,7 +14109,6 @@ class InputPassportElementIdentityCard extends InputPassportElement {
     InputIdentityDocument? this.identity_card,
   });
 
-  @override
   InputPassportElementIdentityCard.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14760,7 +14117,6 @@ class InputPassportElementIdentityCard extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14788,7 +14144,6 @@ class InputPassportElementInternalPassport extends InputPassportElement {
     InputIdentityDocument? this.internal_passport,
   });
 
-  @override
   InputPassportElementInternalPassport.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14797,7 +14152,6 @@ class InputPassportElementInternalPassport extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14825,7 +14179,6 @@ class InputPassportElementAddress extends InputPassportElement {
     Address? this.address,
   });
 
-  @override
   InputPassportElementAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14834,7 +14187,6 @@ class InputPassportElementAddress extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14862,7 +14214,6 @@ class InputPassportElementUtilityBill extends InputPassportElement {
     InputPersonalDocument? this.utility_bill,
   });
 
-  @override
   InputPassportElementUtilityBill.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14871,7 +14222,6 @@ class InputPassportElementUtilityBill extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14899,7 +14249,6 @@ class InputPassportElementBankStatement extends InputPassportElement {
     InputPersonalDocument? this.bank_statement,
   });
 
-  @override
   InputPassportElementBankStatement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14908,7 +14257,6 @@ class InputPassportElementBankStatement extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14936,7 +14284,6 @@ class InputPassportElementRentalAgreement extends InputPassportElement {
     InputPersonalDocument? this.rental_agreement,
   });
 
-  @override
   InputPassportElementRentalAgreement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14945,7 +14292,6 @@ class InputPassportElementRentalAgreement extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -14973,7 +14319,6 @@ class InputPassportElementPassportRegistration extends InputPassportElement {
     InputPersonalDocument? this.passport_registration,
   });
 
-  @override
   InputPassportElementPassportRegistration.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -14982,7 +14327,6 @@ class InputPassportElementPassportRegistration extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15011,7 +14355,6 @@ class InputPassportElementTemporaryRegistration extends InputPassportElement {
     InputPersonalDocument? this.temporary_registration,
   });
 
-  @override
   InputPassportElementTemporaryRegistration.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15020,7 +14363,6 @@ class InputPassportElementTemporaryRegistration extends InputPassportElement {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15049,14 +14391,12 @@ class InputPassportElementPhoneNumber extends InputPassportElement {
     string? this.phone_number,
   });
 
-  @override
   InputPassportElementPhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     phone_number = map.containsKey('phone_number') ? map['phone_number'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15084,7 +14424,6 @@ class InputPassportElementEmailAddress extends InputPassportElement {
     string? this.email_address,
   });
 
-  @override
   InputPassportElementEmailAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15092,7 +14431,6 @@ class InputPassportElementEmailAddress extends InputPassportElement {
         map.containsKey('email_address') ? map['email_address'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15120,7 +14458,6 @@ class PassportElements extends TdObject {
     vector<PassportElement>? this.elements,
   });
 
-  @override
   PassportElements.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15134,7 +14471,6 @@ class PassportElements extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15160,13 +14496,11 @@ class PassportElementErrorSourceUnspecified extends PassportElementErrorSource {
     int? this.client_id,
   });
 
-  @override
   PassportElementErrorSourceUnspecified.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15193,14 +14527,12 @@ class PassportElementErrorSourceDataField extends PassportElementErrorSource {
     string? this.field_name,
   });
 
-  @override
   PassportElementErrorSourceDataField.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     field_name = map.containsKey('field_name') ? map['field_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15226,13 +14558,11 @@ class PassportElementErrorSourceFrontSide extends PassportElementErrorSource {
     int? this.client_id,
   });
 
-  @override
   PassportElementErrorSourceFrontSide.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15257,13 +14587,11 @@ class PassportElementErrorSourceReverseSide extends PassportElementErrorSource {
     int? this.client_id,
   });
 
-  @override
   PassportElementErrorSourceReverseSide.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15288,13 +14616,11 @@ class PassportElementErrorSourceSelfie extends PassportElementErrorSource {
     int? this.client_id,
   });
 
-  @override
   PassportElementErrorSourceSelfie.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15322,14 +14648,12 @@ class PassportElementErrorSourceTranslationFile
     int32? this.file_index,
   });
 
-  @override
   PassportElementErrorSourceTranslationFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_index = map.containsKey('file_index') ? map['file_index'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15356,13 +14680,11 @@ class PassportElementErrorSourceTranslationFiles
     int? this.client_id,
   });
 
-  @override
   PassportElementErrorSourceTranslationFiles.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15389,14 +14711,12 @@ class PassportElementErrorSourceFile extends PassportElementErrorSource {
     int32? this.file_index,
   });
 
-  @override
   PassportElementErrorSourceFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_index = map.containsKey('file_index') ? map['file_index'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15422,13 +14742,11 @@ class PassportElementErrorSourceFiles extends PassportElementErrorSource {
     int? this.client_id,
   });
 
-  @override
   PassportElementErrorSourceFiles.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15459,7 +14777,6 @@ class PassportElementError extends TdObject {
     PassportElementErrorSource? this.source,
   });
 
-  @override
   PassportElementError.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15472,7 +14789,6 @@ class PassportElementError extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15508,7 +14824,6 @@ class PassportSuitableElement extends TdObject {
     Bool? this.is_native_name_required,
   });
 
-  @override
   PassportSuitableElement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15526,7 +14841,6 @@ class PassportSuitableElement extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15559,7 +14873,6 @@ class PassportRequiredElement extends TdObject {
     vector<PassportSuitableElement>? this.suitable_elements,
   });
 
-  @override
   PassportRequiredElement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15574,7 +14887,6 @@ class PassportRequiredElement extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15606,7 +14918,6 @@ class PassportAuthorizationForm extends TdObject {
     string? this.privacy_policy_url,
   });
 
-  @override
   PassportAuthorizationForm.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15625,7 +14936,6 @@ class PassportAuthorizationForm extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15657,7 +14967,6 @@ class PassportElementsWithErrors extends TdObject {
     vector<PassportElementError>? this.errors,
   });
 
-  @override
   PassportElementsWithErrors.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15679,7 +14988,6 @@ class PassportElementsWithErrors extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15712,7 +15020,6 @@ class EncryptedCredentials extends TdObject {
     bytes? this.secret,
   });
 
-  @override
   EncryptedCredentials.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15721,7 +15028,6 @@ class EncryptedCredentials extends TdObject {
     secret = map.containsKey('secret') ? map['secret'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15767,7 +15073,6 @@ class EncryptedPassportElement extends TdObject {
     string? this.hash,
   });
 
-  @override
   EncryptedPassportElement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15804,7 +15109,6 @@ class EncryptedPassportElement extends TdObject {
     hash = map.containsKey('hash') ? map['hash'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15841,14 +15145,12 @@ class InputPassportElementErrorSourceUnspecified
     bytes? this.element_hash,
   });
 
-  @override
   InputPassportElementErrorSourceUnspecified.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     element_hash = map.containsKey('element_hash') ? map['element_hash'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15879,7 +15181,6 @@ class InputPassportElementErrorSourceDataField
     bytes? this.data_hash,
   });
 
-  @override
   InputPassportElementErrorSourceDataField.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -15887,7 +15188,6 @@ class InputPassportElementErrorSourceDataField
     data_hash = map.containsKey('data_hash') ? map['data_hash'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15917,14 +15217,12 @@ class InputPassportElementErrorSourceFrontSide
     bytes? this.file_hash,
   });
 
-  @override
   InputPassportElementErrorSourceFrontSide.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_hash = map.containsKey('file_hash') ? map['file_hash'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15953,14 +15251,12 @@ class InputPassportElementErrorSourceReverseSide
     bytes? this.file_hash,
   });
 
-  @override
   InputPassportElementErrorSourceReverseSide.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_hash = map.containsKey('file_hash') ? map['file_hash'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -15989,14 +15285,12 @@ class InputPassportElementErrorSourceSelfie
     bytes? this.file_hash,
   });
 
-  @override
   InputPassportElementErrorSourceSelfie.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_hash = map.containsKey('file_hash') ? map['file_hash'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16025,7 +15319,6 @@ class InputPassportElementErrorSourceTranslationFile
     bytes? this.file_hash,
   });
 
-  @override
   InputPassportElementErrorSourceTranslationFile.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
@@ -16033,7 +15326,6 @@ class InputPassportElementErrorSourceTranslationFile
     file_hash = map.containsKey('file_hash') ? map['file_hash'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16062,7 +15354,6 @@ class InputPassportElementErrorSourceTranslationFiles
     vector<bytes>? this.file_hashes,
   });
 
-  @override
   InputPassportElementErrorSourceTranslationFiles.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
@@ -16076,7 +15367,6 @@ class InputPassportElementErrorSourceTranslationFiles
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16105,14 +15395,12 @@ class InputPassportElementErrorSourceFile
     bytes? this.file_hash,
   });
 
-  @override
   InputPassportElementErrorSourceFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_hash = map.containsKey('file_hash') ? map['file_hash'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16141,7 +15429,6 @@ class InputPassportElementErrorSourceFiles
     vector<bytes>? this.file_hashes,
   });
 
-  @override
   InputPassportElementErrorSourceFiles.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16154,7 +15441,6 @@ class InputPassportElementErrorSourceFiles
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16186,7 +15472,6 @@ class InputPassportElementError extends TdObject {
     InputPassportElementErrorSource? this.source,
   });
 
-  @override
   InputPassportElementError.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16199,7 +15484,6 @@ class InputPassportElementError extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16231,7 +15515,6 @@ class MessageText extends MessageContent {
     WebPage? this.web_page,
   });
 
-  @override
   MessageText.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16243,7 +15526,6 @@ class MessageText extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16276,7 +15558,6 @@ class MessageAnimation extends MessageContent {
     Bool? this.is_secret,
   });
 
-  @override
   MessageAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16289,7 +15570,6 @@ class MessageAnimation extends MessageContent {
     is_secret = map.containsKey('is_secret') ? map['is_secret'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16321,7 +15601,6 @@ class MessageAudio extends MessageContent {
     FormattedText? this.caption,
   });
 
-  @override
   MessageAudio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16332,7 +15611,6 @@ class MessageAudio extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16363,7 +15641,6 @@ class MessageDocument extends MessageContent {
     FormattedText? this.caption,
   });
 
-  @override
   MessageDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16375,7 +15652,6 @@ class MessageDocument extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16408,7 +15684,6 @@ class MessagePhoto extends MessageContent {
     Bool? this.is_secret,
   });
 
-  @override
   MessagePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16420,7 +15695,6 @@ class MessagePhoto extends MessageContent {
     is_secret = map.containsKey('is_secret') ? map['is_secret'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16448,13 +15722,11 @@ class MessageExpiredPhoto extends MessageContent {
     int? this.client_id,
   });
 
-  @override
   MessageExpiredPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16481,7 +15753,6 @@ class MessageSticker extends MessageContent {
     Sticker? this.sticker,
   });
 
-  @override
   MessageSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16490,7 +15761,6 @@ class MessageSticker extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16522,7 +15792,6 @@ class MessageVideo extends MessageContent {
     Bool? this.is_secret,
   });
 
-  @override
   MessageVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16534,7 +15803,6 @@ class MessageVideo extends MessageContent {
     is_secret = map.containsKey('is_secret') ? map['is_secret'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16562,13 +15830,11 @@ class MessageExpiredVideo extends MessageContent {
     int? this.client_id,
   });
 
-  @override
   MessageExpiredVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16599,7 +15865,6 @@ class MessageVideoNote extends MessageContent {
     Bool? this.is_secret,
   });
 
-  @override
   MessageVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16610,7 +15875,6 @@ class MessageVideoNote extends MessageContent {
     is_secret = map.containsKey('is_secret') ? map['is_secret'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16644,7 +15908,6 @@ class MessageVoiceNote extends MessageContent {
     Bool? this.is_listened,
   });
 
-  @override
   MessageVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16657,7 +15920,6 @@ class MessageVoiceNote extends MessageContent {
     is_listened = map.containsKey('is_listened') ? map['is_listened'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16695,7 +15957,6 @@ class MessageLocation extends MessageContent {
     int32? this.proximity_alert_radius,
   });
 
-  @override
   MessageLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16710,7 +15971,6 @@ class MessageLocation extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16743,7 +16003,6 @@ class MessageVenue extends MessageContent {
     Venue? this.venue,
   });
 
-  @override
   MessageVenue.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16751,7 +16010,6 @@ class MessageVenue extends MessageContent {
         map.containsKey('venue') ? TlMap.fromMap(map['venue']) as Venue : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16779,7 +16037,6 @@ class MessageContact extends MessageContent {
     Contact? this.contact,
   });
 
-  @override
   MessageContact.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16788,7 +16045,6 @@ class MessageContact extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16818,7 +16074,6 @@ class MessageAnimatedEmoji extends MessageContent {
     string? this.emoji,
   });
 
-  @override
   MessageAnimatedEmoji.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16828,7 +16083,6 @@ class MessageAnimatedEmoji extends MessageContent {
     emoji = map.containsKey('emoji') ? map['emoji'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16865,7 +16119,6 @@ class MessageDice extends MessageContent {
     int32? this.success_animation_frame_number,
   });
 
-  @override
   MessageDice.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -16883,7 +16136,6 @@ class MessageDice extends MessageContent {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16916,14 +16168,12 @@ class MessageGame extends MessageContent {
     Game? this.game,
   });
 
-  @override
   MessageGame.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     game = map.containsKey('game') ? TlMap.fromMap(map['game']) as Game : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -16951,14 +16201,12 @@ class MessagePoll extends MessageContent {
     Poll? this.poll,
   });
 
-  @override
   MessagePoll.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     poll = map.containsKey('poll') ? TlMap.fromMap(map['poll']) as Poll : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17002,7 +16250,6 @@ class MessageInvoice extends MessageContent {
     int53? this.receipt_message_id,
   });
 
-  @override
   MessageInvoice.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17023,7 +16270,6 @@ class MessageInvoice extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17064,7 +16310,6 @@ class MessageCall extends MessageContent {
     int32? this.duration,
   });
 
-  @override
   MessageCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17075,7 +16320,6 @@ class MessageCall extends MessageContent {
     duration = map.containsKey('duration') ? map['duration'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17107,7 +16351,6 @@ class MessageVideoChatScheduled extends MessageContent {
     int32? this.start_date,
   });
 
-  @override
   MessageVideoChatScheduled.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17116,7 +16359,6 @@ class MessageVideoChatScheduled extends MessageContent {
     start_date = map.containsKey('start_date') ? map['start_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17145,7 +16387,6 @@ class MessageVideoChatStarted extends MessageContent {
     int32? this.group_call_id,
   });
 
-  @override
   MessageVideoChatStarted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17153,7 +16394,6 @@ class MessageVideoChatStarted extends MessageContent {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17181,14 +16421,12 @@ class MessageVideoChatEnded extends MessageContent {
     int32? this.duration,
   });
 
-  @override
   MessageVideoChatEnded.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     duration = map.containsKey('duration') ? map['duration'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17218,7 +16456,6 @@ class MessageInviteVideoChatParticipants extends MessageContent {
     vector<int53>? this.user_ids,
   });
 
-  @override
   MessageInviteVideoChatParticipants.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17233,7 +16470,6 @@ class MessageInviteVideoChatParticipants extends MessageContent {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17264,7 +16500,6 @@ class MessageBasicGroupChatCreate extends MessageContent {
     vector<int53>? this.member_user_ids,
   });
 
-  @override
   MessageBasicGroupChatCreate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17278,7 +16513,6 @@ class MessageBasicGroupChatCreate extends MessageContent {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17307,14 +16541,12 @@ class MessageSupergroupChatCreate extends MessageContent {
     string? this.title,
   });
 
-  @override
   MessageSupergroupChatCreate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17342,14 +16574,12 @@ class MessageChatChangeTitle extends MessageContent {
     string? this.title,
   });
 
-  @override
   MessageChatChangeTitle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17377,7 +16607,6 @@ class MessageChatChangePhoto extends MessageContent {
     ChatPhoto? this.photo,
   });
 
-  @override
   MessageChatChangePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17386,7 +16615,6 @@ class MessageChatChangePhoto extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17412,13 +16640,11 @@ class MessageChatDeletePhoto extends MessageContent {
     int? this.client_id,
   });
 
-  @override
   MessageChatDeletePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17445,7 +16671,6 @@ class MessageChatAddMembers extends MessageContent {
     vector<int53>? this.member_user_ids,
   });
 
-  @override
   MessageChatAddMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17458,7 +16683,6 @@ class MessageChatAddMembers extends MessageContent {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17484,13 +16708,11 @@ class MessageChatJoinByLink extends MessageContent {
     int? this.client_id,
   });
 
-  @override
   MessageChatJoinByLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17515,13 +16737,11 @@ class MessageChatJoinByRequest extends MessageContent {
     int? this.client_id,
   });
 
-  @override
   MessageChatJoinByRequest.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17548,14 +16768,12 @@ class MessageChatDeleteMember extends MessageContent {
     int53? this.user_id,
   });
 
-  @override
   MessageChatDeleteMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17583,7 +16801,6 @@ class MessageChatUpgradeTo extends MessageContent {
     int53? this.supergroup_id,
   });
 
-  @override
   MessageChatUpgradeTo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17591,7 +16808,6 @@ class MessageChatUpgradeTo extends MessageContent {
         map.containsKey('supergroup_id') ? map['supergroup_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17621,7 +16837,6 @@ class MessageChatUpgradeFrom extends MessageContent {
     int53? this.basic_group_id,
   });
 
-  @override
   MessageChatUpgradeFrom.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17630,7 +16845,6 @@ class MessageChatUpgradeFrom extends MessageContent {
         map.containsKey('basic_group_id') ? map['basic_group_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17659,14 +16873,12 @@ class MessagePinMessage extends MessageContent {
     int53? this.message_id,
   });
 
-  @override
   MessagePinMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17692,13 +16904,11 @@ class MessageScreenshotTaken extends MessageContent {
     int? this.client_id,
   });
 
-  @override
   MessageScreenshotTaken.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17725,14 +16935,12 @@ class MessageChatSetTheme extends MessageContent {
     string? this.theme_name,
   });
 
-  @override
   MessageChatSetTheme.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     theme_name = map.containsKey('theme_name') ? map['theme_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17760,14 +16968,12 @@ class MessageChatSetTtl extends MessageContent {
     int32? this.ttl,
   });
 
-  @override
   MessageChatSetTtl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     ttl = map.containsKey('ttl') ? map['ttl'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17795,14 +17001,12 @@ class MessageCustomServiceAction extends MessageContent {
     string? this.text,
   });
 
-  @override
   MessageCustomServiceAction.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     text = map.containsKey('text') ? map['text'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17834,7 +17038,6 @@ class MessageGameScore extends MessageContent {
     int32? this.score,
   });
 
-  @override
   MessageGameScore.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17844,7 +17047,6 @@ class MessageGameScore extends MessageContent {
     score = map.containsKey('score') ? map['score'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17880,7 +17082,6 @@ class MessagePaymentSuccessful extends MessageContent {
     int53? this.total_amount,
   });
 
-  @override
   MessagePaymentSuccessful.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17893,7 +17094,6 @@ class MessagePaymentSuccessful extends MessageContent {
     total_amount = map.containsKey('total_amount') ? map['total_amount'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17936,7 +17136,6 @@ class MessagePaymentSuccessfulBot extends MessageContent {
     string? this.provider_payment_charge_id,
   });
 
-  @override
   MessagePaymentSuccessfulBot.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -17958,7 +17157,6 @@ class MessagePaymentSuccessfulBot extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -17992,13 +17190,11 @@ class MessageContactRegistered extends MessageContent {
     int? this.client_id,
   });
 
-  @override
   MessageContactRegistered.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18025,14 +17221,12 @@ class MessageWebsiteConnected extends MessageContent {
     string? this.domain_name,
   });
 
-  @override
   MessageWebsiteConnected.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     domain_name = map.containsKey('domain_name') ? map['domain_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18060,7 +17254,6 @@ class MessagePassportDataSent extends MessageContent {
     vector<PassportElementType>? this.types,
   });
 
-  @override
   MessagePassportDataSent.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -18074,7 +17267,6 @@ class MessagePassportDataSent extends MessageContent {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18104,7 +17296,6 @@ class MessagePassportDataReceived extends MessageContent {
     EncryptedCredentials? this.credentials,
   });
 
-  @override
   MessagePassportDataReceived.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -18121,7 +17312,6 @@ class MessagePassportDataReceived extends MessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18154,7 +17344,6 @@ class MessageProximityAlertTriggered extends MessageContent {
     int32? this.distance,
   });
 
-  @override
   MessageProximityAlertTriggered.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -18167,7 +17356,6 @@ class MessageProximityAlertTriggered extends MessageContent {
     distance = map.containsKey('distance') ? map['distance'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18195,13 +17383,11 @@ class MessageUnsupported extends MessageContent {
     int? this.client_id,
   });
 
-  @override
   MessageUnsupported.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18226,13 +17412,11 @@ class TextEntityTypeMention extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeMention.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18257,13 +17441,11 @@ class TextEntityTypeHashtag extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeHashtag.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18288,13 +17470,11 @@ class TextEntityTypeCashtag extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeCashtag.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18319,13 +17499,11 @@ class TextEntityTypeBotCommand extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeBotCommand.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18350,13 +17528,11 @@ class TextEntityTypeUrl extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18381,13 +17557,11 @@ class TextEntityTypeEmailAddress extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeEmailAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18412,13 +17586,11 @@ class TextEntityTypePhoneNumber extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypePhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18443,13 +17615,11 @@ class TextEntityTypeBankCardNumber extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeBankCardNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18474,13 +17644,11 @@ class TextEntityTypeBold extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeBold.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18505,13 +17673,11 @@ class TextEntityTypeItalic extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeItalic.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18536,13 +17702,11 @@ class TextEntityTypeUnderline extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeUnderline.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18567,13 +17731,11 @@ class TextEntityTypeStrikethrough extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeStrikethrough.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18598,13 +17760,11 @@ class TextEntityTypeCode extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypeCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18629,13 +17789,11 @@ class TextEntityTypePre extends TextEntityType {
     int? this.client_id,
   });
 
-  @override
   TextEntityTypePre.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18662,14 +17820,12 @@ class TextEntityTypePreCode extends TextEntityType {
     string? this.language,
   });
 
-  @override
   TextEntityTypePreCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     language = map.containsKey('language') ? map['language'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18697,14 +17853,12 @@ class TextEntityTypeTextUrl extends TextEntityType {
     string? this.url,
   });
 
-  @override
   TextEntityTypeTextUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18732,14 +17886,12 @@ class TextEntityTypeMentionName extends TextEntityType {
     int53? this.user_id,
   });
 
-  @override
   TextEntityTypeMentionName.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18767,7 +17919,6 @@ class TextEntityTypeMediaTimestamp extends TextEntityType {
     int32? this.media_timestamp,
   });
 
-  @override
   TextEntityTypeMediaTimestamp.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -18775,7 +17926,6 @@ class TextEntityTypeMediaTimestamp extends TextEntityType {
         map.containsKey('media_timestamp') ? map['media_timestamp'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18807,7 +17957,6 @@ class InputThumbnail extends TdObject {
     int32? this.height,
   });
 
-  @override
   InputThumbnail.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -18818,7 +17967,6 @@ class InputThumbnail extends TdObject {
     height = map.containsKey('height') ? map['height'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18848,14 +17996,12 @@ class MessageSchedulingStateSendAtDate extends MessageSchedulingState {
     int32? this.send_date,
   });
 
-  @override
   MessageSchedulingStateSendAtDate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     send_date = map.containsKey('send_date') ? map['send_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18881,13 +18027,11 @@ class MessageSchedulingStateSendWhenOnline extends MessageSchedulingState {
     int? this.client_id,
   });
 
-  @override
   MessageSchedulingStateSendWhenOnline.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18918,7 +18062,6 @@ class MessageSendOptions extends TdObject {
     MessageSchedulingState? this.scheduling_state,
   });
 
-  @override
   MessageSendOptions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -18932,7 +18075,6 @@ class MessageSendOptions extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -18966,7 +18108,6 @@ class MessageCopyOptions extends TdObject {
     FormattedText? this.new_caption,
   });
 
-  @override
   MessageCopyOptions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -18978,7 +18119,6 @@ class MessageCopyOptions extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19012,7 +18152,6 @@ class InputMessageText extends InputMessageContent {
     Bool? this.clear_draft,
   });
 
-  @override
   InputMessageText.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19025,7 +18164,6 @@ class InputMessageText extends InputMessageContent {
     clear_draft = map.containsKey('clear_draft') ? map['clear_draft'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19068,7 +18206,6 @@ class InputMessageAnimation extends InputMessageContent {
     FormattedText? this.caption,
   });
 
-  @override
   InputMessageAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19094,7 +18231,6 @@ class InputMessageAnimation extends InputMessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19139,7 +18275,6 @@ class InputMessageAudio extends InputMessageContent {
     FormattedText? this.caption,
   });
 
-  @override
   InputMessageAudio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19157,7 +18292,6 @@ class InputMessageAudio extends InputMessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19197,7 +18331,6 @@ class InputMessageDocument extends InputMessageContent {
     FormattedText? this.caption,
   });
 
-  @override
   InputMessageDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19216,7 +18349,6 @@ class InputMessageDocument extends InputMessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19260,7 +18392,6 @@ class InputMessagePhoto extends InputMessageContent {
     int32? this.ttl,
   });
 
-  @override
   InputMessagePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19286,7 +18417,6 @@ class InputMessagePhoto extends InputMessageContent {
     ttl = map.containsKey('ttl') ? map['ttl'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19329,7 +18459,6 @@ class InputMessageSticker extends InputMessageContent {
     string? this.emoji,
   });
 
-  @override
   InputMessageSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19344,7 +18473,6 @@ class InputMessageSticker extends InputMessageContent {
     emoji = map.containsKey('emoji') ? map['emoji'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19392,7 +18520,6 @@ class InputMessageVideo extends InputMessageContent {
     int32? this.ttl,
   });
 
-  @override
   InputMessageVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19422,7 +18549,6 @@ class InputMessageVideo extends InputMessageContent {
     ttl = map.containsKey('ttl') ? map['ttl'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19465,7 +18591,6 @@ class InputMessageVideoNote extends InputMessageContent {
     int32? this.length,
   });
 
-  @override
   InputMessageVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19479,7 +18604,6 @@ class InputMessageVideoNote extends InputMessageContent {
     length = map.containsKey('length') ? map['length'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19516,7 +18640,6 @@ class InputMessageVoiceNote extends InputMessageContent {
     FormattedText? this.caption,
   });
 
-  @override
   InputMessageVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19530,7 +18653,6 @@ class InputMessageVoiceNote extends InputMessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19567,7 +18689,6 @@ class InputMessageLocation extends InputMessageContent {
     int32? this.proximity_alert_radius,
   });
 
-  @override
   InputMessageLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19581,7 +18702,6 @@ class InputMessageLocation extends InputMessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19613,7 +18733,6 @@ class InputMessageVenue extends InputMessageContent {
     Venue? this.venue,
   });
 
-  @override
   InputMessageVenue.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19621,7 +18740,6 @@ class InputMessageVenue extends InputMessageContent {
         map.containsKey('venue') ? TlMap.fromMap(map['venue']) as Venue : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19649,7 +18767,6 @@ class InputMessageContact extends InputMessageContent {
     Contact? this.contact,
   });
 
-  @override
   InputMessageContact.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19658,7 +18775,6 @@ class InputMessageContact extends InputMessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19688,7 +18804,6 @@ class InputMessageDice extends InputMessageContent {
     Bool? this.clear_draft,
   });
 
-  @override
   InputMessageDice.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19696,7 +18811,6 @@ class InputMessageDice extends InputMessageContent {
     clear_draft = map.containsKey('clear_draft') ? map['clear_draft'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19727,7 +18841,6 @@ class InputMessageGame extends InputMessageContent {
     string? this.game_short_name,
   });
 
-  @override
   InputMessageGame.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19736,7 +18849,6 @@ class InputMessageGame extends InputMessageContent {
         map.containsKey('game_short_name') ? map['game_short_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19785,7 +18897,6 @@ class InputMessageInvoice extends InputMessageContent {
     string? this.start_parameter,
   });
 
-  @override
   InputMessageInvoice.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19807,7 +18918,6 @@ class InputMessageInvoice extends InputMessageContent {
         map.containsKey('start_parameter') ? map['start_parameter'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19857,7 +18967,6 @@ class InputMessagePoll extends InputMessageContent {
     Bool? this.is_closed,
   });
 
-  @override
   InputMessagePoll.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19877,7 +18986,6 @@ class InputMessagePoll extends InputMessageContent {
     is_closed = map.containsKey('is_closed') ? map['is_closed'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19917,7 +19025,6 @@ class InputMessageForwarded extends InputMessageContent {
     MessageCopyOptions? this.copy_options,
   });
 
-  @override
   InputMessageForwarded.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -19930,7 +19037,6 @@ class InputMessageForwarded extends InputMessageContent {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19959,13 +19065,11 @@ class SearchMessagesFilterEmpty extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterEmpty.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -19990,13 +19094,11 @@ class SearchMessagesFilterAnimation extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20021,13 +19123,11 @@ class SearchMessagesFilterAudio extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterAudio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20052,13 +19152,11 @@ class SearchMessagesFilterDocument extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20083,13 +19181,11 @@ class SearchMessagesFilterPhoto extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20114,13 +19210,11 @@ class SearchMessagesFilterVideo extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20145,13 +19239,11 @@ class SearchMessagesFilterVoiceNote extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20176,13 +19268,11 @@ class SearchMessagesFilterPhotoAndVideo extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterPhotoAndVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20207,13 +19297,11 @@ class SearchMessagesFilterUrl extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20238,13 +19326,11 @@ class SearchMessagesFilterChatPhoto extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterChatPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20269,13 +19355,11 @@ class SearchMessagesFilterVideoNote extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20300,13 +19384,11 @@ class SearchMessagesFilterVoiceAndVideoNote extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterVoiceAndVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20331,13 +19413,11 @@ class SearchMessagesFilterMention extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterMention.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20362,13 +19442,11 @@ class SearchMessagesFilterUnreadMention extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterUnreadMention.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20393,13 +19471,11 @@ class SearchMessagesFilterFailedToSend extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterFailedToSend.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20424,13 +19500,11 @@ class SearchMessagesFilterPinned extends SearchMessagesFilter {
     int? this.client_id,
   });
 
-  @override
   SearchMessagesFilterPinned.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20455,13 +19529,11 @@ class ChatActionTyping extends ChatAction {
     int? this.client_id,
   });
 
-  @override
   ChatActionTyping.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20486,13 +19558,11 @@ class ChatActionRecordingVideo extends ChatAction {
     int? this.client_id,
   });
 
-  @override
   ChatActionRecordingVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20519,14 +19589,12 @@ class ChatActionUploadingVideo extends ChatAction {
     int32? this.progress,
   });
 
-  @override
   ChatActionUploadingVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     progress = map.containsKey('progress') ? map['progress'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20552,13 +19620,11 @@ class ChatActionRecordingVoiceNote extends ChatAction {
     int? this.client_id,
   });
 
-  @override
   ChatActionRecordingVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20585,14 +19651,12 @@ class ChatActionUploadingVoiceNote extends ChatAction {
     int32? this.progress,
   });
 
-  @override
   ChatActionUploadingVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     progress = map.containsKey('progress') ? map['progress'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20620,14 +19684,12 @@ class ChatActionUploadingPhoto extends ChatAction {
     int32? this.progress,
   });
 
-  @override
   ChatActionUploadingPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     progress = map.containsKey('progress') ? map['progress'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20655,14 +19717,12 @@ class ChatActionUploadingDocument extends ChatAction {
     int32? this.progress,
   });
 
-  @override
   ChatActionUploadingDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     progress = map.containsKey('progress') ? map['progress'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20688,13 +19748,11 @@ class ChatActionChoosingSticker extends ChatAction {
     int? this.client_id,
   });
 
-  @override
   ChatActionChoosingSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20719,13 +19777,11 @@ class ChatActionChoosingLocation extends ChatAction {
     int? this.client_id,
   });
 
-  @override
   ChatActionChoosingLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20750,13 +19806,11 @@ class ChatActionChoosingContact extends ChatAction {
     int? this.client_id,
   });
 
-  @override
   ChatActionChoosingContact.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20781,13 +19835,11 @@ class ChatActionStartPlayingGame extends ChatAction {
     int? this.client_id,
   });
 
-  @override
   ChatActionStartPlayingGame.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20812,13 +19864,11 @@ class ChatActionRecordingVideoNote extends ChatAction {
     int? this.client_id,
   });
 
-  @override
   ChatActionRecordingVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20845,14 +19895,12 @@ class ChatActionUploadingVideoNote extends ChatAction {
     int32? this.progress,
   });
 
-  @override
   ChatActionUploadingVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     progress = map.containsKey('progress') ? map['progress'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20880,14 +19928,12 @@ class ChatActionWatchingAnimations extends ChatAction {
     string? this.emoji,
   });
 
-  @override
   ChatActionWatchingAnimations.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     emoji = map.containsKey('emoji') ? map['emoji'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20913,13 +19959,11 @@ class ChatActionCancel extends ChatAction {
     int? this.client_id,
   });
 
-  @override
   ChatActionCancel.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20944,13 +19988,11 @@ class UserStatusEmpty extends UserStatus {
     int? this.client_id,
   });
 
-  @override
   UserStatusEmpty.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -20977,14 +20019,12 @@ class UserStatusOnline extends UserStatus {
     int32? this.expires,
   });
 
-  @override
   UserStatusOnline.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     expires = map.containsKey('expires') ? map['expires'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21012,14 +20052,12 @@ class UserStatusOffline extends UserStatus {
     int32? this.was_online,
   });
 
-  @override
   UserStatusOffline.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     was_online = map.containsKey('was_online') ? map['was_online'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21045,13 +20083,11 @@ class UserStatusRecently extends UserStatus {
     int? this.client_id,
   });
 
-  @override
   UserStatusRecently.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21076,13 +20112,11 @@ class UserStatusLastWeek extends UserStatus {
     int? this.client_id,
   });
 
-  @override
   UserStatusLastWeek.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21107,13 +20141,11 @@ class UserStatusLastMonth extends UserStatus {
     int? this.client_id,
   });
 
-  @override
   UserStatusLastMonth.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21140,7 +20172,6 @@ class Stickers extends TdObject {
     vector<Sticker>? this.stickers,
   });
 
-  @override
   Stickers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -21154,7 +20185,6 @@ class Stickers extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21182,7 +20212,6 @@ class Emojis extends TdObject {
     vector<string>? this.emojis,
   });
 
-  @override
   Emojis.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -21195,7 +20224,6 @@ class Emojis extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21247,7 +20275,6 @@ class StickerSet extends TdObject {
     vector<Emojis>? this.emojis,
   });
 
-  @override
   StickerSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -21290,7 +20317,6 @@ class StickerSet extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21354,7 +20380,6 @@ class StickerSetInfo extends TdObject {
     vector<Sticker>? this.covers,
   });
 
-  @override
   StickerSetInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -21390,7 +20415,6 @@ class StickerSetInfo extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21432,7 +20456,6 @@ class StickerSets extends TdObject {
     vector<StickerSetInfo>? this.sets,
   });
 
-  @override
   StickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -21447,7 +20470,6 @@ class StickerSets extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21474,13 +20496,11 @@ class CallDiscardReasonEmpty extends CallDiscardReason {
     int? this.client_id,
   });
 
-  @override
   CallDiscardReasonEmpty.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21505,13 +20525,11 @@ class CallDiscardReasonMissed extends CallDiscardReason {
     int? this.client_id,
   });
 
-  @override
   CallDiscardReasonMissed.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21536,13 +20554,11 @@ class CallDiscardReasonDeclined extends CallDiscardReason {
     int? this.client_id,
   });
 
-  @override
   CallDiscardReasonDeclined.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21567,13 +20583,11 @@ class CallDiscardReasonDisconnected extends CallDiscardReason {
     int? this.client_id,
   });
 
-  @override
   CallDiscardReasonDisconnected.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21598,13 +20612,11 @@ class CallDiscardReasonHungUp extends CallDiscardReason {
     int? this.client_id,
   });
 
-  @override
   CallDiscardReasonHungUp.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21639,7 +20651,6 @@ class CallProtocol extends TdObject {
     vector<string>? this.library_versions,
   });
 
-  @override
   CallProtocol.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -21658,7 +20669,6 @@ class CallProtocol extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21690,14 +20700,12 @@ class CallServerTypeTelegramReflector extends CallServerType {
     bytes? this.peer_tag,
   });
 
-  @override
   CallServerTypeTelegramReflector.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     peer_tag = map.containsKey('peer_tag') ? map['peer_tag'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21731,7 +20739,6 @@ class CallServerTypeWebrtc extends CallServerType {
     Bool? this.supports_stun,
   });
 
-  @override
   CallServerTypeWebrtc.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -21743,7 +20750,6 @@ class CallServerTypeWebrtc extends CallServerType {
         map.containsKey('supports_stun') ? map['supports_stun'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21782,7 +20788,6 @@ class CallServer extends TdObject {
     CallServerType? this.type,
   });
 
-  @override
   CallServer.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -21795,7 +20800,6 @@ class CallServer extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21827,14 +20831,12 @@ class CallId extends TdObject {
     int32? this.id,
   });
 
-  @override
   CallId.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     id = map.containsKey('id') ? map['id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21862,14 +20864,12 @@ class GroupCallId extends TdObject {
     int32? this.id,
   });
 
-  @override
   GroupCallId.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     id = map.containsKey('id') ? map['id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21899,7 +20899,6 @@ class CallStatePending extends CallState {
     Bool? this.is_received,
   });
 
-  @override
   CallStatePending.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -21907,7 +20906,6 @@ class CallStatePending extends CallState {
     is_received = map.containsKey('is_received') ? map['is_received'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21934,13 +20932,11 @@ class CallStateExchangingKeys extends CallState {
     int? this.client_id,
   });
 
-  @override
   CallStateExchangingKeys.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -21977,7 +20973,6 @@ class CallStateReady extends CallState {
     Bool? this.allow_p2p,
   });
 
-  @override
   CallStateReady.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -22005,7 +21000,6 @@ class CallStateReady extends CallState {
     allow_p2p = map.containsKey('allow_p2p') ? map['allow_p2p'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22036,13 +21030,11 @@ class CallStateHangingUp extends CallState {
     int? this.client_id,
   });
 
-  @override
   CallStateHangingUp.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22073,7 +21065,6 @@ class CallStateDiscarded extends CallState {
     Bool? this.need_debug_information,
   });
 
-  @override
   CallStateDiscarded.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -22086,7 +21077,6 @@ class CallStateDiscarded extends CallState {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22117,7 +21107,6 @@ class CallStateError extends CallState {
     Error? this.error,
   });
 
-  @override
   CallStateError.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -22125,7 +21114,6 @@ class CallStateError extends CallState {
         map.containsKey('error') ? TlMap.fromMap(map['error']) as Error : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22151,13 +21139,11 @@ class GroupCallVideoQualityThumbnail extends GroupCallVideoQuality {
     int? this.client_id,
   });
 
-  @override
   GroupCallVideoQualityThumbnail.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22182,13 +21168,11 @@ class GroupCallVideoQualityMedium extends GroupCallVideoQuality {
     int? this.client_id,
   });
 
-  @override
   GroupCallVideoQualityMedium.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22213,13 +21197,11 @@ class GroupCallVideoQualityFull extends GroupCallVideoQuality {
     int? this.client_id,
   });
 
-  @override
   GroupCallVideoQualityFull.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22248,7 +21230,6 @@ class GroupCallRecentSpeaker extends TdObject {
     Bool? this.is_speaking,
   });
 
-  @override
   GroupCallRecentSpeaker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -22258,7 +21239,6 @@ class GroupCallRecentSpeaker extends TdObject {
     is_speaking = map.containsKey('is_speaking') ? map['is_speaking'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22323,7 +21303,6 @@ class GroupCall extends TdObject {
     int32? this.duration,
   });
 
-  @override
   GroupCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -22375,7 +21354,6 @@ class GroupCall extends TdObject {
     duration = map.containsKey('duration') ? map['duration'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22427,7 +21405,6 @@ class GroupCallVideoSourceGroup extends TdObject {
     vector<int32>? this.source_ids,
   });
 
-  @override
   GroupCallVideoSourceGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -22441,7 +21418,6 @@ class GroupCallVideoSourceGroup extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22474,7 +21450,6 @@ class GroupCallParticipantVideoInfo extends TdObject {
     Bool? this.is_paused,
   });
 
-  @override
   GroupCallParticipantVideoInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -22490,7 +21465,6 @@ class GroupCallParticipantVideoInfo extends TdObject {
     is_paused = map.containsKey('is_paused') ? map['is_paused'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22554,7 +21528,6 @@ class GroupCallParticipant extends TdObject {
     string? this.order,
   });
 
-  @override
   GroupCallParticipant.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -22607,7 +21580,6 @@ class GroupCallParticipant extends TdObject {
     order = map.containsKey('order') ? map['order'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22658,13 +21630,11 @@ class CallProblemEcho extends CallProblem {
     int? this.client_id,
   });
 
-  @override
   CallProblemEcho.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22689,13 +21659,11 @@ class CallProblemNoise extends CallProblem {
     int? this.client_id,
   });
 
-  @override
   CallProblemNoise.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22720,13 +21688,11 @@ class CallProblemInterruptions extends CallProblem {
     int? this.client_id,
   });
 
-  @override
   CallProblemInterruptions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22751,13 +21717,11 @@ class CallProblemDistortedSpeech extends CallProblem {
     int? this.client_id,
   });
 
-  @override
   CallProblemDistortedSpeech.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22782,13 +21746,11 @@ class CallProblemSilentLocal extends CallProblem {
     int? this.client_id,
   });
 
-  @override
   CallProblemSilentLocal.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22813,13 +21775,11 @@ class CallProblemSilentRemote extends CallProblem {
     int? this.client_id,
   });
 
-  @override
   CallProblemSilentRemote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22844,13 +21804,11 @@ class CallProblemDropped extends CallProblem {
     int? this.client_id,
   });
 
-  @override
   CallProblemDropped.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22875,13 +21833,11 @@ class CallProblemDistortedVideo extends CallProblem {
     int? this.client_id,
   });
 
-  @override
   CallProblemDistortedVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22906,13 +21862,11 @@ class CallProblemPixelatedVideo extends CallProblem {
     int? this.client_id,
   });
 
-  @override
   CallProblemPixelatedVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -22947,7 +21901,6 @@ class Call extends TdObject {
     CallState? this.state,
   });
 
-  @override
   Call.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -22960,7 +21913,6 @@ class Call extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23000,7 +21952,6 @@ class PhoneNumberAuthenticationSettings extends TdObject {
     vector<string>? this.authentication_tokens,
   });
 
-  @override
   PhoneNumberAuthenticationSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23024,7 +21975,6 @@ class PhoneNumberAuthenticationSettings extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23059,7 +22009,6 @@ class Animations extends TdObject {
     vector<Animation>? this.animations,
   });
 
-  @override
   Animations.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23073,7 +22022,6 @@ class Animations extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23101,7 +22049,6 @@ class DiceStickersRegular extends DiceStickers {
     Sticker? this.sticker,
   });
 
-  @override
   DiceStickersRegular.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23110,7 +22057,6 @@ class DiceStickersRegular extends DiceStickers {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23146,7 +22092,6 @@ class DiceStickersSlotMachine extends DiceStickers {
     Sticker? this.right_reel,
   });
 
-  @override
   DiceStickersSlotMachine.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23167,7 +22112,6 @@ class DiceStickersSlotMachine extends DiceStickers {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23201,7 +22145,6 @@ class ImportedContacts extends TdObject {
     vector<int32>? this.importer_count,
   });
 
-  @override
   ImportedContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23221,7 +22164,6 @@ class ImportedContacts extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23250,14 +22192,12 @@ class HttpUrl extends TdObject {
     string? this.url,
   });
 
-  @override
   HttpUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23305,7 +22245,6 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23331,7 +22270,6 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23388,7 +22326,6 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultArticle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23411,7 +22348,6 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23461,7 +22397,6 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultAudio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23479,7 +22414,6 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23526,7 +22460,6 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultContact.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23548,7 +22481,6 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23601,7 +22533,6 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23624,7 +22555,6 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23666,7 +22596,6 @@ class InputInlineQueryResultGame extends InputInlineQueryResult {
     ReplyMarkup? this.reply_markup,
   });
 
-  @override
   InputInlineQueryResultGame.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23678,7 +22607,6 @@ class InputInlineQueryResultGame extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23724,7 +22652,6 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23748,7 +22675,6 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23801,7 +22727,6 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23821,7 +22746,6 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23870,7 +22794,6 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23890,7 +22813,6 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -23937,7 +22859,6 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultVenue.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -23958,7 +22879,6 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24013,7 +22933,6 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24036,7 +22955,6 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24085,7 +23003,6 @@ class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   InputInlineQueryResultVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24104,7 +23021,6 @@ class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24148,7 +23064,6 @@ class InlineQueryResultArticle extends InlineQueryResult {
     Thumbnail? this.thumbnail,
   });
 
-  @override
   InlineQueryResultArticle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24162,7 +23077,6 @@ class InlineQueryResultArticle extends InlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24199,7 +23113,6 @@ class InlineQueryResultContact extends InlineQueryResult {
     Thumbnail? this.thumbnail,
   });
 
-  @override
   InlineQueryResultContact.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24212,7 +23125,6 @@ class InlineQueryResultContact extends InlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24248,7 +23160,6 @@ class InlineQueryResultLocation extends InlineQueryResult {
     Thumbnail? this.thumbnail,
   });
 
-  @override
   InlineQueryResultLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24262,7 +23173,6 @@ class InlineQueryResultLocation extends InlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24297,7 +23207,6 @@ class InlineQueryResultVenue extends InlineQueryResult {
     Thumbnail? this.thumbnail,
   });
 
-  @override
   InlineQueryResultVenue.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24309,7 +23218,6 @@ class InlineQueryResultVenue extends InlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24341,7 +23249,6 @@ class InlineQueryResultGame extends InlineQueryResult {
     Game? this.game,
   });
 
-  @override
   InlineQueryResultGame.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24349,7 +23256,6 @@ class InlineQueryResultGame extends InlineQueryResult {
     game = map.containsKey('game') ? TlMap.fromMap(map['game']) as Game : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24382,7 +23288,6 @@ class InlineQueryResultAnimation extends InlineQueryResult {
     string? this.title,
   });
 
-  @override
   InlineQueryResultAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24393,7 +23298,6 @@ class InlineQueryResultAnimation extends InlineQueryResult {
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24425,7 +23329,6 @@ class InlineQueryResultAudio extends InlineQueryResult {
     Audio? this.audio,
   });
 
-  @override
   InlineQueryResultAudio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24434,7 +23337,6 @@ class InlineQueryResultAudio extends InlineQueryResult {
         map.containsKey('audio') ? TlMap.fromMap(map['audio']) as Audio : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24469,7 +23371,6 @@ class InlineQueryResultDocument extends InlineQueryResult {
     string? this.description,
   });
 
-  @override
   InlineQueryResultDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24481,7 +23382,6 @@ class InlineQueryResultDocument extends InlineQueryResult {
     description = map.containsKey('description') ? map['description'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24518,7 +23418,6 @@ class InlineQueryResultPhoto extends InlineQueryResult {
     string? this.description,
   });
 
-  @override
   InlineQueryResultPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24529,7 +23428,6 @@ class InlineQueryResultPhoto extends InlineQueryResult {
     description = map.containsKey('description') ? map['description'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24562,7 +23460,6 @@ class InlineQueryResultSticker extends InlineQueryResult {
     Sticker? this.sticker,
   });
 
-  @override
   InlineQueryResultSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24572,7 +23469,6 @@ class InlineQueryResultSticker extends InlineQueryResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24607,7 +23503,6 @@ class InlineQueryResultVideo extends InlineQueryResult {
     string? this.description,
   });
 
-  @override
   InlineQueryResultVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24618,7 +23513,6 @@ class InlineQueryResultVideo extends InlineQueryResult {
     description = map.containsKey('description') ? map['description'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24653,7 +23547,6 @@ class InlineQueryResultVoiceNote extends InlineQueryResult {
     string? this.title,
   });
 
-  @override
   InlineQueryResultVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24664,7 +23557,6 @@ class InlineQueryResultVoiceNote extends InlineQueryResult {
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24702,7 +23594,6 @@ class InlineQueryResults extends TdObject {
     string? this.switch_pm_parameter,
   });
 
-  @override
   InlineQueryResults.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24724,7 +23615,6 @@ class InlineQueryResults extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24756,14 +23646,12 @@ class CallbackQueryPayloadData extends CallbackQueryPayload {
     bytes? this.data,
   });
 
-  @override
   CallbackQueryPayloadData.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24793,7 +23681,6 @@ class CallbackQueryPayloadDataWithPassword extends CallbackQueryPayload {
     bytes? this.data,
   });
 
-  @override
   CallbackQueryPayloadDataWithPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24801,7 +23688,6 @@ class CallbackQueryPayloadDataWithPassword extends CallbackQueryPayload {
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24830,7 +23716,6 @@ class CallbackQueryPayloadGame extends CallbackQueryPayload {
     string? this.game_short_name,
   });
 
-  @override
   CallbackQueryPayloadGame.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24838,7 +23723,6 @@ class CallbackQueryPayloadGame extends CallbackQueryPayload {
         map.containsKey('game_short_name') ? map['game_short_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24870,7 +23754,6 @@ class CallbackQueryAnswer extends TdObject {
     string? this.url,
   });
 
-  @override
   CallbackQueryAnswer.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24879,7 +23762,6 @@ class CallbackQueryAnswer extends TdObject {
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24909,14 +23791,12 @@ class CustomRequestResult extends TdObject {
     string? this.result,
   });
 
-  @override
   CustomRequestResult.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     result = map.containsKey('result') ? map['result'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24948,7 +23828,6 @@ class GameHighScore extends TdObject {
     int32? this.score,
   });
 
-  @override
   GameHighScore.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -24957,7 +23836,6 @@ class GameHighScore extends TdObject {
     score = map.containsKey('score') ? map['score'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -24987,7 +23865,6 @@ class GameHighScores extends TdObject {
     vector<GameHighScore>? this.scores,
   });
 
-  @override
   GameHighScores.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25001,7 +23878,6 @@ class GameHighScores extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25031,7 +23907,6 @@ class ChatEventMessageEdited extends ChatEventAction {
     Message? this.new_message,
   });
 
-  @override
   ChatEventMessageEdited.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25043,7 +23918,6 @@ class ChatEventMessageEdited extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25072,7 +23946,6 @@ class ChatEventMessageDeleted extends ChatEventAction {
     Message? this.message,
   });
 
-  @override
   ChatEventMessageDeleted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25081,7 +23954,6 @@ class ChatEventMessageDeleted extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25109,7 +23981,6 @@ class ChatEventPollStopped extends ChatEventAction {
     Message? this.message,
   });
 
-  @override
   ChatEventPollStopped.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25118,7 +23989,6 @@ class ChatEventPollStopped extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25146,7 +24016,6 @@ class ChatEventMessagePinned extends ChatEventAction {
     Message? this.message,
   });
 
-  @override
   ChatEventMessagePinned.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25155,7 +24024,6 @@ class ChatEventMessagePinned extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25183,7 +24051,6 @@ class ChatEventMessageUnpinned extends ChatEventAction {
     Message? this.message,
   });
 
-  @override
   ChatEventMessageUnpinned.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25192,7 +24059,6 @@ class ChatEventMessageUnpinned extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25218,13 +24084,11 @@ class ChatEventMemberJoined extends ChatEventAction {
     int? this.client_id,
   });
 
-  @override
   ChatEventMemberJoined.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25251,7 +24115,6 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
     ChatInviteLink? this.invite_link,
   });
 
-  @override
   ChatEventMemberJoinedByInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25260,7 +24123,6 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25290,7 +24152,6 @@ class ChatEventMemberJoinedByRequest extends ChatEventAction {
     ChatInviteLink? this.invite_link,
   });
 
-  @override
   ChatEventMemberJoinedByRequest.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25301,7 +24162,6 @@ class ChatEventMemberJoinedByRequest extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25328,13 +24188,11 @@ class ChatEventMemberLeft extends ChatEventAction {
     int? this.client_id,
   });
 
-  @override
   ChatEventMemberLeft.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25363,7 +24221,6 @@ class ChatEventMemberInvited extends ChatEventAction {
     ChatMemberStatus? this.status,
   });
 
-  @override
   ChatEventMemberInvited.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25373,7 +24230,6 @@ class ChatEventMemberInvited extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25406,7 +24262,6 @@ class ChatEventMemberPromoted extends ChatEventAction {
     ChatMemberStatus? this.new_status,
   });
 
-  @override
   ChatEventMemberPromoted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25419,7 +24274,6 @@ class ChatEventMemberPromoted extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25453,7 +24307,6 @@ class ChatEventMemberRestricted extends ChatEventAction {
     ChatMemberStatus? this.new_status,
   });
 
-  @override
   ChatEventMemberRestricted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25468,7 +24321,6 @@ class ChatEventMemberRestricted extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25500,7 +24352,6 @@ class ChatEventTitleChanged extends ChatEventAction {
     string? this.new_title,
   });
 
-  @override
   ChatEventTitleChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25508,7 +24359,6 @@ class ChatEventTitleChanged extends ChatEventAction {
     new_title = map.containsKey('new_title') ? map['new_title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25539,7 +24389,6 @@ class ChatEventPermissionsChanged extends ChatEventAction {
     ChatPermissions? this.new_permissions,
   });
 
-  @override
   ChatEventPermissionsChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25551,7 +24400,6 @@ class ChatEventPermissionsChanged extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25582,7 +24430,6 @@ class ChatEventDescriptionChanged extends ChatEventAction {
     string? this.new_description,
   });
 
-  @override
   ChatEventDescriptionChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25592,7 +24439,6 @@ class ChatEventDescriptionChanged extends ChatEventAction {
         map.containsKey('new_description') ? map['new_description'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25623,7 +24469,6 @@ class ChatEventUsernameChanged extends ChatEventAction {
     string? this.new_username,
   });
 
-  @override
   ChatEventUsernameChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25631,7 +24476,6 @@ class ChatEventUsernameChanged extends ChatEventAction {
     new_username = map.containsKey('new_username') ? map['new_username'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25662,7 +24506,6 @@ class ChatEventPhotoChanged extends ChatEventAction {
     ChatPhoto? this.new_photo,
   });
 
-  @override
   ChatEventPhotoChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25674,7 +24517,6 @@ class ChatEventPhotoChanged extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25703,7 +24545,6 @@ class ChatEventInvitesToggled extends ChatEventAction {
     Bool? this.can_invite_users,
   });
 
-  @override
   ChatEventInvitesToggled.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25711,7 +24552,6 @@ class ChatEventInvitesToggled extends ChatEventAction {
         map.containsKey('can_invite_users') ? map['can_invite_users'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25741,7 +24581,6 @@ class ChatEventLinkedChatChanged extends ChatEventAction {
     int53? this.new_linked_chat_id,
   });
 
-  @override
   ChatEventLinkedChatChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25753,7 +24592,6 @@ class ChatEventLinkedChatChanged extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25784,7 +24622,6 @@ class ChatEventSlowModeDelayChanged extends ChatEventAction {
     int32? this.new_slow_mode_delay,
   });
 
-  @override
   ChatEventSlowModeDelayChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25796,7 +24633,6 @@ class ChatEventSlowModeDelayChanged extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25827,7 +24663,6 @@ class ChatEventMessageTtlChanged extends ChatEventAction {
     int32? this.new_message_ttl,
   });
 
-  @override
   ChatEventMessageTtlChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25837,7 +24672,6 @@ class ChatEventMessageTtlChanged extends ChatEventAction {
         map.containsKey('new_message_ttl') ? map['new_message_ttl'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25866,7 +24700,6 @@ class ChatEventSignMessagesToggled extends ChatEventAction {
     Bool? this.sign_messages,
   });
 
-  @override
   ChatEventSignMessagesToggled.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25874,7 +24707,6 @@ class ChatEventSignMessagesToggled extends ChatEventAction {
         map.containsKey('sign_messages') ? map['sign_messages'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25902,7 +24734,6 @@ class ChatEventHasProtectedContentToggled extends ChatEventAction {
     Bool? this.has_protected_content,
   });
 
-  @override
   ChatEventHasProtectedContentToggled.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25911,7 +24742,6 @@ class ChatEventHasProtectedContentToggled extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25942,7 +24772,6 @@ class ChatEventStickerSetChanged extends ChatEventAction {
     int64? this.new_sticker_set_id,
   });
 
-  @override
   ChatEventStickerSetChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25954,7 +24783,6 @@ class ChatEventStickerSetChanged extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -25985,7 +24813,6 @@ class ChatEventLocationChanged extends ChatEventAction {
     ChatLocation? this.new_location,
   });
 
-  @override
   ChatEventLocationChanged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -25997,7 +24824,6 @@ class ChatEventLocationChanged extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26026,7 +24852,6 @@ class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
     Bool? this.is_all_history_available,
   });
 
-  @override
   ChatEventIsAllHistoryAvailableToggled.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26035,7 +24860,6 @@ class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26066,7 +24890,6 @@ class ChatEventInviteLinkEdited extends ChatEventAction {
     ChatInviteLink? this.new_invite_link,
   });
 
-  @override
   ChatEventInviteLinkEdited.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26078,7 +24901,6 @@ class ChatEventInviteLinkEdited extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26107,7 +24929,6 @@ class ChatEventInviteLinkRevoked extends ChatEventAction {
     ChatInviteLink? this.invite_link,
   });
 
-  @override
   ChatEventInviteLinkRevoked.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26116,7 +24937,6 @@ class ChatEventInviteLinkRevoked extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26144,7 +24964,6 @@ class ChatEventInviteLinkDeleted extends ChatEventAction {
     ChatInviteLink? this.invite_link,
   });
 
-  @override
   ChatEventInviteLinkDeleted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26153,7 +24972,6 @@ class ChatEventInviteLinkDeleted extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26181,7 +24999,6 @@ class ChatEventVideoChatCreated extends ChatEventAction {
     int32? this.group_call_id,
   });
 
-  @override
   ChatEventVideoChatCreated.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26189,7 +25006,6 @@ class ChatEventVideoChatCreated extends ChatEventAction {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26217,7 +25033,6 @@ class ChatEventVideoChatEnded extends ChatEventAction {
     int32? this.group_call_id,
   });
 
-  @override
   ChatEventVideoChatEnded.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26225,7 +25040,6 @@ class ChatEventVideoChatEnded extends ChatEventAction {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26255,7 +25069,6 @@ class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
     Bool? this.is_muted,
   });
 
-  @override
   ChatEventVideoChatParticipantIsMutedToggled.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
@@ -26266,7 +25079,6 @@ class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
     is_muted = map.containsKey('is_muted') ? map['is_muted'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26297,7 +25109,6 @@ class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
     int32? this.volume_level,
   });
 
-  @override
   ChatEventVideoChatParticipantVolumeLevelChanged.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
@@ -26308,7 +25119,6 @@ class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
     volume_level = map.containsKey('volume_level') ? map['volume_level'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26337,7 +25147,6 @@ class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
     Bool? this.mute_new_participants,
   });
 
-  @override
   ChatEventVideoChatMuteNewParticipantsToggled.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
@@ -26347,7 +25156,6 @@ class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26382,7 +25190,6 @@ class ChatEvent extends TdObject {
     ChatEventAction? this.action,
   });
 
-  @override
   ChatEvent.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26396,7 +25203,6 @@ class ChatEvent extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26427,7 +25233,6 @@ class ChatEvents extends TdObject {
     vector<ChatEvent>? this.events,
   });
 
-  @override
   ChatEvents.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26441,7 +25246,6 @@ class ChatEvents extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26491,7 +25295,6 @@ class ChatEventLogFilters extends TdObject {
     Bool? this.video_chat_changes,
   });
 
-  @override
   ChatEventLogFilters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26521,7 +25324,6 @@ class ChatEventLogFilters extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26560,14 +25362,12 @@ class LanguagePackStringValueOrdinary extends LanguagePackStringValue {
     string? this.value,
   });
 
-  @override
   LanguagePackStringValueOrdinary.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26605,7 +25405,6 @@ class LanguagePackStringValuePluralized extends LanguagePackStringValue {
     string? this.other_value,
   });
 
-  @override
   LanguagePackStringValuePluralized.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26617,7 +25416,6 @@ class LanguagePackStringValuePluralized extends LanguagePackStringValue {
     other_value = map.containsKey('other_value') ? map['other_value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26648,13 +25446,11 @@ class LanguagePackStringValueDeleted extends LanguagePackStringValue {
     int? this.client_id,
   });
 
-  @override
   LanguagePackStringValueDeleted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26683,7 +25479,6 @@ class LanguagePackString extends TdObject {
     LanguagePackStringValue? this.value,
   });
 
-  @override
   LanguagePackString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26693,7 +25488,6 @@ class LanguagePackString extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26722,7 +25516,6 @@ class LanguagePackStrings extends TdObject {
     vector<LanguagePackString>? this.strings,
   });
 
-  @override
   LanguagePackStrings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26736,7 +25529,6 @@ class LanguagePackStrings extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26788,7 +25580,6 @@ class LanguagePackInfo extends TdObject {
     string? this.translation_url,
   });
 
-  @override
   LanguagePackInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26816,7 +25607,6 @@ class LanguagePackInfo extends TdObject {
         map.containsKey('translation_url') ? map['translation_url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26858,7 +25648,6 @@ class LocalizationTargetInfo extends TdObject {
     vector<LanguagePackInfo>? this.language_packs,
   });
 
-  @override
   LocalizationTargetInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26872,7 +25661,6 @@ class LocalizationTargetInfo extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26902,7 +25690,6 @@ class DeviceTokenFirebaseCloudMessaging extends DeviceToken {
     Bool? this.encrypt,
   });
 
-  @override
   DeviceTokenFirebaseCloudMessaging.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26910,7 +25697,6 @@ class DeviceTokenFirebaseCloudMessaging extends DeviceToken {
     encrypt = map.containsKey('encrypt') ? map['encrypt'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26941,7 +25727,6 @@ class DeviceTokenApplePush extends DeviceToken {
     Bool? this.is_app_sandbox,
   });
 
-  @override
   DeviceTokenApplePush.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26950,7 +25735,6 @@ class DeviceTokenApplePush extends DeviceToken {
         map.containsKey('is_app_sandbox') ? map['is_app_sandbox'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -26983,7 +25767,6 @@ class DeviceTokenApplePushVoIP extends DeviceToken {
     Bool? this.encrypt,
   });
 
-  @override
   DeviceTokenApplePushVoIP.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -26993,7 +25776,6 @@ class DeviceTokenApplePushVoIP extends DeviceToken {
     encrypt = map.containsKey('encrypt') ? map['encrypt'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27023,14 +25805,12 @@ class DeviceTokenWindowsPush extends DeviceToken {
     string? this.access_token,
   });
 
-  @override
   DeviceTokenWindowsPush.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     access_token = map.containsKey('access_token') ? map['access_token'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27058,14 +25838,12 @@ class DeviceTokenMicrosoftPush extends DeviceToken {
     string? this.channel_uri,
   });
 
-  @override
   DeviceTokenMicrosoftPush.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     channel_uri = map.containsKey('channel_uri') ? map['channel_uri'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27093,14 +25871,12 @@ class DeviceTokenMicrosoftPushVoIP extends DeviceToken {
     string? this.channel_uri,
   });
 
-  @override
   DeviceTokenMicrosoftPushVoIP.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     channel_uri = map.containsKey('channel_uri') ? map['channel_uri'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27132,7 +25908,6 @@ class DeviceTokenWebPush extends DeviceToken {
     string? this.auth_base64url,
   });
 
-  @override
   DeviceTokenWebPush.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27143,7 +25918,6 @@ class DeviceTokenWebPush extends DeviceToken {
         map.containsKey('auth_base64url') ? map['auth_base64url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27173,14 +25947,12 @@ class DeviceTokenSimplePush extends DeviceToken {
     string? this.endpoint,
   });
 
-  @override
   DeviceTokenSimplePush.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     endpoint = map.containsKey('endpoint') ? map['endpoint'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27208,14 +25980,12 @@ class DeviceTokenUbuntuPush extends DeviceToken {
     string? this.token,
   });
 
-  @override
   DeviceTokenUbuntuPush.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     token = map.containsKey('token') ? map['token'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27243,14 +26013,12 @@ class DeviceTokenBlackBerryPush extends DeviceToken {
     string? this.token,
   });
 
-  @override
   DeviceTokenBlackBerryPush.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     token = map.containsKey('token') ? map['token'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27278,14 +26046,12 @@ class DeviceTokenTizenPush extends DeviceToken {
     string? this.reg_id,
   });
 
-  @override
   DeviceTokenTizenPush.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     reg_id = map.containsKey('reg_id') ? map['reg_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27313,14 +26079,12 @@ class PushReceiverId extends TdObject {
     int64? this.id,
   });
 
-  @override
   PushReceiverId.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     id = map.containsKey('id') ? map['id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27348,14 +26112,12 @@ class BackgroundFillSolid extends BackgroundFill {
     int32? this.color,
   });
 
-  @override
   BackgroundFillSolid.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     color = map.containsKey('color') ? map['color'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27387,7 +26149,6 @@ class BackgroundFillGradient extends BackgroundFill {
     int32? this.rotation_angle,
   });
 
-  @override
   BackgroundFillGradient.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27397,7 +26158,6 @@ class BackgroundFillGradient extends BackgroundFill {
         map.containsKey('rotation_angle') ? map['rotation_angle'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27427,7 +26187,6 @@ class BackgroundFillFreeformGradient extends BackgroundFill {
     vector<int32>? this.colors,
   });
 
-  @override
   BackgroundFillFreeformGradient.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27440,7 +26199,6 @@ class BackgroundFillFreeformGradient extends BackgroundFill {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27470,7 +26228,6 @@ class BackgroundTypeWallpaper extends BackgroundType {
     Bool? this.is_moving,
   });
 
-  @override
   BackgroundTypeWallpaper.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27478,7 +26235,6 @@ class BackgroundTypeWallpaper extends BackgroundType {
     is_moving = map.containsKey('is_moving') ? map['is_moving'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27513,7 +26269,6 @@ class BackgroundTypePattern extends BackgroundType {
     Bool? this.is_moving,
   });
 
-  @override
   BackgroundTypePattern.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27525,7 +26280,6 @@ class BackgroundTypePattern extends BackgroundType {
     is_moving = map.containsKey('is_moving') ? map['is_moving'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27556,7 +26310,6 @@ class BackgroundTypeFill extends BackgroundType {
     BackgroundFill? this.fill,
   });
 
-  @override
   BackgroundTypeFill.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27565,7 +26318,6 @@ class BackgroundTypeFill extends BackgroundType {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27603,7 +26355,6 @@ class Background extends TdObject {
     BackgroundType? this.type,
   });
 
-  @override
   Background.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27619,7 +26370,6 @@ class Background extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27652,7 +26402,6 @@ class Backgrounds extends TdObject {
     vector<Background>? this.backgrounds,
   });
 
-  @override
   Backgrounds.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27666,7 +26415,6 @@ class Backgrounds extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27694,7 +26442,6 @@ class InputBackgroundLocal extends InputBackground {
     InputFile? this.background,
   });
 
-  @override
   InputBackgroundLocal.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27703,7 +26450,6 @@ class InputBackgroundLocal extends InputBackground {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27731,7 +26477,6 @@ class InputBackgroundRemote extends InputBackground {
     int64? this.background_id,
   });
 
-  @override
   InputBackgroundRemote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27739,7 +26484,6 @@ class InputBackgroundRemote extends InputBackground {
         map.containsKey('background_id') ? map['background_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27775,7 +26519,6 @@ class ThemeSettings extends TdObject {
     int32? this.outgoing_message_accent_color,
   });
 
-  @override
   ThemeSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27796,7 +26539,6 @@ class ThemeSettings extends TdObject {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27835,7 +26577,6 @@ class ChatTheme extends TdObject {
     ThemeSettings? this.dark_settings,
   });
 
-  @override
   ChatTheme.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27848,7 +26589,6 @@ class ChatTheme extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27878,7 +26618,6 @@ class Hashtags extends TdObject {
     vector<string>? this.hashtags,
   });
 
-  @override
   Hashtags.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -27891,7 +26630,6 @@ class Hashtags extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27917,13 +26655,11 @@ class CanTransferOwnershipResultOk extends CanTransferOwnershipResult {
     int? this.client_id,
   });
 
-  @override
   CanTransferOwnershipResultOk.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27949,13 +26685,11 @@ class CanTransferOwnershipResultPasswordNeeded
     int? this.client_id,
   });
 
-  @override
   CanTransferOwnershipResultPasswordNeeded.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -27983,14 +26717,12 @@ class CanTransferOwnershipResultPasswordTooFresh
     int32? this.retry_after,
   });
 
-  @override
   CanTransferOwnershipResultPasswordTooFresh.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     retry_after = map.containsKey('retry_after') ? map['retry_after'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28019,14 +26751,12 @@ class CanTransferOwnershipResultSessionTooFresh
     int32? this.retry_after,
   });
 
-  @override
   CanTransferOwnershipResultSessionTooFresh.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     retry_after = map.containsKey('retry_after') ? map['retry_after'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28052,13 +26782,11 @@ class CheckChatUsernameResultOk extends CheckChatUsernameResult {
     int? this.client_id,
   });
 
-  @override
   CheckChatUsernameResultOk.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28083,13 +26811,11 @@ class CheckChatUsernameResultUsernameInvalid extends CheckChatUsernameResult {
     int? this.client_id,
   });
 
-  @override
   CheckChatUsernameResultUsernameInvalid.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28114,13 +26840,11 @@ class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
     int? this.client_id,
   });
 
-  @override
   CheckChatUsernameResultUsernameOccupied.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28146,13 +26870,11 @@ class CheckChatUsernameResultPublicChatsTooMuch
     int? this.client_id,
   });
 
-  @override
   CheckChatUsernameResultPublicChatsTooMuch.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28178,14 +26900,12 @@ class CheckChatUsernameResultPublicGroupsUnavailable
     int? this.client_id,
   });
 
-  @override
   CheckChatUsernameResultPublicGroupsUnavailable.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28210,13 +26930,11 @@ class CheckStickerSetNameResultOk extends CheckStickerSetNameResult {
     int? this.client_id,
   });
 
-  @override
   CheckStickerSetNameResultOk.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28241,13 +26959,11 @@ class CheckStickerSetNameResultNameInvalid extends CheckStickerSetNameResult {
     int? this.client_id,
   });
 
-  @override
   CheckStickerSetNameResultNameInvalid.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28272,13 +26988,11 @@ class CheckStickerSetNameResultNameOccupied extends CheckStickerSetNameResult {
     int? this.client_id,
   });
 
-  @override
   CheckStickerSetNameResultNameOccupied.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28303,13 +27017,11 @@ class ResetPasswordResultOk extends ResetPasswordResult {
     int? this.client_id,
   });
 
-  @override
   ResetPasswordResultOk.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28336,7 +27048,6 @@ class ResetPasswordResultPending extends ResetPasswordResult {
     int32? this.pending_reset_date,
   });
 
-  @override
   ResetPasswordResultPending.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28345,7 +27056,6 @@ class ResetPasswordResultPending extends ResetPasswordResult {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28373,14 +27083,12 @@ class ResetPasswordResultDeclined extends ResetPasswordResult {
     int32? this.retry_date,
   });
 
-  @override
   ResetPasswordResultDeclined.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     retry_date = map.containsKey('retry_date') ? map['retry_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28408,14 +27116,12 @@ class MessageFileTypePrivate extends MessageFileType {
     string? this.name,
   });
 
-  @override
   MessageFileTypePrivate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     name = map.containsKey('name') ? map['name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28443,14 +27149,12 @@ class MessageFileTypeGroup extends MessageFileType {
     string? this.title,
   });
 
-  @override
   MessageFileTypeGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28476,13 +27180,11 @@ class MessageFileTypeUnknown extends MessageFileType {
     int? this.client_id,
   });
 
-  @override
   MessageFileTypeUnknown.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28509,14 +27211,12 @@ class PushMessageContentHidden extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentHidden.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28548,7 +27248,6 @@ class PushMessageContentAnimation extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28559,7 +27258,6 @@ class PushMessageContentAnimation extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28591,7 +27289,6 @@ class PushMessageContentAudio extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentAudio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28600,7 +27297,6 @@ class PushMessageContentAudio extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28631,7 +27327,6 @@ class PushMessageContentContact extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentContact.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28639,7 +27334,6 @@ class PushMessageContentContact extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28666,13 +27360,11 @@ class PushMessageContentContactRegistered extends PushMessageContent {
     int? this.client_id,
   });
 
-  @override
   PushMessageContentContactRegistered.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28701,7 +27393,6 @@ class PushMessageContentDocument extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28711,7 +27402,6 @@ class PushMessageContentDocument extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28742,7 +27432,6 @@ class PushMessageContentGame extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentGame.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28750,7 +27439,6 @@ class PushMessageContentGame extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28783,7 +27471,6 @@ class PushMessageContentGameScore extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentGameScore.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28792,7 +27479,6 @@ class PushMessageContentGameScore extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28824,7 +27510,6 @@ class PushMessageContentInvoice extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentInvoice.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28832,7 +27517,6 @@ class PushMessageContentInvoice extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28863,7 +27547,6 @@ class PushMessageContentLocation extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28871,7 +27554,6 @@ class PushMessageContentLocation extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28906,7 +27588,6 @@ class PushMessageContentPhoto extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28917,7 +27598,6 @@ class PushMessageContentPhoto extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28952,7 +27632,6 @@ class PushMessageContentPoll extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentPoll.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -28961,7 +27640,6 @@ class PushMessageContentPoll extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -28989,13 +27667,11 @@ class PushMessageContentScreenshotTaken extends PushMessageContent {
     int? this.client_id,
   });
 
-  @override
   PushMessageContentScreenshotTaken.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29026,7 +27702,6 @@ class PushMessageContentSticker extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29037,7 +27712,6 @@ class PushMessageContentSticker extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29069,7 +27743,6 @@ class PushMessageContentText extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentText.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29077,7 +27750,6 @@ class PushMessageContentText extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29112,7 +27784,6 @@ class PushMessageContentVideo extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29123,7 +27794,6 @@ class PushMessageContentVideo extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29156,7 +27826,6 @@ class PushMessageContentVideoNote extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29166,7 +27835,6 @@ class PushMessageContentVideoNote extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29197,7 +27865,6 @@ class PushMessageContentVoiceNote extends PushMessageContent {
     Bool? this.is_pinned,
   });
 
-  @override
   PushMessageContentVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29207,7 +27874,6 @@ class PushMessageContentVoiceNote extends PushMessageContent {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29234,13 +27900,11 @@ class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
     int? this.client_id,
   });
 
-  @override
   PushMessageContentBasicGroupChatCreate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29271,7 +27935,6 @@ class PushMessageContentChatAddMembers extends PushMessageContent {
     Bool? this.is_returned,
   });
 
-  @override
   PushMessageContentChatAddMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29281,7 +27944,6 @@ class PushMessageContentChatAddMembers extends PushMessageContent {
     is_returned = map.containsKey('is_returned') ? map['is_returned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29309,13 +27971,11 @@ class PushMessageContentChatChangePhoto extends PushMessageContent {
     int? this.client_id,
   });
 
-  @override
   PushMessageContentChatChangePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29342,14 +28002,12 @@ class PushMessageContentChatChangeTitle extends PushMessageContent {
     string? this.title,
   });
 
-  @override
   PushMessageContentChatChangeTitle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29377,14 +28035,12 @@ class PushMessageContentChatSetTheme extends PushMessageContent {
     string? this.theme_name,
   });
 
-  @override
   PushMessageContentChatSetTheme.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     theme_name = map.containsKey('theme_name') ? map['theme_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29416,7 +28072,6 @@ class PushMessageContentChatDeleteMember extends PushMessageContent {
     Bool? this.is_left,
   });
 
-  @override
   PushMessageContentChatDeleteMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29426,7 +28081,6 @@ class PushMessageContentChatDeleteMember extends PushMessageContent {
     is_left = map.containsKey('is_left') ? map['is_left'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29454,13 +28108,11 @@ class PushMessageContentChatJoinByLink extends PushMessageContent {
     int? this.client_id,
   });
 
-  @override
   PushMessageContentChatJoinByLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29485,13 +28137,11 @@ class PushMessageContentChatJoinByRequest extends PushMessageContent {
     int? this.client_id,
   });
 
-  @override
   PushMessageContentChatJoinByRequest.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29518,14 +28168,12 @@ class PushMessageContentMessageForwards extends PushMessageContent {
     int32? this.total_count,
   });
 
-  @override
   PushMessageContentMessageForwards.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     total_count = map.containsKey('total_count') ? map['total_count'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29561,7 +28209,6 @@ class PushMessageContentMediaAlbum extends PushMessageContent {
     Bool? this.has_documents,
   });
 
-  @override
   PushMessageContentMediaAlbum.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29573,7 +28220,6 @@ class PushMessageContentMediaAlbum extends PushMessageContent {
         map.containsKey('has_documents') ? map['has_documents'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29605,7 +28251,6 @@ class NotificationTypeNewMessage extends NotificationType {
     Message? this.message,
   });
 
-  @override
   NotificationTypeNewMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29614,7 +28259,6 @@ class NotificationTypeNewMessage extends NotificationType {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29640,13 +28284,11 @@ class NotificationTypeNewSecretChat extends NotificationType {
     int? this.client_id,
   });
 
-  @override
   NotificationTypeNewSecretChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29673,14 +28315,12 @@ class NotificationTypeNewCall extends NotificationType {
     int32? this.call_id,
   });
 
-  @override
   NotificationTypeNewCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     call_id = map.containsKey('call_id') ? map['call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29716,7 +28356,6 @@ class NotificationTypeNewPushMessage extends NotificationType {
     PushMessageContent? this.content,
   });
 
-  @override
   NotificationTypeNewPushMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29731,7 +28370,6 @@ class NotificationTypeNewPushMessage extends NotificationType {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29761,13 +28399,11 @@ class NotificationGroupTypeMessages extends NotificationGroupType {
     int? this.client_id,
   });
 
-  @override
   NotificationGroupTypeMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29792,13 +28428,11 @@ class NotificationGroupTypeMentions extends NotificationGroupType {
     int? this.client_id,
   });
 
-  @override
   NotificationGroupTypeMentions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29823,13 +28457,11 @@ class NotificationGroupTypeSecretChat extends NotificationGroupType {
     int? this.client_id,
   });
 
-  @override
   NotificationGroupTypeSecretChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29854,13 +28486,11 @@ class NotificationGroupTypeCalls extends NotificationGroupType {
     int? this.client_id,
   });
 
-  @override
   NotificationGroupTypeCalls.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29893,7 +28523,6 @@ class Notification extends TdObject {
     NotificationType? this.type,
   });
 
-  @override
   Notification.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29905,7 +28534,6 @@ class Notification extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29944,7 +28572,6 @@ class NotificationGroup extends TdObject {
     vector<Notification>? this.notifications,
   });
 
-  @override
   NotificationGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -29964,7 +28591,6 @@ class NotificationGroup extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -29996,14 +28622,12 @@ class OptionValueBoolean extends OptionValue {
     Bool? this.value,
   });
 
-  @override
   OptionValueBoolean.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30029,13 +28653,11 @@ class OptionValueEmpty extends OptionValue {
     int? this.client_id,
   });
 
-  @override
   OptionValueEmpty.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30062,14 +28684,12 @@ class OptionValueInteger extends OptionValue {
     int64? this.value,
   });
 
-  @override
   OptionValueInteger.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30097,14 +28717,12 @@ class OptionValueString extends OptionValue {
     string? this.value,
   });
 
-  @override
   OptionValueString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30134,7 +28752,6 @@ class JsonObjectMember extends TdObject {
     JsonValue? this.value,
   });
 
-  @override
   JsonObjectMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -30144,7 +28761,6 @@ class JsonObjectMember extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30171,13 +28787,11 @@ class JsonValueNull extends JsonValue {
     int? this.client_id,
   });
 
-  @override
   JsonValueNull.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30204,14 +28818,12 @@ class JsonValueBoolean extends JsonValue {
     Bool? this.value,
   });
 
-  @override
   JsonValueBoolean.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30239,14 +28851,12 @@ class JsonValueNumber extends JsonValue {
     double? this.value,
   });
 
-  @override
   JsonValueNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30274,14 +28884,12 @@ class JsonValueString extends JsonValue {
     string? this.value,
   });
 
-  @override
   JsonValueString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30309,7 +28917,6 @@ class JsonValueArray extends JsonValue {
     vector<JsonValue>? this.values,
   });
 
-  @override
   JsonValueArray.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -30323,7 +28930,6 @@ class JsonValueArray extends JsonValue {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30351,7 +28957,6 @@ class JsonValueObject extends JsonValue {
     vector<JsonObjectMember>? this.members,
   });
 
-  @override
   JsonValueObject.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -30365,7 +28970,6 @@ class JsonValueObject extends JsonValue {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30391,13 +28995,11 @@ class UserPrivacySettingRuleAllowAll extends UserPrivacySettingRule {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingRuleAllowAll.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30422,13 +29024,11 @@ class UserPrivacySettingRuleAllowContacts extends UserPrivacySettingRule {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingRuleAllowContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30455,7 +29055,6 @@ class UserPrivacySettingRuleAllowUsers extends UserPrivacySettingRule {
     vector<int53>? this.user_ids,
   });
 
-  @override
   UserPrivacySettingRuleAllowUsers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -30468,7 +29067,6 @@ class UserPrivacySettingRuleAllowUsers extends UserPrivacySettingRule {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30496,7 +29094,6 @@ class UserPrivacySettingRuleAllowChatMembers extends UserPrivacySettingRule {
     vector<int53>? this.chat_ids,
   });
 
-  @override
   UserPrivacySettingRuleAllowChatMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -30509,7 +29106,6 @@ class UserPrivacySettingRuleAllowChatMembers extends UserPrivacySettingRule {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30535,13 +29131,11 @@ class UserPrivacySettingRuleRestrictAll extends UserPrivacySettingRule {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingRuleRestrictAll.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30566,13 +29160,11 @@ class UserPrivacySettingRuleRestrictContacts extends UserPrivacySettingRule {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingRuleRestrictContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30599,7 +29191,6 @@ class UserPrivacySettingRuleRestrictUsers extends UserPrivacySettingRule {
     vector<int53>? this.user_ids,
   });
 
-  @override
   UserPrivacySettingRuleRestrictUsers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -30612,7 +29203,6 @@ class UserPrivacySettingRuleRestrictUsers extends UserPrivacySettingRule {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30640,7 +29230,6 @@ class UserPrivacySettingRuleRestrictChatMembers extends UserPrivacySettingRule {
     vector<int53>? this.chat_ids,
   });
 
-  @override
   UserPrivacySettingRuleRestrictChatMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -30653,7 +29242,6 @@ class UserPrivacySettingRuleRestrictChatMembers extends UserPrivacySettingRule {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30681,7 +29269,6 @@ class UserPrivacySettingRules extends TdObject {
     vector<UserPrivacySettingRule>? this.rules,
   });
 
-  @override
   UserPrivacySettingRules.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -30695,7 +29282,6 @@ class UserPrivacySettingRules extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30721,13 +29307,11 @@ class UserPrivacySettingShowStatus extends UserPrivacySetting {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingShowStatus.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30752,13 +29336,11 @@ class UserPrivacySettingShowProfilePhoto extends UserPrivacySetting {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingShowProfilePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30783,14 +29365,12 @@ class UserPrivacySettingShowLinkInForwardedMessages extends UserPrivacySetting {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingShowLinkInForwardedMessages.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30815,13 +29395,11 @@ class UserPrivacySettingShowPhoneNumber extends UserPrivacySetting {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingShowPhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30846,13 +29424,11 @@ class UserPrivacySettingAllowChatInvites extends UserPrivacySetting {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingAllowChatInvites.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30877,13 +29453,11 @@ class UserPrivacySettingAllowCalls extends UserPrivacySetting {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingAllowCalls.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30908,13 +29482,11 @@ class UserPrivacySettingAllowPeerToPeerCalls extends UserPrivacySetting {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingAllowPeerToPeerCalls.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30939,14 +29511,12 @@ class UserPrivacySettingAllowFindingByPhoneNumber extends UserPrivacySetting {
     int? this.client_id,
   });
 
-  @override
   UserPrivacySettingAllowFindingByPhoneNumber.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -30973,14 +29543,12 @@ class AccountTtl extends TdObject {
     int32? this.days,
   });
 
-  @override
   AccountTtl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     days = map.containsKey('days') ? map['days'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31040,7 +29608,6 @@ class Session extends TdObject {
     string? this.region,
   });
 
-  @override
   Session.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31075,7 +29642,6 @@ class Session extends TdObject {
     region = map.containsKey('region') ? map['region'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31123,7 +29689,6 @@ class Sessions extends TdObject {
     int32? this.inactive_session_ttl_days,
   });
 
-  @override
   Sessions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31140,7 +29705,6 @@ class Sessions extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31186,7 +29750,6 @@ class ConnectedWebsite extends TdObject {
     string? this.location,
   });
 
-  @override
   ConnectedWebsite.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31202,7 +29765,6 @@ class ConnectedWebsite extends TdObject {
     location = map.containsKey('location') ? map['location'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31238,7 +29800,6 @@ class ConnectedWebsites extends TdObject {
     vector<ConnectedWebsite>? this.websites,
   });
 
-  @override
   ConnectedWebsites.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31252,7 +29813,6 @@ class ConnectedWebsites extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31278,13 +29838,11 @@ class ChatReportReasonSpam extends ChatReportReason {
     int? this.client_id,
   });
 
-  @override
   ChatReportReasonSpam.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31309,13 +29867,11 @@ class ChatReportReasonViolence extends ChatReportReason {
     int? this.client_id,
   });
 
-  @override
   ChatReportReasonViolence.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31340,13 +29896,11 @@ class ChatReportReasonPornography extends ChatReportReason {
     int? this.client_id,
   });
 
-  @override
   ChatReportReasonPornography.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31371,13 +29925,11 @@ class ChatReportReasonChildAbuse extends ChatReportReason {
     int? this.client_id,
   });
 
-  @override
   ChatReportReasonChildAbuse.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31402,13 +29954,11 @@ class ChatReportReasonCopyright extends ChatReportReason {
     int? this.client_id,
   });
 
-  @override
   ChatReportReasonCopyright.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31433,13 +29983,11 @@ class ChatReportReasonUnrelatedLocation extends ChatReportReason {
     int? this.client_id,
   });
 
-  @override
   ChatReportReasonUnrelatedLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31464,13 +30012,11 @@ class ChatReportReasonFake extends ChatReportReason {
     int? this.client_id,
   });
 
-  @override
   ChatReportReasonFake.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31495,13 +30041,11 @@ class ChatReportReasonCustom extends ChatReportReason {
     int? this.client_id,
   });
 
-  @override
   ChatReportReasonCustom.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31526,13 +30070,11 @@ class InternalLinkTypeActiveSessions extends InternalLinkType {
     int? this.client_id,
   });
 
-  @override
   InternalLinkTypeActiveSessions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31559,14 +30101,12 @@ class InternalLinkTypeAuthenticationCode extends InternalLinkType {
     string? this.code,
   });
 
-  @override
   InternalLinkTypeAuthenticationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     code = map.containsKey('code') ? map['code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31594,7 +30134,6 @@ class InternalLinkTypeBackground extends InternalLinkType {
     string? this.background_name,
   });
 
-  @override
   InternalLinkTypeBackground.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31602,7 +30141,6 @@ class InternalLinkTypeBackground extends InternalLinkType {
         map.containsKey('background_name') ? map['background_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31632,7 +30170,6 @@ class InternalLinkTypeBotStart extends InternalLinkType {
     string? this.start_parameter,
   });
 
-  @override
   InternalLinkTypeBotStart.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31641,7 +30178,6 @@ class InternalLinkTypeBotStart extends InternalLinkType {
         map.containsKey('start_parameter') ? map['start_parameter'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31672,7 +30208,6 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
     string? this.start_parameter,
   });
 
-  @override
   InternalLinkTypeBotStartInGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31681,7 +30216,6 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
         map.containsKey('start_parameter') ? map['start_parameter'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31708,13 +30242,11 @@ class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
     int? this.client_id,
   });
 
-  @override
   InternalLinkTypeChangePhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31741,14 +30273,12 @@ class InternalLinkTypeChatInvite extends InternalLinkType {
     string? this.invite_link,
   });
 
-  @override
   InternalLinkTypeChatInvite.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     invite_link = map.containsKey('invite_link') ? map['invite_link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31774,13 +30304,11 @@ class InternalLinkTypeFilterSettings extends InternalLinkType {
     int? this.client_id,
   });
 
-  @override
   InternalLinkTypeFilterSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31809,7 +30337,6 @@ class InternalLinkTypeGame extends InternalLinkType {
     string? this.game_short_name,
   });
 
-  @override
   InternalLinkTypeGame.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31818,7 +30345,6 @@ class InternalLinkTypeGame extends InternalLinkType {
         map.containsKey('game_short_name') ? map['game_short_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31847,7 +30373,6 @@ class InternalLinkTypeLanguagePack extends InternalLinkType {
     string? this.language_pack_id,
   });
 
-  @override
   InternalLinkTypeLanguagePack.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31855,7 +30380,6 @@ class InternalLinkTypeLanguagePack extends InternalLinkType {
         map.containsKey('language_pack_id') ? map['language_pack_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31883,14 +30407,12 @@ class InternalLinkTypeMessage extends InternalLinkType {
     string? this.url,
   });
 
-  @override
   InternalLinkTypeMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31920,7 +30442,6 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
     Bool? this.contains_link,
   });
 
-  @override
   InternalLinkTypeMessageDraft.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31931,7 +30452,6 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
         map.containsKey('contains_link') ? map['contains_link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -31968,7 +30488,6 @@ class InternalLinkTypePassportDataRequest extends InternalLinkType {
     string? this.callback_url,
   });
 
-  @override
   InternalLinkTypePassportDataRequest.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -31979,7 +30498,6 @@ class InternalLinkTypePassportDataRequest extends InternalLinkType {
     callback_url = map.containsKey('callback_url') ? map['callback_url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32013,7 +30531,6 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
     string? this.phone_number,
   });
 
-  @override
   InternalLinkTypePhoneNumberConfirmation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -32021,7 +30538,6 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
     phone_number = map.containsKey('phone_number') ? map['phone_number'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32054,7 +30570,6 @@ class InternalLinkTypeProxy extends InternalLinkType {
     ProxyType? this.type,
   });
 
-  @override
   InternalLinkTypeProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -32065,7 +30580,6 @@ class InternalLinkTypeProxy extends InternalLinkType {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32095,7 +30609,6 @@ class InternalLinkTypePublicChat extends InternalLinkType {
     string? this.chat_username,
   });
 
-  @override
   InternalLinkTypePublicChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -32103,7 +30616,6 @@ class InternalLinkTypePublicChat extends InternalLinkType {
         map.containsKey('chat_username') ? map['chat_username'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32129,13 +30641,11 @@ class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
     int? this.client_id,
   });
 
-  @override
   InternalLinkTypeQrCodeAuthentication.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32160,13 +30670,11 @@ class InternalLinkTypeSettings extends InternalLinkType {
     int? this.client_id,
   });
 
-  @override
   InternalLinkTypeSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32193,7 +30701,6 @@ class InternalLinkTypeStickerSet extends InternalLinkType {
     string? this.sticker_set_name,
   });
 
-  @override
   InternalLinkTypeStickerSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -32201,7 +30708,6 @@ class InternalLinkTypeStickerSet extends InternalLinkType {
         map.containsKey('sticker_set_name') ? map['sticker_set_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32229,14 +30735,12 @@ class InternalLinkTypeTheme extends InternalLinkType {
     string? this.theme_name,
   });
 
-  @override
   InternalLinkTypeTheme.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     theme_name = map.containsKey('theme_name') ? map['theme_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32262,13 +30766,11 @@ class InternalLinkTypeThemeSettings extends InternalLinkType {
     int? this.client_id,
   });
 
-  @override
   InternalLinkTypeThemeSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32295,14 +30797,12 @@ class InternalLinkTypeUnknownDeepLink extends InternalLinkType {
     string? this.link,
   });
 
-  @override
   InternalLinkTypeUnknownDeepLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     link = map.containsKey('link') ? map['link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32328,13 +30828,11 @@ class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
     int? this.client_id,
   });
 
-  @override
   InternalLinkTypeUnsupportedProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32365,7 +30863,6 @@ class InternalLinkTypeVideoChat extends InternalLinkType {
     Bool? this.is_live_stream,
   });
 
-  @override
   InternalLinkTypeVideoChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -32376,7 +30873,6 @@ class InternalLinkTypeVideoChat extends InternalLinkType {
         map.containsKey('is_live_stream') ? map['is_live_stream'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32408,7 +30904,6 @@ class MessageLink extends TdObject {
     Bool? this.is_public,
   });
 
-  @override
   MessageLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -32416,7 +30911,6 @@ class MessageLink extends TdObject {
     is_public = map.containsKey('is_public') ? map['is_public'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32455,7 +30949,6 @@ class MessageLinkInfo extends TdObject {
     Bool? this.for_comment,
   });
 
-  @override
   MessageLinkInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -32470,7 +30963,6 @@ class MessageLinkInfo extends TdObject {
     for_comment = map.containsKey('for_comment') ? map['for_comment'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32503,14 +30995,12 @@ class FilePart extends TdObject {
     bytes? this.data,
   });
 
-  @override
   FilePart.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32536,13 +31026,11 @@ class FileTypeNone extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeNone.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32567,13 +31055,11 @@ class FileTypeAnimation extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32598,13 +31084,11 @@ class FileTypeAudio extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeAudio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32629,13 +31113,11 @@ class FileTypeDocument extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeDocument.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32660,13 +31142,11 @@ class FileTypePhoto extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32691,13 +31171,11 @@ class FileTypeProfilePhoto extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeProfilePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32722,13 +31200,11 @@ class FileTypeSecret extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeSecret.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32753,13 +31229,11 @@ class FileTypeSecretThumbnail extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeSecretThumbnail.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32784,13 +31258,11 @@ class FileTypeSecure extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeSecure.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32815,13 +31287,11 @@ class FileTypeSticker extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32846,13 +31316,11 @@ class FileTypeThumbnail extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeThumbnail.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32877,13 +31345,11 @@ class FileTypeUnknown extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeUnknown.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32908,13 +31374,11 @@ class FileTypeVideo extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeVideo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32939,13 +31403,11 @@ class FileTypeVideoNote extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -32970,13 +31432,11 @@ class FileTypeVoiceNote extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33001,13 +31461,11 @@ class FileTypeWallpaper extends FileType {
     int? this.client_id,
   });
 
-  @override
   FileTypeWallpaper.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33038,7 +31496,6 @@ class StorageStatisticsByFileType extends TdObject {
     int32? this.count,
   });
 
-  @override
   StorageStatisticsByFileType.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -33049,7 +31506,6 @@ class StorageStatisticsByFileType extends TdObject {
     count = map.containsKey('count') ? map['count'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33085,7 +31541,6 @@ class StorageStatisticsByChat extends TdObject {
     vector<StorageStatisticsByFileType>? this.by_file_type,
   });
 
-  @override
   StorageStatisticsByChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -33102,7 +31557,6 @@ class StorageStatisticsByChat extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33137,7 +31591,6 @@ class StorageStatistics extends TdObject {
     vector<StorageStatisticsByChat>? this.by_chat,
   });
 
-  @override
   StorageStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -33153,7 +31606,6 @@ class StorageStatistics extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33191,7 +31643,6 @@ class StorageStatisticsFast extends TdObject {
     int53? this.log_size,
   });
 
-  @override
   StorageStatisticsFast.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -33205,7 +31656,6 @@ class StorageStatisticsFast extends TdObject {
     log_size = map.containsKey('log_size') ? map['log_size'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33238,14 +31688,12 @@ class DatabaseStatistics extends TdObject {
     string? this.statistics,
   });
 
-  @override
   DatabaseStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     statistics = map.containsKey('statistics') ? map['statistics'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33271,13 +31719,11 @@ class NetworkTypeNone extends NetworkType {
     int? this.client_id,
   });
 
-  @override
   NetworkTypeNone.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33302,13 +31748,11 @@ class NetworkTypeMobile extends NetworkType {
     int? this.client_id,
   });
 
-  @override
   NetworkTypeMobile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33333,13 +31777,11 @@ class NetworkTypeMobileRoaming extends NetworkType {
     int? this.client_id,
   });
 
-  @override
   NetworkTypeMobileRoaming.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33364,13 +31806,11 @@ class NetworkTypeWiFi extends NetworkType {
     int? this.client_id,
   });
 
-  @override
   NetworkTypeWiFi.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33395,13 +31835,11 @@ class NetworkTypeOther extends NetworkType {
     int? this.client_id,
   });
 
-  @override
   NetworkTypeOther.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33434,7 +31872,6 @@ class NetworkStatisticsEntryFile extends NetworkStatisticsEntry {
     int53? this.received_bytes,
   });
 
-  @override
   NetworkStatisticsEntryFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -33449,7 +31886,6 @@ class NetworkStatisticsEntryFile extends NetworkStatisticsEntry {
         map.containsKey('received_bytes') ? map['received_bytes'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33486,7 +31922,6 @@ class NetworkStatisticsEntryCall extends NetworkStatisticsEntry {
     double? this.duration,
   });
 
-  @override
   NetworkStatisticsEntryCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -33499,7 +31934,6 @@ class NetworkStatisticsEntryCall extends NetworkStatisticsEntry {
     duration = map.containsKey('duration') ? map['duration'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33532,7 +31966,6 @@ class NetworkStatistics extends TdObject {
     vector<NetworkStatisticsEntry>? this.entries,
   });
 
-  @override
   NetworkStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -33547,7 +31980,6 @@ class NetworkStatistics extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33590,7 +32022,6 @@ class AutoDownloadSettings extends TdObject {
     Bool? this.use_less_data_for_calls,
   });
 
-  @override
   AutoDownloadSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -33620,7 +32051,6 @@ class AutoDownloadSettings extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33661,7 +32091,6 @@ class AutoDownloadSettingsPresets extends TdObject {
     AutoDownloadSettings? this.high,
   });
 
-  @override
   AutoDownloadSettingsPresets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -33676,7 +32105,6 @@ class AutoDownloadSettingsPresets extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33704,13 +32132,11 @@ class ConnectionStateWaitingForNetwork extends ConnectionState {
     int? this.client_id,
   });
 
-  @override
   ConnectionStateWaitingForNetwork.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33735,13 +32161,11 @@ class ConnectionStateConnectingToProxy extends ConnectionState {
     int? this.client_id,
   });
 
-  @override
   ConnectionStateConnectingToProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33766,13 +32190,11 @@ class ConnectionStateConnecting extends ConnectionState {
     int? this.client_id,
   });
 
-  @override
   ConnectionStateConnecting.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33797,13 +32219,11 @@ class ConnectionStateUpdating extends ConnectionState {
     int? this.client_id,
   });
 
-  @override
   ConnectionStateUpdating.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33828,13 +32248,11 @@ class ConnectionStateReady extends ConnectionState {
     int? this.client_id,
   });
 
-  @override
   ConnectionStateReady.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33859,13 +32277,11 @@ class TopChatCategoryUsers extends TopChatCategory {
     int? this.client_id,
   });
 
-  @override
   TopChatCategoryUsers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33890,13 +32306,11 @@ class TopChatCategoryBots extends TopChatCategory {
     int? this.client_id,
   });
 
-  @override
   TopChatCategoryBots.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33921,13 +32335,11 @@ class TopChatCategoryGroups extends TopChatCategory {
     int? this.client_id,
   });
 
-  @override
   TopChatCategoryGroups.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33952,13 +32364,11 @@ class TopChatCategoryChannels extends TopChatCategory {
     int? this.client_id,
   });
 
-  @override
   TopChatCategoryChannels.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -33983,13 +32393,11 @@ class TopChatCategoryInlineBots extends TopChatCategory {
     int? this.client_id,
   });
 
-  @override
   TopChatCategoryInlineBots.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34014,13 +32422,11 @@ class TopChatCategoryCalls extends TopChatCategory {
     int? this.client_id,
   });
 
-  @override
   TopChatCategoryCalls.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34045,13 +32451,11 @@ class TopChatCategoryForwardChats extends TopChatCategory {
     int? this.client_id,
   });
 
-  @override
   TopChatCategoryForwardChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34078,14 +32482,12 @@ class TMeUrlTypeUser extends TMeUrlType {
     int53? this.user_id,
   });
 
-  @override
   TMeUrlTypeUser.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34113,7 +32515,6 @@ class TMeUrlTypeSupergroup extends TMeUrlType {
     int53? this.supergroup_id,
   });
 
-  @override
   TMeUrlTypeSupergroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34121,7 +32522,6 @@ class TMeUrlTypeSupergroup extends TMeUrlType {
         map.containsKey('supergroup_id') ? map['supergroup_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34149,7 +32549,6 @@ class TMeUrlTypeChatInvite extends TMeUrlType {
     ChatInviteLinkInfo? this.info,
   });
 
-  @override
   TMeUrlTypeChatInvite.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34158,7 +32557,6 @@ class TMeUrlTypeChatInvite extends TMeUrlType {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34186,7 +32584,6 @@ class TMeUrlTypeStickerSet extends TMeUrlType {
     int64? this.sticker_set_id,
   });
 
-  @override
   TMeUrlTypeStickerSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34194,7 +32591,6 @@ class TMeUrlTypeStickerSet extends TMeUrlType {
         map.containsKey('sticker_set_id') ? map['sticker_set_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34224,7 +32620,6 @@ class TMeUrl extends TdObject {
     TMeUrlType? this.type,
   });
 
-  @override
   TMeUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34234,7 +32629,6 @@ class TMeUrl extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34263,7 +32657,6 @@ class TMeUrls extends TdObject {
     vector<TMeUrl>? this.urls,
   });
 
-  @override
   TMeUrls.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34277,7 +32670,6 @@ class TMeUrls extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34303,14 +32695,12 @@ class SuggestedActionEnableArchiveAndMuteNewChats extends SuggestedAction {
     int? this.client_id,
   });
 
-  @override
   SuggestedActionEnableArchiveAndMuteNewChats.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34335,13 +32725,11 @@ class SuggestedActionCheckPassword extends SuggestedAction {
     int? this.client_id,
   });
 
-  @override
   SuggestedActionCheckPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34366,13 +32754,11 @@ class SuggestedActionCheckPhoneNumber extends SuggestedAction {
     int? this.client_id,
   });
 
-  @override
   SuggestedActionCheckPhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34397,13 +32783,11 @@ class SuggestedActionViewChecksHint extends SuggestedAction {
     int? this.client_id,
   });
 
-  @override
   SuggestedActionViewChecksHint.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34430,7 +32814,6 @@ class SuggestedActionConvertToBroadcastGroup extends SuggestedAction {
     int53? this.supergroup_id,
   });
 
-  @override
   SuggestedActionConvertToBroadcastGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34438,7 +32821,6 @@ class SuggestedActionConvertToBroadcastGroup extends SuggestedAction {
         map.containsKey('supergroup_id') ? map['supergroup_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34466,7 +32848,6 @@ class SuggestedActionSetPassword extends SuggestedAction {
     int32? this.authorization_delay,
   });
 
-  @override
   SuggestedActionSetPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34475,7 +32856,6 @@ class SuggestedActionSetPassword extends SuggestedAction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34503,14 +32883,12 @@ class Count extends TdObject {
     int32? this.count,
   });
 
-  @override
   Count.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     count = map.containsKey('count') ? map['count'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34538,14 +32916,12 @@ class Text extends TdObject {
     string? this.text,
   });
 
-  @override
   Text.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     text = map.containsKey('text') ? map['text'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34573,14 +32949,12 @@ class Seconds extends TdObject {
     double? this.seconds,
   });
 
-  @override
   Seconds.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     seconds = map.containsKey('seconds') ? map['seconds'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34610,7 +32984,6 @@ class DeepLinkInfo extends TdObject {
     Bool? this.need_update_application,
   });
 
-  @override
   DeepLinkInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34622,7 +32995,6 @@ class DeepLinkInfo extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34652,14 +33024,12 @@ class TextParseModeMarkdown extends TextParseMode {
     int32? this.version,
   });
 
-  @override
   TextParseModeMarkdown.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     version = map.containsKey('version') ? map['version'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34685,13 +33055,11 @@ class TextParseModeHTML extends TextParseMode {
     int? this.client_id,
   });
 
-  @override
   TextParseModeHTML.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34720,7 +33088,6 @@ class ProxyTypeSocks5 extends ProxyType {
     string? this.password,
   });
 
-  @override
   ProxyTypeSocks5.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34728,7 +33095,6 @@ class ProxyTypeSocks5 extends ProxyType {
     password = map.containsKey('password') ? map['password'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34761,7 +33127,6 @@ class ProxyTypeHttp extends ProxyType {
     Bool? this.http_only,
   });
 
-  @override
   ProxyTypeHttp.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34770,7 +33135,6 @@ class ProxyTypeHttp extends ProxyType {
     http_only = map.containsKey('http_only') ? map['http_only'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34800,14 +33164,12 @@ class ProxyTypeMtproto extends ProxyType {
     string? this.secret,
   });
 
-  @override
   ProxyTypeMtproto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     secret = map.containsKey('secret') ? map['secret'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34845,7 +33207,6 @@ class Proxy extends TdObject {
     ProxyType? this.type,
   });
 
-  @override
   Proxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34860,7 +33221,6 @@ class Proxy extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34893,7 +33253,6 @@ class Proxies extends TdObject {
     vector<Proxy>? this.proxies,
   });
 
-  @override
   Proxies.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34907,7 +33266,6 @@ class Proxies extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34939,7 +33297,6 @@ class InputStickerStatic extends InputSticker {
     MaskPosition? this.mask_position,
   });
 
-  @override
   InputStickerStatic.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34952,7 +33309,6 @@ class InputStickerStatic extends InputSticker {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -34984,7 +33340,6 @@ class InputStickerAnimated extends InputSticker {
     string? this.emojis,
   });
 
-  @override
   InputStickerAnimated.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -34994,7 +33349,6 @@ class InputStickerAnimated extends InputSticker {
     emojis = map.containsKey('emojis') ? map['emojis'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35025,7 +33379,6 @@ class DateRange extends TdObject {
     int32? this.end_date,
   });
 
-  @override
   DateRange.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35033,7 +33386,6 @@ class DateRange extends TdObject {
     end_date = map.containsKey('end_date') ? map['end_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35066,7 +33418,6 @@ class StatisticalValue extends TdObject {
     double? this.growth_rate_percentage,
   });
 
-  @override
   StatisticalValue.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35078,7 +33429,6 @@ class StatisticalValue extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35111,7 +33461,6 @@ class StatisticalGraphData extends StatisticalGraph {
     string? this.zoom_token,
   });
 
-  @override
   StatisticalGraphData.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35119,7 +33468,6 @@ class StatisticalGraphData extends StatisticalGraph {
     zoom_token = map.containsKey('zoom_token') ? map['zoom_token'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35148,14 +33496,12 @@ class StatisticalGraphAsync extends StatisticalGraph {
     string? this.token,
   });
 
-  @override
   StatisticalGraphAsync.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     token = map.containsKey('token') ? map['token'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35183,7 +33529,6 @@ class StatisticalGraphError extends StatisticalGraph {
     string? this.error_message,
   });
 
-  @override
   StatisticalGraphError.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35191,7 +33536,6 @@ class StatisticalGraphError extends StatisticalGraph {
         map.containsKey('error_message') ? map['error_message'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35223,7 +33567,6 @@ class ChatStatisticsMessageInteractionInfo extends TdObject {
     int32? this.forward_count,
   });
 
-  @override
   ChatStatisticsMessageInteractionInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35233,7 +33576,6 @@ class ChatStatisticsMessageInteractionInfo extends TdObject {
         map.containsKey('forward_count') ? map['forward_count'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35267,7 +33609,6 @@ class ChatStatisticsMessageSenderInfo extends TdObject {
     int32? this.average_character_count,
   });
 
-  @override
   ChatStatisticsMessageSenderInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35280,7 +33621,6 @@ class ChatStatisticsMessageSenderInfo extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35317,7 +33657,6 @@ class ChatStatisticsAdministratorActionsInfo extends TdObject {
     int32? this.restricted_user_count,
   });
 
-  @override
   ChatStatisticsAdministratorActionsInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35332,7 +33671,6 @@ class ChatStatisticsAdministratorActionsInfo extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35367,7 +33705,6 @@ class ChatStatisticsInviterInfo extends TdObject {
     int32? this.added_member_count,
   });
 
-  @override
   ChatStatisticsInviterInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35377,7 +33714,6 @@ class ChatStatisticsInviterInfo extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35436,7 +33772,6 @@ class ChatStatisticsSupergroup extends ChatStatistics {
     vector<ChatStatisticsInviterInfo>? this.top_inviters,
   });
 
-  @override
   ChatStatisticsSupergroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35507,7 +33842,6 @@ class ChatStatisticsSupergroup extends ChatStatistics {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35580,7 +33914,6 @@ class ChatStatisticsChannel extends ChatStatistics {
         this.recent_message_interactions,
   });
 
-  @override
   ChatStatisticsChannel.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35641,7 +33974,6 @@ class ChatStatisticsChannel extends ChatStatistics {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35689,7 +34021,6 @@ class MessageStatistics extends TdObject {
     StatisticalGraph? this.message_interaction_graph,
   });
 
-  @override
   MessageStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35698,7 +34029,6 @@ class MessageStatistics extends TdObject {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35729,7 +34059,6 @@ class Point extends TdObject {
     double? this.y,
   });
 
-  @override
   Point.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35737,7 +34066,6 @@ class Point extends TdObject {
     y = map.containsKey('y') ? map['y'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35766,7 +34094,6 @@ class VectorPathCommandLine extends VectorPathCommand {
     Point? this.end_point,
   });
 
-  @override
   VectorPathCommandLine.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35775,7 +34102,6 @@ class VectorPathCommandLine extends VectorPathCommand {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35807,7 +34133,6 @@ class VectorPathCommandCubicBezierCurve extends VectorPathCommand {
     Point? this.end_point,
   });
 
-  @override
   VectorPathCommandCubicBezierCurve.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -35822,7 +34147,6 @@ class VectorPathCommandCubicBezierCurve extends VectorPathCommand {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35850,13 +34174,11 @@ class BotCommandScopeDefault extends BotCommandScope {
     int? this.client_id,
   });
 
-  @override
   BotCommandScopeDefault.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35881,13 +34203,11 @@ class BotCommandScopeAllPrivateChats extends BotCommandScope {
     int? this.client_id,
   });
 
-  @override
   BotCommandScopeAllPrivateChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35912,13 +34232,11 @@ class BotCommandScopeAllGroupChats extends BotCommandScope {
     int? this.client_id,
   });
 
-  @override
   BotCommandScopeAllGroupChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35943,13 +34261,11 @@ class BotCommandScopeAllChatAdministrators extends BotCommandScope {
     int? this.client_id,
   });
 
-  @override
   BotCommandScopeAllChatAdministrators.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -35976,14 +34292,12 @@ class BotCommandScopeChat extends BotCommandScope {
     int53? this.chat_id,
   });
 
-  @override
   BotCommandScopeChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36011,14 +34325,12 @@ class BotCommandScopeChatAdministrators extends BotCommandScope {
     int53? this.chat_id,
   });
 
-  @override
   BotCommandScopeChatAdministrators.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36048,7 +34360,6 @@ class BotCommandScopeChatMember extends BotCommandScope {
     int53? this.user_id,
   });
 
-  @override
   BotCommandScopeChatMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36056,7 +34367,6 @@ class BotCommandScopeChatMember extends BotCommandScope {
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36085,7 +34395,6 @@ class UpdateAuthorizationState extends Update {
     AuthorizationState? this.authorization_state,
   });
 
-  @override
   UpdateAuthorizationState.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36094,7 +34403,6 @@ class UpdateAuthorizationState extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36122,7 +34430,6 @@ class UpdateNewMessage extends Update {
     Message? this.message,
   });
 
-  @override
   UpdateNewMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36131,7 +34438,6 @@ class UpdateNewMessage extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36161,7 +34467,6 @@ class UpdateMessageSendAcknowledged extends Update {
     int53? this.message_id,
   });
 
-  @override
   UpdateMessageSendAcknowledged.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36169,7 +34474,6 @@ class UpdateMessageSendAcknowledged extends Update {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36200,7 +34504,6 @@ class UpdateMessageSendSucceeded extends Update {
     int53? this.old_message_id,
   });
 
-  @override
   UpdateMessageSendSucceeded.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36211,7 +34514,6 @@ class UpdateMessageSendSucceeded extends Update {
         map.containsKey('old_message_id') ? map['old_message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36246,7 +34548,6 @@ class UpdateMessageSendFailed extends Update {
     string? this.error_message,
   });
 
-  @override
   UpdateMessageSendFailed.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36260,7 +34561,6 @@ class UpdateMessageSendFailed extends Update {
         map.containsKey('error_message') ? map['error_message'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36295,7 +34595,6 @@ class UpdateMessageContent extends Update {
     MessageContent? this.new_content,
   });
 
-  @override
   UpdateMessageContent.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36306,7 +34605,6 @@ class UpdateMessageContent extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36342,7 +34640,6 @@ class UpdateMessageEdited extends Update {
     ReplyMarkup? this.reply_markup,
   });
 
-  @override
   UpdateMessageEdited.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36354,7 +34651,6 @@ class UpdateMessageEdited extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36389,7 +34685,6 @@ class UpdateMessageIsPinned extends Update {
     Bool? this.is_pinned,
   });
 
-  @override
   UpdateMessageIsPinned.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36398,7 +34693,6 @@ class UpdateMessageIsPinned extends Update {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36432,7 +34726,6 @@ class UpdateMessageInteractionInfo extends Update {
     MessageInteractionInfo? this.interaction_info,
   });
 
-  @override
   UpdateMessageInteractionInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36443,7 +34736,6 @@ class UpdateMessageInteractionInfo extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36475,7 +34767,6 @@ class UpdateMessageContentOpened extends Update {
     int53? this.message_id,
   });
 
-  @override
   UpdateMessageContentOpened.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36483,7 +34774,6 @@ class UpdateMessageContentOpened extends Update {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36516,7 +34806,6 @@ class UpdateMessageMentionRead extends Update {
     int32? this.unread_mention_count,
   });
 
-  @override
   UpdateMessageMentionRead.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36527,7 +34816,6 @@ class UpdateMessageMentionRead extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36559,7 +34847,6 @@ class UpdateMessageLiveLocationViewed extends Update {
     int53? this.message_id,
   });
 
-  @override
   UpdateMessageLiveLocationViewed.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36567,7 +34854,6 @@ class UpdateMessageLiveLocationViewed extends Update {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36596,14 +34882,12 @@ class UpdateNewChat extends Update {
     Chat? this.chat,
   });
 
-  @override
   UpdateNewChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat = map.containsKey('chat') ? TlMap.fromMap(map['chat']) as Chat : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36633,7 +34917,6 @@ class UpdateChatTitle extends Update {
     string? this.title,
   });
 
-  @override
   UpdateChatTitle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36641,7 +34924,6 @@ class UpdateChatTitle extends Update {
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36672,7 +34954,6 @@ class UpdateChatPhoto extends Update {
     ChatPhotoInfo? this.photo,
   });
 
-  @override
   UpdateChatPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36682,7 +34963,6 @@ class UpdateChatPhoto extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36713,7 +34993,6 @@ class UpdateChatPermissions extends Update {
     ChatPermissions? this.permissions,
   });
 
-  @override
   UpdateChatPermissions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36723,7 +35002,6 @@ class UpdateChatPermissions extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36756,7 +35034,6 @@ class UpdateChatLastMessage extends Update {
     vector<ChatPosition>? this.positions,
   });
 
-  @override
   UpdateChatLastMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36774,7 +35051,6 @@ class UpdateChatLastMessage extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36806,7 +35082,6 @@ class UpdateChatPosition extends Update {
     ChatPosition? this.position,
   });
 
-  @override
   UpdateChatPosition.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36816,7 +35091,6 @@ class UpdateChatPosition extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36849,7 +35123,6 @@ class UpdateChatReadInbox extends Update {
     int32? this.unread_count,
   });
 
-  @override
   UpdateChatReadInbox.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36860,7 +35133,6 @@ class UpdateChatReadInbox extends Update {
     unread_count = map.containsKey('unread_count') ? map['unread_count'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36893,7 +35165,6 @@ class UpdateChatReadOutbox extends Update {
     int53? this.last_read_outbox_message_id,
   });
 
-  @override
   UpdateChatReadOutbox.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36903,7 +35174,6 @@ class UpdateChatReadOutbox extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36935,7 +35205,6 @@ class UpdateChatActionBar extends Update {
     ChatActionBar? this.action_bar,
   });
 
-  @override
   UpdateChatActionBar.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36945,7 +35214,6 @@ class UpdateChatActionBar extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -36978,7 +35246,6 @@ class UpdateChatDraftMessage extends Update {
     vector<ChatPosition>? this.positions,
   });
 
-  @override
   UpdateChatDraftMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -36996,7 +35263,6 @@ class UpdateChatDraftMessage extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37028,7 +35294,6 @@ class UpdateChatMessageSender extends Update {
     MessageSender? this.message_sender_id,
   });
 
-  @override
   UpdateChatMessageSender.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37038,7 +35303,6 @@ class UpdateChatMessageSender extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37069,7 +35333,6 @@ class UpdateChatMessageTtl extends Update {
     int32? this.message_ttl,
   });
 
-  @override
   UpdateChatMessageTtl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37077,7 +35340,6 @@ class UpdateChatMessageTtl extends Update {
     message_ttl = map.containsKey('message_ttl') ? map['message_ttl'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37108,7 +35370,6 @@ class UpdateChatNotificationSettings extends Update {
     ChatNotificationSettings? this.notification_settings,
   });
 
-  @override
   UpdateChatNotificationSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37119,7 +35380,6 @@ class UpdateChatNotificationSettings extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37151,7 +35411,6 @@ class UpdateChatPendingJoinRequests extends Update {
     ChatJoinRequestsInfo? this.pending_join_requests,
   });
 
-  @override
   UpdateChatPendingJoinRequests.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37161,7 +35420,6 @@ class UpdateChatPendingJoinRequests extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37193,7 +35451,6 @@ class UpdateChatReplyMarkup extends Update {
     int53? this.reply_markup_message_id,
   });
 
-  @override
   UpdateChatReplyMarkup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37203,7 +35460,6 @@ class UpdateChatReplyMarkup extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37235,7 +35491,6 @@ class UpdateChatTheme extends Update {
     string? this.theme_name,
   });
 
-  @override
   UpdateChatTheme.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37243,7 +35498,6 @@ class UpdateChatTheme extends Update {
     theme_name = map.containsKey('theme_name') ? map['theme_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37274,7 +35528,6 @@ class UpdateChatUnreadMentionCount extends Update {
     int32? this.unread_mention_count,
   });
 
-  @override
   UpdateChatUnreadMentionCount.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37284,7 +35537,6 @@ class UpdateChatUnreadMentionCount extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37315,7 +35567,6 @@ class UpdateChatVideoChat extends Update {
     VideoChat? this.video_chat,
   });
 
-  @override
   UpdateChatVideoChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37325,7 +35576,6 @@ class UpdateChatVideoChat extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37356,7 +35606,6 @@ class UpdateChatDefaultDisableNotification extends Update {
     Bool? this.default_disable_notification,
   });
 
-  @override
   UpdateChatDefaultDisableNotification.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37367,7 +35616,6 @@ class UpdateChatDefaultDisableNotification extends Update {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37399,7 +35647,6 @@ class UpdateChatHasProtectedContent extends Update {
     Bool? this.has_protected_content,
   });
 
-  @override
   UpdateChatHasProtectedContent.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37409,7 +35656,6 @@ class UpdateChatHasProtectedContent extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37441,7 +35687,6 @@ class UpdateChatHasScheduledMessages extends Update {
     Bool? this.has_scheduled_messages,
   });
 
-  @override
   UpdateChatHasScheduledMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37451,7 +35696,6 @@ class UpdateChatHasScheduledMessages extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37483,7 +35727,6 @@ class UpdateChatIsBlocked extends Update {
     Bool? this.is_blocked,
   });
 
-  @override
   UpdateChatIsBlocked.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37491,7 +35734,6 @@ class UpdateChatIsBlocked extends Update {
     is_blocked = map.containsKey('is_blocked') ? map['is_blocked'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37522,7 +35764,6 @@ class UpdateChatIsMarkedAsUnread extends Update {
     Bool? this.is_marked_as_unread,
   });
 
-  @override
   UpdateChatIsMarkedAsUnread.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37532,7 +35773,6 @@ class UpdateChatIsMarkedAsUnread extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37561,7 +35801,6 @@ class UpdateChatFilters extends Update {
     vector<ChatFilterInfo>? this.chat_filters,
   });
 
-  @override
   UpdateChatFilters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37575,7 +35814,6 @@ class UpdateChatFilters extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37605,7 +35843,6 @@ class UpdateChatOnlineMemberCount extends Update {
     int32? this.online_member_count,
   });
 
-  @override
   UpdateChatOnlineMemberCount.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37615,7 +35852,6 @@ class UpdateChatOnlineMemberCount extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37646,7 +35882,6 @@ class UpdateScopeNotificationSettings extends Update {
     ScopeNotificationSettings? this.notification_settings,
   });
 
-  @override
   UpdateScopeNotificationSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37659,7 +35894,6 @@ class UpdateScopeNotificationSettings extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37691,7 +35925,6 @@ class UpdateNotification extends Update {
     Notification? this.notification,
   });
 
-  @override
   UpdateNotification.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37703,7 +35936,6 @@ class UpdateNotification extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37747,7 +35979,6 @@ class UpdateNotificationGroup extends Update {
     vector<int32>? this.removed_notification_ids,
   });
 
-  @override
   UpdateNotificationGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37783,7 +36014,6 @@ class UpdateNotificationGroup extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37821,7 +36051,6 @@ class UpdateActiveNotifications extends Update {
     vector<NotificationGroup>? this.groups,
   });
 
-  @override
   UpdateActiveNotifications.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37835,7 +36064,6 @@ class UpdateActiveNotifications extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37865,7 +36093,6 @@ class UpdateHavePendingNotifications extends Update {
     Bool? this.have_unreceived_notifications,
   });
 
-  @override
   UpdateHavePendingNotifications.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37878,7 +36105,6 @@ class UpdateHavePendingNotifications extends Update {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37915,7 +36141,6 @@ class UpdateDeleteMessages extends Update {
     Bool? this.from_cache,
   });
 
-  @override
   UpdateDeleteMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37931,7 +36156,6 @@ class UpdateDeleteMessages extends Update {
     from_cache = map.containsKey('from_cache') ? map['from_cache'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -37968,7 +36192,6 @@ class UpdateChatAction extends Update {
     ChatAction? this.action,
   });
 
-  @override
   UpdateChatAction.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -37983,7 +36206,6 @@ class UpdateChatAction extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38016,7 +36238,6 @@ class UpdateUserStatus extends Update {
     UserStatus? this.status,
   });
 
-  @override
   UpdateUserStatus.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38026,7 +36247,6 @@ class UpdateUserStatus extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38055,14 +36275,12 @@ class UpdateUser extends Update {
     User? this.user,
   });
 
-  @override
   UpdateUser.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user = map.containsKey('user') ? TlMap.fromMap(map['user']) as User : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38090,7 +36308,6 @@ class UpdateBasicGroup extends Update {
     BasicGroup? this.basic_group,
   });
 
-  @override
   UpdateBasicGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38099,7 +36316,6 @@ class UpdateBasicGroup extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38127,7 +36343,6 @@ class UpdateSupergroup extends Update {
     Supergroup? this.supergroup,
   });
 
-  @override
   UpdateSupergroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38136,7 +36351,6 @@ class UpdateSupergroup extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38164,7 +36378,6 @@ class UpdateSecretChat extends Update {
     SecretChat? this.secret_chat,
   });
 
-  @override
   UpdateSecretChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38173,7 +36386,6 @@ class UpdateSecretChat extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38203,7 +36415,6 @@ class UpdateUserFullInfo extends Update {
     UserFullInfo? this.user_full_info,
   });
 
-  @override
   UpdateUserFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38213,7 +36424,6 @@ class UpdateUserFullInfo extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38244,7 +36454,6 @@ class UpdateBasicGroupFullInfo extends Update {
     BasicGroupFullInfo? this.basic_group_full_info,
   });
 
-  @override
   UpdateBasicGroupFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38255,7 +36464,6 @@ class UpdateBasicGroupFullInfo extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38287,7 +36495,6 @@ class UpdateSupergroupFullInfo extends Update {
     SupergroupFullInfo? this.supergroup_full_info,
   });
 
-  @override
   UpdateSupergroupFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38298,7 +36505,6 @@ class UpdateSupergroupFullInfo extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38329,7 +36535,6 @@ class UpdateServiceNotification extends Update {
     MessageContent? this.content,
   });
 
-  @override
   UpdateServiceNotification.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38339,7 +36544,6 @@ class UpdateServiceNotification extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38368,14 +36572,12 @@ class UpdateFile extends Update {
     File? this.file,
   });
 
-  @override
   UpdateFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file = map.containsKey('file') ? TlMap.fromMap(map['file']) as File : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38409,7 +36611,6 @@ class UpdateFileGenerationStart extends Update {
     string? this.conversion,
   });
 
-  @override
   UpdateFileGenerationStart.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38422,7 +36623,6 @@ class UpdateFileGenerationStart extends Update {
     conversion = map.containsKey('conversion') ? map['conversion'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38453,7 +36653,6 @@ class UpdateFileGenerationStop extends Update {
     int64? this.generation_id,
   });
 
-  @override
   UpdateFileGenerationStop.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38461,7 +36660,6 @@ class UpdateFileGenerationStop extends Update {
         map.containsKey('generation_id') ? map['generation_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38489,14 +36687,12 @@ class UpdateCall extends Update {
     Call? this.call,
   });
 
-  @override
   UpdateCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     call = map.containsKey('call') ? TlMap.fromMap(map['call']) as Call : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38524,7 +36720,6 @@ class UpdateGroupCall extends Update {
     GroupCall? this.group_call,
   });
 
-  @override
   UpdateGroupCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38533,7 +36728,6 @@ class UpdateGroupCall extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38563,7 +36757,6 @@ class UpdateGroupCallParticipant extends Update {
     GroupCallParticipant? this.participant,
   });
 
-  @override
   UpdateGroupCallParticipant.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38574,7 +36767,6 @@ class UpdateGroupCallParticipant extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38605,7 +36797,6 @@ class UpdateNewCallSignalingData extends Update {
     bytes? this.data,
   });
 
-  @override
   UpdateNewCallSignalingData.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38613,7 +36804,6 @@ class UpdateNewCallSignalingData extends Update {
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38644,7 +36834,6 @@ class UpdateUserPrivacySettingRules extends Update {
     UserPrivacySettingRules? this.rules,
   });
 
-  @override
   UpdateUserPrivacySettingRules.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38656,7 +36845,6 @@ class UpdateUserPrivacySettingRules extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38689,7 +36877,6 @@ class UpdateUnreadMessageCount extends Update {
     int32? this.unread_unmuted_count,
   });
 
-  @override
   UpdateUnreadMessageCount.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38702,7 +36889,6 @@ class UpdateUnreadMessageCount extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38742,7 +36928,6 @@ class UpdateUnreadChatCount extends Update {
     int32? this.marked_as_unread_unmuted_count,
   });
 
-  @override
   UpdateUnreadChatCount.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38763,7 +36948,6 @@ class UpdateUnreadChatCount extends Update {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38800,7 +36984,6 @@ class UpdateOption extends Update {
     OptionValue? this.value,
   });
 
-  @override
   UpdateOption.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38810,7 +36993,6 @@ class UpdateOption extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38839,7 +37021,6 @@ class UpdateStickerSet extends Update {
     StickerSet? this.sticker_set,
   });
 
-  @override
   UpdateStickerSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38848,7 +37029,6 @@ class UpdateStickerSet extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38878,7 +37058,6 @@ class UpdateInstalledStickerSets extends Update {
     vector<int64>? this.sticker_set_ids,
   });
 
-  @override
   UpdateInstalledStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38892,7 +37071,6 @@ class UpdateInstalledStickerSets extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38921,7 +37099,6 @@ class UpdateTrendingStickerSets extends Update {
     StickerSets? this.sticker_sets,
   });
 
-  @override
   UpdateTrendingStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38930,7 +37107,6 @@ class UpdateTrendingStickerSets extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -38960,7 +37136,6 @@ class UpdateRecentStickers extends Update {
     vector<int32>? this.sticker_ids,
   });
 
-  @override
   UpdateRecentStickers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -38974,7 +37149,6 @@ class UpdateRecentStickers extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39003,7 +37177,6 @@ class UpdateFavoriteStickers extends Update {
     vector<int32>? this.sticker_ids,
   });
 
-  @override
   UpdateFavoriteStickers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39016,7 +37189,6 @@ class UpdateFavoriteStickers extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39044,7 +37216,6 @@ class UpdateSavedAnimations extends Update {
     vector<int32>? this.animation_ids,
   });
 
-  @override
   UpdateSavedAnimations.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39057,7 +37228,6 @@ class UpdateSavedAnimations extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39087,7 +37257,6 @@ class UpdateSelectedBackground extends Update {
     Background? this.background,
   });
 
-  @override
   UpdateSelectedBackground.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39098,7 +37267,6 @@ class UpdateSelectedBackground extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39127,7 +37295,6 @@ class UpdateChatThemes extends Update {
     vector<ChatTheme>? this.chat_themes,
   });
 
-  @override
   UpdateChatThemes.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39141,7 +37308,6 @@ class UpdateChatThemes extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39173,7 +37339,6 @@ class UpdateLanguagePackStrings extends Update {
     vector<LanguagePackString>? this.strings,
   });
 
-  @override
   UpdateLanguagePackStrings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39192,7 +37357,6 @@ class UpdateLanguagePackStrings extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39222,7 +37386,6 @@ class UpdateConnectionState extends Update {
     ConnectionState? this.state,
   });
 
-  @override
   UpdateConnectionState.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39231,7 +37394,6 @@ class UpdateConnectionState extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39261,7 +37423,6 @@ class UpdateTermsOfService extends Update {
     TermsOfService? this.terms_of_service,
   });
 
-  @override
   UpdateTermsOfService.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39273,7 +37434,6 @@ class UpdateTermsOfService extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39302,7 +37462,6 @@ class UpdateUsersNearby extends Update {
     vector<ChatNearby>? this.users_nearby,
   });
 
-  @override
   UpdateUsersNearby.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39316,7 +37475,6 @@ class UpdateUsersNearby extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39344,7 +37502,6 @@ class UpdateDiceEmojis extends Update {
     vector<string>? this.emojis,
   });
 
-  @override
   UpdateDiceEmojis.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39357,7 +37514,6 @@ class UpdateDiceEmojis extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39389,7 +37545,6 @@ class UpdateAnimatedEmojiMessageClicked extends Update {
     Sticker? this.sticker,
   });
 
-  @override
   UpdateAnimatedEmojiMessageClicked.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39400,7 +37555,6 @@ class UpdateAnimatedEmojiMessageClicked extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39432,7 +37586,6 @@ class UpdateAnimationSearchParameters extends Update {
     vector<string>? this.emojis,
   });
 
-  @override
   UpdateAnimationSearchParameters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39446,7 +37599,6 @@ class UpdateAnimationSearchParameters extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39477,7 +37629,6 @@ class UpdateSuggestedActions extends Update {
     vector<SuggestedAction>? this.removed_actions,
   });
 
-  @override
   UpdateSuggestedActions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39499,7 +37650,6 @@ class UpdateSuggestedActions extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39538,7 +37688,6 @@ class UpdateNewInlineQuery extends Update {
     string? this.offset,
   });
 
-  @override
   UpdateNewInlineQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39555,7 +37704,6 @@ class UpdateNewInlineQuery extends Update {
     offset = map.containsKey('offset') ? map['offset'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39596,7 +37744,6 @@ class UpdateNewChosenInlineResult extends Update {
     string? this.inline_message_id,
   });
 
-  @override
   UpdateNewChosenInlineResult.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39611,7 +37758,6 @@ class UpdateNewChosenInlineResult extends Update {
         map.containsKey('inline_message_id') ? map['inline_message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39653,7 +37799,6 @@ class UpdateNewCallbackQuery extends Update {
     CallbackQueryPayload? this.payload,
   });
 
-  @override
   UpdateNewCallbackQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39669,7 +37814,6 @@ class UpdateNewCallbackQuery extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39710,7 +37854,6 @@ class UpdateNewInlineCallbackQuery extends Update {
     CallbackQueryPayload? this.payload,
   });
 
-  @override
   UpdateNewInlineCallbackQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39726,7 +37869,6 @@ class UpdateNewInlineCallbackQuery extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39764,7 +37906,6 @@ class UpdateNewShippingQuery extends Update {
     Address? this.shipping_address,
   });
 
-  @override
   UpdateNewShippingQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39778,7 +37919,6 @@ class UpdateNewShippingQuery extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39821,7 +37961,6 @@ class UpdateNewPreCheckoutQuery extends Update {
     OrderInfo? this.order_info,
   });
 
-  @override
   UpdateNewPreCheckoutQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39840,7 +37979,6 @@ class UpdateNewPreCheckoutQuery extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39874,14 +38012,12 @@ class UpdateNewCustomEvent extends Update {
     string? this.event,
   });
 
-  @override
   UpdateNewCustomEvent.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     event = map.containsKey('event') ? map['event'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39913,7 +38049,6 @@ class UpdateNewCustomQuery extends Update {
     int32? this.timeout,
   });
 
-  @override
   UpdateNewCustomQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -39922,7 +38057,6 @@ class UpdateNewCustomQuery extends Update {
     timeout = map.containsKey('timeout') ? map['timeout'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39952,14 +38086,12 @@ class UpdatePoll extends Update {
     Poll? this.poll,
   });
 
-  @override
   UpdatePoll.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     poll = map.containsKey('poll') ? TlMap.fromMap(map['poll']) as Poll : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -39991,7 +38123,6 @@ class UpdatePollAnswer extends Update {
     vector<int32>? this.option_ids,
   });
 
-  @override
   UpdatePollAnswer.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40006,7 +38137,6 @@ class UpdatePollAnswer extends Update {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40046,7 +38176,6 @@ class UpdateChatMember extends Update {
     ChatMember? this.new_chat_member,
   });
 
-  @override
   UpdateChatMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40065,7 +38194,6 @@ class UpdateChatMember extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40102,7 +38230,6 @@ class UpdateNewChatJoinRequest extends Update {
     ChatInviteLink? this.invite_link,
   });
 
-  @override
   UpdateNewChatJoinRequest.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40115,7 +38242,6 @@ class UpdateNewChatJoinRequest extends Update {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40145,7 +38271,6 @@ class Updates extends TdObject {
     vector<Update>? this.updates,
   });
 
-  @override
   Updates.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40159,7 +38284,6 @@ class Updates extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40185,13 +38309,11 @@ class LogStreamDefault extends LogStream {
     int? this.client_id,
   });
 
-  @override
   LogStreamDefault.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40222,7 +38344,6 @@ class LogStreamFile extends LogStream {
     Bool? this.redirect_stderr,
   });
 
-  @override
   LogStreamFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40233,7 +38354,6 @@ class LogStreamFile extends LogStream {
         map.containsKey('redirect_stderr') ? map['redirect_stderr'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40261,13 +38381,11 @@ class LogStreamEmpty extends LogStream {
     int? this.client_id,
   });
 
-  @override
   LogStreamEmpty.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40294,7 +38412,6 @@ class LogVerbosityLevel extends TdObject {
     int32? this.verbosity_level,
   });
 
-  @override
   LogVerbosityLevel.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40302,7 +38419,6 @@ class LogVerbosityLevel extends TdObject {
         map.containsKey('verbosity_level') ? map['verbosity_level'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40330,7 +38446,6 @@ class LogTags extends TdObject {
     vector<string>? this.tags,
   });
 
-  @override
   LogTags.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40343,7 +38458,6 @@ class LogTags extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40371,14 +38485,12 @@ class TestInt extends TdObject {
     int32? this.value,
   });
 
-  @override
   TestInt.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40406,14 +38518,12 @@ class TestString extends TdObject {
     string? this.value,
   });
 
-  @override
   TestString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40441,14 +38551,12 @@ class TestBytes extends TdObject {
     bytes? this.value,
   });
 
-  @override
   TestBytes.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     value = map.containsKey('value') ? map['value'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40476,7 +38584,6 @@ class TestVectorInt extends TdObject {
     vector<int32>? this.value,
   });
 
-  @override
   TestVectorInt.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40489,7 +38596,6 @@ class TestVectorInt extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40517,7 +38623,6 @@ class TestVectorIntObject extends TdObject {
     vector<TestInt>? this.value,
   });
 
-  @override
   TestVectorIntObject.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40531,7 +38636,6 @@ class TestVectorIntObject extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40559,7 +38663,6 @@ class TestVectorString extends TdObject {
     vector<string>? this.value,
   });
 
-  @override
   TestVectorString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40572,7 +38675,6 @@ class TestVectorString extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40600,7 +38702,6 @@ class TestVectorStringObject extends TdObject {
     vector<TestString>? this.value,
   });
 
-  @override
   TestVectorStringObject.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40614,7 +38715,6 @@ class TestVectorStringObject extends TdObject {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40642,13 +38742,11 @@ class GetAuthorizationState extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetAuthorizationState.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40677,7 +38775,6 @@ class SetTdlibParameters extends TdFunction {
     TdlibParameters? this.parameters,
   });
 
-  @override
   SetTdlibParameters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40686,7 +38783,6 @@ class SetTdlibParameters extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40716,7 +38812,6 @@ class CheckDatabaseEncryptionKey extends TdFunction {
     bytes? this.encryption_key,
   });
 
-  @override
   CheckDatabaseEncryptionKey.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40724,7 +38819,6 @@ class CheckDatabaseEncryptionKey extends TdFunction {
         map.containsKey('encryption_key') ? map['encryption_key'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40756,7 +38850,6 @@ class SetAuthenticationPhoneNumber extends TdFunction {
     PhoneNumberAuthenticationSettings? this.settings,
   });
 
-  @override
   SetAuthenticationPhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40766,7 +38859,6 @@ class SetAuthenticationPhoneNumber extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40795,13 +38887,11 @@ class ResendAuthenticationCode extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResendAuthenticationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40830,14 +38920,12 @@ class CheckAuthenticationCode extends TdFunction {
     string? this.code,
   });
 
-  @override
   CheckAuthenticationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     code = map.containsKey('code') ? map['code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40867,7 +38955,6 @@ class RequestQrCodeAuthentication extends TdFunction {
     vector<int53>? this.other_user_ids,
   });
 
-  @override
   RequestQrCodeAuthentication.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40880,7 +38967,6 @@ class RequestQrCodeAuthentication extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40912,7 +38998,6 @@ class RegisterUser extends TdFunction {
     string? this.last_name,
   });
 
-  @override
   RegisterUser.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -40920,7 +39005,6 @@ class RegisterUser extends TdFunction {
     last_name = map.containsKey('last_name') ? map['last_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40951,14 +39035,12 @@ class CheckAuthenticationPassword extends TdFunction {
     string? this.password,
   });
 
-  @override
   CheckAuthenticationPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     password = map.containsKey('password') ? map['password'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -40986,13 +39068,11 @@ class RequestAuthenticationPasswordRecovery extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   RequestAuthenticationPasswordRecovery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41021,7 +39101,6 @@ class CheckAuthenticationPasswordRecoveryCode extends TdFunction {
     string? this.recovery_code,
   });
 
-  @override
   CheckAuthenticationPasswordRecoveryCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -41029,7 +39108,6 @@ class CheckAuthenticationPasswordRecoveryCode extends TdFunction {
         map.containsKey('recovery_code') ? map['recovery_code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41063,7 +39141,6 @@ class RecoverAuthenticationPassword extends TdFunction {
     string? this.new_hint,
   });
 
-  @override
   RecoverAuthenticationPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -41073,7 +39150,6 @@ class RecoverAuthenticationPassword extends TdFunction {
     new_hint = map.containsKey('new_hint') ? map['new_hint'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41105,14 +39181,12 @@ class CheckAuthenticationBotToken extends TdFunction {
     string? this.token,
   });
 
-  @override
   CheckAuthenticationBotToken.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     token = map.containsKey('token') ? map['token'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41140,13 +39214,11 @@ class LogOut extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   LogOut.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41173,13 +39245,11 @@ class Close extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   Close.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41206,13 +39276,11 @@ class Destroy extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   Destroy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41241,14 +39309,12 @@ class ConfirmQrCodeAuthentication extends TdFunction {
     string? this.link,
   });
 
-  @override
   ConfirmQrCodeAuthentication.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     link = map.containsKey('link') ? map['link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41276,13 +39342,11 @@ class GetCurrentState extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetCurrentState.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41311,7 +39375,6 @@ class SetDatabaseEncryptionKey extends TdFunction {
     bytes? this.new_encryption_key,
   });
 
-  @override
   SetDatabaseEncryptionKey.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -41320,7 +39383,6 @@ class SetDatabaseEncryptionKey extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41348,13 +39410,11 @@ class GetPasswordState extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetPasswordState.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41391,7 +39451,6 @@ class SetPassword extends TdFunction {
     string? this.new_recovery_email_address,
   });
 
-  @override
   SetPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -41406,7 +39465,6 @@ class SetPassword extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41442,14 +39500,12 @@ class GetRecoveryEmailAddress extends TdFunction {
     string? this.password,
   });
 
-  @override
   GetRecoveryEmailAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     password = map.containsKey('password') ? map['password'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41481,7 +39537,6 @@ class SetRecoveryEmailAddress extends TdFunction {
     string? this.new_recovery_email_address,
   });
 
-  @override
   SetRecoveryEmailAddress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -41491,7 +39546,6 @@ class SetRecoveryEmailAddress extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41523,14 +39577,12 @@ class CheckRecoveryEmailAddressCode extends TdFunction {
     string? this.code,
   });
 
-  @override
   CheckRecoveryEmailAddressCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     code = map.containsKey('code') ? map['code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41558,13 +39610,11 @@ class ResendRecoveryEmailAddressCode extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResendRecoveryEmailAddressCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41591,13 +39641,11 @@ class RequestPasswordRecovery extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   RequestPasswordRecovery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41626,7 +39674,6 @@ class CheckPasswordRecoveryCode extends TdFunction {
     string? this.recovery_code,
   });
 
-  @override
   CheckPasswordRecoveryCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -41634,7 +39681,6 @@ class CheckPasswordRecoveryCode extends TdFunction {
         map.containsKey('recovery_code') ? map['recovery_code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41668,7 +39714,6 @@ class RecoverPassword extends TdFunction {
     string? this.new_hint,
   });
 
-  @override
   RecoverPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -41678,7 +39723,6 @@ class RecoverPassword extends TdFunction {
     new_hint = map.containsKey('new_hint') ? map['new_hint'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41708,13 +39752,11 @@ class ResetPassword extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResetPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41741,13 +39783,11 @@ class CancelPasswordReset extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   CancelPasswordReset.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41778,7 +39818,6 @@ class CreateTemporaryPassword extends TdFunction {
     int32? this.valid_for,
   });
 
-  @override
   CreateTemporaryPassword.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -41786,7 +39825,6 @@ class CreateTemporaryPassword extends TdFunction {
     valid_for = map.containsKey('valid_for') ? map['valid_for'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41815,13 +39853,11 @@ class GetTemporaryPasswordState extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetTemporaryPasswordState.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41848,13 +39884,11 @@ class GetMe extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetMe.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41883,14 +39917,12 @@ class GetUser extends TdFunction {
     int53? this.user_id,
   });
 
-  @override
   GetUser.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41920,14 +39952,12 @@ class GetUserFullInfo extends TdFunction {
     int53? this.user_id,
   });
 
-  @override
   GetUserFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41957,7 +39987,6 @@ class GetBasicGroup extends TdFunction {
     int53? this.basic_group_id,
   });
 
-  @override
   GetBasicGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -41965,7 +39994,6 @@ class GetBasicGroup extends TdFunction {
         map.containsKey('basic_group_id') ? map['basic_group_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -41995,7 +40023,6 @@ class GetBasicGroupFullInfo extends TdFunction {
     int53? this.basic_group_id,
   });
 
-  @override
   GetBasicGroupFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42003,7 +40030,6 @@ class GetBasicGroupFullInfo extends TdFunction {
         map.containsKey('basic_group_id') ? map['basic_group_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42033,7 +40059,6 @@ class GetSupergroup extends TdFunction {
     int53? this.supergroup_id,
   });
 
-  @override
   GetSupergroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42041,7 +40066,6 @@ class GetSupergroup extends TdFunction {
         map.containsKey('supergroup_id') ? map['supergroup_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42071,7 +40095,6 @@ class GetSupergroupFullInfo extends TdFunction {
     int53? this.supergroup_id,
   });
 
-  @override
   GetSupergroupFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42079,7 +40102,6 @@ class GetSupergroupFullInfo extends TdFunction {
         map.containsKey('supergroup_id') ? map['supergroup_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42109,7 +40131,6 @@ class GetSecretChat extends TdFunction {
     int32? this.secret_chat_id,
   });
 
-  @override
   GetSecretChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42117,7 +40138,6 @@ class GetSecretChat extends TdFunction {
         map.containsKey('secret_chat_id') ? map['secret_chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42147,14 +40167,12 @@ class GetChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42186,7 +40204,6 @@ class GetMessage extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   GetMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42194,7 +40211,6 @@ class GetMessage extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42227,7 +40243,6 @@ class GetMessageLocally extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   GetMessageLocally.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42235,7 +40250,6 @@ class GetMessageLocally extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42268,7 +40282,6 @@ class GetRepliedMessage extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   GetRepliedMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42276,7 +40289,6 @@ class GetRepliedMessage extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42307,14 +40319,12 @@ class GetChatPinnedMessage extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetChatPinnedMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42348,7 +40358,6 @@ class GetCallbackQueryMessage extends TdFunction {
     int64? this.callback_query_id,
   });
 
-  @override
   GetCallbackQueryMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42358,7 +40367,6 @@ class GetCallbackQueryMessage extends TdFunction {
         map.containsKey('callback_query_id') ? map['callback_query_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42392,7 +40400,6 @@ class GetMessages extends TdFunction {
     vector<int53>? this.message_ids,
   });
 
-  @override
   GetMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42406,7 +40413,6 @@ class GetMessages extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42439,7 +40445,6 @@ class GetMessageThread extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   GetMessageThread.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42447,7 +40452,6 @@ class GetMessageThread extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42480,7 +40484,6 @@ class GetMessageViewers extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   GetMessageViewers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42488,7 +40491,6 @@ class GetMessageViewers extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42519,14 +40521,12 @@ class GetFile extends TdFunction {
     int32? this.file_id,
   });
 
-  @override
   GetFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_id = map.containsKey('file_id') ? map['file_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42558,7 +40558,6 @@ class GetRemoteFile extends TdFunction {
     FileType? this.file_type,
   });
 
-  @override
   GetRemoteFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42569,7 +40568,6 @@ class GetRemoteFile extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42602,7 +40600,6 @@ class LoadChats extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   LoadChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42612,7 +40609,6 @@ class LoadChats extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42645,7 +40641,6 @@ class GetChats extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42655,7 +40650,6 @@ class GetChats extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42686,14 +40680,12 @@ class SearchPublicChat extends TdFunction {
     string? this.username,
   });
 
-  @override
   SearchPublicChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     username = map.containsKey('username') ? map['username'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42723,14 +40715,12 @@ class SearchPublicChats extends TdFunction {
     string? this.query,
   });
 
-  @override
   SearchPublicChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     query = map.containsKey('query') ? map['query'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42762,7 +40752,6 @@ class SearchChats extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   SearchChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42770,7 +40759,6 @@ class SearchChats extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42803,7 +40791,6 @@ class SearchChatsOnServer extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   SearchChatsOnServer.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42811,7 +40798,6 @@ class SearchChatsOnServer extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42842,7 +40828,6 @@ class SearchChatsNearby extends TdFunction {
     Location? this.location,
   });
 
-  @override
   SearchChatsNearby.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42851,7 +40836,6 @@ class SearchChatsNearby extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42883,7 +40867,6 @@ class GetTopChats extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetTopChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42893,7 +40876,6 @@ class GetTopChats extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42926,7 +40908,6 @@ class RemoveTopChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   RemoveTopChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -42936,7 +40917,6 @@ class RemoveTopChat extends TdFunction {
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -42967,14 +40947,12 @@ class AddRecentlyFoundChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   AddRecentlyFoundChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43004,14 +40982,12 @@ class RemoveRecentlyFoundChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   RemoveRecentlyFoundChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43039,13 +41015,11 @@ class ClearRecentlyFoundChats extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ClearRecentlyFoundChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43074,14 +41048,12 @@ class GetRecentlyOpenedChats extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetRecentlyOpenedChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43113,7 +41085,6 @@ class CheckChatUsername extends TdFunction {
     string? this.username,
   });
 
-  @override
   CheckChatUsername.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43121,7 +41092,6 @@ class CheckChatUsername extends TdFunction {
     username = map.containsKey('username') ? map['username'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43152,7 +41122,6 @@ class GetCreatedPublicChats extends TdFunction {
     PublicChatType? this.type,
   });
 
-  @override
   GetCreatedPublicChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43161,7 +41130,6 @@ class GetCreatedPublicChats extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43191,7 +41159,6 @@ class CheckCreatedPublicChatsLimit extends TdFunction {
     PublicChatType? this.type,
   });
 
-  @override
   CheckCreatedPublicChatsLimit.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43200,7 +41167,6 @@ class CheckCreatedPublicChatsLimit extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43228,13 +41194,11 @@ class GetSuitableDiscussionChats extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetSuitableDiscussionChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43261,13 +41225,11 @@ class GetInactiveSupergroupChats extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetInactiveSupergroupChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43300,7 +41262,6 @@ class GetGroupsInCommon extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetGroupsInCommon.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43310,7 +41271,6 @@ class GetGroupsInCommon extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43350,7 +41310,6 @@ class GetChatHistory extends TdFunction {
     Bool? this.only_local,
   });
 
-  @override
   GetChatHistory.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43362,7 +41321,6 @@ class GetChatHistory extends TdFunction {
     only_local = map.containsKey('only_local') ? map['only_local'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43404,7 +41362,6 @@ class GetMessageThreadHistory extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetMessageThreadHistory.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43416,7 +41373,6 @@ class GetMessageThreadHistory extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43454,7 +41410,6 @@ class DeleteChatHistory extends TdFunction {
     Bool? this.revoke,
   });
 
-  @override
   DeleteChatHistory.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43465,7 +41420,6 @@ class DeleteChatHistory extends TdFunction {
     revoke = map.containsKey('revoke') ? map['revoke'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43498,14 +41452,12 @@ class DeleteChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   DeleteChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43549,7 +41501,6 @@ class SearchChatMessages extends TdFunction {
     int53? this.message_thread_id,
   });
 
-  @override
   SearchChatMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43569,7 +41520,6 @@ class SearchChatMessages extends TdFunction {
         map.containsKey('message_thread_id') ? map['message_thread_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43622,7 +41572,6 @@ class SearchMessages extends TdFunction {
     int32? this.max_date,
   });
 
-  @override
   SearchMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43643,7 +41592,6 @@ class SearchMessages extends TdFunction {
     max_date = map.containsKey('max_date') ? map['max_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43689,7 +41637,6 @@ class SearchSecretMessages extends TdFunction {
     SearchMessagesFilter? this.filter,
   });
 
-  @override
   SearchSecretMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43702,7 +41649,6 @@ class SearchSecretMessages extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43740,7 +41686,6 @@ class SearchCallMessages extends TdFunction {
     Bool? this.only_missed,
   });
 
-  @override
   SearchCallMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43750,7 +41695,6 @@ class SearchCallMessages extends TdFunction {
     only_missed = map.containsKey('only_missed') ? map['only_missed'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43782,14 +41726,12 @@ class DeleteAllCallMessages extends TdFunction {
     Bool? this.revoke,
   });
 
-  @override
   DeleteAllCallMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     revoke = map.containsKey('revoke') ? map['revoke'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43821,7 +41763,6 @@ class SearchChatRecentLocationMessages extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   SearchChatRecentLocationMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43829,7 +41770,6 @@ class SearchChatRecentLocationMessages extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43858,13 +41798,11 @@ class GetActiveLiveLocationMessages extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetActiveLiveLocationMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43895,7 +41833,6 @@ class GetChatMessageByDate extends TdFunction {
     int32? this.date,
   });
 
-  @override
   GetChatMessageByDate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43903,7 +41840,6 @@ class GetChatMessageByDate extends TdFunction {
     date = map.containsKey('date') ? map['date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43940,7 +41876,6 @@ class GetChatSparseMessagePositions extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetChatSparseMessagePositions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -43953,7 +41888,6 @@ class GetChatSparseMessagePositions extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -43990,7 +41924,6 @@ class GetChatMessageCalendar extends TdFunction {
     int53? this.from_message_id,
   });
 
-  @override
   GetChatMessageCalendar.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44002,7 +41935,6 @@ class GetChatMessageCalendar extends TdFunction {
         map.containsKey('from_message_id') ? map['from_message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44038,7 +41970,6 @@ class GetChatMessageCount extends TdFunction {
     Bool? this.return_local,
   });
 
-  @override
   GetChatMessageCount.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44049,7 +41980,6 @@ class GetChatMessageCount extends TdFunction {
     return_local = map.containsKey('return_local') ? map['return_local'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44081,14 +42011,12 @@ class GetChatScheduledMessages extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetChatScheduledMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44124,7 +42052,6 @@ class GetMessagePublicForwards extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetMessagePublicForwards.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44134,7 +42061,6 @@ class GetMessagePublicForwards extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44167,14 +42093,12 @@ class GetChatSponsoredMessage extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetChatSponsoredMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44206,7 +42130,6 @@ class RemoveNotification extends TdFunction {
     int32? this.notification_id,
   });
 
-  @override
   RemoveNotification.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44217,7 +42140,6 @@ class RemoveNotification extends TdFunction {
         map.containsKey('notification_id') ? map['notification_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44251,7 +42173,6 @@ class RemoveNotificationGroup extends TdFunction {
     int32? this.max_notification_id,
   });
 
-  @override
   RemoveNotificationGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44263,7 +42184,6 @@ class RemoveNotificationGroup extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44303,7 +42223,6 @@ class GetMessageLink extends TdFunction {
     Bool? this.for_comment,
   });
 
-  @override
   GetMessageLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44315,7 +42234,6 @@ class GetMessageLink extends TdFunction {
     for_comment = map.containsKey('for_comment') ? map['for_comment'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44353,7 +42271,6 @@ class GetMessageEmbeddingCode extends TdFunction {
     Bool? this.for_album,
   });
 
-  @override
   GetMessageEmbeddingCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44362,7 +42279,6 @@ class GetMessageEmbeddingCode extends TdFunction {
     for_album = map.containsKey('for_album') ? map['for_album'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44394,14 +42310,12 @@ class GetMessageLinkInfo extends TdFunction {
     string? this.url,
   });
 
-  @override
   GetMessageLinkInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     url = map.containsKey('url') ? map['url'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44431,14 +42345,12 @@ class GetChatAvailableMessageSenders extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetChatAvailableMessageSenders.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44470,7 +42382,6 @@ class SetChatMessageSender extends TdFunction {
     MessageSender? this.message_sender_id,
   });
 
-  @override
   SetChatMessageSender.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44480,7 +42391,6 @@ class SetChatMessageSender extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44521,7 +42431,6 @@ class SendMessage extends TdFunction {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   SendMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44542,7 +42451,6 @@ class SendMessage extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44586,7 +42494,6 @@ class SendMessageAlbum extends TdFunction {
     vector<InputMessageContent>? this.input_message_contents,
   });
 
-  @override
   SendMessageAlbum.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44610,7 +42517,6 @@ class SendMessageAlbum extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44649,7 +42555,6 @@ class SendBotStartMessage extends TdFunction {
     string? this.parameter,
   });
 
-  @override
   SendBotStartMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44658,7 +42563,6 @@ class SendBotStartMessage extends TdFunction {
     parameter = map.containsKey('parameter') ? map['parameter'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44702,7 +42606,6 @@ class SendInlineQueryResultMessage extends TdFunction {
     Bool? this.hide_via_bot,
   });
 
-  @override
   SendInlineQueryResultMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44720,7 +42623,6 @@ class SendInlineQueryResultMessage extends TdFunction {
     hide_via_bot = map.containsKey('hide_via_bot') ? map['hide_via_bot'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44768,7 +42670,6 @@ class ForwardMessages extends TdFunction {
     Bool? this.only_preview,
   });
 
-  @override
   ForwardMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44790,7 +42691,6 @@ class ForwardMessages extends TdFunction {
     only_preview = map.containsKey('only_preview') ? map['only_preview'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44828,7 +42728,6 @@ class ResendMessages extends TdFunction {
     vector<int53>? this.message_ids,
   });
 
-  @override
   ResendMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44842,7 +42741,6 @@ class ResendMessages extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44873,14 +42771,12 @@ class SendChatScreenshotTakenNotification extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   SendChatScreenshotTakenNotification.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44918,7 +42814,6 @@ class AddLocalMessage extends TdFunction {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   AddLocalMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44937,7 +42832,6 @@ class AddLocalMessage extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -44976,7 +42870,6 @@ class DeleteMessages extends TdFunction {
     Bool? this.revoke,
   });
 
-  @override
   DeleteMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -44991,7 +42884,6 @@ class DeleteMessages extends TdFunction {
     revoke = map.containsKey('revoke') ? map['revoke'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45025,7 +42917,6 @@ class DeleteChatMessagesBySender extends TdFunction {
     MessageSender? this.sender_id,
   });
 
-  @override
   DeleteChatMessagesBySender.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45035,7 +42926,6 @@ class DeleteChatMessagesBySender extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45072,7 +42962,6 @@ class DeleteChatMessagesByDate extends TdFunction {
     Bool? this.revoke,
   });
 
-  @override
   DeleteChatMessagesByDate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45082,7 +42971,6 @@ class DeleteChatMessagesByDate extends TdFunction {
     revoke = map.containsKey('revoke') ? map['revoke'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45121,7 +43009,6 @@ class EditMessageText extends TdFunction {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   EditMessageText.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45135,7 +43022,6 @@ class EditMessageText extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45179,7 +43065,6 @@ class EditMessageLiveLocation extends TdFunction {
     int32? this.proximity_alert_radius,
   });
 
-  @override
   EditMessageLiveLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45197,7 +43082,6 @@ class EditMessageLiveLocation extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45239,7 +43123,6 @@ class EditMessageMedia extends TdFunction {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   EditMessageMedia.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45253,7 +43136,6 @@ class EditMessageMedia extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45293,7 +43175,6 @@ class EditMessageCaption extends TdFunction {
     FormattedText? this.caption,
   });
 
-  @override
   EditMessageCaption.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45307,7 +43188,6 @@ class EditMessageCaption extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45344,7 +43224,6 @@ class EditMessageReplyMarkup extends TdFunction {
     ReplyMarkup? this.reply_markup,
   });
 
-  @override
   EditMessageReplyMarkup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45355,7 +43234,6 @@ class EditMessageReplyMarkup extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45391,7 +43269,6 @@ class EditInlineMessageText extends TdFunction {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   EditInlineMessageText.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45405,7 +43282,6 @@ class EditInlineMessageText extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45446,7 +43322,6 @@ class EditInlineMessageLiveLocation extends TdFunction {
     int32? this.proximity_alert_radius,
   });
 
-  @override
   EditInlineMessageLiveLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45464,7 +43339,6 @@ class EditInlineMessageLiveLocation extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45503,7 +43377,6 @@ class EditInlineMessageMedia extends TdFunction {
     InputMessageContent? this.input_message_content,
   });
 
-  @override
   EditInlineMessageMedia.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45517,7 +43390,6 @@ class EditInlineMessageMedia extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45554,7 +43426,6 @@ class EditInlineMessageCaption extends TdFunction {
     FormattedText? this.caption,
   });
 
-  @override
   EditInlineMessageCaption.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45568,7 +43439,6 @@ class EditInlineMessageCaption extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45602,7 +43472,6 @@ class EditInlineMessageReplyMarkup extends TdFunction {
     ReplyMarkup? this.reply_markup,
   });
 
-  @override
   EditInlineMessageReplyMarkup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45613,7 +43482,6 @@ class EditInlineMessageReplyMarkup extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45648,7 +43516,6 @@ class EditMessageSchedulingState extends TdFunction {
     MessageSchedulingState? this.scheduling_state,
   });
 
-  @override
   EditMessageSchedulingState.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45659,7 +43526,6 @@ class EditMessageSchedulingState extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45691,14 +43557,12 @@ class GetTextEntities extends TdFunction {
     string? this.text,
   });
 
-  @override
   GetTextEntities.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     text = map.containsKey('text') ? map['text'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45730,7 +43594,6 @@ class ParseTextEntities extends TdFunction {
     TextParseMode? this.parse_mode,
   });
 
-  @override
   ParseTextEntities.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45740,7 +43603,6 @@ class ParseTextEntities extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45771,7 +43633,6 @@ class ParseMarkdown extends TdFunction {
     FormattedText? this.text,
   });
 
-  @override
   ParseMarkdown.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45780,7 +43641,6 @@ class ParseMarkdown extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45810,7 +43670,6 @@ class GetMarkdownText extends TdFunction {
     FormattedText? this.text,
   });
 
-  @override
   GetMarkdownText.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45819,7 +43678,6 @@ class GetMarkdownText extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45849,14 +43707,12 @@ class GetFileMimeType extends TdFunction {
     string? this.file_name,
   });
 
-  @override
   GetFileMimeType.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_name = map.containsKey('file_name') ? map['file_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45886,14 +43742,12 @@ class GetFileExtension extends TdFunction {
     string? this.mime_type,
   });
 
-  @override
   GetFileExtension.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     mime_type = map.containsKey('mime_type') ? map['mime_type'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45923,14 +43777,12 @@ class CleanFileName extends TdFunction {
     string? this.file_name,
   });
 
-  @override
   CleanFileName.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_name = map.containsKey('file_name') ? map['file_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -45966,7 +43818,6 @@ class GetLanguagePackString extends TdFunction {
     string? this.key,
   });
 
-  @override
   GetLanguagePackString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -45981,7 +43832,6 @@ class GetLanguagePackString extends TdFunction {
     key = map.containsKey('key') ? map['key'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46015,14 +43865,12 @@ class GetJsonValue extends TdFunction {
     string? this.json,
   });
 
-  @override
   GetJsonValue.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     json = map.containsKey('json') ? map['json'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46052,7 +43900,6 @@ class GetJsonString extends TdFunction {
     JsonValue? this.json_value,
   });
 
-  @override
   GetJsonString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46061,7 +43908,6 @@ class GetJsonString extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46095,7 +43941,6 @@ class SetPollAnswer extends TdFunction {
     vector<int32>? this.option_ids,
   });
 
-  @override
   SetPollAnswer.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46110,7 +43955,6 @@ class SetPollAnswer extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46150,7 +43994,6 @@ class GetPollVoters extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetPollVoters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46161,7 +44004,6 @@ class GetPollVoters extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46199,7 +44041,6 @@ class StopPoll extends TdFunction {
     ReplyMarkup? this.reply_markup,
   });
 
-  @override
   StopPoll.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46210,7 +44051,6 @@ class StopPoll extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46242,7 +44082,6 @@ class HideSuggestedAction extends TdFunction {
     SuggestedAction? this.action,
   });
 
-  @override
   HideSuggestedAction.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46251,7 +44090,6 @@ class HideSuggestedAction extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46285,7 +44123,6 @@ class GetLoginUrlInfo extends TdFunction {
     int53? this.button_id,
   });
 
-  @override
   GetLoginUrlInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46294,7 +44131,6 @@ class GetLoginUrlInfo extends TdFunction {
     button_id = map.containsKey('button_id') ? map['button_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46332,7 +44168,6 @@ class GetLoginUrl extends TdFunction {
     Bool? this.allow_write_access,
   });
 
-  @override
   GetLoginUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46344,7 +44179,6 @@ class GetLoginUrl extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46385,7 +44219,6 @@ class GetInlineQueryResults extends TdFunction {
     string? this.offset,
   });
 
-  @override
   GetInlineQueryResults.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46398,7 +44231,6 @@ class GetInlineQueryResults extends TdFunction {
     offset = map.containsKey('offset') ? map['offset'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46444,7 +44276,6 @@ class AnswerInlineQuery extends TdFunction {
     string? this.switch_pm_parameter,
   });
 
-  @override
   AnswerInlineQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46468,7 +44299,6 @@ class AnswerInlineQuery extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46508,7 +44338,6 @@ class GetCallbackQueryAnswer extends TdFunction {
     CallbackQueryPayload? this.payload,
   });
 
-  @override
   GetCallbackQueryAnswer.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46519,7 +44348,6 @@ class GetCallbackQueryAnswer extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46559,7 +44387,6 @@ class AnswerCallbackQuery extends TdFunction {
     int32? this.cache_time,
   });
 
-  @override
   AnswerCallbackQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46571,7 +44398,6 @@ class AnswerCallbackQuery extends TdFunction {
     cache_time = map.containsKey('cache_time') ? map['cache_time'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46609,7 +44435,6 @@ class AnswerShippingQuery extends TdFunction {
     string? this.error_message,
   });
 
-  @override
   AnswerShippingQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46628,7 +44453,6 @@ class AnswerShippingQuery extends TdFunction {
         map.containsKey('error_message') ? map['error_message'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46662,7 +44486,6 @@ class AnswerPreCheckoutQuery extends TdFunction {
     string? this.error_message,
   });
 
-  @override
   AnswerPreCheckoutQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46673,7 +44496,6 @@ class AnswerPreCheckoutQuery extends TdFunction {
         map.containsKey('error_message') ? map['error_message'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46715,7 +44537,6 @@ class SetGameScore extends TdFunction {
     Bool? this.force,
   });
 
-  @override
   SetGameScore.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46727,7 +44548,6 @@ class SetGameScore extends TdFunction {
     force = map.containsKey('force') ? map['force'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46770,7 +44590,6 @@ class SetInlineGameScore extends TdFunction {
     Bool? this.force,
   });
 
-  @override
   SetInlineGameScore.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46782,7 +44601,6 @@ class SetInlineGameScore extends TdFunction {
     force = map.containsKey('force') ? map['force'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46820,7 +44638,6 @@ class GetGameHighScores extends TdFunction {
     int53? this.user_id,
   });
 
-  @override
   GetGameHighScores.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46829,7 +44646,6 @@ class GetGameHighScores extends TdFunction {
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46863,7 +44679,6 @@ class GetInlineGameHighScores extends TdFunction {
     int53? this.user_id,
   });
 
-  @override
   GetInlineGameHighScores.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46872,7 +44687,6 @@ class GetInlineGameHighScores extends TdFunction {
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46905,7 +44719,6 @@ class DeleteChatReplyMarkup extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   DeleteChatReplyMarkup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46913,7 +44726,6 @@ class DeleteChatReplyMarkup extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46948,7 +44760,6 @@ class SendChatAction extends TdFunction {
     ChatAction? this.action,
   });
 
-  @override
   SendChatAction.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -46960,7 +44771,6 @@ class SendChatAction extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -46992,14 +44802,12 @@ class OpenChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   OpenChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47029,14 +44837,12 @@ class CloseChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   CloseChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47072,7 +44878,6 @@ class ViewMessages extends TdFunction {
     Bool? this.force_read,
   });
 
-  @override
   ViewMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47089,7 +44894,6 @@ class ViewMessages extends TdFunction {
     force_read = map.containsKey('force_read') ? map['force_read'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47124,7 +44928,6 @@ class OpenMessageContent extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   OpenMessageContent.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47132,7 +44935,6 @@ class OpenMessageContent extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47165,7 +44967,6 @@ class ClickAnimatedEmojiMessage extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   ClickAnimatedEmojiMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47173,7 +44974,6 @@ class ClickAnimatedEmojiMessage extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47204,14 +45004,12 @@ class GetInternalLinkType extends TdFunction {
     string? this.link,
   });
 
-  @override
   GetInternalLinkType.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     link = map.containsKey('link') ? map['link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47241,14 +45039,12 @@ class GetExternalLinkInfo extends TdFunction {
     string? this.link,
   });
 
-  @override
   GetExternalLinkInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     link = map.containsKey('link') ? map['link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47280,7 +45076,6 @@ class GetExternalLink extends TdFunction {
     Bool? this.allow_write_access,
   });
 
-  @override
   GetExternalLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47290,7 +45085,6 @@ class GetExternalLink extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47321,14 +45115,12 @@ class ReadAllChatMentions extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   ReadAllChatMentions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47360,7 +45152,6 @@ class CreatePrivateChat extends TdFunction {
     Bool? this.force,
   });
 
-  @override
   CreatePrivateChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47368,7 +45159,6 @@ class CreatePrivateChat extends TdFunction {
     force = map.containsKey('force') ? map['force'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47401,7 +45191,6 @@ class CreateBasicGroupChat extends TdFunction {
     Bool? this.force,
   });
 
-  @override
   CreateBasicGroupChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47410,7 +45199,6 @@ class CreateBasicGroupChat extends TdFunction {
     force = map.containsKey('force') ? map['force'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47443,7 +45231,6 @@ class CreateSupergroupChat extends TdFunction {
     Bool? this.force,
   });
 
-  @override
   CreateSupergroupChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47452,7 +45239,6 @@ class CreateSupergroupChat extends TdFunction {
     force = map.containsKey('force') ? map['force'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47483,7 +45269,6 @@ class CreateSecretChat extends TdFunction {
     int32? this.secret_chat_id,
   });
 
-  @override
   CreateSecretChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47491,7 +45276,6 @@ class CreateSecretChat extends TdFunction {
         map.containsKey('secret_chat_id') ? map['secret_chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47523,7 +45307,6 @@ class CreateNewBasicGroupChat extends TdFunction {
     string? this.title,
   });
 
-  @override
   CreateNewBasicGroupChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47537,7 +45320,6 @@ class CreateNewBasicGroupChat extends TdFunction {
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47576,7 +45358,6 @@ class CreateNewSupergroupChat extends TdFunction {
     Bool? this.for_import,
   });
 
-  @override
   CreateNewSupergroupChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47589,7 +45370,6 @@ class CreateNewSupergroupChat extends TdFunction {
     for_import = map.containsKey('for_import') ? map['for_import'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47623,14 +45403,12 @@ class CreateNewSecretChat extends TdFunction {
     int53? this.user_id,
   });
 
-  @override
   CreateNewSecretChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47660,14 +45438,12 @@ class UpgradeBasicGroupChatToSupergroupChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   UpgradeBasicGroupChatToSupergroupChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47697,14 +45473,12 @@ class GetChatListsToAddChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetChatListsToAddChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47736,7 +45510,6 @@ class AddChatToList extends TdFunction {
     ChatList? this.chat_list,
   });
 
-  @override
   AddChatToList.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47746,7 +45519,6 @@ class AddChatToList extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47777,7 +45549,6 @@ class GetChatFilter extends TdFunction {
     int32? this.chat_filter_id,
   });
 
-  @override
   GetChatFilter.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47785,7 +45556,6 @@ class GetChatFilter extends TdFunction {
         map.containsKey('chat_filter_id') ? map['chat_filter_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47815,7 +45585,6 @@ class CreateChatFilter extends TdFunction {
     ChatFilter? this.filter,
   });
 
-  @override
   CreateChatFilter.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47824,7 +45593,6 @@ class CreateChatFilter extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47856,7 +45624,6 @@ class EditChatFilter extends TdFunction {
     ChatFilter? this.filter,
   });
 
-  @override
   EditChatFilter.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47867,7 +45634,6 @@ class EditChatFilter extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47898,7 +45664,6 @@ class DeleteChatFilter extends TdFunction {
     int32? this.chat_filter_id,
   });
 
-  @override
   DeleteChatFilter.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47906,7 +45671,6 @@ class DeleteChatFilter extends TdFunction {
         map.containsKey('chat_filter_id') ? map['chat_filter_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47936,7 +45700,6 @@ class ReorderChatFilters extends TdFunction {
     vector<int32>? this.chat_filter_ids,
   });
 
-  @override
   ReorderChatFilters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -47949,7 +45712,6 @@ class ReorderChatFilters extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -47977,13 +45739,11 @@ class GetRecommendedChatFilters extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetRecommendedChatFilters.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48012,7 +45772,6 @@ class GetChatFilterDefaultIconName extends TdFunction {
     ChatFilter? this.filter,
   });
 
-  @override
   GetChatFilterDefaultIconName.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48021,7 +45780,6 @@ class GetChatFilterDefaultIconName extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48053,7 +45811,6 @@ class SetChatTitle extends TdFunction {
     string? this.title,
   });
 
-  @override
   SetChatTitle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48061,7 +45818,6 @@ class SetChatTitle extends TdFunction {
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48094,7 +45850,6 @@ class SetChatPhoto extends TdFunction {
     InputChatPhoto? this.photo,
   });
 
-  @override
   SetChatPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48104,7 +45859,6 @@ class SetChatPhoto extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48137,7 +45891,6 @@ class SetChatMessageTtl extends TdFunction {
     int32? this.ttl,
   });
 
-  @override
   SetChatMessageTtl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48145,7 +45898,6 @@ class SetChatMessageTtl extends TdFunction {
     ttl = map.containsKey('ttl') ? map['ttl'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48178,7 +45930,6 @@ class SetChatPermissions extends TdFunction {
     ChatPermissions? this.permissions,
   });
 
-  @override
   SetChatPermissions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48188,7 +45939,6 @@ class SetChatPermissions extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48221,7 +45971,6 @@ class SetChatTheme extends TdFunction {
     string? this.theme_name,
   });
 
-  @override
   SetChatTheme.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48229,7 +45978,6 @@ class SetChatTheme extends TdFunction {
     theme_name = map.containsKey('theme_name') ? map['theme_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48264,7 +46012,6 @@ class SetChatDraftMessage extends TdFunction {
     DraftMessage? this.draft_message,
   });
 
-  @override
   SetChatDraftMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48276,7 +46023,6 @@ class SetChatDraftMessage extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48310,7 +46056,6 @@ class SetChatNotificationSettings extends TdFunction {
     ChatNotificationSettings? this.notification_settings,
   });
 
-  @override
   SetChatNotificationSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48321,7 +46066,6 @@ class SetChatNotificationSettings extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48355,7 +46099,6 @@ class ToggleChatHasProtectedContent extends TdFunction {
     Bool? this.has_protected_content,
   });
 
-  @override
   ToggleChatHasProtectedContent.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48365,7 +46108,6 @@ class ToggleChatHasProtectedContent extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48399,7 +46141,6 @@ class ToggleChatIsMarkedAsUnread extends TdFunction {
     Bool? this.is_marked_as_unread,
   });
 
-  @override
   ToggleChatIsMarkedAsUnread.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48409,7 +46150,6 @@ class ToggleChatIsMarkedAsUnread extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48442,7 +46182,6 @@ class ToggleChatDefaultDisableNotification extends TdFunction {
     Bool? this.default_disable_notification,
   });
 
-  @override
   ToggleChatDefaultDisableNotification.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48453,7 +46192,6 @@ class ToggleChatDefaultDisableNotification extends TdFunction {
             : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48487,7 +46225,6 @@ class SetChatClientData extends TdFunction {
     string? this.client_data,
   });
 
-  @override
   SetChatClientData.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48495,7 +46232,6 @@ class SetChatClientData extends TdFunction {
     client_data = map.containsKey('client_data') ? map['client_data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48528,7 +46264,6 @@ class SetChatDescription extends TdFunction {
     string? this.description,
   });
 
-  @override
   SetChatDescription.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48536,7 +46271,6 @@ class SetChatDescription extends TdFunction {
     description = map.containsKey('description') ? map['description'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48569,7 +46303,6 @@ class SetChatDiscussionGroup extends TdFunction {
     int53? this.discussion_chat_id,
   });
 
-  @override
   SetChatDiscussionGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48579,7 +46312,6 @@ class SetChatDiscussionGroup extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48612,7 +46344,6 @@ class SetChatLocation extends TdFunction {
     ChatLocation? this.location,
   });
 
-  @override
   SetChatLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48622,7 +46353,6 @@ class SetChatLocation extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48655,7 +46385,6 @@ class SetChatSlowModeDelay extends TdFunction {
     int32? this.slow_mode_delay,
   });
 
-  @override
   SetChatSlowModeDelay.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48664,7 +46393,6 @@ class SetChatSlowModeDelay extends TdFunction {
         map.containsKey('slow_mode_delay') ? map['slow_mode_delay'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48701,7 +46429,6 @@ class PinChatMessage extends TdFunction {
     Bool? this.only_for_self,
   });
 
-  @override
   PinChatMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48714,7 +46441,6 @@ class PinChatMessage extends TdFunction {
         map.containsKey('only_for_self') ? map['only_for_self'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48749,7 +46475,6 @@ class UnpinChatMessage extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   UnpinChatMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48757,7 +46482,6 @@ class UnpinChatMessage extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48788,14 +46512,12 @@ class UnpinAllChatMessages extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   UnpinAllChatMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48825,14 +46547,12 @@ class JoinChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   JoinChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48862,14 +46582,12 @@ class LeaveChat extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   LeaveChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48903,7 +46621,6 @@ class AddChatMember extends TdFunction {
     int32? this.forward_limit,
   });
 
-  @override
   AddChatMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48913,7 +46630,6 @@ class AddChatMember extends TdFunction {
         map.containsKey('forward_limit') ? map['forward_limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48947,7 +46663,6 @@ class AddChatMembers extends TdFunction {
     vector<int53>? this.user_ids,
   });
 
-  @override
   AddChatMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -48961,7 +46676,6 @@ class AddChatMembers extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -48996,7 +46710,6 @@ class SetChatMemberStatus extends TdFunction {
     ChatMemberStatus? this.status,
   });
 
-  @override
   SetChatMemberStatus.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49009,7 +46722,6 @@ class SetChatMemberStatus extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49047,7 +46759,6 @@ class BanChatMember extends TdFunction {
     Bool? this.revoke_messages,
   });
 
-  @override
   BanChatMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49061,7 +46772,6 @@ class BanChatMember extends TdFunction {
         map.containsKey('revoke_messages') ? map['revoke_messages'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49092,13 +46802,11 @@ class CanTransferOwnership extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   CanTransferOwnership.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49131,7 +46839,6 @@ class TransferChatOwnership extends TdFunction {
     string? this.password,
   });
 
-  @override
   TransferChatOwnership.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49140,7 +46847,6 @@ class TransferChatOwnership extends TdFunction {
     password = map.containsKey('password') ? map['password'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49174,7 +46880,6 @@ class GetChatMember extends TdFunction {
     MessageSender? this.member_id,
   });
 
-  @override
   GetChatMember.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49184,7 +46889,6 @@ class GetChatMember extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49221,7 +46925,6 @@ class SearchChatMembers extends TdFunction {
     ChatMembersFilter? this.filter,
   });
 
-  @override
   SearchChatMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49233,7 +46936,6 @@ class SearchChatMembers extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49266,14 +46968,12 @@ class GetChatAdministrators extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetChatAdministrators.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49303,7 +47003,6 @@ class ClearAllDraftMessages extends TdFunction {
     Bool? this.exclude_secret_chats,
   });
 
-  @override
   ClearAllDraftMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49312,7 +47011,6 @@ class ClearAllDraftMessages extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49344,7 +47042,6 @@ class GetChatNotificationSettingsExceptions extends TdFunction {
     Bool? this.compare_sound,
   });
 
-  @override
   GetChatNotificationSettingsExceptions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49355,7 +47052,6 @@ class GetChatNotificationSettingsExceptions extends TdFunction {
         map.containsKey('compare_sound') ? map['compare_sound'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49386,7 +47082,6 @@ class GetScopeNotificationSettings extends TdFunction {
     NotificationSettingsScope? this.scope,
   });
 
-  @override
   GetScopeNotificationSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49395,7 +47090,6 @@ class GetScopeNotificationSettings extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49427,7 +47121,6 @@ class SetScopeNotificationSettings extends TdFunction {
     ScopeNotificationSettings? this.notification_settings,
   });
 
-  @override
   SetScopeNotificationSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49440,7 +47133,6 @@ class SetScopeNotificationSettings extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49470,13 +47162,11 @@ class ResetAllNotificationSettings extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResetAllNotificationSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49509,7 +47199,6 @@ class ToggleChatIsPinned extends TdFunction {
     Bool? this.is_pinned,
   });
 
-  @override
   ToggleChatIsPinned.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49520,7 +47209,6 @@ class ToggleChatIsPinned extends TdFunction {
     is_pinned = map.containsKey('is_pinned') ? map['is_pinned'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49554,7 +47242,6 @@ class SetPinnedChats extends TdFunction {
     vector<int53>? this.chat_ids,
   });
 
-  @override
   SetPinnedChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49570,7 +47257,6 @@ class SetPinnedChats extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49609,7 +47295,6 @@ class DownloadFile extends TdFunction {
     Bool? this.synchronous,
   });
 
-  @override
   DownloadFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49620,7 +47305,6 @@ class DownloadFile extends TdFunction {
     synchronous = map.containsKey('synchronous') ? map['synchronous'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49656,7 +47340,6 @@ class GetFileDownloadedPrefixSize extends TdFunction {
     int32? this.offset,
   });
 
-  @override
   GetFileDownloadedPrefixSize.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49664,7 +47347,6 @@ class GetFileDownloadedPrefixSize extends TdFunction {
     offset = map.containsKey('offset') ? map['offset'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49697,7 +47379,6 @@ class CancelDownloadFile extends TdFunction {
     Bool? this.only_if_pending,
   });
 
-  @override
   CancelDownloadFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49706,7 +47387,6 @@ class CancelDownloadFile extends TdFunction {
         map.containsKey('only_if_pending') ? map['only_if_pending'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49739,7 +47419,6 @@ class GetSuggestedFileName extends TdFunction {
     string? this.directory,
   });
 
-  @override
   GetSuggestedFileName.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49747,7 +47426,6 @@ class GetSuggestedFileName extends TdFunction {
     directory = map.containsKey('directory') ? map['directory'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49782,7 +47460,6 @@ class UploadFile extends TdFunction {
     int32? this.priority,
   });
 
-  @override
   UploadFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49795,7 +47472,6 @@ class UploadFile extends TdFunction {
     priority = map.containsKey('priority') ? map['priority'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49827,14 +47503,12 @@ class CancelUploadFile extends TdFunction {
     int32? this.file_id,
   });
 
-  @override
   CancelUploadFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_id = map.containsKey('file_id') ? map['file_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49868,7 +47542,6 @@ class WriteGeneratedFilePart extends TdFunction {
     bytes? this.data,
   });
 
-  @override
   WriteGeneratedFilePart.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49878,7 +47551,6 @@ class WriteGeneratedFilePart extends TdFunction {
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49914,7 +47586,6 @@ class SetFileGenerationProgress extends TdFunction {
     int32? this.local_prefix_size,
   });
 
-  @override
   SetFileGenerationProgress.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49926,7 +47597,6 @@ class SetFileGenerationProgress extends TdFunction {
         map.containsKey('local_prefix_size') ? map['local_prefix_size'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -49960,7 +47630,6 @@ class FinishFileGeneration extends TdFunction {
     Error? this.error,
   });
 
-  @override
   FinishFileGeneration.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -49970,7 +47639,6 @@ class FinishFileGeneration extends TdFunction {
         map.containsKey('error') ? TlMap.fromMap(map['error']) as Error : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50005,7 +47673,6 @@ class ReadFilePart extends TdFunction {
     int32? this.count,
   });
 
-  @override
   ReadFilePart.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50014,7 +47681,6 @@ class ReadFilePart extends TdFunction {
     count = map.containsKey('count') ? map['count'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50046,14 +47712,12 @@ class DeleteFile extends TdFunction {
     int32? this.file_id,
   });
 
-  @override
   DeleteFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_id = map.containsKey('file_id') ? map['file_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50083,7 +47747,6 @@ class GetMessageFileType extends TdFunction {
     string? this.message_file_head,
   });
 
-  @override
   GetMessageFileType.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50091,7 +47754,6 @@ class GetMessageFileType extends TdFunction {
         map.containsKey('message_file_head') ? map['message_file_head'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50121,14 +47783,12 @@ class GetMessageImportConfirmationText extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetMessageImportConfirmationText.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50162,7 +47822,6 @@ class ImportMessages extends TdFunction {
     vector<InputFile>? this.attached_files,
   });
 
-  @override
   ImportMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50180,7 +47839,6 @@ class ImportMessages extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50212,14 +47870,12 @@ class ReplacePrimaryChatInviteLink extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   ReplacePrimaryChatInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50257,7 +47913,6 @@ class CreateChatInviteLink extends TdFunction {
     Bool? this.creates_join_request,
   });
 
-  @override
   CreateChatInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50271,7 +47926,6 @@ class CreateChatInviteLink extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50315,7 +47969,6 @@ class EditChatInviteLink extends TdFunction {
     Bool? this.creates_join_request,
   });
 
-  @override
   EditChatInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50330,7 +47983,6 @@ class EditChatInviteLink extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50367,7 +48019,6 @@ class GetChatInviteLink extends TdFunction {
     string? this.invite_link,
   });
 
-  @override
   GetChatInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50375,7 +48026,6 @@ class GetChatInviteLink extends TdFunction {
     invite_link = map.containsKey('invite_link') ? map['invite_link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50406,14 +48056,12 @@ class GetChatInviteLinkCounts extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetChatInviteLinkCounts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50453,7 +48101,6 @@ class GetChatInviteLinks extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetChatInviteLinks.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50468,7 +48115,6 @@ class GetChatInviteLinks extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50509,7 +48155,6 @@ class GetChatInviteLinkMembers extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetChatInviteLinkMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50521,7 +48166,6 @@ class GetChatInviteLinkMembers extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50556,7 +48200,6 @@ class RevokeChatInviteLink extends TdFunction {
     string? this.invite_link,
   });
 
-  @override
   RevokeChatInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50564,7 +48207,6 @@ class RevokeChatInviteLink extends TdFunction {
     invite_link = map.containsKey('invite_link') ? map['invite_link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50597,7 +48239,6 @@ class DeleteRevokedChatInviteLink extends TdFunction {
     string? this.invite_link,
   });
 
-  @override
   DeleteRevokedChatInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50605,7 +48246,6 @@ class DeleteRevokedChatInviteLink extends TdFunction {
     invite_link = map.containsKey('invite_link') ? map['invite_link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50638,7 +48278,6 @@ class DeleteAllRevokedChatInviteLinks extends TdFunction {
     int53? this.creator_user_id,
   });
 
-  @override
   DeleteAllRevokedChatInviteLinks.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50647,7 +48286,6 @@ class DeleteAllRevokedChatInviteLinks extends TdFunction {
         map.containsKey('creator_user_id') ? map['creator_user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50678,14 +48316,12 @@ class CheckChatInviteLink extends TdFunction {
     string? this.invite_link,
   });
 
-  @override
   CheckChatInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     invite_link = map.containsKey('invite_link') ? map['invite_link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50715,14 +48351,12 @@ class JoinChatByInviteLink extends TdFunction {
     string? this.invite_link,
   });
 
-  @override
   JoinChatByInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     invite_link = map.containsKey('invite_link') ? map['invite_link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50760,7 +48394,6 @@ class GetChatJoinRequests extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetChatJoinRequests.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50773,7 +48406,6 @@ class GetChatJoinRequests extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50811,7 +48443,6 @@ class ProcessChatJoinRequest extends TdFunction {
     Bool? this.approve,
   });
 
-  @override
   ProcessChatJoinRequest.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50820,7 +48451,6 @@ class ProcessChatJoinRequest extends TdFunction {
     approve = map.containsKey('approve') ? map['approve'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50856,7 +48486,6 @@ class ProcessChatJoinRequests extends TdFunction {
     Bool? this.approve,
   });
 
-  @override
   ProcessChatJoinRequests.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50865,7 +48494,6 @@ class ProcessChatJoinRequests extends TdFunction {
     approve = map.containsKey('approve') ? map['approve'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50901,7 +48529,6 @@ class CreateCall extends TdFunction {
     Bool? this.is_video,
   });
 
-  @override
   CreateCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50912,7 +48539,6 @@ class CreateCall extends TdFunction {
     is_video = map.containsKey('is_video') ? map['is_video'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50946,7 +48572,6 @@ class AcceptCall extends TdFunction {
     CallProtocol? this.protocol,
   });
 
-  @override
   AcceptCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50956,7 +48581,6 @@ class AcceptCall extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -50989,7 +48613,6 @@ class SendCallSignalingData extends TdFunction {
     bytes? this.data,
   });
 
-  @override
   SendCallSignalingData.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -50997,7 +48620,6 @@ class SendCallSignalingData extends TdFunction {
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51036,7 +48658,6 @@ class DiscardCall extends TdFunction {
     int64? this.connection_id,
   });
 
-  @override
   DiscardCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51049,7 +48670,6 @@ class DiscardCall extends TdFunction {
         map.containsKey('connection_id') ? map['connection_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51089,7 +48709,6 @@ class SendCallRating extends TdFunction {
     vector<CallProblem>? this.problems,
   });
 
-  @override
   SendCallRating.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51106,7 +48725,6 @@ class SendCallRating extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51141,7 +48759,6 @@ class SendCallDebugInformation extends TdFunction {
     string? this.debug_information,
   });
 
-  @override
   SendCallDebugInformation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51150,7 +48767,6 @@ class SendCallDebugInformation extends TdFunction {
         map.containsKey('debug_information') ? map['debug_information'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51181,14 +48797,12 @@ class GetVideoChatAvailableParticipants extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetVideoChatAvailableParticipants.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51220,7 +48834,6 @@ class SetVideoChatDefaultParticipant extends TdFunction {
     MessageSender? this.default_participant_id,
   });
 
-  @override
   SetVideoChatDefaultParticipant.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51230,7 +48843,6 @@ class SetVideoChatDefaultParticipant extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51266,7 +48878,6 @@ class CreateVideoChat extends TdFunction {
     int32? this.start_date,
   });
 
-  @override
   CreateVideoChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51275,7 +48886,6 @@ class CreateVideoChat extends TdFunction {
     start_date = map.containsKey('start_date') ? map['start_date'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51307,7 +48917,6 @@ class GetGroupCall extends TdFunction {
     int32? this.group_call_id,
   });
 
-  @override
   GetGroupCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51315,7 +48924,6 @@ class GetGroupCall extends TdFunction {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51345,7 +48953,6 @@ class StartScheduledGroupCall extends TdFunction {
     int32? this.group_call_id,
   });
 
-  @override
   StartScheduledGroupCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51353,7 +48960,6 @@ class StartScheduledGroupCall extends TdFunction {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51385,7 +48991,6 @@ class ToggleGroupCallEnabledStartNotification extends TdFunction {
     Bool? this.enabled_start_notification,
   });
 
-  @override
   ToggleGroupCallEnabledStartNotification.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51396,7 +49001,6 @@ class ToggleGroupCallEnabledStartNotification extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51440,7 +49044,6 @@ class JoinGroupCall extends TdFunction {
     string? this.invite_hash,
   });
 
-  @override
   JoinGroupCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51459,7 +49062,6 @@ class JoinGroupCall extends TdFunction {
     invite_hash = map.containsKey('invite_hash') ? map['invite_hash'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51499,7 +49101,6 @@ class StartGroupCallScreenSharing extends TdFunction {
     string? this.payload,
   });
 
-  @override
   StartGroupCallScreenSharing.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51510,7 +49111,6 @@ class StartGroupCallScreenSharing extends TdFunction {
     payload = map.containsKey('payload') ? map['payload'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51544,7 +49144,6 @@ class ToggleGroupCallScreenSharingIsPaused extends TdFunction {
     Bool? this.is_paused,
   });
 
-  @override
   ToggleGroupCallScreenSharingIsPaused.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51553,7 +49152,6 @@ class ToggleGroupCallScreenSharingIsPaused extends TdFunction {
     is_paused = map.containsKey('is_paused') ? map['is_paused'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51584,7 +49182,6 @@ class EndGroupCallScreenSharing extends TdFunction {
     int32? this.group_call_id,
   });
 
-  @override
   EndGroupCallScreenSharing.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51592,7 +49189,6 @@ class EndGroupCallScreenSharing extends TdFunction {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51624,7 +49220,6 @@ class SetGroupCallTitle extends TdFunction {
     string? this.title,
   });
 
-  @override
   SetGroupCallTitle.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51633,7 +49228,6 @@ class SetGroupCallTitle extends TdFunction {
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51666,7 +49260,6 @@ class ToggleGroupCallMuteNewParticipants extends TdFunction {
     Bool? this.mute_new_participants,
   });
 
-  @override
   ToggleGroupCallMuteNewParticipants.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51677,7 +49270,6 @@ class ToggleGroupCallMuteNewParticipants extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51711,7 +49303,6 @@ class InviteGroupCallParticipants extends TdFunction {
     vector<int53>? this.user_ids,
   });
 
-  @override
   InviteGroupCallParticipants.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51726,7 +49317,6 @@ class InviteGroupCallParticipants extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51759,7 +49349,6 @@ class GetGroupCallInviteLink extends TdFunction {
     Bool? this.can_self_unmute,
   });
 
-  @override
   GetGroupCallInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51769,7 +49358,6 @@ class GetGroupCallInviteLink extends TdFunction {
         map.containsKey('can_self_unmute') ? map['can_self_unmute'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51800,7 +49388,6 @@ class RevokeGroupCallInviteLink extends TdFunction {
     int32? this.group_call_id,
   });
 
-  @override
   RevokeGroupCallInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51808,7 +49395,6 @@ class RevokeGroupCallInviteLink extends TdFunction {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51844,7 +49430,6 @@ class StartGroupCallRecording extends TdFunction {
     Bool? this.use_portrait_orientation,
   });
 
-  @override
   StartGroupCallRecording.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51857,7 +49442,6 @@ class StartGroupCallRecording extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51891,7 +49475,6 @@ class EndGroupCallRecording extends TdFunction {
     int32? this.group_call_id,
   });
 
-  @override
   EndGroupCallRecording.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51899,7 +49482,6 @@ class EndGroupCallRecording extends TdFunction {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51931,7 +49513,6 @@ class ToggleGroupCallIsMyVideoPaused extends TdFunction {
     Bool? this.is_my_video_paused,
   });
 
-  @override
   ToggleGroupCallIsMyVideoPaused.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51942,7 +49523,6 @@ class ToggleGroupCallIsMyVideoPaused extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -51975,7 +49555,6 @@ class ToggleGroupCallIsMyVideoEnabled extends TdFunction {
     Bool? this.is_my_video_enabled,
   });
 
-  @override
   ToggleGroupCallIsMyVideoEnabled.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -51986,7 +49565,6 @@ class ToggleGroupCallIsMyVideoEnabled extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52021,7 +49599,6 @@ class SetGroupCallParticipantIsSpeaking extends TdFunction {
     Bool? this.is_speaking,
   });
 
-  @override
   SetGroupCallParticipantIsSpeaking.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52031,7 +49608,6 @@ class SetGroupCallParticipantIsSpeaking extends TdFunction {
     is_speaking = map.containsKey('is_speaking') ? map['is_speaking'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52067,7 +49643,6 @@ class ToggleGroupCallParticipantIsMuted extends TdFunction {
     Bool? this.is_muted,
   });
 
-  @override
   ToggleGroupCallParticipantIsMuted.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52079,7 +49654,6 @@ class ToggleGroupCallParticipantIsMuted extends TdFunction {
     is_muted = map.containsKey('is_muted') ? map['is_muted'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52115,7 +49689,6 @@ class SetGroupCallParticipantVolumeLevel extends TdFunction {
     int32? this.volume_level,
   });
 
-  @override
   SetGroupCallParticipantVolumeLevel.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52127,7 +49700,6 @@ class SetGroupCallParticipantVolumeLevel extends TdFunction {
     volume_level = map.containsKey('volume_level') ? map['volume_level'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52163,7 +49735,6 @@ class ToggleGroupCallParticipantIsHandRaised extends TdFunction {
     Bool? this.is_hand_raised,
   });
 
-  @override
   ToggleGroupCallParticipantIsHandRaised.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52176,7 +49747,6 @@ class ToggleGroupCallParticipantIsHandRaised extends TdFunction {
         map.containsKey('is_hand_raised') ? map['is_hand_raised'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52210,7 +49780,6 @@ class LoadGroupCallParticipants extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   LoadGroupCallParticipants.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52219,7 +49788,6 @@ class LoadGroupCallParticipants extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52250,7 +49818,6 @@ class LeaveGroupCall extends TdFunction {
     int32? this.group_call_id,
   });
 
-  @override
   LeaveGroupCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52258,7 +49825,6 @@ class LeaveGroupCall extends TdFunction {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52288,7 +49854,6 @@ class EndGroupCall extends TdFunction {
     int32? this.group_call_id,
   });
 
-  @override
   EndGroupCall.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52296,7 +49861,6 @@ class EndGroupCall extends TdFunction {
         map.containsKey('group_call_id') ? map['group_call_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52334,7 +49898,6 @@ class GetGroupCallStreamSegment extends TdFunction {
     GroupCallVideoQuality? this.video_quality,
   });
 
-  @override
   GetGroupCallStreamSegment.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52348,7 +49911,6 @@ class GetGroupCallStreamSegment extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52384,7 +49946,6 @@ class ToggleMessageSenderIsBlocked extends TdFunction {
     Bool? this.is_blocked,
   });
 
-  @override
   ToggleMessageSenderIsBlocked.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52394,7 +49955,6 @@ class ToggleMessageSenderIsBlocked extends TdFunction {
     is_blocked = map.containsKey('is_blocked') ? map['is_blocked'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52431,7 +49991,6 @@ class BlockMessageSenderFromReplies extends TdFunction {
     Bool? this.report_spam,
   });
 
-  @override
   BlockMessageSenderFromReplies.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52444,7 +50003,6 @@ class BlockMessageSenderFromReplies extends TdFunction {
     report_spam = map.containsKey('report_spam') ? map['report_spam'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52479,7 +50037,6 @@ class GetBlockedMessageSenders extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetBlockedMessageSenders.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52487,7 +50044,6 @@ class GetBlockedMessageSenders extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52520,7 +50076,6 @@ class AddContact extends TdFunction {
     Bool? this.share_phone_number,
   });
 
-  @override
   AddContact.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52532,7 +50087,6 @@ class AddContact extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52563,7 +50117,6 @@ class ImportContacts extends TdFunction {
     vector<Contact>? this.contacts,
   });
 
-  @override
   ImportContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52577,7 +50130,6 @@ class ImportContacts extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52605,13 +50157,11 @@ class GetContacts extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52642,7 +50192,6 @@ class SearchContacts extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   SearchContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52650,7 +50199,6 @@ class SearchContacts extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52681,7 +50229,6 @@ class RemoveContacts extends TdFunction {
     vector<int53>? this.user_ids,
   });
 
-  @override
   RemoveContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52694,7 +50241,6 @@ class RemoveContacts extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52722,13 +50268,11 @@ class GetImportedContactCount extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetImportedContactCount.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52757,7 +50301,6 @@ class ChangeImportedContacts extends TdFunction {
     vector<Contact>? this.contacts,
   });
 
-  @override
   ChangeImportedContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52771,7 +50314,6 @@ class ChangeImportedContacts extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52799,13 +50341,11 @@ class ClearImportedContacts extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ClearImportedContacts.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52834,14 +50374,12 @@ class SharePhoneNumber extends TdFunction {
     int53? this.user_id,
   });
 
-  @override
   SharePhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     user_id = map.containsKey('user_id') ? map['user_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52875,7 +50413,6 @@ class GetUserProfilePhotos extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetUserProfilePhotos.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52884,7 +50421,6 @@ class GetUserProfilePhotos extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52918,7 +50454,6 @@ class GetStickers extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetStickers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52926,7 +50461,6 @@ class GetStickers extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52959,7 +50493,6 @@ class SearchStickers extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   SearchStickers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -52967,7 +50500,6 @@ class SearchStickers extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -52998,14 +50530,12 @@ class GetInstalledStickerSets extends TdFunction {
     Bool? this.is_masks,
   });
 
-  @override
   GetInstalledStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     is_masks = map.containsKey('is_masks') ? map['is_masks'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53039,7 +50569,6 @@ class GetArchivedStickerSets extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetArchivedStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53050,7 +50579,6 @@ class GetArchivedStickerSets extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53085,7 +50613,6 @@ class GetTrendingStickerSets extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetTrendingStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53093,7 +50620,6 @@ class GetTrendingStickerSets extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53124,14 +50650,12 @@ class GetAttachedStickerSets extends TdFunction {
     int32? this.file_id,
   });
 
-  @override
   GetAttachedStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     file_id = map.containsKey('file_id') ? map['file_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53161,14 +50685,12 @@ class GetStickerSet extends TdFunction {
     int64? this.set_id,
   });
 
-  @override
   GetStickerSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     set_id = map.containsKey('set_id') ? map['set_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53198,14 +50720,12 @@ class SearchStickerSet extends TdFunction {
     string? this.name,
   });
 
-  @override
   SearchStickerSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     name = map.containsKey('name') ? map['name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53239,7 +50759,6 @@ class SearchInstalledStickerSets extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   SearchInstalledStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53248,7 +50767,6 @@ class SearchInstalledStickerSets extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53280,14 +50798,12 @@ class SearchStickerSets extends TdFunction {
     string? this.query,
   });
 
-  @override
   SearchStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     query = map.containsKey('query') ? map['query'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53321,7 +50837,6 @@ class ChangeStickerSet extends TdFunction {
     Bool? this.is_archived,
   });
 
-  @override
   ChangeStickerSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53330,7 +50845,6 @@ class ChangeStickerSet extends TdFunction {
     is_archived = map.containsKey('is_archived') ? map['is_archived'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53362,7 +50876,6 @@ class ViewTrendingStickerSets extends TdFunction {
     vector<int64>? this.sticker_set_ids,
   });
 
-  @override
   ViewTrendingStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53375,7 +50888,6 @@ class ViewTrendingStickerSets extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53407,7 +50919,6 @@ class ReorderInstalledStickerSets extends TdFunction {
     vector<int64>? this.sticker_set_ids,
   });
 
-  @override
   ReorderInstalledStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53421,7 +50932,6 @@ class ReorderInstalledStickerSets extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53452,14 +50962,12 @@ class GetRecentStickers extends TdFunction {
     Bool? this.is_attached,
   });
 
-  @override
   GetRecentStickers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     is_attached = map.containsKey('is_attached') ? map['is_attached'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53491,7 +50999,6 @@ class AddRecentSticker extends TdFunction {
     InputFile? this.sticker,
   });
 
-  @override
   AddRecentSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53501,7 +51008,6 @@ class AddRecentSticker extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53534,7 +51040,6 @@ class RemoveRecentSticker extends TdFunction {
     InputFile? this.sticker,
   });
 
-  @override
   RemoveRecentSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53544,7 +51049,6 @@ class RemoveRecentSticker extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53575,14 +51079,12 @@ class ClearRecentStickers extends TdFunction {
     Bool? this.is_attached,
   });
 
-  @override
   ClearRecentStickers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     is_attached = map.containsKey('is_attached') ? map['is_attached'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53610,13 +51112,11 @@ class GetFavoriteStickers extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetFavoriteStickers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53645,7 +51145,6 @@ class AddFavoriteSticker extends TdFunction {
     InputFile? this.sticker,
   });
 
-  @override
   AddFavoriteSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53654,7 +51153,6 @@ class AddFavoriteSticker extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53684,7 +51182,6 @@ class RemoveFavoriteSticker extends TdFunction {
     InputFile? this.sticker,
   });
 
-  @override
   RemoveFavoriteSticker.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53693,7 +51190,6 @@ class RemoveFavoriteSticker extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53723,7 +51219,6 @@ class GetStickerEmojis extends TdFunction {
     InputFile? this.sticker,
   });
 
-  @override
   GetStickerEmojis.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53732,7 +51227,6 @@ class GetStickerEmojis extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53766,7 +51260,6 @@ class SearchEmojis extends TdFunction {
     vector<string>? this.input_language_codes,
   });
 
-  @override
   SearchEmojis.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53782,7 +51275,6 @@ class SearchEmojis extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53814,14 +51306,12 @@ class GetAnimatedEmoji extends TdFunction {
     string? this.emoji,
   });
 
-  @override
   GetAnimatedEmoji.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     emoji = map.containsKey('emoji') ? map['emoji'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53851,7 +51341,6 @@ class GetEmojiSuggestionsUrl extends TdFunction {
     string? this.language_code,
   });
 
-  @override
   GetEmojiSuggestionsUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53859,7 +51348,6 @@ class GetEmojiSuggestionsUrl extends TdFunction {
         map.containsKey('language_code') ? map['language_code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53887,13 +51375,11 @@ class GetSavedAnimations extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetSavedAnimations.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53922,7 +51408,6 @@ class AddSavedAnimation extends TdFunction {
     InputFile? this.animation,
   });
 
-  @override
   AddSavedAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53931,7 +51416,6 @@ class AddSavedAnimation extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53961,7 +51445,6 @@ class RemoveSavedAnimation extends TdFunction {
     InputFile? this.animation,
   });
 
-  @override
   RemoveSavedAnimation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -53970,7 +51453,6 @@ class RemoveSavedAnimation extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -53998,13 +51480,11 @@ class GetRecentInlineBots extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetRecentInlineBots.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54035,7 +51515,6 @@ class SearchHashtags extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   SearchHashtags.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54043,7 +51522,6 @@ class SearchHashtags extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54074,14 +51552,12 @@ class RemoveRecentHashtag extends TdFunction {
     string? this.hashtag,
   });
 
-  @override
   RemoveRecentHashtag.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     hashtag = map.containsKey('hashtag') ? map['hashtag'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54111,7 +51587,6 @@ class GetWebPagePreview extends TdFunction {
     FormattedText? this.text,
   });
 
-  @override
   GetWebPagePreview.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54120,7 +51595,6 @@ class GetWebPagePreview extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54152,7 +51626,6 @@ class GetWebPageInstantView extends TdFunction {
     Bool? this.force_full,
   });
 
-  @override
   GetWebPageInstantView.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54160,7 +51633,6 @@ class GetWebPageInstantView extends TdFunction {
     force_full = map.containsKey('force_full') ? map['force_full'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54191,7 +51663,6 @@ class SetProfilePhoto extends TdFunction {
     InputChatPhoto? this.photo,
   });
 
-  @override
   SetProfilePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54200,7 +51671,6 @@ class SetProfilePhoto extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54230,7 +51700,6 @@ class DeleteProfilePhoto extends TdFunction {
     int64? this.profile_photo_id,
   });
 
-  @override
   DeleteProfilePhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54238,7 +51707,6 @@ class DeleteProfilePhoto extends TdFunction {
         map.containsKey('profile_photo_id') ? map['profile_photo_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54270,7 +51738,6 @@ class SetName extends TdFunction {
     string? this.last_name,
   });
 
-  @override
   SetName.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54278,7 +51745,6 @@ class SetName extends TdFunction {
     last_name = map.containsKey('last_name') ? map['last_name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54309,14 +51775,12 @@ class SetBio extends TdFunction {
     string? this.bio,
   });
 
-  @override
   SetBio.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     bio = map.containsKey('bio') ? map['bio'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54346,14 +51810,12 @@ class SetUsername extends TdFunction {
     string? this.username,
   });
 
-  @override
   SetUsername.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     username = map.containsKey('username') ? map['username'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54383,7 +51845,6 @@ class SetLocation extends TdFunction {
     Location? this.location,
   });
 
-  @override
   SetLocation.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54392,7 +51853,6 @@ class SetLocation extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54424,7 +51884,6 @@ class ChangePhoneNumber extends TdFunction {
     PhoneNumberAuthenticationSettings? this.settings,
   });
 
-  @override
   ChangePhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54434,7 +51893,6 @@ class ChangePhoneNumber extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54463,13 +51921,11 @@ class ResendChangePhoneNumberCode extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResendChangePhoneNumberCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54498,14 +51954,12 @@ class CheckChangePhoneNumberCode extends TdFunction {
     string? this.code,
   });
 
-  @override
   CheckChangePhoneNumberCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     code = map.containsKey('code') ? map['code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54539,7 +51993,6 @@ class SetCommands extends TdFunction {
     vector<BotCommand>? this.commands,
   });
 
-  @override
   SetCommands.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54558,7 +52011,6 @@ class SetCommands extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54592,7 +52044,6 @@ class DeleteCommands extends TdFunction {
     string? this.language_code,
   });
 
-  @override
   DeleteCommands.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54603,7 +52054,6 @@ class DeleteCommands extends TdFunction {
         map.containsKey('language_code') ? map['language_code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54636,7 +52086,6 @@ class GetCommands extends TdFunction {
     string? this.language_code,
   });
 
-  @override
   GetCommands.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54647,7 +52096,6 @@ class GetCommands extends TdFunction {
         map.containsKey('language_code') ? map['language_code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54676,13 +52124,11 @@ class GetActiveSessions extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetActiveSessions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54711,14 +52157,12 @@ class TerminateSession extends TdFunction {
     int64? this.session_id,
   });
 
-  @override
   TerminateSession.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     session_id = map.containsKey('session_id') ? map['session_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54746,13 +52190,11 @@ class TerminateAllOtherSessions extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   TerminateAllOtherSessions.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54783,7 +52225,6 @@ class ToggleSessionCanAcceptCalls extends TdFunction {
     Bool? this.can_accept_calls,
   });
 
-  @override
   ToggleSessionCanAcceptCalls.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54792,7 +52233,6 @@ class ToggleSessionCanAcceptCalls extends TdFunction {
         map.containsKey('can_accept_calls') ? map['can_accept_calls'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54825,7 +52265,6 @@ class ToggleSessionCanAcceptSecretChats extends TdFunction {
     Bool? this.can_accept_secret_chats,
   });
 
-  @override
   ToggleSessionCanAcceptSecretChats.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54835,7 +52274,6 @@ class ToggleSessionCanAcceptSecretChats extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54867,7 +52305,6 @@ class SetInactiveSessionTtl extends TdFunction {
     int32? this.inactive_session_ttl_days,
   });
 
-  @override
   SetInactiveSessionTtl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -54876,7 +52313,6 @@ class SetInactiveSessionTtl extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54905,13 +52341,11 @@ class GetConnectedWebsites extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetConnectedWebsites.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54940,14 +52374,12 @@ class DisconnectWebsite extends TdFunction {
     int64? this.website_id,
   });
 
-  @override
   DisconnectWebsite.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     website_id = map.containsKey('website_id') ? map['website_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -54975,13 +52407,11 @@ class DisconnectAllWebsites extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   DisconnectAllWebsites.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55012,7 +52442,6 @@ class SetSupergroupUsername extends TdFunction {
     string? this.username,
   });
 
-  @override
   SetSupergroupUsername.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55021,7 +52450,6 @@ class SetSupergroupUsername extends TdFunction {
     username = map.containsKey('username') ? map['username'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55054,7 +52482,6 @@ class SetSupergroupStickerSet extends TdFunction {
     int64? this.sticker_set_id,
   });
 
-  @override
   SetSupergroupStickerSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55064,7 +52491,6 @@ class SetSupergroupStickerSet extends TdFunction {
         map.containsKey('sticker_set_id') ? map['sticker_set_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55097,7 +52523,6 @@ class ToggleSupergroupSignMessages extends TdFunction {
     Bool? this.sign_messages,
   });
 
-  @override
   ToggleSupergroupSignMessages.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55107,7 +52532,6 @@ class ToggleSupergroupSignMessages extends TdFunction {
         map.containsKey('sign_messages') ? map['sign_messages'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55140,7 +52564,6 @@ class ToggleSupergroupIsAllHistoryAvailable extends TdFunction {
     Bool? this.is_all_history_available,
   });
 
-  @override
   ToggleSupergroupIsAllHistoryAvailable.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55151,7 +52574,6 @@ class ToggleSupergroupIsAllHistoryAvailable extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55183,7 +52605,6 @@ class ToggleSupergroupIsBroadcastGroup extends TdFunction {
     int53? this.supergroup_id,
   });
 
-  @override
   ToggleSupergroupIsBroadcastGroup.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55191,7 +52612,6 @@ class ToggleSupergroupIsBroadcastGroup extends TdFunction {
         map.containsKey('supergroup_id') ? map['supergroup_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55223,7 +52643,6 @@ class ReportSupergroupSpam extends TdFunction {
     vector<int53>? this.message_ids,
   });
 
-  @override
   ReportSupergroupSpam.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55238,7 +52657,6 @@ class ReportSupergroupSpam extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55275,7 +52693,6 @@ class GetSupergroupMembers extends TdFunction {
     int32? this.limit,
   });
 
-  @override
   GetSupergroupMembers.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55288,7 +52705,6 @@ class GetSupergroupMembers extends TdFunction {
     limit = map.containsKey('limit') ? map['limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55321,7 +52737,6 @@ class CloseSecretChat extends TdFunction {
     int32? this.secret_chat_id,
   });
 
-  @override
   CloseSecretChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55329,7 +52744,6 @@ class CloseSecretChat extends TdFunction {
         map.containsKey('secret_chat_id') ? map['secret_chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55369,7 +52783,6 @@ class GetChatEventLog extends TdFunction {
     vector<int53>? this.user_ids,
   });
 
-  @override
   GetChatEventLog.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55390,7 +52803,6 @@ class GetChatEventLog extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55429,7 +52841,6 @@ class GetPaymentForm extends TdFunction {
     PaymentFormTheme? this.theme,
   });
 
-  @override
   GetPaymentForm.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55440,7 +52851,6 @@ class GetPaymentForm extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55478,7 +52888,6 @@ class ValidateOrderInfo extends TdFunction {
     Bool? this.allow_save,
   });
 
-  @override
   ValidateOrderInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55490,7 +52899,6 @@ class ValidateOrderInfo extends TdFunction {
     allow_save = map.containsKey('allow_save') ? map['allow_save'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55535,7 +52943,6 @@ class SendPaymentForm extends TdFunction {
     int53? this.tip_amount,
   });
 
-  @override
   SendPaymentForm.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55554,7 +52961,6 @@ class SendPaymentForm extends TdFunction {
     tip_amount = map.containsKey('tip_amount') ? map['tip_amount'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55592,7 +52998,6 @@ class GetPaymentReceipt extends TdFunction {
     int53? this.message_id,
   });
 
-  @override
   GetPaymentReceipt.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55600,7 +53005,6 @@ class GetPaymentReceipt extends TdFunction {
     message_id = map.containsKey('message_id') ? map['message_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55629,13 +53033,11 @@ class GetSavedOrderInfo extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetSavedOrderInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55662,13 +53064,11 @@ class DeleteSavedOrderInfo extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   DeleteSavedOrderInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55695,13 +53095,11 @@ class DeleteSavedCredentials extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   DeleteSavedCredentials.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55728,13 +53126,11 @@ class GetSupportUser extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetSupportUser.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55763,7 +53159,6 @@ class GetBackgrounds extends TdFunction {
     Bool? this.for_dark_theme,
   });
 
-  @override
   GetBackgrounds.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55771,7 +53166,6 @@ class GetBackgrounds extends TdFunction {
         map.containsKey('for_dark_theme') ? map['for_dark_theme'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55803,7 +53197,6 @@ class GetBackgroundUrl extends TdFunction {
     BackgroundType? this.type,
   });
 
-  @override
   GetBackgroundUrl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55813,7 +53206,6 @@ class GetBackgroundUrl extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55844,14 +53236,12 @@ class SearchBackground extends TdFunction {
     string? this.name,
   });
 
-  @override
   SearchBackground.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     name = map.containsKey('name') ? map['name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55885,7 +53275,6 @@ class SetBackground extends TdFunction {
     Bool? this.for_dark_theme,
   });
 
-  @override
   SetBackground.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55899,7 +53288,6 @@ class SetBackground extends TdFunction {
         map.containsKey('for_dark_theme') ? map['for_dark_theme'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55931,7 +53319,6 @@ class RemoveBackground extends TdFunction {
     int64? this.background_id,
   });
 
-  @override
   RemoveBackground.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -55939,7 +53326,6 @@ class RemoveBackground extends TdFunction {
         map.containsKey('background_id') ? map['background_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -55967,13 +53353,11 @@ class ResetBackgrounds extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResetBackgrounds.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56002,14 +53386,12 @@ class GetLocalizationTargetInfo extends TdFunction {
     Bool? this.only_local,
   });
 
-  @override
   GetLocalizationTargetInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     only_local = map.containsKey('only_local') ? map['only_local'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56039,7 +53421,6 @@ class GetLanguagePackInfo extends TdFunction {
     string? this.language_pack_id,
   });
 
-  @override
   GetLanguagePackInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56047,7 +53428,6 @@ class GetLanguagePackInfo extends TdFunction {
         map.containsKey('language_pack_id') ? map['language_pack_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56079,7 +53459,6 @@ class GetLanguagePackStrings extends TdFunction {
     vector<string>? this.keys,
   });
 
-  @override
   GetLanguagePackStrings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56094,7 +53473,6 @@ class GetLanguagePackStrings extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56125,7 +53503,6 @@ class SynchronizeLanguagePack extends TdFunction {
     string? this.language_pack_id,
   });
 
-  @override
   SynchronizeLanguagePack.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56133,7 +53510,6 @@ class SynchronizeLanguagePack extends TdFunction {
         map.containsKey('language_pack_id') ? map['language_pack_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56163,7 +53539,6 @@ class AddCustomServerLanguagePack extends TdFunction {
     string? this.language_pack_id,
   });
 
-  @override
   AddCustomServerLanguagePack.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56171,7 +53546,6 @@ class AddCustomServerLanguagePack extends TdFunction {
         map.containsKey('language_pack_id') ? map['language_pack_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56203,7 +53577,6 @@ class SetCustomLanguagePack extends TdFunction {
     vector<LanguagePackString>? this.strings,
   });
 
-  @override
   SetCustomLanguagePack.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56220,7 +53593,6 @@ class SetCustomLanguagePack extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56251,7 +53623,6 @@ class EditCustomLanguagePackInfo extends TdFunction {
     LanguagePackInfo? this.info,
   });
 
-  @override
   EditCustomLanguagePackInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56260,7 +53631,6 @@ class EditCustomLanguagePackInfo extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56292,7 +53662,6 @@ class SetCustomLanguagePackString extends TdFunction {
     LanguagePackString? this.new_string,
   });
 
-  @override
   SetCustomLanguagePackString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56303,7 +53672,6 @@ class SetCustomLanguagePackString extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56334,7 +53702,6 @@ class DeleteLanguagePack extends TdFunction {
     string? this.language_pack_id,
   });
 
-  @override
   DeleteLanguagePack.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56342,7 +53709,6 @@ class DeleteLanguagePack extends TdFunction {
         map.containsKey('language_pack_id') ? map['language_pack_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56374,7 +53740,6 @@ class RegisterDevice extends TdFunction {
     vector<int53>? this.other_user_ids,
   });
 
-  @override
   RegisterDevice.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56390,7 +53755,6 @@ class RegisterDevice extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56421,14 +53785,12 @@ class ProcessPushNotification extends TdFunction {
     string? this.payload,
   });
 
-  @override
   ProcessPushNotification.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     payload = map.containsKey('payload') ? map['payload'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56458,14 +53820,12 @@ class GetPushReceiverId extends TdFunction {
     string? this.payload,
   });
 
-  @override
   GetPushReceiverId.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     payload = map.containsKey('payload') ? map['payload'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56495,14 +53855,12 @@ class GetRecentlyVisitedTMeUrls extends TdFunction {
     string? this.referrer,
   });
 
-  @override
   GetRecentlyVisitedTMeUrls.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     referrer = map.containsKey('referrer') ? map['referrer'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56534,7 +53892,6 @@ class SetUserPrivacySettingRules extends TdFunction {
     UserPrivacySettingRules? this.rules,
   });
 
-  @override
   SetUserPrivacySettingRules.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56546,7 +53903,6 @@ class SetUserPrivacySettingRules extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56577,7 +53933,6 @@ class GetUserPrivacySettingRules extends TdFunction {
     UserPrivacySetting? this.setting,
   });
 
-  @override
   GetUserPrivacySettingRules.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56586,7 +53941,6 @@ class GetUserPrivacySettingRules extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56616,14 +53970,12 @@ class GetOption extends TdFunction {
     string? this.name,
   });
 
-  @override
   GetOption.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     name = map.containsKey('name') ? map['name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56655,7 +54007,6 @@ class SetOption extends TdFunction {
     OptionValue? this.value,
   });
 
-  @override
   SetOption.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56665,7 +54016,6 @@ class SetOption extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56696,7 +54046,6 @@ class SetAccountTtl extends TdFunction {
     AccountTtl? this.ttl,
   });
 
-  @override
   SetAccountTtl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56704,7 +54053,6 @@ class SetAccountTtl extends TdFunction {
         map.containsKey('ttl') ? TlMap.fromMap(map['ttl']) as AccountTtl : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56732,13 +54080,11 @@ class GetAccountTtl extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetAccountTtl.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56767,14 +54113,12 @@ class DeleteAccount extends TdFunction {
     string? this.reason,
   });
 
-  @override
   DeleteAccount.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     reason = map.containsKey('reason') ? map['reason'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56804,14 +54148,12 @@ class RemoveChatActionBar extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   RemoveChatActionBar.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56847,7 +54189,6 @@ class ReportChat extends TdFunction {
     string? this.text,
   });
 
-  @override
   ReportChat.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56865,7 +54206,6 @@ class ReportChat extends TdFunction {
     text = map.containsKey('text') ? map['text'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56904,7 +54244,6 @@ class ReportChatPhoto extends TdFunction {
     string? this.text,
   });
 
-  @override
   ReportChatPhoto.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56916,7 +54255,6 @@ class ReportChatPhoto extends TdFunction {
     text = map.containsKey('text') ? map['text'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56951,7 +54289,6 @@ class GetChatStatistics extends TdFunction {
     Bool? this.is_dark,
   });
 
-  @override
   GetChatStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -56959,7 +54296,6 @@ class GetChatStatistics extends TdFunction {
     is_dark = map.containsKey('is_dark') ? map['is_dark'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -56994,7 +54330,6 @@ class GetMessageStatistics extends TdFunction {
     Bool? this.is_dark,
   });
 
-  @override
   GetMessageStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57003,7 +54338,6 @@ class GetMessageStatistics extends TdFunction {
     is_dark = map.containsKey('is_dark') ? map['is_dark'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57039,7 +54373,6 @@ class GetStatisticalGraph extends TdFunction {
     int53? this.x,
   });
 
-  @override
   GetStatisticalGraph.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57048,7 +54381,6 @@ class GetStatisticalGraph extends TdFunction {
     x = map.containsKey('x') ? map['x'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57080,14 +54412,12 @@ class GetStorageStatistics extends TdFunction {
     int32? this.chat_limit,
   });
 
-  @override
   GetStorageStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     chat_limit = map.containsKey('chat_limit') ? map['chat_limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57115,13 +54445,11 @@ class GetStorageStatisticsFast extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetStorageStatisticsFast.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57148,13 +54476,11 @@ class GetDatabaseStatistics extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetDatabaseStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57199,7 +54525,6 @@ class OptimizeStorage extends TdFunction {
     int32? this.chat_limit,
   });
 
-  @override
   OptimizeStorage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57238,7 +54563,6 @@ class OptimizeStorage extends TdFunction {
     chat_limit = map.containsKey('chat_limit') ? map['chat_limit'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57277,7 +54601,6 @@ class SetNetworkType extends TdFunction {
     NetworkType? this.type,
   });
 
-  @override
   SetNetworkType.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57286,7 +54609,6 @@ class SetNetworkType extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57316,14 +54638,12 @@ class GetNetworkStatistics extends TdFunction {
     Bool? this.only_current,
   });
 
-  @override
   GetNetworkStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     only_current = map.containsKey('only_current') ? map['only_current'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57353,7 +54673,6 @@ class AddNetworkStatistics extends TdFunction {
     NetworkStatisticsEntry? this.entry,
   });
 
-  @override
   AddNetworkStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57362,7 +54681,6 @@ class AddNetworkStatistics extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57390,13 +54708,11 @@ class ResetNetworkStatistics extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResetNetworkStatistics.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57423,13 +54739,11 @@ class GetAutoDownloadSettingsPresets extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetAutoDownloadSettingsPresets.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57460,7 +54774,6 @@ class SetAutoDownloadSettings extends TdFunction {
     NetworkType? this.type,
   });
 
-  @override
   SetAutoDownloadSettings.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57472,7 +54785,6 @@ class SetAutoDownloadSettings extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57503,7 +54815,6 @@ class GetBankCardInfo extends TdFunction {
     string? this.bank_card_number,
   });
 
-  @override
   GetBankCardInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57511,7 +54822,6 @@ class GetBankCardInfo extends TdFunction {
         map.containsKey('bank_card_number') ? map['bank_card_number'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57543,7 +54853,6 @@ class GetPassportElement extends TdFunction {
     string? this.password,
   });
 
-  @override
   GetPassportElement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57553,7 +54862,6 @@ class GetPassportElement extends TdFunction {
     password = map.containsKey('password') ? map['password'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57584,14 +54892,12 @@ class GetAllPassportElements extends TdFunction {
     string? this.password,
   });
 
-  @override
   GetAllPassportElements.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     password = map.containsKey('password') ? map['password'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57623,7 +54929,6 @@ class SetPassportElement extends TdFunction {
     string? this.password,
   });
 
-  @override
   SetPassportElement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57633,7 +54938,6 @@ class SetPassportElement extends TdFunction {
     password = map.containsKey('password') ? map['password'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57664,7 +54968,6 @@ class DeletePassportElement extends TdFunction {
     PassportElementType? this.type,
   });
 
-  @override
   DeletePassportElement.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57673,7 +54976,6 @@ class DeletePassportElement extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57705,7 +55007,6 @@ class SetPassportElementErrors extends TdFunction {
     vector<InputPassportElementError>? this.errors,
   });
 
-  @override
   SetPassportElementErrors.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57720,7 +55021,6 @@ class SetPassportElementErrors extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57751,14 +55051,12 @@ class GetPreferredCountryLanguage extends TdFunction {
     string? this.country_code,
   });
 
-  @override
   GetPreferredCountryLanguage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     country_code = map.containsKey('country_code') ? map['country_code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57790,7 +55088,6 @@ class SendPhoneNumberVerificationCode extends TdFunction {
     PhoneNumberAuthenticationSettings? this.settings,
   });
 
-  @override
   SendPhoneNumberVerificationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57800,7 +55097,6 @@ class SendPhoneNumberVerificationCode extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57829,13 +55125,11 @@ class ResendPhoneNumberVerificationCode extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResendPhoneNumberVerificationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57864,14 +55158,12 @@ class CheckPhoneNumberVerificationCode extends TdFunction {
     string? this.code,
   });
 
-  @override
   CheckPhoneNumberVerificationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     code = map.containsKey('code') ? map['code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57901,7 +55193,6 @@ class SendEmailAddressVerificationCode extends TdFunction {
     string? this.email_address,
   });
 
-  @override
   SendEmailAddressVerificationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -57909,7 +55200,6 @@ class SendEmailAddressVerificationCode extends TdFunction {
         map.containsKey('email_address') ? map['email_address'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57937,13 +55227,11 @@ class ResendEmailAddressVerificationCode extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResendEmailAddressVerificationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -57972,14 +55260,12 @@ class CheckEmailAddressVerificationCode extends TdFunction {
     string? this.code,
   });
 
-  @override
   CheckEmailAddressVerificationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     code = map.containsKey('code') ? map['code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58015,7 +55301,6 @@ class GetPassportAuthorizationForm extends TdFunction {
     string? this.nonce,
   });
 
-  @override
   GetPassportAuthorizationForm.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58025,7 +55310,6 @@ class GetPassportAuthorizationForm extends TdFunction {
     nonce = map.containsKey('nonce') ? map['nonce'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58060,7 +55344,6 @@ class GetPassportAuthorizationFormAvailableElements extends TdFunction {
     string? this.password,
   });
 
-  @override
   GetPassportAuthorizationFormAvailableElements.fromMap(
       Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
@@ -58071,7 +55354,6 @@ class GetPassportAuthorizationFormAvailableElements extends TdFunction {
     password = map.containsKey('password') ? map['password'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58104,7 +55386,6 @@ class SendPassportAuthorizationForm extends TdFunction {
     vector<PassportElementType>? this.types,
   });
 
-  @override
   SendPassportAuthorizationForm.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58121,7 +55402,6 @@ class SendPassportAuthorizationForm extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58156,7 +55436,6 @@ class SendPhoneNumberConfirmationCode extends TdFunction {
     PhoneNumberAuthenticationSettings? this.settings,
   });
 
-  @override
   SendPhoneNumberConfirmationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58167,7 +55446,6 @@ class SendPhoneNumberConfirmationCode extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58197,13 +55475,11 @@ class ResendPhoneNumberConfirmationCode extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   ResendPhoneNumberConfirmationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58232,14 +55508,12 @@ class CheckPhoneNumberConfirmationCode extends TdFunction {
     string? this.code,
   });
 
-  @override
   CheckPhoneNumberConfirmationCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     code = map.containsKey('code') ? map['code'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58271,7 +55545,6 @@ class SetBotUpdatesStatus extends TdFunction {
     string? this.error_message,
   });
 
-  @override
   SetBotUpdatesStatus.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58282,7 +55555,6 @@ class SetBotUpdatesStatus extends TdFunction {
         map.containsKey('error_message') ? map['error_message'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58315,7 +55587,6 @@ class UploadStickerFile extends TdFunction {
     InputSticker? this.sticker,
   });
 
-  @override
   UploadStickerFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58325,7 +55596,6 @@ class UploadStickerFile extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58356,14 +55626,12 @@ class GetSuggestedStickerSetName extends TdFunction {
     string? this.title,
   });
 
-  @override
   GetSuggestedStickerSetName.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     title = map.containsKey('title') ? map['title'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58393,14 +55661,12 @@ class CheckStickerSetName extends TdFunction {
     string? this.name,
   });
 
-  @override
   CheckStickerSetName.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     name = map.containsKey('name') ? map['name'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58440,7 +55706,6 @@ class CreateNewStickerSet extends TdFunction {
     string? this.source,
   });
 
-  @override
   CreateNewStickerSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58459,7 +55724,6 @@ class CreateNewStickerSet extends TdFunction {
     source = map.containsKey('source') ? map['source'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58498,7 +55762,6 @@ class AddStickerToSet extends TdFunction {
     InputSticker? this.sticker,
   });
 
-  @override
   AddStickerToSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58509,7 +55772,6 @@ class AddStickerToSet extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58545,7 +55807,6 @@ class SetStickerSetThumbnail extends TdFunction {
     InputFile? this.thumbnail,
   });
 
-  @override
   SetStickerSetThumbnail.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58556,7 +55817,6 @@ class SetStickerSetThumbnail extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58590,7 +55850,6 @@ class SetStickerPositionInSet extends TdFunction {
     int32? this.position,
   });
 
-  @override
   SetStickerPositionInSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58600,7 +55859,6 @@ class SetStickerPositionInSet extends TdFunction {
     position = map.containsKey('position') ? map['position'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58631,7 +55889,6 @@ class RemoveStickerFromSet extends TdFunction {
     InputFile? this.sticker,
   });
 
-  @override
   RemoveStickerFromSet.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58640,7 +55897,6 @@ class RemoveStickerFromSet extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58680,7 +55936,6 @@ class GetMapThumbnailFile extends TdFunction {
     int53? this.chat_id,
   });
 
-  @override
   GetMapThumbnailFile.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58694,7 +55949,6 @@ class GetMapThumbnailFile extends TdFunction {
     chat_id = map.containsKey('chat_id') ? map['chat_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58729,7 +55983,6 @@ class AcceptTermsOfService extends TdFunction {
     string? this.terms_of_service_id,
   });
 
-  @override
   AcceptTermsOfService.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58738,7 +55991,6 @@ class AcceptTermsOfService extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58770,7 +56022,6 @@ class SendCustomRequest extends TdFunction {
     string? this.parameters,
   });
 
-  @override
   SendCustomRequest.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58778,7 +56029,6 @@ class SendCustomRequest extends TdFunction {
     parameters = map.containsKey('parameters') ? map['parameters'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58811,7 +56061,6 @@ class AnswerCustomQuery extends TdFunction {
     string? this.data,
   });
 
-  @override
   AnswerCustomQuery.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58820,7 +56069,6 @@ class AnswerCustomQuery extends TdFunction {
     data = map.containsKey('data') ? map['data'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58851,14 +56099,12 @@ class SetAlarm extends TdFunction {
     double? this.seconds,
   });
 
-  @override
   SetAlarm.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     seconds = map.containsKey('seconds') ? map['seconds'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58886,13 +56132,11 @@ class GetCountries extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetCountries.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58919,13 +56163,11 @@ class GetCountryCode extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetCountryCode.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58954,7 +56196,6 @@ class GetPhoneNumberInfo extends TdFunction {
     string? this.phone_number_prefix,
   });
 
-  @override
   GetPhoneNumberInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -58963,7 +56204,6 @@ class GetPhoneNumberInfo extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -58995,7 +56235,6 @@ class GetPhoneNumberInfoSync extends TdFunction {
     string? this.phone_number_prefix,
   });
 
-  @override
   GetPhoneNumberInfoSync.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59006,7 +56245,6 @@ class GetPhoneNumberInfoSync extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59035,13 +56273,11 @@ class GetApplicationDownloadLink extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetApplicationDownloadLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59070,14 +56306,12 @@ class GetDeepLinkInfo extends TdFunction {
     string? this.link,
   });
 
-  @override
   GetDeepLinkInfo.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     link = map.containsKey('link') ? map['link'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59105,13 +56339,11 @@ class GetApplicationConfig extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetApplicationConfig.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59144,7 +56376,6 @@ class SaveApplicationLogEvent extends TdFunction {
     JsonValue? this.data,
   });
 
-  @override
   SaveApplicationLogEvent.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59155,7 +56386,6 @@ class SaveApplicationLogEvent extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59193,7 +56423,6 @@ class AddProxy extends TdFunction {
     ProxyType? this.type,
   });
 
-  @override
   AddProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59205,7 +56434,6 @@ class AddProxy extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59246,7 +56474,6 @@ class EditProxy extends TdFunction {
     ProxyType? this.type,
   });
 
-  @override
   EditProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59259,7 +56486,6 @@ class EditProxy extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59293,14 +56519,12 @@ class EnableProxy extends TdFunction {
     int32? this.proxy_id,
   });
 
-  @override
   EnableProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     proxy_id = map.containsKey('proxy_id') ? map['proxy_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59328,13 +56552,11 @@ class DisableProxy extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   DisableProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59363,14 +56585,12 @@ class RemoveProxy extends TdFunction {
     int32? this.proxy_id,
   });
 
-  @override
   RemoveProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     proxy_id = map.containsKey('proxy_id') ? map['proxy_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59398,13 +56618,11 @@ class GetProxies extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetProxies.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59433,14 +56651,12 @@ class GetProxyLink extends TdFunction {
     int32? this.proxy_id,
   });
 
-  @override
   GetProxyLink.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     proxy_id = map.containsKey('proxy_id') ? map['proxy_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59470,14 +56686,12 @@ class PingProxy extends TdFunction {
     int32? this.proxy_id,
   });
 
-  @override
   PingProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     proxy_id = map.containsKey('proxy_id') ? map['proxy_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59507,7 +56721,6 @@ class SetLogStream extends TdFunction {
     LogStream? this.log_stream,
   });
 
-  @override
   SetLogStream.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59516,7 +56729,6 @@ class SetLogStream extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59544,13 +56756,11 @@ class GetLogStream extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetLogStream.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59579,7 +56789,6 @@ class SetLogVerbosityLevel extends TdFunction {
     int32? this.new_verbosity_level,
   });
 
-  @override
   SetLogVerbosityLevel.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59588,7 +56797,6 @@ class SetLogVerbosityLevel extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59616,13 +56824,11 @@ class GetLogVerbosityLevel extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetLogVerbosityLevel.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59649,13 +56855,11 @@ class GetLogTags extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   GetLogTags.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59686,7 +56890,6 @@ class SetLogTagVerbosityLevel extends TdFunction {
     int32? this.new_verbosity_level,
   });
 
-  @override
   SetLogTagVerbosityLevel.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59696,7 +56899,6 @@ class SetLogTagVerbosityLevel extends TdFunction {
         : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59727,14 +56929,12 @@ class GetLogTagVerbosityLevel extends TdFunction {
     string? this.tag,
   });
 
-  @override
   GetLogTagVerbosityLevel.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     tag = map.containsKey('tag') ? map['tag'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59766,7 +56966,6 @@ class AddLogMessage extends TdFunction {
     string? this.text,
   });
 
-  @override
   AddLogMessage.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59775,7 +56974,6 @@ class AddLogMessage extends TdFunction {
     text = map.containsKey('text') ? map['text'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59804,13 +57002,11 @@ class TestCallEmpty extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   TestCallEmpty.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59839,14 +57035,12 @@ class TestCallString extends TdFunction {
     string? this.x,
   });
 
-  @override
   TestCallString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     x = map.containsKey('x') ? map['x'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59876,14 +57070,12 @@ class TestCallBytes extends TdFunction {
     bytes? this.x,
   });
 
-  @override
   TestCallBytes.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     x = map.containsKey('x') ? map['x'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59913,7 +57105,6 @@ class TestCallVectorInt extends TdFunction {
     vector<int32>? this.x,
   });
 
-  @override
   TestCallVectorInt.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59926,7 +57117,6 @@ class TestCallVectorInt extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -59956,7 +57146,6 @@ class TestCallVectorIntObject extends TdFunction {
     vector<TestInt>? this.x,
   });
 
-  @override
   TestCallVectorIntObject.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -59970,7 +57159,6 @@ class TestCallVectorIntObject extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -60000,7 +57188,6 @@ class TestCallVectorString extends TdFunction {
     vector<string>? this.x,
   });
 
-  @override
   TestCallVectorString.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -60013,7 +57200,6 @@ class TestCallVectorString extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -60043,7 +57229,6 @@ class TestCallVectorStringObject extends TdFunction {
     vector<TestString>? this.x,
   });
 
-  @override
   TestCallVectorStringObject.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -60057,7 +57242,6 @@ class TestCallVectorStringObject extends TdFunction {
     }
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -60087,14 +57271,12 @@ class TestSquareInt extends TdFunction {
     int32? this.x,
   });
 
-  @override
   TestSquareInt.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
     x = map.containsKey('x') ? map['x'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -60122,13 +57304,11 @@ class TestNetwork extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   TestNetwork.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -60165,7 +57345,6 @@ class TestProxy extends TdFunction {
     double? this.timeout,
   });
 
-  @override
   TestProxy.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -60178,7 +57357,6 @@ class TestProxy extends TdFunction {
     timeout = map.containsKey('timeout') ? map['timeout'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -60210,13 +57388,11 @@ class TestGetDifference extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   TestGetDifference.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -60243,13 +57419,11 @@ class TestUseUpdate extends TdFunction {
     int? this.client_id,
   });
 
-  @override
   TestUseUpdate.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
@@ -60278,7 +57452,6 @@ class TestReturnError extends TdFunction {
     Error? this.error,
   });
 
-  @override
   TestReturnError.fromMap(Map<String, dynamic> map) {
     extra = map.containsKey('@extra') ? map['@extra'] : null;
     client_id = map.containsKey('@client_id') ? map['@client_id'] : null;
@@ -60286,7 +57459,6 @@ class TestReturnError extends TdFunction {
         map.containsKey('error') ? TlMap.fromMap(map['error']) as Error : null;
   }
 
-  @override
   Map<String, dynamic> toMap({skipNulls = true}) {
     Map<String, dynamic> map = {
       '@type': tlType,
