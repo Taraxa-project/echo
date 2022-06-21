@@ -11,11 +11,13 @@ class TelegramCommandsChats extends TelegramCommand {
     initLogger();
 
     final TelegramClient telegramClient = TelegramClient(
-        libtdjsonPath: globalResults!['libtdjson-path'],
-        apiId: int.parse(globalResults!['api-id']),
-        apiHash: globalResults!['api-hash'],
-        phoneNumber: globalResults!['phone-number'],
-        libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']));
+      libtdjsonPath: globalResults!['libtdjson-path'],
+      apiId: int.parse(globalResults!['api-id']),
+      apiHash: globalResults!['api-hash'],
+      phoneNumber: globalResults!['phone-number'],
+      libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']),
+      databasePath: globalResults!['database-path'],
+    );
 
     await telegramClient
         .signUp((this.runner as TelegramCommandRunner).readTelegramCode);
