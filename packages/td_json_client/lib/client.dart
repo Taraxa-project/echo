@@ -10,6 +10,12 @@ mixin TdJsonClientLoggy implements LoggyType {
   @override
   Loggy<TdJsonClientLoggy> get loggy =>
       Loggy<TdJsonClientLoggy>('$runtimeType');
+
+  void setLogLevel(String logLevelName) {
+    loggy.level = LogOptions(LogLevel.values.firstWhere(
+        (element) => element.name == logLevelName,
+        orElse: () => LogLevel.all));
+  }
 }
 
 class TdJsonClient with TdJsonClientLoggy {
@@ -21,8 +27,8 @@ class TdJsonClient with TdJsonClientLoggy {
   TdJsonClient(
       {required String this.libtdjsonPath,
       int this.libtdjsonLoglevel = 1,
-      logLevelName = 'Error'}) {
-    initLogger(logLevelName);
+      loglevel = 'Error'}) {
+    setLogLevel(loglevel);
 
     loggy.debug('Loading libdtjson from $libtdjsonPath...');
     _libTdJson = LibTdJson(ffi.DynamicLibrary.open(libtdjsonPath));
@@ -74,19 +80,5 @@ class TdJsonClient with TdJsonClientLoggy {
         }
       }
     }
-  }
-
-  void initLogger(String logLevelName) {
-    var logLevel = LogLevel.values.firstWhere(
-        (element) => element.name == logLevelName,
-        orElse: () => LogLevel.all);
-    var logOptions = LogOptions(logLevel);
-
-    Loggy.initLoggy(
-        logPrinter: const PrettyPrinter(),
-        logOptions: logOptions,
-        hierarchicalLogging: true);
-
-    loggy.level = logOptions;
   }
 }

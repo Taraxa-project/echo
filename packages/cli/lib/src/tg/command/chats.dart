@@ -8,7 +8,7 @@ class TelegramCommandsChats extends TelegramCommand {
   final description = 'List the chats for a Telegram account.';
 
   void run() async {
-    initLogger();
+    setLogLevel(globalResults!['loglevel']);
 
     final TelegramClient telegramClient = TelegramClient(
       libtdjsonPath: globalResults!['libtdjson-path'],
@@ -17,6 +17,7 @@ class TelegramCommandsChats extends TelegramCommand {
       phoneNumber: globalResults!['phone-number'],
       libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']),
       databasePath: globalResults!['database-path'],
+      loglevel: globalResults!['loglevel'],
     );
 
     var clientId = telegramClient.createClientId();

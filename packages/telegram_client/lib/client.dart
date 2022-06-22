@@ -7,6 +7,12 @@ mixin TelegramClientLoggy implements LoggyType {
   @override
   Loggy<TelegramClientLoggy> get loggy =>
       Loggy<TelegramClientLoggy>('$runtimeType');
+
+  void setLogLevel(String logLevelName) {
+    loggy.level = LogOptions(LogLevel.values.firstWhere(
+        (element) => element.name == logLevelName,
+        orElse: () => LogLevel.all));
+  }
 }
 
 class TelegramClient with TelegramClientLoggy {
@@ -31,12 +37,12 @@ class TelegramClient with TelegramClientLoggy {
       required String this.phoneNumber,
       required String this.databasePath,
       int libtdjsonLoglevel = 1,
-      logLevelName = 'Error'})
+      loglevel = 'Error'})
       : _tdJsonClient = TdJsonClient(
             libtdjsonPath: libtdjsonPath,
             libtdjsonLoglevel: libtdjsonLoglevel,
-            logLevelName: logLevelName) {
-    initLogger(logLevelName);
+            loglevel: loglevel) {
+    setLogLevel(loglevel);
   }
 
   int createClientId() {
@@ -120,19 +126,5 @@ class TelegramClient with TelegramClientLoggy {
 
   void execute(dynamic request) {
     _tdJsonClient.execute(request);
-  }
-
-  void initLogger(String logLevelName) {
-    var logLevel = LogLevel.values.firstWhere(
-        (element) => element.name == logLevelName,
-        orElse: () => LogLevel.all);
-    var logOptions = LogOptions(logLevel);
-
-    Loggy.initLoggy(
-        logPrinter: const PrettyPrinter(),
-        logOptions: logOptions,
-        hierarchicalLogging: true);
-
-    loggy.level = logOptions;
   }
 }
