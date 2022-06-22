@@ -1,16 +1,16 @@
-import 'package:echo_cli/src/tg/tg_command.dart';
-import 'package:echo_cli/src/tg/tg_command_runner.dart';
+import 'package:echo_cli/src/tg/command/base.dart';
+import 'package:echo_cli/src/tg/command/runner.dart';
 
-import 'package:telegram_client/telegram_client.dart';
+import 'package:telegram_client/client.dart';
 
-class TelegramCommandSignup extends TelegramCommand {
-  final name = 'signup';
-  final description = 'Sign up a Telegram account.';
+class TelegramCommandLogin extends TelegramCommand {
+  final name = 'login';
+  final description = 'Login a Telegram account.';
 
   void run() async {
     initLogger();
 
-    final TelegramClient telegramClient = TelegramClient(
+    final telegramClient = TelegramClient(
       libtdjsonPath: globalResults!['libtdjson-path'],
       apiId: int.parse(globalResults!['api-id']),
       apiHash: globalResults!['api-hash'],
@@ -19,8 +19,13 @@ class TelegramCommandSignup extends TelegramCommand {
       databasePath: globalResults!['database-path'],
     );
 
-    await telegramClient
-        .signUp((this.runner as TelegramCommandRunner).readTelegramCode);
+    var clientId = telegramClient.createClientId();
+
+    await telegramClient.login(
+        clientId: clientId,
+        readTelegramCode:
+            (this.runner as TelegramCommandRunner).readTelegramCode);
+
     if (telegramClient.isAuthorized) {
       print('Signed up successfully.');
     }

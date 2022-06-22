@@ -1,7 +1,7 @@
-import 'package:echo_cli/src/tg/tg_command.dart';
-import 'package:echo_cli/src/tg/tg_command_runner.dart';
+import 'package:echo_cli/src/tg/command/base.dart';
+import 'package:echo_cli/src/tg/command/runner.dart';
 
-import 'package:telegram_client/telegram_client.dart';
+import 'package:telegram_client/client.dart';
 
 class TelegramCommandsChats extends TelegramCommand {
   final name = 'chats';
@@ -19,14 +19,17 @@ class TelegramCommandsChats extends TelegramCommand {
       databasePath: globalResults!['database-path'],
     );
 
-    await telegramClient
-        .signUp((this.runner as TelegramCommandRunner).readTelegramCode);
+    var clientId = telegramClient.createClientId();
+    await telegramClient.login(
+        clientId: clientId,
+        readTelegramCode:
+            (this.runner as TelegramCommandRunner).readTelegramCode);
     if (!telegramClient.isAuthorized) {
       print('Could not login to Telegram.');
       return;
     }
 
-    await for (var response in telegramClient.getChats()) {
+    await for (var response in telegramClient.getChats(clientId: clientId)) {
       print(response);
     }
   }

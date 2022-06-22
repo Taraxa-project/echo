@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import 'package:echo_cli/src/tg/tg_input.dart';
-import 'package:echo_cli/src/tg/tg_command_runner.dart';
-import 'package:echo_cli/src/tg/tg_command_signup.dart';
-import 'package:echo_cli/src/tg/tg_command_chats.dart';
+import 'package:echo_cli/src/tg/command/runner.dart';
+import 'package:echo_cli/src/tg/command/login.dart';
+import 'package:echo_cli/src/tg/command/chats.dart';
 
 void main(List<String> arguments) {
   final TelegramCommandRunner commandRunner = TelegramCommandRunner(
@@ -27,7 +27,7 @@ void main(List<String> arguments) {
 
   commandRunner
     ..readTelegramCode = readTelegramCode
-    ..addCommand(TelegramCommandSignup())
+    ..addCommand(TelegramCommandLogin())
     ..addCommand(TelegramCommandsChats())
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
