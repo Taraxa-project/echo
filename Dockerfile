@@ -17,7 +17,7 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/tdlib/td.git /tmp/td \
-    && mkdir -p /tmp/td/build
+    && mkdir -p /tmp/td/build && cd /tmp/td && git checkout v1.8.0
 
 ENV CXXFLAGS="-stdlib=libc++"
 ENV CC="/usr/bin/clang"
