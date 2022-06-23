@@ -26,7 +26,6 @@ RUN rm -rf td && \
 FROM dart:stable
 
 # Copy tdlib binaries
-#COPY --from=builder /td/tdlib/include /usr/local/include/
 COPY --from=builder /td/build /usr/local/lib/
 
 # Install packages
@@ -35,12 +34,12 @@ RUN apt update \
     libc++-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /app/dart_api
-COPY . /app/dart_api
+RUN mkdir -p /app
+COPY . /app
 
 ENV PATH="/root/.pub-cache/bin:${PATH}"
 
-WORKDIR /app/dart_api/packages
+WORKDIR /app
 
 RUN dart pub global activate melos
 
@@ -48,4 +47,4 @@ RUN melos bootstrap
 RUN melos run get
 
 ENTRYPOINT [ "/usr/lib/dart/bin/dart", "run"]
-CMD ["/app/dart_api/packages/cli/bin/main.dart"]
+CMD ["/app/packages/cli/bin/main.dart"]
