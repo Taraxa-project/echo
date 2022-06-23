@@ -34,7 +34,7 @@ RUN apt update \
     libc++-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /app
+RUN rm -rf /app && mkdir -p /app
 COPY . /app
 
 ENV PATH="/root/.pub-cache/bin:${PATH}"
