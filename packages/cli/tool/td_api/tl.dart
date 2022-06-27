@@ -21,7 +21,7 @@ class TlFunction extends TlDefinition {
 }
 
 class TlDefinition extends Tl {
-  List<TlComment> comments;
+  List<TlCommentValue> comments;
   TlConstructor constructor;
   TlDefinition({
     this.comments = const [],
@@ -36,11 +36,24 @@ class TlDefinition extends Tl {
   bool get isFunction => false;
 }
 
-class TlComment extends Tl {
+class TlCommentValue extends Tl {
   String text;
-  TlComment({
+  TlCommentValue({
     required this.text,
   });
+}
+
+class TlAbstractClassComment extends TlCommentValue {
+  TlAbstractClassComment({required super.text});
+}
+
+class TlClassComment extends TlCommentValue {
+  TlClassComment({required super.text});
+}
+
+class TlParamComment extends TlCommentValue {
+  String paramName;
+  TlParamComment({required super.text, required this.paramName});
 }
 
 class TlConstructor extends Tl {

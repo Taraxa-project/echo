@@ -20,17 +20,41 @@ class TlGrammarDefinition extends GrammarDefinition {
       ));
 
   Parser definition() =>
-      (ref0(commments).star() & ref0(constructor)).map((value) => TlDefinition(
+      (ref0(comment) & ref0(constructor)).map((value) => TlDefinition(
             constructor: value.last,
-            comments: value.take(value.length - 1).toList().cast<TlComment>(),
+            comments:
+                value.take(value.length - 1).toList().cast<TlCommentValue>(),
           ));
 
-  Parser commments() => ref0(comment);
-  Parser comment() =>
-      ((string('//') & noneOf('\n\r').star().flatten() & whitespace().star())
-          .map((value) => value[1])
-          .flatten()
-          .map((value) => value)).map((value) => TlComment(text: value));
+  Parser comment() => ref0(classComment);
+
+  Parser classComment() =>
+      ref0(astractClassComment).star() &
+      ref0(classCommentBegin) &
+      ref0(commentContinued).star() &
+      (ref0(paramComment) & ref0(commentContinued).star()).star();
+
+  Parser astractClassComment() => (string('//@class') &
+          whitespace().star() &
+          noneOf(' ').plus().flatten() &
+          whitespace().star() &
+          string('@description ') &
+          noneOf('\n\r').star().flatten() &
+          whitespace().star())
+      .map((value) => TlAbstractClassComment(text: value[5]));
+  Parser classCommentBegin() => (string('//@description ') &
+          noneOf('\n\r@').star().flatten() &
+          whitespace().star())
+      .map((value) => value[1]);
+  Parser commentContinued() =>
+      (string('//-') & noneOf('\n\r@').star().flatten() & whitespace().star())
+          .map((value) => value[1]);
+  Parser paramComment() =>
+      (string('//@') | string('@')) &
+      noneOf(' @').plus().flatten() &
+      whitespace().star() &
+      noneOf('@\n\r').star().flatten() &
+      whitespace().star();
 
   Parser constructor() => (ref0(name) &
           ref0(param).star() &
