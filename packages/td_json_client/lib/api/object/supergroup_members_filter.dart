@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Specifies the kind of chat members to return in getSupergroupMembers
 abstract class SupergroupMembersFilter extends TdObject {}
 
+
+/// Returns recently active users in reverse chronological order
 class SupergroupMembersFilterRecent extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterRecent';
 
@@ -30,11 +33,15 @@ class SupergroupMembersFilterRecent extends SupergroupMembersFilter {
     return map;
   }
 }
+
+/// Returns contacts of the user, which are members of the supergroup or channel 
 class SupergroupMembersFilterContacts extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterContacts';
 
   String? extra;
   int? client_id;
+
+  /// Query to search for
   string? query;
 
   SupergroupMembersFilterContacts({
@@ -62,6 +69,8 @@ class SupergroupMembersFilterContacts extends SupergroupMembersFilter {
     return map;
   }
 }
+
+/// Returns the owner and administrators
 class SupergroupMembersFilterAdministrators extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterAdministrators';
 
@@ -90,11 +99,15 @@ class SupergroupMembersFilterAdministrators extends SupergroupMembersFilter {
     return map;
   }
 }
+
+/// Used to search for supergroup or channel members via a (string) query 
 class SupergroupMembersFilterSearch extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterSearch';
 
   String? extra;
   int? client_id;
+
+  /// Query to search for
   string? query;
 
   SupergroupMembersFilterSearch({
@@ -122,11 +135,15 @@ class SupergroupMembersFilterSearch extends SupergroupMembersFilter {
     return map;
   }
 }
+
+/// Returns restricted supergroup members; can be used only by administrators 
 class SupergroupMembersFilterRestricted extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterRestricted';
 
   String? extra;
   int? client_id;
+
+  /// Query to search for
   string? query;
 
   SupergroupMembersFilterRestricted({
@@ -154,11 +171,15 @@ class SupergroupMembersFilterRestricted extends SupergroupMembersFilter {
     return map;
   }
 }
+
+/// Returns users banned from the supergroup or channel; can be used only by administrators 
 class SupergroupMembersFilterBanned extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterBanned';
 
   String? extra;
   int? client_id;
+
+  /// Query to search for
   string? query;
 
   SupergroupMembersFilterBanned({
@@ -186,12 +207,18 @@ class SupergroupMembersFilterBanned extends SupergroupMembersFilter {
     return map;
   }
 }
+
+/// Returns users which can be mentioned in the supergroup 
 class SupergroupMembersFilterMention extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterMention';
 
   String? extra;
   int? client_id;
+
+  /// Query to search for 
   string? query;
+
+  /// If non-zero, the identifier of the current message thread
   int53? message_thread_id;
 
   SupergroupMembersFilterMention({
@@ -222,6 +249,8 @@ class SupergroupMembersFilterMention extends SupergroupMembersFilter {
     return map;
   }
 }
+
+/// Returns bot members of the supergroup or channel
 class SupergroupMembersFilterBots extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterBots';
 

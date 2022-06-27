@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains a list of hashtags 
 class Hashtags extends TdObject {
   String get tdType => 'hashtags';
 
   String? extra;
   int? client_id;
+
+  /// A list of hashtags
   vector<string>? hashtags;
 
   Hashtags({

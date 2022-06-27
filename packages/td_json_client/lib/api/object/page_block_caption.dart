@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/rich_text.dart';
 
+
+/// Contains a caption of an instant view web page block, consisting of a text and a trailing credit 
 class PageBlockCaption extends TdObject {
   String get tdType => 'pageBlockCaption';
 
   String? extra;
   int? client_id;
+
+  /// Content of the caption 
   RichText? text;
+
+  /// Block credit (like HTML tag <cite>)
   RichText? credit;
 
   PageBlockCaption({

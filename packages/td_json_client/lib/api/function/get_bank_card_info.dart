@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a bank card 
 class GetBankCardInfo extends TdFunction {
   String get tdType => 'getBankCardInfo';
   String get tdReturnType => 'BankCardInfo';
 
   String? extra;
   int? client_id;
+
+  /// The bank card number
   string? bank_card_number;
 
   GetBankCardInfo({

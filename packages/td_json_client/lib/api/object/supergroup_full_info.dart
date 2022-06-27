@@ -5,31 +5,74 @@ import 'package:td_json_client/api/object/chat_location.dart';
 import 'package:td_json_client/api/object/chat_invite_link.dart';
 import 'package:td_json_client/api/object/bot_commands.dart';
 
+
+/// Contains full information about a supergroup or channel
 class SupergroupFullInfo extends TdObject {
   String get tdType => 'supergroupFullInfo';
 
   String? extra;
   int? client_id;
+
+  /// Chat photo; may be null
   ChatPhoto? photo;
+
   string? description;
+
+  /// Number of members in the supergroup or channel; 0 if unknown
   int32? member_count;
+
+  /// Number of privileged users in the supergroup or channel; 0 if unknown
   int32? administrator_count;
+
+  /// Number of restricted users in the supergroup; 0 if unknown
   int32? restricted_count;
+
+  /// Number of users banned from chat; 0 if unknown
   int32? banned_count;
+
+  /// Chat identifier of a discussion group for the channel, or a channel, for which the supergroup is the designated discussion group; 0 if none or unknown
   int53? linked_chat_id;
+
+  /// Delay between consecutive sent messages for non-administrator supergroup members, in seconds
   int32? slow_mode_delay;
+
+  /// Time left before next message can be sent in the supergroup, in seconds. An updateSupergroupFullInfo update is not triggered when value of this field changes, but both new and old values are non-zero
   double? slow_mode_delay_expires_in;
+
+  /// True, if members of the chat can be retrieved
   Bool? can_get_members;
+
+  /// True, if the chat username can be changed
   Bool? can_set_username;
+
+  /// True, if the supergroup sticker set can be changed
   Bool? can_set_sticker_set;
+
+  /// True, if the supergroup location can be changed
   Bool? can_set_location;
+
+  /// True, if the supergroup or channel statistics are available
   Bool? can_get_statistics;
+
+  /// True, if new chat members will have access to old messages. In public or discussion groups and both public and private channels, old messages are always available, so this option affects only private supergroups without a linked chat. The value of this field is only available for chat administrators
   Bool? is_all_history_available;
+
+  /// Identifier of the supergroup sticker set; 0 if none
   int64? sticker_set_id;
+
+  /// Location to which the supergroup is connected; may be null
   ChatLocation? location;
+
+  /// Primary invite link for the chat; may be null. For chat administrators with can_invite_users right only
   ChatInviteLink? invite_link;
+
+  /// List of commands of bots in the group
   vector<BotCommands>? bot_commands;
+
+  /// Identifier of the basic group from which supergroup was upgraded; 0 if none
   int53? upgraded_from_basic_group_id;
+
+  /// Identifier of the last message in the basic group from which supergroup was upgraded; 0 if none
   int53? upgraded_from_max_message_id;
 
   SupergroupFullInfo({

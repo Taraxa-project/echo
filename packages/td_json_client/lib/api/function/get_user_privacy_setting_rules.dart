@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/user_privacy_setting.dart';
 
+
+/// Returns the current privacy settings 
 class GetUserPrivacySettingRules extends TdFunction {
   String get tdType => 'getUserPrivacySettingRules';
   String get tdReturnType => 'UserPrivacySettingRules';
 
   String? extra;
   int? client_id;
+
+  /// The privacy setting
   UserPrivacySetting? setting;
 
   GetUserPrivacySettingRules({

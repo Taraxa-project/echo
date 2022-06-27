@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns file downloaded prefix size from a given offset, in bytes 
 class GetFileDownloadedPrefixSize extends TdFunction {
   String get tdType => 'getFileDownloadedPrefixSize';
   String get tdReturnType => 'Count';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the file 
   int32? file_id;
+
+  /// Offset from which downloaded prefix size needs to be calculated
   int32? offset;
 
   GetFileDownloadedPrefixSize({

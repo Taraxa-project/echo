@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/language_pack_string.dart';
 
+
+/// Adds, edits or deletes a string in a custom local language pack. Can be called before authorization 
 class SetCustomLanguagePackString extends TdFunction {
   String get tdType => 'setCustomLanguagePackString';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of a previously added custom local language pack in the current localization target 
   string? language_pack_id;
+
+  /// New language pack string
   LanguagePackString? new_string;
 
   SetCustomLanguagePackString({

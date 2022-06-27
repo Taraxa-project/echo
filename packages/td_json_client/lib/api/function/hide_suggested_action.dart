@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/suggested_action.dart';
 
+
+/// Hides a suggested action 
 class HideSuggestedAction extends TdFunction {
   String get tdType => 'hideSuggestedAction';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Suggested action to hide
   SuggestedAction? action;
 
   HideSuggestedAction({

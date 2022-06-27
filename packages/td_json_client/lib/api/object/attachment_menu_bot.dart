@@ -3,19 +3,39 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/attachment_menu_bot_color.dart';
 import 'package:td_json_client/api/object/file.dart';
 
+
+/// Represents a bot added to attachment menu
 class AttachmentMenuBot extends TdObject {
   String get tdType => 'attachmentMenuBot';
 
   String? extra;
   int? client_id;
+
+  /// User identifier of the bot added to attachment menu
   int53? bot_user_id;
+
+  /// Name for the bot in attachment menu
   string? name;
+
+  /// Color to highlight selected name of the bot if appropriate; may be null
   AttachmentMenuBotColor? name_color;
+
+  /// Default attachment menu icon for the bot in SVG format; may be null
   File? default_icon;
+
+  /// Attachment menu icon for the bot in SVG format for the official iOS app; may be null
   File? ios_static_icon;
+
+  /// Attachment menu icon for the bot in TGS format for the official iOS app; may be null
   File? ios_animated_icon;
+
+  /// Attachment menu icon for the bot in TGS format for the official Android app; may be null
   File? android_icon;
+
+  /// Attachment menu icon for the bot in TGS format for the official native macOS app; may be null
   File? macos_icon;
+
+  /// Color to highlight selected icon of the bot if appropriate; may be null
   AttachmentMenuBotColor? icon_color;
 
   AttachmentMenuBot({

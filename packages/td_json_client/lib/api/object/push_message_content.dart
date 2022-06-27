@@ -9,13 +9,18 @@ import 'package:td_json_client/api/object/video.dart';
 import 'package:td_json_client/api/object/video_note.dart';
 import 'package:td_json_client/api/object/voice_note.dart';
 
+/// Contains content of a push message notification
 abstract class PushMessageContent extends TdObject {}
 
+
+/// A general message with hidden content 
 class PushMessageContentHidden extends PushMessageContent {
   String get tdType => 'pushMessageContentHidden';
 
   String? extra;
   int? client_id;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentHidden({
@@ -43,13 +48,21 @@ class PushMessageContentHidden extends PushMessageContent {
     return map;
   }
 }
+
+/// An animation message (GIF-style). 
 class PushMessageContentAnimation extends PushMessageContent {
   String get tdType => 'pushMessageContentAnimation';
 
   String? extra;
   int? client_id;
+
+  /// Message content; may be null 
   Animation? animation;
+
+  /// Animation caption 
   string? caption;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentAnimation({
@@ -83,12 +96,18 @@ class PushMessageContentAnimation extends PushMessageContent {
     return map;
   }
 }
+
+/// An audio message 
 class PushMessageContentAudio extends PushMessageContent {
   String get tdType => 'pushMessageContentAudio';
 
   String? extra;
   int? client_id;
+
+  /// Message content; may be null 
   Audio? audio;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentAudio({
@@ -119,12 +138,18 @@ class PushMessageContentAudio extends PushMessageContent {
     return map;
   }
 }
+
+/// A message with a user contact 
 class PushMessageContentContact extends PushMessageContent {
   String get tdType => 'pushMessageContentContact';
 
   String? extra;
   int? client_id;
+
+  /// Contact's name 
   string? name;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentContact({
@@ -155,6 +180,8 @@ class PushMessageContentContact extends PushMessageContent {
     return map;
   }
 }
+
+/// A contact has registered with Telegram
 class PushMessageContentContactRegistered extends PushMessageContent {
   String get tdType => 'pushMessageContentContactRegistered';
 
@@ -183,12 +210,18 @@ class PushMessageContentContactRegistered extends PushMessageContent {
     return map;
   }
 }
+
+/// A document message (a general file) 
 class PushMessageContentDocument extends PushMessageContent {
   String get tdType => 'pushMessageContentDocument';
 
   String? extra;
   int? client_id;
+
+  /// Message content; may be null 
   Document? document;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentDocument({
@@ -219,12 +252,18 @@ class PushMessageContentDocument extends PushMessageContent {
     return map;
   }
 }
+
+/// A message with a game 
 class PushMessageContentGame extends PushMessageContent {
   String get tdType => 'pushMessageContentGame';
 
   String? extra;
   int? client_id;
+
+  /// Game title, empty for pinned game message 
   string? title;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentGame({
@@ -255,13 +294,21 @@ class PushMessageContentGame extends PushMessageContent {
     return map;
   }
 }
+
+/// A new high score was achieved in a game 
 class PushMessageContentGameScore extends PushMessageContent {
   String get tdType => 'pushMessageContentGameScore';
 
   String? extra;
   int? client_id;
+
+  /// Game title, empty for pinned message 
   string? title;
+
+  /// New score, 0 for pinned message 
   int32? score;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentGameScore({
@@ -295,12 +342,18 @@ class PushMessageContentGameScore extends PushMessageContent {
     return map;
   }
 }
+
+/// A message with an invoice from a bot 
 class PushMessageContentInvoice extends PushMessageContent {
   String get tdType => 'pushMessageContentInvoice';
 
   String? extra;
   int? client_id;
+
+  /// Product price 
   string? price;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentInvoice({
@@ -331,12 +384,18 @@ class PushMessageContentInvoice extends PushMessageContent {
     return map;
   }
 }
+
+/// A message with a location 
 class PushMessageContentLocation extends PushMessageContent {
   String get tdType => 'pushMessageContentLocation';
 
   String? extra;
   int? client_id;
+
+  /// True, if the location is live 
   Bool? is_live;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentLocation({
@@ -367,14 +426,24 @@ class PushMessageContentLocation extends PushMessageContent {
     return map;
   }
 }
+
+/// A photo message 
 class PushMessageContentPhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentPhoto';
 
   String? extra;
   int? client_id;
+
+  /// Message content; may be null 
   Photo? photo;
+
+  /// Photo caption 
   string? caption;
+
+  /// True, if the photo is secret 
   Bool? is_secret;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentPhoto({
@@ -411,13 +480,21 @@ class PushMessageContentPhoto extends PushMessageContent {
     return map;
   }
 }
+
+/// A message with a poll 
 class PushMessageContentPoll extends PushMessageContent {
   String get tdType => 'pushMessageContentPoll';
 
   String? extra;
   int? client_id;
+
+  /// Poll question 
   string? question;
+
+  /// True, if the poll is regular and not in quiz mode 
   Bool? is_regular;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentPoll({
@@ -451,6 +528,8 @@ class PushMessageContentPoll extends PushMessageContent {
     return map;
   }
 }
+
+/// A screenshot of a message in the chat has been taken
 class PushMessageContentScreenshotTaken extends PushMessageContent {
   String get tdType => 'pushMessageContentScreenshotTaken';
 
@@ -479,13 +558,21 @@ class PushMessageContentScreenshotTaken extends PushMessageContent {
     return map;
   }
 }
+
+/// A message with a sticker 
 class PushMessageContentSticker extends PushMessageContent {
   String get tdType => 'pushMessageContentSticker';
 
   String? extra;
   int? client_id;
+
+  /// Message content; may be null 
   Sticker? sticker;
+
+  /// Emoji corresponding to the sticker; may be empty 
   string? emoji;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentSticker({
@@ -519,12 +606,18 @@ class PushMessageContentSticker extends PushMessageContent {
     return map;
   }
 }
+
+/// A text message 
 class PushMessageContentText extends PushMessageContent {
   String get tdType => 'pushMessageContentText';
 
   String? extra;
   int? client_id;
+
+  /// Message text 
   string? text;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentText({
@@ -555,14 +648,24 @@ class PushMessageContentText extends PushMessageContent {
     return map;
   }
 }
+
+/// A video message 
 class PushMessageContentVideo extends PushMessageContent {
   String get tdType => 'pushMessageContentVideo';
 
   String? extra;
   int? client_id;
+
+  /// Message content; may be null 
   Video? video;
+
+  /// Video caption 
   string? caption;
+
+  /// True, if the video is secret 
   Bool? is_secret;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentVideo({
@@ -599,12 +702,18 @@ class PushMessageContentVideo extends PushMessageContent {
     return map;
   }
 }
+
+/// A video note message 
 class PushMessageContentVideoNote extends PushMessageContent {
   String get tdType => 'pushMessageContentVideoNote';
 
   String? extra;
   int? client_id;
+
+  /// Message content; may be null 
   VideoNote? video_note;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentVideoNote({
@@ -635,12 +744,18 @@ class PushMessageContentVideoNote extends PushMessageContent {
     return map;
   }
 }
+
+/// A voice note message 
 class PushMessageContentVoiceNote extends PushMessageContent {
   String get tdType => 'pushMessageContentVoiceNote';
 
   String? extra;
   int? client_id;
+
+  /// Message content; may be null 
   VoiceNote? voice_note;
+
+  /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentVoiceNote({
@@ -671,6 +786,8 @@ class PushMessageContentVoiceNote extends PushMessageContent {
     return map;
   }
 }
+
+/// A newly created basic group
 class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
   String get tdType => 'pushMessageContentBasicGroupChatCreate';
 
@@ -699,13 +816,21 @@ class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
     return map;
   }
 }
+
+/// New chat members were invited to a group 
 class PushMessageContentChatAddMembers extends PushMessageContent {
   String get tdType => 'pushMessageContentChatAddMembers';
 
   String? extra;
   int? client_id;
+
+  /// Name of the added member 
   string? member_name;
+
+  /// True, if the current user was added to the group
   Bool? is_current_user;
+
+  /// True, if the user has returned to the group themselves
   Bool? is_returned;
 
   PushMessageContentChatAddMembers({
@@ -739,6 +864,8 @@ class PushMessageContentChatAddMembers extends PushMessageContent {
     return map;
   }
 }
+
+/// A chat photo was edited
 class PushMessageContentChatChangePhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentChatChangePhoto';
 
@@ -767,11 +894,15 @@ class PushMessageContentChatChangePhoto extends PushMessageContent {
     return map;
   }
 }
+
+/// A chat title was edited 
 class PushMessageContentChatChangeTitle extends PushMessageContent {
   String get tdType => 'pushMessageContentChatChangeTitle';
 
   String? extra;
   int? client_id;
+
+  /// New chat title
   string? title;
 
   PushMessageContentChatChangeTitle({
@@ -799,11 +930,15 @@ class PushMessageContentChatChangeTitle extends PushMessageContent {
     return map;
   }
 }
+
+/// A chat theme was edited 
 class PushMessageContentChatSetTheme extends PushMessageContent {
   String get tdType => 'pushMessageContentChatSetTheme';
 
   String? extra;
   int? client_id;
+
+  /// If non-empty, name of a new theme, set for the chat. Otherwise chat theme was reset to the default one
   string? theme_name;
 
   PushMessageContentChatSetTheme({
@@ -831,13 +966,21 @@ class PushMessageContentChatSetTheme extends PushMessageContent {
     return map;
   }
 }
+
+/// A chat member was deleted 
 class PushMessageContentChatDeleteMember extends PushMessageContent {
   String get tdType => 'pushMessageContentChatDeleteMember';
 
   String? extra;
   int? client_id;
+
+  /// Name of the deleted member 
   string? member_name;
+
+  /// True, if the current user was deleted from the group
   Bool? is_current_user;
+
+  /// True, if the user has left the group themselves
   Bool? is_left;
 
   PushMessageContentChatDeleteMember({
@@ -871,6 +1014,8 @@ class PushMessageContentChatDeleteMember extends PushMessageContent {
     return map;
   }
 }
+
+/// A new member joined the chat via an invite link
 class PushMessageContentChatJoinByLink extends PushMessageContent {
   String get tdType => 'pushMessageContentChatJoinByLink';
 
@@ -899,6 +1044,8 @@ class PushMessageContentChatJoinByLink extends PushMessageContent {
     return map;
   }
 }
+
+/// A new member was accepted to the chat by an administrator
 class PushMessageContentChatJoinByRequest extends PushMessageContent {
   String get tdType => 'pushMessageContentChatJoinByRequest';
 
@@ -927,11 +1074,15 @@ class PushMessageContentChatJoinByRequest extends PushMessageContent {
     return map;
   }
 }
+
+/// A forwarded messages 
 class PushMessageContentMessageForwards extends PushMessageContent {
   String get tdType => 'pushMessageContentMessageForwards';
 
   String? extra;
   int? client_id;
+
+  /// Number of forwarded messages
   int32? total_count;
 
   PushMessageContentMessageForwards({
@@ -959,15 +1110,27 @@ class PushMessageContentMessageForwards extends PushMessageContent {
     return map;
   }
 }
+
+/// A media album 
 class PushMessageContentMediaAlbum extends PushMessageContent {
   String get tdType => 'pushMessageContentMediaAlbum';
 
   String? extra;
   int? client_id;
+
+  /// Number of messages in the album 
   int32? total_count;
+
+  /// True, if the album has at least one photo 
   Bool? has_photos;
+
+  /// True, if the album has at least one video
   Bool? has_videos;
+
+  /// True, if the album has at least one audio file 
   Bool? has_audios;
+
+  /// True, if the album has at least one document
   Bool? has_documents;
 
   PushMessageContentMediaAlbum({

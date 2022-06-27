@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/bot_command.dart';
 
+
+/// Contains a list of bot commands 
 class BotCommands extends TdObject {
   String get tdType => 'botCommands';
 
   String? extra;
   int? client_id;
+
+  /// Bot's user identifier 
   int53? bot_user_id;
+
+  /// List of bot commands
   vector<BotCommand>? commands;
 
   BotCommands({

@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the reason why a call was discarded
 abstract class CallDiscardReason extends TdObject {}
 
+
+/// The call wasn't discarded, or the reason is unknown
 class CallDiscardReasonEmpty extends CallDiscardReason {
   String get tdType => 'callDiscardReasonEmpty';
 
@@ -30,6 +33,8 @@ class CallDiscardReasonEmpty extends CallDiscardReason {
     return map;
   }
 }
+
+/// The call was ended before the conversation started. It was canceled by the caller or missed by the other party
 class CallDiscardReasonMissed extends CallDiscardReason {
   String get tdType => 'callDiscardReasonMissed';
 
@@ -58,6 +63,8 @@ class CallDiscardReasonMissed extends CallDiscardReason {
     return map;
   }
 }
+
+/// The call was ended before the conversation started. It was declined by the other party
 class CallDiscardReasonDeclined extends CallDiscardReason {
   String get tdType => 'callDiscardReasonDeclined';
 
@@ -86,6 +93,8 @@ class CallDiscardReasonDeclined extends CallDiscardReason {
     return map;
   }
 }
+
+/// The call was ended during the conversation because the users were disconnected
 class CallDiscardReasonDisconnected extends CallDiscardReason {
   String get tdType => 'callDiscardReasonDisconnected';
 
@@ -114,6 +123,8 @@ class CallDiscardReasonDisconnected extends CallDiscardReason {
     return map;
   }
 }
+
+/// The call was ended because one of the parties hung up
 class CallDiscardReasonHungUp extends CallDiscardReason {
   String get tdType => 'callDiscardReasonHungUp';
 

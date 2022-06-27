@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains a list of available TDLib internal log tags 
 class LogTags extends TdObject {
   String get tdType => 'logTags';
 
   String? extra;
   int? client_id;
+
+  /// List of log tags
   vector<string>? tags;
 
   LogTags({

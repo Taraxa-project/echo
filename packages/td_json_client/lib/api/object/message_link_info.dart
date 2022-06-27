@@ -2,16 +2,30 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message.dart';
 
+
+/// Contains information about a link to a message in a chat
 class MessageLinkInfo extends TdObject {
   String get tdType => 'messageLinkInfo';
 
   String? extra;
   int? client_id;
+
+  /// True, if the link is a public link for a message in a chat
   Bool? is_public;
+
+  /// If found, identifier of the chat to which the message belongs, 0 otherwise
   int53? chat_id;
+
+  /// If found, the linked message; may be null
   Message? message;
+
+  /// Timestamp from which the video/audio/video note/voice note playing must start, in seconds; 0 if not specified. The media can be in the message content or in its web page preview
   int32? media_timestamp;
+
+  /// True, if the whole media album to which the message belongs is linked
   Bool? for_album;
+
+  /// True, if the message is linked as a channel post comment or from a message thread
   Bool? for_comment;
 
   MessageLinkInfo({

@@ -4,16 +4,29 @@ import 'package:td_json_client/api/object/bot_menu_button.dart';
 import 'package:td_json_client/api/object/bot_command.dart';
 import 'package:td_json_client/api/object/chat_administrator_rights.dart';
 
+
+/// Contains information about a bot
 class BotInfo extends TdObject {
   String get tdType => 'botInfo';
 
   String? extra;
   int? client_id;
+
+  /// The text that is shown on the bot's profile page and is sent together with the link when users share the bot
   string? share_text;
+
   string? description;
+
+  /// Information about a button to show instead of the bot commands menu button; may be null if ordinary bot commands menu must be shown
   BotMenuButton? menu_button;
+
+  /// List of the bot commands
   vector<BotCommand>? commands;
+
+  /// Default administrator rights for adding the bot to basic group and supergroup chats; may be null
   ChatAdministratorRights? default_group_administrator_rights;
+
+  /// Default administrator rights for adding the bot to channels; may be null
   ChatAdministratorRights? default_channel_administrator_rights;
 
   BotInfo({

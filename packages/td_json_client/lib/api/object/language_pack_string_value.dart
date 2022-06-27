@@ -1,12 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents the value of a string in a language pack
 abstract class LanguagePackStringValue extends TdObject {}
 
+
+/// An ordinary language pack string 
 class LanguagePackStringValueOrdinary extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValueOrdinary';
 
   String? extra;
   int? client_id;
+
+  /// String value
   string? value;
 
   LanguagePackStringValueOrdinary({
@@ -34,16 +39,30 @@ class LanguagePackStringValueOrdinary extends LanguagePackStringValue {
     return map;
   }
 }
+
+/// A language pack string which has different forms based on the number of some object it mentions. See https://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html for more information
 class LanguagePackStringValuePluralized extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValuePluralized';
 
   String? extra;
   int? client_id;
+
+  /// Value for zero objects 
   string? zero_value;
+
+  /// Value for one object 
   string? one_value;
+
+  /// Value for two objects
   string? two_value;
+
+  /// Value for few objects 
   string? few_value;
+
+  /// Value for many objects 
   string? many_value;
+
+  /// Default value
   string? other_value;
 
   LanguagePackStringValuePluralized({
@@ -86,6 +105,8 @@ class LanguagePackStringValuePluralized extends LanguagePackStringValue {
     return map;
   }
 }
+
+/// A deleted language pack string, the value must be taken from the built-in English language pack
 class LanguagePackStringValueDeleted extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValueDeleted';
 

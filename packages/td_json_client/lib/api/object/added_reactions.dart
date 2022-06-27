@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/added_reaction.dart';
 
+
+/// Represents a list of reactions added to a message 
 class AddedReactions extends TdObject {
   String get tdType => 'addedReactions';
 
   String? extra;
   int? client_id;
+
+  /// The total number of found reactions 
   int32? total_count;
+
+  /// The list of added reactions 
   vector<AddedReaction>? reactions;
+
+  /// The offset for the next request. If empty, there are no more results
   string? next_offset;
 
   AddedReactions({

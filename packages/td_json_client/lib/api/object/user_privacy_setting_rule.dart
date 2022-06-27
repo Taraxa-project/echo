@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents a single rule for managing privacy settings
 abstract class UserPrivacySettingRule extends TdObject {}
 
+
+/// A rule to allow all users to do something
 class UserPrivacySettingRuleAllowAll extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowAll';
 
@@ -30,6 +33,8 @@ class UserPrivacySettingRuleAllowAll extends UserPrivacySettingRule {
     return map;
   }
 }
+
+/// A rule to allow all of a user's contacts to do something
 class UserPrivacySettingRuleAllowContacts extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowContacts';
 
@@ -58,11 +63,15 @@ class UserPrivacySettingRuleAllowContacts extends UserPrivacySettingRule {
     return map;
   }
 }
+
+/// A rule to allow certain specified users to do something 
 class UserPrivacySettingRuleAllowUsers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowUsers';
 
   String? extra;
   int? client_id;
+
+  /// The user identifiers, total number of users in all rules must not exceed 1000
   vector<int53>? user_ids;
 
   UserPrivacySettingRuleAllowUsers({
@@ -95,11 +104,15 @@ class UserPrivacySettingRuleAllowUsers extends UserPrivacySettingRule {
     return map;
   }
 }
+
+/// A rule to allow all members of certain specified basic groups and supergroups to doing something 
 class UserPrivacySettingRuleAllowChatMembers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowChatMembers';
 
   String? extra;
   int? client_id;
+
+  /// The chat identifiers, total number of chats in all rules must not exceed 20
   vector<int53>? chat_ids;
 
   UserPrivacySettingRuleAllowChatMembers({
@@ -132,6 +145,8 @@ class UserPrivacySettingRuleAllowChatMembers extends UserPrivacySettingRule {
     return map;
   }
 }
+
+/// A rule to restrict all users from doing something
 class UserPrivacySettingRuleRestrictAll extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictAll';
 
@@ -160,6 +175,8 @@ class UserPrivacySettingRuleRestrictAll extends UserPrivacySettingRule {
     return map;
   }
 }
+
+/// A rule to restrict all contacts of a user from doing something
 class UserPrivacySettingRuleRestrictContacts extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictContacts';
 
@@ -188,11 +205,15 @@ class UserPrivacySettingRuleRestrictContacts extends UserPrivacySettingRule {
     return map;
   }
 }
+
+/// A rule to restrict all specified users from doing something 
 class UserPrivacySettingRuleRestrictUsers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictUsers';
 
   String? extra;
   int? client_id;
+
+  /// The user identifiers, total number of users in all rules must not exceed 1000
   vector<int53>? user_ids;
 
   UserPrivacySettingRuleRestrictUsers({
@@ -225,11 +246,15 @@ class UserPrivacySettingRuleRestrictUsers extends UserPrivacySettingRule {
     return map;
   }
 }
+
+/// A rule to restrict all members of specified basic groups and supergroups from doing something 
 class UserPrivacySettingRuleRestrictChatMembers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictChatMembers';
 
   String? extra;
   int? client_id;
+
+  /// The chat identifiers, total number of chats in all rules must not exceed 20
   vector<int53>? chat_ids;
 
   UserPrivacySettingRuleRestrictChatMembers({

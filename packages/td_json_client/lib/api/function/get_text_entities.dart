@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns all entities (mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses) contained in the text. Can be called synchronously 
 class GetTextEntities extends TdFunction {
   String get tdType => 'getTextEntities';
   String get tdReturnType => 'TextEntities';
 
   String? extra;
   int? client_id;
+
+  /// The text in which to look for entites
   string? text;
 
   GetTextEntities({

@@ -5,13 +5,18 @@ import 'package:td_json_client/api/object/identity_document.dart';
 import 'package:td_json_client/api/object/address.dart';
 import 'package:td_json_client/api/object/personal_document.dart';
 
+/// Contains information about a Telegram Passport element
 abstract class PassportElement extends TdObject {}
 
+
+/// A Telegram Passport element containing the user's personal details 
 class PassportElementPersonalDetails extends PassportElement {
   String get tdType => 'passportElementPersonalDetails';
 
   String? extra;
   int? client_id;
+
+  /// Personal details of the user
   PersonalDetails? personal_details;
 
   PassportElementPersonalDetails({
@@ -39,11 +44,15 @@ class PassportElementPersonalDetails extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's passport 
 class PassportElementPassport extends PassportElement {
   String get tdType => 'passportElementPassport';
 
   String? extra;
   int? client_id;
+
+  /// Passport
   IdentityDocument? passport;
 
   PassportElementPassport({
@@ -71,11 +80,15 @@ class PassportElementPassport extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's driver license 
 class PassportElementDriverLicense extends PassportElement {
   String get tdType => 'passportElementDriverLicense';
 
   String? extra;
   int? client_id;
+
+  /// Driver license
   IdentityDocument? driver_license;
 
   PassportElementDriverLicense({
@@ -103,11 +116,15 @@ class PassportElementDriverLicense extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's identity card 
 class PassportElementIdentityCard extends PassportElement {
   String get tdType => 'passportElementIdentityCard';
 
   String? extra;
   int? client_id;
+
+  /// Identity card
   IdentityDocument? identity_card;
 
   PassportElementIdentityCard({
@@ -135,11 +152,15 @@ class PassportElementIdentityCard extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's internal passport 
 class PassportElementInternalPassport extends PassportElement {
   String get tdType => 'passportElementInternalPassport';
 
   String? extra;
   int? client_id;
+
+  /// Internal passport
   IdentityDocument? internal_passport;
 
   PassportElementInternalPassport({
@@ -167,11 +188,15 @@ class PassportElementInternalPassport extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's address 
 class PassportElementAddress extends PassportElement {
   String get tdType => 'passportElementAddress';
 
   String? extra;
   int? client_id;
+
+  /// Address
   Address? address;
 
   PassportElementAddress({
@@ -199,11 +224,15 @@ class PassportElementAddress extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's utility bill 
 class PassportElementUtilityBill extends PassportElement {
   String get tdType => 'passportElementUtilityBill';
 
   String? extra;
   int? client_id;
+
+  /// Utility bill
   PersonalDocument? utility_bill;
 
   PassportElementUtilityBill({
@@ -231,11 +260,15 @@ class PassportElementUtilityBill extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's bank statement 
 class PassportElementBankStatement extends PassportElement {
   String get tdType => 'passportElementBankStatement';
 
   String? extra;
   int? client_id;
+
+  /// Bank statement
   PersonalDocument? bank_statement;
 
   PassportElementBankStatement({
@@ -263,11 +296,15 @@ class PassportElementBankStatement extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's rental agreement 
 class PassportElementRentalAgreement extends PassportElement {
   String get tdType => 'passportElementRentalAgreement';
 
   String? extra;
   int? client_id;
+
+  /// Rental agreement
   PersonalDocument? rental_agreement;
 
   PassportElementRentalAgreement({
@@ -295,11 +332,15 @@ class PassportElementRentalAgreement extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's passport registration pages 
 class PassportElementPassportRegistration extends PassportElement {
   String get tdType => 'passportElementPassportRegistration';
 
   String? extra;
   int? client_id;
+
+  /// Passport registration pages
   PersonalDocument? passport_registration;
 
   PassportElementPassportRegistration({
@@ -327,11 +368,15 @@ class PassportElementPassportRegistration extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's temporary registration 
 class PassportElementTemporaryRegistration extends PassportElement {
   String get tdType => 'passportElementTemporaryRegistration';
 
   String? extra;
   int? client_id;
+
+  /// Temporary registration
   PersonalDocument? temporary_registration;
 
   PassportElementTemporaryRegistration({
@@ -359,11 +404,15 @@ class PassportElementTemporaryRegistration extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's phone number 
 class PassportElementPhoneNumber extends PassportElement {
   String get tdType => 'passportElementPhoneNumber';
 
   String? extra;
   int? client_id;
+
+  /// Phone number
   string? phone_number;
 
   PassportElementPhoneNumber({
@@ -391,11 +440,15 @@ class PassportElementPhoneNumber extends PassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's email address 
 class PassportElementEmailAddress extends PassportElement {
   String get tdType => 'passportElementEmailAddress';
 
   String? extra;
   int? client_id;
+
+  /// Email address
   string? email_address;
 
   PassportElementEmailAddress({

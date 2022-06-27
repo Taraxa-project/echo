@@ -47,13 +47,16 @@ class Api {
               packageFilePath: path.joinAll(['api', 'object']),
             ));
     if (!tlObject.extendsBase) {
-      tdFile.classes.putIfAbsent(
-          tlObject.superClassName,
-          () => Td(
-                className: tlObject.superClassName,
-                superClassName: 'TdObject',
-                isAbstract: true,
-              ));
+      var td = Td(
+        className: tlObject.superClassName,
+        superClassName: 'TdObject',
+        isAbstract: true,
+        comments: [],
+      );
+      if (tlObject.comment.abstractClassComment != null) {
+        td.comments.add(tlObject.comment.abstractClassComment!.text);
+      }
+      tdFile.classes.putIfAbsent(tlObject.superClassName, () => td);
     }
     tdFile.processTlDefinition(tlObject);
   }
@@ -77,6 +80,7 @@ class Api {
   }
 
   Future<void> writeFiles() async {
+    // return;
     await createDirectories();
 
     await writeMap();
@@ -152,7 +156,11 @@ class TdFile {
               isFunction: tlDefinition.isFunction,
               returnType: tlDefinition.returnType,
               members: [],
+              comments: [tlDefinition.comment.classComment.text],
             ));
+    for (var comment in tlDefinition.comment.classComment.nextLines) {
+      td.comments.add(comment.text);
+    }
     tlDefinition.constructor.params.forEach((tlParam) {
       var tdMember = TdMember(
         type: tlParam.type.tdName,
@@ -160,7 +168,16 @@ class TdFile {
         isPrimitive: true,
         isVector: tlParam.type.isVector,
         isVectorVector: tlParam.type.isVectorVector,
+        comments: [],
       );
+      for (var comment in tlDefinition.comment.paramComments) {
+        if (comment.paramName == tlParam.name) {
+          tdMember.comments.add(comment.text);
+          for (var nextLine in comment.nextLines) {
+            tdMember.comments.add(nextLine.text);
+          }
+        }
+      }
       if (!tlParam.type.isPrimitive &&
           !TlPrimitives.primitives.contains(tlParam.type.tdSubName)) {
         if (this.typeName != tlParam.type.tdSubName) {
@@ -252,10 +269,16 @@ import 'package:{{# package }}{{ value }}{{/ package }}/api/map.dart';
 
 {{# classes }}
 {{# isAbstract }}
+{{# comments}}
+/// {{ text }}
+{{/ comments}}
 abstract class {{ className }} extends {{ extendsClassName }} {}
-
 {{/ isAbstract }}
+
 {{^ isAbstract}}
+{{# comments}}
+/// {{ text }}
+{{/ comments}}
 class {{ className }} extends {{ extendsClassName }} {
   {{! properties }}
   String get tdType => '{{ tdType }}';
@@ -267,6 +290,10 @@ class {{ className }} extends {{ extendsClassName }} {
   String? extra;
   int? client_id;
   {{# members }}
+
+  {{# comments }}
+  /// {{ text }}
+  {{/ comments }}
   {{ type }}? {{ name }};
   {{/ members }}
 
@@ -372,6 +399,7 @@ class Td {
   bool isFunction;
   String returnType;
   List<TdMember> members = [];
+  List<String> comments;
 
   Td({
     required this.className,
@@ -380,6 +408,7 @@ class Td {
     this.isFunction = false,
     this.returnType = '',
     this.members = const [],
+    this.comments = const [],
   });
   Map<String, dynamic> toMap() {
     var map = {
@@ -390,6 +419,7 @@ class Td {
       'tdType': ReCase(className).camelCase,
       'returnType': returnType,
       'members': members.map((e) => e.toMap()),
+      'comments': comments.map((e) => {'text': e})
     };
     return map;
   }
@@ -403,12 +433,14 @@ class TdMember {
   bool isVectorVector = false;
   bool get isContainer => isVector || isVectorVector;
   String subName = '';
+  List<String> comments;
   TdMember({
     required this.type,
     required this.name,
     required this.isPrimitive,
     this.isVector = false,
     this.isVectorVector = false,
+    this.comments = const [],
   });
   Map<String, dynamic> toMap() {
     return {
@@ -419,6 +451,7 @@ class TdMember {
       'isVector': isVector,
       'isContainer': isContainer,
       'subName': subName,
+      'comments': comments.map((e) => {'text': e})
     };
   }
 }

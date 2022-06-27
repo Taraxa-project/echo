@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Clears message drafts in all chats 
 class ClearAllDraftMessages extends TdFunction {
   String get tdType => 'clearAllDraftMessages';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to keep local message drafts in secret chats
   Bool? exclude_secret_chats;
 
   ClearAllDraftMessages({

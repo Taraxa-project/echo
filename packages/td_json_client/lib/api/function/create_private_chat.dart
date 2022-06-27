@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns an existing chat corresponding to a given user 
 class CreatePrivateChat extends TdFunction {
   String get tdType => 'createPrivateChat';
   String get tdReturnType => 'Chat';
 
   String? extra;
   int? client_id;
+
+  /// User identifier 
   int53? user_id;
+
+  /// Pass true to create the chat without a network request. In this case all information about the chat except its type, title and photo can be incorrect
   Bool? force;
 
   CreatePrivateChat({

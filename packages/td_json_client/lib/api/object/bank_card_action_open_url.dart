@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes an action associated with a bank card number 
 class BankCardActionOpenUrl extends TdObject {
   String get tdType => 'bankCardActionOpenUrl';
 
   String? extra;
   int? client_id;
+
+  /// Action text 
   string? text;
+
+  /// The URL to be opened
   string? url;
 
   BankCardActionOpenUrl({

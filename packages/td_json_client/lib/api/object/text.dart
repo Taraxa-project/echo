@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains some text 
 class Text extends TdObject {
   String get tdType => 'text';
 
   String? extra;
   int? client_id;
+
+  /// Text
   string? text;
 
   Text({

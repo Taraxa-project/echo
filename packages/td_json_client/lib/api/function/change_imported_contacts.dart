@@ -2,12 +2,17 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/contact.dart';
 
+
+/// Changes imported contacts using the list of contacts saved on the device. Imports newly added contacts and, if at least the file database is enabled, deletes recently deleted contacts.
+/// Query result depends on the result of the previous query, so only one query is possible at the same time 
 class ChangeImportedContacts extends TdFunction {
   String get tdType => 'changeImportedContacts';
   String get tdReturnType => 'ImportedContacts';
 
   String? extra;
   int? client_id;
+
+  /// The new list of contacts, contact's vCard are ignored and are not imported
   vector<Contact>? contacts;
 
   ChangeImportedContacts({

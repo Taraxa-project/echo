@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/location.dart';
 
+
+/// Changes the location of the current user. Needs to be called if GetOption("is_location_visible") is true and location changes for more than 1 kilometer 
 class SetLocation extends TdFunction {
   String get tdType => 'setLocation';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The new location of the user
   Location? location;
 
   SetLocation({

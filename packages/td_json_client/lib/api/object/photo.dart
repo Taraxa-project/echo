@@ -3,13 +3,21 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/photo_size.dart';
 
+
+/// Describes a photo 
 class Photo extends TdObject {
   String get tdType => 'photo';
 
   String? extra;
   int? client_id;
+
+  /// True, if stickers were added to the photo. The list of corresponding sticker sets can be received using getAttachedStickerSets
   Bool? has_stickers;
+
+  /// Photo minithumbnail; may be null 
   Minithumbnail? minithumbnail;
+
+  /// Available variants of the photo, in different sizes
   vector<PhotoSize>? sizes;
 
   Photo({

@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents the categories of chats for which a list of frequently used chats can be retrieved
 abstract class TopChatCategory extends TdObject {}
 
+
+/// A category containing frequently used private chats with non-bot users
 class TopChatCategoryUsers extends TopChatCategory {
   String get tdType => 'topChatCategoryUsers';
 
@@ -30,6 +33,8 @@ class TopChatCategoryUsers extends TopChatCategory {
     return map;
   }
 }
+
+/// A category containing frequently used private chats with bot users
 class TopChatCategoryBots extends TopChatCategory {
   String get tdType => 'topChatCategoryBots';
 
@@ -58,6 +63,8 @@ class TopChatCategoryBots extends TopChatCategory {
     return map;
   }
 }
+
+/// A category containing frequently used basic groups and supergroups
 class TopChatCategoryGroups extends TopChatCategory {
   String get tdType => 'topChatCategoryGroups';
 
@@ -86,6 +93,8 @@ class TopChatCategoryGroups extends TopChatCategory {
     return map;
   }
 }
+
+/// A category containing frequently used channels
 class TopChatCategoryChannels extends TopChatCategory {
   String get tdType => 'topChatCategoryChannels';
 
@@ -114,6 +123,8 @@ class TopChatCategoryChannels extends TopChatCategory {
     return map;
   }
 }
+
+/// A category containing frequently used chats with inline bots sorted by their usage in inline mode
 class TopChatCategoryInlineBots extends TopChatCategory {
   String get tdType => 'topChatCategoryInlineBots';
 
@@ -142,6 +153,8 @@ class TopChatCategoryInlineBots extends TopChatCategory {
     return map;
   }
 }
+
+/// A category containing frequently used chats used for calls
 class TopChatCategoryCalls extends TopChatCategory {
   String get tdType => 'topChatCategoryCalls';
 
@@ -170,6 +183,8 @@ class TopChatCategoryCalls extends TopChatCategory {
     return map;
   }
 }
+
+/// A category containing frequently used chats used to forward messages
 class TopChatCategoryForwardChats extends TopChatCategory {
   String get tdType => 'topChatCategoryForwardChats';
 

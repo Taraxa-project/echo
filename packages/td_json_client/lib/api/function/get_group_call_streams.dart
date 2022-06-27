@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about available group call streams 
 class GetGroupCallStreams extends TdFunction {
   String get tdType => 'getGroupCallStreams';
   String get tdReturnType => 'GroupCallStreams';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
 
   GetGroupCallStreams({

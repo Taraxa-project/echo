@@ -2,31 +2,75 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/group_call_recent_speaker.dart';
 
+
+/// Describes a group call
 class GroupCall extends TdObject {
   String get tdType => 'groupCall';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? id;
+
+  /// Group call title
   string? title;
+
+  /// Point in time (Unix timestamp) when the group call is supposed to be started by an administrator; 0 if it is already active or was ended
   int32? scheduled_start_date;
+
+  /// True, if the group call is scheduled and the current user will receive a notification when the group call will start
   Bool? enabled_start_notification;
+
+  /// True, if the call is active
   Bool? is_active;
+
+  /// True, if the chat is an RTMP stream instead of an ordinary video chat
   Bool? is_rtmp_stream;
+
+  /// True, if the call is joined
   Bool? is_joined;
+
+  /// True, if user was kicked from the call because of network loss and the call needs to be rejoined
   Bool? need_rejoin;
+
+  /// True, if the current user can manage the group call
   Bool? can_be_managed;
+
+  /// Number of participants in the group call
   int32? participant_count;
+
+  /// True, if group call participants, which are muted, aren't returned in participant list
   Bool? has_hidden_listeners;
+
+  /// True, if all group call participants are loaded
   Bool? loaded_all_participants;
+
+  /// At most 3 recently speaking users in the group call
   vector<GroupCallRecentSpeaker>? recent_speakers;
+
+  /// True, if the current user's video is enabled
   Bool? is_my_video_enabled;
+
+  /// True, if the current user's video is paused
   Bool? is_my_video_paused;
+
+  /// True, if the current user can broadcast video or share screen
   Bool? can_enable_video;
+
+  /// True, if only group call administrators can unmute new participants
   Bool? mute_new_participants;
+
+  /// True, if the current user can enable or disable mute_new_participants setting
   Bool? can_toggle_mute_new_participants;
+
+  /// Duration of the ongoing group call recording, in seconds; 0 if none. An updateGroupCall update is not triggered when value of this field changes, but the same recording goes on
   int32? record_duration;
+
+  /// True, if a video file is being recorded for the call
   Bool? is_video_recorded;
+
+  /// Call duration, in seconds; for ended calls only
   int32? duration;
 
   GroupCall({

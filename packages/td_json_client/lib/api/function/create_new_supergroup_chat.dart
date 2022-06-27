@@ -2,16 +2,27 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_location.dart';
 
+
+/// Creates a new supergroup or channel and sends a corresponding messageSupergroupChatCreate. Returns the newly created chat
 class CreateNewSupergroupChat extends TdFunction {
   String get tdType => 'createNewSupergroupChat';
   String get tdReturnType => 'Chat';
 
   String? extra;
   int? client_id;
+
+  /// Title of the new chat; 1-128 characters
   string? title;
+
+  /// Pass true to create a channel chat
   Bool? is_channel;
+
   string? description;
+
+  /// Chat location if a location-based supergroup is being created; pass null to create an ordinary supergroup chat
   ChatLocation? location;
+
+  /// Pass true to create a supergroup for importing messages using importMessage
   Bool? for_import;
 
   CreateNewSupergroupChat({

@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Toggles whether a group call participant hand is rased
 class ToggleGroupCallParticipantIsHandRaised extends TdFunction {
   String get tdType => 'toggleGroupCallParticipantIsHandRaised';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier 
   int32? group_call_id;
+
+  /// Participant identifier
   MessageSender? participant_id;
+
+  /// Pass true if the user's hand needs to be raised. Only self hand can be raised. Requires groupCall.can_be_managed group call flag to lower other's hand
   Bool? is_hand_raised;
 
   ToggleGroupCallParticipantIsHandRaised({

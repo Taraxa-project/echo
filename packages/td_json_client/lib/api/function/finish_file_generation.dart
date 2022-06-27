@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/error.dart';
 
+
+/// Finishes the file generation
 class FinishFileGeneration extends TdFunction {
   String get tdType => 'finishFileGeneration';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The identifier of the generation process
   int64? generation_id;
+
+  /// If passed, the file generation has failed and must be terminated; pass null if the file generation succeeded
   Error? error;
 
   FinishFileGeneration({

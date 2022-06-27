@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns full information about a user by their identifier 
 class GetUserFullInfo extends TdFunction {
   String get tdType => 'getUserFullInfo';
   String get tdReturnType => 'UserFullInfo';
 
   String? extra;
   int? client_id;
+
+  /// User identifier
   int53? user_id;
 
   GetUserFullInfo({

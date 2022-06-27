@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks whether a username can be set for a chat 
 class CheckChatUsername extends TdFunction {
   String get tdType => 'checkChatUsername';
   String get tdReturnType => 'CheckChatUsernameResult';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier; must be identifier of a supergroup chat, or a channel chat, or a private chat with self, or zero if the chat is being created 
   int53? chat_id;
+
+  /// Username to be checked
   string? username;
 
   CheckChatUsername({

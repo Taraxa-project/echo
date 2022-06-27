@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 
+
+/// Contains information about a tg: deep link 
 class DeepLinkInfo extends TdObject {
   String get tdType => 'deepLinkInfo';
 
   String? extra;
   int? client_id;
+
+  /// Text to be shown to the user 
   FormattedText? text;
+
+  /// True, if the user must be asked to update the application
   Bool? need_update_application;
 
   DeepLinkInfo({

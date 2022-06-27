@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a message with the callback button that originated a callback query; for bots only 
 class GetCallbackQueryMessage extends TdFunction {
   String get tdType => 'getCallbackQueryMessage';
   String get tdReturnType => 'Message';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat the message belongs to 
   int53? chat_id;
+
+  /// Message identifier 
   int53? message_id;
+
+  /// Identifier of the callback query
   int64? callback_query_id;
 
   GetCallbackQueryMessage({

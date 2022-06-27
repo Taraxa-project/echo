@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Describes a video chat
 class VideoChat extends TdObject {
   String get tdType => 'videoChat';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier of an active video chat; 0 if none. Full information about the video chat can be received through the method getGroupCall
   int32? group_call_id;
+
+  /// True, if the video chat has participants
   Bool? has_participants;
+
+  /// Default group call participant identifier to join the video chat; may be null
   MessageSender? default_participant_id;
 
   VideoChat({

@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/group_call_stream.dart';
 
+
+/// Represents a list of group call streams 
 class GroupCallStreams extends TdObject {
   String get tdType => 'groupCallStreams';
 
   String? extra;
   int? client_id;
+
+  /// A list of group call streams
   vector<GroupCallStream>? streams;
 
   GroupCallStreams({

@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about an invite link. Requires administrator privileges and can_invite_users right in the chat to get own links and owner privileges to get other links
 class GetChatInviteLink extends TdFunction {
   String get tdType => 'getChatInviteLink';
   String get tdReturnType => 'ChatInviteLink';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// Invite link to get
   string? invite_link;
 
   GetChatInviteLink({

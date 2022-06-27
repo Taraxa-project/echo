@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Creates a new basic group and sends a corresponding messageBasicGroupChatCreate. Returns the newly created chat 
 class CreateNewBasicGroupChat extends TdFunction {
   String get tdType => 'createNewBasicGroupChat';
   String get tdReturnType => 'Chat';
 
   String? extra;
   int? client_id;
+
+  /// Identifiers of users to be added to the basic group 
   vector<int53>? user_ids;
+
+  /// Title of the new basic group; 1-128 characters
   string? title;
 
   CreateNewBasicGroupChat({

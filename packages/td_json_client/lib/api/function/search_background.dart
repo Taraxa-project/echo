@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for a background by its name 
 class SearchBackground extends TdFunction {
   String get tdType => 'searchBackground';
   String get tdReturnType => 'Background';
 
   String? extra;
   int? client_id;
+
+  /// The name of the background
   string? name;
 
   SearchBackground({

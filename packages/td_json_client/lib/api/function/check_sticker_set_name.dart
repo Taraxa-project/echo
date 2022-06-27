@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks whether a name can be used for a new sticker set 
 class CheckStickerSetName extends TdFunction {
   String get tdType => 'checkStickerSetName';
   String get tdReturnType => 'CheckStickerSetNameResult';
 
   String? extra;
   int? client_id;
+
+  /// Name to be checked
   string? name;
 
   CheckStickerSetName({

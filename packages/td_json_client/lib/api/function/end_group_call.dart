@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Ends a group call. Requires groupCall.can_be_managed 
 class EndGroupCall extends TdFunction {
   String get tdType => 'endGroupCall';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
 
   EndGroupCall({

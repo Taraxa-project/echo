@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents a list of chats 
 class Chats extends TdObject {
   String get tdType => 'chats';
 
   String? extra;
   int? client_id;
+
+  /// Approximate total number of chats found 
   int32? total_count;
+
+  /// List of chat identifiers
   vector<int53>? chat_ids;
 
   Chats({

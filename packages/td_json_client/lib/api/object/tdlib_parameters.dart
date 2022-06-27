@@ -1,24 +1,56 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains parameters for TDLib initialization
 class TdlibParameters extends TdObject {
   String get tdType => 'tdlibParameters';
 
   String? extra;
   int? client_id;
+
+  /// If set to true, the Telegram test environment will be used instead of the production environment
   Bool? use_test_dc;
+
+  /// The path to the directory for the persistent database; if empty, the current working directory will be used
   string? database_directory;
+
+  /// The path to the directory for storing files; if empty, database_directory will be used
   string? files_directory;
+
+  /// If set to true, information about downloaded and uploaded files will be saved between application restarts
   Bool? use_file_database;
+
+  /// If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats. Implies use_file_database
   Bool? use_chat_info_database;
+
+  /// If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database
   Bool? use_message_database;
+
+  /// If set to true, support for secret chats will be enabled
   Bool? use_secret_chats;
+
+  /// Application identifier for Telegram API access, which can be obtained at https://my.telegram.org
   int32? api_id;
+
+  /// Application identifier hash for Telegram API access, which can be obtained at https://my.telegram.org
   string? api_hash;
+
+  /// IETF language tag of the user's operating system language; must be non-empty
   string? system_language_code;
+
+  /// Model of the device the application is being run on; must be non-empty
   string? device_model;
+
+  /// Version of the operating system the application is being run on. If empty, the version is automatically detected by TDLib
   string? system_version;
+
+  /// Application version; must be non-empty
   string? application_version;
+
+  /// If set to true, old files will automatically be deleted
   Bool? enable_storage_optimizer;
+
+  /// If set to true, original file names will be ignored. Otherwise, downloaded files will be saved under names as close as possible to the original name
   Bool? ignore_file_names;
 
   TdlibParameters({

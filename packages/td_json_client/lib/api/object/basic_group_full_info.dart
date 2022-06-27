@@ -5,16 +5,29 @@ import 'package:td_json_client/api/object/chat_member.dart';
 import 'package:td_json_client/api/object/chat_invite_link.dart';
 import 'package:td_json_client/api/object/bot_commands.dart';
 
+
+/// Contains full information about a basic group
 class BasicGroupFullInfo extends TdObject {
   String get tdType => 'basicGroupFullInfo';
 
   String? extra;
   int? client_id;
+
+  /// Chat photo; may be null
   ChatPhoto? photo;
+
   string? description;
+
+  /// User identifier of the creator of the group; 0 if unknown
   int53? creator_user_id;
+
+  /// Group members
   vector<ChatMember>? members;
+
+  /// Primary invite link for this group; may be null. For chat administrators with can_invite_users right only. Updated only after the basic group is opened
   ChatInviteLink? invite_link;
+
+  /// List of commands of bots in the group
   vector<BotCommands>? bot_commands;
 
   BasicGroupFullInfo({

@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the username of a supergroup or channel, requires owner privileges in the supergroup or channel 
 class SetSupergroupUsername extends TdFunction {
   String get tdType => 'setSupergroupUsername';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the supergroup or channel 
   int53? supergroup_id;
+
+  /// New value of the username. Use an empty string to remove the username
   string? username;
 
   SetSupergroupUsername({

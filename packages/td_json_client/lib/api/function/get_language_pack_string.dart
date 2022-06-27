@@ -1,14 +1,24 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a string stored in the local database from the specified localization target and language pack by its key. Returns a 404 error if the string is not found. Can be called synchronously
 class GetLanguagePackString extends TdFunction {
   String get tdType => 'getLanguagePackString';
   String get tdReturnType => 'LanguagePackStringValue';
 
   String? extra;
   int? client_id;
+
+  /// Path to the language pack database in which strings are stored 
   string? language_pack_database_path;
+
+  /// Localization target to which the language pack belongs 
   string? localization_target;
+
+  /// Language pack identifier 
   string? language_pack_id;
+
+  /// Language pack key of the string to be returned
   string? key;
 
   GetLanguagePackString({

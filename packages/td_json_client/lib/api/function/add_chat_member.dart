@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Adds a new member to a chat. Members can't be added to private or secret chats
 class AddChatMember extends TdFunction {
   String get tdType => 'addChatMember';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifier of the user 
   int53? user_id;
+
+  /// The number of earlier messages from the chat to be forwarded to the new member; up to 100. Ignored for supergroups and channels, or if the added user is a bot
   int32? forward_limit;
 
   AddChatMember({

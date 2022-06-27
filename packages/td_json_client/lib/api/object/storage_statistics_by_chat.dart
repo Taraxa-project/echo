@@ -2,14 +2,24 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/storage_statistics_by_file_type.dart';
 
+
+/// Contains the storage usage statistics for a specific chat 
 class StorageStatisticsByChat extends TdObject {
   String get tdType => 'storageStatisticsByChat';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier; 0 if none 
   int53? chat_id;
+
+  /// Total size of the files in the chat, in bytes 
   int53? size;
+
+  /// Total number of files in the chat 
   int32? count;
+
+  /// Statistics split by file types
   vector<StorageStatisticsByFileType>? by_file_type;
 
   StorageStatisticsByChat({

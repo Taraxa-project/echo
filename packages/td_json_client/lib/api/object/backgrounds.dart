@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/background.dart';
 
+
+/// Contains a list of backgrounds 
 class Backgrounds extends TdObject {
   String get tdType => 'backgrounds';
 
   String? extra;
   int? client_id;
+
+  /// A list of backgrounds
   vector<Background>? backgrounds;
 
   Backgrounds({

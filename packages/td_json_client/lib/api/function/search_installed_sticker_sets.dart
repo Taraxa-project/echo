@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for installed sticker sets by looking for specified query in their title and name 
 class SearchInstalledStickerSets extends TdFunction {
   String get tdType => 'searchInstalledStickerSets';
   String get tdReturnType => 'StickerSets';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to return mask sticker sets; pass false to return ordinary sticker sets 
   Bool? is_masks;
+
+  /// Query to search for 
   string? query;
+
+  /// The maximum number of sticker sets to return
   int32? limit;
 
   SearchInstalledStickerSets({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Upgrades supergroup to a broadcast group; requires owner privileges in the supergroup 
 class ToggleSupergroupIsBroadcastGroup extends TdFunction {
   String get tdType => 'toggleSupergroupIsBroadcastGroup';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the supergroup
   int53? supergroup_id;
 
   ToggleSupergroupIsBroadcastGroup({

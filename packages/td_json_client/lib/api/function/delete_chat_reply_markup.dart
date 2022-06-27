@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Deletes the default reply markup from a chat. Must be called after a one-time keyboard or a ForceReply reply markup has been used. UpdateChatReplyMarkup will be sent if the reply markup is changed
 class DeleteChatReplyMarkup extends TdFunction {
   String get tdType => 'deleteChatReplyMarkup';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// The message identifier of the used keyboard
   int53? message_id;
 
   DeleteChatReplyMarkup({

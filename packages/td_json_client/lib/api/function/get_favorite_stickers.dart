@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns favorite stickers
 class GetFavoriteStickers extends TdFunction {
   String get tdType => 'getFavoriteStickers';
   String get tdReturnType => 'Stickers';

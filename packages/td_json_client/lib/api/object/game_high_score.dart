@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains one row of the game high score table 
 class GameHighScore extends TdObject {
   String get tdType => 'gameHighScore';
 
   String? extra;
   int? client_id;
+
+  /// Position in the high score table 
   int32? position;
+
+  /// User identifier 
   int53? user_id;
+
+  /// User score
   int32? score;
 
   GameHighScore({

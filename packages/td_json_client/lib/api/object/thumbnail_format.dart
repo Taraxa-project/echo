@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes format of a thumbnail
 abstract class ThumbnailFormat extends TdObject {}
 
+
+/// The thumbnail is in JPEG format
 class ThumbnailFormatJpeg extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatJpeg';
 
@@ -30,6 +33,8 @@ class ThumbnailFormatJpeg extends ThumbnailFormat {
     return map;
   }
 }
+
+/// The thumbnail is in static GIF format. It will be used only for some bot inline results
 class ThumbnailFormatGif extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatGif';
 
@@ -58,6 +63,8 @@ class ThumbnailFormatGif extends ThumbnailFormat {
     return map;
   }
 }
+
+/// The thumbnail is in MPEG4 format. It will be used only for some animations and videos
 class ThumbnailFormatMpeg4 extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatMpeg4';
 
@@ -86,6 +93,8 @@ class ThumbnailFormatMpeg4 extends ThumbnailFormat {
     return map;
   }
 }
+
+/// The thumbnail is in PNG format. It will be used only for background patterns
 class ThumbnailFormatPng extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatPng';
 
@@ -114,6 +123,8 @@ class ThumbnailFormatPng extends ThumbnailFormat {
     return map;
   }
 }
+
+/// The thumbnail is in TGS format. It will be used only for TGS sticker sets
 class ThumbnailFormatTgs extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatTgs';
 
@@ -142,6 +153,8 @@ class ThumbnailFormatTgs extends ThumbnailFormat {
     return map;
   }
 }
+
+/// The thumbnail is in WEBM format. It will be used only for WEBM sticker sets
 class ThumbnailFormatWebm extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatWebm';
 
@@ -170,6 +183,8 @@ class ThumbnailFormatWebm extends ThumbnailFormat {
     return map;
   }
 }
+
+/// The thumbnail is in WEBP format. It will be used only for some stickers
 class ThumbnailFormatWebp extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatWebp';
 

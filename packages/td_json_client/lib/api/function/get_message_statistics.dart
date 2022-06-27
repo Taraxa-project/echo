@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns detailed statistics about a message. Can be used only if message.can_get_statistics == true 
 class GetMessageStatistics extends TdFunction {
   String get tdType => 'getMessageStatistics';
   String get tdReturnType => 'MessageStatistics';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Message identifier 
   int53? message_id;
+
+  /// Pass true if a dark theme is used by the application
   Bool? is_dark;
 
   GetMessageStatistics({

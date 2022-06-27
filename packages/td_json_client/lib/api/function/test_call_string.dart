@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the received string; for testing only. This is an offline method. Can be called before authorization 
 class TestCallString extends TdFunction {
   String get tdType => 'testCallString';
   String get tdReturnType => 'TestString';
 
   String? extra;
   int? client_id;
+
+  /// String to return
   string? x;
 
   TestCallString({

@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_administrator.dart';
 
+
+/// Represents a list of chat administrators 
 class ChatAdministrators extends TdObject {
   String get tdType => 'chatAdministrators';
 
   String? extra;
   int? client_id;
+
+  /// A list of chat administrators
   vector<ChatAdministrator>? administrators;
 
   ChatAdministrators({

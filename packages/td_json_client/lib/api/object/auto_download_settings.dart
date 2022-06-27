@@ -1,17 +1,35 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains auto-download settings
 class AutoDownloadSettings extends TdObject {
   String get tdType => 'autoDownloadSettings';
 
   String? extra;
   int? client_id;
+
+  /// True, if the auto-download is enabled
   Bool? is_auto_download_enabled;
+
+  /// The maximum size of a photo file to be auto-downloaded, in bytes
   int32? max_photo_file_size;
+
+  /// The maximum size of a video file to be auto-downloaded, in bytes
   int32? max_video_file_size;
+
+  /// The maximum size of other file types to be auto-downloaded, in bytes
   int32? max_other_file_size;
+
+  /// The maximum suggested bitrate for uploaded videos, in kbit/s
   int32? video_upload_bitrate;
+
+  /// True, if the beginning of video files needs to be preloaded for instant playback
   Bool? preload_large_videos;
+
+  /// True, if the next audio track needs to be preloaded while the user is listening to an audio file
   Bool? preload_next_audio;
+
+  /// True, if "use less data for calls" option needs to be enabled
   Bool? use_less_data_for_calls;
 
   AutoDownloadSettings({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the username of the current user 
 class SetUsername extends TdFunction {
   String get tdType => 'setUsername';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The new value of the username. Use an empty string to remove the username
   string? username;
 
   SetUsername({

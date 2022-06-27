@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Informs the server that some trending sticker sets have been viewed by the user 
 class ViewTrendingStickerSets extends TdFunction {
   String get tdType => 'viewTrendingStickerSets';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifiers of viewed trending sticker sets
   vector<int64>? sticker_set_ids;
 
   ViewTrendingStickerSets({

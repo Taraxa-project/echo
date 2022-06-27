@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Informs TDLib on a file generation progress
 class SetFileGenerationProgress extends TdFunction {
   String get tdType => 'setFileGenerationProgress';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The identifier of the generation process
   int64? generation_id;
+
+  /// Expected size of the generated file, in bytes; 0 if unknown
   int32? expected_size;
+
+  /// The number of bytes already generated
   int32? local_prefix_size;
 
   SetFileGenerationProgress({

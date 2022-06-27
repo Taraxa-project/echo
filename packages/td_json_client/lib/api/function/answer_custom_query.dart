@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Answers a custom query; for bots only 
 class AnswerCustomQuery extends TdFunction {
   String get tdType => 'answerCustomQuery';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of a custom query 
   int64? custom_query_id;
+
+  /// JSON-serialized answer to the query
   string? data;
 
   AnswerCustomQuery({

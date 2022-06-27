@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_sticker.dart';
 
+
+/// Uploads a file with a sticker; returns the uploaded file 
 class UploadStickerFile extends TdFunction {
   String get tdType => 'uploadStickerFile';
   String get tdReturnType => 'File';
 
   String? extra;
   int? client_id;
+
+  /// Sticker file owner; ignored for regular users 
   int53? user_id;
+
+  /// Sticker file to upload
   InputSticker? sticker;
 
   UploadStickerFile({

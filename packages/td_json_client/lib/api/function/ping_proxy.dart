@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Computes time needed to receive a response from a Telegram server through a proxy. Can be called before authorization 
 class PingProxy extends TdFunction {
   String get tdType => 'pingProxy';
   String get tdReturnType => 'Seconds';
 
   String? extra;
   int? client_id;
+
+  /// Proxy identifier. Use 0 to ping a Telegram server without a proxy
   int32? proxy_id;
 
   PingProxy({

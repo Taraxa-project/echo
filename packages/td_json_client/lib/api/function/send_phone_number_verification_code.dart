@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/phone_number_authentication_settings.dart';
 
+
+/// Sends a code to verify a phone number to be added to a user's Telegram Passport
 class SendPhoneNumberVerificationCode extends TdFunction {
   String get tdType => 'sendPhoneNumberVerificationCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
   String? extra;
   int? client_id;
+
+  /// The phone number of the user, in international format 
   string? phone_number;
+
+  /// Settings for the authentication of the user's phone number; pass null to use default settings
   PhoneNumberAuthenticationSettings? settings;
 
   SendPhoneNumberVerificationCode({

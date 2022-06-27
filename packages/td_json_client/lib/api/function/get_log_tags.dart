@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns list of available TDLib internal log tags, for example, ["actor", "binlog", "connections", "notifications", "proxy"]. Can be called synchronously
 class GetLogTags extends TdFunction {
   String get tdType => 'getLogTags';
   String get tdReturnType => 'LogTags';

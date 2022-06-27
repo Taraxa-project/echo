@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes a chat located nearby 
 class ChatNearby extends TdObject {
   String get tdType => 'chatNearby';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Distance to the chat location, in meters
   int32? distance;
 
   ChatNearby({

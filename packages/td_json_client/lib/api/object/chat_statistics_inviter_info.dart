@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains statistics about number of new members invited by a user
 class ChatStatisticsInviterInfo extends TdObject {
   String get tdType => 'chatStatisticsInviterInfo';
 
   String? extra;
   int? client_id;
+
+  /// User identifier
   int53? user_id;
+
+  /// Number of new members invited by the user
   int32? added_member_count;
 
   ChatStatisticsInviterInfo({

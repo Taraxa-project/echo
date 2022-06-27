@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains the result of a custom request 
 class CustomRequestResult extends TdObject {
   String get tdType => 'customRequestResult';
 
   String? extra;
   int? client_id;
+
+  /// A JSON-serialized result
   string? result;
 
   CustomRequestResult({

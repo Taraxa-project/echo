@@ -2,16 +2,28 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_sticker.dart';
 
+
+/// Creates a new sticker set. Returns the newly created sticker set
 class CreateNewStickerSet extends TdFunction {
   String get tdType => 'createNewStickerSet';
   String get tdReturnType => 'StickerSet';
 
   String? extra;
   int? client_id;
+
+  /// Sticker set owner; ignored for regular users
   int53? user_id;
+
+  /// Sticker set title; 1-64 characters
   string? title;
+
+  /// Sticker set name. Can contain only English letters, digits and underscores. Must end with *"_by_<bot username>"* (*<bot_username>* is case insensitive) for bots; 1-64 characters
   string? name;
+
+  /// List of stickers to be added to the set; must be non-empty. All stickers must have the same format. For TGS stickers, uploadStickerFile must be used before the sticker is shown
   vector<InputSticker>? stickers;
+
+  /// Source of the sticker set; may be empty if unknown
   string? source;
 
   CreateNewStickerSet({

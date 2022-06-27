@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Starts screen sharing in a joined group call. Returns join response payload for tgcalls
 class StartGroupCallScreenSharing extends TdFunction {
   String get tdType => 'startGroupCallScreenSharing';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
+
+  /// Screen sharing audio channel synchronization source identifier; received from tgcalls
   int32? audio_source_id;
+
+  /// Group call join payload; received from tgcalls
   string? payload;
 
   StartGroupCallScreenSharing({

@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Terminates all other sessions of the current user
 class TerminateAllOtherSessions extends TdFunction {
   String get tdType => 'terminateAllOtherSessions';
   String get tdReturnType => 'Ok';

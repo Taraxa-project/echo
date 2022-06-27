@@ -13,18 +13,32 @@ import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/video.dart';
 import 'package:td_json_client/api/object/voice_note.dart';
 
+/// Represents a single result of an inline query
 abstract class InlineQueryResult extends TdObject {}
 
+
+/// Represents a link to an article or web page 
 class InlineQueryResultArticle extends InlineQueryResult {
   String get tdType => 'inlineQueryResultArticle';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// URL of the result, if it exists 
   string? url;
+
+  /// True, if the URL must be not shown 
   Bool? hide_url;
+
+  /// Title of the result
   string? title;
+
   string? description;
+
+  /// Result thumbnail in JPEG format; may be null
   Thumbnail? thumbnail;
 
   InlineQueryResultArticle({
@@ -67,13 +81,21 @@ class InlineQueryResultArticle extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents a user contact 
 class InlineQueryResultContact extends InlineQueryResult {
   String get tdType => 'inlineQueryResultContact';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// A user contact 
   Contact? contact;
+
+  /// Result thumbnail in JPEG format; may be null
   Thumbnail? thumbnail;
 
   InlineQueryResultContact({
@@ -107,14 +129,24 @@ class InlineQueryResultContact extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents a point on the map 
 class InlineQueryResultLocation extends InlineQueryResult {
   String get tdType => 'inlineQueryResultLocation';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Location result 
   Location? location;
+
+  /// Title of the result 
   string? title;
+
+  /// Result thumbnail in JPEG format; may be null
   Thumbnail? thumbnail;
 
   InlineQueryResultLocation({
@@ -151,13 +183,21 @@ class InlineQueryResultLocation extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents information about a venue 
 class InlineQueryResultVenue extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVenue';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Venue result 
   Venue? venue;
+
+  /// Result thumbnail in JPEG format; may be null
   Thumbnail? thumbnail;
 
   InlineQueryResultVenue({
@@ -191,12 +231,18 @@ class InlineQueryResultVenue extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents information about a game 
 class InlineQueryResultGame extends InlineQueryResult {
   String get tdType => 'inlineQueryResultGame';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Game result
   Game? game;
 
   InlineQueryResultGame({
@@ -227,13 +273,21 @@ class InlineQueryResultGame extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents an animation file 
 class InlineQueryResultAnimation extends InlineQueryResult {
   String get tdType => 'inlineQueryResultAnimation';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Animation file 
   Animation? animation;
+
+  /// Animation title
   string? title;
 
   InlineQueryResultAnimation({
@@ -267,12 +321,18 @@ class InlineQueryResultAnimation extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents an audio file 
 class InlineQueryResultAudio extends InlineQueryResult {
   String get tdType => 'inlineQueryResultAudio';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Audio file
   Audio? audio;
 
   InlineQueryResultAudio({
@@ -303,14 +363,23 @@ class InlineQueryResultAudio extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents a document 
 class InlineQueryResultDocument extends InlineQueryResult {
   String get tdType => 'inlineQueryResultDocument';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Document 
   Document? document;
+
+  /// Document title 
   string? title;
+
   string? description;
 
   InlineQueryResultDocument({
@@ -347,14 +416,23 @@ class InlineQueryResultDocument extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents a photo 
 class InlineQueryResultPhoto extends InlineQueryResult {
   String get tdType => 'inlineQueryResultPhoto';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Photo 
   Photo? photo;
+
+  /// Title of the result, if known 
   string? title;
+
   string? description;
 
   InlineQueryResultPhoto({
@@ -391,12 +469,18 @@ class InlineQueryResultPhoto extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents a sticker 
 class InlineQueryResultSticker extends InlineQueryResult {
   String get tdType => 'inlineQueryResultSticker';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Sticker
   Sticker? sticker;
 
   InlineQueryResultSticker({
@@ -427,14 +511,23 @@ class InlineQueryResultSticker extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents a video 
 class InlineQueryResultVideo extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVideo';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Video 
   Video? video;
+
+  /// Title of the video 
   string? title;
+
   string? description;
 
   InlineQueryResultVideo({
@@ -471,13 +564,21 @@ class InlineQueryResultVideo extends InlineQueryResult {
     return map;
   }
 }
+
+/// Represents a voice note 
 class InlineQueryResultVoiceNote extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVoiceNote';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Voice note 
   VoiceNote? voice_note;
+
+  /// Title of the voice note
   string? title;
 
   InlineQueryResultVoiceNote({

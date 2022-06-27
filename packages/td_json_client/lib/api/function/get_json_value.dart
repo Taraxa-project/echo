@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Converts a JSON-serialized string to corresponding JsonValue object. Can be called synchronously 
 class GetJsonValue extends TdFunction {
   String get tdType => 'getJsonValue';
   String get tdReturnType => 'JsonValue';
 
   String? extra;
   int? client_id;
+
+  /// The JSON-serialized string
   string? json;
 
   GetJsonValue({

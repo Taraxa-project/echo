@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Contains information about the sending state of the message
 abstract class MessageSendingState extends TdObject {}
 
+
+/// The message is being sent now, but has not yet been delivered to the server
 class MessageSendingStatePending extends MessageSendingState {
   String get tdType => 'messageSendingStatePending';
 
@@ -30,15 +33,27 @@ class MessageSendingStatePending extends MessageSendingState {
     return map;
   }
 }
+
+/// The message failed to be sent 
 class MessageSendingStateFailed extends MessageSendingState {
   String get tdType => 'messageSendingStateFailed';
 
   String? extra;
   int? client_id;
+
+  /// An error code; 0 if unknown 
   int32? error_code;
+
+  /// Error message
   string? error_message;
+
+  /// True, if the message can be re-sent
   Bool? can_retry;
+
+  /// True, if the message can be re-sent only on behalf of a different sender
   Bool? need_another_sender;
+
+  /// Time left before the message can be re-sent, in seconds. No update is sent when this field changes
   double? retry_after;
 
   MessageSendingStateFailed({

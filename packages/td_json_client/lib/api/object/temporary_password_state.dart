@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about the availability of a temporary password, which can be used for payments 
 class TemporaryPasswordState extends TdObject {
   String get tdType => 'temporaryPasswordState';
 
   String? extra;
   int? client_id;
+
+  /// True, if a temporary password is available 
   Bool? has_password;
+
+  /// Time left before the temporary password expires, in seconds
   int32? valid_for;
 
   TemporaryPasswordState({

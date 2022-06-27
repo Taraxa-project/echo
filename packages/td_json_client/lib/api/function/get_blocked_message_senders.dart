@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns users and chats that were blocked by the current user 
 class GetBlockedMessageSenders extends TdFunction {
   String get tdType => 'getBlockedMessageSenders';
   String get tdReturnType => 'MessageSenders';
 
   String? extra;
   int? client_id;
+
+  /// Number of users and chats to skip in the result; must be non-negative 
   int32? offset;
+
+  /// The maximum number of users and chats to return; up to 100
   int32? limit;
 
   GetBlockedMessageSenders({

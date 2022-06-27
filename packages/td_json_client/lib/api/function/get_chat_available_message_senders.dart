@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns list of message sender identifiers, which can be used to send messages in a chat 
 class GetChatAvailableMessageSenders extends TdFunction {
   String get tdType => 'getChatAvailableMessageSenders';
   String get tdReturnType => 'MessageSenders';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   GetChatAvailableMessageSenders({

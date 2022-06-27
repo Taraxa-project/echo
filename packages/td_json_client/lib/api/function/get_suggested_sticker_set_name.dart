@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a suggested name for a new sticker set with a given title 
 class GetSuggestedStickerSetName extends TdFunction {
   String get tdType => 'getSuggestedStickerSetName';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// Sticker set title; 1-64 characters
   string? title;
 
   GetSuggestedStickerSetName({

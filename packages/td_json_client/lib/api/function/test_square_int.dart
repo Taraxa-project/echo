@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the squared received number; for testing only. This is an offline method. Can be called before authorization 
 class TestSquareInt extends TdFunction {
   String get tdType => 'testSquareInt';
   String get tdReturnType => 'TestInt';
 
   String? extra;
   int? client_id;
+
+  /// Number to square
   int32? x;
 
   TestSquareInt({

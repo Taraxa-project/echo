@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a list of trending sticker sets. For optimal performance, the number of returned sticker sets is chosen by TDLib
 class GetTrendingStickerSets extends TdFunction {
   String get tdType => 'getTrendingStickerSets';
   String get tdReturnType => 'StickerSets';
 
   String? extra;
   int? client_id;
+
+  /// The offset from which to return the sticker sets; must be non-negative
   int32? offset;
+
+  /// The maximum number of sticker sets to be returned; up to 100. For optimal performance, the number of returned sticker sets is chosen by TDLib and can be smaller than the specified limit, even if the end of the list has not been reached
   int32? limit;
 
   GetTrendingStickerSets({

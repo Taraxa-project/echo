@@ -3,15 +3,25 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/input_message_content.dart';
 
+
+/// Edits the text of a message (or a text of a game message). Returns the edited message after the edit is completed on the server side
 class EditMessageText extends TdFunction {
   String get tdType => 'editMessageText';
   String get tdReturnType => 'Message';
 
   String? extra;
   int? client_id;
+
+  /// The chat the message belongs to
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
+
+  /// The new message reply markup; pass null if none; for bots only
   ReplyMarkup? reply_markup;
+
+  /// New text content of the message. Must be of type inputMessageText
   InputMessageContent? input_message_content;
 
   EditMessageText({

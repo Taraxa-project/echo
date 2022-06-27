@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents result of checking whether the current session can be used to transfer a chat ownership to another user
 abstract class CanTransferOwnershipResult extends TdObject {}
 
+
+/// The session can be used
 class CanTransferOwnershipResultOk extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultOk';
 
@@ -30,6 +33,8 @@ class CanTransferOwnershipResultOk extends CanTransferOwnershipResult {
     return map;
   }
 }
+
+/// The 2-step verification needs to be enabled first
 class CanTransferOwnershipResultPasswordNeeded extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultPasswordNeeded';
 
@@ -58,11 +63,15 @@ class CanTransferOwnershipResultPasswordNeeded extends CanTransferOwnershipResul
     return map;
   }
 }
+
+/// The 2-step verification was enabled recently, user needs to wait 
 class CanTransferOwnershipResultPasswordTooFresh extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultPasswordTooFresh';
 
   String? extra;
   int? client_id;
+
+  /// Time left before the session can be used to transfer ownership of a chat, in seconds
   int32? retry_after;
 
   CanTransferOwnershipResultPasswordTooFresh({
@@ -90,11 +99,15 @@ class CanTransferOwnershipResultPasswordTooFresh extends CanTransferOwnershipRes
     return map;
   }
 }
+
+/// The session was created recently, user needs to wait 
 class CanTransferOwnershipResultSessionTooFresh extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultSessionTooFresh';
 
   String? extra;
   int? client_id;
+
+  /// Time left before the session can be used to transfer ownership of a chat, in seconds
   int32? retry_after;
 
   CanTransferOwnershipResultSessionTooFresh({

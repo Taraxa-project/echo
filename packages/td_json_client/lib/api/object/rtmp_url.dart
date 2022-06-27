@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents an RTMP url 
 class RtmpUrl extends TdObject {
   String get tdType => 'rtmpUrl';
 
   String? extra;
   int? client_id;
+
+  /// The URL 
   string? url;
+
+  /// Stream key
   string? stream_key;
 
   RtmpUrl({

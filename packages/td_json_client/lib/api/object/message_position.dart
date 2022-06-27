@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains information about a message in a specific position 
 class MessagePosition extends TdObject {
   String get tdType => 'messagePosition';
 
   String? extra;
   int? client_id;
+
+  /// 0-based message position in the full list of suitable messages 
   int32? position;
+
+  /// Message identifier 
   int53? message_id;
+
+  /// Point in time (Unix timestamp) when the message was sent
   int32? date;
 
   MessagePosition({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns menu button set by the bot for the given user; for bots only 
 class GetMenuButton extends TdFunction {
   String get tdType => 'getMenuButton';
   String get tdReturnType => 'BotMenuButton';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the user or 0 to get the default menu button
   int53? user_id;
 
   GetMenuButton({

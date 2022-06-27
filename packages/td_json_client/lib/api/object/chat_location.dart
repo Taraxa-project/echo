@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/location.dart';
 
+
+/// Represents a location to which a chat is connected 
 class ChatLocation extends TdObject {
   String get tdType => 'chatLocation';
 
   String? extra;
   int? client_id;
+
+  /// The location 
   Location? location;
+
+  /// Location address; 1-64 characters, as defined by the chat owner
   string? address;
 
   ChatLocation({

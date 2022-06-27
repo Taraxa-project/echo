@@ -1,22 +1,51 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents a filter of user chats
 class ChatFilter extends TdObject {
   String get tdType => 'chatFilter';
 
   String? extra;
   int? client_id;
+
+  /// The title of the filter; 1-12 characters without line feeds
   string? title;
+
+  /// The chosen icon name for short filter representation. If non-empty, must be one of "All", "Unread", "Unmuted", "Bots", "Channels", "Groups", "Private", "Custom", "Setup", "Cat", "Crown", "Favorite", "Flower", "Game", "Home", "Love", "Mask", "Party", "Sport", "Study", "Trade", "Travel", "Work".
+  /// If empty, use getChatFilterDefaultIconName to get default icon name for the filter
   string? icon_name;
+
+  /// The chat identifiers of pinned chats in the filtered chat list
   vector<int53>? pinned_chat_ids;
+
+  /// The chat identifiers of always included chats in the filtered chat list
   vector<int53>? included_chat_ids;
+
+  /// The chat identifiers of always excluded chats in the filtered chat list
   vector<int53>? excluded_chat_ids;
+
+  /// True, if muted chats need to be excluded
   Bool? exclude_muted;
+
+  /// True, if read chats need to be excluded
   Bool? exclude_read;
+
+  /// True, if archived chats need to be excluded
   Bool? exclude_archived;
+
+  /// True, if contacts need to be included
   Bool? include_contacts;
+
+  /// True, if non-contact users need to be included
   Bool? include_non_contacts;
+
+  /// True, if bots need to be included
   Bool? include_bots;
+
+  /// True, if basic groups and supergroups need to be included
   Bool? include_groups;
+
+  /// True, if channels need to be included
   Bool? include_channels;
 
   ChatFilter({

@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Toggles whether a participant of an active group call is muted, unmuted, or allowed to unmute themselves
 class ToggleGroupCallParticipantIsMuted extends TdFunction {
   String get tdType => 'toggleGroupCallParticipantIsMuted';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier 
   int32? group_call_id;
+
+  /// Participant identifier 
   MessageSender? participant_id;
+
+  /// Pass true to mute the user; pass false to unmute the them
   Bool? is_muted;
 
   ToggleGroupCallParticipantIsMuted({

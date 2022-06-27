@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 
+
+/// Loads more chats from a chat list. The loaded chats and their positions in the chat list will be sent through updates. Chats are sorted by the pair (chat.position.order, chat.id) in descending order. Returns a 404 error if all chats have been loaded
 class LoadChats extends TdFunction {
   String get tdType => 'loadChats';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The chat list in which to load chats; pass null to load chats from the main chat list
   ChatList? chat_list;
+
+  /// The maximum number of chats to be loaded. For optimal performance, the number of loaded chats is chosen by TDLib and can be smaller than the specified limit, even if the end of the list is not reached
   int32? limit;
 
   LoadChats({

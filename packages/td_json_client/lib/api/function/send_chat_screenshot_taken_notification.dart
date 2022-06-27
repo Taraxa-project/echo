@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Sends a notification about a screenshot taken in a chat. Supported only in private and secret chats 
 class SendChatScreenshotTakenNotification extends TdFunction {
   String get tdType => 'sendChatScreenshotTakenNotification';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   SendChatScreenshotTakenNotification({

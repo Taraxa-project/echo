@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns sponsored message to be shown in a chat; for channel chats only. Returns a 404 error if there is no sponsored message in the chat 
 class GetChatSponsoredMessage extends TdFunction {
   String get tdType => 'getChatSponsoredMessage';
   String get tdReturnType => 'SponsoredMessage';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat
   int53? chat_id;
 
   GetChatSponsoredMessage({

@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Contains the description of an error in a Telegram Passport element
 abstract class PassportElementErrorSource extends TdObject {}
 
+
+/// The element contains an error in an unspecified place. The error will be considered resolved when new data is added
 class PassportElementErrorSourceUnspecified extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceUnspecified';
 
@@ -30,11 +33,15 @@ class PassportElementErrorSourceUnspecified extends PassportElementErrorSource {
     return map;
   }
 }
+
+/// One of the data fields contains an error. The error will be considered resolved when the value of the field changes 
 class PassportElementErrorSourceDataField extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceDataField';
 
   String? extra;
   int? client_id;
+
+  /// Field name
   string? field_name;
 
   PassportElementErrorSourceDataField({
@@ -62,6 +69,8 @@ class PassportElementErrorSourceDataField extends PassportElementErrorSource {
     return map;
   }
 }
+
+/// The front side of the document contains an error. The error will be considered resolved when the file with the front side changes
 class PassportElementErrorSourceFrontSide extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceFrontSide';
 
@@ -90,6 +99,8 @@ class PassportElementErrorSourceFrontSide extends PassportElementErrorSource {
     return map;
   }
 }
+
+/// The reverse side of the document contains an error. The error will be considered resolved when the file with the reverse side changes
 class PassportElementErrorSourceReverseSide extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceReverseSide';
 
@@ -118,6 +129,8 @@ class PassportElementErrorSourceReverseSide extends PassportElementErrorSource {
     return map;
   }
 }
+
+/// The selfie with the document contains an error. The error will be considered resolved when the file with the selfie changes
 class PassportElementErrorSourceSelfie extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceSelfie';
 
@@ -146,11 +159,15 @@ class PassportElementErrorSourceSelfie extends PassportElementErrorSource {
     return map;
   }
 }
+
+/// One of files with the translation of the document contains an error. The error will be considered resolved when the file changes 
 class PassportElementErrorSourceTranslationFile extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceTranslationFile';
 
   String? extra;
   int? client_id;
+
+  /// Index of a file with the error
   int32? file_index;
 
   PassportElementErrorSourceTranslationFile({
@@ -178,6 +195,8 @@ class PassportElementErrorSourceTranslationFile extends PassportElementErrorSour
     return map;
   }
 }
+
+/// The translation of the document contains an error. The error will be considered resolved when the list of translation files changes
 class PassportElementErrorSourceTranslationFiles extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceTranslationFiles';
 
@@ -206,11 +225,15 @@ class PassportElementErrorSourceTranslationFiles extends PassportElementErrorSou
     return map;
   }
 }
+
+/// The file contains an error. The error will be considered resolved when the file changes 
 class PassportElementErrorSourceFile extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceFile';
 
   String? extra;
   int? client_id;
+
+  /// Index of a file with the error
   int32? file_index;
 
   PassportElementErrorSourceFile({
@@ -238,6 +261,8 @@ class PassportElementErrorSourceFile extends PassportElementErrorSource {
     return map;
   }
 }
+
+/// The list of attached files contains an error. The error will be considered resolved when the list of files changes
 class PassportElementErrorSourceFiles extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceFiles';
 

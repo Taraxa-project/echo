@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the user answer to a poll. A poll in quiz mode can be answered only once
 class SetPollAnswer extends TdFunction {
   String get tdType => 'setPollAnswer';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to which the poll belongs
   int53? chat_id;
+
+  /// Identifier of the message containing the poll
   int53? message_id;
+
+  /// 0-based identifiers of answer options, chosen by the user. User can choose more than 1 answer option only is the poll allows multiple answers
   vector<int32>? option_ids;
 
   SetPollAnswer({

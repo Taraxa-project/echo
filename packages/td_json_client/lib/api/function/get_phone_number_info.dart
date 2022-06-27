@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a phone number by its prefix. Can be called before authorization 
 class GetPhoneNumberInfo extends TdFunction {
   String get tdType => 'getPhoneNumberInfo';
   String get tdReturnType => 'PhoneNumberInfo';
 
   String? extra;
   int? client_id;
+
+  /// The phone number prefix
   string? phone_number_prefix;
 
   GetPhoneNumberInfo({

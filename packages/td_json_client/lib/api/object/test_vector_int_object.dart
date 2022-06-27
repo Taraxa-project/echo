@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/test_int.dart';
 
+
+/// A simple object containing a vector of objects that hold a number; for testing only 
 class TestVectorIntObject extends TdObject {
   String get tdType => 'testVectorIntObject';
 
   String? extra;
   int? client_id;
+
+  /// Vector of objects
   vector<TestInt>? value;
 
   TestVectorIntObject({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a language pack. Returned language pack identifier may be different from a provided one. Can be called before authorization 
 class GetLanguagePackInfo extends TdFunction {
   String get tdType => 'getLanguagePackInfo';
   String get tdReturnType => 'LanguagePackInfo';
 
   String? extra;
   int? client_id;
+
+  /// Language pack identifier
   string? language_pack_id;
 
   GetLanguagePackInfo({

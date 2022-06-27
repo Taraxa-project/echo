@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/json_value.dart';
 
+
+/// Saves application log event on the server. Can be called before authorization 
 class SaveApplicationLogEvent extends TdFunction {
   String get tdType => 'saveApplicationLogEvent';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Event type 
   string? type;
+
+  /// Optional chat identifier, associated with the event 
   int53? chat_id;
+
+  /// The log event data
   JsonValue? data;
 
   SaveApplicationLogEvent({

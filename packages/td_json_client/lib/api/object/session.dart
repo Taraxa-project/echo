@@ -2,28 +2,66 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/session_type.dart';
 
+
+/// Contains information about one session in a Telegram application used by the current user. Sessions must be shown to the user in the returned order
 class Session extends TdObject {
   String get tdType => 'session';
 
   String? extra;
   int? client_id;
+
+  /// Session identifier 
   int64? id;
+
+  /// True, if this session is the current session
   Bool? is_current;
+
+  /// True, if a password is needed to complete authorization of the session
   Bool? is_password_pending;
+
+  /// True, if incoming secret chats can be accepted by the session
   Bool? can_accept_secret_chats;
+
+  /// True, if incoming calls can be accepted by the session
   Bool? can_accept_calls;
+
+  /// Session type based on the system and application version, which can be used to display a corresponding icon
   SessionType? type;
+
+  /// Telegram API identifier, as provided by the application 
   int32? api_id;
+
+  /// Name of the application, as provided by the application
   string? application_name;
+
+  /// The version of the application, as provided by the application 
   string? application_version;
+
+  /// True, if the application is an official application or uses the api_id of an official application
   Bool? is_official_application;
+
+  /// Model of the device the application has been run or is running on, as provided by the application 
   string? device_model;
+
+  /// Operating system the application has been run or is running on, as provided by the application
   string? platform;
+
+  /// Version of the operating system the application has been run or is running on, as provided by the application 
   string? system_version;
+
+  /// Point in time (Unix timestamp) when the user has logged in
   int32? log_in_date;
+
+  /// Point in time (Unix timestamp) when the session was last used 
   int32? last_active_date;
+
+  /// IP address from which the session was created, in human-readable format
   string? ip;
+
+  /// A two-letter country code for the country from which the session was created, based on the IP address 
   string? country;
+
+  /// Region code from which the session was created, based on the IP address
   string? region;
 
   Session({

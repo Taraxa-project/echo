@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/recommended_chat_filter.dart';
 
+
+/// Contains a list of recommended chat filters 
 class RecommendedChatFilters extends TdObject {
   String get tdType => 'recommendedChatFilters';
 
   String? extra;
   int? client_id;
+
+  /// List of recommended chat filters
   vector<RecommendedChatFilter>? chat_filters;
 
   RecommendedChatFilters({

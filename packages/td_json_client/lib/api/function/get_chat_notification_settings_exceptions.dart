@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/notification_settings_scope.dart';
 
+
+/// Returns list of chats with non-default notification settings
 class GetChatNotificationSettingsExceptions extends TdFunction {
   String get tdType => 'getChatNotificationSettingsExceptions';
   String get tdReturnType => 'Chats';
 
   String? extra;
   int? client_id;
+
+  /// If specified, only chats from the scope will be returned; pass null to return chats from all scopes
   NotificationSettingsScope? scope;
+
+  /// Pass true to include in the response chats with only non-default sound
   Bool? compare_sound;
 
   GetChatNotificationSettingsExceptions({

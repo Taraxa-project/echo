@@ -6,23 +6,48 @@ import 'package:td_json_client/api/object/contact.dart';
 import 'package:td_json_client/api/object/location.dart';
 import 'package:td_json_client/api/object/venue.dart';
 
+/// Represents a single result of an inline query; for bots only
 abstract class InputInlineQueryResult extends TdObject {}
 
+
+/// Represents a link to an animated GIF or an animated (i.e., without sound) H.264/MPEG-4 AVC video
 class InputInlineQueryResultAnimation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAnimation';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Title of the query result
   string? title;
+
+  /// URL of the result thumbnail (JPEG, GIF, or MPEG4), if it exists 
   string? thumbnail_url;
+
+  /// MIME type of the video thumbnail. If non-empty, must be one of "image/jpeg", "image/gif" and "video/mp4"
   string? thumbnail_mime_type;
+
+  /// The URL of the video file (file size must not exceed 1MB) 
   string? video_url;
+
+  /// MIME type of the video file. Must be one of "image/gif" and "video/mp4"
   string? video_mime_type;
+
+  /// Duration of the video, in seconds 
   int32? video_duration;
+
+  /// Width of the video 
   int32? video_width;
+
+  /// Height of the video
   int32? video_height;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultAnimation({
@@ -80,20 +105,41 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents a link to an article or web page 
 class InputInlineQueryResultArticle extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultArticle';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// URL of the result, if it exists 
   string? url;
+
+  /// True, if the URL must be not shown 
   Bool? hide_url;
+
+  /// Title of the result
   string? title;
+
   string? description;
+
+  /// URL of the result thumbnail, if it exists 
   string? thumbnail_url;
+
+  /// Thumbnail width, if known 
   int32? thumbnail_width;
+
+  /// Thumbnail height, if known
   int32? thumbnail_height;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultArticle({
@@ -148,17 +194,33 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents a link to an MP3 audio file 
 class InputInlineQueryResultAudio extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAudio';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Title of the audio file 
   string? title;
+
+  /// Performer of the audio file
   string? performer;
+
+  /// The URL of the audio file 
   string? audio_url;
+
+  /// Audio file duration, in seconds
   int32? audio_duration;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageAudio, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultAudio({
@@ -204,17 +266,33 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents a user contact 
 class InputInlineQueryResultContact extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultContact';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// User contact 
   Contact? contact;
+
+  /// URL of the result thumbnail, if it exists 
   string? thumbnail_url;
+
+  /// Thumbnail width, if known 
   int32? thumbnail_width;
+
+  /// Thumbnail height, if known
   int32? thumbnail_height;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultContact({
@@ -260,20 +338,41 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents a link to a file 
 class InputInlineQueryResultDocument extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultDocument';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Title of the resulting file 
   string? title;
+
   string? description;
+
+  /// URL of the file 
   string? document_url;
+
+  /// MIME type of the file content; only "application/pdf" and "application/zip" are currently allowed
   string? mime_type;
+
+  /// The URL of the file thumbnail, if it exists 
   string? thumbnail_url;
+
+  /// Width of the thumbnail 
   int32? thumbnail_width;
+
+  /// Height of the thumbnail
   int32? thumbnail_height;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageDocument, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultDocument({
@@ -328,13 +427,21 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents a game 
 class InputInlineQueryResultGame extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultGame';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Short name of the game 
   string? game_short_name;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
 
   InputInlineQueryResultGame({
@@ -368,19 +475,39 @@ class InputInlineQueryResultGame extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents a point on the map 
 class InputInlineQueryResultLocation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultLocation';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Location result
   Location? location;
+
+  /// Amount of time relative to the message sent time until the location can be updated, in seconds
   int32? live_period;
+
+  /// Title of the result 
   string? title;
+
+  /// URL of the result thumbnail, if it exists 
   string? thumbnail_url;
+
+  /// Thumbnail width, if known 
   int32? thumbnail_width;
+
+  /// Thumbnail height, if known
   int32? thumbnail_height;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultLocation({
@@ -432,19 +559,38 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents link to a JPEG image 
 class InputInlineQueryResultPhoto extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultPhoto';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Title of the result, if known 
   string? title;
+
   string? description;
+
+  /// URL of the photo thumbnail, if it exists
   string? thumbnail_url;
+
+  /// The URL of the JPEG photo (photo size must not exceed 5MB) 
   string? photo_url;
+
+  /// Width of the photo 
   int32? photo_width;
+
+  /// Height of the photo
   int32? photo_height;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessagePhoto, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultPhoto({
@@ -496,17 +642,33 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents a link to a WEBP, TGS, or WEBM sticker 
 class InputInlineQueryResultSticker extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultSticker';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// URL of the sticker thumbnail, if it exists
   string? thumbnail_url;
+
+  /// The URL of the WEBP, TGS, or WEBM sticker (sticker file size must not exceed 5MB) 
   string? sticker_url;
+
+  /// Width of the sticker 
   int32? sticker_width;
+
+  /// Height of the sticker
   int32? sticker_height;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageSticker, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultSticker({
@@ -552,17 +714,33 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents information about a venue 
 class InputInlineQueryResultVenue extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVenue';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Venue result 
   Venue? venue;
+
+  /// URL of the result thumbnail, if it exists 
   string? thumbnail_url;
+
+  /// Thumbnail width, if known 
   int32? thumbnail_width;
+
+  /// Thumbnail height, if known
   int32? thumbnail_height;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultVenue({
@@ -608,21 +786,44 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents a link to a page containing an embedded video player or a video file 
 class InputInlineQueryResultVideo extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVideo';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Title of the result 
   string? title;
+
   string? description;
+
+  /// The URL of the video thumbnail (JPEG), if it exists 
   string? thumbnail_url;
+
+  /// URL of the embedded video player or video file 
   string? video_url;
+
+  /// MIME type of the content of the video URL, only "text/html" or "video/mp4" are currently supported
   string? mime_type;
+
+  /// Width of the video 
   int32? video_width;
+
+  /// Height of the video 
   int32? video_height;
+
+  /// Video duration, in seconds
   int32? video_duration;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageVideo, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultVideo({
@@ -680,16 +881,30 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
     return map;
   }
 }
+
+/// Represents a link to an opus-encoded audio file within an OGG container, single channel audio 
 class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVoiceNote';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the query result 
   string? id;
+
+  /// Title of the voice note
   string? title;
+
+  /// The URL of the voice note file 
   string? voice_note_url;
+
+  /// Duration of the voice note, in seconds
   int32? voice_note_duration;
+
+  /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageVoiceNote, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultVoiceNote({

@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_required_element.dart';
 
+
+/// Contains information about a Telegram Passport authorization form that was requested 
 class PassportAuthorizationForm extends TdObject {
   String get tdType => 'passportAuthorizationForm';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the authorization form
   int32? id;
+
+  /// Telegram Passport elements that must be provided to complete the form
   vector<PassportRequiredElement>? required_elements;
+
+  /// URL for the privacy policy of the service; may be empty
   string? privacy_policy_url;
 
   PassportAuthorizationForm({

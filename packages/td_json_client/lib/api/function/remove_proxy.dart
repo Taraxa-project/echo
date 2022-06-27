@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes a proxy server. Can be called before authorization 
 class RemoveProxy extends TdFunction {
   String get tdType => 'removeProxy';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Proxy identifier
   int32? proxy_id;
 
   RemoveProxy({

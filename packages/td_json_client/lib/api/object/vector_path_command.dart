@@ -2,13 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/point.dart';
 
+/// Represents a vector path command
 abstract class VectorPathCommand extends TdObject {}
 
+
+/// A straight line to a given point 
 class VectorPathCommandLine extends VectorPathCommand {
   String get tdType => 'vectorPathCommandLine';
 
   String? extra;
   int? client_id;
+
+  /// The end point of the straight line
   Point? end_point;
 
   VectorPathCommandLine({
@@ -36,13 +41,21 @@ class VectorPathCommandLine extends VectorPathCommand {
     return map;
   }
 }
+
+/// A cubic Bézier curve to a given point 
 class VectorPathCommandCubicBezierCurve extends VectorPathCommand {
   String get tdType => 'vectorPathCommandCubicBezierCurve';
 
   String? extra;
   int? client_id;
+
+  /// The start control point of the curve 
   Point? start_control_point;
+
+  /// The end control point of the curve 
   Point? end_control_point;
+
+  /// The end point of the curve
   Point? end_point;
 
   VectorPathCommandCubicBezierCurve({

@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Deletes messages 
 class DeleteMessages extends TdFunction {
   String get tdType => 'deleteMessages';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifiers of the messages to be deleted 
   vector<int53>? message_ids;
+
+  /// Pass true to delete messages for all chat members. Always true for supergroups, channels and secret chats
   Bool? revoke;
 
   DeleteMessages({

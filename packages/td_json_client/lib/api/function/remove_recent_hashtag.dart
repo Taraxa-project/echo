@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes a hashtag from the list of recently used hashtags 
 class RemoveRecentHashtag extends TdFunction {
   String get tdType => 'removeRecentHashtag';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Hashtag to delete
   string? hashtag;
 
   RemoveRecentHashtag({

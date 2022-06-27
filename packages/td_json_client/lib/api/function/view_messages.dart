@@ -1,14 +1,24 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Informs TDLib that messages are being viewed by the user. Sponsored messages must be marked as viewed only when the entire text of the message is shown on the screen (excluding the button). Many useful activities depend on whether the messages are currently being viewed or not (e.g., marking messages as read, incrementing a view counter, updating a view counter, removing deleted messages in supergroups and channels)
 class ViewMessages extends TdFunction {
   String get tdType => 'viewMessages';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// If not 0, a message thread identifier in which the messages are being viewed
   int53? message_thread_id;
+
+  /// The identifiers of the messages being viewed
   vector<int53>? message_ids;
+
+  /// Pass true to mark as read the specified messages even the chat is closed
   Bool? force_read;
 
   ViewMessages({

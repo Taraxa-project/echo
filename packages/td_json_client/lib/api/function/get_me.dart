@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the current user
 class GetMe extends TdFunction {
   String get tdType => 'getMe';
   String get tdReturnType => 'User';

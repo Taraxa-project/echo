@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/bank_card_action_open_url.dart';
 
+
+/// Information about a bank card 
 class BankCardInfo extends TdObject {
   String get tdType => 'bankCardInfo';
 
   String? extra;
   int? client_id;
+
+  /// Title of the bank card description 
   string? title;
+
+  /// Actions that can be done with the bank card number
   vector<BankCardActionOpenUrl>? actions;
 
   BankCardInfo({

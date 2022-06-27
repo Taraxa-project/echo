@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains a bot's answer to a callback query 
 class CallbackQueryAnswer extends TdObject {
   String get tdType => 'callbackQueryAnswer';
 
   String? extra;
   int? client_id;
+
+  /// Text of the answer 
   string? text;
+
+  /// True, if an alert must be shown to the user instead of a toast notification 
   Bool? show_alert;
+
+  /// URL to be opened
   string? url;
 
   CallbackQueryAnswer({

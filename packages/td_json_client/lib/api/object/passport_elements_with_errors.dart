@@ -3,12 +3,18 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_element.dart';
 import 'package:td_json_client/api/object/passport_element_error.dart';
 
+
+/// Contains information about a Telegram Passport elements and corresponding errors 
 class PassportElementsWithErrors extends TdObject {
   String get tdType => 'passportElementsWithErrors';
 
   String? extra;
   int? client_id;
+
+  /// Telegram Passport elements 
   vector<PassportElement>? elements;
+
+  /// Errors in the elements that are already available
   vector<PassportElementError>? errors;
 
   PassportElementsWithErrors({

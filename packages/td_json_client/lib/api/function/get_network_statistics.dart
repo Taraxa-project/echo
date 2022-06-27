@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns network data usage statistics. Can be called before authorization 
 class GetNetworkStatistics extends TdFunction {
   String get tdType => 'getNetworkStatistics';
   String get tdReturnType => 'NetworkStatistics';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to get statistics only for the current library launch
   Bool? only_current;
 
   GetNetworkStatistics({

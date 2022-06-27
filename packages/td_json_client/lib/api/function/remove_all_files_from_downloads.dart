@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes all files from the file download list
 class RemoveAllFilesFromDownloads extends TdFunction {
   String get tdType => 'removeAllFilesFromDownloads';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to remove only active downloads, including paused
   Bool? only_active;
+
+  /// Pass true to remove only completed downloads
   Bool? only_completed;
+
+  /// Pass true to delete the file from the TDLib file cache
   Bool? delete_from_cache;
 
   RemoveAllFilesFromDownloads({

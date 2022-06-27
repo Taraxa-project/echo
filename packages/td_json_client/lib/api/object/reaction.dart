@@ -2,20 +2,42 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 
+
+/// Contains stickers which must be used for reaction animation rendering
 class Reaction extends TdObject {
   String get tdType => 'reaction';
 
   String? extra;
   int? client_id;
+
+  /// Text representation of the reaction
   string? reaction;
+
+  /// Reaction title
   string? title;
+
+  /// True, if the reaction can be added to new messages and enabled in chats
   Bool? is_active;
+
+  /// Static icon for the reaction
   Sticker? static_icon;
+
+  /// Appear animation for the reaction
   Sticker? appear_animation;
+
+  /// Select animation for the reaction
   Sticker? select_animation;
+
+  /// Activate animation for the reaction
   Sticker? activate_animation;
+
+  /// Effect animation for the reaction
   Sticker? effect_animation;
+
+  /// Around animation for the reaction; may be null
   Sticker? around_animation;
+
+  /// Center animation for the reaction; may be null
   Sticker? center_animation;
 
   Reaction({

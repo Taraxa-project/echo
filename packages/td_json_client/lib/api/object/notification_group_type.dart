@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the type of notifications in a notification group
 abstract class NotificationGroupType extends TdObject {}
 
+
+/// A group containing notifications of type notificationTypeNewMessage and notificationTypeNewPushMessage with ordinary unread messages
 class NotificationGroupTypeMessages extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeMessages';
 
@@ -30,6 +33,8 @@ class NotificationGroupTypeMessages extends NotificationGroupType {
     return map;
   }
 }
+
+/// A group containing notifications of type notificationTypeNewMessage and notificationTypeNewPushMessage with unread mentions of the current user, replies to their messages, or a pinned message
 class NotificationGroupTypeMentions extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeMentions';
 
@@ -58,6 +63,8 @@ class NotificationGroupTypeMentions extends NotificationGroupType {
     return map;
   }
 }
+
+/// A group containing a notification of type notificationTypeNewSecretChat
 class NotificationGroupTypeSecretChat extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeSecretChat';
 
@@ -86,6 +93,8 @@ class NotificationGroupTypeSecretChat extends NotificationGroupType {
     return map;
   }
 }
+
+/// A group containing notifications of type notificationTypeNewCall
 class NotificationGroupTypeCalls extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeCalls';
 

@@ -2,15 +2,25 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_report_reason.dart';
 
+
+/// Reports a chat to the Telegram moderators. A chat can be reported only from the chat action bar, or if chat.can_be_reported
 class ReportChat extends TdFunction {
   String get tdType => 'reportChat';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifiers of reported messages; may be empty to report the whole chat 
   vector<int53>? message_ids;
+
+  /// The reason for reporting the chat 
   ChatReportReason? reason;
+
+  /// Additional report details; 0-1024 characters
   string? text;
 
   ReportChat({

@@ -3,20 +3,42 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_photo.dart';
 import 'package:td_json_client/api/object/bot_info.dart';
 
+
+/// Contains full information about a user
 class UserFullInfo extends TdObject {
   String get tdType => 'userFullInfo';
 
   String? extra;
   int? client_id;
+
+  /// User profile photo; may be null
   ChatPhoto? photo;
+
+  /// True, if the user is blocked by the current user
   Bool? is_blocked;
+
+  /// True, if the user can be called
   Bool? can_be_called;
+
+  /// True, if a video call can be created with the user
   Bool? supports_video_calls;
+
+  /// True, if the user can't be called due to their privacy settings
   Bool? has_private_calls;
+
+  /// True, if the user can't be linked in forwarded messages due to their privacy settings
   Bool? has_private_forwards;
+
+  /// True, if the current user needs to explicitly allow to share their phone number with the user when the method addContact is used
   Bool? need_phone_number_privacy_exception;
+
+  /// A short user bio
   string? bio;
+
+  /// Number of group chats where both the other user and the current user are a member; 0 for the current user
   int32? group_in_common_count;
+
+  /// For bots, information about the bot; may be null
   BotInfo? bot_info;
 
   UserFullInfo({

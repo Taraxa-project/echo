@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents a date according to the Gregorian calendar 
 class Date extends TdObject {
   String get tdType => 'date';
 
   String? extra;
   int? client_id;
+
+  /// Day of the month; 1-31 
   int32? day;
+
+  /// Month; 1-12 
   int32? month;
+
+  /// Year; 1-9999
   int32? year;
 
   Date({

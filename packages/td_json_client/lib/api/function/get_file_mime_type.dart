@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the MIME type of a file, guessed by its extension. Returns an empty string on failure. Can be called synchronously 
 class GetFileMimeType extends TdFunction {
   String get tdType => 'getFileMimeType';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// The name of the file or path to the file
   string? file_name;
 
   GetFileMimeType({

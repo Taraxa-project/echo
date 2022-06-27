@@ -3,13 +3,19 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/notification_settings_scope.dart';
 import 'package:td_json_client/api/object/scope_notification_settings.dart';
 
+
+/// Changes notification settings for chats of a given type 
 class SetScopeNotificationSettings extends TdFunction {
   String get tdType => 'setScopeNotificationSettings';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Types of chats for which to change the notification settings 
   NotificationSettingsScope? scope;
+
+  /// The new notification settings for the given scope
   ScopeNotificationSettings? notification_settings;
 
   SetScopeNotificationSettings({

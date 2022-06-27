@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file_type.dart';
 
+
+/// Contains the storage usage statistics for a specific file type 
 class StorageStatisticsByFileType extends TdObject {
   String get tdType => 'storageStatisticsByFileType';
 
   String? extra;
   int? client_id;
+
+  /// File type 
   FileType? file_type;
+
+  /// Total size of the files, in bytes 
   int53? size;
+
+  /// Total number of files
   int32? count;
 
   StorageStatisticsByFileType({

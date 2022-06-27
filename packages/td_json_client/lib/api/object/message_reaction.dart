@@ -2,14 +2,24 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Contains information about a reaction to a message
 class MessageReaction extends TdObject {
   String get tdType => 'messageReaction';
 
   String? extra;
   int? client_id;
+
+  /// Text representation of the reaction
   string? reaction;
+
+  /// Number of times the reaction was added
   int32? total_count;
+
+  /// True, if the reaction is chosen by the current user
   Bool? is_chosen;
+
+  /// Identifiers of at most 3 recent message senders, added the reaction; available in private, basic group and supergroup chats
   vector<MessageSender>? recent_sender_ids;
 
   MessageReaction({

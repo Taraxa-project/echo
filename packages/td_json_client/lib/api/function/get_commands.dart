@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/bot_command_scope.dart';
 
+
+/// Returns the list of commands supported by the bot for the given user scope and language; for bots only
 class GetCommands extends TdFunction {
   String get tdType => 'getCommands';
   String get tdReturnType => 'BotCommands';
 
   String? extra;
   int? client_id;
+
+  /// The scope to which the commands are relevant; pass null to get commands in the default bot command scope
   BotCommandScope? scope;
+
+  /// A two-letter ISO 639-1 language code or an empty string
   string? language_code;
 
   GetCommands({

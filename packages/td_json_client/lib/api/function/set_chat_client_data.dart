@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes application-specific data associated with a chat 
 class SetChatClientData extends TdFunction {
   String get tdType => 'setChatClientData';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of client_data
   string? client_data;
 
   SetChatClientData({

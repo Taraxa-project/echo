@@ -1,14 +1,24 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Starts recording of an active group call. Requires groupCall.can_be_managed group call flag 
 class StartGroupCallRecording extends TdFunction {
   String get tdType => 'startGroupCallRecording';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier 
   int32? group_call_id;
+
+  /// Group call recording title; 0-64 characters
   string? title;
+
+  /// Pass true to record a video file instead of an audio file 
   Bool? record_video;
+
+  /// Pass true to use portrait orientation for video instead of landscape one
   Bool? use_portrait_orientation;
 
   StartGroupCallRecording({

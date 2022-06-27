@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about the current localization target. This is an offline request if only_local is true. Can be called before authorization 
 class GetLocalizationTargetInfo extends TdFunction {
   String get tdType => 'getLocalizationTargetInfo';
   String get tdReturnType => 'LocalizationTargetInfo';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to get only locally available information without sending network requests
   Bool? only_local;
 
   GetLocalizationTargetInfo({

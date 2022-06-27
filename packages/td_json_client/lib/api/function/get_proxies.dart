@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns list of proxies that are currently set up. Can be called before authorization
 class GetProxies extends TdFunction {
   String get tdType => 'getProxies';
   String get tdReturnType => 'Proxies';

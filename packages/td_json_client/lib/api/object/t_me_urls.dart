@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/t_me_url.dart';
 
+
+/// Contains a list of t.me URLs 
 class TMeUrls extends TdObject {
   String get tdType => 'tMeUrls';
 
   String? extra;
   int? client_id;
+
+  /// List of URLs
   vector<TMeUrl>? urls;
 
   TMeUrls({

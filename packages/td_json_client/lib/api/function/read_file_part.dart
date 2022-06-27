@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Reads a part of a file from the TDLib file cache and returns read bytes. This method is intended to be used only if the application has no direct access to TDLib's file system, because it is usually slower than a direct read from the file
 class ReadFilePart extends TdFunction {
   String get tdType => 'readFilePart';
   String get tdReturnType => 'FilePart';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the file. The file must be located in the TDLib file cache
   int32? file_id;
+
+  /// The offset from which to read the file
   int32? offset;
+
+  /// Number of bytes to read. An error will be returned if there are not enough bytes available in the file from the specified position. Pass 0 to read all available data from the specified position
   int32? count;
 
   ReadFilePart({

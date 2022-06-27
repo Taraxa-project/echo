@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// A simple object containing a vector of strings; for testing only 
 class TestVectorString extends TdObject {
   String get tdType => 'testVectorString';
 
   String? extra;
   int? client_id;
+
+  /// Vector of strings
   vector<string>? value;
 
   TestVectorString({

@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// A value with information about its recent changes 
 class StatisticalValue extends TdObject {
   String get tdType => 'statisticalValue';
 
   String? extra;
   int? client_id;
+
+  /// The current value 
   double? value;
+
+  /// The value for the previous day 
   double? previous_value;
+
+  /// The growth rate of the value, as a percentage
   double? growth_rate_percentage;
 
   StatisticalValue({

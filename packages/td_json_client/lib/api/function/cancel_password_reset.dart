@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Cancels reset of 2-step verification password. The method can be called if passwordState.pending_reset_date > 0
 class CancelPasswordReset extends TdFunction {
   String get tdType => 'cancelPasswordReset';
   String get tdReturnType => 'Ok';

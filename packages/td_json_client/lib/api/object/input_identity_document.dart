@@ -3,16 +3,30 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/date.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+
+/// An identity document to be saved to Telegram Passport 
 class InputIdentityDocument extends TdObject {
   String get tdType => 'inputIdentityDocument';
 
   String? extra;
   int? client_id;
+
+  /// Document number; 1-24 characters 
   string? number;
+
+  /// Document expiry date; pass null if not applicable 
   Date? expiry_date;
+
+  /// Front side of the document
   InputFile? front_side;
+
+  /// Reverse side of the document; only for driver license and identity card; pass null otherwise 
   InputFile? reverse_side;
+
+  /// Selfie with the document; pass null if unavailable 
   InputFile? selfie;
+
+  /// List of files containing a certified English translation of the document
   vector<InputFile>? translation;
 
   InputIdentityDocument({

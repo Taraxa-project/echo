@@ -3,13 +3,21 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/downloaded_file_counts.dart';
 import 'package:td_json_client/api/object/file_download.dart';
 
+
+/// Contains a list of downloaded files, found by a search
 class FoundFileDownloads extends TdObject {
   String get tdType => 'foundFileDownloads';
 
   String? extra;
   int? client_id;
+
+  /// Total number of suitable files, ignoring offset
   DownloadedFileCounts? total_counts;
+
+  /// The list of files
   vector<FileDownload>? files;
+
+  /// The offset for the next request. If empty, there are no more results
   string? next_offset;
 
   FoundFileDownloads({

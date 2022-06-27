@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes a user that sent a join request and waits for administrator approval 
 class ChatJoinRequest extends TdObject {
   String get tdType => 'chatJoinRequest';
 
   String? extra;
   int? client_id;
+
+  /// User identifier 
   int53? user_id;
+
+  /// Point in time (Unix timestamp) when the user sent the join request 
   int32? date;
+
+  /// A short bio of the user
   string? bio;
 
   ChatJoinRequest({

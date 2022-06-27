@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes a notification sound from the list of saved notification sounds 
 class RemoveSavedNotificationSound extends TdFunction {
   String get tdType => 'removeSavedNotificationSound';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the notification sound
   int64? notification_sound_id;
 
   RemoveSavedNotificationSound({

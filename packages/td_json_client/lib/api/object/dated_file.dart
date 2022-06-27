@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file.dart';
 
+
+/// File with the date it was uploaded 
 class DatedFile extends TdObject {
   String get tdType => 'datedFile';
 
   String? extra;
   int? client_id;
+
+  /// The file 
   File? file;
+
+  /// Point in time (Unix timestamp) when the file was uploaded
   int32? date;
 
   DatedFile({

@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Toggles whether sender signature is added to sent messages in a channel; requires can_change_info administrator right 
 class ToggleSupergroupSignMessages extends TdFunction {
   String get tdType => 'toggleSupergroupSignMessages';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the channel 
   int53? supergroup_id;
+
+  /// New value of sign_messages
   Bool? sign_messages;
 
   ToggleSupergroupSignMessages({

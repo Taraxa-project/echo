@@ -4,8 +4,11 @@ import 'package:td_json_client/api/object/chat_administrator_rights.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 import 'package:td_json_client/api/object/proxy_type.dart';
 
+/// Describes an internal https://t.me or tg: link, which must be processed by the app in a special way
 abstract class InternalLinkType extends TdObject {}
 
+
+/// The link is a link to the active sessions section of the app. Use getActiveSessions to handle the link
 class InternalLinkTypeActiveSessions extends InternalLinkType {
   String get tdType => 'internalLinkTypeActiveSessions';
 
@@ -34,13 +37,24 @@ class InternalLinkTypeActiveSessions extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to an attachment menu bot to be opened in the specified chat. Process given chat_link to open corresponding chat.
+/// Then call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then use getAttachmentMenuBot to receive information about the bot.
+/// If the bot isn't added to attachment menu, then user needs to confirm adding the bot to attachment menu. If user confirms adding, then use toggleBotIsAddedToAttachmentMenu to add it.
+/// If attachment menu bots can't be used in the current chat, show an error to the user. If the bot is added to attachment menu, then use openWebApp with the given URL
 class InternalLinkTypeAttachmentMenuBot extends InternalLinkType {
   String get tdType => 'internalLinkTypeAttachmentMenuBot';
 
   String? extra;
   int? client_id;
+
+  /// An internal link pointing to a chat; may be null if the current chat needs to be kept 
   InternalLinkType? chat_link;
+
+  /// Username of the bot 
   string? bot_username;
+
+  /// URL to be passed to openWebApp
   string? url;
 
   InternalLinkTypeAttachmentMenuBot({
@@ -74,11 +88,15 @@ class InternalLinkTypeAttachmentMenuBot extends InternalLinkType {
     return map;
   }
 }
+
+/// The link contains an authentication code. Call checkAuthenticationCode with the code if the current authorization state is authorizationStateWaitCode 
 class InternalLinkTypeAuthenticationCode extends InternalLinkType {
   String get tdType => 'internalLinkTypeAuthenticationCode';
 
   String? extra;
   int? client_id;
+
+  /// The authentication code
   string? code;
 
   InternalLinkTypeAuthenticationCode({
@@ -106,11 +124,15 @@ class InternalLinkTypeAuthenticationCode extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a background. Call searchBackground with the given background name to process the link 
 class InternalLinkTypeBackground extends InternalLinkType {
   String get tdType => 'internalLinkTypeBackground';
 
   String? extra;
   int? client_id;
+
+  /// Name of the background
   string? background_name;
 
   InternalLinkTypeBackground({
@@ -138,12 +160,19 @@ class InternalLinkTypeBackground extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a chat with a Telegram bot. Call searchPublicChat with the given bot username, check that the user is a bot, show START button in the chat with the bot,
+/// and then call sendBotStartMessage with the given start parameter after the button is pressed
 class InternalLinkTypeBotStart extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStart';
 
   String? extra;
   int? client_id;
+
+  /// Username of the bot 
   string? bot_username;
+
+  /// The parameter to be passed to sendBotStartMessage
   string? start_parameter;
 
   InternalLinkTypeBotStart({
@@ -174,13 +203,26 @@ class InternalLinkTypeBotStart extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a Telegram bot, which is supposed to be added to a group chat. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to groups,
+/// ask the current user to select a basic group or a supergroup chat to add the bot to, taking into account that bots can be added to a public supergroup only by administrators of the supergroup.
+/// If administrator rights are provided by the link, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator,
+/// check that the current user can edit its administrator rights, combine received rights with the requested administrator rights, show confirmation box to the user,
+/// and call setChatMemberStatus with the chosen chat and confirmed administrator rights. Before call to setChatMemberStatus it may be required to upgrade the chosen basic group chat to a supergroup chat.
+/// Then if start_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat, otherwise just send /start message with bot's username added to the chat.
 class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStartInGroup';
 
   String? extra;
   int? client_id;
+
+  /// Username of the bot 
   string? bot_username;
+
+  /// The parameter to be passed to sendBotStartMessage 
   string? start_parameter;
+
+  /// Expected administrator rights for the bot; may be null
   ChatAdministratorRights? administrator_rights;
 
   InternalLinkTypeBotStartInGroup({
@@ -214,12 +256,20 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a Telegram bot, which is supposed to be added to a channel chat as an administrator. Call searchPublicChat with the given bot username and check that the user is a bot,
+/// ask the current user to select a channel chat to add the bot to as an administrator. Then call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator,
+/// check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights
 class InternalLinkTypeBotAddToChannel extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotAddToChannel';
 
   String? extra;
   int? client_id;
+
+  /// Username of the bot 
   string? bot_username;
+
+  /// Expected administrator rights for the bot
   ChatAdministratorRights? administrator_rights;
 
   InternalLinkTypeBotAddToChannel({
@@ -250,6 +300,8 @@ class InternalLinkTypeBotAddToChannel extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to the change phone number section of the app
 class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
   String get tdType => 'internalLinkTypeChangePhoneNumber';
 
@@ -278,11 +330,15 @@ class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a chat invite link. Call checkChatInviteLink with the given invite link to process the link 
 class InternalLinkTypeChatInvite extends InternalLinkType {
   String get tdType => 'internalLinkTypeChatInvite';
 
   String? extra;
   int? client_id;
+
+  /// Internal representation of the invite link
   string? invite_link;
 
   InternalLinkTypeChatInvite({
@@ -310,6 +366,8 @@ class InternalLinkTypeChatInvite extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to the filter settings section of the app
 class InternalLinkTypeFilterSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeFilterSettings';
 
@@ -338,12 +396,18 @@ class InternalLinkTypeFilterSettings extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a game. Call searchPublicChat with the given bot username, check that the user is a bot, ask the current user to select a chat to send the game, and then call sendMessage with inputMessageGame
 class InternalLinkTypeGame extends InternalLinkType {
   String get tdType => 'internalLinkTypeGame';
 
   String? extra;
   int? client_id;
+
+  /// Username of the bot that owns the game 
   string? bot_username;
+
+  /// Short name of the game
   string? game_short_name;
 
   InternalLinkTypeGame({
@@ -374,11 +438,15 @@ class InternalLinkTypeGame extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a language pack. Call getLanguagePackInfo with the given language pack identifier to process the link 
 class InternalLinkTypeLanguagePack extends InternalLinkType {
   String get tdType => 'internalLinkTypeLanguagePack';
 
   String? extra;
   int? client_id;
+
+  /// Language pack identifier
   string? language_pack_id;
 
   InternalLinkTypeLanguagePack({
@@ -406,6 +474,8 @@ class InternalLinkTypeLanguagePack extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to the language settings section of the app
 class InternalLinkTypeLanguageSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeLanguageSettings';
 
@@ -434,11 +504,15 @@ class InternalLinkTypeLanguageSettings extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a Telegram message. Call getMessageLinkInfo with the given URL to process the link 
 class InternalLinkTypeMessage extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessage';
 
   String? extra;
   int? client_id;
+
+  /// URL to be passed to getMessageLinkInfo
   string? url;
 
   InternalLinkTypeMessage({
@@ -466,12 +540,18 @@ class InternalLinkTypeMessage extends InternalLinkType {
     return map;
   }
 }
+
+/// The link contains a message draft text. A share screen needs to be shown to the user, then the chosen chat must be opened and the text is added to the input field
 class InternalLinkTypeMessageDraft extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessageDraft';
 
   String? extra;
   int? client_id;
+
+  /// Message draft text 
   FormattedText? text;
+
+  /// True, if the first line of the text contains a link. If true, the input field needs to be focused and the text after the link must be selected
   Bool? contains_link;
 
   InternalLinkTypeMessageDraft({
@@ -502,15 +582,27 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
     return map;
   }
 }
+
+/// The link contains a request of Telegram passport data. Call getPassportAuthorizationForm with the given parameters to process the link if the link was received from outside of the app, otherwise ignore it
 class InternalLinkTypePassportDataRequest extends InternalLinkType {
   String get tdType => 'internalLinkTypePassportDataRequest';
 
   String? extra;
   int? client_id;
+
+  /// User identifier of the service's bot 
   int53? bot_user_id;
+
+  /// Telegram Passport element types requested by the service 
   string? scope;
+
+  /// Service's public key 
   string? public_key;
+
+  /// Unique request identifier provided by the service
   string? nonce;
+
+  /// An HTTP URL to open once the request is finished or canceled with the parameter tg_passport=success or tg_passport=cancel respectively. If empty, then the link tgbot{bot_user_id}://passport/success or tgbot{bot_user_id}://passport/cancel needs to be opened instead
   string? callback_url;
 
   InternalLinkTypePassportDataRequest({
@@ -550,12 +642,18 @@ class InternalLinkTypePassportDataRequest extends InternalLinkType {
     return map;
   }
 }
+
+/// The link can be used to confirm ownership of a phone number to prevent account deletion. Call sendPhoneNumberConfirmationCode with the given hash and phone number to process the link
 class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
   String get tdType => 'internalLinkTypePhoneNumberConfirmation';
 
   String? extra;
   int? client_id;
+
+  /// Hash value from the link 
   string? hash;
+
+  /// Phone number value from the link
   string? phone_number;
 
   InternalLinkTypePhoneNumberConfirmation({
@@ -586,6 +684,8 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to the privacy and security settings section of the app
 class InternalLinkTypePrivacyAndSecuritySettings extends InternalLinkType {
   String get tdType => 'internalLinkTypePrivacyAndSecuritySettings';
 
@@ -614,13 +714,21 @@ class InternalLinkTypePrivacyAndSecuritySettings extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a proxy. Call addProxy with the given parameters to process the link and add the proxy
 class InternalLinkTypeProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeProxy';
 
   String? extra;
   int? client_id;
+
+  /// Proxy server IP address 
   string? server;
+
+  /// Proxy server port 
   int32? port;
+
+  /// Type of the proxy
   ProxyType? type;
 
   InternalLinkTypeProxy({
@@ -654,11 +762,15 @@ class InternalLinkTypeProxy extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a chat by its username. Call searchPublicChat with the given chat username to process the link 
 class InternalLinkTypePublicChat extends InternalLinkType {
   String get tdType => 'internalLinkTypePublicChat';
 
   String? extra;
   int? client_id;
+
+  /// Username of the chat
   string? chat_username;
 
   InternalLinkTypePublicChat({
@@ -686,6 +798,9 @@ class InternalLinkTypePublicChat extends InternalLinkType {
     return map;
   }
 }
+
+/// The link can be used to login the current user on another device, but it must be scanned from QR-code using in-app camera. An alert similar to
+/// "This code can be used to allow someone to log in to your Telegram account. To confirm Telegram login, please go to Settings > Devices > Scan QR and scan the code" needs to be shown
 class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
   String get tdType => 'internalLinkTypeQrCodeAuthentication';
 
@@ -714,6 +829,8 @@ class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to app settings
 class InternalLinkTypeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeSettings';
 
@@ -742,11 +859,15 @@ class InternalLinkTypeSettings extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a sticker set. Call searchStickerSet with the given sticker set name to process the link and show the sticker set 
 class InternalLinkTypeStickerSet extends InternalLinkType {
   String get tdType => 'internalLinkTypeStickerSet';
 
   String? extra;
   int? client_id;
+
+  /// Name of the sticker set
   string? sticker_set_name;
 
   InternalLinkTypeStickerSet({
@@ -774,11 +895,15 @@ class InternalLinkTypeStickerSet extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a theme. TDLib has no theme support yet 
 class InternalLinkTypeTheme extends InternalLinkType {
   String get tdType => 'internalLinkTypeTheme';
 
   String? extra;
   int? client_id;
+
+  /// Name of the theme
   string? theme_name;
 
   InternalLinkTypeTheme({
@@ -806,6 +931,8 @@ class InternalLinkTypeTheme extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to the theme settings section of the app
 class InternalLinkTypeThemeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeThemeSettings';
 
@@ -834,11 +961,15 @@ class InternalLinkTypeThemeSettings extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is an unknown tg: link. Call getDeepLinkInfo to process the link 
 class InternalLinkTypeUnknownDeepLink extends InternalLinkType {
   String get tdType => 'internalLinkTypeUnknownDeepLink';
 
   String? extra;
   int? client_id;
+
+  /// Link to be passed to getDeepLinkInfo
   string? link;
 
   InternalLinkTypeUnknownDeepLink({
@@ -866,6 +997,8 @@ class InternalLinkTypeUnknownDeepLink extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to an unsupported proxy. An alert can be shown to the user
 class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeUnsupportedProxy';
 
@@ -894,11 +1027,15 @@ class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a user by its phone number. Call searchUserByPhoneNumber with the given phone number to process the link 
 class InternalLinkTypeUserPhoneNumber extends InternalLinkType {
   String get tdType => 'internalLinkTypeUserPhoneNumber';
 
   String? extra;
   int? client_id;
+
+  /// Phone number of the user
   string? phone_number;
 
   InternalLinkTypeUserPhoneNumber({
@@ -926,13 +1063,21 @@ class InternalLinkTypeUserPhoneNumber extends InternalLinkType {
     return map;
   }
 }
+
+/// The link is a link to a video chat. Call searchPublicChat with the given chat username, and then joinGroupCall with the given invite hash to process the link
 class InternalLinkTypeVideoChat extends InternalLinkType {
   String get tdType => 'internalLinkTypeVideoChat';
 
   String? extra;
   int? client_id;
+
+  /// Username of the chat with the video chat 
   string? chat_username;
+
+  /// If non-empty, invite hash to be used to join the video chat without being muted by administrators
   string? invite_hash;
+
+  /// True, if the video chat is expected to be a live stream in a channel or a broadcast group
   Bool? is_live_stream;
 
   InternalLinkTypeVideoChat({

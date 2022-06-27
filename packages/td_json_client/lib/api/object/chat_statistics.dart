@@ -8,28 +8,63 @@ import 'package:td_json_client/api/object/chat_statistics_administrator_actions_
 import 'package:td_json_client/api/object/chat_statistics_inviter_info.dart';
 import 'package:td_json_client/api/object/chat_statistics_message_interaction_info.dart';
 
+/// Contains a detailed statistics about a chat
 abstract class ChatStatistics extends TdObject {}
 
+
+/// A detailed statistics about a supergroup chat
 class ChatStatisticsSupergroup extends ChatStatistics {
   String get tdType => 'chatStatisticsSupergroup';
 
   String? extra;
   int? client_id;
+
+  /// A period to which the statistics applies
   DateRange? period;
+
+  /// Number of members in the chat
   StatisticalValue? member_count;
+
+  /// Number of messages sent to the chat
   StatisticalValue? message_count;
+
+  /// Number of users who viewed messages in the chat
   StatisticalValue? viewer_count;
+
+  /// Number of users who sent messages to the chat
   StatisticalValue? sender_count;
+
+  /// A graph containing number of members in the chat
   StatisticalGraph? member_count_graph;
+
+  /// A graph containing number of members joined and left the chat
   StatisticalGraph? join_graph;
+
+  /// A graph containing number of new member joins per source
   StatisticalGraph? join_by_source_graph;
+
+  /// A graph containing distribution of active users per language
   StatisticalGraph? language_graph;
+
+  /// A graph containing distribution of sent messages by content type
   StatisticalGraph? message_content_graph;
+
+  /// A graph containing number of different actions in the chat
   StatisticalGraph? action_graph;
+
+  /// A graph containing distribution of message views per hour
   StatisticalGraph? day_graph;
+
+  /// A graph containing distribution of message views per day of week
   StatisticalGraph? week_graph;
+
+  /// List of users sent most messages in the last week
   vector<ChatStatisticsMessageSenderInfo>? top_senders;
+
+  /// List of most active administrators in the last week
   vector<ChatStatisticsAdministratorActionsInfo>? top_administrators;
+
+  /// List of most active inviters of new members in the last week
   vector<ChatStatisticsInviterInfo>? top_inviters;
 
   ChatStatisticsSupergroup({
@@ -117,25 +152,57 @@ class ChatStatisticsSupergroup extends ChatStatistics {
     return map;
   }
 }
+
+/// A detailed statistics about a channel chat
 class ChatStatisticsChannel extends ChatStatistics {
   String get tdType => 'chatStatisticsChannel';
 
   String? extra;
   int? client_id;
+
+  /// A period to which the statistics applies
   DateRange? period;
+
+  /// Number of members in the chat
   StatisticalValue? member_count;
+
+  /// Mean number of times the recently sent messages was viewed
   StatisticalValue? mean_view_count;
+
+  /// Mean number of times the recently sent messages was shared
   StatisticalValue? mean_share_count;
+
+  /// A percentage of users with enabled notifications for the chat
   double? enabled_notifications_percentage;
+
+  /// A graph containing number of members in the chat
   StatisticalGraph? member_count_graph;
+
+  /// A graph containing number of members joined and left the chat
   StatisticalGraph? join_graph;
+
+  /// A graph containing number of members muted and unmuted the chat
   StatisticalGraph? mute_graph;
+
+  /// A graph containing number of message views in a given hour in the last two weeks
   StatisticalGraph? view_count_by_hour_graph;
+
+  /// A graph containing number of message views per source
   StatisticalGraph? view_count_by_source_graph;
+
+  /// A graph containing number of new member joins per source
   StatisticalGraph? join_by_source_graph;
+
+  /// A graph containing number of users viewed chat messages per language
   StatisticalGraph? language_graph;
+
+  /// A graph containing number of chat message views and shares
   StatisticalGraph? message_interaction_graph;
+
+  /// A graph containing number of views of associated with the chat instant views
   StatisticalGraph? instant_view_interaction_graph;
+
+  /// Detailed statistics about number of views and shares of recently sent messages
   vector<ChatStatisticsMessageInteractionInfo>? recent_message_interactions;
 
   ChatStatisticsChannel({

@@ -1,12 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Revokes invite link for a chat. Available for basic groups, supergroups, and channels. Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for other links.
+/// If a primary link is revoked, then additionally to the revoked link returns new primary link
 class RevokeChatInviteLink extends TdFunction {
   String get tdType => 'revokeChatInviteLink';
   String get tdReturnType => 'ChatInviteLinks';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// Invite link to be revoked
   string? invite_link;
 
   RevokeChatInviteLink({

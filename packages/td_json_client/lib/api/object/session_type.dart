@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents the type of a session
 abstract class SessionType extends TdObject {}
 
+
+/// The session is running on an Android device
 class SessionTypeAndroid extends SessionType {
   String get tdType => 'sessionTypeAndroid';
 
@@ -30,6 +33,8 @@ class SessionTypeAndroid extends SessionType {
     return map;
   }
 }
+
+/// The session is running on a generic Apple device
 class SessionTypeApple extends SessionType {
   String get tdType => 'sessionTypeApple';
 
@@ -58,6 +63,8 @@ class SessionTypeApple extends SessionType {
     return map;
   }
 }
+
+/// The session is running on the Brave browser
 class SessionTypeBrave extends SessionType {
   String get tdType => 'sessionTypeBrave';
 
@@ -86,6 +93,8 @@ class SessionTypeBrave extends SessionType {
     return map;
   }
 }
+
+/// The session is running on the Chrome browser
 class SessionTypeChrome extends SessionType {
   String get tdType => 'sessionTypeChrome';
 
@@ -114,6 +123,8 @@ class SessionTypeChrome extends SessionType {
     return map;
   }
 }
+
+/// The session is running on the Edge browser
 class SessionTypeEdge extends SessionType {
   String get tdType => 'sessionTypeEdge';
 
@@ -142,6 +153,8 @@ class SessionTypeEdge extends SessionType {
     return map;
   }
 }
+
+/// The session is running on the Firefox browser
 class SessionTypeFirefox extends SessionType {
   String get tdType => 'sessionTypeFirefox';
 
@@ -170,6 +183,8 @@ class SessionTypeFirefox extends SessionType {
     return map;
   }
 }
+
+/// The session is running on an iPad device
 class SessionTypeIpad extends SessionType {
   String get tdType => 'sessionTypeIpad';
 
@@ -198,6 +213,8 @@ class SessionTypeIpad extends SessionType {
     return map;
   }
 }
+
+/// The session is running on an iPhone device
 class SessionTypeIphone extends SessionType {
   String get tdType => 'sessionTypeIphone';
 
@@ -226,6 +243,8 @@ class SessionTypeIphone extends SessionType {
     return map;
   }
 }
+
+/// The session is running on a Linux device
 class SessionTypeLinux extends SessionType {
   String get tdType => 'sessionTypeLinux';
 
@@ -254,6 +273,8 @@ class SessionTypeLinux extends SessionType {
     return map;
   }
 }
+
+/// The session is running on a Mac device
 class SessionTypeMac extends SessionType {
   String get tdType => 'sessionTypeMac';
 
@@ -282,6 +303,8 @@ class SessionTypeMac extends SessionType {
     return map;
   }
 }
+
+/// The session is running on the Opera browser
 class SessionTypeOpera extends SessionType {
   String get tdType => 'sessionTypeOpera';
 
@@ -310,6 +333,8 @@ class SessionTypeOpera extends SessionType {
     return map;
   }
 }
+
+/// The session is running on the Safari browser
 class SessionTypeSafari extends SessionType {
   String get tdType => 'sessionTypeSafari';
 
@@ -338,6 +363,8 @@ class SessionTypeSafari extends SessionType {
     return map;
   }
 }
+
+/// The session is running on an Ubuntu device
 class SessionTypeUbuntu extends SessionType {
   String get tdType => 'sessionTypeUbuntu';
 
@@ -366,6 +393,8 @@ class SessionTypeUbuntu extends SessionType {
     return map;
   }
 }
+
+/// The session is running on an unknown type of device
 class SessionTypeUnknown extends SessionType {
   String get tdType => 'sessionTypeUnknown';
 
@@ -394,6 +423,8 @@ class SessionTypeUnknown extends SessionType {
     return map;
   }
 }
+
+/// The session is running on the Vivaldi browser
 class SessionTypeVivaldi extends SessionType {
   String get tdType => 'sessionTypeVivaldi';
 
@@ -422,6 +453,8 @@ class SessionTypeVivaldi extends SessionType {
     return map;
   }
 }
+
+/// The session is running on a Windows device
 class SessionTypeWindows extends SessionType {
   String get tdType => 'sessionTypeWindows';
 
@@ -450,6 +483,8 @@ class SessionTypeWindows extends SessionType {
     return map;
   }
 }
+
+/// The session is running on an Xbox console
 class SessionTypeXbox extends SessionType {
   String get tdType => 'sessionTypeXbox';
 

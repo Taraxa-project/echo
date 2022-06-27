@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_event.dart';
 
+
+/// Contains a list of chat events 
 class ChatEvents extends TdObject {
   String get tdType => 'chatEvents';
 
   String? extra;
   int? client_id;
+
+  /// List of events
   vector<ChatEvent>? events;
 
   ChatEvents({

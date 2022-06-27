@@ -3,14 +3,22 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/input_message_content.dart';
 
+
+/// Edits the text of an inline text or game message sent via a bot; for bots only
 class EditInlineMessageText extends TdFunction {
   String get tdType => 'editInlineMessageText';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Inline message identifier
   string? inline_message_id;
+
+  /// The new message reply markup; pass null if none
   ReplyMarkup? reply_markup;
+
+  /// New text content of the message. Must be of type inputMessageText
   InputMessageContent? input_message_content;
 
   EditInlineMessageText({

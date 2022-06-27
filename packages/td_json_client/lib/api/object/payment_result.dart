@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains the result of a payment request 
 class PaymentResult extends TdObject {
   String get tdType => 'paymentResult';
 
   String? extra;
   int? client_id;
+
+  /// True, if the payment request was successful; otherwise the verification_url will be non-empty 
   Bool? success;
+
+  /// URL for additional payment credentials verification
   string? verification_url;
 
   PaymentResult({

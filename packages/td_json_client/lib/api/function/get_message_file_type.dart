@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a file with messages exported from another app 
 class GetMessageFileType extends TdFunction {
   String get tdType => 'getMessageFileType';
   String get tdReturnType => 'MessageFileType';
 
   String? extra;
   int? client_id;
+
+  /// Beginning of the message file; up to 100 first lines
   string? message_file_head;
 
   GetMessageFileType({

@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains information about pending join requests for a chat 
 class ChatJoinRequestsInfo extends TdObject {
   String get tdType => 'chatJoinRequestsInfo';
 
   String? extra;
   int? client_id;
+
+  /// Total number of pending join requests 
   int32? total_count;
+
+  /// Identifiers of at most 3 users sent the newest pending join requests
   vector<int53>? user_ids;
 
   ChatJoinRequestsInfo({

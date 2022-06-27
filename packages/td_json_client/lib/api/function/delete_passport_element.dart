@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_element_type.dart';
 
+
+/// Deletes a Telegram Passport element 
 class DeletePassportElement extends TdFunction {
   String get tdType => 'deletePassportElement';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Element type
   PassportElementType? type;
 
   DeletePassportElement({

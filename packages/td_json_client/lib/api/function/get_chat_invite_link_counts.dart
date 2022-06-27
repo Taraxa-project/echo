@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns list of chat administrators with number of their invite links. Requires owner privileges in the chat 
 class GetChatInviteLinkCounts extends TdFunction {
   String get tdType => 'getChatInviteLinkCounts';
   String get tdReturnType => 'ChatInviteLinkCounts';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   GetChatInviteLinkCounts({

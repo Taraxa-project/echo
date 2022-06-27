@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Informs TDLib that a message with an animated emoji was clicked by the user. Returns a big animated sticker to be played or a 404 error if usual animation needs to be played 
 class ClickAnimatedEmojiMessage extends TdFunction {
   String get tdType => 'clickAnimatedEmojiMessage';
   String get tdReturnType => 'Sticker';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier of the message 
   int53? chat_id;
+
+  /// Identifier of the clicked message
   int53? message_id;
 
   ClickAnimatedEmojiMessage({

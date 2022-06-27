@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_message_content.dart';
 
+
+/// Contains information about a message draft
 class DraftMessage extends TdObject {
   String get tdType => 'draftMessage';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the replied message; 0 if none
   int53? reply_to_message_id;
+
+  /// Point in time (Unix timestamp) when the draft was created
   int32? date;
+
+  /// Content of the message draft; must be of the type inputMessageText
   InputMessageContent? input_message_text;
 
   DraftMessage({

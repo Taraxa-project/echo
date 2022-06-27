@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/game_high_score.dart';
 
+
+/// Contains a list of game high scores 
 class GameHighScores extends TdObject {
   String get tdType => 'gameHighScores';
 
   String? extra;
   int? client_id;
+
+  /// A list of game high scores
   vector<GameHighScore>? scores;
 
   GameHighScores({

@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes a pinned message from a chat; requires can_pin_messages rights in the group or can_edit_messages rights in the channel 
 class UnpinChatMessage extends TdFunction {
   String get tdType => 'unpinChatMessage';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat 
   int53? chat_id;
+
+  /// Identifier of the removed pinned message
   int53? message_id;
 
   UnpinChatMessage({

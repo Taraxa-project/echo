@@ -2,14 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/background_fill.dart';
 
+/// Describes the type of a background
 abstract class BackgroundType extends TdObject {}
 
+
+/// A wallpaper in JPEG format
 class BackgroundTypeWallpaper extends BackgroundType {
   String get tdType => 'backgroundTypeWallpaper';
 
   String? extra;
   int? client_id;
+
+  /// True, if the wallpaper must be downscaled to fit in 450x450 square and then box-blurred with radius 12
   Bool? is_blurred;
+
+  /// True, if the background needs to be slightly moved when device is tilted
   Bool? is_moving;
 
   BackgroundTypeWallpaper({
@@ -40,14 +47,24 @@ class BackgroundTypeWallpaper extends BackgroundType {
     return map;
   }
 }
+
+/// A PNG or TGV (gzipped subset of SVG with MIME type "application/x-tgwallpattern") pattern to be combined with the background fill chosen by the user
 class BackgroundTypePattern extends BackgroundType {
   String get tdType => 'backgroundTypePattern';
 
   String? extra;
   int? client_id;
+
+  /// Fill of the background
   BackgroundFill? fill;
+
+  /// Intensity of the pattern when it is shown above the filled background; 0-100.
   int32? intensity;
+
+  /// True, if the background fill must be applied only to the pattern itself. All other pixels are black in this case. For dark themes only
   Bool? is_inverted;
+
+  /// True, if the background needs to be slightly moved when device is tilted
   Bool? is_moving;
 
   BackgroundTypePattern({
@@ -84,11 +101,15 @@ class BackgroundTypePattern extends BackgroundType {
     return map;
   }
 }
+
+/// A filled background 
 class BackgroundTypeFill extends BackgroundType {
   String get tdType => 'backgroundTypeFill';
 
   String? extra;
   int? client_id;
+
+  /// The background fill
   BackgroundFill? fill;
 
   BackgroundTypeFill({

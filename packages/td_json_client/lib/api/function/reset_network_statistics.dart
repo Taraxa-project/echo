@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Resets all network data usage statistics to zero. Can be called before authorization
 class ResetNetworkStatistics extends TdFunction {
   String get tdType => 'resetNetworkStatistics';
   String get tdReturnType => 'Ok';

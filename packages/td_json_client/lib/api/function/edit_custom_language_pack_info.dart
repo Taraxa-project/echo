@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/language_pack_info.dart';
 
+
+/// Edits information about a custom local language pack in the current localization target. Can be called before authorization 
 class EditCustomLanguagePackInfo extends TdFunction {
   String get tdType => 'editCustomLanguagePackInfo';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// New information about the custom local language pack
   LanguagePackInfo? info;
 
   EditCustomLanguagePackInfo({

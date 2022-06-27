@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Clears the list of recently found chats
 class ClearRecentlyFoundChats extends TdFunction {
   String get tdType => 'clearRecentlyFoundChats';
   String get tdReturnType => 'Ok';

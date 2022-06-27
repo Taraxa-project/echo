@@ -10,31 +10,74 @@ import 'package:td_json_client/api/object/video.dart';
 import 'package:td_json_client/api/object/video_note.dart';
 import 'package:td_json_client/api/object/voice_note.dart';
 
+
+/// Describes a web page preview
 class WebPage extends TdObject {
   String get tdType => 'webPage';
 
   String? extra;
   int? client_id;
+
+  /// Original URL of the link
   string? url;
+
+  /// URL to display
   string? display_url;
+
+  /// Type of the web page. Can be: article, photo, audio, video, document, profile, app, or something else
   string? type;
+
+  /// Short name of the site (e.g., Google Docs, App Store)
   string? site_name;
+
+  /// Title of the content
   string? title;
+
   FormattedText? description;
+
+  /// Image representing the content; may be null
   Photo? photo;
+
+  /// URL to show in the embedded preview
   string? embed_url;
+
+  /// MIME type of the embedded preview, (e.g., text/html or video/mp4)
   string? embed_type;
+
+  /// Width of the embedded preview
   int32? embed_width;
+
+  /// Height of the embedded preview
   int32? embed_height;
+
+  /// Duration of the content, in seconds
   int32? duration;
+
+  /// Author of the content
   string? author;
+
+  /// Preview of the content as an animation, if available; may be null
   Animation? animation;
+
+  /// Preview of the content as an audio file, if available; may be null
   Audio? audio;
+
+  /// Preview of the content as a document, if available; may be null
   Document? document;
+
+  /// Preview of the content as a sticker for small WEBP files, if available; may be null
   Sticker? sticker;
+
+  /// Preview of the content as a video, if available; may be null
   Video? video;
+
+  /// Preview of the content as a video note, if available; may be null
   VideoNote? video_note;
+
+  /// Preview of the content as a voice note, if available; may be null
   VoiceNote? voice_note;
+
+  /// Version of instant view, available for the web page (currently, can be 1 or 2), 0 if none
   int32? instant_view_version;
 
   WebPage({

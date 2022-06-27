@@ -1,14 +1,24 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes chosen reaction for a message
 class SetMessageReaction extends TdFunction {
   String get tdType => 'setMessageReaction';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to which the message belongs
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
+
+  /// Text representation of the new chosen reaction. Can be an empty string or the currently chosen non-big reaction to remove the reaction
   string? reaction;
+
+  /// Pass true if the reaction is added with a big animation
   Bool? is_big;
 
   SetMessageReaction({

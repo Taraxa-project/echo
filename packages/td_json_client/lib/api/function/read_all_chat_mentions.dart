@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Marks all mentions in a chat as read 
 class ReadAllChatMentions extends TdFunction {
   String get tdType => 'readAllChatMentions';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   ReadAllChatMentions({

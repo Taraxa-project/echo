@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for ordinary sticker sets by looking for specified query in their title and name. Excludes installed sticker sets from the results 
 class SearchStickerSets extends TdFunction {
   String get tdType => 'searchStickerSets';
   String get tdReturnType => 'StickerSets';
 
   String? extra;
   int? client_id;
+
+  /// Query to search for
   string? query;
 
   SearchStickerSets({

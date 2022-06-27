@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes pause state of a file in the file download list
 class ToggleDownloadIsPaused extends TdFunction {
   String get tdType => 'toggleDownloadIsPaused';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the downloaded file
   int32? file_id;
+
+  /// Pass true if the download is paused
   Bool? is_paused;
 
   ToggleDownloadIsPaused({

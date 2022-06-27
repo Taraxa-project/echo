@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Terminates a session of the current user 
 class TerminateSession extends TdFunction {
   String get tdType => 'terminateSession';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Session identifier
   int64? session_id;
 
   TerminateSession({

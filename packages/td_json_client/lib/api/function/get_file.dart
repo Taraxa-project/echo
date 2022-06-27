@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a file; this is an offline request 
 class GetFile extends TdFunction {
   String get tdType => 'getFile';
   String get tdReturnType => 'File';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the file to get
   int32? file_id;
 
   GetFile({

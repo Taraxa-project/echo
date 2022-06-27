@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a list of recently used stickers 
 class GetRecentStickers extends TdFunction {
   String get tdType => 'getRecentStickers';
   String get tdReturnType => 'Stickers';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to return stickers and masks that were recently attached to photos or video files; pass false to return recently sent stickers
   Bool? is_attached;
 
   GetRecentStickers({

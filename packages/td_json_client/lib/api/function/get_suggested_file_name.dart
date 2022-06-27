@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns suggested name for saving a file in a given directory 
 class GetSuggestedFileName extends TdFunction {
   String get tdType => 'getSuggestedFileName';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the file 
   int32? file_id;
+
+  /// Directory in which the file is supposed to be saved
   string? directory;
 
   GetSuggestedFileName({

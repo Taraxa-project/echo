@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Toggles whether current user's video is enabled 
 class ToggleGroupCallIsMyVideoEnabled extends TdFunction {
   String get tdType => 'toggleGroupCallIsMyVideoEnabled';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier 
   int32? group_call_id;
+
+  /// Pass true if the current user's video is enabled
   Bool? is_my_video_enabled;
 
   ToggleGroupCallIsMyVideoEnabled({

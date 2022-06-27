@@ -1,12 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the type of a call server
 abstract class CallServerType extends TdObject {}
 
+
+/// A Telegram call reflector 
 class CallServerTypeTelegramReflector extends CallServerType {
   String get tdType => 'callServerTypeTelegramReflector';
 
   String? extra;
   int? client_id;
+
+  /// A peer tag to be used with the reflector
   bytes? peer_tag;
 
   CallServerTypeTelegramReflector({
@@ -34,14 +39,24 @@ class CallServerTypeTelegramReflector extends CallServerType {
     return map;
   }
 }
+
+/// A WebRTC server 
 class CallServerTypeWebrtc extends CallServerType {
   String get tdType => 'callServerTypeWebrtc';
 
   String? extra;
   int? client_id;
+
+  /// Username to be used for authentication 
   string? username;
+
+  /// Authentication password 
   string? password;
+
+  /// True, if the server supports TURN 
   Bool? supports_turn;
+
+  /// True, if the server supports STUN
   Bool? supports_stun;
 
   CallServerTypeWebrtc({

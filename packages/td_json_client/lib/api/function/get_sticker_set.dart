@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a sticker set by its identifier 
 class GetStickerSet extends TdFunction {
   String get tdType => 'getStickerSet';
   String get tdReturnType => 'StickerSet';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the sticker set
   int64? set_id;
 
   GetStickerSet({

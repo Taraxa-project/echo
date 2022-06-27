@@ -1,14 +1,26 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes a user contact 
 class Contact extends TdObject {
   String get tdType => 'contact';
 
   String? extra;
   int? client_id;
+
+  /// Phone number of the user 
   string? phone_number;
+
+  /// First name of the user; 1-255 characters in length 
   string? first_name;
+
+  /// Last name of the user 
   string? last_name;
+
+  /// Additional data about the user in a form of vCard; 0-2048 bytes in length 
   string? vcard;
+
+  /// Identifier of the user, if known; otherwise 0
   int53? user_id;
 
   Contact({

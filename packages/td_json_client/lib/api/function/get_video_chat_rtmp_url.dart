@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns RTMP URL for streaming to the chat; requires creator privileges 
 class GetVideoChatRtmpUrl extends TdFunction {
   String get tdType => 'getVideoChatRtmpUrl';
   String get tdReturnType => 'RtmpUrl';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   GetVideoChatRtmpUrl({

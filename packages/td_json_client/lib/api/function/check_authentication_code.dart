@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks the authentication code. Works only when the current authorization state is authorizationStateWaitCode 
 class CheckAuthenticationCode extends TdFunction {
   String get tdType => 'checkAuthenticationCode';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Authentication code to check
   string? code;
 
   CheckAuthenticationCode({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Revokes invite link for a group call. Requires groupCall.can_be_managed group call flag 
 class RevokeGroupCallInviteLink extends TdFunction {
   String get tdType => 'revokeGroupCallInviteLink';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
 
   RevokeGroupCallInviteLink({

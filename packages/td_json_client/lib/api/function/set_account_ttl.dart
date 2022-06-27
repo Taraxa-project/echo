@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/account_ttl.dart';
 
+
+/// Changes the period of inactivity after which the account of the current user will automatically be deleted 
 class SetAccountTtl extends TdFunction {
   String get tdType => 'setAccountTtl';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// New account TTL
   AccountTtl? ttl;
 
   SetAccountTtl({

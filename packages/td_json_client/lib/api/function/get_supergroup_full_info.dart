@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns full information about a supergroup or a channel by its identifier, cached for up to 1 minute 
 class GetSupergroupFullInfo extends TdFunction {
   String get tdType => 'getSupergroupFullInfo';
   String get tdReturnType => 'SupergroupFullInfo';
 
   String? extra;
   int? client_id;
+
+  /// Supergroup or channel identifier
   int53? supergroup_id;
 
   GetSupergroupFullInfo({

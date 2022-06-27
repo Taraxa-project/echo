@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Closes a secret chat, effectively transferring its state to secretChatStateClosed 
 class CloseSecretChat extends TdFunction {
   String get tdType => 'closeSecretChat';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Secret chat identifier
   int32? secret_chat_id;
 
   CloseSecretChat({

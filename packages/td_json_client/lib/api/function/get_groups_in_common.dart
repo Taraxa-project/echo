@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a list of common group chats with a given user. Chats are sorted by their type and creation date 
 class GetGroupsInCommon extends TdFunction {
   String get tdType => 'getGroupsInCommon';
   String get tdReturnType => 'Chats';
 
   String? extra;
   int? client_id;
+
+  /// User identifier 
   int53? user_id;
+
+  /// Chat identifier starting from which to return chats; use 0 for the first request 
   int53? offset_chat_id;
+
+  /// The maximum number of chats to be returned; up to 100
   int32? limit;
 
   GetGroupsInCommon({

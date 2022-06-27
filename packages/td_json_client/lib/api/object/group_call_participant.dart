@@ -3,28 +3,66 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/group_call_participant_video_info.dart';
 
+
+/// Represents a group call participant
 class GroupCallParticipant extends TdObject {
   String get tdType => 'groupCallParticipant';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the group call participant
   MessageSender? participant_id;
+
+  /// User's audio channel synchronization source identifier
   int32? audio_source_id;
+
+  /// User's screen sharing audio channel synchronization source identifier
   int32? screen_sharing_audio_source_id;
+
+  /// Information about user's video channel; may be null if there is no active video
   GroupCallParticipantVideoInfo? video_info;
+
+  /// Information about user's screen sharing video channel; may be null if there is no active screen sharing video
   GroupCallParticipantVideoInfo? screen_sharing_video_info;
+
+  /// The participant user's bio or the participant chat's description
   string? bio;
+
+  /// True, if the participant is the current user
   Bool? is_current_user;
+
+  /// True, if the participant is speaking as set by setGroupCallParticipantIsSpeaking
   Bool? is_speaking;
+
+  /// True, if the participant hand is raised
   Bool? is_hand_raised;
+
+  /// True, if the current user can mute the participant for all other group call participants
   Bool? can_be_muted_for_all_users;
+
+  /// True, if the current user can allow the participant to unmute themselves or unmute the participant (if the participant is the current user)
   Bool? can_be_unmuted_for_all_users;
+
+  /// True, if the current user can mute the participant only for self
   Bool? can_be_muted_for_current_user;
+
+  /// True, if the current user can unmute the participant for self
   Bool? can_be_unmuted_for_current_user;
+
+  /// True, if the participant is muted for all users
   Bool? is_muted_for_all_users;
+
+  /// True, if the participant is muted for the current user
   Bool? is_muted_for_current_user;
+
+  /// True, if the participant is muted for all users, but can unmute themselves
   Bool? can_unmute_self;
+
+  /// Participant's volume level; 1-20000 in hundreds of percents
   int32? volume_level;
+
+  /// User's order in the group call participant list. Orders must be compared lexicographically. The bigger is order, the higher is user in the list. If order is empty, the user must be removed from the participant list
   string? order;
 
   GroupCallParticipant({

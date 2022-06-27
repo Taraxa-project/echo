@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a user by their identifier. This is an offline request if the current user is not a bot 
 class GetUser extends TdFunction {
   String get tdType => 'getUser';
   String get tdReturnType => 'User';
 
   String? extra;
   int? client_id;
+
+  /// User identifier
   int53? user_id;
 
   GetUser({

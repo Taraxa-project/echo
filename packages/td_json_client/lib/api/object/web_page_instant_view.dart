@@ -3,16 +3,30 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/page_block.dart';
 import 'package:td_json_client/api/object/internal_link_type.dart';
 
+
+/// Describes an instant view page for a web page
 class WebPageInstantView extends TdObject {
   String get tdType => 'webPageInstantView';
 
   String? extra;
   int? client_id;
+
+  /// Content of the web page
   vector<PageBlock>? page_blocks;
+
+  /// Number of the instant view views; 0 if unknown
   int32? view_count;
+
+  /// Version of the instant view; currently, can be 1 or 2
   int32? version;
+
+  /// True, if the instant view must be shown from right to left
   Bool? is_rtl;
+
+  /// True, if the instant view contains the full page. A network request might be needed to get the full web page instant view
   Bool? is_full;
+
+  /// An internal link to be opened to leave feedback about the instant view
   InternalLinkType? feedback_link;
 
   WebPageInstantView({

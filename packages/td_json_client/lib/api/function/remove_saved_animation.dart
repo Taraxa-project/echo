@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+
+/// Removes an animation from the list of saved animations 
 class RemoveSavedAnimation extends TdFunction {
   String get tdType => 'removeSavedAnimation';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Animation file to be removed
   InputFile? animation;
 
   RemoveSavedAnimation({

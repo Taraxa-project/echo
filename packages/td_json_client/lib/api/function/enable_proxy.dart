@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Enables a proxy. Only one proxy can be enabled at a time. Can be called before authorization 
 class EnableProxy extends TdFunction {
   String get tdType => 'enableProxy';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Proxy identifier
   int32? proxy_id;
 
   EnableProxy({

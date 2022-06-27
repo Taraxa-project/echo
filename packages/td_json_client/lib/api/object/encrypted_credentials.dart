@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains encrypted Telegram Passport data credentials 
 class EncryptedCredentials extends TdObject {
   String get tdType => 'encryptedCredentials';
 
   String? extra;
   int? client_id;
+
+  /// The encrypted credentials 
   bytes? data;
+
+  /// The decrypted data hash 
   bytes? hash;
+
+  /// Secret for data decryption, encrypted with the service's public key
   bytes? secret;
 
   EncryptedCredentials({

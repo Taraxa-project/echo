@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a list of archived sticker sets 
 class GetArchivedStickerSets extends TdFunction {
   String get tdType => 'getArchivedStickerSets';
   String get tdReturnType => 'StickerSets';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to return mask stickers sets; pass false to return ordinary sticker sets 
   Bool? is_masks;
+
+  /// Identifier of the sticker set from which to return the result 
   int64? offset_sticker_set_id;
+
+  /// The maximum number of sticker sets to return; up to 100
   int32? limit;
 
   GetArchivedStickerSets({

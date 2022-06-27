@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Describes a recently speaking participant in a group call 
 class GroupCallRecentSpeaker extends TdObject {
   String get tdType => 'groupCallRecentSpeaker';
 
   String? extra;
   int? client_id;
+
+  /// Group call participant identifier 
   MessageSender? participant_id;
+
+  /// True, is the user has spoken recently
   Bool? is_speaking;
 
   GroupCallRecentSpeaker({

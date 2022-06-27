@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+
+/// A personal document to be saved to Telegram Passport 
 class InputPersonalDocument extends TdObject {
   String get tdType => 'inputPersonalDocument';
 
   String? extra;
   int? client_id;
+
+  /// List of files containing the pages of the document 
   vector<InputFile>? files;
+
+  /// List of files containing a certified English translation of the document
   vector<InputFile>? translation;
 
   InputPersonalDocument({

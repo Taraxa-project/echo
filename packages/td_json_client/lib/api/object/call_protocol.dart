@@ -1,14 +1,26 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Specifies the supported call protocols
 class CallProtocol extends TdObject {
   String get tdType => 'callProtocol';
 
   String? extra;
   int? client_id;
+
+  /// True, if UDP peer-to-peer connections are supported
   Bool? udp_p2p;
+
+  /// True, if connection through UDP reflectors is supported
   Bool? udp_reflector;
+
+  /// The minimum supported API layer; use 65
   int32? min_layer;
+
+  /// The maximum supported API layer; use 65
   int32? max_layer;
+
+  /// List of supported tgcalls versions
   vector<string>? library_versions;
 
   CallProtocol({

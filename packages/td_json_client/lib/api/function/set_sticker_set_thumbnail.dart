@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+
+/// Sets a sticker set thumbnail; for bots only. Returns the sticker set
 class SetStickerSetThumbnail extends TdFunction {
   String get tdType => 'setStickerSetThumbnail';
   String get tdReturnType => 'StickerSet';
 
   String? extra;
   int? client_id;
+
+  /// Sticker set owner 
   int53? user_id;
+
+  /// Sticker set name
   string? name;
+
+  /// Thumbnail to set in PNG, TGS, or WEBM format; pass null to remove the sticker set thumbnail. Thumbnail format must match the format of stickers in the set
   InputFile? thumbnail;
 
   SetStickerSetThumbnail({

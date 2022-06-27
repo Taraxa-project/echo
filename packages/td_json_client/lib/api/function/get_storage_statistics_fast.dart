@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Quickly returns approximate storage usage statistics. Can be called before authorization
 class GetStorageStatisticsFast extends TdFunction {
   String get tdType => 'getStorageStatisticsFast';
   String get tdReturnType => 'StorageStatisticsFast';

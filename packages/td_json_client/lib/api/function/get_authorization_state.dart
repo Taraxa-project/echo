@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the current authorization state; this is an offline request. For informational purposes only. Use updateAuthorizationState instead to maintain the current authorization state. Can be called before initialization
 class GetAuthorizationState extends TdFunction {
   String get tdType => 'getAuthorizationState';
   String get tdReturnType => 'AuthorizationState';

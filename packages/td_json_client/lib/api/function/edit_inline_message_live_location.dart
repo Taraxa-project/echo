@@ -3,16 +3,28 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/location.dart';
 
+
+/// Edits the content of a live location in an inline message sent via a bot; for bots only
 class EditInlineMessageLiveLocation extends TdFunction {
   String get tdType => 'editInlineMessageLiveLocation';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Inline message identifier
   string? inline_message_id;
+
+  /// The new message reply markup; pass null if none
   ReplyMarkup? reply_markup;
+
+  /// New location content of the message; pass null to stop sharing the live location
   Location? location;
+
+  /// The new direction in which the location moves, in degrees; 1-360. Pass 0 if unknown
   int32? heading;
+
+  /// The new maximum distance for proximity alerts, in meters (0-100000). Pass 0 if the notification is disabled
   int32? proximity_alert_radius;
 
   EditInlineMessageLiveLocation({

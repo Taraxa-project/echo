@@ -2,14 +2,24 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/address.dart';
 
+
+/// Order information 
 class OrderInfo extends TdObject {
   String get tdType => 'orderInfo';
 
   String? extra;
   int? client_id;
+
+  /// Name of the user 
   string? name;
+
+  /// Phone number of the user 
   string? phone_number;
+
+  /// Email address of the user 
   string? email_address;
+
+  /// Shipping address for this order; may be null
   Address? shipping_address;
 
   OrderInfo({

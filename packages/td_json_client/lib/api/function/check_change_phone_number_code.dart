@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks the authentication code sent to confirm a new phone number of the user 
 class CheckChangePhoneNumberCode extends TdFunction {
   String get tdType => 'checkChangePhoneNumberCode';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Authentication code to check
   string? code;
 
   CheckChangePhoneNumberCode({

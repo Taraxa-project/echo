@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Toggles whether new participants of a group call can be unmuted only by administrators of the group call. Requires groupCall.can_toggle_mute_new_participants group call flag
 class ToggleGroupCallMuteNewParticipants extends TdFunction {
   String get tdType => 'toggleGroupCallMuteNewParticipants';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier 
   int32? group_call_id;
+
+  /// New value of the mute_new_participants setting
   Bool? mute_new_participants;
 
   ToggleGroupCallMuteNewParticipants({

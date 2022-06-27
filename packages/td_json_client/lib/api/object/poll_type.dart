@@ -2,13 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 
+/// Describes the type of a poll
 abstract class PollType extends TdObject {}
 
+
+/// A regular poll 
 class PollTypeRegular extends PollType {
   String get tdType => 'pollTypeRegular';
 
   String? extra;
   int? client_id;
+
+  /// True, if multiple answer options can be chosen simultaneously
   Bool? allow_multiple_answers;
 
   PollTypeRegular({
@@ -36,12 +41,18 @@ class PollTypeRegular extends PollType {
     return map;
   }
 }
+
+/// A poll in quiz mode, which has exactly one correct answer option and can be answered only once
 class PollTypeQuiz extends PollType {
   String get tdType => 'pollTypeQuiz';
 
   String? extra;
   int? client_id;
+
+  /// 0-based identifier of the correct answer option; -1 for a yet unanswered poll
   int32? correct_option_id;
+
+  /// Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; 0-200 characters with at most 2 line feeds; empty for a yet unanswered poll
   FormattedText? explanation;
 
   PollTypeQuiz({

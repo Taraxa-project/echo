@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Does nothing; for testing only. This is an offline method. Can be called before authorization
 class TestCallEmpty extends TdFunction {
   String get tdType => 'testCallEmpty';
   String get tdReturnType => 'Ok';

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Adds a chat to the list of recently found chats. The chat is added to the beginning of the list. If the chat is already in the list, it will be removed from the list first 
 class AddRecentlyFoundChat extends TdFunction {
   String get tdType => 'addRecentlyFoundChat';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to add
   int53? chat_id;
 
   AddRecentlyFoundChat({

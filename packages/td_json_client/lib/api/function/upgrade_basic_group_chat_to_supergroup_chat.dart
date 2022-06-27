@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Creates a new supergroup from an existing basic group and sends a corresponding messageChatUpgradeTo and messageChatUpgradeFrom; requires creator privileges. Deactivates the original basic group 
 class UpgradeBasicGroupChatToSupergroupChat extends TdFunction {
   String get tdType => 'upgradeBasicGroupChatToSupergroupChat';
   String get tdReturnType => 'Chat';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to upgrade
   int53? chat_id;
 
   UpgradeBasicGroupChatToSupergroupChat({

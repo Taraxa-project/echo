@@ -2,13 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+/// Contains information about background to set
 abstract class InputBackground extends TdObject {}
 
+
+/// A background from a local file
 class InputBackgroundLocal extends InputBackground {
   String get tdType => 'inputBackgroundLocal';
 
   String? extra;
   int? client_id;
+
+  /// Background file to use. Only inputFileLocal and inputFileGenerated are supported. The file must be in JPEG format for wallpapers and in PNG format for patterns
   InputFile? background;
 
   InputBackgroundLocal({
@@ -36,11 +41,15 @@ class InputBackgroundLocal extends InputBackground {
     return map;
   }
 }
+
+/// A background from the server 
 class InputBackgroundRemote extends InputBackground {
   String get tdType => 'inputBackgroundRemote';
 
   String? extra;
   int? client_id;
+
+  /// The background identifier
   int64? background_id;
 
   InputBackgroundRemote({

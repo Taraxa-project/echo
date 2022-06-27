@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a basic group by its identifier. This is an offline request if the current user is not a bot 
 class GetBasicGroup extends TdFunction {
   String get tdType => 'getBasicGroup';
   String get tdReturnType => 'BasicGroup';
 
   String? extra;
   int? client_id;
+
+  /// Basic group identifier
   int53? basic_group_id;
 
   GetBasicGroup({

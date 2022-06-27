@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes an active notification from notification list. Needs to be called only if the notification is removed by the current user 
 class RemoveNotification extends TdFunction {
   String get tdType => 'removeNotification';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of notification group to which the notification belongs 
   int32? notification_group_id;
+
+  /// Identifier of removed notification
   int32? notification_id;
 
   RemoveNotification({

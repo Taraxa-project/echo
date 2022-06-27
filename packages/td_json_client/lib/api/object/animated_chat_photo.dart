@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file.dart';
 
+
+/// Animated variant of a chat photo in MPEG4 format
 class AnimatedChatPhoto extends TdObject {
   String get tdType => 'animatedChatPhoto';
 
   String? extra;
   int? client_id;
+
+  /// Animation width and height
   int32? length;
+
+  /// Information about the animation file
   File? file;
+
+  /// Timestamp of the frame, used as a static chat photo
   double? main_frame_timestamp;
 
   AnimatedChatPhoto({

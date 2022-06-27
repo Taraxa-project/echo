@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Reports messages in a supergroup as spam; requires administrator rights in the supergroup 
 class ReportSupergroupSpam extends TdFunction {
   String get tdType => 'reportSupergroupSpam';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Supergroup identifier 
   int53? supergroup_id;
+
+  /// Identifiers of messages to report
   vector<int53>? message_ids;
 
   ReportSupergroupSpam({

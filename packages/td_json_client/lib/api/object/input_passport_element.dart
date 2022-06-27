@@ -5,13 +5,18 @@ import 'package:td_json_client/api/object/input_identity_document.dart';
 import 'package:td_json_client/api/object/address.dart';
 import 'package:td_json_client/api/object/input_personal_document.dart';
 
+/// Contains information about a Telegram Passport element to be saved
 abstract class InputPassportElement extends TdObject {}
 
+
+/// A Telegram Passport element to be saved containing the user's personal details 
 class InputPassportElementPersonalDetails extends InputPassportElement {
   String get tdType => 'inputPassportElementPersonalDetails';
 
   String? extra;
   int? client_id;
+
+  /// Personal details of the user
   PersonalDetails? personal_details;
 
   InputPassportElementPersonalDetails({
@@ -39,11 +44,15 @@ class InputPassportElementPersonalDetails extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's passport 
 class InputPassportElementPassport extends InputPassportElement {
   String get tdType => 'inputPassportElementPassport';
 
   String? extra;
   int? client_id;
+
+  /// The passport to be saved
   InputIdentityDocument? passport;
 
   InputPassportElementPassport({
@@ -71,11 +80,15 @@ class InputPassportElementPassport extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's driver license 
 class InputPassportElementDriverLicense extends InputPassportElement {
   String get tdType => 'inputPassportElementDriverLicense';
 
   String? extra;
   int? client_id;
+
+  /// The driver license to be saved
   InputIdentityDocument? driver_license;
 
   InputPassportElementDriverLicense({
@@ -103,11 +116,15 @@ class InputPassportElementDriverLicense extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's identity card 
 class InputPassportElementIdentityCard extends InputPassportElement {
   String get tdType => 'inputPassportElementIdentityCard';
 
   String? extra;
   int? client_id;
+
+  /// The identity card to be saved
   InputIdentityDocument? identity_card;
 
   InputPassportElementIdentityCard({
@@ -135,11 +152,15 @@ class InputPassportElementIdentityCard extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's internal passport 
 class InputPassportElementInternalPassport extends InputPassportElement {
   String get tdType => 'inputPassportElementInternalPassport';
 
   String? extra;
   int? client_id;
+
+  /// The internal passport to be saved
   InputIdentityDocument? internal_passport;
 
   InputPassportElementInternalPassport({
@@ -167,11 +188,15 @@ class InputPassportElementInternalPassport extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's address 
 class InputPassportElementAddress extends InputPassportElement {
   String get tdType => 'inputPassportElementAddress';
 
   String? extra;
   int? client_id;
+
+  /// The address to be saved
   Address? address;
 
   InputPassportElementAddress({
@@ -199,11 +224,15 @@ class InputPassportElementAddress extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's utility bill 
 class InputPassportElementUtilityBill extends InputPassportElement {
   String get tdType => 'inputPassportElementUtilityBill';
 
   String? extra;
   int? client_id;
+
+  /// The utility bill to be saved
   InputPersonalDocument? utility_bill;
 
   InputPassportElementUtilityBill({
@@ -231,11 +260,15 @@ class InputPassportElementUtilityBill extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's bank statement 
 class InputPassportElementBankStatement extends InputPassportElement {
   String get tdType => 'inputPassportElementBankStatement';
 
   String? extra;
   int? client_id;
+
+  /// The bank statement to be saved
   InputPersonalDocument? bank_statement;
 
   InputPassportElementBankStatement({
@@ -263,11 +296,15 @@ class InputPassportElementBankStatement extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's rental agreement 
 class InputPassportElementRentalAgreement extends InputPassportElement {
   String get tdType => 'inputPassportElementRentalAgreement';
 
   String? extra;
   int? client_id;
+
+  /// The rental agreement to be saved
   InputPersonalDocument? rental_agreement;
 
   InputPassportElementRentalAgreement({
@@ -295,11 +332,15 @@ class InputPassportElementRentalAgreement extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's passport registration 
 class InputPassportElementPassportRegistration extends InputPassportElement {
   String get tdType => 'inputPassportElementPassportRegistration';
 
   String? extra;
   int? client_id;
+
+  /// The passport registration page to be saved
   InputPersonalDocument? passport_registration;
 
   InputPassportElementPassportRegistration({
@@ -327,11 +368,15 @@ class InputPassportElementPassportRegistration extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's temporary registration 
 class InputPassportElementTemporaryRegistration extends InputPassportElement {
   String get tdType => 'inputPassportElementTemporaryRegistration';
 
   String? extra;
   int? client_id;
+
+  /// The temporary registration document to be saved
   InputPersonalDocument? temporary_registration;
 
   InputPassportElementTemporaryRegistration({
@@ -359,11 +404,15 @@ class InputPassportElementTemporaryRegistration extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's phone number 
 class InputPassportElementPhoneNumber extends InputPassportElement {
   String get tdType => 'inputPassportElementPhoneNumber';
 
   String? extra;
   int? client_id;
+
+  /// The phone number to be saved
   string? phone_number;
 
   InputPassportElementPhoneNumber({
@@ -391,11 +440,15 @@ class InputPassportElementPhoneNumber extends InputPassportElement {
     return map;
   }
 }
+
+/// A Telegram Passport element to be saved containing the user's email address 
 class InputPassportElementEmailAddress extends InputPassportElement {
   String get tdType => 'inputPassportElementEmailAddress';
 
   String? extra;
   int? client_id;
+
+  /// The email address to be saved
   string? email_address;
 
   InputPassportElementEmailAddress({

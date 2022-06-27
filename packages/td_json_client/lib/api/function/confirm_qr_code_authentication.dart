@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Confirms QR code authentication on another device. Returns created session on success 
 class ConfirmQrCodeAuthentication extends TdFunction {
   String get tdType => 'confirmQrCodeAuthentication';
   String get tdReturnType => 'Session';
 
   String? extra;
   int? client_id;
+
+  /// A link from a QR code. The link must be scanned by the in-app camera
   string? link;
 
   ConfirmQrCodeAuthentication({

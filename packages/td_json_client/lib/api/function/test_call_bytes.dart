@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the received bytes; for testing only. This is an offline method. Can be called before authorization 
 class TestCallBytes extends TdFunction {
   String get tdType => 'testCallBytes';
   String get tdReturnType => 'TestBytes';
 
   String? extra;
   int? client_id;
+
+  /// Bytes to return
   bytes? x;
 
   TestCallBytes({

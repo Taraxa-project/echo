@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the database encryption key. Usually the encryption key is never changed and is stored in some OS keychain 
 class SetDatabaseEncryptionKey extends TdFunction {
   String get tdType => 'setDatabaseEncryptionKey';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// New encryption key
   bytes? new_encryption_key;
 
   SetDatabaseEncryptionKey({

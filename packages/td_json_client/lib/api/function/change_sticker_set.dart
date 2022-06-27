@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Installs/uninstalls or activates/archives a sticker set 
 class ChangeStickerSet extends TdFunction {
   String get tdType => 'changeStickerSet';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the sticker set 
   int64? set_id;
+
+  /// The new value of is_installed 
   Bool? is_installed;
+
+  /// The new value of is_archived. A sticker set can't be installed and archived simultaneously
   Bool? is_archived;
 
   ChangeStickerSet({

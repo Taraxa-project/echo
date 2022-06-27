@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the link for downloading official Telegram application to be used when the current user invites friends to Telegram
 class GetApplicationDownloadLink extends TdFunction {
   String get tdType => 'getApplicationDownloadLink';
   String get tdReturnType => 'HttpUrl';

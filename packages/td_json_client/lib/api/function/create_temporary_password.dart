@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Creates a new temporary password for processing payments 
 class CreateTemporaryPassword extends TdFunction {
   String get tdType => 'createTemporaryPassword';
   String get tdReturnType => 'TemporaryPasswordState';
 
   String? extra;
   int? client_id;
+
+  /// Persistent user password 
   string? password;
+
+  /// Time during which the temporary password will be valid, in seconds; must be between 60 and 86400
   int32? valid_for;
 
   CreateTemporaryPassword({

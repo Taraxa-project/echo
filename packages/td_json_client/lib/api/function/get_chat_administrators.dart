@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a list of administrators of the chat with their custom titles 
 class GetChatAdministrators extends TdFunction {
   String get tdType => 'getChatAdministrators';
   String get tdReturnType => 'ChatAdministrators';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   GetChatAdministrators({

@@ -5,22 +5,48 @@ import 'package:td_json_client/api/object/closed_vector_path.dart';
 import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 
+
+/// Represents short information about a sticker set
 class StickerSetInfo extends TdObject {
   String get tdType => 'stickerSetInfo';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the sticker set 
   int64? id;
+
+  /// Title of the sticker set 
   string? title;
+
+  /// Name of the sticker set 
   string? name;
+
+  /// Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null
   Thumbnail? thumbnail;
+
+  /// Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty. The coordinate system origin is in the upper-left corner
   vector<ClosedVectorPath>? thumbnail_outline;
+
+  /// True, if the sticker set has been installed by the current user 
   Bool? is_installed;
+
+  /// True, if the sticker set has been archived. A sticker set can't be installed and archived simultaneously
   Bool? is_archived;
+
+  /// True, if the sticker set is official 
   Bool? is_official;
+
+  /// Type of the stickers in the set 
   StickerType? sticker_type;
+
+  /// True for already viewed trending sticker sets
   Bool? is_viewed;
+
+  /// Total number of stickers in the set 
   int32? size;
+
+  /// Up to the first 5 stickers from the set, depending on the context. If the application needs more stickers the full sticker set needs to be requested
   vector<Sticker>? covers;
 
   StickerSetInfo({

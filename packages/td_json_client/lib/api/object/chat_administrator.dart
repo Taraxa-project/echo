@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains information about a chat administrator 
 class ChatAdministrator extends TdObject {
   String get tdType => 'chatAdministrator';
 
   String? extra;
   int? client_id;
+
+  /// User identifier of the administrator 
   int53? user_id;
+
+  /// Custom title of the administrator 
   string? custom_title;
+
+  /// True, if the user is the owner of the chat
   Bool? is_owner;
 
   ChatAdministrator({

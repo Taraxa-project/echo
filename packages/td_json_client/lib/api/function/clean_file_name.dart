@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes potentially dangerous characters from the name of a file. The encoding of the file name is supposed to be UTF-8. Returns an empty string on failure. Can be called synchronously 
 class CleanFileName extends TdFunction {
   String get tdType => 'cleanFileName';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// File name or path to the file
   string? file_name;
 
   CleanFileName({

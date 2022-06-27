@@ -2,16 +2,28 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/search_messages_filter.dart';
 
+
+/// Searches for messages in secret chats. Returns the results in reverse chronological order. For optimal performance, the number of returned messages is chosen by TDLib
 class SearchSecretMessages extends TdFunction {
   String get tdType => 'searchSecretMessages';
   String get tdReturnType => 'FoundMessages';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat in which to search. Specify 0 to search in all secret chats
   int53? chat_id;
+
+  /// Query to search for. If empty, searchChatMessages must be used instead
   string? query;
+
+  /// Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
   string? offset;
+
+  /// The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
   int32? limit;
+
+  /// Additional filter for messages to search; pass null to search for all messages
   SearchMessagesFilter? filter;
 
   SearchSecretMessages({

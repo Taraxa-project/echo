@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes a chat member joined a chat via an invite link 
 class ChatInviteLinkMember extends TdObject {
   String get tdType => 'chatInviteLinkMember';
 
   String? extra;
   int? client_id;
+
+  /// User identifier 
   int53? user_id;
+
+  /// Point in time (Unix timestamp) when the user joined the chat 
   int32? joined_chat_date;
+
+  /// User identifier of the chat administrator, approved user join request
   int53? approver_user_id;
 
   ChatInviteLinkMember({

@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents a list of users 
 class Users extends TdObject {
   String get tdType => 'users';
 
   String? extra;
   int? client_id;
+
+  /// Approximate total number of users found 
   int32? total_count;
+
+  /// A list of user identifiers
   vector<int53>? user_ids;
 
   Users({

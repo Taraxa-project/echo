@@ -1,20 +1,44 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes rights of the administrator
 class ChatAdministratorRights extends TdObject {
   String get tdType => 'chatAdministratorRights';
 
   String? extra;
   int? client_id;
+
+  /// True, if the administrator can get chat event log, get chat statistics, get message statistics in channels, get channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other privilege; applicable to supergroups and channels only
   Bool? can_manage_chat;
+
+  /// True, if the administrator can change the chat title, photo, and other settings
   Bool? can_change_info;
+
+  /// True, if the administrator can create channel posts; applicable to channels only
   Bool? can_post_messages;
+
+  /// True, if the administrator can edit messages of other users and pin messages; applicable to channels only
   Bool? can_edit_messages;
+
+  /// True, if the administrator can delete messages of other users
   Bool? can_delete_messages;
+
+  /// True, if the administrator can invite new users to the chat
   Bool? can_invite_users;
+
+  /// True, if the administrator can restrict, ban, or unban chat members; always true for channels
   Bool? can_restrict_members;
+
+  /// True, if the administrator can pin messages; applicable to basic groups and supergroups only
   Bool? can_pin_messages;
+
+  /// True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that were directly or indirectly promoted by them
   Bool? can_promote_members;
+
+  /// True, if the administrator can manage video chats
   Bool? can_manage_video_chats;
+
+  /// True, if the administrator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only
   Bool? is_anonymous;
 
   ChatAdministratorRights({

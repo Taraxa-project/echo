@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns saved notification sound by its identifier. Returns a 404 error if there is no saved notification sound with the specified identifier 
 class GetSavedNotificationSound extends TdFunction {
   String get tdType => 'getSavedNotificationSound';
   String get tdReturnType => 'NotificationSounds';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the notification sound
   int64? notification_sound_id;
 
   GetSavedNotificationSound({

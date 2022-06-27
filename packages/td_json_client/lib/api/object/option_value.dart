@@ -1,12 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents the value of an option
 abstract class OptionValue extends TdObject {}
 
+
+/// Represents a boolean option 
 class OptionValueBoolean extends OptionValue {
   String get tdType => 'optionValueBoolean';
 
   String? extra;
   int? client_id;
+
+  /// The value of the option
   Bool? value;
 
   OptionValueBoolean({
@@ -34,6 +39,8 @@ class OptionValueBoolean extends OptionValue {
     return map;
   }
 }
+
+/// Represents an unknown option or an option which has a default value
 class OptionValueEmpty extends OptionValue {
   String get tdType => 'optionValueEmpty';
 
@@ -62,11 +69,15 @@ class OptionValueEmpty extends OptionValue {
     return map;
   }
 }
+
+/// Represents an integer option 
 class OptionValueInteger extends OptionValue {
   String get tdType => 'optionValueInteger';
 
   String? extra;
   int? client_id;
+
+  /// The value of the option
   int64? value;
 
   OptionValueInteger({
@@ -94,11 +105,15 @@ class OptionValueInteger extends OptionValue {
     return map;
   }
 }
+
+/// Represents a string option 
 class OptionValueString extends OptionValue {
   String get tdType => 'optionValueString';
 
   String? extra;
   int? client_id;
+
+  /// The value of the option
   string? value;
 
   OptionValueString({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks the authentication token of a bot; to log in as a bot. Works only when the current authorization state is authorizationStateWaitPhoneNumber. Can be used instead of setAuthenticationPhoneNumber and checkAuthenticationCode to log in 
 class CheckAuthenticationBotToken extends TdFunction {
   String get tdType => 'checkAuthenticationBotToken';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The bot token
   string? token;
 
   CheckAuthenticationBotToken({

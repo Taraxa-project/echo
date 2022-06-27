@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Contains information about an unread reaction to a message
 class UnreadReaction extends TdObject {
   String get tdType => 'unreadReaction';
 
   String? extra;
   int? client_id;
+
+  /// Text representation of the reaction
   string? reaction;
+
+  /// Identifier of the sender, added the reaction
   MessageSender? sender_id;
+
+  /// True, if the reaction was added with a big animation
   Bool? is_big;
 
   UnreadReaction({

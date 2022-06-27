@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Sets the verbosity level for a specified TDLib internal log tag. Can be called synchronously
 class SetLogTagVerbosityLevel extends TdFunction {
   String get tdType => 'setLogTagVerbosityLevel';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Logging tag to change verbosity level 
   string? tag;
+
+  /// New verbosity level; 1-1024
   int32? new_verbosity_level;
 
   SetLogTagVerbosityLevel({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a chat by its identifier, this is an offline request if the current user is not a bot 
 class GetChat extends TdFunction {
   String get tdType => 'getChat';
   String get tdReturnType => 'Chat';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   GetChat({

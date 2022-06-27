@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_scheduling_state.dart';
 
+
+/// Edits the time when a scheduled message will be sent. Scheduling state of all messages in the same album or forwarded together with the message will be also changed
 class EditMessageSchedulingState extends TdFunction {
   String get tdType => 'editMessageSchedulingState';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The chat the message belongs to
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
+
+  /// The new message scheduling state; pass null to send the message immediately
   MessageSchedulingState? scheduling_state;
 
   EditMessageSchedulingState({

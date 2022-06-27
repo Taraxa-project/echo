@@ -3,13 +3,19 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/user_privacy_setting.dart';
 import 'package:td_json_client/api/object/user_privacy_setting_rules.dart';
 
+
+/// Changes user privacy settings 
 class SetUserPrivacySettingRules extends TdFunction {
   String get tdType => 'setUserPrivacySettingRules';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The privacy setting 
   UserPrivacySetting? setting;
+
+  /// The new privacy rules
   UserPrivacySettingRules? rules;
 
   SetUserPrivacySettingRules({

@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about currently used log stream for internal logging of TDLib. Can be called synchronously
 class GetLogStream extends TdFunction {
   String get tdType => 'getLogStream';
   String get tdReturnType => 'LogStream';

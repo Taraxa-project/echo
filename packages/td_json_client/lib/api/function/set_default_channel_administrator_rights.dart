@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_administrator_rights.dart';
 
+
+/// Sets default administrator rights for adding the bot to channel chats; for bots only 
 class SetDefaultChannelAdministratorRights extends TdFunction {
   String get tdType => 'setDefaultChannelAdministratorRights';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Default administrator rights for adding the bot to channels; may be null
   ChatAdministratorRights? default_channel_administrator_rights;
 
   SetDefaultChannelAdministratorRights({

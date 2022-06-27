@@ -1,12 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Contains information about the payment method chosen by the user
 abstract class InputCredentials extends TdObject {}
 
+
+/// Applies if a user chooses some previously saved payment credentials. To use their previously saved credentials, the user must have a valid temporary password 
 class InputCredentialsSaved extends InputCredentials {
   String get tdType => 'inputCredentialsSaved';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the saved credentials
   string? saved_credentials_id;
 
   InputCredentialsSaved({
@@ -34,12 +39,18 @@ class InputCredentialsSaved extends InputCredentials {
     return map;
   }
 }
+
+/// Applies if a user enters new credentials on a payment provider website 
 class InputCredentialsNew extends InputCredentials {
   String get tdType => 'inputCredentialsNew';
 
   String? extra;
   int? client_id;
+
+  /// JSON-encoded data with the credential identifier from the payment provider 
   string? data;
+
+  /// True, if the credential identifier can be saved on the server side
   Bool? allow_save;
 
   InputCredentialsNew({
@@ -70,11 +81,15 @@ class InputCredentialsNew extends InputCredentials {
     return map;
   }
 }
+
+/// Applies if a user enters new credentials using Apple Pay 
 class InputCredentialsApplePay extends InputCredentials {
   String get tdType => 'inputCredentialsApplePay';
 
   String? extra;
   int? client_id;
+
+  /// JSON-encoded data with the credential identifier
   string? data;
 
   InputCredentialsApplePay({
@@ -102,11 +117,15 @@ class InputCredentialsApplePay extends InputCredentials {
     return map;
   }
 }
+
+/// Applies if a user enters new credentials using Google Pay 
 class InputCredentialsGooglePay extends InputCredentials {
   String get tdType => 'inputCredentialsGooglePay';
 
   String? extra;
   int? client_id;
+
+  /// JSON-encoded data with the credential identifier
   string? data;
 
   InputCredentialsGooglePay({

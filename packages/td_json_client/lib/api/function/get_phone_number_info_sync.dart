@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a phone number by its prefix synchronously. getCountries must be called at least once after changing localization to the specified language if properly localized country information is expected. Can be called synchronously
 class GetPhoneNumberInfoSync extends TdFunction {
   String get tdType => 'getPhoneNumberInfoSync';
   String get tdReturnType => 'PhoneNumberInfo';
 
   String? extra;
   int? client_id;
+
+  /// A two-letter ISO 639-1 language code for country information localization 
   string? language_code;
+
+  /// The phone number prefix
   string? phone_number_prefix;
 
   GetPhoneNumberInfoSync({

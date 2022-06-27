@@ -2,15 +2,27 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_member_status.dart';
 
+
+/// Represents a basic group of 0-200 users (must be upgraded to a supergroup to accommodate more than 200 users)
 class BasicGroup extends TdObject {
   String get tdType => 'basicGroup';
 
   String? extra;
   int? client_id;
+
+  /// Group identifier
   int53? id;
+
+  /// Number of members in the group
   int32? member_count;
+
+  /// Status of the current user in the group
   ChatMemberStatus? status;
+
+  /// True, if the group is active
   Bool? is_active;
+
+  /// Identifier of the supergroup to which this group was upgraded; 0 if none
   int53? upgraded_to_supergroup_id;
 
   BasicGroup({

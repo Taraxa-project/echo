@@ -3,16 +3,30 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/document.dart';
 import 'package:td_json_client/api/object/background_type.dart';
 
+
+/// Describes a chat background
 class Background extends TdObject {
   String get tdType => 'background';
 
   String? extra;
   int? client_id;
+
+  /// Unique background identifier
   int64? id;
+
+  /// True, if this is one of default backgrounds
   Bool? is_default;
+
+  /// True, if the background is dark and is recommended to be used with dark theme
   Bool? is_dark;
+
+  /// Unique background name
   string? name;
+
+  /// Document with the background; may be null. Null only for filled backgrounds
   Document? document;
+
+  /// Type of the background
   BackgroundType? type;
 
   Background({

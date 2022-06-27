@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks whether the current session can be used to transfer a chat ownership to another user
 class CanTransferOwnership extends TdFunction {
   String get tdType => 'canTransferOwnership';
   String get tdReturnType => 'CanTransferOwnershipResult';

@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/test_string.dart';
 
+
+/// A simple object containing a vector of objects that hold a string; for testing only 
 class TestVectorStringObject extends TdObject {
   String get tdType => 'testVectorStringObject';
 
   String? extra;
   int? client_id;
+
+  /// Vector of objects
   vector<TestString>? value;
 
   TestVectorStringObject({

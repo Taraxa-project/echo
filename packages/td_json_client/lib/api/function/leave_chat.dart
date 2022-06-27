@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes the current user from chat members. Private and secret chats can't be left using this method 
 class LeaveChat extends TdFunction {
   String get tdType => 'leaveChat';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   LeaveChat({

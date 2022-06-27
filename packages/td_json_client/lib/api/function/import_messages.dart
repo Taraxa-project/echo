@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+
+/// Imports messages exported from another app
 class ImportMessages extends TdFunction {
   String get tdType => 'importMessages';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of a chat to which the messages will be imported. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can_change_info administrator right
   int53? chat_id;
+
+  /// File with messages to import. Only inputFileLocal and inputFileGenerated are supported. The file must not be previously uploaded
   InputFile? message_file;
+
+  /// Files used in the imported messages. Only inputFileLocal and inputFileGenerated are supported. The files must not be previously uploaded
   vector<InputFile>? attached_files;
 
   ImportMessages({

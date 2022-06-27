@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Starts a scheduled group call 
 class StartScheduledGroupCall extends TdFunction {
   String get tdType => 'startScheduledGroupCall';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
 
   StartScheduledGroupCall({

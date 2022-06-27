@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/session.dart';
 
+
+/// Contains a list of sessions 
 class Sessions extends TdObject {
   String get tdType => 'sessions';
 
   String? extra;
   int? client_id;
+
+  /// List of sessions 
   vector<Session>? sessions;
+
+  /// Number of days of inactivity before sessions will automatically be terminated; 1-366 days
   int32? inactive_session_ttl_days;
 
   Sessions({

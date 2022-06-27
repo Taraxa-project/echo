@@ -1,15 +1,27 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for files in the file download list or recently downloaded files from the list
 class SearchFileDownloads extends TdFunction {
   String get tdType => 'searchFileDownloads';
   String get tdReturnType => 'FoundFileDownloads';
 
   String? extra;
   int? client_id;
+
+  /// Query to search for; may be empty to return all downloaded files
   string? query;
+
+  /// Pass true to search only for active downloads, including paused
   Bool? only_active;
+
+  /// Pass true to search only for completed downloads
   Bool? only_completed;
+
+  /// Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
   string? offset;
+
+  /// The maximum number of files to be returned
   int32? limit;
 
   SearchFileDownloads({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks the database encryption key for correctness. Works only when the current authorization state is authorizationStateWaitEncryptionKey 
 class CheckDatabaseEncryptionKey extends TdFunction {
   String get tdType => 'checkDatabaseEncryptionKey';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Encryption key to check or set up
   bytes? encryption_key;
 
   CheckDatabaseEncryptionKey({

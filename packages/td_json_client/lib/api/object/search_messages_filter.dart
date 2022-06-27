@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents a filter for message search results
 abstract class SearchMessagesFilter extends TdObject {}
 
+
+/// Returns all found messages, no filter is applied
 class SearchMessagesFilterEmpty extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterEmpty';
 
@@ -30,6 +33,8 @@ class SearchMessagesFilterEmpty extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only animation messages
 class SearchMessagesFilterAnimation extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterAnimation';
 
@@ -58,6 +63,8 @@ class SearchMessagesFilterAnimation extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only audio messages
 class SearchMessagesFilterAudio extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterAudio';
 
@@ -86,6 +93,8 @@ class SearchMessagesFilterAudio extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only document messages
 class SearchMessagesFilterDocument extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterDocument';
 
@@ -114,6 +123,8 @@ class SearchMessagesFilterDocument extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only photo messages
 class SearchMessagesFilterPhoto extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterPhoto';
 
@@ -142,6 +153,8 @@ class SearchMessagesFilterPhoto extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only video messages
 class SearchMessagesFilterVideo extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVideo';
 
@@ -170,6 +183,8 @@ class SearchMessagesFilterVideo extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only voice note messages
 class SearchMessagesFilterVoiceNote extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVoiceNote';
 
@@ -198,6 +213,8 @@ class SearchMessagesFilterVoiceNote extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only photo and video messages
 class SearchMessagesFilterPhotoAndVideo extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterPhotoAndVideo';
 
@@ -226,6 +243,8 @@ class SearchMessagesFilterPhotoAndVideo extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only messages containing URLs
 class SearchMessagesFilterUrl extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterUrl';
 
@@ -254,6 +273,8 @@ class SearchMessagesFilterUrl extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only messages containing chat photos
 class SearchMessagesFilterChatPhoto extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterChatPhoto';
 
@@ -282,6 +303,8 @@ class SearchMessagesFilterChatPhoto extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only video note messages
 class SearchMessagesFilterVideoNote extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVideoNote';
 
@@ -310,6 +333,8 @@ class SearchMessagesFilterVideoNote extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only voice and video note messages
 class SearchMessagesFilterVoiceAndVideoNote extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVoiceAndVideoNote';
 
@@ -338,6 +363,8 @@ class SearchMessagesFilterVoiceAndVideoNote extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only messages with mentions of the current user, or messages that are replies to their messages
 class SearchMessagesFilterMention extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterMention';
 
@@ -366,6 +393,8 @@ class SearchMessagesFilterMention extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only messages with unread mentions of the current user, or messages that are replies to their messages. When using this filter the results can't be additionally filtered by a query, a message thread or by the sending user
 class SearchMessagesFilterUnreadMention extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterUnreadMention';
 
@@ -394,6 +423,8 @@ class SearchMessagesFilterUnreadMention extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only messages with unread reactions for the current user. When using this filter the results can't be additionally filtered by a query, a message thread or by the sending user
 class SearchMessagesFilterUnreadReaction extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterUnreadReaction';
 
@@ -422,6 +453,8 @@ class SearchMessagesFilterUnreadReaction extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only failed to send messages. This filter can be used only if the message database is used
 class SearchMessagesFilterFailedToSend extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterFailedToSend';
 
@@ -450,6 +483,8 @@ class SearchMessagesFilterFailedToSend extends SearchMessagesFilter {
     return map;
   }
 }
+
+/// Returns only pinned messages
 class SearchMessagesFilterPinned extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterPinned';
 

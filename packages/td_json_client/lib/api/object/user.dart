@@ -4,27 +4,63 @@ import 'package:td_json_client/api/object/user_status.dart';
 import 'package:td_json_client/api/object/profile_photo.dart';
 import 'package:td_json_client/api/object/user_type.dart';
 
+
+/// Represents a user
 class User extends TdObject {
   String get tdType => 'user';
 
   String? extra;
   int? client_id;
+
+  /// User identifier
   int53? id;
+
+  /// First name of the user
   string? first_name;
+
+  /// Last name of the user
   string? last_name;
+
+  /// Username of the user
   string? username;
+
+  /// Phone number of the user
   string? phone_number;
+
+  /// Current online status of the user
   UserStatus? status;
+
+  /// Profile photo of the user; may be null
   ProfilePhoto? profile_photo;
+
+  /// The user is a contact of the current user
   Bool? is_contact;
+
+  /// The user is a contact of the current user and the current user is a contact of the user
   Bool? is_mutual_contact;
+
+  /// True, if the user is verified
   Bool? is_verified;
+
+  /// True, if the user is Telegram support account
   Bool? is_support;
+
+  /// If non-empty, it contains a human-readable description of the reason why access to this user must be restricted
   string? restriction_reason;
+
+  /// True, if many users reported this user as a scam
   Bool? is_scam;
+
+  /// True, if many users reported this user as a fake account
   Bool? is_fake;
+
+  /// If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method except GetUser
   Bool? have_access;
+
+  /// Type of the user
   UserType? type;
+
+  /// IETF language tag of the user's language; only available to bots
   string? language_code;
 
   User({

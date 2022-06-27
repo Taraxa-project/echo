@@ -4,17 +4,31 @@ import 'package:td_json_client/api/object/message_send_options.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/input_message_content.dart';
 
+
+/// Sends a message. Returns the sent message
 class SendMessage extends TdFunction {
   String get tdType => 'sendMessage';
   String get tdReturnType => 'Message';
 
   String? extra;
   int? client_id;
+
+  /// Target chat
   int53? chat_id;
+
+  /// If not 0, a message thread identifier in which the message will be sent
   int53? message_thread_id;
+
+  /// Identifier of the replied message; 0 if none
   int53? reply_to_message_id;
+
+  /// Options to be used to send the message; pass null to use default options
   MessageSendOptions? options;
+
+  /// Markup for replying to the message; pass null if none; for bots only
   ReplyMarkup? reply_markup;
+
+  /// The content of the message to be sent
   InputMessageContent? input_message_content;
 
   SendMessage({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns all scheduled messages in a chat. The messages are returned in a reverse chronological order (i.e., in order of decreasing message_id) 
 class GetChatScheduledMessages extends TdFunction {
   String get tdType => 'getChatScheduledMessages';
   String get tdReturnType => 'Messages';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   GetChatScheduledMessages({

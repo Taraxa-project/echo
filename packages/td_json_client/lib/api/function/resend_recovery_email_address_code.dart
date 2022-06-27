@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Resends the 2-step verification recovery email address verification code
 class ResendRecoveryEmailAddressCode extends TdFunction {
   String get tdType => 'resendRecoveryEmailAddressCode';
   String get tdReturnType => 'PasswordState';

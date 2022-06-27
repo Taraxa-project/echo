@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// An object of this type is returned on a successful function call for certain functions
 class Ok extends TdObject {
   String get tdType => 'ok';
 

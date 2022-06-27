@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the period of inactivity after which the account of the current user will automatically be deleted
 class GetAccountTtl extends TdFunction {
   String get tdType => 'getAccountTtl';
   String get tdReturnType => 'AccountTtl';

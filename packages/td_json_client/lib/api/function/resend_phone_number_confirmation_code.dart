@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Resends phone number confirmation code
 class ResendPhoneNumberConfirmationCode extends TdFunction {
   String get tdType => 'resendPhoneNumberConfirmationCode';
   String get tdReturnType => 'AuthenticationCodeInfo';

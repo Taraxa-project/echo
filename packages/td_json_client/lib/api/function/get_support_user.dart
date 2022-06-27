@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a user that can be contacted to get support
 class GetSupportUser extends TdFunction {
   String get tdType => 'getSupportUser';
   String get tdReturnType => 'User';

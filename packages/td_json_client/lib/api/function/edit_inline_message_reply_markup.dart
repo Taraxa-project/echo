@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 
+
+/// Edits the reply markup of an inline message sent via a bot; for bots only
 class EditInlineMessageReplyMarkup extends TdFunction {
   String get tdType => 'editInlineMessageReplyMarkup';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Inline message identifier
   string? inline_message_id;
+
+  /// The new message reply markup; pass null if none
   ReplyMarkup? reply_markup;
 
   EditInlineMessageReplyMarkup({

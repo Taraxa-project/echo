@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about the current temporary password
 class GetTemporaryPasswordState extends TdFunction {
   String get tdType => 'getTemporaryPasswordState';
   String get tdReturnType => 'TemporaryPasswordState';

@@ -5,14 +5,21 @@ import 'package:td_json_client/api/object/call_server.dart';
 import 'package:td_json_client/api/object/call_discard_reason.dart';
 import 'package:td_json_client/api/object/error.dart';
 
+/// Describes the current call state
 abstract class CallState extends TdObject {}
 
+
+/// The call is pending, waiting to be accepted by a user 
 class CallStatePending extends CallState {
   String get tdType => 'callStatePending';
 
   String? extra;
   int? client_id;
+
+  /// True, if the call has already been created by the server 
   Bool? is_created;
+
+  /// True, if the call has already been received by the other party
   Bool? is_received;
 
   CallStatePending({
@@ -43,6 +50,8 @@ class CallStatePending extends CallState {
     return map;
   }
 }
+
+/// The call has been answered and encryption keys are being exchanged
 class CallStateExchangingKeys extends CallState {
   String get tdType => 'callStateExchangingKeys';
 
@@ -71,16 +80,30 @@ class CallStateExchangingKeys extends CallState {
     return map;
   }
 }
+
+/// The call is ready to use 
 class CallStateReady extends CallState {
   String get tdType => 'callStateReady';
 
   String? extra;
   int? client_id;
+
+  /// Call protocols supported by the peer 
   CallProtocol? protocol;
+
+  /// List of available call servers 
   vector<CallServer>? servers;
+
+  /// A JSON-encoded call config 
   string? config;
+
+  /// Call encryption key 
   bytes? encryption_key;
+
+  /// Encryption key emojis fingerprint 
   vector<string>? emojis;
+
+  /// True, if peer-to-peer connection is allowed by users privacy settings
   Bool? allow_p2p;
 
   CallStateReady({
@@ -133,6 +156,8 @@ class CallStateReady extends CallState {
     return map;
   }
 }
+
+/// The call is hanging up after discardCall has been called
 class CallStateHangingUp extends CallState {
   String get tdType => 'callStateHangingUp';
 
@@ -161,14 +186,24 @@ class CallStateHangingUp extends CallState {
     return map;
   }
 }
+
+/// The call has ended successfully 
 class CallStateDiscarded extends CallState {
   String get tdType => 'callStateDiscarded';
 
   String? extra;
   int? client_id;
+
+  /// The reason, why the call has ended 
   CallDiscardReason? reason;
+
+  /// True, if the call rating must be sent to the server 
   Bool? need_rating;
+
+  /// True, if the call debug information must be sent to the server 
   Bool? need_debug_information;
+
+  /// True, if the call log must be sent to the server
   Bool? need_log;
 
   CallStateDiscarded({
@@ -205,11 +240,15 @@ class CallStateDiscarded extends CallState {
     return map;
   }
 }
+
+/// The call has ended with an error 
 class CallStateError extends CallState {
   String get tdType => 'callStateError';
 
   String? extra;
   int? client_id;
+
+  /// Error. An error with the code 4005000 will be returned if an outgoing call is missed because of an expired timeout
   Error? error;
 
   CallStateError({

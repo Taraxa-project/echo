@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Returns information about a single member of a chat 
 class GetChatMember extends TdFunction {
   String get tdType => 'getChatMember';
   String get tdReturnType => 'ChatMember';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Member identifier
   MessageSender? member_id;
 
   GetChatMember({

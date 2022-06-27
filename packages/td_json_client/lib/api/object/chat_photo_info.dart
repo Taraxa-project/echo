@@ -3,14 +3,24 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file.dart';
 import 'package:td_json_client/api/object/minithumbnail.dart';
 
+
+/// Contains basic information about the photo of a chat
 class ChatPhotoInfo extends TdObject {
   String get tdType => 'chatPhotoInfo';
 
   String? extra;
   int? client_id;
+
+  /// A small (160x160) chat photo variant in JPEG format. The file can be downloaded only before the photo is changed
   File? small;
+
+  /// A big (640x640) chat photo variant in JPEG format. The file can be downloaded only before the photo is changed
   File? big;
+
+  /// Chat photo minithumbnail; may be null
   Minithumbnail? minithumbnail;
+
+  /// True, if the photo has animated variant
   Bool? has_animation;
 
   ChatPhotoInfo({

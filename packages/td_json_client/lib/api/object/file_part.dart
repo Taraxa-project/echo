@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains a part of a file 
 class FilePart extends TdObject {
   String get tdType => 'filePart';
 
   String? extra;
   int? client_id;
+
+  /// File bytes
   bytes? data;
 
   FilePart({

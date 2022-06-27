@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 
+
+/// Replaces text entities with Markdown formatting in a human-friendly format. Entities that can't be represented in Markdown unambiguously are kept as is. Can be called synchronously 
 class GetMarkdownText extends TdFunction {
   String get tdType => 'getMarkdownText';
   String get tdReturnType => 'FormattedText';
 
   String? extra;
   int? client_id;
+
+  /// The text
   FormattedText? text;
 
   GetMarkdownText({

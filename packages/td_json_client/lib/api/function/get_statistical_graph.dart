@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Loads an asynchronous or a zoomed in statistical graph 
 class GetStatisticalGraph extends TdFunction {
   String get tdType => 'getStatisticalGraph';
   String get tdReturnType => 'StatisticalGraph';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The token for graph loading 
   string? token;
+
+  /// X-value for zoomed in graph or 0 otherwise
   int53? x;
 
   GetStatisticalGraph({

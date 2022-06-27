@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 
+
+/// Contains Telegram terms of service 
 class TermsOfService extends TdObject {
   String get tdType => 'termsOfService';
 
   String? extra;
   int? client_id;
+
+  /// Text of the terms of service 
   FormattedText? text;
+
+  /// The minimum age of a user to be able to accept the terms; 0 if age isn't restricted 
   int32? min_user_age;
+
+  /// True, if a blocking popup with terms of service must be shown to the user
   Bool? show_popup;
 
   TermsOfService({

@@ -3,15 +3,27 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/notification_group_type.dart';
 import 'package:td_json_client/api/object/notification.dart';
 
+
+/// Describes a group of notifications 
 class NotificationGroup extends TdObject {
   String get tdType => 'notificationGroup';
 
   String? extra;
   int? client_id;
+
+  /// Unique persistent auto-incremented from 1 identifier of the notification group 
   int32? id;
+
+  /// Type of the group
   NotificationGroupType? type;
+
+  /// Identifier of a chat to which all notifications in the group belong
   int53? chat_id;
+
+  /// Total number of active notifications in the group 
   int32? total_count;
+
+  /// The list of active notifications
   vector<Notification>? notifications;
 
   NotificationGroup({

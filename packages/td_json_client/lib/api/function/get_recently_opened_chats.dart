@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns recently opened chats, this is an offline request. Returns chats in the order of last opening 
 class GetRecentlyOpenedChats extends TdFunction {
   String get tdType => 'getRecentlyOpenedChats';
   String get tdReturnType => 'Chats';
 
   String? extra;
   int? client_id;
+
+  /// The maximum number of chats to be returned
   int32? limit;
 
   GetRecentlyOpenedChats({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Uses an invite link to add the current user to the chat if possible 
 class JoinChatByInviteLink extends TdFunction {
   String get tdType => 'joinChatByInviteLink';
   String get tdReturnType => 'Chat';
 
   String? extra;
   int? client_id;
+
+  /// Invite link to use
   string? invite_link;
 
   JoinChatByInviteLink({

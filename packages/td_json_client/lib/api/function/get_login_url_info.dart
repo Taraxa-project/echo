@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a button of type inlineKeyboardButtonTypeLoginUrl. The method needs to be called when the user presses the button
 class GetLoginUrlInfo extends TdFunction {
   String get tdType => 'getLoginUrlInfo';
   String get tdReturnType => 'LoginUrlInfo';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier of the message with the button 
   int53? chat_id;
+
+  /// Message identifier of the message with the button 
   int53? message_id;
+
+  /// Button identifier
   int53? button_id;
 
   GetLoginUrlInfo({

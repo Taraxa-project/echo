@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains database statistics
 class DatabaseStatistics extends TdObject {
   String get tdType => 'databaseStatistics';
 
   String? extra;
   int? client_id;
+
+  /// Database statistics in an unspecified human-readable format
   string? statistics;
 
   DatabaseStatistics({

@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the exact type of a problem with a call
 abstract class CallProblem extends TdObject {}
 
+
+/// The user heard their own voice
 class CallProblemEcho extends CallProblem {
   String get tdType => 'callProblemEcho';
 
@@ -30,6 +33,8 @@ class CallProblemEcho extends CallProblem {
     return map;
   }
 }
+
+/// The user heard background noise
 class CallProblemNoise extends CallProblem {
   String get tdType => 'callProblemNoise';
 
@@ -58,6 +63,8 @@ class CallProblemNoise extends CallProblem {
     return map;
   }
 }
+
+/// The other side kept disappearing
 class CallProblemInterruptions extends CallProblem {
   String get tdType => 'callProblemInterruptions';
 
@@ -86,6 +93,8 @@ class CallProblemInterruptions extends CallProblem {
     return map;
   }
 }
+
+/// The speech was distorted
 class CallProblemDistortedSpeech extends CallProblem {
   String get tdType => 'callProblemDistortedSpeech';
 
@@ -114,6 +123,8 @@ class CallProblemDistortedSpeech extends CallProblem {
     return map;
   }
 }
+
+/// The user couldn't hear the other side
 class CallProblemSilentLocal extends CallProblem {
   String get tdType => 'callProblemSilentLocal';
 
@@ -142,6 +153,8 @@ class CallProblemSilentLocal extends CallProblem {
     return map;
   }
 }
+
+/// The other side couldn't hear the user
 class CallProblemSilentRemote extends CallProblem {
   String get tdType => 'callProblemSilentRemote';
 
@@ -170,6 +183,8 @@ class CallProblemSilentRemote extends CallProblem {
     return map;
   }
 }
+
+/// The call ended unexpectedly
 class CallProblemDropped extends CallProblem {
   String get tdType => 'callProblemDropped';
 
@@ -198,6 +213,8 @@ class CallProblemDropped extends CallProblem {
     return map;
   }
 }
+
+/// The video was distorted
 class CallProblemDistortedVideo extends CallProblem {
   String get tdType => 'callProblemDistortedVideo';
 
@@ -226,6 +243,8 @@ class CallProblemDistortedVideo extends CallProblem {
     return map;
   }
 }
+
+/// The video was pixelated
 class CallProblemPixelatedVideo extends CallProblem {
   String get tdType => 'callProblemPixelatedVideo';
 

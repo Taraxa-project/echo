@@ -2,22 +2,48 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/labeled_price_part.dart';
 
+
+/// Product invoice 
 class Invoice extends TdObject {
   String get tdType => 'invoice';
 
   String? extra;
   int? client_id;
+
+  /// ISO 4217 currency code
   string? currency;
+
+  /// A list of objects used to calculate the total price of the product
   vector<LabeledPricePart>? price_parts;
+
+  /// The maximum allowed amount of tip in the smallest units of the currency
   int53? max_tip_amount;
+
+  /// Suggested amounts of tip in the smallest units of the currency
   vector<int53>? suggested_tip_amounts;
+
+  /// True, if the payment is a test payment
   Bool? is_test;
+
+  /// True, if the user's name is needed for payment
   Bool? need_name;
+
+  /// True, if the user's phone number is needed for payment
   Bool? need_phone_number;
+
+  /// True, if the user's email address is needed for payment
   Bool? need_email_address;
+
+  /// True, if the user's shipping address is needed for payment
   Bool? need_shipping_address;
+
+  /// True, if the user's phone number will be sent to the provider
   Bool? send_phone_number_to_provider;
+
+  /// True, if the user's email address will be sent to the provider
   Bool? send_email_address_to_provider;
+
+  /// True, if the total price depends on the shipping method
   Bool? is_flexible;
 
   Invoice({

@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/country_info.dart';
 
+
+/// Contains information about a phone number
 class PhoneNumberInfo extends TdObject {
   String get tdType => 'phoneNumberInfo';
 
   String? extra;
   int? client_id;
+
+  /// Information about the country to which the phone number belongs; may be null
   CountryInfo? country;
+
+  /// The part of the phone number denoting country calling code or its part
   string? country_calling_code;
+
+  /// The phone number without country calling code formatted accordingly to local rules. Expected digits are returned as '-', but even more digits might be entered by the user
   string? formatted_phone_number;
 
   PhoneNumberInfo({

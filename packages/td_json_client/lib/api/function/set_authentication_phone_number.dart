@@ -2,13 +2,20 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/phone_number_authentication_settings.dart';
 
+
+/// Sets the phone number of the user and sends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitPhoneNumber,
+/// or if there is no pending authentication query and the current authorization state is authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
 class SetAuthenticationPhoneNumber extends TdFunction {
   String get tdType => 'setAuthenticationPhoneNumber';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The phone number of the user, in international format 
   string? phone_number;
+
+  /// Settings for the authentication of the user's phone number; pass null to use default settings
   PhoneNumberAuthenticationSettings? settings;
 
   SetAuthenticationPhoneNumber({

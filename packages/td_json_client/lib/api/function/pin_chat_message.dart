@@ -1,14 +1,24 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Pins a message in a chat; requires can_pin_messages rights or can_edit_messages rights in the channel
 class PinChatMessage extends TdFunction {
   String get tdType => 'pinChatMessage';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat
   int53? chat_id;
+
+  /// Identifier of the new pinned message
   int53? message_id;
+
+  /// Pass true to disable notification about the pinned message. Notifications are always disabled in channels and private chats
   Bool? disable_notification;
+
+  /// Pass true to pin the message only for self; private chats only
   Bool? only_for_self;
 
   PinChatMessage({

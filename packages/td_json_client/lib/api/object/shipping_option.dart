@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/labeled_price_part.dart';
 
+
+/// One shipping option 
 class ShippingOption extends TdObject {
   String get tdType => 'shippingOption';
 
   String? extra;
   int? client_id;
+
+  /// Shipping option identifier 
   string? id;
+
+  /// Option title 
   string? title;
+
+  /// A list of objects used to calculate the total shipping costs
   vector<LabeledPricePart>? price_parts;
 
   ShippingOption({

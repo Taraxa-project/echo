@@ -1,18 +1,38 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains information about one website the current user is logged in with Telegram
 class ConnectedWebsite extends TdObject {
   String get tdType => 'connectedWebsite';
 
   String? extra;
   int? client_id;
+
+  /// Website identifier
   int64? id;
+
+  /// The domain name of the website
   string? domain_name;
+
+  /// User identifier of a bot linked with the website
   int53? bot_user_id;
+
+  /// The version of a browser used to log in
   string? browser;
+
+  /// Operating system the browser is running on
   string? platform;
+
+  /// Point in time (Unix timestamp) when the user was logged in
   int32? log_in_date;
+
+  /// Point in time (Unix timestamp) when obtained authorization was last used
   int32? last_active_date;
+
+  /// IP address from which the user was logged in, in human-readable format
   string? ip;
+
+  /// Human-readable description of a country and a region from which the user was logged in, based on the IP address
   string? location;
 
   ConnectedWebsite({

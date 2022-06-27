@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Deletes all call messages 
 class DeleteAllCallMessages extends TdFunction {
   String get tdType => 'deleteAllCallMessages';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to delete the messages for all users
   Bool? revoke;
 
   DeleteAllCallMessages({

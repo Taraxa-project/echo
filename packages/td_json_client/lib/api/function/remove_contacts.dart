@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes users from the contact list 
 class RemoveContacts extends TdFunction {
   String get tdType => 'removeContacts';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifiers of users to be deleted
   vector<int53>? user_ids;
 
   RemoveContacts({

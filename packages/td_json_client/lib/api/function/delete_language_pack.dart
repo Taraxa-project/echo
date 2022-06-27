@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Deletes all information about a language pack in the current localization target. The language pack which is currently in use (including base language pack) or is being synchronized can't be deleted. Can be called before authorization 
 class DeleteLanguagePack extends TdFunction {
   String get tdType => 'deleteLanguagePack';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the language pack to delete
   string? language_pack_id;
 
   DeleteLanguagePack({

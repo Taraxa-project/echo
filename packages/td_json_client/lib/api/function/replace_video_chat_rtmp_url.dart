@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Replaces the current RTMP URL for streaming to the chat; requires creator privileges 
 class ReplaceVideoChatRtmpUrl extends TdFunction {
   String get tdType => 'replaceVideoChatRtmpUrl';
   String get tdReturnType => 'RtmpUrl';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   ReplaceVideoChatRtmpUrl({

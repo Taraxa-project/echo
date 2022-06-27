@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Resets list of installed backgrounds to its default value
 class ResetBackgrounds extends TdFunction {
   String get tdType => 'resetBackgrounds';
   String get tdReturnType => 'Ok';

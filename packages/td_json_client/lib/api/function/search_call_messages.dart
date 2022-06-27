@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for call messages. Returns the results in reverse chronological order (i. e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib
 class SearchCallMessages extends TdFunction {
   String get tdType => 'searchCallMessages';
   String get tdReturnType => 'Messages';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the message from which to search; use 0 to get results from the last message
   int53? from_message_id;
+
+  /// The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
   int32? limit;
+
+  /// Pass true to search only for messages with missed/declined calls
   Bool? only_missed;
 
   SearchCallMessages({

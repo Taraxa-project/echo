@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for stickers from public sticker sets that correspond to a given emoji 
 class SearchStickers extends TdFunction {
   String get tdType => 'searchStickers';
   String get tdReturnType => 'Stickers';
 
   String? extra;
   int? client_id;
+
+  /// String representation of emoji; must be non-empty 
   string? emoji;
+
+  /// The maximum number of stickers to be returned
   int32? limit;
 
   SearchStickers({

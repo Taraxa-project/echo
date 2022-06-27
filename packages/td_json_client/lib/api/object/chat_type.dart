@@ -1,12 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the type of a chat
 abstract class ChatType extends TdObject {}
 
+
+/// An ordinary chat with a user 
 class ChatTypePrivate extends ChatType {
   String get tdType => 'chatTypePrivate';
 
   String? extra;
   int? client_id;
+
+  /// User identifier
   int53? user_id;
 
   ChatTypePrivate({
@@ -34,11 +39,15 @@ class ChatTypePrivate extends ChatType {
     return map;
   }
 }
+
+/// A basic group (a chat with 0-200 other users) 
 class ChatTypeBasicGroup extends ChatType {
   String get tdType => 'chatTypeBasicGroup';
 
   String? extra;
   int? client_id;
+
+  /// Basic group identifier
   int53? basic_group_id;
 
   ChatTypeBasicGroup({
@@ -66,12 +75,18 @@ class ChatTypeBasicGroup extends ChatType {
     return map;
   }
 }
+
+/// A supergroup or channel (with unlimited members) 
 class ChatTypeSupergroup extends ChatType {
   String get tdType => 'chatTypeSupergroup';
 
   String? extra;
   int? client_id;
+
+  /// Supergroup or channel identifier 
   int53? supergroup_id;
+
+  /// True, if the supergroup is a channel
   Bool? is_channel;
 
   ChatTypeSupergroup({
@@ -102,12 +117,18 @@ class ChatTypeSupergroup extends ChatType {
     return map;
   }
 }
+
+/// A secret chat with a user 
 class ChatTypeSecret extends ChatType {
   String get tdType => 'chatTypeSecret';
 
   String? extra;
   int? client_id;
+
+  /// Secret chat identifier 
   int32? secret_chat_id;
+
+  /// User identifier of the secret chat peer
   int53? user_id;
 
   ChatTypeSecret({

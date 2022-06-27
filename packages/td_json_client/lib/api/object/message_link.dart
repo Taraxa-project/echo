@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains an HTTPS link to a message in a supergroup or channel 
 class MessageLink extends TdObject {
   String get tdType => 'messageLink';
 
   String? extra;
   int? client_id;
+
+  /// Message link 
   string? link;
+
+  /// True, if the link will work for non-members of the chat
   Bool? is_public;
 
   MessageLink({

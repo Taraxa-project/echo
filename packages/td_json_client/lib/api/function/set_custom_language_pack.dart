@@ -3,13 +3,19 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/language_pack_info.dart';
 import 'package:td_json_client/api/object/language_pack_string.dart';
 
+
+/// Adds or changes a custom local language pack to the current localization target 
 class SetCustomLanguagePack extends TdFunction {
   String get tdType => 'setCustomLanguagePack';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Information about the language pack. Language pack ID must start with 'X', consist only of English letters, digits and hyphens, and must not exceed 64 characters. Can be called before authorization 
   LanguagePackInfo? info;
+
+  /// Strings of the new language pack
   vector<LanguagePackString>? strings;
 
   SetCustomLanguagePack({
