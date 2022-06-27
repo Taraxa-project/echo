@@ -17,15 +17,17 @@ Future<void> main(List<String> arguments) async {
       .parse(await File(options['tl-schema-path']).readAsString());
 
   if (parseResults.isFailure) {
-    logWarning('Parse error: ${parseResults.message}');
+    logError('Parse error: ${parseResults.message}');
     exit(-1);
   }
 
   await Api(
     tdApiPath: options['td-api-path'],
     package: options['package'],
+    tlObjects: parseResults.value[0].cast<TlObject>(),
+    tlFunctions: parseResults.value[1].cast<TlFunction>(),
   )
-    ..addTls(parseResults.value.cast<Tl>())
+    ..prepareOutput()
     ..writeFiles();
 }
 

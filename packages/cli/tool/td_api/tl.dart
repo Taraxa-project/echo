@@ -4,37 +4,42 @@ enum ParseType { object, function }
 
 class Tl {}
 
-class TlSwitch extends Tl {}
+class TlObject extends TlDefinition {
+  TlObject({super.comments = const [], required super.constructor});
+}
+
+class TlFunction extends TlDefinition {
+  TlFunction({
+    super.comments = const [],
+    required super.constructor,
+  });
+  bool get isLeafClass => true;
+  String get fileName => ReCase(constructor.name).snakeCase;
+  bool get extendsBase => true;
+  String get extendsClasName => 'TdFunction';
+  bool get isFunction => true;
+}
+
+class TlDefinition extends Tl {
+  List<TlComment> comments;
+  TlConstructor constructor;
+  TlDefinition({
+    this.comments = const [],
+    required this.constructor,
+  });
+  String get className => ReCase(constructor.name).pascalCase;
+  String get superClassName => constructor.returnType.name;
+  String get fileName => ReCase(constructor.returnType.name).snakeCase;
+  bool get extendsBase => className == superClassName;
+  String get extendsClasName => extendsBase ? 'TdObject' : superClassName;
+  String get returnType => constructor.returnType.name;
+  bool get isFunction => false;
+}
 
 class TlComment extends Tl {
   String text;
-
   TlComment({
     required this.text,
-  });
-}
-
-class TlType extends Tl {
-  String name;
-
-  TlType({
-    required this.name,
-  });
-
-  String get tdName => isPrimitive ? name : ReCase(name).pascalCase;
-  bool get isPrimitive =>
-      TlPrimitives.primitives.contains(name) || isVector || isVectorVector;
-  bool get isVector => this.name.indexOf('vector<') > 0;
-  bool get isVectorVector => this.name.indexOf('vector<vector<') > 0;
-}
-
-class TlParam extends Tl {
-  String name;
-  TlType type;
-
-  TlParam({
-    required this.name,
-    required this.type,
   });
 }
 
@@ -42,22 +47,57 @@ class TlConstructor extends Tl {
   String name;
   List<TlParam> params;
   TlType returnType;
-
   TlConstructor({
     required this.name,
     required this.params,
     required this.returnType,
   });
-
-  String get className => ReCase(name).pascalCase;
-  String get superClassName => returnType.name;
-  bool get isLeafClass => className == superClassName;
 }
 
-class TlDefinition extends Tl {
-  List<TlComment> comments;
-  TlConstructor constructor;
-  TlDefinition({this.comments = const [], required this.constructor});
+class TlType extends Tl {
+  String name;
+  TlType({
+    required this.name,
+  });
+  String get tdName => isPrimitive ? name : _getTdName();
+  bool get isPrimitive => TlPrimitives.primitives.contains(name);
+  bool get isVector => this.name.indexOf('vector<') != -1;
+  bool get isVectorVector => this.name.indexOf('vector<vector<') != -1;
+  String get tdSubName => _getTdSubName();
+
+  String _getTdName() {
+    var subName = _getTdSubName();
+    if (isVector || isVectorVector) {
+      return name.replaceRange(this.name.lastIndexOf('<') + 1,
+          this.name.indexOf('>'), _getTdSubName());
+    } else {
+      return subName;
+    }
+  }
+
+  String _getTdSubName() {
+    var subName = name;
+    if (isVector || isVectorVector) {
+      subName = this
+          .name
+          .substring(this.name.lastIndexOf('<') + 1, this.name.indexOf('>'));
+    }
+
+    if (TlPrimitives.primitives.contains(subName)) {
+      return subName;
+    } else {
+      return ReCase(subName).pascalCase;
+    }
+  }
+}
+
+class TlParam extends Tl {
+  String name;
+  TlType type;
+  TlParam({
+    required this.name,
+    required this.type,
+  });
 }
 
 class TlPrimitives {

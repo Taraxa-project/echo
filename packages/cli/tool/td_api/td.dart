@@ -1,149 +1,289 @@
+import 'dart:io';
+
 import 'package:path/path.dart' as path;
 import 'package:recase/recase.dart';
+import 'package:mustache_template/mustache.dart';
 
 import 'tl.dart';
-
-class Td {
-  String className;
-  List<String> imports = [];
-  List<TdMember> members = [];
-  Td({required this.className});
-  String get fileName => ReCase(className).snakeCase;
-}
-
-class TdAbstract extends Td {
-  List<TdObject> tdObjects = [];
-  TdAbstract({required super.className});
-
-  dynamic toMap() {
-    return {
-      'className': className,
-    };
-  }
-}
-
-class TdObject extends Td {
-  TdObject({required super.className});
-}
-
-class TdFunction extends Td {
-  String returnType;
-  TdFunction({required super.className, required this.returnType});
-}
-
-class TdMember {
-  String name;
-  String type;
-  TdMember({
-    required this.name,
-    required this.type,
-  });
-}
 
 class Api {
   String tdApiPath;
   String package;
+  List<TlObject> tlObjects;
+  List<TlFunction> tlFunctions;
 
-  Map<String, Td> _tdObjects = {};
-  List<Td> _tdFunctions = [];
-  Map<String, String> _map = {};
+  Api(
+      {required this.tdApiPath,
+      required this.package,
+      required this.tlObjects,
+      required this.tlFunctions});
 
-  Api({
-    required this.tdApiPath,
-    required this.package,
-  });
+  String get apiPath => path.joinAll([tdApiPath, 'api']);
+  String get basePath => path.joinAll([apiPath, 'base.dart']);
+  String get apiObjectPath => path.joinAll([tdApiPath, 'api', 'object']);
+  String get apiFunctionPath => path.joinAll([tdApiPath, 'api', 'function']);
 
-  ParseType _parseType = ParseType.object;
+  Map<String, TdFile> _tdFiles = {};
+  Map<String, String> _typeToFile = {};
 
-  void addTls(List<Tl> tls) {
-    tls.forEach((tl) {
-      if (tl is TlSwitch) {
-        _parseType = ParseType.function;
-      } else {
-        var tlDefinition = (tl as TlDefinition);
-        _parseType == ParseType.object
-            ? addObjectDefinition(tlDefinition)
-            : addFunctionDefinition(tlDefinition);
+  void prepareOutput() {
+    tlObjects.forEach((element) {
+      _prepareObject(element);
+    });
+    tlFunctions.forEach((element) {
+      _prepareFunction(element);
+    });
+  }
+
+  void _prepareObject(TlObject tlObject) {
+    _addTypeToFile(tlObject, apiObjectPath);
+    var tdFile = _tdFiles.putIfAbsent(
+        tlObject.superClassName,
+        () => TdFile(
+              typeName: tlObject.superClassName,
+              dirPath: apiObjectPath,
+              package: package,
+              packageFilePath: path.joinAll(['api', 'object']),
+            ));
+    if (!tlObject.extendsBase) {
+      tdFile.classes.putIfAbsent(
+          tlObject.superClassName,
+          () => Td(
+                className: tlObject.superClassName,
+                superClassName: 'TdObject',
+                isAbstract: true,
+              ));
+    }
+    tdFile.processTlDefinition(tlObject);
+  }
+
+  void _prepareFunction(TlFunction tlFunction) {
+    _addTypeToFile(tlFunction, apiObjectPath);
+    var tdFile = _tdFiles.putIfAbsent(
+        tlFunction.className,
+        () => TdFile(
+              typeName: tlFunction.className,
+              dirPath: apiFunctionPath,
+              package: package,
+              packageFilePath: path.joinAll(['api', 'function']),
+            ));
+    tdFile.processTlDefinition(tlFunction);
+  }
+
+  void _addTypeToFile(TlDefinition tlDefinition, String dir) {
+    _typeToFile.putIfAbsent(tlDefinition.className,
+        () => path.joinAll([dir, tlDefinition.fileName]));
+  }
+
+  Future<void> writeFiles() async {
+    await createDirectories();
+    await writeApi();
+    await writeBase();
+  }
+
+  Future<void> createDirectories() async {
+    await Directory(apiPath).create(recursive: true);
+    await Directory(apiObjectPath).create(recursive: true);
+    await Directory(apiFunctionPath).create(recursive: true);
+  }
+
+  Future<void> writeApi() async {
+    for (var className in _tdFiles.keys) {
+      var tdFile = _tdFiles[className]!;
+      await File(path
+              .joinAll([tdFile.dirPath, '${ReCase(className).snakeCase}.dart']))
+          .writeAsString(Template(TdFile.tdTemplate, htmlEscapeValues: false)
+              .renderString(tdFile.toMap()));
+    }
+  }
+
+  Future<void> writeBase() async {
+    await File(basePath).writeAsString(
+        Template(TdFile.baseTemplate, htmlEscapeValues: false)
+            .renderString({}));
+  }
+}
+
+class TdFile {
+  String package;
+  String dirPath;
+  String packageFilePath;
+  String typeName;
+  Map<String, String> imports = {};
+  Map<String, Td> classes = {};
+  TdFile(
+      {required this.typeName,
+      required this.dirPath,
+      required this.package,
+      required this.packageFilePath});
+
+  void processTlDefinition(TlDefinition tlDefinition) {
+    var td = classes.putIfAbsent(
+        tlDefinition.className,
+        () => Td(
+              className: tlDefinition.className,
+              superClassName: tlDefinition.extendsClasName,
+              isFunction: tlDefinition.isFunction,
+              returnType: tlDefinition.returnType,
+              members: [],
+            ));
+    tlDefinition.constructor.params.forEach((tlParam) {
+      td.members.add(TdMember(type: tlParam.type.tdName, name: tlParam.name));
+      if (!tlParam.type.isPrimitive &&
+          !TlPrimitives.primitives.contains(tlParam.type.tdSubName)) {
+        if (this.typeName != tlParam.type.tdSubName) {
+          imports[tlParam.type.tdSubName] = tlParam.type.tdSubName;
+        }
       }
     });
   }
 
-  void addObjectDefinition(TlDefinition tlDefinition) {
-    var tlConstructor = tlDefinition.constructor;
-
-    var tdObject = TdObject(className: tlConstructor.className);
-
-    if (tlConstructor.isLeafClass) {
-      _tdObjects[tlConstructor.className] = tdObject;
-    } else {
-      var tdAbstract = (_tdObjects.putIfAbsent(tlConstructor.superClassName,
-              () => TdAbstract(className: tlConstructor.superClassName))
-          as TdAbstract);
-
-      for (var tlParam in tlConstructor.params) {
-        if (!tlParam.type.isPrimitive &&
-            !tdAbstract.imports.contains(tlParam.type.tdName)) {
-          tdAbstract.imports.add(tlParam.type.tdName);
-        }
-      }
-
-      tdAbstract.tdObjects.add(tdObject);
-    }
-
-    for (var tlParam in tlConstructor.params) {
-      tdObject.members.add(TdMember(
-        name: tlParam.name,
-        type: tlParam.type.tdName,
-      ));
-    }
-
-    if (tlConstructor.isLeafClass) {
-      for (var tlParam in tlConstructor.params) {
-        if (!tlParam.type.isPrimitive &&
-            !tdObject.imports.contains(tlParam.type.tdName)) {
-          tdObject.imports.add(tlParam.type.tdName);
-        }
-      }
-    }
-
-    _map[tlConstructor.name] = tlConstructor.className;
+  Map<String, dynamic> toMap() {
+    return {
+      'package': {'value': package},
+      'imports': imports.values.map((e) => {
+            'value':
+                "import 'package:/$package/api/object/${ReCase(e).snakeCase}.dart';",
+          }),
+      'classes': classes.values.map((td) => td.toMap()),
+    };
   }
 
-  void addFunctionDefinition(TlDefinition tlDefinition) {
-    var tlConstructor = tlDefinition.constructor;
+  static String get baseTemplate => '''
+import 'dart:convert';
 
-    var tdFunction = TdFunction(
-      className: tlConstructor.className,
-      returnType: tlConstructor.returnType.name,
-    );
+typedef Bool = bool;
+typedef int32 = int;
+typedef int53 = int;
+typedef int64 = String;
+typedef vector<T> = List<T>;
+typedef bytes = String;
+typedef string = String;
 
-    tdFunction.imports.add(tlConstructor.returnType.name);
+extension BoolMap on bool {
+  bool toMap({skipNulls: true}) => this;
+}
 
-    for (var tlParam in tlConstructor.params) {
-      tdFunction.members.add(TdMember(
-        name: tlParam.name,
-        type: tlParam.type.tdName,
-      ));
-      if (!tlParam.type.isPrimitive &&
-          !tdFunction.imports.contains(tlParam.type.tdName)) {
-        tdFunction.imports.add(tlParam.type.tdName);
-      }
-    }
-    _tdFunctions.add(tdFunction);
-    _map[tlConstructor.name] = tlConstructor.className;
+extension IntMap on int {
+  int toMap({skipNulls: true}) => this;
+}
+
+extension DoubleMap on double {
+  double toMap({skipNulls: true}) => this;
+}
+
+extension StringMap on String {
+  String toMap({skipNulls: true}) => this;
+}
+
+extension ListMap on List {
+  List toMap({skipNulls: true}) => this;
+}
+
+abstract class Td {
+  String get tdType;
+
+  Td();
+  Td.fromMap(Map<String, dynamic> map);
+
+  Map<String, dynamic> toMap({skipNulls: true});
+
+  String toJson({skipNulls = true}) {
+    return jsonEncode(toMap(skipNulls: skipNulls));
   }
 
-  String get apiPath => path.joinAll([tdApiPath, 'api']);
-  String get apiObjectPath => path.joinAll([tdApiPath, 'api', 'object']);
-  String get apiFunctionPath => path.joinAll([tdApiPath, 'api', 'function']);
+  String toString({skipNulls = false}) {
+    return toJson(skipNulls: skipNulls);
+  }
+}
 
-  Future<void> writeFiles() async {
-    await writeBase();
-    await writeObjects();
-    await writeFunctions();
+abstract class TdObject extends Td {}
+
+abstract class TdFunction extends Td {
+  String get tdReturnType;
+}
+''';
+
+  static String get tdTemplate => '''
+import 'package:{{# package }}{{ value }}{{/ package }}/api/base.dart';
+{{# imports }}
+{{ value }}
+{{/ imports }}
+
+{{# classes }}
+{{# isAbstract }}
+abstract class {{ className }} extends {{ extendsClassName }} {}
+
+{{/ isAbstract }}
+{{^ isAbstract}}
+class {{ className }} extends {{ extendsClassName }} {
+  {{! properties }}
+  String get tdType => '{{ tdType }}';
+  {{# isFunction }}
+  String get tdReturnType => '{{ returnType }}';
+  {{/ isFunction }}
+
+  {{! class members }}
+  string? extra;
+  int? client_id;
+  {{# members }}
+  {{ type }}? {{ name }};
+  {{/ members }}
+
+  {{! fromMap constructor}}
+  {{ className }}.fromMap(Map<String, dynamic> map) {
+
   }
 
-  Future<void> writeBase() async {}
-  Future<void> writeObjects() async {}
-  Future<void> writeFunctions() async {}
+  {{! toMap}}
+  Map<String, dynamic> toMap({skipNulls: true}) {
+    return {};
+  }
+
+}
+{{/ isAbstract }}
+{{/ classes }}
+''';
+}
+
+class Td {
+  String className;
+  String superClassName;
+  bool isAbstract;
+  bool isFunction;
+  String returnType;
+  List<TdMember> members = [];
+
+  Td({
+    required this.className,
+    required this.superClassName,
+    this.isAbstract = false,
+    this.isFunction = false,
+    this.returnType = '',
+    this.members = const [],
+  });
+  Map<String, dynamic> toMap() {
+    var map = {
+      'className': className,
+      'extendsClassName': superClassName,
+      'isAbstract': isAbstract,
+      'isFunction': isFunction,
+      'tdType': ReCase(className).camelCase,
+      'returnType': returnType,
+      'members': members.map((e) => e.toMap()),
+    };
+    return map;
+  }
+}
+
+class TdMember {
+  String type;
+  String name;
+  TdMember({required this.type, required this.name});
+  Map<String, String> toMap() {
+    return {
+      'name': name,
+      'type': type,
+    };
+  }
 }

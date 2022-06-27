@@ -6,7 +6,18 @@ class TlGrammarDefinition extends GrammarDefinition {
 
   Parser start() => ref0(term).end();
 
-  Parser term() => (ref0(definition) | ref0(switchToFunctions)).star();
+  Parser term() =>
+      (ref0(object).plus() & ref0(switchToFunctions) & ref0(function).plus())
+          .map((value) => [value[0], value[2]]);
+
+  Parser object() => (ref0(definition)).map((value) => TlObject(
+        constructor: value.constructor,
+        comments: value.comments,
+      ));
+  Parser function() => (ref0(definition)).map((value) => TlFunction(
+        constructor: value.constructor,
+        comments: value.comments,
+      ));
 
   Parser definition() =>
       (ref0(commments).star() & ref0(constructor)).map((value) => TlDefinition(
@@ -16,7 +27,7 @@ class TlGrammarDefinition extends GrammarDefinition {
 
   Parser commments() => ref0(comment);
   Parser comment() =>
-      ((string('//') & noneOf('\n\r').star().flatten() & newline.star())
+      ((string('//') & noneOf('\n\r').star().flatten() & whitespace().star())
           .map((value) => value[1])
           .flatten()
           .map((value) => value)).map((value) => TlComment(text: value));
@@ -43,9 +54,8 @@ class TlGrammarDefinition extends GrammarDefinition {
             name: value[0],
           ));
   Parser resultType() =>
-      (noneOf(';').plus().flatten() & char(';') & newline.star())
+      (noneOf(';').plus().flatten() & char(';') & whitespace().star())
           .map((value) => TlType(name: value[0]));
 
-  Parser switchToFunctions() =>
-      (string('---functions---') & newline.star()).map((value) => TlSwitch());
+  Parser switchToFunctions() => string('---functions---') & whitespace().star();
 }
