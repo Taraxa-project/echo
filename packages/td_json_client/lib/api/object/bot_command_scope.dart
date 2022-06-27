@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents the scope to which bot commands are relevant
 abstract class BotCommandScope extends TdObject {}
 
+
+/// A scope covering all users
 class BotCommandScopeDefault extends BotCommandScope {
   String get tdType => 'botCommandScopeDefault';
 
@@ -30,6 +33,8 @@ class BotCommandScopeDefault extends BotCommandScope {
     return map;
   }
 }
+
+/// A scope covering all private chats
 class BotCommandScopeAllPrivateChats extends BotCommandScope {
   String get tdType => 'botCommandScopeAllPrivateChats';
 
@@ -58,6 +63,8 @@ class BotCommandScopeAllPrivateChats extends BotCommandScope {
     return map;
   }
 }
+
+/// A scope covering all group and supergroup chats
 class BotCommandScopeAllGroupChats extends BotCommandScope {
   String get tdType => 'botCommandScopeAllGroupChats';
 
@@ -86,6 +93,8 @@ class BotCommandScopeAllGroupChats extends BotCommandScope {
     return map;
   }
 }
+
+/// A scope covering all group and supergroup chat administrators
 class BotCommandScopeAllChatAdministrators extends BotCommandScope {
   String get tdType => 'botCommandScopeAllChatAdministrators';
 
@@ -114,11 +123,15 @@ class BotCommandScopeAllChatAdministrators extends BotCommandScope {
     return map;
   }
 }
+
+/// A scope covering all members of a chat 
 class BotCommandScopeChat extends BotCommandScope {
   String get tdType => 'botCommandScopeChat';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   BotCommandScopeChat({
@@ -146,11 +159,15 @@ class BotCommandScopeChat extends BotCommandScope {
     return map;
   }
 }
+
+/// A scope covering all administrators of a chat 
 class BotCommandScopeChatAdministrators extends BotCommandScope {
   String get tdType => 'botCommandScopeChatAdministrators';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   BotCommandScopeChatAdministrators({
@@ -178,12 +195,18 @@ class BotCommandScopeChatAdministrators extends BotCommandScope {
     return map;
   }
 }
+
+/// A scope covering a member of a chat 
 class BotCommandScopeChatMember extends BotCommandScope {
   String get tdType => 'botCommandScopeChatMember';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// User identifier
   int53? user_id;
 
   BotCommandScopeChatMember({

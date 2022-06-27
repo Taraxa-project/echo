@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains an HTTP URL 
 class HttpUrl extends TdObject {
   String get tdType => 'httpUrl';
 
   String? extra;
   int? client_id;
+
+  /// The URL
   string? url;
 
   HttpUrl({

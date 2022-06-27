@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// An object of this type can be returned on every function call, in case of an error
 class Error extends TdObject {
   String get tdType => 'error';
 
   String? extra;
   int? client_id;
+
+  /// Error code; subject to future changes. If the error coååde is 406, the error message must not be processed in any way and must not be displayed to the user
   int32? code;
+
+  /// Error message; subject to future changes
   string? message;
 
   Error({

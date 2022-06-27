@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns all website where the current user used Telegram to log in
 class GetConnectedWebsites extends TdFunction {
   String get tdType => 'getConnectedWebsites';
   String get tdReturnType => 'ConnectedWebsites';

@@ -4,16 +4,30 @@ import 'package:td_json_client/api/object/message_reply_info.dart';
 import 'package:td_json_client/api/object/message.dart';
 import 'package:td_json_client/api/object/draft_message.dart';
 
+
+/// Contains information about a message thread
 class MessageThreadInfo extends TdObject {
   String get tdType => 'messageThreadInfo';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to which the message thread belongs
   int53? chat_id;
+
+  /// Message thread identifier, unique within the chat
   int53? message_thread_id;
+
+  /// Information about the message thread
   MessageReplyInfo? reply_info;
+
+  /// Approximate number of unread messages in the message thread
   int32? unread_message_count;
+
+  /// The messages from which the thread starts. The messages are returned in a reverse chronological order (i.e., in order of decreasing message_id)
   vector<Message>? messages;
+
+  /// A draft of a message in the message thread; may be null
   DraftMessage? draft_message;
 
   MessageThreadInfo({

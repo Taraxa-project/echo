@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/theme_settings.dart';
 
+
+/// Describes a chat theme
 class ChatTheme extends TdObject {
   String get tdType => 'chatTheme';
 
   String? extra;
   int? client_id;
+
+  /// Theme name
   string? name;
+
+  /// Theme settings for a light chat theme
   ThemeSettings? light_settings;
+
+  /// Theme settings for a dark chat theme
   ThemeSettings? dark_settings;
 
   ChatTheme({

@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 
+
+/// Changes the order of pinned chats 
 class SetPinnedChats extends TdFunction {
   String get tdType => 'setPinnedChats';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat list in which to change the order of pinned chats 
   ChatList? chat_list;
+
+  /// The new list of pinned chats
   vector<int53>? chat_ids;
 
   SetPinnedChats({

@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_passport_element_error.dart';
 
+
+/// Informs the user that some of the elements in their Telegram Passport contain errors; for bots only. The user will not be able to resend the elements, until the errors are fixed 
 class SetPassportElementErrors extends TdFunction {
   String get tdType => 'setPassportElementErrors';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// User identifier 
   int53? user_id;
+
+  /// The errors
   vector<InputPassportElementError>? errors;
 
   SetPassportElementErrors({

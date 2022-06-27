@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+
+/// Sends log file for a call to Telegram servers 
 class SendCallLog extends TdFunction {
   String get tdType => 'sendCallLog';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Call identifier 
   int32? call_id;
+
+  /// Call log file. Only inputFileLocal and inputFileGenerated are supported
   InputFile? log_file;
 
   SendCallLog({

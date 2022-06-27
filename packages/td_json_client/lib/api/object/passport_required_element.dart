@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_suitable_element.dart';
 
+
+/// Contains a description of the required Telegram Passport element that was requested by a service 
 class PassportRequiredElement extends TdObject {
   String get tdType => 'passportRequiredElement';
 
   String? extra;
   int? client_id;
+
+  /// List of Telegram Passport elements any of which is enough to provide
   vector<PassportSuitableElement>? suitable_elements;
 
   PassportRequiredElement({

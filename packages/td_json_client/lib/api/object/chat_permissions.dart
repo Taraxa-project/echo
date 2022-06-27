@@ -1,17 +1,35 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes actions that a user is allowed to take in a chat
 class ChatPermissions extends TdObject {
   String get tdType => 'chatPermissions';
 
   String? extra;
   int? client_id;
+
+  /// True, if the user can send text messages, contacts, locations, and venues
   Bool? can_send_messages;
+
+  /// True, if the user can send audio files, documents, photos, videos, video notes, and voice notes. Implies can_send_messages permissions
   Bool? can_send_media_messages;
+
+  /// True, if the user can send polls. Implies can_send_messages permissions
   Bool? can_send_polls;
+
+  /// True, if the user can send animations, games, stickers, and dice and use inline bots. Implies can_send_messages permissions
   Bool? can_send_other_messages;
+
+  /// True, if the user may add a web page preview to their messages. Implies can_send_messages permissions
   Bool? can_add_web_page_previews;
+
+  /// True, if the user can change the chat title, photo, and other settings
   Bool? can_change_info;
+
+  /// True, if the user can invite new users to the chat
   Bool? can_invite_users;
+
+  /// True, if the user can pin messages
   Bool? can_pin_messages;
 
   ChatPermissions({

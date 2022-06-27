@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Changes the block state of a message sender. Currently, only users and supergroup chats can be blocked 
 class ToggleMessageSenderIsBlocked extends TdFunction {
   String get tdType => 'toggleMessageSenderIsBlocked';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of a message sender to block/unblock 
   MessageSender? sender_id;
+
+  /// New value of is_blocked
   Bool? is_blocked;
 
   ToggleMessageSenderIsBlocked({

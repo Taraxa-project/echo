@@ -1,15 +1,27 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns an HTTPS link to a message in a chat. Available only for already sent messages in supergroups and channels, or if message.can_get_media_timestamp_links and a media timestamp link is generated. This is an offline request
 class GetMessageLink extends TdFunction {
   String get tdType => 'getMessageLink';
   String get tdReturnType => 'MessageLink';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to which the message belongs
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
+
+  /// If not 0, timestamp from which the video/audio/video note/voice note playing must start, in seconds. The media can be in the message content or in its web page preview
   int32? media_timestamp;
+
+  /// Pass true to create a link for the whole media album
   Bool? for_album;
+
+  /// Pass true to create a link to the message as a channel post comment, or from a message thread
   Bool? for_comment;
 
   GetMessageLink({

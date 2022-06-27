@@ -5,20 +5,42 @@ import 'package:td_json_client/api/object/payments_provider_stripe.dart';
 import 'package:td_json_client/api/object/order_info.dart';
 import 'package:td_json_client/api/object/saved_credentials.dart';
 
+
+/// Contains information about an invoice payment form
 class PaymentForm extends TdObject {
   String get tdType => 'paymentForm';
 
   String? extra;
   int? client_id;
+
+  /// The payment form identifier
   int64? id;
+
+  /// Full information of the invoice
   Invoice? invoice;
+
+  /// Payment form URL
   string? url;
+
+  /// User identifier of the seller bot
   int53? seller_bot_user_id;
+
+  /// User identifier of the payment provider bot
   int53? payments_provider_user_id;
+
+  /// Information about the payment provider, if available, to support it natively without the need for opening the URL; may be null
   PaymentsProviderStripe? payments_provider;
+
+  /// Saved server-side order information; may be null
   OrderInfo? saved_order_info;
+
+  /// Information about saved card credentials; may be null
   SavedCredentials? saved_credentials;
+
+  /// True, if the user can choose to save credentials
   Bool? can_save_credentials;
+
+  /// True, if the user will be able to save credentials protected by a password they set up
   Bool? need_password;
 
   PaymentForm({

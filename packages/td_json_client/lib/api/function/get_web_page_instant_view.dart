@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns an instant view version of a web page if available. Returns a 404 error if the web page has no instant view page 
 class GetWebPageInstantView extends TdFunction {
   String get tdType => 'getWebPageInstantView';
   String get tdReturnType => 'WebPageInstantView';
 
   String? extra;
   int? client_id;
+
+  /// The web page URL 
   string? url;
+
+  /// Pass true to get full instant view for the web page
   Bool? force_full;
 
   GetWebPageInstantView({

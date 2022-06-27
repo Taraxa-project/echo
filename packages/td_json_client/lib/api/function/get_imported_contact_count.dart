@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the total number of imported contacts
 class GetImportedContactCount extends TdFunction {
   String get tdType => 'getImportedContactCount';
   String get tdReturnType => 'Count';

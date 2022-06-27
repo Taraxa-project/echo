@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the order of chat filters 
 class ReorderChatFilters extends TdFunction {
   String get tdType => 'reorderChatFilters';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifiers of chat filters in the new correct order
   vector<int32>? chat_filter_ids;
 
   ReorderChatFilters({

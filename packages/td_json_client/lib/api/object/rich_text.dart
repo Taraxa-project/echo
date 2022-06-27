@@ -2,13 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/document.dart';
 
+/// Describes a text object inside an instant-view web page
 abstract class RichText extends TdObject {}
 
+
+/// A plain text 
 class RichTextPlain extends RichText {
   String get tdType => 'richTextPlain';
 
   String? extra;
   int? client_id;
+
+  /// Text
   string? text;
 
   RichTextPlain({
@@ -36,11 +41,15 @@ class RichTextPlain extends RichText {
     return map;
   }
 }
+
+/// A bold rich text 
 class RichTextBold extends RichText {
   String get tdType => 'richTextBold';
 
   String? extra;
   int? client_id;
+
+  /// Text
   RichText? text;
 
   RichTextBold({
@@ -68,11 +77,15 @@ class RichTextBold extends RichText {
     return map;
   }
 }
+
+/// An italicized rich text 
 class RichTextItalic extends RichText {
   String get tdType => 'richTextItalic';
 
   String? extra;
   int? client_id;
+
+  /// Text
   RichText? text;
 
   RichTextItalic({
@@ -100,11 +113,15 @@ class RichTextItalic extends RichText {
     return map;
   }
 }
+
+/// An underlined rich text 
 class RichTextUnderline extends RichText {
   String get tdType => 'richTextUnderline';
 
   String? extra;
   int? client_id;
+
+  /// Text
   RichText? text;
 
   RichTextUnderline({
@@ -132,11 +149,15 @@ class RichTextUnderline extends RichText {
     return map;
   }
 }
+
+/// A strikethrough rich text 
 class RichTextStrikethrough extends RichText {
   String get tdType => 'richTextStrikethrough';
 
   String? extra;
   int? client_id;
+
+  /// Text
   RichText? text;
 
   RichTextStrikethrough({
@@ -164,11 +185,15 @@ class RichTextStrikethrough extends RichText {
     return map;
   }
 }
+
+/// A fixed-width rich text 
 class RichTextFixed extends RichText {
   String get tdType => 'richTextFixed';
 
   String? extra;
   int? client_id;
+
+  /// Text
   RichText? text;
 
   RichTextFixed({
@@ -196,13 +221,21 @@ class RichTextFixed extends RichText {
     return map;
   }
 }
+
+/// A rich text URL link 
 class RichTextUrl extends RichText {
   String get tdType => 'richTextUrl';
 
   String? extra;
   int? client_id;
+
+  /// Text 
   RichText? text;
+
+  /// URL 
   string? url;
+
+  /// True, if the URL has cached instant view server-side
   Bool? is_cached;
 
   RichTextUrl({
@@ -236,12 +269,18 @@ class RichTextUrl extends RichText {
     return map;
   }
 }
+
+/// A rich text email link 
 class RichTextEmailAddress extends RichText {
   String get tdType => 'richTextEmailAddress';
 
   String? extra;
   int? client_id;
+
+  /// Text 
   RichText? text;
+
+  /// Email address
   string? email_address;
 
   RichTextEmailAddress({
@@ -272,11 +311,15 @@ class RichTextEmailAddress extends RichText {
     return map;
   }
 }
+
+/// A subscript rich text 
 class RichTextSubscript extends RichText {
   String get tdType => 'richTextSubscript';
 
   String? extra;
   int? client_id;
+
+  /// Text
   RichText? text;
 
   RichTextSubscript({
@@ -304,11 +347,15 @@ class RichTextSubscript extends RichText {
     return map;
   }
 }
+
+/// A superscript rich text 
 class RichTextSuperscript extends RichText {
   String get tdType => 'richTextSuperscript';
 
   String? extra;
   int? client_id;
+
+  /// Text
   RichText? text;
 
   RichTextSuperscript({
@@ -336,11 +383,15 @@ class RichTextSuperscript extends RichText {
     return map;
   }
 }
+
+/// A marked rich text 
 class RichTextMarked extends RichText {
   String get tdType => 'richTextMarked';
 
   String? extra;
   int? client_id;
+
+  /// Text
   RichText? text;
 
   RichTextMarked({
@@ -368,12 +419,18 @@ class RichTextMarked extends RichText {
     return map;
   }
 }
+
+/// A rich text phone number 
 class RichTextPhoneNumber extends RichText {
   String get tdType => 'richTextPhoneNumber';
 
   String? extra;
   int? client_id;
+
+  /// Text 
   RichText? text;
+
+  /// Phone number
   string? phone_number;
 
   RichTextPhoneNumber({
@@ -404,13 +461,21 @@ class RichTextPhoneNumber extends RichText {
     return map;
   }
 }
+
+/// A small image inside the text 
 class RichTextIcon extends RichText {
   String get tdType => 'richTextIcon';
 
   String? extra;
   int? client_id;
+
+  /// The image represented as a document. The image can be in GIF, JPEG or PNG format
   Document? document;
+
+  /// Width of a bounding box in which the image must be shown; 0 if unknown
   int32? width;
+
+  /// Height of a bounding box in which the image must be shown; 0 if unknown
   int32? height;
 
   RichTextIcon({
@@ -444,13 +509,21 @@ class RichTextIcon extends RichText {
     return map;
   }
 }
+
+/// A reference to a richTexts object on the same web page 
 class RichTextReference extends RichText {
   String get tdType => 'richTextReference';
 
   String? extra;
   int? client_id;
+
+  /// The text 
   RichText? text;
+
+  /// The name of a richTextAnchor object, which is the first element of the target richTexts object 
   string? anchor_name;
+
+  /// An HTTP URL, opening the reference
   string? url;
 
   RichTextReference({
@@ -484,11 +557,15 @@ class RichTextReference extends RichText {
     return map;
   }
 }
+
+/// An anchor 
 class RichTextAnchor extends RichText {
   String get tdType => 'richTextAnchor';
 
   String? extra;
   int? client_id;
+
+  /// Anchor name
   string? name;
 
   RichTextAnchor({
@@ -516,13 +593,21 @@ class RichTextAnchor extends RichText {
     return map;
   }
 }
+
+/// A link to an anchor on the same web page 
 class RichTextAnchorLink extends RichText {
   String get tdType => 'richTextAnchorLink';
 
   String? extra;
   int? client_id;
+
+  /// The link text 
   RichText? text;
+
+  /// The anchor name. If the name is empty, the link must bring back to top 
   string? anchor_name;
+
+  /// An HTTP URL, opening the anchor
   string? url;
 
   RichTextAnchorLink({
@@ -556,11 +641,15 @@ class RichTextAnchorLink extends RichText {
     return map;
   }
 }
+
+/// A concatenation of rich texts 
 class RichTexts extends RichText {
   String get tdType => 'richTexts';
 
   String? extra;
   int? client_id;
+
+  /// Texts
   vector<RichText>? texts;
 
   RichTexts({

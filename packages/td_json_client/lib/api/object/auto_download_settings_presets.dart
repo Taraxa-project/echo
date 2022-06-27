@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/auto_download_settings.dart';
 
+
+/// Contains auto-download settings presets for the current user
 class AutoDownloadSettingsPresets extends TdObject {
   String get tdType => 'autoDownloadSettingsPresets';
 
   String? extra;
   int? client_id;
+
+  /// Preset with lowest settings; supposed to be used by default when roaming
   AutoDownloadSettings? low;
+
+  /// Preset with medium settings; supposed to be used by default when using mobile data
   AutoDownloadSettings? medium;
+
+  /// Preset with highest settings; supposed to be used by default when connected on Wi-Fi
   AutoDownloadSettings? high;
 
   AutoDownloadSettingsPresets({

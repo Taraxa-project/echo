@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Clears all imported contacts, contact list remains unchanged
 class ClearImportedContacts extends TdFunction {
   String get tdType => 'clearImportedContacts';
   String get tdReturnType => 'Ok';

@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Sends a simple network request to the Telegram servers; for testing only. Can be called before authorization
 class TestNetwork extends TdFunction {
   String get tdType => 'testNetwork';
   String get tdReturnType => 'Ok';

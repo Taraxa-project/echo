@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns an animated emoji corresponding to a given emoji. Returns a 404 error if the emoji has no animated emoji 
 class GetAnimatedEmoji extends TdFunction {
   String get tdType => 'getAnimatedEmoji';
   String get tdReturnType => 'AnimatedEmoji';
 
   String? extra;
   int? client_id;
+
+  /// The emoji
   string? emoji;
 
   GetAnimatedEmoji({

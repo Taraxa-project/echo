@@ -1,16 +1,30 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns invite links for a chat created by specified administrator. Requires administrator privileges and can_invite_users right in the chat to get own links and owner privileges to get other links
 class GetChatInviteLinks extends TdFunction {
   String get tdType => 'getChatInviteLinks';
   String get tdReturnType => 'ChatInviteLinks';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// User identifier of a chat administrator. Must be an identifier of the current user for non-owner
   int53? creator_user_id;
+
+  /// Pass true if revoked links needs to be returned instead of active or expired
   Bool? is_revoked;
+
+  /// Creation date of an invite link starting after which to return invite links; use 0 to get results from the beginning
   int32? offset_date;
+
+  /// Invite link starting after which to return invite links; use empty string to get results from the beginning
   string? offset_invite_link;
+
+  /// The maximum number of invite links to return; up to 100
   int32? limit;
 
   GetChatInviteLinks({

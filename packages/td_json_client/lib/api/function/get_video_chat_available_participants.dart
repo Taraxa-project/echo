@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns list of participant identifiers, on whose behalf a video chat in the chat can be joined 
 class GetVideoChatAvailableParticipants extends TdFunction {
   String get tdType => 'getVideoChatAvailableParticipants';
   String get tdReturnType => 'MessageSenders';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   GetVideoChatAvailableParticipants({

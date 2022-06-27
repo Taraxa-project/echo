@@ -2,15 +2,25 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Bans a member in a chat. Members can't be banned in private or secret chats. In supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first
 class BanChatMember extends TdFunction {
   String get tdType => 'banChatMember';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// Member identifier
   MessageSender? member_id;
+
+  /// Point in time (Unix timestamp) when the user will be unbanned; 0 if never. If the user is banned for more than 366 days or for less than 30 seconds from the current time, the user is considered to be banned forever. Ignored in basic groups and if a chat is banned
   int32? banned_until_date;
+
+  /// Pass true to delete all messages in the chat for the user that is being removed. Always true for supergroups and channels
   Bool? revoke_messages;
 
   BanChatMember({

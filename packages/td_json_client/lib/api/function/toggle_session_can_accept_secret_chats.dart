@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Toggles whether a session can accept incoming secret chats 
 class ToggleSessionCanAcceptSecretChats extends TdFunction {
   String get tdType => 'toggleSessionCanAcceptSecretChats';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Session identifier 
   int64? session_id;
+
+  /// Pass true to allow accepring secret chats by the session; pass false otherwise
   Bool? can_accept_secret_chats;
 
   ToggleSessionCanAcceptSecretChats({

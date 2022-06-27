@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes a chat administrator with a number of active and revoked chat invite links
 class ChatInviteLinkCount extends TdObject {
   String get tdType => 'chatInviteLinkCount';
 
   String? extra;
   int? client_id;
+
+  /// Administrator's user identifier
   int53? user_id;
+
+  /// Number of active invite links
   int32? invite_link_count;
+
+  /// Number of revoked invite links
   int32? revoked_invite_link_count;
 
   ChatInviteLinkCount({

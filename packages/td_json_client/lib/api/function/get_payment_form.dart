@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/theme_parameters.dart';
 
+
+/// Returns an invoice payment form. This method must be called when the user presses inlineKeyboardButtonBuy
 class GetPaymentForm extends TdFunction {
   String get tdType => 'getPaymentForm';
   String get tdReturnType => 'PaymentForm';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier of the Invoice message
   int53? chat_id;
+
+  /// Message identifier
   int53? message_id;
+
+  /// Preferred payment form theme; pass null to use the default theme
   ThemeParameters? theme;
 
   GetPaymentForm({

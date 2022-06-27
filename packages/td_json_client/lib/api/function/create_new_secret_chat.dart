@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Creates a new secret chat. Returns the newly created chat 
 class CreateNewSecretChat extends TdFunction {
   String get tdType => 'createNewSecretChat';
   String get tdReturnType => 'Chat';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the target user
   int53? user_id;
 
   CreateNewSecretChat({

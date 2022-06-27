@@ -3,20 +3,42 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/poll_option.dart';
 import 'package:td_json_client/api/object/poll_type.dart';
 
+
+/// Describes a poll 
 class Poll extends TdObject {
   String get tdType => 'poll';
 
   String? extra;
   int? client_id;
+
+  /// Unique poll identifier 
   int64? id;
+
+  /// Poll question; 1-300 characters 
   string? question;
+
+  /// List of poll answer options
   vector<PollOption>? options;
+
+  /// Total number of voters, participating in the poll 
   int32? total_voter_count;
+
+  /// User identifiers of recent voters, if the poll is non-anonymous
   vector<int53>? recent_voter_user_ids;
+
+  /// True, if the poll is anonymous 
   Bool? is_anonymous;
+
+  /// Type of the poll
   PollType? type;
+
+  /// Amount of time the poll will be active after creation, in seconds 
   int32? open_period;
+
+  /// Point in time (Unix timestamp) when the poll will automatically be closed 
   int32? close_date;
+
+  /// True, if the poll is closed
   Bool? is_closed;
 
   Poll({

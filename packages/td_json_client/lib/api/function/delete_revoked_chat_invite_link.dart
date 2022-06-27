@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Deletes revoked chat invite links. Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for other links 
 class DeleteRevokedChatInviteLink extends TdFunction {
   String get tdType => 'deleteRevokedChatInviteLink';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Invite link to revoke
   string? invite_link;
 
   DeleteRevokedChatInviteLink({

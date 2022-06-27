@@ -2,15 +2,25 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_report_reason.dart';
 
+
+/// Reports a chat photo to the Telegram moderators. A chat photo can be reported only if chat.can_be_reported
 class ReportChatPhoto extends TdFunction {
   String get tdType => 'reportChatPhoto';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifier of the photo to report. Only full photos from chatPhoto can be reported 
   int32? file_id;
+
+  /// The reason for reporting the chat photo 
   ChatReportReason? reason;
+
+  /// Additional report details; 0-1024 characters
   string? text;
 
   ReportChatPhoto({

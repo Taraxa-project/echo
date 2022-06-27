@@ -6,22 +6,48 @@ import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/emojis.dart';
 
+
+/// Represents a sticker set
 class StickerSet extends TdObject {
   String get tdType => 'stickerSet';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the sticker set 
   int64? id;
+
+  /// Title of the sticker set 
   string? title;
+
+  /// Name of the sticker set 
   string? name;
+
+  /// Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null. The file can be downloaded only before the thumbnail is changed
   Thumbnail? thumbnail;
+
+  /// Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty. The coordinate system origin is in the upper-left corner
   vector<ClosedVectorPath>? thumbnail_outline;
+
+  /// True, if the sticker set has been installed by the current user 
   Bool? is_installed;
+
+  /// True, if the sticker set has been archived. A sticker set can't be installed and archived simultaneously
   Bool? is_archived;
+
+  /// True, if the sticker set is official 
   Bool? is_official;
+
+  /// Type of the stickers in the set 
   StickerType? sticker_type;
+
+  /// True for already viewed trending sticker sets
   Bool? is_viewed;
+
+  /// List of stickers in this set 
   vector<Sticker>? stickers;
+
+  /// A list of emoji corresponding to the stickers in the same order. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object
   vector<Emojis>? emojis;
 
   StickerSet({

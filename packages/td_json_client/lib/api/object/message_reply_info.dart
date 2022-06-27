@@ -2,15 +2,27 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Contains information about replies to a message
 class MessageReplyInfo extends TdObject {
   String get tdType => 'messageReplyInfo';
 
   String? extra;
   int? client_id;
+
+  /// Number of times the message was directly or indirectly replied
   int32? reply_count;
+
+  /// Identifiers of at most 3 recent repliers to the message; available in channels with a discussion supergroup. The users and chats are expected to be inaccessible: only their photo and name will be available
   vector<MessageSender>? recent_replier_ids;
+
+  /// Identifier of the last read incoming reply to the message
   int53? last_read_inbox_message_id;
+
+  /// Identifier of the last read outgoing reply to the message
   int53? last_read_outbox_message_id;
+
+  /// Identifier of the last reply to the message
   int53? last_message_id;
 
   MessageReplyInfo({

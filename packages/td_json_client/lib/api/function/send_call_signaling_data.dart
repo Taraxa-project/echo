@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Sends call signaling data 
 class SendCallSignalingData extends TdFunction {
   String get tdType => 'sendCallSignalingData';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Call identifier 
   int32? call_id;
+
+  /// The data
   bytes? data;
 
   SendCallSignalingData({

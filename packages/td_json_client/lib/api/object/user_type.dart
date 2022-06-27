@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents the type of a user. The following types are possible: regular users, deleted users and bots
 abstract class UserType extends TdObject {}
 
+
+/// A regular user
 class UserTypeRegular extends UserType {
   String get tdType => 'userTypeRegular';
 
@@ -30,6 +33,8 @@ class UserTypeRegular extends UserType {
     return map;
   }
 }
+
+/// A deleted user or deleted bot. No information on the user besides the user identifier is available. It is not possible to perform any active actions on this type of user
 class UserTypeDeleted extends UserType {
   String get tdType => 'userTypeDeleted';
 
@@ -58,16 +63,30 @@ class UserTypeDeleted extends UserType {
     return map;
   }
 }
+
+/// A bot (see https://core.telegram.org/bots)
 class UserTypeBot extends UserType {
   String get tdType => 'userTypeBot';
 
   String? extra;
   int? client_id;
+
+  /// True, if the bot can be invited to basic group and supergroup chats
   Bool? can_join_groups;
+
+  /// True, if the bot can read all messages in basic group or supergroup chats and not just those addressed to the bot. In private and channel chats a bot can always read all messages
   Bool? can_read_all_group_messages;
+
+  /// True, if the bot supports inline queries
   Bool? is_inline;
+
+  /// Placeholder for inline queries (displayed on the application input field)
   string? inline_query_placeholder;
+
+  /// True, if the location of the user is expected to be sent with every inline query to this bot
   Bool? need_location;
+
+  /// True, if the bot can be added to attachment menu
   Bool? can_be_added_to_attachment_menu;
 
   UserTypeBot({
@@ -110,6 +129,8 @@ class UserTypeBot extends UserType {
     return map;
   }
 }
+
+/// No information on the user besides the user identifier is available, yet this user has not been deleted. This object is extremely rare and must be handled like a deleted user. It is not possible to perform any actions on users of this type
 class UserTypeUnknown extends UserType {
   String get tdType => 'userTypeUnknown';
 

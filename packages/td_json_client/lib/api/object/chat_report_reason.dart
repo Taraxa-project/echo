@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the reason why a chat is reported
 abstract class ChatReportReason extends TdObject {}
 
+
+/// The chat contains spam messages
 class ChatReportReasonSpam extends ChatReportReason {
   String get tdType => 'chatReportReasonSpam';
 
@@ -30,6 +33,8 @@ class ChatReportReasonSpam extends ChatReportReason {
     return map;
   }
 }
+
+/// The chat promotes violence
 class ChatReportReasonViolence extends ChatReportReason {
   String get tdType => 'chatReportReasonViolence';
 
@@ -58,6 +63,8 @@ class ChatReportReasonViolence extends ChatReportReason {
     return map;
   }
 }
+
+/// The chat contains pornographic messages
 class ChatReportReasonPornography extends ChatReportReason {
   String get tdType => 'chatReportReasonPornography';
 
@@ -86,6 +93,8 @@ class ChatReportReasonPornography extends ChatReportReason {
     return map;
   }
 }
+
+/// The chat has child abuse related content
 class ChatReportReasonChildAbuse extends ChatReportReason {
   String get tdType => 'chatReportReasonChildAbuse';
 
@@ -114,6 +123,8 @@ class ChatReportReasonChildAbuse extends ChatReportReason {
     return map;
   }
 }
+
+/// The chat contains copyrighted content
 class ChatReportReasonCopyright extends ChatReportReason {
   String get tdType => 'chatReportReasonCopyright';
 
@@ -142,6 +153,8 @@ class ChatReportReasonCopyright extends ChatReportReason {
     return map;
   }
 }
+
+/// The location-based chat is unrelated to its stated location
 class ChatReportReasonUnrelatedLocation extends ChatReportReason {
   String get tdType => 'chatReportReasonUnrelatedLocation';
 
@@ -170,6 +183,8 @@ class ChatReportReasonUnrelatedLocation extends ChatReportReason {
     return map;
   }
 }
+
+/// The chat represents a fake account
 class ChatReportReasonFake extends ChatReportReason {
   String get tdType => 'chatReportReasonFake';
 
@@ -198,6 +213,8 @@ class ChatReportReasonFake extends ChatReportReason {
     return map;
   }
 }
+
+/// The chat has illegal drugs related content
 class ChatReportReasonIllegalDrugs extends ChatReportReason {
   String get tdType => 'chatReportReasonIllegalDrugs';
 
@@ -226,6 +243,8 @@ class ChatReportReasonIllegalDrugs extends ChatReportReason {
     return map;
   }
 }
+
+/// The chat contains messages with personal details
 class ChatReportReasonPersonalDetails extends ChatReportReason {
   String get tdType => 'chatReportReasonPersonalDetails';
 
@@ -254,6 +273,8 @@ class ChatReportReasonPersonalDetails extends ChatReportReason {
     return map;
   }
 }
+
+/// A custom reason provided by the user
 class ChatReportReasonCustom extends ChatReportReason {
   String get tdType => 'chatReportReasonCustom';
 

@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Handles all pending join requests for a given link in a chat
 class ProcessChatJoinRequests extends TdFunction {
   String get tdType => 'processChatJoinRequests';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// Invite link for which to process join requests. If empty, all join requests will be processed. Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for other links
   string? invite_link;
+
+  /// Pass true to approve all requests; pass false to decline them
   Bool? approve;
 
   ProcessChatJoinRequests({

@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/bot_menu_button.dart';
 
+
+/// Sets menu button for the given user or for all users; for bots only
 class SetMenuButton extends TdFunction {
   String get tdType => 'setMenuButton';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the user or 0 to set menu button for all users
   int53? user_id;
+
+  /// New menu button
   BotMenuButton? menu_button;
 
   SetMenuButton({

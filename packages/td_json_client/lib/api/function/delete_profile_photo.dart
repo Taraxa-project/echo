@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Deletes a profile photo 
 class DeleteProfilePhoto extends TdFunction {
   String get tdType => 'deleteProfilePhoto';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the profile photo to delete
   int64? profile_photo_id;
 
   DeleteProfilePhoto({

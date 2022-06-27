@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the quality of a group call video
 abstract class GroupCallVideoQuality extends TdObject {}
 
+
+/// The worst available video quality
 class GroupCallVideoQualityThumbnail extends GroupCallVideoQuality {
   String get tdType => 'groupCallVideoQualityThumbnail';
 
@@ -30,6 +33,8 @@ class GroupCallVideoQualityThumbnail extends GroupCallVideoQuality {
     return map;
   }
 }
+
+/// The medium video quality
 class GroupCallVideoQualityMedium extends GroupCallVideoQuality {
   String get tdType => 'groupCallVideoQualityMedium';
 
@@ -58,6 +63,8 @@ class GroupCallVideoQualityMedium extends GroupCallVideoQuality {
     return map;
   }
 }
+
+/// The best available video quality
 class GroupCallVideoQualityFull extends GroupCallVideoQuality {
   String get tdType => 'groupCallVideoQualityFull';
 

@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents a list of emoji 
 class Emojis extends TdObject {
   String get tdType => 'emojis';
 
   String? extra;
   int? client_id;
+
+  /// List of emojis
   vector<string>? emojis;
 
   Emojis({

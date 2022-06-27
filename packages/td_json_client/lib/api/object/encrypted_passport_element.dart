@@ -3,19 +3,39 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_element_type.dart';
 import 'package:td_json_client/api/object/dated_file.dart';
 
+
+/// Contains information about an encrypted Telegram Passport element; for bots only 
 class EncryptedPassportElement extends TdObject {
   String get tdType => 'encryptedPassportElement';
 
   String? extra;
   int? client_id;
+
+  /// Type of Telegram Passport element 
   PassportElementType? type;
+
+  /// Encrypted JSON-encoded data about the user 
   bytes? data;
+
+  /// The front side of an identity document 
   DatedFile? front_side;
+
+  /// The reverse side of an identity document; may be null 
   DatedFile? reverse_side;
+
+  /// Selfie with the document; may be null 
   DatedFile? selfie;
+
+  /// List of files containing a certified English translation of the document 
   vector<DatedFile>? translation;
+
+  /// List of attached files 
   vector<DatedFile>? files;
+
+  /// Unencrypted data, phone number or email address 
   string? value;
+
+  /// Hash of the entire element
   string? hash;
 
   EncryptedPassportElement({

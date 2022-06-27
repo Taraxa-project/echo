@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Handles a pending join request in a chat 
 class ProcessChatJoinRequest extends TdFunction {
   String get tdType => 'processChatJoinRequest';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifier of the user that sent the request 
   int53? user_id;
+
+  /// Pass true to approve the request; pass false to decline it
   Bool? approve;
 
   ProcessChatJoinRequest({

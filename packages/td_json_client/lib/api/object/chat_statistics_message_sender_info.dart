@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains statistics about messages sent by a user
 class ChatStatisticsMessageSenderInfo extends TdObject {
   String get tdType => 'chatStatisticsMessageSenderInfo';
 
   String? extra;
   int? client_id;
+
+  /// User identifier
   int53? user_id;
+
+  /// Number of sent messages
   int32? sent_message_count;
+
+  /// Average number of characters in sent messages; 0 if unknown
   int32? average_character_count;
 
   ChatStatisticsMessageSenderInfo({

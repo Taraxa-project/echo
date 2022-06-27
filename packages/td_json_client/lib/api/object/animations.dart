@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/animation.dart';
 
+
+/// Represents a list of animations 
 class Animations extends TdObject {
   String get tdType => 'animations';
 
   String? extra;
   int? client_id;
+
+  /// List of animations
   vector<Animation>? animations;
 
   Animations({

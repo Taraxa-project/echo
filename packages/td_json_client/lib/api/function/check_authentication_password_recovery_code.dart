@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks whether a password recovery code sent to an email address is valid. Works only when the current authorization state is authorizationStateWaitPassword 
 class CheckAuthenticationPasswordRecoveryCode extends TdFunction {
   String get tdType => 'checkAuthenticationPasswordRecoveryCode';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Recovery code to check
   string? recovery_code;
 
   CheckAuthenticationPasswordRecoveryCode({

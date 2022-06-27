@@ -2,14 +2,24 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_element_type.dart';
 
+
+/// Contains information about a Telegram Passport element that was requested by a service 
 class PassportSuitableElement extends TdObject {
   String get tdType => 'passportSuitableElement';
 
   String? extra;
   int? client_id;
+
+  /// Type of the element 
   PassportElementType? type;
+
+  /// True, if a selfie is required with the identity document
   Bool? is_selfie_required;
+
+  /// True, if a certified English translation is required with the document 
   Bool? is_translation_required;
+
+  /// True, if personal details must include the user's name in the language of their country of residence
   Bool? is_native_name_required;
 
   PassportSuitableElement({

@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_inline_query_result.dart';
 
+
+/// Sets the result of interaction with a web app and sends corresponding message on behalf of the user to the chat from which the query originated; for bots only
 class AnswerWebAppQuery extends TdFunction {
   String get tdType => 'answerWebAppQuery';
   String get tdReturnType => 'SentWebAppMessage';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the web app query
   string? web_app_query_id;
+
+  /// The result of the query
   InputInlineQueryResult? result;
 
   AnswerWebAppQuery({

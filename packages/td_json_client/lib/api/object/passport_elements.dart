@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_element.dart';
 
+
+/// Contains information about saved Telegram Passport elements 
 class PassportElements extends TdObject {
   String get tdType => 'passportElements';
 
   String? extra;
   int? client_id;
+
+  /// Telegram Passport elements
   vector<PassportElement>? elements;
 
   PassportElements({

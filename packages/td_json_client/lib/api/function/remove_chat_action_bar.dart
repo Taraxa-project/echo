@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes a chat action bar without any other action 
 class RemoveChatActionBar extends TdFunction {
   String get tdType => 'removeChatActionBar';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   RemoveChatActionBar({

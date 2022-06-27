@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns backgrounds installed by the user 
 class GetBackgrounds extends TdFunction {
   String get tdType => 'getBackgrounds';
   String get tdReturnType => 'Backgrounds';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to order returned backgrounds for a dark theme
   Bool? for_dark_theme;
 
   GetBackgrounds({

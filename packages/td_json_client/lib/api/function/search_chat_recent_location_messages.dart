@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about the recent locations of chat members that were sent to the chat. Returns up to 1 location message per user 
 class SearchChatRecentLocationMessages extends TdFunction {
   String get tdType => 'searchChatRecentLocationMessages';
   String get tdReturnType => 'Messages';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The maximum number of messages to be returned
   int32? limit;
 
   SearchChatRecentLocationMessages({

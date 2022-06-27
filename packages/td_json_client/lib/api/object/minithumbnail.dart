@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Thumbnail image of a very poor quality and low resolution 
 class Minithumbnail extends TdObject {
   String get tdType => 'minithumbnail';
 
   String? extra;
   int? client_id;
+
+  /// Thumbnail width, usually doesn't exceed 40 
   int32? width;
+
+  /// Thumbnail height, usually doesn't exceed 40 
   int32? height;
+
+  /// The thumbnail in JPEG format
   bytes? data;
 
   Minithumbnail({

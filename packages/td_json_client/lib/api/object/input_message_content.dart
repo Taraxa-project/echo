@@ -10,15 +10,24 @@ import 'package:td_json_client/api/object/invoice.dart';
 import 'package:td_json_client/api/object/poll_type.dart';
 import 'package:td_json_client/api/object/message_copy_options.dart';
 
+/// The content of a message to send
 abstract class InputMessageContent extends TdObject {}
 
+
+/// A text message 
 class InputMessageText extends InputMessageContent {
   String get tdType => 'inputMessageText';
 
   String? extra;
   int? client_id;
+
+  /// Formatted text to be sent; 1-GetOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
   FormattedText? text;
+
+  /// True, if rich web page previews for URLs in the message text must be disabled 
   Bool? disable_web_page_preview;
+
+  /// True, if a chat message draft must be deleted
   Bool? clear_draft;
 
   InputMessageText({
@@ -52,17 +61,33 @@ class InputMessageText extends InputMessageContent {
     return map;
   }
 }
+
+/// An animation message (GIF-style). 
 class InputMessageAnimation extends InputMessageContent {
   String get tdType => 'inputMessageAnimation';
 
   String? extra;
   int? client_id;
+
+  /// Animation file to be sent 
   InputFile? animation;
+
+  /// Animation thumbnail; pass null to skip thumbnail uploading 
   InputThumbnail? thumbnail;
+
+  /// File identifiers of the stickers added to the animation, if applicable
   vector<int32>? added_sticker_file_ids;
+
+  /// Duration of the animation, in seconds 
   int32? duration;
+
+  /// Width of the animation; may be replaced by the server 
   int32? width;
+
+  /// Height of the animation; may be replaced by the server 
   int32? height;
+
+  /// Animation caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
   FormattedText? caption;
 
   InputMessageAnimation({
@@ -113,16 +138,30 @@ class InputMessageAnimation extends InputMessageContent {
     return map;
   }
 }
+
+/// An audio message 
 class InputMessageAudio extends InputMessageContent {
   String get tdType => 'inputMessageAudio';
 
   String? extra;
   int? client_id;
+
+  /// Audio file to be sent 
   InputFile? audio;
+
+  /// Thumbnail of the cover for the album; pass null to skip thumbnail uploading 
   InputThumbnail? album_cover_thumbnail;
+
+  /// Duration of the audio, in seconds; may be replaced by the server 
   int32? duration;
+
+  /// Title of the audio; 0-64 characters; may be replaced by the server
   string? title;
+
+  /// Performer of the audio; 0-64 characters, may be replaced by the server 
   string? performer;
+
+  /// Audio caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
   FormattedText? caption;
 
   InputMessageAudio({
@@ -165,14 +204,24 @@ class InputMessageAudio extends InputMessageContent {
     return map;
   }
 }
+
+/// A document message (general file) 
 class InputMessageDocument extends InputMessageContent {
   String get tdType => 'inputMessageDocument';
 
   String? extra;
   int? client_id;
+
+  /// Document to be sent 
   InputFile? document;
+
+  /// Document thumbnail; pass null to skip thumbnail uploading 
   InputThumbnail? thumbnail;
+
+  /// If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats 
   Bool? disable_content_type_detection;
+
+  /// Document caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
   FormattedText? caption;
 
   InputMessageDocument({
@@ -209,17 +258,33 @@ class InputMessageDocument extends InputMessageContent {
     return map;
   }
 }
+
+/// A photo message 
 class InputMessagePhoto extends InputMessageContent {
   String get tdType => 'inputMessagePhoto';
 
   String? extra;
   int? client_id;
+
+  /// Photo to send 
   InputFile? photo;
+
+  /// Photo thumbnail to be sent; pass null to skip thumbnail uploading. The thumbnail is sent to the other party only in secret chats 
   InputThumbnail? thumbnail;
+
+  /// File identifiers of the stickers added to the photo, if applicable 
   vector<int32>? added_sticker_file_ids;
+
+  /// Photo width 
   int32? width;
+
+  /// Photo height 
   int32? height;
+
+  /// Photo caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
   FormattedText? caption;
+
+  /// Photo TTL (Time To Live), in seconds (0-60). A non-zero TTL can be specified only in private chats
   int32? ttl;
 
   InputMessagePhoto({
@@ -270,15 +335,27 @@ class InputMessagePhoto extends InputMessageContent {
     return map;
   }
 }
+
+/// A sticker message 
 class InputMessageSticker extends InputMessageContent {
   String get tdType => 'inputMessageSticker';
 
   String? extra;
   int? client_id;
+
+  /// Sticker to be sent 
   InputFile? sticker;
+
+  /// Sticker thumbnail; pass null to skip thumbnail uploading 
   InputThumbnail? thumbnail;
+
+  /// Sticker width 
   int32? width;
+
+  /// Sticker height 
   int32? height;
+
+  /// Emoji used to choose the sticker
   string? emoji;
 
   InputMessageSticker({
@@ -318,19 +395,39 @@ class InputMessageSticker extends InputMessageContent {
     return map;
   }
 }
+
+/// A video message 
 class InputMessageVideo extends InputMessageContent {
   String get tdType => 'inputMessageVideo';
 
   String? extra;
   int? client_id;
+
+  /// Video to be sent 
   InputFile? video;
+
+  /// Video thumbnail; pass null to skip thumbnail uploading 
   InputThumbnail? thumbnail;
+
+  /// File identifiers of the stickers added to the video, if applicable
   vector<int32>? added_sticker_file_ids;
+
+  /// Duration of the video, in seconds 
   int32? duration;
+
+  /// Video width 
   int32? width;
+
+  /// Video height 
   int32? height;
+
+  /// True, if the video is supposed to be streamed
   Bool? supports_streaming;
+
+  /// Video caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters 
   FormattedText? caption;
+
+  /// Video TTL (Time To Live), in seconds (0-60). A non-zero TTL can be specified only in private chats
   int32? ttl;
 
   InputMessageVideo({
@@ -387,14 +484,24 @@ class InputMessageVideo extends InputMessageContent {
     return map;
   }
 }
+
+/// A video note message 
 class InputMessageVideoNote extends InputMessageContent {
   String get tdType => 'inputMessageVideoNote';
 
   String? extra;
   int? client_id;
+
+  /// Video note to be sent 
   InputFile? video_note;
+
+  /// Video thumbnail; pass null to skip thumbnail uploading 
   InputThumbnail? thumbnail;
+
+  /// Duration of the video, in seconds 
   int32? duration;
+
+  /// Video width and height; must be positive and not greater than 640
   int32? length;
 
   InputMessageVideoNote({
@@ -431,14 +538,24 @@ class InputMessageVideoNote extends InputMessageContent {
     return map;
   }
 }
+
+/// A voice note message 
 class InputMessageVoiceNote extends InputMessageContent {
   String get tdType => 'inputMessageVoiceNote';
 
   String? extra;
   int? client_id;
+
+  /// Voice note to be sent 
   InputFile? voice_note;
+
+  /// Duration of the voice note, in seconds 
   int32? duration;
+
+  /// Waveform representation of the voice note, in 5-bit format 
   bytes? waveform;
+
+  /// Voice note caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
   FormattedText? caption;
 
   InputMessageVoiceNote({
@@ -475,14 +592,24 @@ class InputMessageVoiceNote extends InputMessageContent {
     return map;
   }
 }
+
+/// A message with a location 
 class InputMessageLocation extends InputMessageContent {
   String get tdType => 'inputMessageLocation';
 
   String? extra;
   int? client_id;
+
+  /// Location to be sent 
   Location? location;
+
+  /// Period for which the location can be updated, in seconds; must be between 60 and 86400 for a live location and 0 otherwise
   int32? live_period;
+
+  /// For live locations, a direction in which the location moves, in degrees; 1-360. Pass 0 if unknown
   int32? heading;
+
+  /// For live locations, a maximum distance to another chat member for proximity alerts, in meters (0-100000). Pass 0 if the notification is disabled. Can't be enabled in channels and Saved Messages
   int32? proximity_alert_radius;
 
   InputMessageLocation({
@@ -519,11 +646,15 @@ class InputMessageLocation extends InputMessageContent {
     return map;
   }
 }
+
+/// A message with information about a venue 
 class InputMessageVenue extends InputMessageContent {
   String get tdType => 'inputMessageVenue';
 
   String? extra;
   int? client_id;
+
+  /// Venue to send
   Venue? venue;
 
   InputMessageVenue({
@@ -551,11 +682,15 @@ class InputMessageVenue extends InputMessageContent {
     return map;
   }
 }
+
+/// A message containing a user contact 
 class InputMessageContact extends InputMessageContent {
   String get tdType => 'inputMessageContact';
 
   String? extra;
   int? client_id;
+
+  /// Contact to send
   Contact? contact;
 
   InputMessageContact({
@@ -583,12 +718,18 @@ class InputMessageContact extends InputMessageContent {
     return map;
   }
 }
+
+/// A dice message 
 class InputMessageDice extends InputMessageContent {
   String get tdType => 'inputMessageDice';
 
   String? extra;
   int? client_id;
+
+  /// Emoji on which the dice throw animation is based 
   string? emoji;
+
+  /// True, if the chat message draft must be deleted
   Bool? clear_draft;
 
   InputMessageDice({
@@ -619,12 +760,18 @@ class InputMessageDice extends InputMessageContent {
     return map;
   }
 }
+
+/// A message with a game; not supported for channels or secret chats 
 class InputMessageGame extends InputMessageContent {
   String get tdType => 'inputMessageGame';
 
   String? extra;
   int? client_id;
+
+  /// User identifier of the bot that owns the game 
   int53? bot_user_id;
+
+  /// Short name of the game
   string? game_short_name;
 
   InputMessageGame({
@@ -655,21 +802,44 @@ class InputMessageGame extends InputMessageContent {
     return map;
   }
 }
+
+/// A message with an invoice; can be used only by bots 
 class InputMessageInvoice extends InputMessageContent {
   String get tdType => 'inputMessageInvoice';
 
   String? extra;
   int? client_id;
+
+  /// Invoice 
   Invoice? invoice;
+
+  /// Product title; 1-32 characters 
   string? title;
+
   string? description;
+
+  /// Product photo URL; optional 
   string? photo_url;
+
+  /// Product photo size 
   int32? photo_size;
+
+  /// Product photo width 
   int32? photo_width;
+
+  /// Product photo height
   int32? photo_height;
+
+  /// The invoice payload 
   bytes? payload;
+
+  /// Payment provider token 
   string? provider_token;
+
+  /// JSON-encoded data about the invoice, which will be shared with the payment provider
   string? provider_data;
+
+  /// Unique invoice bot deep link parameter for the generation of this invoice. If empty, it would be possible to pay directly from forwards of the invoice message
   string? start_parameter;
 
   InputMessageInvoice({
@@ -727,17 +897,33 @@ class InputMessageInvoice extends InputMessageContent {
     return map;
   }
 }
+
+/// A message with a poll. Polls can't be sent to secret chats. Polls can be sent only to a private chat with a bot 
 class InputMessagePoll extends InputMessageContent {
   String get tdType => 'inputMessagePoll';
 
   String? extra;
   int? client_id;
+
+  /// Poll question; 1-255 characters (up to 300 characters for bots) 
   string? question;
+
+  /// List of poll answer options, 2-10 strings 1-100 characters each
   vector<string>? options;
+
+  /// True, if the poll voters are anonymous. Non-anonymous polls can't be sent or forwarded to channels 
   Bool? is_anonymous;
+
+  /// Type of the poll
   PollType? type;
+
+  /// Amount of time the poll will be active after creation, in seconds; for bots only
   int32? open_period;
+
+  /// Point in time (Unix timestamp) when the poll will automatically be closed; for bots only
   int32? close_date;
+
+  /// True, if the poll needs to be sent already closed; for bots only
   Bool? is_closed;
 
   InputMessagePoll({
@@ -788,14 +974,24 @@ class InputMessagePoll extends InputMessageContent {
     return map;
   }
 }
+
+/// A forwarded message 
 class InputMessageForwarded extends InputMessageContent {
   String get tdType => 'inputMessageForwarded';
 
   String? extra;
   int? client_id;
+
+  /// Identifier for the chat this forwarded message came from 
   int53? from_chat_id;
+
+  /// Identifier of the message to forward
   int53? message_id;
+
+  /// True, if a game message is being shared from a launched game; applies only to game messages
   Bool? in_game_share;
+
+  /// Options to be used to copy content of the message without reference to the original sender; pass null to forward the message as usual
   MessageCopyOptions? copy_options;
 
   InputMessageForwarded({

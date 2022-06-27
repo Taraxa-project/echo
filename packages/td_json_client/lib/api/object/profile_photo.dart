@@ -3,15 +3,27 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file.dart';
 import 'package:td_json_client/api/object/minithumbnail.dart';
 
+
+/// Describes a user profile photo 
 class ProfilePhoto extends TdObject {
   String get tdType => 'profilePhoto';
 
   String? extra;
   int? client_id;
+
+  /// Photo identifier; 0 for an empty photo. Can be used to find a photo in a list of user profile photos
   int64? id;
+
+  /// A small (160x160) user profile photo. The file can be downloaded only before the photo is changed
   File? small;
+
+  /// A big (640x640) user profile photo. The file can be downloaded only before the photo is changed
   File? big;
+
+  /// User profile photo minithumbnail; may be null
   Minithumbnail? minithumbnail;
+
+  /// True, if the photo has animated variant
   Bool? has_animation;
 
   ProfilePhoto({

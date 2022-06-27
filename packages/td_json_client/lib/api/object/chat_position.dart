@@ -3,14 +3,24 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 import 'package:td_json_client/api/object/chat_source.dart';
 
+
+/// Describes a position of a chat in a chat list
 class ChatPosition extends TdObject {
   String get tdType => 'chatPosition';
 
   String? extra;
   int? client_id;
+
+  /// The chat list
   ChatList? list;
+
+  /// A parameter used to determine order of the chat in the chat list. Chats must be sorted by the pair (order, chat.id) in descending order
   int64? order;
+
+  /// True, if the chat is pinned in the chat list
   Bool? is_pinned;
+
+  /// Source of the chat in the chat list; may be null
   ChatSource? source;
 
   ChatPosition({

@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns game high scores and some part of the high score table in the range of the specified user; for bots only 
 class GetInlineGameHighScores extends TdFunction {
   String get tdType => 'getInlineGameHighScores';
   String get tdReturnType => 'GameHighScores';
 
   String? extra;
   int? client_id;
+
+  /// Inline message identifier 
   string? inline_message_id;
+
+  /// User identifier
   int53? user_id;
 
   GetInlineGameHighScores({

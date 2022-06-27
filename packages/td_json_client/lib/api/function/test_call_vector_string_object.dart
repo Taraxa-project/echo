@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/test_string.dart';
 
+
+/// Returns the received vector of objects containing a string; for testing only. This is an offline method. Can be called before authorization 
 class TestCallVectorStringObject extends TdFunction {
   String get tdType => 'testCallVectorStringObject';
   String get tdReturnType => 'TestVectorStringObject';
 
   String? extra;
   int? client_id;
+
+  /// Vector of objects to return
   vector<TestString>? x;
 
   TestCallVectorStringObject({

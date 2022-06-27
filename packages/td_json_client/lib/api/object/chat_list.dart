@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes a list of chats
 abstract class ChatList extends TdObject {}
 
+
+/// A main list of chats
 class ChatListMain extends ChatList {
   String get tdType => 'chatListMain';
 
@@ -30,6 +33,8 @@ class ChatListMain extends ChatList {
     return map;
   }
 }
+
+/// A list of chats usually located at the top of the main chat list. Unmuted chats are automatically moved from the Archive to the Main chat list when a new message arrives
 class ChatListArchive extends ChatList {
   String get tdType => 'chatListArchive';
 
@@ -58,11 +63,15 @@ class ChatListArchive extends ChatList {
     return map;
   }
 }
+
+/// A list of chats belonging to a chat filter 
 class ChatListFilter extends ChatList {
   String get tdType => 'chatListFilter';
 
   String? extra;
   int? client_id;
+
+  /// Chat filter identifier
   int32? chat_filter_id;
 
   ChatListFilter({

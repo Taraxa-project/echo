@@ -4,17 +4,32 @@ import 'package:td_json_client/api/object/formatted_text.dart';
 import 'package:td_json_client/api/object/photo.dart';
 import 'package:td_json_client/api/object/animation.dart';
 
+
+/// Describes a game 
 class Game extends TdObject {
   String get tdType => 'game';
 
   String? extra;
   int? client_id;
+
+  /// Game ID 
   int64? id;
+
+  /// Game short name. To share a game use the URL https://t.me/{bot_username}?game={game_short_name} 
   string? short_name;
+
+  /// Game title 
   string? title;
+
+  /// Game text, usually containing scoreboards for a game
   FormattedText? text;
+
   string? description;
+
+  /// Game photo 
   Photo? photo;
+
+  /// Game animation; may be null
   Animation? animation;
 
   Game({

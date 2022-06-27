@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents the type of a file
 abstract class FileType extends TdObject {}
 
+
+/// The data is not a file
 class FileTypeNone extends FileType {
   String get tdType => 'fileTypeNone';
 
@@ -30,6 +33,8 @@ class FileTypeNone extends FileType {
     return map;
   }
 }
+
+/// The file is an animation
 class FileTypeAnimation extends FileType {
   String get tdType => 'fileTypeAnimation';
 
@@ -58,6 +63,8 @@ class FileTypeAnimation extends FileType {
     return map;
   }
 }
+
+/// The file is an audio file
 class FileTypeAudio extends FileType {
   String get tdType => 'fileTypeAudio';
 
@@ -86,6 +93,8 @@ class FileTypeAudio extends FileType {
     return map;
   }
 }
+
+/// The file is a document
 class FileTypeDocument extends FileType {
   String get tdType => 'fileTypeDocument';
 
@@ -114,6 +123,8 @@ class FileTypeDocument extends FileType {
     return map;
   }
 }
+
+/// The file is a notification sound
 class FileTypeNotificationSound extends FileType {
   String get tdType => 'fileTypeNotificationSound';
 
@@ -142,6 +153,8 @@ class FileTypeNotificationSound extends FileType {
     return map;
   }
 }
+
+/// The file is a photo
 class FileTypePhoto extends FileType {
   String get tdType => 'fileTypePhoto';
 
@@ -170,6 +183,8 @@ class FileTypePhoto extends FileType {
     return map;
   }
 }
+
+/// The file is a profile photo
 class FileTypeProfilePhoto extends FileType {
   String get tdType => 'fileTypeProfilePhoto';
 
@@ -198,6 +213,8 @@ class FileTypeProfilePhoto extends FileType {
     return map;
   }
 }
+
+/// The file was sent to a secret chat (the file type is not known to the server)
 class FileTypeSecret extends FileType {
   String get tdType => 'fileTypeSecret';
 
@@ -226,6 +243,8 @@ class FileTypeSecret extends FileType {
     return map;
   }
 }
+
+/// The file is a thumbnail of a file from a secret chat
 class FileTypeSecretThumbnail extends FileType {
   String get tdType => 'fileTypeSecretThumbnail';
 
@@ -254,6 +273,8 @@ class FileTypeSecretThumbnail extends FileType {
     return map;
   }
 }
+
+/// The file is a file from Secure storage used for storing Telegram Passport files
 class FileTypeSecure extends FileType {
   String get tdType => 'fileTypeSecure';
 
@@ -282,6 +303,8 @@ class FileTypeSecure extends FileType {
     return map;
   }
 }
+
+/// The file is a sticker
 class FileTypeSticker extends FileType {
   String get tdType => 'fileTypeSticker';
 
@@ -310,6 +333,8 @@ class FileTypeSticker extends FileType {
     return map;
   }
 }
+
+/// The file is a thumbnail of another file
 class FileTypeThumbnail extends FileType {
   String get tdType => 'fileTypeThumbnail';
 
@@ -338,6 +363,8 @@ class FileTypeThumbnail extends FileType {
     return map;
   }
 }
+
+/// The file type is not yet known
 class FileTypeUnknown extends FileType {
   String get tdType => 'fileTypeUnknown';
 
@@ -366,6 +393,8 @@ class FileTypeUnknown extends FileType {
     return map;
   }
 }
+
+/// The file is a video
 class FileTypeVideo extends FileType {
   String get tdType => 'fileTypeVideo';
 
@@ -394,6 +423,8 @@ class FileTypeVideo extends FileType {
     return map;
   }
 }
+
+/// The file is a video note
 class FileTypeVideoNote extends FileType {
   String get tdType => 'fileTypeVideoNote';
 
@@ -422,6 +453,8 @@ class FileTypeVideoNote extends FileType {
     return map;
   }
 }
+
+/// The file is a voice note
 class FileTypeVoiceNote extends FileType {
   String get tdType => 'fileTypeVoiceNote';
 
@@ -450,6 +483,8 @@ class FileTypeVoiceNote extends FileType {
     return map;
   }
 }
+
+/// The file is a wallpaper or a background pattern
 class FileTypeWallpaper extends FileType {
   String get tdType => 'fileTypeWallpaper';
 

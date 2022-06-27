@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for outgoing messages with content of the type messageDocument in all chats except secret chats. Returns the results in reverse chronological order
 class SearchOutgoingDocumentMessages extends TdFunction {
   String get tdType => 'searchOutgoingDocumentMessages';
   String get tdReturnType => 'FoundMessages';
 
   String? extra;
   int? client_id;
+
+  /// Query to search for in document file name and message caption
   string? query;
+
+  /// The maximum number of messages to be returned; up to 100
   int32? limit;
 
   SearchOutgoingDocumentMessages({

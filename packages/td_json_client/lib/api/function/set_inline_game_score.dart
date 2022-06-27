@@ -1,15 +1,27 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Updates the game score of the specified user in a game; for bots only 
 class SetInlineGameScore extends TdFunction {
   String get tdType => 'setInlineGameScore';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Inline message identifier 
   string? inline_message_id;
+
+  /// Pass true to edit the game message to include the current scoreboard 
   Bool? edit_message;
+
+  /// User identifier 
   int53? user_id;
+
+  /// The new score
   int32? score;
+
+  /// Pass true to update the score even if it decreases. If the score is 0, the user will be deleted from the high score table
   Bool? force;
 
   SetInlineGameScore({

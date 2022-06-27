@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+
+/// Removes a sticker from the list of recently used stickers 
 class RemoveRecentSticker extends TdFunction {
   String get tdType => 'removeRecentSticker';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to remove the sticker from the list of stickers recently attached to photo or video files; pass false to remove the sticker from the list of recently sent stickers 
   Bool? is_attached;
+
+  /// Sticker file to delete
   InputFile? sticker;
 
   RemoveRecentSticker({

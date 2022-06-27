@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Stops the downloading of a file. If a file has already been downloaded, does nothing 
 class CancelDownloadFile extends TdFunction {
   String get tdType => 'cancelDownloadFile';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of a file to stop downloading 
   int32? file_id;
+
+  /// Pass true to stop downloading only if it hasn't been started, i.e. request hasn't been sent to server
   Bool? only_if_pending;
 
   CancelDownloadFile({

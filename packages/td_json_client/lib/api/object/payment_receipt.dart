@@ -5,21 +5,44 @@ import 'package:td_json_client/api/object/invoice.dart';
 import 'package:td_json_client/api/object/order_info.dart';
 import 'package:td_json_client/api/object/shipping_option.dart';
 
+
+/// Contains information about a successful payment
 class PaymentReceipt extends TdObject {
   String get tdType => 'paymentReceipt';
 
   String? extra;
   int? client_id;
+
+  /// Product title
   string? title;
+
   string? description;
+
+  /// Product photo; may be null
   Photo? photo;
+
+  /// Point in time (Unix timestamp) when the payment was made
   int32? date;
+
+  /// User identifier of the seller bot
   int53? seller_bot_user_id;
+
+  /// User identifier of the payment provider bot
   int53? payments_provider_user_id;
+
+  /// Information about the invoice
   Invoice? invoice;
+
+  /// Order information; may be null
   OrderInfo? order_info;
+
+  /// Chosen shipping option; may be null
   ShippingOption? shipping_option;
+
+  /// Title of the saved credentials chosen by the buyer
   string? credentials_title;
+
+  /// The amount of tip chosen by the buyer in the smallest units of the currency
   int53? tip_amount;
 
   PaymentReceipt({

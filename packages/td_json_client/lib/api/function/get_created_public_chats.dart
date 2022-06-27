@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/public_chat_type.dart';
 
+
+/// Returns a list of public chats of the specified type, owned by the user 
 class GetCreatedPublicChats extends TdFunction {
   String get tdType => 'getCreatedPublicChats';
   String get tdReturnType => 'Chats';
 
   String? extra;
   int? client_id;
+
+  /// Type of the public chats to return
   PublicChatType? type;
 
   GetCreatedPublicChats({

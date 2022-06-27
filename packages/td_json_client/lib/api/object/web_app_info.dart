@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains information about a web app 
 class WebAppInfo extends TdObject {
   String get tdType => 'webAppInfo';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier for the web app launch 
   int64? launch_id;
+
+  /// A web app URL to open in a web view
   string? url;
 
   WebAppInfo({

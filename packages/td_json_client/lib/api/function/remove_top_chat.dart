@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/top_chat_category.dart';
 
+
+/// Removes a chat from the list of frequently used chats. Supported only if the chat info database is enabled 
 class RemoveTopChat extends TdFunction {
   String get tdType => 'removeTopChat';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Category of frequently used chats 
   TopChatCategory? category;
+
+  /// Chat identifier
   int53? chat_id;
 
   RemoveTopChat({

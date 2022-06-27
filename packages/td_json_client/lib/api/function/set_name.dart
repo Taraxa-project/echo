@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the first and last name of the current user 
 class SetName extends TdFunction {
   String get tdType => 'setName';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The new value of the first name for the current user; 1-64 characters 
   string? first_name;
+
+  /// The new value of the optional last name for the current user; 0-64 characters
   string? last_name;
 
   SetName({

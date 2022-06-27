@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes a color to highlight a bot added to attachment menu 
 class AttachmentMenuBotColor extends TdObject {
   String get tdType => 'attachmentMenuBotColor';
 
   String? extra;
   int? client_id;
+
+  /// Color in the RGB24 format for light themes 
   int32? light_color;
+
+  /// Color in the RGB24 format for dark themes
   int32? dark_color;
 
   AttachmentMenuBotColor({

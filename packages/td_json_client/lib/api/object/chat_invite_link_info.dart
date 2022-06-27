@@ -3,20 +3,41 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_type.dart';
 import 'package:td_json_client/api/object/chat_photo_info.dart';
 
+
+/// Contains information about a chat invite link
 class ChatInviteLinkInfo extends TdObject {
   String get tdType => 'chatInviteLinkInfo';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier of the invite link; 0 if the user has no access to the chat before joining
   int53? chat_id;
+
+  /// If non-zero, the amount of time for which read access to the chat will remain available, in seconds
   int32? accessible_for;
+
+  /// Type of the chat
   ChatType? type;
+
+  /// Title of the chat
   string? title;
+
+  /// Chat photo; may be null
   ChatPhotoInfo? photo;
+
   string? description;
+
+  /// Number of members in the chat
   int32? member_count;
+
+  /// User identifiers of some chat members that may be known to the current user
   vector<int53>? member_user_ids;
+
+  /// True, if the link only creates join request
   Bool? creates_join_request;
+
+  /// True, if the chat is a public supergroup or channel, i.e. it has a username or it is a location-based supergroup
   Bool? is_public;
 
   ChatInviteLinkInfo({

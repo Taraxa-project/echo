@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Informs TDLib that the message content has been opened (e.g., the user has opened a photo, video, document, location or venue, or has listened to an audio file or voice note message). An updateMessageContentOpened update will be generated if something has changed 
 class OpenMessageContent extends TdFunction {
   String get tdType => 'openMessageContent';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier of the message 
   int53? chat_id;
+
+  /// Identifier of the message with the opened content
   int53? message_id;
 
   OpenMessageContent({

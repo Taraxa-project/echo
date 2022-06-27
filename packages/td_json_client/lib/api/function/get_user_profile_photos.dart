@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the profile photos of a user. The result of this query may be outdated: some photos might have been deleted already 
 class GetUserProfilePhotos extends TdFunction {
   String get tdType => 'getUserProfilePhotos';
   String get tdReturnType => 'ChatPhotos';
 
   String? extra;
   int? client_id;
+
+  /// User identifier 
   int53? user_id;
+
+  /// The number of photos to skip; must be non-negative 
   int32? offset;
+
+  /// The maximum number of photos to be returned; up to 100
   int32? limit;
 
   GetUserProfilePhotos({

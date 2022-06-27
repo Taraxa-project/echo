@@ -1,14 +1,24 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a Telegram Passport authorization form for sharing data with a service 
 class GetPassportAuthorizationForm extends TdFunction {
   String get tdType => 'getPassportAuthorizationForm';
   String get tdReturnType => 'PassportAuthorizationForm';
 
   String? extra;
   int? client_id;
+
+  /// User identifier of the service's bot 
   int53? bot_user_id;
+
+  /// Telegram Passport element types requested by the service 
   string? scope;
+
+  /// Service's public key 
   string? public_key;
+
+  /// Unique request identifier provided by the service
   string? nonce;
 
   GetPassportAuthorizationForm({

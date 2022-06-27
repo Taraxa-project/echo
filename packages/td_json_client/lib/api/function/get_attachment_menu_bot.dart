@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a bot that can be added to attachment menu 
 class GetAttachmentMenuBot extends TdFunction {
   String get tdType => 'getAttachmentMenuBot';
   String get tdReturnType => 'AttachmentMenuBot';
 
   String? extra;
   int? client_id;
+
+  /// Bot's user identifier
   int53? bot_user_id;
 
   GetAttachmentMenuBot({

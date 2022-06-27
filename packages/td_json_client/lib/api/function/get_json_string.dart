@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/json_value.dart';
 
+
+/// Converts a JsonValue object to corresponding JSON-serialized string. Can be called synchronously 
 class GetJsonString extends TdFunction {
   String get tdType => 'getJsonString';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// The JsonValue object
   JsonValue? json_value;
 
   GetJsonString({

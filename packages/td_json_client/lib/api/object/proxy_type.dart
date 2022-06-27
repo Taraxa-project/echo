@@ -1,13 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the type of a proxy server
 abstract class ProxyType extends TdObject {}
 
+
+/// A SOCKS5 proxy server 
 class ProxyTypeSocks5 extends ProxyType {
   String get tdType => 'proxyTypeSocks5';
 
   String? extra;
   int? client_id;
+
+  /// Username for logging in; may be empty 
   string? username;
+
+  /// Password for logging in; may be empty
   string? password;
 
   ProxyTypeSocks5({
@@ -38,13 +45,21 @@ class ProxyTypeSocks5 extends ProxyType {
     return map;
   }
 }
+
+/// A HTTP transparent proxy server 
 class ProxyTypeHttp extends ProxyType {
   String get tdType => 'proxyTypeHttp';
 
   String? extra;
   int? client_id;
+
+  /// Username for logging in; may be empty 
   string? username;
+
+  /// Password for logging in; may be empty 
   string? password;
+
+  /// Pass true if the proxy supports only HTTP requests and doesn't support transparent TCP connections via HTTP CONNECT method
   Bool? http_only;
 
   ProxyTypeHttp({
@@ -78,11 +93,15 @@ class ProxyTypeHttp extends ProxyType {
     return map;
   }
 }
+
+/// An MTProto proxy server 
 class ProxyTypeMtproto extends ProxyType {
   String get tdType => 'proxyTypeMtproto';
 
   String? extra;
   int? client_id;
+
+  /// The proxy's secret in hexadecimal encoding
   string? secret;
 
   ProxyTypeMtproto({

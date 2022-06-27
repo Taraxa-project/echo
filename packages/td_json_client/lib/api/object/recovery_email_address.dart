@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains information about the current recovery email address 
 class RecoveryEmailAddress extends TdObject {
   String get tdType => 'recoveryEmailAddress';
 
   String? extra;
   int? client_id;
+
+  /// Recovery email address
   string? recovery_email_address;
 
   RecoveryEmailAddress({

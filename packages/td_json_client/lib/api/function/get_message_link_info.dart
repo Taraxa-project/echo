@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a public or private message link. Can be called for any internal link of the type internalLinkTypeMessage 
 class GetMessageLinkInfo extends TdFunction {
   String get tdType => 'getMessageLinkInfo';
   String get tdReturnType => 'MessageLinkInfo';
 
   String? extra;
   int? client_id;
+
+  /// The message link
   string? url;
 
   GetMessageLinkInfo({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Leaves a group call 
 class LeaveGroupCall extends TdFunction {
   String get tdType => 'leaveGroupCall';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
 
   LeaveGroupCall({

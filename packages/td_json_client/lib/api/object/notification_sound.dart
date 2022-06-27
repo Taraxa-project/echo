@@ -2,16 +2,30 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file.dart';
 
+
+/// Describes a notification sound in MP3 format
 class NotificationSound extends TdObject {
   String get tdType => 'notificationSound';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier of the notification sound
   int64? id;
+
+  /// Duration of the sound, in seconds
   int32? duration;
+
+  /// Point in time (Unix timestamp) when the sound was created
   int32? date;
+
+  /// Title of the notification sound
   string? title;
+
+  /// Arbitrary data, defined while the sound was uploaded
   string? data;
+
+  /// File containing the sound
   File? sound;
 
   NotificationSound({

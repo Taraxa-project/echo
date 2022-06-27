@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/call_protocol.dart';
 
+
+/// Accepts an incoming call 
 class AcceptCall extends TdFunction {
   String get tdType => 'acceptCall';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Call identifier 
   int32? call_id;
+
+  /// The call protocols supported by the application
   CallProtocol? protocol;
 
   AcceptCall({

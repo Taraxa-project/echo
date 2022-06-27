@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_calendar_day.dart';
 
+
+/// Contains information about found messages, split by days according to the option "utc_time_offset" 
 class MessageCalendar extends TdObject {
   String get tdType => 'messageCalendar';
 
   String? extra;
   int? client_id;
+
+  /// Total number of found messages 
   int32? total_count;
+
+  /// Information about messages sent
   vector<MessageCalendarDay>? days;
 
   MessageCalendar({

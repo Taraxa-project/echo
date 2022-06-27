@@ -1,21 +1,47 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains a chat invite link
 class ChatInviteLink extends TdObject {
   String get tdType => 'chatInviteLink';
 
   String? extra;
   int? client_id;
+
+  /// Chat invite link
   string? invite_link;
+
+  /// Name of the link
   string? name;
+
+  /// User identifier of an administrator created the link
   int53? creator_user_id;
+
+  /// Point in time (Unix timestamp) when the link was created
   int32? date;
+
+  /// Point in time (Unix timestamp) when the link was last edited; 0 if never or unknown
   int32? edit_date;
+
+  /// Point in time (Unix timestamp) when the link will expire; 0 if never
   int32? expiration_date;
+
+  /// The maximum number of members, which can join the chat using the link simultaneously; 0 if not limited. Always 0 if the link requires approval
   int32? member_limit;
+
+  /// Number of chat members, which joined the chat using the link
   int32? member_count;
+
+  /// Number of pending join requests created using this link
   int32? pending_join_request_count;
+
+  /// True, if the link only creates join request. If true, total number of joining members will be unlimited
   Bool? creates_join_request;
+
+  /// True, if the link is primary. Primary invite link can't have name, expiration date, or usage limit. There is exactly one primary invite link for each administrator with can_invite_users right at a given time
   Bool? is_primary;
+
+  /// True, if the link was revoked
   Bool? is_revoked;
 
   ChatInviteLink({

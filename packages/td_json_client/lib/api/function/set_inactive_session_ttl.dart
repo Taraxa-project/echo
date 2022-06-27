@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the period of inactivity after which sessions will automatically be terminated 
 class SetInactiveSessionTtl extends TdFunction {
   String get tdType => 'setInactiveSessionTtl';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// New number of days of inactivity before sessions will be automatically terminated; 1-366 days
   int32? inactive_session_ttl_days;
 
   SetInactiveSessionTtl({

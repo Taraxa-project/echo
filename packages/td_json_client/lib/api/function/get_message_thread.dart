@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a message thread. Can be used only if message.can_get_message_thread == true 
 class GetMessageThread extends TdFunction {
   String get tdType => 'getMessageThread';
   String get tdReturnType => 'MessageThreadInfo';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
 
   GetMessageThread({

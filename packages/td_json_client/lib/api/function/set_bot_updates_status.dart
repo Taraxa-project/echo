@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Informs the server about the number of pending bot updates if they haven't been processed for a long time; for bots only 
 class SetBotUpdatesStatus extends TdFunction {
   String get tdType => 'setBotUpdatesStatus';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The number of pending updates 
   int32? pending_update_count;
+
+  /// The last error message
   string? error_message;
 
   SetBotUpdatesStatus({

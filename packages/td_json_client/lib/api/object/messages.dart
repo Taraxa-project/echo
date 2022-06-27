@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message.dart';
 
+
+/// Contains a list of messages 
 class Messages extends TdObject {
   String get tdType => 'messages';
 
   String? extra;
   int? client_id;
+
+  /// Approximate total number of messages found 
   int32? total_count;
+
+  /// List of messages; messages may be null
   vector<Message>? messages;
 
   Messages({

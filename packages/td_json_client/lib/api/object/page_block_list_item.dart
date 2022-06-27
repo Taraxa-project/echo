@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/page_block.dart';
 
+
+/// Describes an item of a list page block 
 class PageBlockListItem extends TdObject {
   String get tdType => 'pageBlockListItem';
 
   String? extra;
   int? client_id;
+
+  /// Item label 
   string? label;
+
+  /// Item blocks
   vector<PageBlock>? page_blocks;
 
   PageBlockListItem({

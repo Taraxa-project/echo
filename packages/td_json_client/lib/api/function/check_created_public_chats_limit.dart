@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/public_chat_type.dart';
 
+
+/// Checks whether the maximum number of owned public chats has been reached. Returns corresponding error if the limit was reached 
 class CheckCreatedPublicChatsLimit extends TdFunction {
   String get tdType => 'checkCreatedPublicChatsLimit';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Type of the public chats, for which to check the limit
   PublicChatType? type;
 
   CheckCreatedPublicChatsLimit({

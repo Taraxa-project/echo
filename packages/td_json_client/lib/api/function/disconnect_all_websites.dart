@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Disconnects all websites from the current user's Telegram account
 class DisconnectAllWebsites extends TdFunction {
   String get tdType => 'disconnectAllWebsites';
   String get tdReturnType => 'Ok';

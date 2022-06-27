@@ -2,16 +2,28 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/group_call_video_quality.dart';
 
+
+/// Returns a file with a segment of a group call stream in a modified OGG format for audio or MPEG-4 format for video
 class GetGroupCallStreamSegment extends TdFunction {
   String get tdType => 'getGroupCallStreamSegment';
   String get tdReturnType => 'FilePart';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
+
+  /// Point in time when the stream segment begins; Unix timestamp in milliseconds
   int53? time_offset;
+
+  /// Segment duration scale; 0-1. Segment's duration is 1000/(2**scale) milliseconds
   int32? scale;
+
+  /// Identifier of an audio/video channel to get as received from tgcalls
   int32? channel_id;
+
+  /// Video quality as received from tgcalls; pass null to get the worst available quality
   GroupCallVideoQuality? video_quality;
 
   GetGroupCallStreamSegment({

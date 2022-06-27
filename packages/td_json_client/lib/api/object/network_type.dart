@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents the type of a network
 abstract class NetworkType extends TdObject {}
 
+
+/// The network is not available
 class NetworkTypeNone extends NetworkType {
   String get tdType => 'networkTypeNone';
 
@@ -30,6 +33,8 @@ class NetworkTypeNone extends NetworkType {
     return map;
   }
 }
+
+/// A mobile network
 class NetworkTypeMobile extends NetworkType {
   String get tdType => 'networkTypeMobile';
 
@@ -58,6 +63,8 @@ class NetworkTypeMobile extends NetworkType {
     return map;
   }
 }
+
+/// A mobile roaming network
 class NetworkTypeMobileRoaming extends NetworkType {
   String get tdType => 'networkTypeMobileRoaming';
 
@@ -86,6 +93,8 @@ class NetworkTypeMobileRoaming extends NetworkType {
     return map;
   }
 }
+
+/// A Wi-Fi network
 class NetworkTypeWiFi extends NetworkType {
   String get tdType => 'networkTypeWiFi';
 
@@ -114,6 +123,8 @@ class NetworkTypeWiFi extends NetworkType {
     return map;
   }
 }
+
+/// A different network type (e.g., Ethernet network)
 class NetworkTypeOther extends NetworkType {
   String get tdType => 'networkTypeOther';
 

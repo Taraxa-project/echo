@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Sets group call title. Requires groupCall.can_be_managed group call flag 
 class SetGroupCallTitle extends TdFunction {
   String get tdType => 'setGroupCallTitle';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier 
   int32? group_call_id;
+
+  /// New group call title; 1-64 characters
   string? title;
 
   SetGroupCallTitle({

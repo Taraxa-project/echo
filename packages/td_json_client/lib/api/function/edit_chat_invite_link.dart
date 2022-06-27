@@ -1,16 +1,30 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Edits a non-primary invite link for a chat. Available for basic groups, supergroups, and channels. Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for other links
 class EditChatInviteLink extends TdFunction {
   String get tdType => 'editChatInviteLink';
   String get tdReturnType => 'ChatInviteLink';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// Invite link to be edited
   string? invite_link;
+
+  /// Invite link name; 0-32 characters
   string? name;
+
+  /// Point in time (Unix timestamp) when the link will expire; pass 0 if never
   int32? expiration_date;
+
+  /// The maximum number of chat members that can join the chat via the link simultaneously; 0-99999; pass 0 if not limited
   int32? member_limit;
+
+  /// Pass true if users joining the chat via the link need to be approved by chat administrators. In this case, member_limit must be 0
   Bool? creates_join_request;
 
   EditChatInviteLink({

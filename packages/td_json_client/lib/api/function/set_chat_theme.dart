@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the chat theme. Supported only in private and secret chats 
 class SetChatTheme extends TdFunction {
   String get tdType => 'setChatTheme';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Name of the new chat theme; pass an empty string to return the default theme
   string? theme_name;
 
   SetChatTheme({

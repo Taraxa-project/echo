@@ -1,12 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the way the text needs to be parsed for TextEntities
 abstract class TextParseMode extends TdObject {}
 
+
+/// The text uses Markdown-style formatting
 class TextParseModeMarkdown extends TextParseMode {
   String get tdType => 'textParseModeMarkdown';
 
   String? extra;
   int? client_id;
+
+  /// Version of the parser: 0 or 1 - Telegram Bot API "Markdown" parse mode, 2 - Telegram Bot API "MarkdownV2" parse mode
   int32? version;
 
   TextParseModeMarkdown({
@@ -34,6 +39,8 @@ class TextParseModeMarkdown extends TextParseMode {
     return map;
   }
 }
+
+/// The text uses HTML-style formatting. The same as Telegram Bot API "HTML" parse mode
 class TextParseModeHTML extends TextParseMode {
   String get tdType => 'textParseModeHTML';
 

@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a successful payment 
 class GetPaymentReceipt extends TdFunction {
   String get tdType => 'getPaymentReceipt';
   String get tdReturnType => 'PaymentReceipt';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier of the PaymentSuccessful message 
   int53? chat_id;
+
+  /// Message identifier
   int53? message_id;
 
   GetPaymentReceipt({

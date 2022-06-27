@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/vector_path_command.dart';
 
+
+/// Represents a closed vector path. The path begins at the end point of the last command 
 class ClosedVectorPath extends TdObject {
   String get tdType => 'closedVectorPath';
 
   String? extra;
   int? client_id;
+
+  /// List of vector path commands
   vector<VectorPathCommand>? commands;
 
   ClosedVectorPath({

@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about messages. If a message is not found, returns null on the corresponding position of the result 
 class GetMessages extends TdFunction {
   String get tdType => 'getMessages';
   String get tdReturnType => 'Messages';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat the messages belong to 
   int53? chat_id;
+
+  /// Identifiers of the messages to get
   vector<int53>? message_ids;
 
   GetMessages({

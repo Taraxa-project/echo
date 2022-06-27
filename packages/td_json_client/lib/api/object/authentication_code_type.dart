@@ -1,12 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Provides information about the method by which an authentication code is delivered to the user
 abstract class AuthenticationCodeType extends TdObject {}
 
+
+/// An authentication code is delivered via a private Telegram message, which can be viewed from another active session 
 class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeTelegramMessage';
 
   String? extra;
   int? client_id;
+
+  /// Length of the code
   int32? length;
 
   AuthenticationCodeTypeTelegramMessage({
@@ -34,11 +39,15 @@ class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
     return map;
   }
 }
+
+/// An authentication code is delivered via an SMS message to the specified phone number 
 class AuthenticationCodeTypeSms extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeSms';
 
   String? extra;
   int? client_id;
+
+  /// Length of the code
   int32? length;
 
   AuthenticationCodeTypeSms({
@@ -66,11 +75,15 @@ class AuthenticationCodeTypeSms extends AuthenticationCodeType {
     return map;
   }
 }
+
+/// An authentication code is delivered via a phone call to the specified phone number 
 class AuthenticationCodeTypeCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeCall';
 
   String? extra;
   int? client_id;
+
+  /// Length of the code
   int32? length;
 
   AuthenticationCodeTypeCall({
@@ -98,11 +111,15 @@ class AuthenticationCodeTypeCall extends AuthenticationCodeType {
     return map;
   }
 }
+
+/// An authentication code is delivered by an immediately canceled call to the specified phone number. The phone number that calls is the code that must be entered automatically 
 class AuthenticationCodeTypeFlashCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeFlashCall';
 
   String? extra;
   int? client_id;
+
+  /// Pattern of the phone number from which the call will be made
   string? pattern;
 
   AuthenticationCodeTypeFlashCall({
@@ -130,12 +147,18 @@ class AuthenticationCodeTypeFlashCall extends AuthenticationCodeType {
     return map;
   }
 }
+
+/// An authentication code is delivered by an immediately canceled call to the specified phone number. The last digits of the phone number that calls are the code that must be entered manually by the user 
 class AuthenticationCodeTypeMissedCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeMissedCall';
 
   String? extra;
   int? client_id;
+
+  /// Prefix of the phone number from which the call will be made 
   string? phone_number_prefix;
+
+  /// Number of digits in the code, excluding the prefix
   int32? length;
 
   AuthenticationCodeTypeMissedCall({

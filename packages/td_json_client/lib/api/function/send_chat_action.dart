@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_action.dart';
 
+
+/// Sends a notification about user activity in a chat 
 class SendChatAction extends TdFunction {
   String get tdType => 'sendChatAction';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// If not 0, a message thread identifier in which the action was performed 
   int53? message_thread_id;
+
+  /// The action description; pass null to cancel the currently active action
   ChatAction? action;
 
   SendChatAction({

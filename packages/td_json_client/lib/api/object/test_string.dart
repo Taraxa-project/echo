@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// A simple object containing a string; for testing only 
 class TestString extends TdObject {
   String get tdType => 'testString';
 
   String? extra;
   int? client_id;
+
+  /// String
   string? value;
 
   TestString({

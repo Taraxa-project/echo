@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the bio of the current user 
 class SetBio extends TdFunction {
   String get tdType => 'setBio';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The new value of the user bio; 0-70 characters without line feeds
   string? bio;
 
   SetBio({

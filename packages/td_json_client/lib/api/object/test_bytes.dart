@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// A simple object containing a sequence of bytes; for testing only 
 class TestBytes extends TdObject {
   String get tdType => 'testBytes';
 
   String? extra;
   int? client_id;
+
+  /// Bytes
   bytes? value;
 
   TestBytes({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks phone number confirmation code 
 class CheckPhoneNumberConfirmationCode extends TdFunction {
   String get tdType => 'checkPhoneNumberConfirmationCode';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Confirmation code to check
   string? code;
 
   CheckPhoneNumberConfirmationCode({

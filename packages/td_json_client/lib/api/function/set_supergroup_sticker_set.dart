@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the sticker set of a supergroup; requires can_change_info administrator right 
 class SetSupergroupStickerSet extends TdFunction {
   String get tdType => 'setSupergroupStickerSet';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the supergroup 
   int53? supergroup_id;
+
+  /// New value of the supergroup sticker set identifier. Use 0 to remove the supergroup sticker set
   int64? sticker_set_id;
 
   SetSupergroupStickerSet({

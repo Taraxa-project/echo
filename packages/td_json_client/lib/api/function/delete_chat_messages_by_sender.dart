@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Deletes all messages sent by the specified message sender in a chat. Supported only for supergroups; requires can_delete_messages administrator privileges 
 class DeleteChatMessagesBySender extends TdFunction {
   String get tdType => 'deleteChatMessagesBySender';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifier of the sender of messages to delete
   MessageSender? sender_id;
 
   DeleteChatMessagesBySender({

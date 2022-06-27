@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns current verbosity level of the internal logging of TDLib. Can be called synchronously
 class GetLogVerbosityLevel extends TdFunction {
   String get tdType => 'getLogVerbosityLevel';
   String get tdReturnType => 'LogVerbosityLevel';

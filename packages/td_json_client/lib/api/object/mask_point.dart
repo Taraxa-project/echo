@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Part of the face, relative to which a mask is placed
 abstract class MaskPoint extends TdObject {}
 
+
+/// The mask is placed relatively to the forehead
 class MaskPointForehead extends MaskPoint {
   String get tdType => 'maskPointForehead';
 
@@ -30,6 +33,8 @@ class MaskPointForehead extends MaskPoint {
     return map;
   }
 }
+
+/// The mask is placed relatively to the eyes
 class MaskPointEyes extends MaskPoint {
   String get tdType => 'maskPointEyes';
 
@@ -58,6 +63,8 @@ class MaskPointEyes extends MaskPoint {
     return map;
   }
 }
+
+/// The mask is placed relatively to the mouth
 class MaskPointMouth extends MaskPoint {
   String get tdType => 'maskPointMouth';
 
@@ -86,6 +93,8 @@ class MaskPointMouth extends MaskPoint {
     return map;
   }
 }
+
+/// The mask is placed relatively to the chin
 class MaskPointChin extends MaskPoint {
   String get tdType => 'maskPointChin';
 

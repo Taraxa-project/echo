@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes a keyboard button type
 abstract class KeyboardButtonType extends TdObject {}
 
+
+/// A simple button, with text that must be sent when the button is pressed
 class KeyboardButtonTypeText extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeText';
 
@@ -30,6 +33,8 @@ class KeyboardButtonTypeText extends KeyboardButtonType {
     return map;
   }
 }
+
+/// A button that sends the user's phone number when pressed; available only in private chats
 class KeyboardButtonTypeRequestPhoneNumber extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeRequestPhoneNumber';
 
@@ -58,6 +63,8 @@ class KeyboardButtonTypeRequestPhoneNumber extends KeyboardButtonType {
     return map;
   }
 }
+
+/// A button that sends the user's location when pressed; available only in private chats
 class KeyboardButtonTypeRequestLocation extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeRequestLocation';
 
@@ -86,12 +93,18 @@ class KeyboardButtonTypeRequestLocation extends KeyboardButtonType {
     return map;
   }
 }
+
+/// A button that allows the user to create and send a poll when pressed; available only in private chats 
 class KeyboardButtonTypeRequestPoll extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeRequestPoll';
 
   String? extra;
   int? client_id;
+
+  /// If true, only regular polls must be allowed to create 
   Bool? force_regular;
+
+  /// If true, only polls in quiz mode must be allowed to create
   Bool? force_quiz;
 
   KeyboardButtonTypeRequestPoll({
@@ -122,11 +135,15 @@ class KeyboardButtonTypeRequestPoll extends KeyboardButtonType {
     return map;
   }
 }
+
+/// A button that opens a web app by calling getWebAppUrl 
 class KeyboardButtonTypeWebApp extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeWebApp';
 
   String? extra;
   int? client_id;
+
+  /// An HTTP URL to pass to getWebAppUrl
   string? url;
 
   KeyboardButtonTypeWebApp({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns t.me URLs recently visited by a newly registered user 
 class GetRecentlyVisitedTMeUrls extends TdFunction {
   String get tdType => 'getRecentlyVisitedTMeUrls';
   String get tdReturnType => 'TMeUrls';
 
   String? extra;
   int? client_id;
+
+  /// Google Play referrer to identify the user
   string? referrer;
 
   GetRecentlyVisitedTMeUrls({

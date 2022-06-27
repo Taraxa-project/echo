@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks the authentication password for correctness. Works only when the current authorization state is authorizationStateWaitPassword 
 class CheckAuthenticationPassword extends TdFunction {
   String get tdType => 'checkAuthenticationPassword';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The password to check
   string? password;
 
   CheckAuthenticationPassword({

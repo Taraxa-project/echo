@@ -2,18 +2,34 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_inline_query_result.dart';
 
+
+/// Sets the result of an inline query; for bots only
 class AnswerInlineQuery extends TdFunction {
   String get tdType => 'answerInlineQuery';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the inline query
   int64? inline_query_id;
+
+  /// Pass true if results may be cached and returned only for the user that sent the query. By default, results may be returned to any user who sends the same query
   Bool? is_personal;
+
+  /// The results of the query
   vector<InputInlineQueryResult>? results;
+
+  /// Allowed time to cache the results of the query, in seconds
   int32? cache_time;
+
+  /// Offset for the next inline query; pass an empty string if there are no more results
   string? next_offset;
+
+  /// If non-empty, this text must be shown on the button that opens a private chat with the bot and sends a start message to the bot with the parameter switch_pm_parameter
   string? switch_pm_text;
+
+  /// The parameter for the bot start message
   string? switch_pm_parameter;
 
   AnswerInlineQuery({

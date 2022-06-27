@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes available user privacy settings
 abstract class UserPrivacySetting extends TdObject {}
 
+
+/// A privacy setting for managing whether the user's online status is visible
 class UserPrivacySettingShowStatus extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowStatus';
 
@@ -30,6 +33,8 @@ class UserPrivacySettingShowStatus extends UserPrivacySetting {
     return map;
   }
 }
+
+/// A privacy setting for managing whether the user's profile photo is visible
 class UserPrivacySettingShowProfilePhoto extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowProfilePhoto';
 
@@ -58,6 +63,8 @@ class UserPrivacySettingShowProfilePhoto extends UserPrivacySetting {
     return map;
   }
 }
+
+/// A privacy setting for managing whether a link to the user's account is included in forwarded messages
 class UserPrivacySettingShowLinkInForwardedMessages extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowLinkInForwardedMessages';
 
@@ -86,6 +93,8 @@ class UserPrivacySettingShowLinkInForwardedMessages extends UserPrivacySetting {
     return map;
   }
 }
+
+/// A privacy setting for managing whether the user's phone number is visible
 class UserPrivacySettingShowPhoneNumber extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowPhoneNumber';
 
@@ -114,6 +123,8 @@ class UserPrivacySettingShowPhoneNumber extends UserPrivacySetting {
     return map;
   }
 }
+
+/// A privacy setting for managing whether the user can be invited to chats
 class UserPrivacySettingAllowChatInvites extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowChatInvites';
 
@@ -142,6 +153,8 @@ class UserPrivacySettingAllowChatInvites extends UserPrivacySetting {
     return map;
   }
 }
+
+/// A privacy setting for managing whether the user can be called
 class UserPrivacySettingAllowCalls extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowCalls';
 
@@ -170,6 +183,8 @@ class UserPrivacySettingAllowCalls extends UserPrivacySetting {
     return map;
   }
 }
+
+/// A privacy setting for managing whether peer-to-peer connections can be used for calls
 class UserPrivacySettingAllowPeerToPeerCalls extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowPeerToPeerCalls';
 
@@ -198,6 +213,8 @@ class UserPrivacySettingAllowPeerToPeerCalls extends UserPrivacySetting {
     return map;
   }
 }
+
+/// A privacy setting for managing whether the user can be found by their phone number. Checked only if the phone number is not known to the other user. Can be set only to "Allow contacts" or "Allow all"
 class UserPrivacySettingAllowFindingByPhoneNumber extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowFindingByPhoneNumber';
 

@@ -3,15 +3,27 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/background.dart';
 import 'package:td_json_client/api/object/background_fill.dart';
 
+
+/// Describes theme settings
 class ThemeSettings extends TdObject {
   String get tdType => 'themeSettings';
 
   String? extra;
   int? client_id;
+
+  /// Theme accent color in ARGB format
   int32? accent_color;
+
+  /// The background to be used in chats; may be null
   Background? background;
+
+  /// The fill to be used as a background for outgoing messages
   BackgroundFill? outgoing_message_fill;
+
+  /// If true, the freeform gradient fill needs to be animated on every sent message
   Bool? animate_outgoing_message_fill;
+
+  /// Accent color of outgoing messages in ARGB format
   int32? outgoing_message_accent_color;
 
   ThemeSettings({

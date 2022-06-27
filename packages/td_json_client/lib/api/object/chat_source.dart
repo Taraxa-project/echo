@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes a reason why an external chat is shown in a chat list
 abstract class ChatSource extends TdObject {}
 
+
+/// The chat is sponsored by the user's MTProxy server
 class ChatSourceMtprotoProxy extends ChatSource {
   String get tdType => 'chatSourceMtprotoProxy';
 
@@ -30,12 +33,18 @@ class ChatSourceMtprotoProxy extends ChatSource {
     return map;
   }
 }
+
+/// The chat contains a public service announcement 
 class ChatSourcePublicServiceAnnouncement extends ChatSource {
   String get tdType => 'chatSourcePublicServiceAnnouncement';
 
   String? extra;
   int? client_id;
+
+  /// The type of the announcement 
   string? type;
+
+  /// The text of the announcement
   string? text;
 
   ChatSourcePublicServiceAnnouncement({

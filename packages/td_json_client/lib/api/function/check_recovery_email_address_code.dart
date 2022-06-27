@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks the 2-step verification recovery email address verification code 
 class CheckRecoveryEmailAddressCode extends TdFunction {
   String get tdType => 'checkRecoveryEmailAddressCode';
   String get tdReturnType => 'PasswordState';
 
   String? extra;
   int? client_id;
+
+  /// Verification code to check
   string? code;
 
   CheckRecoveryEmailAddressCode({

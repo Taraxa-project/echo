@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes a button to be shown instead of bot commands menu button 
 class BotMenuButton extends TdObject {
   String get tdType => 'botMenuButton';
 
   String? extra;
   int? client_id;
+
+  /// Text of the button 
   string? text;
+
+  /// URL to be passed to openWebApp
   string? url;
 
   BotMenuButton({

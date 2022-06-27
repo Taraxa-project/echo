@@ -4,15 +4,27 @@ import 'package:td_json_client/api/object/chat_invite_link_info.dart';
 import 'package:td_json_client/api/object/internal_link_type.dart';
 import 'package:td_json_client/api/object/message_content.dart';
 
+
+/// Describes a sponsored message
 class SponsoredMessage extends TdObject {
   String get tdType => 'sponsoredMessage';
 
   String? extra;
   int? client_id;
+
+  /// Message identifier; unique for the chat to which the sponsored message belongs among both ordinary and sponsored messages
   int53? message_id;
+
+  /// Sponsor chat identifier; 0 if the sponsor chat is accessible through an invite link
   int53? sponsor_chat_id;
+
+  /// Information about the sponsor chat; may be null unless sponsor_chat_id == 0
   ChatInviteLinkInfo? sponsor_chat_info;
+
+  /// An internal link to be opened when the sponsored message is clicked; may be null if the sponsor chat needs to be opened instead
   InternalLinkType? link;
+
+  /// Content of the message. Currently, can be only of the type messageText
   MessageContent? content;
 
   SponsoredMessage({

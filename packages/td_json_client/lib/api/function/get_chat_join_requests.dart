@@ -2,16 +2,28 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_join_request.dart';
 
+
+/// Returns pending join requests in a chat
 class GetChatJoinRequests extends TdFunction {
   String get tdType => 'getChatJoinRequests';
   String get tdReturnType => 'ChatJoinRequests';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// Invite link for which to return join requests. If empty, all join requests will be returned. Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for other links
   string? invite_link;
+
+  /// A query to search for in the first names, last names and usernames of the users to return
   string? query;
+
+  /// A chat join request from which to return next requests; pass null to get results from the beginning
   ChatJoinRequest? offset_request;
+
+  /// The maximum number of requests to join the chat to return
   int32? limit;
 
   GetChatJoinRequests({

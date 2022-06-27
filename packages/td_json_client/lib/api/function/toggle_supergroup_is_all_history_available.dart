@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Toggles whether the message history of a supergroup is available to new members; requires can_change_info administrator right 
 class ToggleSupergroupIsAllHistoryAvailable extends TdFunction {
   String get tdType => 'toggleSupergroupIsAllHistoryAvailable';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The identifier of the supergroup 
   int53? supergroup_id;
+
+  /// The new value of is_all_history_available
   Bool? is_all_history_available;
 
   ToggleSupergroupIsAllHistoryAvailable({

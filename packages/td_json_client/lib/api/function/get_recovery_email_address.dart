@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a 2-step verification recovery email address that was previously set up. This method can be used to verify a password provided by the user 
 class GetRecoveryEmailAddress extends TdFunction {
   String get tdType => 'getRecoveryEmailAddress';
   String get tdReturnType => 'RecoveryEmailAddress';
 
   String? extra;
   int? client_id;
+
+  /// The password for the current user
   string? password;
 
   GetRecoveryEmailAddress({

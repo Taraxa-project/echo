@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the ability of users to save, forward, or copy chat content. Supported only for basic groups, supergroups and channels. Requires owner privileges
 class ToggleChatHasProtectedContent extends TdFunction {
   String get tdType => 'toggleChatHasProtectedContent';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of has_protected_content
   Bool? has_protected_content;
 
   ToggleChatHasProtectedContent({

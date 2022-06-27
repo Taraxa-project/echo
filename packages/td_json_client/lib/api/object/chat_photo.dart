@@ -4,15 +4,27 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/photo_size.dart';
 import 'package:td_json_client/api/object/animated_chat_photo.dart';
 
+
+/// Describes a chat or user profile photo
 class ChatPhoto extends TdObject {
   String get tdType => 'chatPhoto';
 
   String? extra;
   int? client_id;
+
+  /// Unique photo identifier
   int64? id;
+
+  /// Point in time (Unix timestamp) when the photo has been added
   int32? added_date;
+
+  /// Photo minithumbnail; may be null
   Minithumbnail? minithumbnail;
+
+  /// Available variants of the photo in JPEG format, in different size
   vector<PhotoSize>? sizes;
+
+  /// Animated variant of the photo in MPEG4 format; may be null
   AnimatedChatPhoto? animation;
 
   ChatPhoto({

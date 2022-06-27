@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/json_value.dart';
 
+
+/// Represents one member of a JSON object 
 class JsonObjectMember extends TdObject {
   String get tdType => 'jsonObjectMember';
 
   String? extra;
   int? client_id;
+
+  /// Member's key 
   string? key;
+
+  /// Member's value
   JsonValue? value;
 
   JsonObjectMember({

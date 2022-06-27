@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_filter.dart';
 
+
+/// Edits existing chat filter. Returns information about the edited chat filter 
 class EditChatFilter extends TdFunction {
   String get tdType => 'editChatFilter';
   String get tdReturnType => 'ChatFilterInfo';
 
   String? extra;
   int? client_id;
+
+  /// Chat filter identifier 
   int32? chat_filter_id;
+
+  /// The edited chat filter
   ChatFilter? filter;
 
   EditChatFilter({

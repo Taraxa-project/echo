@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes a chat from the list of recently found chats 
 class RemoveRecentlyFoundChat extends TdFunction {
   String get tdType => 'removeRecentlyFoundChat';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to be removed
   int53? chat_id;
 
   RemoveRecentlyFoundChat({

@@ -2,18 +2,34 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_send_options.dart';
 
+
+/// Forwards previously sent messages. Returns the forwarded messages in the same order as the message identifiers passed in message_ids. If a message can't be forwarded, null will be returned instead of the message
 class ForwardMessages extends TdFunction {
   String get tdType => 'forwardMessages';
   String get tdReturnType => 'Messages';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to which to forward messages
   int53? chat_id;
+
+  /// Identifier of the chat from which to forward messages
   int53? from_chat_id;
+
+  /// Identifiers of the messages to forward. Message identifiers must be in a strictly increasing order. At most 100 messages can be forwarded simultaneously
   vector<int53>? message_ids;
+
+  /// Options to be used to send the messages; pass null to use default options
   MessageSendOptions? options;
+
+  /// Pass true to copy content of the messages without reference to the original sender. Always true if the messages are forwarded to a secret chat or are local
   Bool? send_copy;
+
+  /// Pass true to remove media captions of message copies. Ignored if send_copy is false
   Bool? remove_caption;
+
+  /// Pass true to get fake messages instead of actually forwarding them
   Bool? only_preview;
 
   ForwardMessages({

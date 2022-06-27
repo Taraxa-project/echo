@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains information about the period of inactivity after which the current user's account will automatically be deleted 
 class AccountTtl extends TdObject {
   String get tdType => 'accountTtl';
 
   String? extra;
   int? client_id;
+
+  /// Number of days of inactivity before the account will be flagged for deletion; 30-366 days
   int32? days;
 
   AccountTtl({

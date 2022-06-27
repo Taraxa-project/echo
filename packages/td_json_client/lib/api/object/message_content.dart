@@ -25,14 +25,21 @@ import 'package:td_json_client/api/object/encrypted_passport_element.dart';
 import 'package:td_json_client/api/object/encrypted_credentials.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+/// Contains the content of a message
 abstract class MessageContent extends TdObject {}
 
+
+/// A text message 
 class MessageText extends MessageContent {
   String get tdType => 'messageText';
 
   String? extra;
   int? client_id;
+
+  /// Text of the message 
   FormattedText? text;
+
+  /// A preview of the web page that's mentioned in the text; may be null
   WebPage? web_page;
 
   MessageText({
@@ -63,13 +70,21 @@ class MessageText extends MessageContent {
     return map;
   }
 }
+
+/// An animation message (GIF-style). 
 class MessageAnimation extends MessageContent {
   String get tdType => 'messageAnimation';
 
   String? extra;
   int? client_id;
+
+  /// The animation description 
   Animation? animation;
+
+  /// Animation caption 
   FormattedText? caption;
+
+  /// True, if the animation thumbnail must be blurred and the animation must be shown only while tapped
   Bool? is_secret;
 
   MessageAnimation({
@@ -103,12 +118,18 @@ class MessageAnimation extends MessageContent {
     return map;
   }
 }
+
+/// An audio message 
 class MessageAudio extends MessageContent {
   String get tdType => 'messageAudio';
 
   String? extra;
   int? client_id;
+
+  /// The audio description 
   Audio? audio;
+
+  /// Audio caption
   FormattedText? caption;
 
   MessageAudio({
@@ -139,12 +160,18 @@ class MessageAudio extends MessageContent {
     return map;
   }
 }
+
+/// A document message (general file) 
 class MessageDocument extends MessageContent {
   String get tdType => 'messageDocument';
 
   String? extra;
   int? client_id;
+
+  /// The document description 
   Document? document;
+
+  /// Document caption
   FormattedText? caption;
 
   MessageDocument({
@@ -175,13 +202,21 @@ class MessageDocument extends MessageContent {
     return map;
   }
 }
+
+/// A photo message 
 class MessagePhoto extends MessageContent {
   String get tdType => 'messagePhoto';
 
   String? extra;
   int? client_id;
+
+  /// The photo description 
   Photo? photo;
+
+  /// Photo caption 
   FormattedText? caption;
+
+  /// True, if the photo must be blurred and must be shown only while tapped
   Bool? is_secret;
 
   MessagePhoto({
@@ -215,6 +250,8 @@ class MessagePhoto extends MessageContent {
     return map;
   }
 }
+
+/// An expired photo message (self-destructed after TTL has elapsed)
 class MessageExpiredPhoto extends MessageContent {
   String get tdType => 'messageExpiredPhoto';
 
@@ -243,11 +280,15 @@ class MessageExpiredPhoto extends MessageContent {
     return map;
   }
 }
+
+/// A sticker message 
 class MessageSticker extends MessageContent {
   String get tdType => 'messageSticker';
 
   String? extra;
   int? client_id;
+
+  /// The sticker description
   Sticker? sticker;
 
   MessageSticker({
@@ -275,13 +316,21 @@ class MessageSticker extends MessageContent {
     return map;
   }
 }
+
+/// A video message 
 class MessageVideo extends MessageContent {
   String get tdType => 'messageVideo';
 
   String? extra;
   int? client_id;
+
+  /// The video description 
   Video? video;
+
+  /// Video caption 
   FormattedText? caption;
+
+  /// True, if the video thumbnail must be blurred and the video must be shown only while tapped
   Bool? is_secret;
 
   MessageVideo({
@@ -315,6 +364,8 @@ class MessageVideo extends MessageContent {
     return map;
   }
 }
+
+/// An expired video message (self-destructed after TTL has elapsed)
 class MessageExpiredVideo extends MessageContent {
   String get tdType => 'messageExpiredVideo';
 
@@ -343,13 +394,21 @@ class MessageExpiredVideo extends MessageContent {
     return map;
   }
 }
+
+/// A video note message 
 class MessageVideoNote extends MessageContent {
   String get tdType => 'messageVideoNote';
 
   String? extra;
   int? client_id;
+
+  /// The video note description 
   VideoNote? video_note;
+
+  /// True, if at least one of the recipients has viewed the video note 
   Bool? is_viewed;
+
+  /// True, if the video note thumbnail must be blurred and the video note must be shown only while tapped
   Bool? is_secret;
 
   MessageVideoNote({
@@ -383,13 +442,21 @@ class MessageVideoNote extends MessageContent {
     return map;
   }
 }
+
+/// A voice note message 
 class MessageVoiceNote extends MessageContent {
   String get tdType => 'messageVoiceNote';
 
   String? extra;
   int? client_id;
+
+  /// The voice note description 
   VoiceNote? voice_note;
+
+  /// Voice note caption 
   FormattedText? caption;
+
+  /// True, if at least one of the recipients has listened to the voice note
   Bool? is_listened;
 
   MessageVoiceNote({
@@ -423,15 +490,27 @@ class MessageVoiceNote extends MessageContent {
     return map;
   }
 }
+
+/// A message with a location 
 class MessageLocation extends MessageContent {
   String get tdType => 'messageLocation';
 
   String? extra;
   int? client_id;
+
+  /// The location description 
   Location? location;
+
+  /// Time relative to the message send date, for which the location can be updated, in seconds
   int32? live_period;
+
+  /// Left time for which the location can be updated, in seconds. updateMessageContent is not sent when this field changes
   int32? expires_in;
+
+  /// For live locations, a direction in which the location moves, in degrees; 1-360. If 0 the direction is unknown
   int32? heading;
+
+  /// For live locations, a maximum distance to another chat member for proximity alerts, in meters (0-100000). 0 if the notification is disabled. Available only for the message sender
   int32? proximity_alert_radius;
 
   MessageLocation({
@@ -471,11 +550,15 @@ class MessageLocation extends MessageContent {
     return map;
   }
 }
+
+/// A message with information about a venue 
 class MessageVenue extends MessageContent {
   String get tdType => 'messageVenue';
 
   String? extra;
   int? client_id;
+
+  /// The venue description
   Venue? venue;
 
   MessageVenue({
@@ -503,11 +586,15 @@ class MessageVenue extends MessageContent {
     return map;
   }
 }
+
+/// A message with a user contact 
 class MessageContact extends MessageContent {
   String get tdType => 'messageContact';
 
   String? extra;
   int? client_id;
+
+  /// The contact description
   Contact? contact;
 
   MessageContact({
@@ -535,12 +622,18 @@ class MessageContact extends MessageContent {
     return map;
   }
 }
+
+/// A message with an animated emoji 
 class MessageAnimatedEmoji extends MessageContent {
   String get tdType => 'messageAnimatedEmoji';
 
   String? extra;
   int? client_id;
+
+  /// The animated emoji 
   AnimatedEmoji? animated_emoji;
+
+  /// The corresponding emoji
   string? emoji;
 
   MessageAnimatedEmoji({
@@ -571,15 +664,27 @@ class MessageAnimatedEmoji extends MessageContent {
     return map;
   }
 }
+
+/// A dice message. The dice value is randomly generated by the server
 class MessageDice extends MessageContent {
   String get tdType => 'messageDice';
 
   String? extra;
   int? client_id;
+
+  /// The animated stickers with the initial dice animation; may be null if unknown. updateMessageContent will be sent when the sticker became known
   DiceStickers? initial_state;
+
+  /// The animated stickers with the final dice animation; may be null if unknown. updateMessageContent will be sent when the sticker became known
   DiceStickers? final_state;
+
+  /// Emoji on which the dice throw animation is based
   string? emoji;
+
+  /// The dice value. If the value is 0, the dice don't have final state yet
   int32? value;
+
+  /// Number of frame after which a success animation like a shower of confetti needs to be shown on updateMessageSendSucceeded
   int32? success_animation_frame_number;
 
   MessageDice({
@@ -619,11 +724,15 @@ class MessageDice extends MessageContent {
     return map;
   }
 }
+
+/// A message with a game 
 class MessageGame extends MessageContent {
   String get tdType => 'messageGame';
 
   String? extra;
   int? client_id;
+
+  /// The game description
   Game? game;
 
   MessageGame({
@@ -651,11 +760,15 @@ class MessageGame extends MessageContent {
     return map;
   }
 }
+
+/// A message with a poll 
 class MessagePoll extends MessageContent {
   String get tdType => 'messagePoll';
 
   String? extra;
   int? client_id;
+
+  /// The poll description
   Poll? poll;
 
   MessagePoll({
@@ -683,19 +796,38 @@ class MessagePoll extends MessageContent {
     return map;
   }
 }
+
+/// A message with an invoice from a bot 
 class MessageInvoice extends MessageContent {
   String get tdType => 'messageInvoice';
 
   String? extra;
   int? client_id;
+
+  /// Product title 
   string? title;
+
   string? description;
+
+  /// Product photo; may be null 
   Photo? photo;
+
+  /// Currency for the product price 
   string? currency;
+
+  /// Product total price in the smallest units of the currency
   int53? total_amount;
+
+  /// Unique invoice bot start_parameter. To share an invoice use the URL https://t.me/{bot_username}?start={start_parameter} 
   string? start_parameter;
+
+  /// True, if the invoice is a test invoice
   Bool? is_test;
+
+  /// True, if the shipping address must be specified 
   Bool? need_shipping_address;
+
+  /// The identifier of the message with the receipt, after the product has been purchased
   int53? receipt_message_id;
 
   MessageInvoice({
@@ -747,13 +879,21 @@ class MessageInvoice extends MessageContent {
     return map;
   }
 }
+
+/// A message with information about an ended call 
 class MessageCall extends MessageContent {
   String get tdType => 'messageCall';
 
   String? extra;
   int? client_id;
+
+  /// True, if the call was a video call 
   Bool? is_video;
+
+  /// Reason why the call was discarded 
   CallDiscardReason? discard_reason;
+
+  /// Call duration, in seconds
   int32? duration;
 
   MessageCall({
@@ -787,12 +927,18 @@ class MessageCall extends MessageContent {
     return map;
   }
 }
+
+/// A new video chat was scheduled 
 class MessageVideoChatScheduled extends MessageContent {
   String get tdType => 'messageVideoChatScheduled';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the video chat. The video chat can be received through the method getGroupCall 
   int32? group_call_id;
+
+  /// Point in time (Unix timestamp) when the group call is supposed to be started by an administrator
   int32? start_date;
 
   MessageVideoChatScheduled({
@@ -823,11 +969,15 @@ class MessageVideoChatScheduled extends MessageContent {
     return map;
   }
 }
+
+/// A newly created video chat 
 class MessageVideoChatStarted extends MessageContent {
   String get tdType => 'messageVideoChatStarted';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the video chat. The video chat can be received through the method getGroupCall
   int32? group_call_id;
 
   MessageVideoChatStarted({
@@ -855,11 +1005,15 @@ class MessageVideoChatStarted extends MessageContent {
     return map;
   }
 }
+
+/// A message with information about an ended video chat 
 class MessageVideoChatEnded extends MessageContent {
   String get tdType => 'messageVideoChatEnded';
 
   String? extra;
   int? client_id;
+
+  /// Call duration, in seconds
   int32? duration;
 
   MessageVideoChatEnded({
@@ -887,12 +1041,18 @@ class MessageVideoChatEnded extends MessageContent {
     return map;
   }
 }
+
+/// A message with information about an invite to a video chat 
 class MessageInviteVideoChatParticipants extends MessageContent {
   String get tdType => 'messageInviteVideoChatParticipants';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the video chat. The video chat can be received through the method getGroupCall 
   int32? group_call_id;
+
+  /// Invited user identifiers
   vector<int53>? user_ids;
 
   MessageInviteVideoChatParticipants({
@@ -928,12 +1088,18 @@ class MessageInviteVideoChatParticipants extends MessageContent {
     return map;
   }
 }
+
+/// A newly created basic group 
 class MessageBasicGroupChatCreate extends MessageContent {
   String get tdType => 'messageBasicGroupChatCreate';
 
   String? extra;
   int? client_id;
+
+  /// Title of the basic group 
   string? title;
+
+  /// User identifiers of members in the basic group
   vector<int53>? member_user_ids;
 
   MessageBasicGroupChatCreate({
@@ -969,11 +1135,15 @@ class MessageBasicGroupChatCreate extends MessageContent {
     return map;
   }
 }
+
+/// A newly created supergroup or channel 
 class MessageSupergroupChatCreate extends MessageContent {
   String get tdType => 'messageSupergroupChatCreate';
 
   String? extra;
   int? client_id;
+
+  /// Title of the supergroup or channel
   string? title;
 
   MessageSupergroupChatCreate({
@@ -1001,11 +1171,15 @@ class MessageSupergroupChatCreate extends MessageContent {
     return map;
   }
 }
+
+/// An updated chat title 
 class MessageChatChangeTitle extends MessageContent {
   String get tdType => 'messageChatChangeTitle';
 
   String? extra;
   int? client_id;
+
+  /// New chat title
   string? title;
 
   MessageChatChangeTitle({
@@ -1033,11 +1207,15 @@ class MessageChatChangeTitle extends MessageContent {
     return map;
   }
 }
+
+/// An updated chat photo 
 class MessageChatChangePhoto extends MessageContent {
   String get tdType => 'messageChatChangePhoto';
 
   String? extra;
   int? client_id;
+
+  /// New chat photo
   ChatPhoto? photo;
 
   MessageChatChangePhoto({
@@ -1065,6 +1243,8 @@ class MessageChatChangePhoto extends MessageContent {
     return map;
   }
 }
+
+/// A deleted chat photo
 class MessageChatDeletePhoto extends MessageContent {
   String get tdType => 'messageChatDeletePhoto';
 
@@ -1093,11 +1273,15 @@ class MessageChatDeletePhoto extends MessageContent {
     return map;
   }
 }
+
+/// New chat members were added 
 class MessageChatAddMembers extends MessageContent {
   String get tdType => 'messageChatAddMembers';
 
   String? extra;
   int? client_id;
+
+  /// User identifiers of the new members
   vector<int53>? member_user_ids;
 
   MessageChatAddMembers({
@@ -1130,6 +1314,8 @@ class MessageChatAddMembers extends MessageContent {
     return map;
   }
 }
+
+/// A new member joined the chat via an invite link
 class MessageChatJoinByLink extends MessageContent {
   String get tdType => 'messageChatJoinByLink';
 
@@ -1158,6 +1344,8 @@ class MessageChatJoinByLink extends MessageContent {
     return map;
   }
 }
+
+/// A new member was accepted to the chat by an administrator
 class MessageChatJoinByRequest extends MessageContent {
   String get tdType => 'messageChatJoinByRequest';
 
@@ -1186,11 +1374,15 @@ class MessageChatJoinByRequest extends MessageContent {
     return map;
   }
 }
+
+/// A chat member was deleted 
 class MessageChatDeleteMember extends MessageContent {
   String get tdType => 'messageChatDeleteMember';
 
   String? extra;
   int? client_id;
+
+  /// User identifier of the deleted chat member
   int53? user_id;
 
   MessageChatDeleteMember({
@@ -1218,11 +1410,15 @@ class MessageChatDeleteMember extends MessageContent {
     return map;
   }
 }
+
+/// A basic group was upgraded to a supergroup and was deactivated as the result 
 class MessageChatUpgradeTo extends MessageContent {
   String get tdType => 'messageChatUpgradeTo';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the supergroup to which the basic group was upgraded
   int53? supergroup_id;
 
   MessageChatUpgradeTo({
@@ -1250,12 +1446,18 @@ class MessageChatUpgradeTo extends MessageContent {
     return map;
   }
 }
+
+/// A supergroup has been created from a basic group 
 class MessageChatUpgradeFrom extends MessageContent {
   String get tdType => 'messageChatUpgradeFrom';
 
   String? extra;
   int? client_id;
+
+  /// Title of the newly created supergroup 
   string? title;
+
+  /// The identifier of the original basic group
   int53? basic_group_id;
 
   MessageChatUpgradeFrom({
@@ -1286,11 +1488,15 @@ class MessageChatUpgradeFrom extends MessageContent {
     return map;
   }
 }
+
+/// A message has been pinned 
 class MessagePinMessage extends MessageContent {
   String get tdType => 'messagePinMessage';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the pinned message, can be an identifier of a deleted message or 0
   int53? message_id;
 
   MessagePinMessage({
@@ -1318,6 +1524,8 @@ class MessagePinMessage extends MessageContent {
     return map;
   }
 }
+
+/// A screenshot of a message in the chat has been taken
 class MessageScreenshotTaken extends MessageContent {
   String get tdType => 'messageScreenshotTaken';
 
@@ -1346,11 +1554,15 @@ class MessageScreenshotTaken extends MessageContent {
     return map;
   }
 }
+
+/// A theme in the chat has been changed 
 class MessageChatSetTheme extends MessageContent {
   String get tdType => 'messageChatSetTheme';
 
   String? extra;
   int? client_id;
+
+  /// If non-empty, name of a new theme, set for the chat. Otherwise chat theme was reset to the default one
   string? theme_name;
 
   MessageChatSetTheme({
@@ -1378,11 +1590,15 @@ class MessageChatSetTheme extends MessageContent {
     return map;
   }
 }
+
+/// The TTL (Time To Live) setting for messages in the chat has been changed 
 class MessageChatSetTtl extends MessageContent {
   String get tdType => 'messageChatSetTtl';
 
   String? extra;
   int? client_id;
+
+  /// New message TTL
   int32? ttl;
 
   MessageChatSetTtl({
@@ -1410,11 +1626,15 @@ class MessageChatSetTtl extends MessageContent {
     return map;
   }
 }
+
+/// A non-standard action has happened in the chat 
 class MessageCustomServiceAction extends MessageContent {
   String get tdType => 'messageCustomServiceAction';
 
   String? extra;
   int? client_id;
+
+  /// Message text to be shown in the chat
   string? text;
 
   MessageCustomServiceAction({
@@ -1442,13 +1662,21 @@ class MessageCustomServiceAction extends MessageContent {
     return map;
   }
 }
+
+/// A new high score was achieved in a game 
 class MessageGameScore extends MessageContent {
   String get tdType => 'messageGameScore';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the message with the game, can be an identifier of a deleted message 
   int53? game_message_id;
+
+  /// Identifier of the game; may be different from the games presented in the message with the game 
   int64? game_id;
+
+  /// New score
   int32? score;
 
   MessageGameScore({
@@ -1482,14 +1710,24 @@ class MessageGameScore extends MessageContent {
     return map;
   }
 }
+
+/// A payment has been completed 
 class MessagePaymentSuccessful extends MessageContent {
   String get tdType => 'messagePaymentSuccessful';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat, containing the corresponding invoice message; 0 if unknown 
   int53? invoice_chat_id;
+
+  /// Identifier of the message with the corresponding invoice; can be an identifier of a deleted message 
   int53? invoice_message_id;
+
+  /// Currency for the price of the product 
   string? currency;
+
+  /// Total price for the product, in the smallest units of the currency
   int53? total_amount;
 
   MessagePaymentSuccessful({
@@ -1526,17 +1764,33 @@ class MessagePaymentSuccessful extends MessageContent {
     return map;
   }
 }
+
+/// A payment has been completed; for bots only 
 class MessagePaymentSuccessfulBot extends MessageContent {
   String get tdType => 'messagePaymentSuccessfulBot';
 
   String? extra;
   int? client_id;
+
+  /// Currency for price of the product
   string? currency;
+
+  /// Total price for the product, in the smallest units of the currency 
   int53? total_amount;
+
+  /// Invoice payload 
   bytes? invoice_payload;
+
+  /// Identifier of the shipping option chosen by the user; may be empty if not applicable 
   string? shipping_option_id;
+
+  /// Information about the order; may be null
   OrderInfo? order_info;
+
+  /// Telegram payment identifier 
   string? telegram_payment_charge_id;
+
+  /// Provider payment identifier
   string? provider_payment_charge_id;
 
   MessagePaymentSuccessfulBot({
@@ -1582,6 +1836,8 @@ class MessagePaymentSuccessfulBot extends MessageContent {
     return map;
   }
 }
+
+/// A contact has registered with Telegram
 class MessageContactRegistered extends MessageContent {
   String get tdType => 'messageContactRegistered';
 
@@ -1610,11 +1866,15 @@ class MessageContactRegistered extends MessageContent {
     return map;
   }
 }
+
+/// The current user has connected a website by logging in using Telegram Login Widget on it 
 class MessageWebsiteConnected extends MessageContent {
   String get tdType => 'messageWebsiteConnected';
 
   String? extra;
   int? client_id;
+
+  /// Domain name of the connected website
   string? domain_name;
 
   MessageWebsiteConnected({
@@ -1642,11 +1902,15 @@ class MessageWebsiteConnected extends MessageContent {
     return map;
   }
 }
+
+/// Data from a web app has been sent to a bot 
 class MessageWebAppDataSent extends MessageContent {
   String get tdType => 'messageWebAppDataSent';
 
   String? extra;
   int? client_id;
+
+  /// Text of the keyboardButtonTypeWebApp button, which opened the web app
   string? button_text;
 
   MessageWebAppDataSent({
@@ -1674,12 +1938,18 @@ class MessageWebAppDataSent extends MessageContent {
     return map;
   }
 }
+
+/// Data from a web app has been received; for bots only 
 class MessageWebAppDataReceived extends MessageContent {
   String get tdType => 'messageWebAppDataReceived';
 
   String? extra;
   int? client_id;
+
+  /// Text of the keyboardButtonTypeWebApp button, which opened the web app 
   string? button_text;
+
+  /// Received data
   string? data;
 
   MessageWebAppDataReceived({
@@ -1710,11 +1980,15 @@ class MessageWebAppDataReceived extends MessageContent {
     return map;
   }
 }
+
+/// Telegram Passport data has been sent to a bot 
 class MessagePassportDataSent extends MessageContent {
   String get tdType => 'messagePassportDataSent';
 
   String? extra;
   int? client_id;
+
+  /// List of Telegram Passport element types sent
   vector<PassportElementType>? types;
 
   MessagePassportDataSent({
@@ -1747,12 +2021,18 @@ class MessagePassportDataSent extends MessageContent {
     return map;
   }
 }
+
+/// Telegram Passport data has been received; for bots only 
 class MessagePassportDataReceived extends MessageContent {
   String get tdType => 'messagePassportDataReceived';
 
   String? extra;
   int? client_id;
+
+  /// List of received Telegram Passport elements 
   vector<EncryptedPassportElement>? elements;
+
+  /// Encrypted data credentials
   EncryptedCredentials? credentials;
 
   MessagePassportDataReceived({
@@ -1788,13 +2068,21 @@ class MessagePassportDataReceived extends MessageContent {
     return map;
   }
 }
+
+/// A user in the chat came within proximity alert range 
 class MessageProximityAlertTriggered extends MessageContent {
   String get tdType => 'messageProximityAlertTriggered';
 
   String? extra;
   int? client_id;
+
+  /// The identifier of a user or chat that triggered the proximity alert 
   MessageSender? traveler_id;
+
+  /// The identifier of a user or chat that subscribed for the proximity alert 
   MessageSender? watcher_id;
+
+  /// The distance between the users
   int32? distance;
 
   MessageProximityAlertTriggered({
@@ -1828,6 +2116,8 @@ class MessageProximityAlertTriggered extends MessageContent {
     return map;
   }
 }
+
+/// Message content that is not supported in the current TDLib version
 class MessageUnsupported extends MessageContent {
   String get tdType => 'messageUnsupported';
 

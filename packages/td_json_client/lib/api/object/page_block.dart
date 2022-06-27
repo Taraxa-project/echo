@@ -13,13 +13,18 @@ import 'package:td_json_client/api/object/page_block_table_cell.dart';
 import 'package:td_json_client/api/object/page_block_related_article.dart';
 import 'package:td_json_client/api/object/location.dart';
 
+/// Describes a block of an instant view web page
 abstract class PageBlock extends TdObject {}
 
+
+/// The title of a page 
 class PageBlockTitle extends PageBlock {
   String get tdType => 'pageBlockTitle';
 
   String? extra;
   int? client_id;
+
+  /// Title
   RichText? title;
 
   PageBlockTitle({
@@ -47,11 +52,15 @@ class PageBlockTitle extends PageBlock {
     return map;
   }
 }
+
+/// The subtitle of a page 
 class PageBlockSubtitle extends PageBlock {
   String get tdType => 'pageBlockSubtitle';
 
   String? extra;
   int? client_id;
+
+  /// Subtitle
   RichText? subtitle;
 
   PageBlockSubtitle({
@@ -79,12 +88,18 @@ class PageBlockSubtitle extends PageBlock {
     return map;
   }
 }
+
+/// The author and publishing date of a page 
 class PageBlockAuthorDate extends PageBlock {
   String get tdType => 'pageBlockAuthorDate';
 
   String? extra;
   int? client_id;
+
+  /// Author 
   RichText? author;
+
+  /// Point in time (Unix timestamp) when the article was published; 0 if unknown
   int32? publish_date;
 
   PageBlockAuthorDate({
@@ -115,11 +130,15 @@ class PageBlockAuthorDate extends PageBlock {
     return map;
   }
 }
+
+/// A header 
 class PageBlockHeader extends PageBlock {
   String get tdType => 'pageBlockHeader';
 
   String? extra;
   int? client_id;
+
+  /// Header
   RichText? header;
 
   PageBlockHeader({
@@ -147,11 +166,15 @@ class PageBlockHeader extends PageBlock {
     return map;
   }
 }
+
+/// A subheader 
 class PageBlockSubheader extends PageBlock {
   String get tdType => 'pageBlockSubheader';
 
   String? extra;
   int? client_id;
+
+  /// Subheader
   RichText? subheader;
 
   PageBlockSubheader({
@@ -179,11 +202,15 @@ class PageBlockSubheader extends PageBlock {
     return map;
   }
 }
+
+/// A kicker 
 class PageBlockKicker extends PageBlock {
   String get tdType => 'pageBlockKicker';
 
   String? extra;
   int? client_id;
+
+  /// Kicker
   RichText? kicker;
 
   PageBlockKicker({
@@ -211,11 +238,15 @@ class PageBlockKicker extends PageBlock {
     return map;
   }
 }
+
+/// A text paragraph 
 class PageBlockParagraph extends PageBlock {
   String get tdType => 'pageBlockParagraph';
 
   String? extra;
   int? client_id;
+
+  /// Paragraph text
   RichText? text;
 
   PageBlockParagraph({
@@ -243,12 +274,18 @@ class PageBlockParagraph extends PageBlock {
     return map;
   }
 }
+
+/// A preformatted text paragraph 
 class PageBlockPreformatted extends PageBlock {
   String get tdType => 'pageBlockPreformatted';
 
   String? extra;
   int? client_id;
+
+  /// Paragraph text 
   RichText? text;
+
+  /// Programming language for which the text needs to be formatted
   string? language;
 
   PageBlockPreformatted({
@@ -279,11 +316,15 @@ class PageBlockPreformatted extends PageBlock {
     return map;
   }
 }
+
+/// The footer of a page 
 class PageBlockFooter extends PageBlock {
   String get tdType => 'pageBlockFooter';
 
   String? extra;
   int? client_id;
+
+  /// Footer
   RichText? footer;
 
   PageBlockFooter({
@@ -311,6 +352,8 @@ class PageBlockFooter extends PageBlock {
     return map;
   }
 }
+
+/// An empty block separating a page
 class PageBlockDivider extends PageBlock {
   String get tdType => 'pageBlockDivider';
 
@@ -339,11 +382,15 @@ class PageBlockDivider extends PageBlock {
     return map;
   }
 }
+
+/// An invisible anchor on a page, which can be used in a URL to open the page from the specified anchor 
 class PageBlockAnchor extends PageBlock {
   String get tdType => 'pageBlockAnchor';
 
   String? extra;
   int? client_id;
+
+  /// Name of the anchor
   string? name;
 
   PageBlockAnchor({
@@ -371,11 +418,15 @@ class PageBlockAnchor extends PageBlock {
     return map;
   }
 }
+
+/// A list of data blocks 
 class PageBlockList extends PageBlock {
   String get tdType => 'pageBlockList';
 
   String? extra;
   int? client_id;
+
+  /// The items of the list
   vector<PageBlockListItem>? items;
 
   PageBlockList({
@@ -408,12 +459,18 @@ class PageBlockList extends PageBlock {
     return map;
   }
 }
+
+/// A block quote 
 class PageBlockBlockQuote extends PageBlock {
   String get tdType => 'pageBlockBlockQuote';
 
   String? extra;
   int? client_id;
+
+  /// Quote text 
   RichText? text;
+
+  /// Quote credit
   RichText? credit;
 
   PageBlockBlockQuote({
@@ -444,12 +501,18 @@ class PageBlockBlockQuote extends PageBlock {
     return map;
   }
 }
+
+/// A pull quote 
 class PageBlockPullQuote extends PageBlock {
   String get tdType => 'pageBlockPullQuote';
 
   String? extra;
   int? client_id;
+
+  /// Quote text 
   RichText? text;
+
+  /// Quote credit
   RichText? credit;
 
   PageBlockPullQuote({
@@ -480,13 +543,21 @@ class PageBlockPullQuote extends PageBlock {
     return map;
   }
 }
+
+/// An animation 
 class PageBlockAnimation extends PageBlock {
   String get tdType => 'pageBlockAnimation';
 
   String? extra;
   int? client_id;
+
+  /// Animation file; may be null 
   Animation? animation;
+
+  /// Animation caption 
   PageBlockCaption? caption;
+
+  /// True, if the animation must be played automatically
   Bool? need_autoplay;
 
   PageBlockAnimation({
@@ -520,12 +591,18 @@ class PageBlockAnimation extends PageBlock {
     return map;
   }
 }
+
+/// An audio file 
 class PageBlockAudio extends PageBlock {
   String get tdType => 'pageBlockAudio';
 
   String? extra;
   int? client_id;
+
+  /// Audio file; may be null 
   Audio? audio;
+
+  /// Audio file caption
   PageBlockCaption? caption;
 
   PageBlockAudio({
@@ -556,13 +633,21 @@ class PageBlockAudio extends PageBlock {
     return map;
   }
 }
+
+/// A photo 
 class PageBlockPhoto extends PageBlock {
   String get tdType => 'pageBlockPhoto';
 
   String? extra;
   int? client_id;
+
+  /// Photo file; may be null 
   Photo? photo;
+
+  /// Photo caption 
   PageBlockCaption? caption;
+
+  /// URL that needs to be opened when the photo is clicked
   string? url;
 
   PageBlockPhoto({
@@ -596,14 +681,24 @@ class PageBlockPhoto extends PageBlock {
     return map;
   }
 }
+
+/// A video 
 class PageBlockVideo extends PageBlock {
   String get tdType => 'pageBlockVideo';
 
   String? extra;
   int? client_id;
+
+  /// Video file; may be null 
   Video? video;
+
+  /// Video caption 
   PageBlockCaption? caption;
+
+  /// True, if the video must be played automatically 
   Bool? need_autoplay;
+
+  /// True, if the video must be looped
   Bool? is_looped;
 
   PageBlockVideo({
@@ -640,12 +735,18 @@ class PageBlockVideo extends PageBlock {
     return map;
   }
 }
+
+/// A voice note 
 class PageBlockVoiceNote extends PageBlock {
   String get tdType => 'pageBlockVoiceNote';
 
   String? extra;
   int? client_id;
+
+  /// Voice note; may be null 
   VoiceNote? voice_note;
+
+  /// Voice note caption
   PageBlockCaption? caption;
 
   PageBlockVoiceNote({
@@ -676,11 +777,15 @@ class PageBlockVoiceNote extends PageBlock {
     return map;
   }
 }
+
+/// A page cover 
 class PageBlockCover extends PageBlock {
   String get tdType => 'pageBlockCover';
 
   String? extra;
   int? client_id;
+
+  /// Cover
   PageBlock? cover;
 
   PageBlockCover({
@@ -708,18 +813,36 @@ class PageBlockCover extends PageBlock {
     return map;
   }
 }
+
+/// An embedded web page 
 class PageBlockEmbedded extends PageBlock {
   String get tdType => 'pageBlockEmbedded';
 
   String? extra;
   int? client_id;
+
+  /// Web page URL, if available 
   string? url;
+
+  /// HTML-markup of the embedded page 
   string? html;
+
+  /// Poster photo, if available; may be null 
   Photo? poster_photo;
+
+  /// Block width; 0 if unknown 
   int32? width;
+
+  /// Block height; 0 if unknown 
   int32? height;
+
+  /// Block caption 
   PageBlockCaption? caption;
+
+  /// True, if the block must be full width 
   Bool? is_full_width;
+
+  /// True, if scrolling needs to be allowed
   Bool? allow_scrolling;
 
   PageBlockEmbedded({
@@ -768,16 +891,30 @@ class PageBlockEmbedded extends PageBlock {
     return map;
   }
 }
+
+/// An embedded post 
 class PageBlockEmbeddedPost extends PageBlock {
   String get tdType => 'pageBlockEmbeddedPost';
 
   String? extra;
   int? client_id;
+
+  /// Web page URL 
   string? url;
+
+  /// Post author 
   string? author;
+
+  /// Post author photo; may be null 
   Photo? author_photo;
+
+  /// Point in time (Unix timestamp) when the post was created; 0 if unknown 
   int32? date;
+
+  /// Post content 
   vector<PageBlock>? page_blocks;
+
+  /// Post caption
   PageBlockCaption? caption;
 
   PageBlockEmbeddedPost({
@@ -825,12 +962,18 @@ class PageBlockEmbeddedPost extends PageBlock {
     return map;
   }
 }
+
+/// A collage 
 class PageBlockCollage extends PageBlock {
   String get tdType => 'pageBlockCollage';
 
   String? extra;
   int? client_id;
+
+  /// Collage item contents 
   vector<PageBlock>? page_blocks;
+
+  /// Block caption
   PageBlockCaption? caption;
 
   PageBlockCollage({
@@ -866,12 +1009,18 @@ class PageBlockCollage extends PageBlock {
     return map;
   }
 }
+
+/// A slideshow 
 class PageBlockSlideshow extends PageBlock {
   String get tdType => 'pageBlockSlideshow';
 
   String? extra;
   int? client_id;
+
+  /// Slideshow item contents 
   vector<PageBlock>? page_blocks;
+
+  /// Block caption
   PageBlockCaption? caption;
 
   PageBlockSlideshow({
@@ -907,13 +1056,21 @@ class PageBlockSlideshow extends PageBlock {
     return map;
   }
 }
+
+/// A link to a chat 
 class PageBlockChatLink extends PageBlock {
   String get tdType => 'pageBlockChatLink';
 
   String? extra;
   int? client_id;
+
+  /// Chat title 
   string? title;
+
+  /// Chat photo; may be null 
   ChatPhotoInfo? photo;
+
+  /// Chat username by which all other information about the chat can be resolved
   string? username;
 
   PageBlockChatLink({
@@ -947,14 +1104,24 @@ class PageBlockChatLink extends PageBlock {
     return map;
   }
 }
+
+/// A table 
 class PageBlockTable extends PageBlock {
   String get tdType => 'pageBlockTable';
 
   String? extra;
   int? client_id;
+
+  /// Table caption 
   RichText? caption;
+
+  /// Table cells 
   vector<vector<PageBlockTableCell>>? cells;
+
+  /// True, if the table is bordered 
   Bool? is_bordered;
+
+  /// True, if the table is striped
   Bool? is_striped;
 
   PageBlockTable({
@@ -1000,13 +1167,21 @@ class PageBlockTable extends PageBlock {
     return map;
   }
 }
+
+/// A collapsible block 
 class PageBlockDetails extends PageBlock {
   String get tdType => 'pageBlockDetails';
 
   String? extra;
   int? client_id;
+
+  /// Always visible heading for the block 
   RichText? header;
+
+  /// Block contents 
   vector<PageBlock>? page_blocks;
+
+  /// True, if the block is open by default
   Bool? is_open;
 
   PageBlockDetails({
@@ -1045,12 +1220,18 @@ class PageBlockDetails extends PageBlock {
     return map;
   }
 }
+
+/// Related articles 
 class PageBlockRelatedArticles extends PageBlock {
   String get tdType => 'pageBlockRelatedArticles';
 
   String? extra;
   int? client_id;
+
+  /// Block header 
   RichText? header;
+
+  /// List of related articles
   vector<PageBlockRelatedArticle>? articles;
 
   PageBlockRelatedArticles({
@@ -1086,15 +1267,27 @@ class PageBlockRelatedArticles extends PageBlock {
     return map;
   }
 }
+
+/// A map 
 class PageBlockMap extends PageBlock {
   String get tdType => 'pageBlockMap';
 
   String? extra;
   int? client_id;
+
+  /// Location of the map center 
   Location? location;
+
+  /// Map zoom level 
   int32? zoom;
+
+  /// Map width 
   int32? width;
+
+  /// Map height 
   int32? height;
+
+  /// Block caption
   PageBlockCaption? caption;
 
   PageBlockMap({

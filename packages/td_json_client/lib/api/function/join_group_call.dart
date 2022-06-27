@@ -2,18 +2,34 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Joins an active group call. Returns join response payload for tgcalls
 class JoinGroupCall extends TdFunction {
   String get tdType => 'joinGroupCall';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
+
+  /// Identifier of a group call participant, which will be used to join the call; pass null to join as self; video chats only
   MessageSender? participant_id;
+
+  /// Caller audio channel synchronization source identifier; received from tgcalls
   int32? audio_source_id;
+
+  /// Group call join payload; received from tgcalls
   string? payload;
+
+  /// Pass true to join the call with muted microphone
   Bool? is_muted;
+
+  /// Pass true if the user's video is enabled
   Bool? is_my_video_enabled;
+
+  /// If non-empty, invite hash to be used to join the group call without being muted by administrators
   string? invite_hash;
 
   JoinGroupCall({

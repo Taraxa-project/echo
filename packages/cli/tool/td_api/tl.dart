@@ -5,12 +5,15 @@ enum ParseType { object, function }
 class Tl {}
 
 class TlObject extends TlDefinition {
-  TlObject({super.comments = const [], required super.constructor});
+  TlObject({
+    required super.comment,
+    required super.constructor,
+  });
 }
 
 class TlFunction extends TlDefinition {
   TlFunction({
-    super.comments = const [],
+    required super.comment,
     required super.constructor,
   });
   bool get isLeafClass => true;
@@ -21,10 +24,10 @@ class TlFunction extends TlDefinition {
 }
 
 class TlDefinition extends Tl {
-  List<TlComment> comments;
+  TlComment comment;
   TlConstructor constructor;
   TlDefinition({
-    this.comments = const [],
+    required this.comment,
     required this.constructor,
   });
   String get className => ReCase(constructor.name).pascalCase;
@@ -36,10 +39,32 @@ class TlDefinition extends Tl {
   bool get isFunction => false;
 }
 
-class TlComment extends Tl {
+class TlCommentValue extends Tl {
   String text;
-  TlComment({
+  TlCommentValue({
     required this.text,
+  });
+}
+
+class TlAbstractClassComment extends TlCommentValue {
+  TlAbstractClassComment({required super.text});
+}
+
+class TlClassComment extends TlCommentValue {
+  List<TlCommentValue> nextLines = [];
+  TlClassComment({
+    required super.text,
+    this.nextLines = const [],
+  });
+}
+
+class TlParamComment extends TlCommentValue {
+  String paramName;
+  List<TlCommentValue> nextLines = [];
+  TlParamComment({
+    required super.text,
+    required this.paramName,
+    this.nextLines = const [],
   });
 }
 
@@ -51,6 +76,17 @@ class TlConstructor extends Tl {
     required this.name,
     required this.params,
     required this.returnType,
+  });
+}
+
+class TlComment {
+  TlAbstractClassComment? abstractClassComment;
+  TlClassComment classComment;
+  List<TlParamComment> paramComments;
+  TlComment({
+    this.abstractClassComment,
+    required this.classComment,
+    this.paramComments = const [],
   });
 }
 

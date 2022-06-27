@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the slow mode delay of a chat. Available only for supergroups; requires can_restrict_members rights 
 class SetChatSlowModeDelay extends TdFunction {
   String get tdType => 'setChatSlowModeDelay';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New slow mode delay for the chat, in seconds; must be one of 0, 10, 30, 60, 300, 900, 3600
   int32? slow_mode_delay;
 
   SetChatSlowModeDelay({

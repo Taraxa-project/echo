@@ -2,12 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/text_entity.dart';
 
+
+/// A text with some entities 
 class FormattedText extends TdObject {
   String get tdType => 'formattedText';
 
   String? extra;
   int? client_id;
+
+  /// The text 
   string? text;
+
+  /// Entities contained in the text. Entities can be nested, but must not mutually intersect with each other.
+  /// Pre, Code and PreCode entities can't contain other entities. Bold, Italic, Underline, Strikethrough, and Spoiler entities can contain and to be contained in all other entities. All other entities can't contain each other
   vector<TextEntity>? entities;
 
   FormattedText({

@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes a file from the file download list 
 class RemoveFileFromDownloads extends TdFunction {
   String get tdType => 'removeFileFromDownloads';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the downloaded file 
   int32? file_id;
+
+  /// Pass true to delete the file from the TDLib file cache
   Bool? delete_from_cache;
 
   RemoveFileFromDownloads({

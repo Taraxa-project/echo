@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns a globally unique push notification subscription identifier for identification of an account, which has received a push notification. Can be called synchronously 
 class GetPushReceiverId extends TdFunction {
   String get tdType => 'getPushReceiverId';
   String get tdReturnType => 'PushReceiverId';
 
   String? extra;
   int? client_id;
+
+  /// JSON-encoded push notification payload
   string? payload;
 
   GetPushReceiverId({

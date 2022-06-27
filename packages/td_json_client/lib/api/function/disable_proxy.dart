@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Disables the currently enabled proxy. Can be called before authorization
 class DisableProxy extends TdFunction {
   String get tdType => 'disableProxy';
   String get tdReturnType => 'Ok';

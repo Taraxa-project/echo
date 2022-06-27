@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns auto-download settings presets for the current user
 class GetAutoDownloadSettingsPresets extends TdFunction {
   String get tdType => 'getAutoDownloadSettingsPresets';
   String get tdReturnType => 'AutoDownloadSettingsPresets';

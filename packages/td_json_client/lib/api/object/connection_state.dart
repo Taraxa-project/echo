@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the current state of the connection to Telegram servers
 abstract class ConnectionState extends TdObject {}
 
+
+/// Currently waiting for the network to become available. Use setNetworkType to change the available network type
 class ConnectionStateWaitingForNetwork extends ConnectionState {
   String get tdType => 'connectionStateWaitingForNetwork';
 
@@ -30,6 +33,8 @@ class ConnectionStateWaitingForNetwork extends ConnectionState {
     return map;
   }
 }
+
+/// Currently establishing a connection with a proxy server
 class ConnectionStateConnectingToProxy extends ConnectionState {
   String get tdType => 'connectionStateConnectingToProxy';
 
@@ -58,6 +63,8 @@ class ConnectionStateConnectingToProxy extends ConnectionState {
     return map;
   }
 }
+
+/// Currently establishing a connection to the Telegram servers
 class ConnectionStateConnecting extends ConnectionState {
   String get tdType => 'connectionStateConnecting';
 
@@ -86,6 +93,8 @@ class ConnectionStateConnecting extends ConnectionState {
     return map;
   }
 }
+
+/// Downloading data received while the application was offline
 class ConnectionStateUpdating extends ConnectionState {
   String get tdType => 'connectionStateUpdating';
 
@@ -114,6 +123,8 @@ class ConnectionStateUpdating extends ConnectionState {
     return map;
   }
 }
+
+/// There is a working connection to the Telegram servers
 class ConnectionStateReady extends ConnectionState {
   String get tdType => 'connectionStateReady';
 

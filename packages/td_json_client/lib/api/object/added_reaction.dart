@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Represents a reaction applied to a message 
 class AddedReaction extends TdObject {
   String get tdType => 'addedReaction';
 
   String? extra;
   int? client_id;
+
+  /// Text representation of the reaction 
   string? reaction;
+
+  /// Identifier of the chat member, applied the reaction
   MessageSender? sender_id;
 
   AddedReaction({

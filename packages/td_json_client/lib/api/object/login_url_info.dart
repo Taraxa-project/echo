@@ -1,13 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Contains information about an inline button of type inlineKeyboardButtonTypeLoginUrl
 abstract class LoginUrlInfo extends TdObject {}
 
+
+/// An HTTP url needs to be open 
 class LoginUrlInfoOpen extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoOpen';
 
   String? extra;
   int? client_id;
+
+  /// The URL to open 
   string? url;
+
+  /// True, if there is no need to show an ordinary open URL confirm
   Bool? skip_confirm;
 
   LoginUrlInfoOpen({
@@ -38,14 +45,24 @@ class LoginUrlInfoOpen extends LoginUrlInfo {
     return map;
   }
 }
+
+/// An authorization confirmation dialog needs to be shown to the user 
 class LoginUrlInfoRequestConfirmation extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoRequestConfirmation';
 
   String? extra;
   int? client_id;
+
+  /// An HTTP URL to be opened 
   string? url;
+
+  /// A domain of the URL
   string? domain;
+
+  /// User identifier of a bot linked with the website 
   int53? bot_user_id;
+
+  /// True, if the user needs to be requested to give the permission to the bot to send them messages
   Bool? request_write_access;
 
   LoginUrlInfoRequestConfirmation({

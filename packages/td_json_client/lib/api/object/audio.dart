@@ -4,18 +4,36 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
+
+/// Describes an audio file. Audio is usually in MP3 or M4A format 
 class Audio extends TdObject {
   String get tdType => 'audio';
 
   String? extra;
   int? client_id;
+
+  /// Duration of the audio, in seconds; as defined by the sender 
   int32? duration;
+
+  /// Title of the audio; as defined by the sender 
   string? title;
+
+  /// Performer of the audio; as defined by the sender
   string? performer;
+
+  /// Original name of the file; as defined by the sender 
   string? file_name;
+
+  /// The MIME type of the file; as defined by the sender 
   string? mime_type;
+
+  /// The minithumbnail of the album cover; may be null
   Minithumbnail? album_cover_minithumbnail;
+
+  /// The thumbnail of the album cover in JPEG format; as defined by the sender. The full size thumbnail is supposed to be extracted from the downloaded file; may be null 
   Thumbnail? album_cover_thumbnail;
+
+  /// File containing the audio
   File? audio;
 
   Audio({

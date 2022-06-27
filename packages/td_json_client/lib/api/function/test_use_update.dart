@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Does nothing and ensures that the Update object is used; for testing only. This is an offline method. Can be called before authorization
 class TestUseUpdate extends TdFunction {
   String get tdType => 'testUseUpdate';
   String get tdReturnType => 'Update';

@@ -3,14 +3,22 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/chat_member_status.dart';
 
+
+/// Changes the status of a chat member, needs appropriate privileges. This function is currently not suitable for transferring chat ownership; use transferChatOwnership instead. Use addChatMember or banChatMember if some additional parameters needs to be passed
 class SetChatMemberStatus extends TdFunction {
   String get tdType => 'setChatMemberStatus';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Member identifier. Chats can be only banned and unbanned in supergroups and channels 
   MessageSender? member_id;
+
+  /// The new status of the member in the chat
   ChatMemberStatus? status;
 
   SetChatMemberStatus({

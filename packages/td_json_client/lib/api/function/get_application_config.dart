@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns application config, provided by the server. Can be called before authorization
 class GetApplicationConfig extends TdFunction {
   String get tdType => 'getApplicationConfig';
   String get tdReturnType => 'JsonValue';

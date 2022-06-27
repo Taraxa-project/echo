@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a group call 
 class GetGroupCall extends TdFunction {
   String get tdType => 'getGroupCall';
   String get tdReturnType => 'GroupCall';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
 
   GetGroupCall({

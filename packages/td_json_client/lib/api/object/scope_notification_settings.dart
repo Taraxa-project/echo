@@ -1,14 +1,26 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains information about notification settings for several chats
 class ScopeNotificationSettings extends TdObject {
   String get tdType => 'scopeNotificationSettings';
 
   String? extra;
   int? client_id;
+
+  /// Time left before notifications will be unmuted, in seconds
   int32? mute_for;
+
+  /// Identifier of the notification sound to be played; 0 if sound is disabled
   int64? sound_id;
+
+  /// True, if message content must be displayed in notifications
   Bool? show_preview;
+
+  /// True, if notifications for incoming pinned messages will be created as for an ordinary unread message
   Bool? disable_pinned_message_notifications;
+
+  /// True, if notifications for messages with mentions will be created as for an ordinary unread message
   Bool? disable_mention_notifications;
 
   ScopeNotificationSettings({

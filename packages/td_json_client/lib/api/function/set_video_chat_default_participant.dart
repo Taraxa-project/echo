@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
+
+/// Changes default participant identifier, on whose behalf a video chat in the chat will be joined 
 class SetVideoChatDefaultParticipant extends TdFunction {
   String get tdType => 'setVideoChatDefaultParticipant';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Default group call participant identifier to join the video chats
   MessageSender? default_participant_id;
 
   SetVideoChatDefaultParticipant({

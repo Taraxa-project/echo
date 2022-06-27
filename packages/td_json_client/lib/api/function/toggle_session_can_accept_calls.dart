@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Toggles whether a session can accept incoming calls 
 class ToggleSessionCanAcceptCalls extends TdFunction {
   String get tdType => 'toggleSessionCanAcceptCalls';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Session identifier 
   int64? session_id;
+
+  /// Pass true to allow accepting incoming calls by the session; pass false otherwise
   Bool? can_accept_calls;
 
   ToggleSessionCanAcceptCalls({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns an HTTP URL which can be used to automatically log in to the translation platform and suggest new emoji replacements. The URL will be valid for 30 seconds after generation 
 class GetEmojiSuggestionsUrl extends TdFunction {
   String get tdType => 'getEmojiSuggestionsUrl';
   String get tdReturnType => 'HttpUrl';
 
   String? extra;
   int? client_id;
+
+  /// Language code for which the emoji replacements will be suggested
   string? language_code;
 
   GetEmojiSuggestionsUrl({

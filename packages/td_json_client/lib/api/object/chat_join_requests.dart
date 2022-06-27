@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_join_request.dart';
 
+
+/// Contains a list of requests to join a chat 
 class ChatJoinRequests extends TdObject {
   String get tdType => 'chatJoinRequests';
 
   String? extra;
   int? client_id;
+
+  /// Approximate total number of requests found 
   int32? total_count;
+
+  /// List of the requests
   vector<ChatJoinRequest>? requests;
 
   ChatJoinRequests({

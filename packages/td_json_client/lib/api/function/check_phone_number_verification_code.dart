@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks the phone number verification code for Telegram Passport 
 class CheckPhoneNumberVerificationCode extends TdFunction {
   String get tdType => 'checkPhoneNumberVerificationCode';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Verification code to check
   string? code;
 
   CheckPhoneNumberVerificationCode({

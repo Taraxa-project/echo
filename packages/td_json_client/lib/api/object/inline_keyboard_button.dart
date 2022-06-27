@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/inline_keyboard_button_type.dart';
 
+
+/// Represents a single button in an inline keyboard 
 class InlineKeyboardButton extends TdObject {
   String get tdType => 'inlineKeyboardButton';
 
   String? extra;
   int? client_id;
+
+  /// Text of the button 
   string? text;
+
+  /// Type of the button
   InlineKeyboardButtonType? type;
 
   InlineKeyboardButton({

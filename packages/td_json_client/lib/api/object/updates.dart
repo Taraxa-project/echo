@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/update.dart';
 
+
+/// Contains a list of updates 
 class Updates extends TdObject {
   String get tdType => 'updates';
 
   String? extra;
   int? client_id;
+
+  /// List of updates
   vector<Update>? updates;
 
   Updates({

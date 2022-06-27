@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a chat filter by its identifier 
 class GetChatFilter extends TdFunction {
   String get tdType => 'getChatFilter';
   String get tdReturnType => 'ChatFilter';
 
   String? extra;
   int? client_id;
+
+  /// Chat filter identifier
   int32? chat_filter_id;
 
   GetChatFilter({

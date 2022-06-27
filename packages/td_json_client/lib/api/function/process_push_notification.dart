@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Handles a push notification. Returns error with code 406 if the push notification is not supported and connection to the server is required to fetch new data. Can be called before authorization
 class ProcessPushNotification extends TdFunction {
   String get tdType => 'processPushNotification';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// JSON-encoded push notification payload with all fields sent by the server, and "google.sent_time" and "google.notification.sound" fields added
   string? payload;
 
   ProcessPushNotification({

@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes a stream to which TDLib internal log is written
 abstract class LogStream extends TdObject {}
 
+
+/// The log is written to stderr or an OS specific log
 class LogStreamDefault extends LogStream {
   String get tdType => 'logStreamDefault';
 
@@ -30,13 +33,21 @@ class LogStreamDefault extends LogStream {
     return map;
   }
 }
+
+/// The log is written to a file
 class LogStreamFile extends LogStream {
   String get tdType => 'logStreamFile';
 
   String? extra;
   int? client_id;
+
+  /// Path to the file to where the internal TDLib log will be written
   string? path;
+
+  /// The maximum size of the file to where the internal TDLib log is written before the file will automatically be rotated, in bytes
   int53? max_file_size;
+
+  /// Pass true to additionally redirect stderr to the log file. Ignored on Windows
   Bool? redirect_stderr;
 
   LogStreamFile({
@@ -70,6 +81,8 @@ class LogStreamFile extends LogStream {
     return map;
   }
 }
+
+/// The log is written nowhere
 class LogStreamEmpty extends LogStream {
   String get tdType => 'logStreamEmpty';
 

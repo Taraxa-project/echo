@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns chat lists to which the chat can be added. This is an offline request 
 class GetChatListsToAddChat extends TdFunction {
   String get tdType => 'getChatListsToAddChat';
   String get tdReturnType => 'ChatLists';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   GetChatListsToAddChat({

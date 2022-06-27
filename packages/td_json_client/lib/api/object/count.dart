@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains a counter 
 class Count extends TdObject {
   String get tdType => 'count';
 
   String? extra;
   int? client_id;
+
+  /// Count
   int32? count;
 
   Count({

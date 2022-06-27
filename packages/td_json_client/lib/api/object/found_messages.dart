@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message.dart';
 
+
+/// Contains a list of messages found by a search 
 class FoundMessages extends TdObject {
   String get tdType => 'foundMessages';
 
   String? extra;
   int? client_id;
+
+  /// Approximate total number of messages found; -1 if unknown 
   int32? total_count;
+
+  /// List of messages 
   vector<Message>? messages;
+
+  /// The offset for the next request. If empty, there are no more results
   string? next_offset;
 
   FoundMessages({

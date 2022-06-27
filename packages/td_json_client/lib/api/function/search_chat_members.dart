@@ -2,15 +2,25 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_members_filter.dart';
 
+
+/// Searches for a specified query in the first name, last name and username of the members of a specified chat. Requires administrator rights in channels
 class SearchChatMembers extends TdFunction {
   String get tdType => 'searchChatMembers';
   String get tdReturnType => 'ChatMembers';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// Query to search for
   string? query;
+
+  /// The maximum number of users to be returned; up to 200
   int32? limit;
+
+  /// The type of users to search for; pass null to search among all chat members
   ChatMembersFilter? filter;
 
   SearchChatMembers({

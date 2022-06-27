@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a secret chat by its identifier. This is an offline request 
 class GetSecretChat extends TdFunction {
   String get tdType => 'getSecretChat';
   String get tdReturnType => 'SecretChat';
 
   String? extra;
   int? client_id;
+
+  /// Secret chat identifier
   int32? secret_chat_id;
 
   GetSecretChat({

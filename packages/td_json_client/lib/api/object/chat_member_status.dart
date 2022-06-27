@@ -3,15 +3,24 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_administrator_rights.dart';
 import 'package:td_json_client/api/object/chat_permissions.dart';
 
+/// Provides information about the status of a member in a chat
 abstract class ChatMemberStatus extends TdObject {}
 
+
+/// The user is the owner of the chat and has all the administrator privileges
 class ChatMemberStatusCreator extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusCreator';
 
   String? extra;
   int? client_id;
+
+  /// A custom title of the owner; 0-16 characters without emojis; applicable to supergroups only
   string? custom_title;
+
+  /// True, if the creator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only
   Bool? is_anonymous;
+
+  /// True, if the user is a member of the chat
   Bool? is_member;
 
   ChatMemberStatusCreator({
@@ -45,13 +54,21 @@ class ChatMemberStatusCreator extends ChatMemberStatus {
     return map;
   }
 }
+
+/// The user is a member of the chat and has some additional privileges. In basic groups, administrators can edit and delete messages sent by others, add new members, ban unprivileged members, and manage video chats. In supergroups and channels, there are more detailed options for administrator privileges
 class ChatMemberStatusAdministrator extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusAdministrator';
 
   String? extra;
   int? client_id;
+
+  /// A custom title of the administrator; 0-16 characters without emojis; applicable to supergroups only
   string? custom_title;
+
+  /// True, if the current user can edit the administrator privileges for the called user
   Bool? can_be_edited;
+
+  /// Rights of the administrator
   ChatAdministratorRights? rights;
 
   ChatMemberStatusAdministrator({
@@ -85,6 +102,8 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
     return map;
   }
 }
+
+/// The user is a member of the chat, without any additional privileges or restrictions
 class ChatMemberStatusMember extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusMember';
 
@@ -113,13 +132,21 @@ class ChatMemberStatusMember extends ChatMemberStatus {
     return map;
   }
 }
+
+/// The user is under certain restrictions in the chat. Not supported in basic groups and channels
 class ChatMemberStatusRestricted extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusRestricted';
 
   String? extra;
   int? client_id;
+
+  /// True, if the user is a member of the chat
   Bool? is_member;
+
+  /// Point in time (Unix timestamp) when restrictions will be lifted from the user; 0 if never. If the user is restricted for more than 366 days or for less than 30 seconds from the current time, the user is considered to be restricted forever
   int32? restricted_until_date;
+
+  /// User permissions in the chat
   ChatPermissions? permissions;
 
   ChatMemberStatusRestricted({
@@ -153,6 +180,8 @@ class ChatMemberStatusRestricted extends ChatMemberStatus {
     return map;
   }
 }
+
+/// The user or the chat is not a chat member
 class ChatMemberStatusLeft extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusLeft';
 
@@ -181,11 +210,15 @@ class ChatMemberStatusLeft extends ChatMemberStatus {
     return map;
   }
 }
+
+/// The user or the chat was banned (and hence is not a member of the chat). Implies the user can't return to the chat, view messages, or be used as a participant identifier to join a video chat of the chat
 class ChatMemberStatusBanned extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusBanned';
 
   String? extra;
   int? client_id;
+
+  /// Point in time (Unix timestamp) when the user will be unbanned; 0 if never. If the user is banned for more than 366 days or for less than 30 seconds from the current time, the user is considered to be banned forever. Always 0 in basic groups
   int32? banned_until_date;
 
   ChatMemberStatusBanned({

@@ -2,15 +2,27 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_forward_origin.dart';
 
+
+/// Contains information about a forwarded message
 class MessageForwardInfo extends TdObject {
   String get tdType => 'messageForwardInfo';
 
   String? extra;
   int? client_id;
+
+  /// Origin of a forwarded message
   MessageForwardOrigin? origin;
+
+  /// Point in time (Unix timestamp) when the message was originally sent
   int32? date;
+
+  /// The type of a public service announcement for the forwarded message
   string? public_service_announcement_type;
+
+  /// For messages forwarded to the chat with the current user (Saved Messages), to the Replies bot chat, or to the channel's discussion group, the identifier of the chat from which the message was forwarded last time; 0 if unknown
   int53? from_chat_id;
+
+  /// For messages forwarded to the chat with the current user (Saved Messages), to the Replies bot chat, or to the channel's discussion group, the identifier of the original message from which the new message was forwarded last time; 0 if unknown
   int53? from_message_id;
 
   MessageForwardInfo({

@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Deletes saved credentials for all payment provider bots
 class DeleteSavedCredentials extends TdFunction {
   String get tdType => 'deleteSavedCredentials';
   String get tdReturnType => 'Ok';

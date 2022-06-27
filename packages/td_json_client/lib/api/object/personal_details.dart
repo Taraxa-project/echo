@@ -2,20 +2,42 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/date.dart';
 
+
+/// Contains the user's personal details
 class PersonalDetails extends TdObject {
   String get tdType => 'personalDetails';
 
   String? extra;
   int? client_id;
+
+  /// First name of the user written in English; 1-255 characters 
   string? first_name;
+
+  /// Middle name of the user written in English; 0-255 characters 
   string? middle_name;
+
+  /// Last name of the user written in English; 1-255 characters
   string? last_name;
+
+  /// Native first name of the user; 1-255 characters 
   string? native_first_name;
+
+  /// Native middle name of the user; 0-255 characters 
   string? native_middle_name;
+
+  /// Native last name of the user; 1-255 characters
   string? native_last_name;
+
+  /// Birthdate of the user 
   Date? birthdate;
+
+  /// Gender of the user, "male" or "female" 
   string? gender;
+
+  /// A two-letter ISO 3166-1 alpha-2 country code of the user's country 
   string? country_code;
+
+  /// A two-letter ISO 3166-1 alpha-2 country code of the user's residence country
   string? residence_country_code;
 
   PersonalDetails({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the value of an option by its name. (Check the list of available options on https://core.telegram.org/tdlib/options.) Can be called before authorization
 class GetOption extends TdFunction {
   String get tdType => 'getOption';
   String get tdReturnType => 'OptionValue';
 
   String? extra;
   int? client_id;
+
+  /// The name of the option
   string? name;
 
   GetOption({

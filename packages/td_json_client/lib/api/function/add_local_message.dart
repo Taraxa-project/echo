@@ -3,16 +3,28 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/input_message_content.dart';
 
+
+/// Adds a local message to a chat. The message is persistent across application restarts only if the message database is used. Returns the added message
 class AddLocalMessage extends TdFunction {
   String get tdType => 'addLocalMessage';
   String get tdReturnType => 'Message';
 
   String? extra;
   int? client_id;
+
+  /// Target chat
   int53? chat_id;
+
+  /// Identifier of the sender of the message
   MessageSender? sender_id;
+
+  /// Identifier of the replied message; 0 if none
   int53? reply_to_message_id;
+
+  /// Pass true to disable notification for the message
   Bool? disable_notification;
+
+  /// The content of the message to be added
   InputMessageContent? input_message_content;
 
   AddLocalMessage({

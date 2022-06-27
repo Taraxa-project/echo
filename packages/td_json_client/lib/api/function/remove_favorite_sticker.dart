@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+
+/// Removes a sticker from the list of favorite stickers 
 class RemoveFavoriteSticker extends TdFunction {
   String get tdType => 'removeFavoriteSticker';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Sticker file to delete from the list
   InputFile? sticker;
 
   RemoveFavoriteSticker({

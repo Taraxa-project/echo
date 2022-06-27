@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes a horizontal alignment of a table cell content
 abstract class PageBlockHorizontalAlignment extends TdObject {}
 
+
+/// The content must be left-aligned
 class PageBlockHorizontalAlignmentLeft extends PageBlockHorizontalAlignment {
   String get tdType => 'pageBlockHorizontalAlignmentLeft';
 
@@ -30,6 +33,8 @@ class PageBlockHorizontalAlignmentLeft extends PageBlockHorizontalAlignment {
     return map;
   }
 }
+
+/// The content must be center-aligned
 class PageBlockHorizontalAlignmentCenter extends PageBlockHorizontalAlignment {
   String get tdType => 'pageBlockHorizontalAlignmentCenter';
 
@@ -58,6 +63,8 @@ class PageBlockHorizontalAlignmentCenter extends PageBlockHorizontalAlignment {
     return map;
   }
 }
+
+/// The content must be right-aligned
 class PageBlockHorizontalAlignmentRight extends PageBlockHorizontalAlignment {
   String get tdType => 'pageBlockHorizontalAlignmentRight';
 

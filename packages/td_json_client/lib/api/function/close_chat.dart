@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Informs TDLib that the chat is closed by the user. Many useful activities depend on the chat being opened or closed 
 class CloseChat extends TdFunction {
   String get tdType => 'closeChat';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   CloseChat({

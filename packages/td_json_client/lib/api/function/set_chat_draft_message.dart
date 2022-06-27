@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/draft_message.dart';
 
+
+/// Changes the draft message in a chat 
 class SetChatDraftMessage extends TdFunction {
   String get tdType => 'setChatDraftMessage';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// If not 0, a message thread identifier in which the draft was changed 
   int53? message_thread_id;
+
+  /// New draft message; pass null to remove the draft
   DraftMessage? draft_message;
 
   SetChatDraftMessage({

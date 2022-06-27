@@ -4,13 +4,18 @@ import 'package:td_json_client/api/object/message.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/push_message_content.dart';
 
+/// Contains detailed information about a notification
 abstract class NotificationType extends TdObject {}
 
+
+/// New message was received 
 class NotificationTypeNewMessage extends NotificationType {
   String get tdType => 'notificationTypeNewMessage';
 
   String? extra;
   int? client_id;
+
+  /// The message
   Message? message;
 
   NotificationTypeNewMessage({
@@ -38,6 +43,8 @@ class NotificationTypeNewMessage extends NotificationType {
     return map;
   }
 }
+
+/// New secret chat was created
 class NotificationTypeNewSecretChat extends NotificationType {
   String get tdType => 'notificationTypeNewSecretChat';
 
@@ -66,11 +73,15 @@ class NotificationTypeNewSecretChat extends NotificationType {
     return map;
   }
 }
+
+/// New call was received 
 class NotificationTypeNewCall extends NotificationType {
   String get tdType => 'notificationTypeNewCall';
 
   String? extra;
   int? client_id;
+
+  /// Call identifier
   int32? call_id;
 
   NotificationTypeNewCall({
@@ -98,15 +109,27 @@ class NotificationTypeNewCall extends NotificationType {
     return map;
   }
 }
+
+/// New message was received through a push notification
 class NotificationTypeNewPushMessage extends NotificationType {
   String get tdType => 'notificationTypeNewPushMessage';
 
   String? extra;
   int? client_id;
+
+  /// The message identifier. The message will not be available in the chat history, but the ID can be used in viewMessages, or as reply_to_message_id
   int53? message_id;
+
+  /// Identifier of the sender of the message. Corresponding user or chat may be inaccessible
   MessageSender? sender_id;
+
+  /// Name of the sender
   string? sender_name;
+
+  /// True, if the message is outgoing
   Bool? is_outgoing;
+
+  /// Push message content
   PushMessageContent? content;
 
   NotificationTypeNewPushMessage({

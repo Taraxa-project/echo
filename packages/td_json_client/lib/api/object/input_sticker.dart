@@ -3,13 +3,21 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 import 'package:td_json_client/api/object/sticker_type.dart';
 
+
+/// A sticker to be added to a sticker set
 class InputSticker extends TdObject {
   String get tdType => 'inputSticker';
 
   String? extra;
   int? client_id;
+
+  /// File with the sticker; must fit in a 512x512 square. For WEBP stickers and masks the file must be in PNG format, which will be converted to WEBP server-side. Otherwise, the file must be local or uploaded within a week. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
   InputFile? sticker;
+
+  /// Emojis corresponding to the sticker
   string? emojis;
+
+  /// Sticker type
   StickerType? type;
 
   InputSticker({

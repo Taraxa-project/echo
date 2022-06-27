@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/dated_file.dart';
 
+
+/// A personal document, containing some information about a user 
 class PersonalDocument extends TdObject {
   String get tdType => 'personalDocument';
 
   String? extra;
   int? client_id;
+
+  /// List of files containing the pages of the document 
   vector<DatedFile>? files;
+
+  /// List of files containing a certified English translation of the document
   vector<DatedFile>? translation;
 
   PersonalDocument({

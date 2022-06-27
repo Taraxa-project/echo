@@ -4,15 +4,27 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
+
+/// Describes a video note. The video must be equal in width and height, cropped to a circle, and stored in MPEG4 format 
 class VideoNote extends TdObject {
   String get tdType => 'videoNote';
 
   String? extra;
   int? client_id;
+
+  /// Duration of the video, in seconds; as defined by the sender
   int32? duration;
+
+  /// Video width and height; as defined by the sender 
   int32? length;
+
+  /// Video minithumbnail; may be null
   Minithumbnail? minithumbnail;
+
+  /// Video thumbnail in JPEG format; as defined by the sender; may be null 
   Thumbnail? thumbnail;
+
+  /// File containing the video
   File? video;
 
   VideoNote({

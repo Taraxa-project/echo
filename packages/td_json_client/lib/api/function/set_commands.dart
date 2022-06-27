@@ -3,14 +3,22 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/bot_command_scope.dart';
 import 'package:td_json_client/api/object/bot_command.dart';
 
+
+/// Sets the list of commands supported by the bot for the given user scope and language; for bots only
 class SetCommands extends TdFunction {
   String get tdType => 'setCommands';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The scope to which the commands are relevant; pass null to change commands in the default bot command scope
   BotCommandScope? scope;
+
+  /// A two-letter ISO 639-1 language code. If empty, the commands will be applied to all users from the given scope, for which language there are no dedicated commands
   string? language_code;
+
+  /// List of the bot's commands
   vector<BotCommand>? commands;
 
   SetCommands({

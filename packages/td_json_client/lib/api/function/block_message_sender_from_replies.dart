@@ -1,14 +1,24 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Blocks an original sender of a message in the Replies chat
 class BlockMessageSenderFromReplies extends TdFunction {
   String get tdType => 'blockMessageSenderFromReplies';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The identifier of an incoming message in the Replies chat
   int53? message_id;
+
+  /// Pass true to delete the message
   Bool? delete_message;
+
+  /// Pass true to delete all messages from the same sender
   Bool? delete_all_messages;
+
+  /// Pass true to report the sender to the Telegram moderators
   Bool? report_spam;
 
   BlockMessageSenderFromReplies({

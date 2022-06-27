@@ -1,15 +1,27 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns reactions added for a message, along with their sender
 class GetMessageAddedReactions extends TdFunction {
   String get tdType => 'getMessageAddedReactions';
   String get tdReturnType => 'AddedReactions';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to which the message belongs
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
+
+  /// If non-empty, only added reactions with the specified text representation will be returned
   string? reaction;
+
+  /// Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
   string? offset;
+
+  /// The maximum number of reactions to be returned; must be positive and can't be greater than 100
   int32? limit;
 
   GetMessageAddedReactions({

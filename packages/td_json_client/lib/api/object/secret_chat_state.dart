@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the current secret chat state
 abstract class SecretChatState extends TdObject {}
 
+
+/// The secret chat is not yet created; waiting for the other user to get online
 class SecretChatStatePending extends SecretChatState {
   String get tdType => 'secretChatStatePending';
 
@@ -30,6 +33,8 @@ class SecretChatStatePending extends SecretChatState {
     return map;
   }
 }
+
+/// The secret chat is ready to use
 class SecretChatStateReady extends SecretChatState {
   String get tdType => 'secretChatStateReady';
 
@@ -58,6 +63,8 @@ class SecretChatStateReady extends SecretChatState {
     return map;
   }
 }
+
+/// The secret chat is closed
 class SecretChatStateClosed extends SecretChatState {
   String get tdType => 'secretChatStateClosed';
 

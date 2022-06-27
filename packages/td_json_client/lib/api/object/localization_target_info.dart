@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/language_pack_info.dart';
 
+
+/// Contains information about the current localization target 
 class LocalizationTargetInfo extends TdObject {
   String get tdType => 'localizationTargetInfo';
 
   String? extra;
   int? client_id;
+
+  /// List of available language packs for this application
   vector<LanguagePackInfo>? language_packs;
 
   LocalizationTargetInfo({

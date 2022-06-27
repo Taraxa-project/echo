@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the last time the user was online
 abstract class UserStatus extends TdObject {}
 
+
+/// The user status was never changed
 class UserStatusEmpty extends UserStatus {
   String get tdType => 'userStatusEmpty';
 
@@ -30,11 +33,15 @@ class UserStatusEmpty extends UserStatus {
     return map;
   }
 }
+
+/// The user is online 
 class UserStatusOnline extends UserStatus {
   String get tdType => 'userStatusOnline';
 
   String? extra;
   int? client_id;
+
+  /// Point in time (Unix timestamp) when the user's online status will expire
   int32? expires;
 
   UserStatusOnline({
@@ -62,11 +69,15 @@ class UserStatusOnline extends UserStatus {
     return map;
   }
 }
+
+/// The user is offline 
 class UserStatusOffline extends UserStatus {
   String get tdType => 'userStatusOffline';
 
   String? extra;
   int? client_id;
+
+  /// Point in time (Unix timestamp) when the user was last online
   int32? was_online;
 
   UserStatusOffline({
@@ -94,6 +105,8 @@ class UserStatusOffline extends UserStatus {
     return map;
   }
 }
+
+/// The user was online recently
 class UserStatusRecently extends UserStatus {
   String get tdType => 'userStatusRecently';
 
@@ -122,6 +135,8 @@ class UserStatusRecently extends UserStatus {
     return map;
   }
 }
+
+/// The user is offline, but was online last week
 class UserStatusLastWeek extends UserStatus {
   String get tdType => 'userStatusLastWeek';
 
@@ -150,6 +165,8 @@ class UserStatusLastWeek extends UserStatus {
     return map;
   }
 }
+
+/// The user is offline, but was online last month
 class UserStatusLastMonth extends UserStatus {
   String get tdType => 'userStatusLastMonth';
 

@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns stickers from the installed sticker sets that correspond to a given emoji. If the emoji is non-empty, favorite and recently used stickers may also be returned 
 class GetStickers extends TdFunction {
   String get tdType => 'getStickers';
   String get tdReturnType => 'Stickers';
 
   String? extra;
   int? client_id;
+
+  /// String representation of emoji. If empty, returns all known installed stickers 
   string? emoji;
+
+  /// The maximum number of stickers to be returned
   int32? limit;
 
   GetStickers({

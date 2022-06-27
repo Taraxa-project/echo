@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns up to 20 recently used inline bots in the order of their last usage
 class GetRecentInlineBots extends TdFunction {
   String get tdType => 'getRecentInlineBots';
   String get tdReturnType => 'Users';

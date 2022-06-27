@@ -3,14 +3,24 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/chat_event_action.dart';
 
+
+/// Represents a chat event 
 class ChatEvent extends TdObject {
   String get tdType => 'chatEvent';
 
   String? extra;
   int? client_id;
+
+  /// Chat event identifier 
   int64? id;
+
+  /// Point in time (Unix timestamp) when the event happened 
   int32? date;
+
+  /// Identifier of the user or chat who performed the action 
   MessageSender? member_id;
+
+  /// The action
   ChatEventAction? action;
 
   ChatEvent({

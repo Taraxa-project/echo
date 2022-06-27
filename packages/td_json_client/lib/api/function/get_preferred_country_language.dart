@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns an IETF language tag of the language preferred in the country, which must be used to fill native fields in Telegram Passport personal details. Returns a 404 error if unknown 
 class GetPreferredCountryLanguage extends TdFunction {
   String get tdType => 'getPreferredCountryLanguage';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// A two-letter ISO 3166-1 alpha-2 country code
   string? country_code;
 
   GetPreferredCountryLanguage({

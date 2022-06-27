@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns list of saved notification sounds. If a sound isn't in the list, then default sound needs to be used
 class GetSavedNotificationSounds extends TdFunction {
   String get tdType => 'getSavedNotificationSounds';
   String get tdReturnType => 'NotificationSounds';

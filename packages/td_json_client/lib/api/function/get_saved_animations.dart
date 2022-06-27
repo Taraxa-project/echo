@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns saved animations
 class GetSavedAnimations extends TdFunction {
   String get tdType => 'getSavedAnimations';
   String get tdReturnType => 'Animations';

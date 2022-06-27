@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Shares the phone number of the current user with a mutual contact. Supposed to be called when the user clicks on chatActionBarSharePhoneNumber 
 class SharePhoneNumber extends TdFunction {
   String get tdType => 'sharePhoneNumber';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the user with whom to share the phone number. The user must be a mutual contact
   int53? user_id;
 
   SharePhoneNumber({

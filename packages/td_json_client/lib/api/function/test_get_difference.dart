@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Forces an updates.getDifference call to the Telegram servers; for testing only
 class TestGetDifference extends TdFunction {
   String get tdType => 'testGetDifference';
   String get tdReturnType => 'Ok';

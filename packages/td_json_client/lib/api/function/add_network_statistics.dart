@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/network_statistics_entry.dart';
 
+
+/// Adds the specified data to data usage statistics. Can be called before authorization 
 class AddNetworkStatistics extends TdFunction {
   String get tdType => 'addNetworkStatistics';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The network statistics entry with the data to be added to statistics
   NetworkStatisticsEntry? entry;
 
   AddNetworkStatistics({

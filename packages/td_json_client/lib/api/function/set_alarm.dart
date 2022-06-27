@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Succeeds after a specified amount of time has passed. Can be called before initialization 
 class SetAlarm extends TdFunction {
   String get tdType => 'setAlarm';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Number of seconds before the function returns
   double? seconds;
 
   SetAlarm({

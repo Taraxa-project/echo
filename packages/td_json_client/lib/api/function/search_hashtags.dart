@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for recently used hashtags by their prefix 
 class SearchHashtags extends TdFunction {
   String get tdType => 'searchHashtags';
   String get tdReturnType => 'Hashtags';
 
   String? extra;
   int? client_id;
+
+  /// Hashtag prefix to search for 
   string? prefix;
+
+  /// The maximum number of hashtags to be returned
   int32? limit;
 
   SearchHashtags({

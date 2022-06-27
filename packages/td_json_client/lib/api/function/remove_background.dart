@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Removes background from the list of installed backgrounds 
 class RemoveBackground extends TdFunction {
   String get tdType => 'removeBackground';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// The background identifier
   int64? background_id;
 
   RemoveBackground({

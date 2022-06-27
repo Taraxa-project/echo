@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Deletes a file from the TDLib file cache 
 class DeleteFile extends TdFunction {
   String get tdType => 'deleteFile';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the file to delete
   int32? file_id;
 
   DeleteFile({

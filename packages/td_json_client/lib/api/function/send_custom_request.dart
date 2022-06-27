@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Sends a custom request; for bots only 
 class SendCustomRequest extends TdFunction {
   String get tdType => 'sendCustomRequest';
   String get tdReturnType => 'CustomRequestResult';
 
   String? extra;
   int? client_id;
+
+  /// The method name 
   string? method;
+
+  /// JSON-serialized method parameters
   string? parameters;
 
   SendCustomRequest({

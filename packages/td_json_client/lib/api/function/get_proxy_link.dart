@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns an HTTPS link, which can be used to add a proxy. Available only for SOCKS5 and MTProto proxies. Can be called before authorization 
 class GetProxyLink extends TdFunction {
   String get tdType => 'getProxyLink';
   String get tdReturnType => 'HttpUrl';
 
   String? extra;
   int? client_id;
+
+  /// Proxy identifier
   int32? proxy_id;
 
   GetProxyLink({

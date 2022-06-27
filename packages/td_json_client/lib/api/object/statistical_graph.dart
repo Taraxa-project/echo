@@ -1,13 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes a statistical graph
 abstract class StatisticalGraph extends TdObject {}
 
+
+/// A graph data 
 class StatisticalGraphData extends StatisticalGraph {
   String get tdType => 'statisticalGraphData';
 
   String? extra;
   int? client_id;
+
+  /// Graph data in JSON format 
   string? json_data;
+
+  /// If non-empty, a token which can be used to receive a zoomed in graph
   string? zoom_token;
 
   StatisticalGraphData({
@@ -38,11 +45,15 @@ class StatisticalGraphData extends StatisticalGraph {
     return map;
   }
 }
+
+/// The graph data to be asynchronously loaded through getStatisticalGraph 
 class StatisticalGraphAsync extends StatisticalGraph {
   String get tdType => 'statisticalGraphAsync';
 
   String? extra;
   int? client_id;
+
+  /// The token to use for data loading
   string? token;
 
   StatisticalGraphAsync({
@@ -70,11 +81,15 @@ class StatisticalGraphAsync extends StatisticalGraph {
     return map;
   }
 }
+
+/// An error message to be shown to the user instead of the graph 
 class StatisticalGraphError extends StatisticalGraph {
   String get tdType => 'statisticalGraphError';
 
   String? extra;
   int? client_id;
+
+  /// The error message
   string? error_message;
 
   StatisticalGraphError({

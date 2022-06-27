@@ -1,14 +1,26 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains information about a country
 class CountryInfo extends TdObject {
   String get tdType => 'countryInfo';
 
   String? extra;
   int? client_id;
+
+  /// A two-letter ISO 3166-1 alpha-2 country code
   string? country_code;
+
+  /// Native name of the country
   string? name;
+
+  /// English name of the country
   string? english_name;
+
+  /// True, if the country must be hidden from the list of all countries
   Bool? is_hidden;
+
+  /// List of country calling codes
   vector<string>? calling_codes;
 
   CountryInfo({

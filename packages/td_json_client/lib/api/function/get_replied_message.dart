@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a message that is replied by a given message. Also returns the pinned message, the game message, and the invoice message for messages of the types messagePinMessage, messageGameScore, and messagePaymentSuccessful respectively
 class GetRepliedMessage extends TdFunction {
   String get tdType => 'getRepliedMessage';
   String get tdReturnType => 'Message';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat the message belongs to 
   int53? chat_id;
+
+  /// Identifier of the reply message
   int53? message_id;
 
   GetRepliedMessage({

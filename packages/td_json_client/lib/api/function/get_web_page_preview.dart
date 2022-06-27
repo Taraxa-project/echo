@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 
+
+/// Returns a web page preview by the text of the message. Do not call this function too often. Returns a 404 error if the web page has no preview 
 class GetWebPagePreview extends TdFunction {
   String get tdType => 'getWebPagePreview';
   String get tdReturnType => 'WebPage';
 
   String? extra;
   int? client_id;
+
+  /// Message text with formatting
   FormattedText? text;
 
   GetWebPagePreview({

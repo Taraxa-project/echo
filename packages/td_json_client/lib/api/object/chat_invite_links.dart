@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_invite_link.dart';
 
+
+/// Contains a list of chat invite links 
 class ChatInviteLinks extends TdObject {
   String get tdType => 'chatInviteLinks';
 
   String? extra;
   int? client_id;
+
+  /// Approximate total number of chat invite links found 
   int32? total_count;
+
+  /// List of invite links
   vector<ChatInviteLink>? invite_links;
 
   ChatInviteLinks({

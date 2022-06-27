@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Uses the current IP address to find the current country. Returns two-letter ISO 3166-1 alpha-2 country code. Can be called before authorization
 class GetCountryCode extends TdFunction {
   String get tdType => 'getCountryCode';
   String get tdReturnType => 'Text';

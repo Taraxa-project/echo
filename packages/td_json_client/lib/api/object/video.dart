@@ -4,20 +4,42 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
+
+/// Describes a video file 
 class Video extends TdObject {
   String get tdType => 'video';
 
   String? extra;
   int? client_id;
+
+  /// Duration of the video, in seconds; as defined by the sender 
   int32? duration;
+
+  /// Video width; as defined by the sender 
   int32? width;
+
+  /// Video height; as defined by the sender
   int32? height;
+
+  /// Original name of the file; as defined by the sender 
   string? file_name;
+
+  /// MIME type of the file; as defined by the sender
   string? mime_type;
+
+  /// True, if stickers were added to the video. The list of corresponding sticker sets can be received using getAttachedStickerSets
   Bool? has_stickers;
+
+  /// True, if the video is supposed to be streamed 
   Bool? supports_streaming;
+
+  /// Video minithumbnail; may be null
   Minithumbnail? minithumbnail;
+
+  /// Video thumbnail in JPEG or MPEG4 format; as defined by the sender; may be null 
   Thumbnail? thumbnail;
+
+  /// File containing the video
   File? video;
 
   Video({

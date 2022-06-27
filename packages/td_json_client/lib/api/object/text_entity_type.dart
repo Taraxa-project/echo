@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents a part of the text which must be formatted differently
 abstract class TextEntityType extends TdObject {}
 
+
+/// A mention of a user by their username
 class TextEntityTypeMention extends TextEntityType {
   String get tdType => 'textEntityTypeMention';
 
@@ -30,6 +33,8 @@ class TextEntityTypeMention extends TextEntityType {
     return map;
   }
 }
+
+/// A hashtag text, beginning with "#"
 class TextEntityTypeHashtag extends TextEntityType {
   String get tdType => 'textEntityTypeHashtag';
 
@@ -58,6 +63,8 @@ class TextEntityTypeHashtag extends TextEntityType {
     return map;
   }
 }
+
+/// A cashtag text, beginning with "$" and consisting of capital English letters (e.g., "$USD")
 class TextEntityTypeCashtag extends TextEntityType {
   String get tdType => 'textEntityTypeCashtag';
 
@@ -86,6 +93,8 @@ class TextEntityTypeCashtag extends TextEntityType {
     return map;
   }
 }
+
+/// A bot command, beginning with "/"
 class TextEntityTypeBotCommand extends TextEntityType {
   String get tdType => 'textEntityTypeBotCommand';
 
@@ -114,6 +123,8 @@ class TextEntityTypeBotCommand extends TextEntityType {
     return map;
   }
 }
+
+/// An HTTP URL
 class TextEntityTypeUrl extends TextEntityType {
   String get tdType => 'textEntityTypeUrl';
 
@@ -142,6 +153,8 @@ class TextEntityTypeUrl extends TextEntityType {
     return map;
   }
 }
+
+/// An email address
 class TextEntityTypeEmailAddress extends TextEntityType {
   String get tdType => 'textEntityTypeEmailAddress';
 
@@ -170,6 +183,8 @@ class TextEntityTypeEmailAddress extends TextEntityType {
     return map;
   }
 }
+
+/// A phone number
 class TextEntityTypePhoneNumber extends TextEntityType {
   String get tdType => 'textEntityTypePhoneNumber';
 
@@ -198,6 +213,8 @@ class TextEntityTypePhoneNumber extends TextEntityType {
     return map;
   }
 }
+
+/// A bank card number. The getBankCardInfo method can be used to get information about the bank card
 class TextEntityTypeBankCardNumber extends TextEntityType {
   String get tdType => 'textEntityTypeBankCardNumber';
 
@@ -226,6 +243,8 @@ class TextEntityTypeBankCardNumber extends TextEntityType {
     return map;
   }
 }
+
+/// A bold text
 class TextEntityTypeBold extends TextEntityType {
   String get tdType => 'textEntityTypeBold';
 
@@ -254,6 +273,8 @@ class TextEntityTypeBold extends TextEntityType {
     return map;
   }
 }
+
+/// An italic text
 class TextEntityTypeItalic extends TextEntityType {
   String get tdType => 'textEntityTypeItalic';
 
@@ -282,6 +303,8 @@ class TextEntityTypeItalic extends TextEntityType {
     return map;
   }
 }
+
+/// An underlined text
 class TextEntityTypeUnderline extends TextEntityType {
   String get tdType => 'textEntityTypeUnderline';
 
@@ -310,6 +333,8 @@ class TextEntityTypeUnderline extends TextEntityType {
     return map;
   }
 }
+
+/// A strikethrough text
 class TextEntityTypeStrikethrough extends TextEntityType {
   String get tdType => 'textEntityTypeStrikethrough';
 
@@ -338,6 +363,8 @@ class TextEntityTypeStrikethrough extends TextEntityType {
     return map;
   }
 }
+
+/// A spoiler text. Not supported in secret chats
 class TextEntityTypeSpoiler extends TextEntityType {
   String get tdType => 'textEntityTypeSpoiler';
 
@@ -366,6 +393,8 @@ class TextEntityTypeSpoiler extends TextEntityType {
     return map;
   }
 }
+
+/// Text that must be formatted as if inside a code HTML tag
 class TextEntityTypeCode extends TextEntityType {
   String get tdType => 'textEntityTypeCode';
 
@@ -394,6 +423,8 @@ class TextEntityTypeCode extends TextEntityType {
     return map;
   }
 }
+
+/// Text that must be formatted as if inside a pre HTML tag
 class TextEntityTypePre extends TextEntityType {
   String get tdType => 'textEntityTypePre';
 
@@ -422,11 +453,15 @@ class TextEntityTypePre extends TextEntityType {
     return map;
   }
 }
+
+/// Text that must be formatted as if inside pre, and code HTML tags 
 class TextEntityTypePreCode extends TextEntityType {
   String get tdType => 'textEntityTypePreCode';
 
   String? extra;
   int? client_id;
+
+  /// Programming language of the code; as defined by the sender
   string? language;
 
   TextEntityTypePreCode({
@@ -454,11 +489,15 @@ class TextEntityTypePreCode extends TextEntityType {
     return map;
   }
 }
+
+/// A text description shown instead of a raw URL 
 class TextEntityTypeTextUrl extends TextEntityType {
   String get tdType => 'textEntityTypeTextUrl';
 
   String? extra;
   int? client_id;
+
+  /// HTTP or tg:// URL to be opened when the link is clicked
   string? url;
 
   TextEntityTypeTextUrl({
@@ -486,11 +525,15 @@ class TextEntityTypeTextUrl extends TextEntityType {
     return map;
   }
 }
+
+/// A text shows instead of a raw mention of the user (e.g., when the user has no username) 
 class TextEntityTypeMentionName extends TextEntityType {
   String get tdType => 'textEntityTypeMentionName';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the mentioned user
   int53? user_id;
 
   TextEntityTypeMentionName({
@@ -518,11 +561,15 @@ class TextEntityTypeMentionName extends TextEntityType {
     return map;
   }
 }
+
+/// A media timestamp 
 class TextEntityTypeMediaTimestamp extends TextEntityType {
   String get tdType => 'textEntityTypeMediaTimestamp';
 
   String? extra;
   int? client_id;
+
+  /// Timestamp from which a video/audio/video note/voice note playing must start, in seconds. The media can be in the content or the web page preview of the current message, or in the same places in the replied message
   int32? media_timestamp;
 
   TextEntityTypeMediaTimestamp({

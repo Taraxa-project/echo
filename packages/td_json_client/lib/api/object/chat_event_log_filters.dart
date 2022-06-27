@@ -1,21 +1,47 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents a set of filters used to obtain a chat event log
 class ChatEventLogFilters extends TdObject {
   String get tdType => 'chatEventLogFilters';
 
   String? extra;
   int? client_id;
+
+  /// True, if message edits need to be returned
   Bool? message_edits;
+
+  /// True, if message deletions need to be returned
   Bool? message_deletions;
+
+  /// True, if pin/unpin events need to be returned
   Bool? message_pins;
+
+  /// True, if members joining events need to be returned
   Bool? member_joins;
+
+  /// True, if members leaving events need to be returned
   Bool? member_leaves;
+
+  /// True, if invited member events need to be returned
   Bool? member_invites;
+
+  /// True, if member promotion/demotion events need to be returned
   Bool? member_promotions;
+
+  /// True, if member restricted/unrestricted/banned/unbanned events need to be returned
   Bool? member_restrictions;
+
+  /// True, if changes in chat information need to be returned
   Bool? info_changes;
+
+  /// True, if changes in chat settings need to be returned
   Bool? setting_changes;
+
+  /// True, if changes to invite links need to be returned
   Bool? invite_link_changes;
+
+  /// True, if video chat actions need to be returned
   Bool? video_chat_changes;
 
   ChatEventLogFilters({

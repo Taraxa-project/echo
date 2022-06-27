@@ -1,12 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the message TTL in a chat. Requires can_delete_messages administrator right in basic groups, supergroups and channels
+/// Message TTL can't be changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).
 class SetChatMessageTtl extends TdFunction {
   String get tdType => 'setChatMessageTtl';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New TTL value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400
   int32? ttl;
 
   SetChatMessageTtl({

@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes an available stream in a group call
 class GroupCallStream extends TdObject {
   String get tdType => 'groupCallStream';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of an audio/video channel
   int32? channel_id;
+
+  /// Scale of segment durations in the stream. The duration is 1000/(2**scale) milliseconds
   int32? scale;
+
+  /// Point in time when the stream currently ends; Unix timestamp in milliseconds
   int53? time_offset;
 
   GroupCallStream({

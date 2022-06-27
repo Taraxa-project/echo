@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Deletes existing chat filter 
 class DeleteChatFilter extends TdFunction {
   String get tdType => 'deleteChatFilter';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat filter identifier
   int32? chat_filter_id;
 
   DeleteChatFilter({

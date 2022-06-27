@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes a Vertical alignment of a table cell content
 abstract class PageBlockVerticalAlignment extends TdObject {}
 
+
+/// The content must be top-aligned
 class PageBlockVerticalAlignmentTop extends PageBlockVerticalAlignment {
   String get tdType => 'pageBlockVerticalAlignmentTop';
 
@@ -30,6 +33,8 @@ class PageBlockVerticalAlignmentTop extends PageBlockVerticalAlignment {
     return map;
   }
 }
+
+/// The content must be middle-aligned
 class PageBlockVerticalAlignmentMiddle extends PageBlockVerticalAlignment {
   String get tdType => 'pageBlockVerticalAlignmentMiddle';
 
@@ -58,6 +63,8 @@ class PageBlockVerticalAlignmentMiddle extends PageBlockVerticalAlignment {
     return map;
   }
 }
+
+/// The content must be bottom-aligned
 class PageBlockVerticalAlignmentBottom extends PageBlockVerticalAlignment {
   String get tdType => 'pageBlockVerticalAlignmentBottom';
 

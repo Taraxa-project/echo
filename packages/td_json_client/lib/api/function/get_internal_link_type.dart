@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about the type of an internal link. Returns a 404 error if the link is not internal. Can be called before authorization 
 class GetInternalLinkType extends TdFunction {
   String get tdType => 'getInternalLinkType';
   String get tdReturnType => 'InternalLinkType';
 
   String? extra;
   int? client_id;
+
+  /// The link
   string? link;
 
   GetInternalLinkType({

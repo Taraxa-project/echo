@@ -9,46 +9,120 @@ import 'package:td_json_client/api/object/unread_reaction.dart';
 import 'package:td_json_client/api/object/message_content.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 
+
+/// Describes a message
 class Message extends TdObject {
   String get tdType => 'message';
 
   String? extra;
   int? client_id;
+
+  /// Message identifier; unique for the chat to which the message belongs
   int53? id;
+
+  /// Identifier of the sender of the message
   MessageSender? sender_id;
+
+  /// Chat identifier
   int53? chat_id;
+
+  /// The sending state of the message; may be null
   MessageSendingState? sending_state;
+
+  /// The scheduling state of the message; may be null
   MessageSchedulingState? scheduling_state;
+
+  /// True, if the message is outgoing
   Bool? is_outgoing;
+
+  /// True, if the message is pinned
   Bool? is_pinned;
+
+  /// True, if the message can be edited. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message by the application
   Bool? can_be_edited;
+
+  /// True, if the message can be forwarded
   Bool? can_be_forwarded;
+
+  /// True, if content of the message can be saved locally or copied
   Bool? can_be_saved;
+
+  /// True, if the message can be deleted only for the current user while other users will continue to see it
   Bool? can_be_deleted_only_for_self;
+
+  /// True, if the message can be deleted for all users
   Bool? can_be_deleted_for_all_users;
+
+  /// True, if the list of added reactions is available through getMessageAddedReactions
   Bool? can_get_added_reactions;
+
+  /// True, if the message statistics are available through getMessageStatistics
   Bool? can_get_statistics;
+
+  /// True, if information about the message thread is available through getMessageThread
   Bool? can_get_message_thread;
+
+  /// True, if chat members already viewed the message can be received through getMessageViewers
   Bool? can_get_viewers;
+
+  /// True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description through getMessageLink
   Bool? can_get_media_timestamp_links;
+
+  /// True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message
   Bool? has_timestamped_media;
+
+  /// True, if the message is a channel post. All messages to channels are channel posts, all other messages are not channel posts
   Bool? is_channel_post;
+
+  /// True, if the message contains an unread mention for the current user
   Bool? contains_unread_mention;
+
+  /// Point in time (Unix timestamp) when the message was sent
   int32? date;
+
+  /// Point in time (Unix timestamp) when the message was last edited
   int32? edit_date;
+
+  /// Information about the initial message sender; may be null
   MessageForwardInfo? forward_info;
+
+  /// Information about interactions with the message; may be null
   MessageInteractionInfo? interaction_info;
+
+  /// Information about unread reactions added to the message
   vector<UnreadReaction>? unread_reactions;
+
+  /// If non-zero, the identifier of the chat to which the replied message belongs; Currently, only messages in the Replies chat can have different reply_in_chat_id and chat_id
   int53? reply_in_chat_id;
+
+  /// If non-zero, the identifier of the message this message is replying to; can be the identifier of a deleted message
   int53? reply_to_message_id;
+
+  /// If non-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs
   int53? message_thread_id;
+
+  /// For self-destructing messages, the message's TTL (Time To Live), in seconds; 0 if none. TDLib will send updateDeleteMessages or updateMessageContent once the TTL expires
   int32? ttl;
+
+  /// Time left before the message expires, in seconds. If the TTL timer isn't started yet, equals to the value of the ttl field
   double? ttl_expires_in;
+
+  /// If non-zero, the user identifier of the bot through which this message was sent
   int53? via_bot_user_id;
+
+  /// For channel posts and anonymous group messages, optional author signature
   string? author_signature;
+
+  /// Unique identifier of an album this message belongs to. Only audios, documents, photos and videos can be grouped together in albums
   int64? media_album_id;
+
+  /// If non-empty, contains a human-readable description of the reason why access to this message must be restricted
   string? restriction_reason;
+
+  /// Content of the message
   MessageContent? content;
+
+  /// Reply markup for the message; may be null
   ReplyMarkup? reply_markup;
 
   Message({

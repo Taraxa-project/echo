@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents a date range 
 class DateRange extends TdObject {
   String get tdType => 'dateRange';
 
   String? extra;
   int? client_id;
+
+  /// Point in time (Unix timestamp) at which the date range begins 
   int32? start_date;
+
+  /// Point in time (Unix timestamp) at which the date range ends
   int32? end_date;
 
   DateRange({

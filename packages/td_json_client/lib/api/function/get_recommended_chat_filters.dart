@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns recommended chat filters for the current user
 class GetRecommendedChatFilters extends TdFunction {
   String get tdType => 'getRecommendedChatFilters';
   String get tdReturnType => 'RecommendedChatFilters';

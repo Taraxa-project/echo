@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/log_stream.dart';
 
+
+/// Sets new log stream for internal logging of TDLib. Can be called synchronously 
 class SetLogStream extends TdFunction {
   String get tdType => 'setLogStream';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// New log stream
   LogStream? log_stream;
 
   SetLogStream({

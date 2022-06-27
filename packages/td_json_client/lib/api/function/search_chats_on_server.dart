@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for the specified query in the title and username of already known chats via request to the server. Returns chats in the order seen in the main chat list 
 class SearchChatsOnServer extends TdFunction {
   String get tdType => 'searchChatsOnServer';
   String get tdReturnType => 'Chats';
 
   String? extra;
   int? client_id;
+
+  /// Query to search for 
   string? query;
+
+  /// The maximum number of chats to be returned
   int32? limit;
 
   SearchChatsOnServer({

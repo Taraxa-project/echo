@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Pauses or unpauses screen sharing in a joined group call 
 class ToggleGroupCallScreenSharingIsPaused extends TdFunction {
   String get tdType => 'toggleGroupCallScreenSharingIsPaused';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier 
   int32? group_call_id;
+
+  /// True if screen sharing is paused
   Bool? is_paused;
 
   ToggleGroupCallScreenSharingIsPaused({

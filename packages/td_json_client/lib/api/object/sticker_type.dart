@@ -2,8 +2,11 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/mask_position.dart';
 
+/// Describes type of a sticker
 abstract class StickerType extends TdObject {}
 
+
+/// The sticker is an image in WEBP format
 class StickerTypeStatic extends StickerType {
   String get tdType => 'stickerTypeStatic';
 
@@ -32,6 +35,8 @@ class StickerTypeStatic extends StickerType {
     return map;
   }
 }
+
+/// The sticker is an animation in TGS format
 class StickerTypeAnimated extends StickerType {
   String get tdType => 'stickerTypeAnimated';
 
@@ -60,6 +65,8 @@ class StickerTypeAnimated extends StickerType {
     return map;
   }
 }
+
+/// The sticker is a video in WEBM format
 class StickerTypeVideo extends StickerType {
   String get tdType => 'stickerTypeVideo';
 
@@ -88,11 +95,15 @@ class StickerTypeVideo extends StickerType {
     return map;
   }
 }
+
+/// The sticker is a mask in WEBP format to be placed on photos or videos 
 class StickerTypeMask extends StickerType {
   String get tdType => 'stickerTypeMask';
 
   String? extra;
   int? client_id;
+
+  /// Position where the mask is placed; may be null
   MaskPosition? mask_position;
 
   StickerTypeMask({

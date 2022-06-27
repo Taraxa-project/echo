@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/theme_parameters.dart';
 
+
+/// Converts a themeParameters object to corresponding JSON-serialized string. Can be called synchronously 
 class GetThemeParametersJsonString extends TdFunction {
   String get tdType => 'getThemeParametersJsonString';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// Theme parameters to convert to JSON
   ThemeParameters? theme;
 
   GetThemeParametersJsonString({

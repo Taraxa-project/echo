@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns all active sessions of the current user
 class GetActiveSessions extends TdFunction {
   String get tdType => 'getActiveSessions';
   String get tdReturnType => 'Sessions';

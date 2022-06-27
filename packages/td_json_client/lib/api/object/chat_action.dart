@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the different types of activity in a chat
 abstract class ChatAction extends TdObject {}
 
+
+/// The user is typing a message
 class ChatActionTyping extends ChatAction {
   String get tdType => 'chatActionTyping';
 
@@ -30,6 +33,8 @@ class ChatActionTyping extends ChatAction {
     return map;
   }
 }
+
+/// The user is recording a video
 class ChatActionRecordingVideo extends ChatAction {
   String get tdType => 'chatActionRecordingVideo';
 
@@ -58,11 +63,15 @@ class ChatActionRecordingVideo extends ChatAction {
     return map;
   }
 }
+
+/// The user is uploading a video 
 class ChatActionUploadingVideo extends ChatAction {
   String get tdType => 'chatActionUploadingVideo';
 
   String? extra;
   int? client_id;
+
+  /// Upload progress, as a percentage
   int32? progress;
 
   ChatActionUploadingVideo({
@@ -90,6 +99,8 @@ class ChatActionUploadingVideo extends ChatAction {
     return map;
   }
 }
+
+/// The user is recording a voice note
 class ChatActionRecordingVoiceNote extends ChatAction {
   String get tdType => 'chatActionRecordingVoiceNote';
 
@@ -118,11 +129,15 @@ class ChatActionRecordingVoiceNote extends ChatAction {
     return map;
   }
 }
+
+/// The user is uploading a voice note 
 class ChatActionUploadingVoiceNote extends ChatAction {
   String get tdType => 'chatActionUploadingVoiceNote';
 
   String? extra;
   int? client_id;
+
+  /// Upload progress, as a percentage
   int32? progress;
 
   ChatActionUploadingVoiceNote({
@@ -150,11 +165,15 @@ class ChatActionUploadingVoiceNote extends ChatAction {
     return map;
   }
 }
+
+/// The user is uploading a photo 
 class ChatActionUploadingPhoto extends ChatAction {
   String get tdType => 'chatActionUploadingPhoto';
 
   String? extra;
   int? client_id;
+
+  /// Upload progress, as a percentage
   int32? progress;
 
   ChatActionUploadingPhoto({
@@ -182,11 +201,15 @@ class ChatActionUploadingPhoto extends ChatAction {
     return map;
   }
 }
+
+/// The user is uploading a document 
 class ChatActionUploadingDocument extends ChatAction {
   String get tdType => 'chatActionUploadingDocument';
 
   String? extra;
   int? client_id;
+
+  /// Upload progress, as a percentage
   int32? progress;
 
   ChatActionUploadingDocument({
@@ -214,6 +237,8 @@ class ChatActionUploadingDocument extends ChatAction {
     return map;
   }
 }
+
+/// The user is picking a sticker to send
 class ChatActionChoosingSticker extends ChatAction {
   String get tdType => 'chatActionChoosingSticker';
 
@@ -242,6 +267,8 @@ class ChatActionChoosingSticker extends ChatAction {
     return map;
   }
 }
+
+/// The user is picking a location or venue to send
 class ChatActionChoosingLocation extends ChatAction {
   String get tdType => 'chatActionChoosingLocation';
 
@@ -270,6 +297,8 @@ class ChatActionChoosingLocation extends ChatAction {
     return map;
   }
 }
+
+/// The user is picking a contact to send
 class ChatActionChoosingContact extends ChatAction {
   String get tdType => 'chatActionChoosingContact';
 
@@ -298,6 +327,8 @@ class ChatActionChoosingContact extends ChatAction {
     return map;
   }
 }
+
+/// The user has started to play a game
 class ChatActionStartPlayingGame extends ChatAction {
   String get tdType => 'chatActionStartPlayingGame';
 
@@ -326,6 +357,8 @@ class ChatActionStartPlayingGame extends ChatAction {
     return map;
   }
 }
+
+/// The user is recording a video note
 class ChatActionRecordingVideoNote extends ChatAction {
   String get tdType => 'chatActionRecordingVideoNote';
 
@@ -354,11 +387,15 @@ class ChatActionRecordingVideoNote extends ChatAction {
     return map;
   }
 }
+
+/// The user is uploading a video note 
 class ChatActionUploadingVideoNote extends ChatAction {
   String get tdType => 'chatActionUploadingVideoNote';
 
   String? extra;
   int? client_id;
+
+  /// Upload progress, as a percentage
   int32? progress;
 
   ChatActionUploadingVideoNote({
@@ -386,11 +423,15 @@ class ChatActionUploadingVideoNote extends ChatAction {
     return map;
   }
 }
+
+/// The user is watching animations sent by the other party by clicking on an animated emoji 
 class ChatActionWatchingAnimations extends ChatAction {
   String get tdType => 'chatActionWatchingAnimations';
 
   String? extra;
   int? client_id;
+
+  /// The animated emoji
   string? emoji;
 
   ChatActionWatchingAnimations({
@@ -418,6 +459,8 @@ class ChatActionWatchingAnimations extends ChatAction {
     return map;
   }
 }
+
+/// The user has canceled the previous action
 class ChatActionCancel extends ChatAction {
   String get tdType => 'chatActionCancel';
 

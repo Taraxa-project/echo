@@ -1,11 +1,16 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents a command supported by a bot 
 class BotCommand extends TdObject {
   String get tdType => 'botCommand';
 
   String? extra;
   int? client_id;
+
+  /// Text of the bot command 
   string? command;
+
   string? description;
 
   BotCommand({

@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the received vector of numbers; for testing only. This is an offline method. Can be called before authorization 
 class TestCallVectorInt extends TdFunction {
   String get tdType => 'testCallVectorInt';
   String get tdReturnType => 'TestVectorInt';
 
   String? extra;
   int? client_id;
+
+  /// Vector of numbers to return
   vector<int32>? x;
 
   TestCallVectorInt({

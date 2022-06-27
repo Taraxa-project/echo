@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes reactions, available in a chat. Available for basic groups, supergroups, and channels. Requires can_change_info administrator right 
 class SetChatAvailableReactions extends TdFunction {
   String get tdType => 'setChatAvailableReactions';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat 
   int53? chat_id;
+
+  /// New list of reactions, available in the chat. All reactions must be active
   vector<string>? available_reactions;
 
   SetChatAvailableReactions({

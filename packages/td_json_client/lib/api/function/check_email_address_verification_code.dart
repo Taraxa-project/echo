@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks the email address verification code for Telegram Passport 
 class CheckEmailAddressVerificationCode extends TdFunction {
   String get tdType => 'checkEmailAddressVerificationCode';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Verification code to check
   string? code;
 
   CheckEmailAddressVerificationCode({

@@ -3,17 +3,31 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_send_options.dart';
 import 'package:td_json_client/api/object/input_message_content.dart';
 
+
+/// Sends 2-10 messages grouped together into an album. Currently, only audio, document, photo and video messages can be grouped into an album. Documents and audio files can be only grouped in an album with messages of the same type. Returns sent messages
 class SendMessageAlbum extends TdFunction {
   String get tdType => 'sendMessageAlbum';
   String get tdReturnType => 'Messages';
 
   String? extra;
   int? client_id;
+
+  /// Target chat
   int53? chat_id;
+
+  /// If not 0, a message thread identifier in which the messages will be sent
   int53? message_thread_id;
+
+  /// Identifier of a replied message; 0 if none
   int53? reply_to_message_id;
+
+  /// Options to be used to send the messages; pass null to use default options
   MessageSendOptions? options;
+
+  /// Contents of messages to be sent. At most 10 messages can be added to an album
   vector<InputMessageContent>? input_message_contents;
+
+  /// Pass true to get fake messages instead of actually sending them
   Bool? only_preview;
 
   SendMessageAlbum({

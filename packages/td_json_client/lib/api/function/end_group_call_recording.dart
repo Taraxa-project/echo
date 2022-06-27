@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Ends recording of an active group call. Requires groupCall.can_be_managed group call flag 
 class EndGroupCallRecording extends TdFunction {
   String get tdType => 'endGroupCallRecording';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
 
   EndGroupCallRecording({

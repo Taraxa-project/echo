@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/network_statistics_entry.dart';
 
+
+/// A full list of available network statistic entries 
 class NetworkStatistics extends TdObject {
   String get tdType => 'networkStatistics';
 
   String? extra;
   int? client_id;
+
+  /// Point in time (Unix timestamp) from which the statistics are collected 
   int32? since_date;
+
+  /// Network statistics entries
   vector<NetworkStatisticsEntry>? entries;
 
   NetworkStatistics({

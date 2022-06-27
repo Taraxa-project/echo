@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Replaces current primary invite link for a chat with a new primary invite link. Available for basic groups, supergroups, and channels. Requires administrator privileges and can_invite_users right 
 class ReplacePrimaryChatInviteLink extends TdFunction {
   String get tdType => 'replacePrimaryChatInviteLink';
   String get tdReturnType => 'ChatInviteLink';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier
   int53? chat_id;
 
   ReplacePrimaryChatInviteLink({

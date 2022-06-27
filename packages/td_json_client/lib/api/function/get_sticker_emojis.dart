@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
+
+/// Returns emoji corresponding to a sticker. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object 
 class GetStickerEmojis extends TdFunction {
   String get tdType => 'getStickerEmojis';
   String get tdReturnType => 'Emojis';
 
   String? extra;
   int? client_id;
+
+  /// Sticker file identifier
   InputFile? sticker;
 
   GetStickerEmojis({

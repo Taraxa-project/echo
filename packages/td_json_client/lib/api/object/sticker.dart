@@ -5,18 +5,36 @@ import 'package:td_json_client/api/object/closed_vector_path.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
+
+/// Describes a sticker 
 class Sticker extends TdObject {
   String get tdType => 'sticker';
 
   String? extra;
   int? client_id;
+
+  /// The identifier of the sticker set to which the sticker belongs; 0 if none 
   int64? set_id;
+
+  /// Sticker width; as defined by the sender 
   int32? width;
+
+  /// Sticker height; as defined by the sender
   int32? height;
+
+  /// Emoji corresponding to the sticker 
   string? emoji;
+
+  /// Sticker type 
   StickerType? type;
+
+  /// Sticker's outline represented as a list of closed vector paths; may be empty. The coordinate system origin is in the upper-left corner
   vector<ClosedVectorPath>? outline;
+
+  /// Sticker thumbnail in WEBP or JPEG format; may be null 
   Thumbnail? thumbnail;
+
+  /// File containing the sticker
   File? sticker;
 
   Sticker({

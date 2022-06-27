@@ -1,14 +1,26 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Describes one answer option of a poll 
 class PollOption extends TdObject {
   String get tdType => 'pollOption';
 
   String? extra;
   int? client_id;
+
+  /// Option text; 1-100 characters 
   string? text;
+
+  /// Number of voters for this option, available only for closed or voted polls 
   int32? voter_count;
+
+  /// The percentage of votes for this option; 0-100
   int32? vote_percentage;
+
+  /// True, if the option was chosen by the user 
   Bool? is_chosen;
+
+  /// True, if the option is being chosen by a pending setPollAnswer request
   Bool? is_being_chosen;
 
   PollOption({

@@ -2,13 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 
+/// Contains animated stickers which must be used for dice animation rendering
 abstract class DiceStickers extends TdObject {}
 
+
+/// A regular animated sticker 
 class DiceStickersRegular extends DiceStickers {
   String get tdType => 'diceStickersRegular';
 
   String? extra;
   int? client_id;
+
+  /// The animated sticker with the dice animation
   Sticker? sticker;
 
   DiceStickersRegular({
@@ -36,15 +41,27 @@ class DiceStickersRegular extends DiceStickers {
     return map;
   }
 }
+
+/// Animated stickers to be combined into a slot machine
 class DiceStickersSlotMachine extends DiceStickers {
   String get tdType => 'diceStickersSlotMachine';
 
   String? extra;
   int? client_id;
+
+  /// The animated sticker with the slot machine background. The background animation must start playing after all reel animations finish
   Sticker? background;
+
+  /// The animated sticker with the lever animation. The lever animation must play once in the initial dice state
   Sticker? lever;
+
+  /// The animated sticker with the left reel
   Sticker? left_reel;
+
+  /// The animated sticker with the center reel
   Sticker? center_reel;
+
+  /// The animated sticker with the right reel
   Sticker? right_reel;
 
   DiceStickersSlotMachine({

@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes a type of public chats
 abstract class PublicChatType extends TdObject {}
 
+
+/// The chat is public, because it has username
 class PublicChatTypeHasUsername extends PublicChatType {
   String get tdType => 'publicChatTypeHasUsername';
 
@@ -30,6 +33,8 @@ class PublicChatTypeHasUsername extends PublicChatType {
     return map;
   }
 }
+
+/// The chat is public, because it is a location-based supergroup
 class PublicChatTypeIsLocationBased extends PublicChatType {
   String get tdType => 'publicChatTypeIsLocationBased';
 

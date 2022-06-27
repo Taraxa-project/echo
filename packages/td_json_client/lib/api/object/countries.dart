@@ -2,11 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/country_info.dart';
 
+
+/// Contains information about countries 
 class Countries extends TdObject {
   String get tdType => 'countries';
 
   String? extra;
   int? client_id;
+
+  /// The list of countries
   vector<CountryInfo>? countries;
 
   Countries({

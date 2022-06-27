@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches for a sticker set by its name 
 class SearchStickerSet extends TdFunction {
   String get tdType => 'searchStickerSet';
   String get tdReturnType => 'StickerSet';
 
   String? extra;
   int? client_id;
+
+  /// Name of the sticker set
   string? name;
 
   SearchStickerSet({

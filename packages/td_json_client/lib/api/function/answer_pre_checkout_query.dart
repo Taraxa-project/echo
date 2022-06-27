@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Sets the result of a pre-checkout query; for bots only 
 class AnswerPreCheckoutQuery extends TdFunction {
   String get tdType => 'answerPreCheckoutQuery';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the pre-checkout query 
   int64? pre_checkout_query_id;
+
+  /// An error message, empty on success
   string? error_message;
 
   AnswerPreCheckoutQuery({

@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/notification_settings_scope.dart';
 
+
+/// Returns the notification settings for chats of a given type 
 class GetScopeNotificationSettings extends TdFunction {
   String get tdType => 'getScopeNotificationSettings';
   String get tdReturnType => 'ScopeNotificationSettings';
 
   String? extra;
   int? client_id;
+
+  /// Types of chats for which to return the notification settings information
   NotificationSettingsScope? scope;
 
   GetScopeNotificationSettings({

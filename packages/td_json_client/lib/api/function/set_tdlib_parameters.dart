@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/tdlib_parameters.dart';
 
+
+/// Sets the parameters for TDLib initialization. Works only when the current authorization state is authorizationStateWaitTdlibParameters 
 class SetTdlibParameters extends TdFunction {
   String get tdType => 'setTdlibParameters';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Parameters for TDLib initialization
   TdlibParameters? parameters;
 
   SetTdlibParameters({

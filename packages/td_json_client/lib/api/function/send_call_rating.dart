@@ -2,15 +2,25 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/call_problem.dart';
 
+
+/// Sends a call rating 
 class SendCallRating extends TdFunction {
   String get tdType => 'sendCallRating';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Call identifier 
   int32? call_id;
+
+  /// Call rating; 1-5 
   int32? rating;
+
+  /// An optional user comment if the rating is less than 5 
   string? comment;
+
+  /// List of the exact types of problems with the call, specified by the user
   vector<CallProblem>? problems;
 
   SendCallRating({

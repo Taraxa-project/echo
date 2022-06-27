@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Information about the message sent by answerWebAppQuery 
 class SentWebAppMessage extends TdObject {
   String get tdType => 'sentWebAppMessage';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the sent inline message, if known
   string? inline_message_id;
 
   SentWebAppMessage({

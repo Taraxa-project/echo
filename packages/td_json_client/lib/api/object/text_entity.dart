@@ -2,13 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/text_entity_type.dart';
 
+
+/// Represents a part of the text that needs to be formatted in some unusual way 
 class TextEntity extends TdObject {
   String get tdType => 'textEntity';
 
   String? extra;
   int? client_id;
+
+  /// Offset of the entity, in UTF-16 code units 
   int32? offset;
+
+  /// Length of the entity, in UTF-16 code units 
   int32? length;
+
+  /// Type of the entity
   TextEntityType? type;
 
   TextEntity({

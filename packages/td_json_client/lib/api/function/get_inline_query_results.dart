@@ -2,16 +2,28 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/location.dart';
 
+
+/// Sends an inline query to a bot and returns its results. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires
 class GetInlineQueryResults extends TdFunction {
   String get tdType => 'getInlineQueryResults';
   String get tdReturnType => 'InlineQueryResults';
 
   String? extra;
   int? client_id;
+
+  /// The identifier of the target bot
   int53? bot_user_id;
+
+  /// Identifier of the chat where the query was sent
   int53? chat_id;
+
+  /// Location of the user; pass null if unknown or the bot doesn't need user's location
   Location? user_location;
+
+  /// Text of the query
   string? query;
+
+  /// Offset of the first entry to return
   string? offset;
 
   GetInlineQueryResults({

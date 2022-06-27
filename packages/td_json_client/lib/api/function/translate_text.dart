@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Translates a text to the given language. Returns a 404 error if the translation can't be performed
 class TranslateText extends TdFunction {
   String get tdType => 'translateText';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// Text to translate
   string? text;
+
+  /// A two-letter ISO 639-1 language code of the language from which the message is translated. If empty, the language will be detected automatically
   string? from_language_code;
+
+  /// A two-letter ISO 639-1 language code of the language to which the message is translated
   string? to_language_code;
 
   TranslateText({

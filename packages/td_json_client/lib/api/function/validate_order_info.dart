@@ -2,15 +2,25 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/order_info.dart';
 
+
+/// Validates the order information provided by a user and returns the available shipping options for a flexible invoice
 class ValidateOrderInfo extends TdFunction {
   String get tdType => 'validateOrderInfo';
   String get tdReturnType => 'ValidatedOrderInfo';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier of the Invoice message
   int53? chat_id;
+
+  /// Message identifier
   int53? message_id;
+
+  /// The order information, provided by the user; pass null if empty
   OrderInfo? order_info;
+
+  /// Pass true to save the order information
   Bool? allow_save;
 
   ValidateOrderInfo({

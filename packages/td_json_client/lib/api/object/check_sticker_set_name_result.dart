@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents result of checking whether a name can be used for a new sticker set
 abstract class CheckStickerSetNameResult extends TdObject {}
 
+
+/// The name can be set
 class CheckStickerSetNameResultOk extends CheckStickerSetNameResult {
   String get tdType => 'checkStickerSetNameResultOk';
 
@@ -30,6 +33,8 @@ class CheckStickerSetNameResultOk extends CheckStickerSetNameResult {
     return map;
   }
 }
+
+/// The name is invalid
 class CheckStickerSetNameResultNameInvalid extends CheckStickerSetNameResult {
   String get tdType => 'checkStickerSetNameResultNameInvalid';
 
@@ -58,6 +63,8 @@ class CheckStickerSetNameResultNameInvalid extends CheckStickerSetNameResult {
     return map;
   }
 }
+
+/// The name is occupied
 class CheckStickerSetNameResultNameOccupied extends CheckStickerSetNameResult {
   String get tdType => 'checkStickerSetNameResultNameOccupied';
 

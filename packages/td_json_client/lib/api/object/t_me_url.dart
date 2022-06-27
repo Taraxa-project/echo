@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/t_me_url_type.dart';
 
+
+/// Represents a URL linking to an internal Telegram entity 
 class TMeUrl extends TdObject {
   String get tdType => 'tMeUrl';
 
   String? extra;
   int? client_id;
+
+  /// URL 
   string? url;
+
+  /// Type of the URL
   TMeUrlType? type;
 
   TMeUrl({

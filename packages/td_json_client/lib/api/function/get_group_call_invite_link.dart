@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns invite link to a video chat in a public chat
 class GetGroupCallInviteLink extends TdFunction {
   String get tdType => 'getGroupCallInviteLink';
   String get tdReturnType => 'HttpUrl';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
+
+  /// Pass true if the invite link needs to contain an invite hash, passing which to joinGroupCall would allow the invited user to unmute themselves. Requires groupCall.can_be_managed group call flag
   Bool? can_self_unmute;
 
   GetGroupCallInviteLink({

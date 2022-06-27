@@ -63,13 +63,18 @@ import 'package:td_json_client/api/object/chat_invite_link.dart';
 import 'package:td_json_client/api/object/chat_member.dart';
 import 'package:td_json_client/api/object/chat_join_request.dart';
 
+/// Contains notifications about data changes
 abstract class Update extends TdObject {}
 
+
+/// The user authorization state has changed 
 class UpdateAuthorizationState extends Update {
   String get tdType => 'updateAuthorizationState';
 
   String? extra;
   int? client_id;
+
+  /// New authorization state
   AuthorizationState? authorization_state;
 
   UpdateAuthorizationState({
@@ -97,11 +102,15 @@ class UpdateAuthorizationState extends Update {
     return map;
   }
 }
+
+/// A new message was received; can also be an outgoing message 
 class UpdateNewMessage extends Update {
   String get tdType => 'updateNewMessage';
 
   String? extra;
   int? client_id;
+
+  /// The new message
   Message? message;
 
   UpdateNewMessage({
@@ -129,12 +138,18 @@ class UpdateNewMessage extends Update {
     return map;
   }
 }
+
+/// A request to send a message has reached the Telegram server. This doesn't mean that the message will be sent successfully or even that the send message request will be processed. This update will be sent only if the option "use_quick_ack" is set to true. This update may be sent multiple times for the same message
 class UpdateMessageSendAcknowledged extends Update {
   String get tdType => 'updateMessageSendAcknowledged';
 
   String? extra;
   int? client_id;
+
+  /// The chat identifier of the sent message 
   int53? chat_id;
+
+  /// A temporary message identifier
   int53? message_id;
 
   UpdateMessageSendAcknowledged({
@@ -165,12 +180,18 @@ class UpdateMessageSendAcknowledged extends Update {
     return map;
   }
 }
+
+/// A message has been successfully sent 
 class UpdateMessageSendSucceeded extends Update {
   String get tdType => 'updateMessageSendSucceeded';
 
   String? extra;
   int? client_id;
+
+  /// The sent message. Usually only the message identifier, date, and content are changed, but almost all other fields can also change 
   Message? message;
+
+  /// The previous temporary message identifier
   int53? old_message_id;
 
   UpdateMessageSendSucceeded({
@@ -201,14 +222,24 @@ class UpdateMessageSendSucceeded extends Update {
     return map;
   }
 }
+
+/// A message failed to send. Be aware that some messages being sent can be irrecoverably deleted, in which case updateDeleteMessages will be received instead of this update
 class UpdateMessageSendFailed extends Update {
   String get tdType => 'updateMessageSendFailed';
 
   String? extra;
   int? client_id;
+
+  /// The failed to send message 
   Message? message;
+
+  /// The previous temporary message identifier 
   int53? old_message_id;
+
+  /// An error code 
   int32? error_code;
+
+  /// Error message
   string? error_message;
 
   UpdateMessageSendFailed({
@@ -245,13 +276,21 @@ class UpdateMessageSendFailed extends Update {
     return map;
   }
 }
+
+/// The message content has changed 
 class UpdateMessageContent extends Update {
   String get tdType => 'updateMessageContent';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Message identifier 
   int53? message_id;
+
+  /// New message content
   MessageContent? new_content;
 
   UpdateMessageContent({
@@ -285,14 +324,24 @@ class UpdateMessageContent extends Update {
     return map;
   }
 }
+
+/// A message was edited. Changes in the message content will come in a separate updateMessageContent 
 class UpdateMessageEdited extends Update {
   String get tdType => 'updateMessageEdited';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Message identifier 
   int53? message_id;
+
+  /// Point in time (Unix timestamp) when the message was edited 
   int32? edit_date;
+
+  /// New message reply markup; may be null
   ReplyMarkup? reply_markup;
 
   UpdateMessageEdited({
@@ -329,13 +378,21 @@ class UpdateMessageEdited extends Update {
     return map;
   }
 }
+
+/// The message pinned state was changed 
 class UpdateMessageIsPinned extends Update {
   String get tdType => 'updateMessageIsPinned';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The message identifier 
   int53? message_id;
+
+  /// True, if the message is pinned
   Bool? is_pinned;
 
   UpdateMessageIsPinned({
@@ -369,13 +426,21 @@ class UpdateMessageIsPinned extends Update {
     return map;
   }
 }
+
+/// The information about interactions with a message has changed 
 class UpdateMessageInteractionInfo extends Update {
   String get tdType => 'updateMessageInteractionInfo';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Message identifier 
   int53? message_id;
+
+  /// New information about interactions with the message; may be null
   MessageInteractionInfo? interaction_info;
 
   UpdateMessageInteractionInfo({
@@ -409,12 +474,18 @@ class UpdateMessageInteractionInfo extends Update {
     return map;
   }
 }
+
+/// The message content was opened. Updates voice note messages to "listened", video note messages to "viewed" and starts the TTL timer for self-destructing messages 
 class UpdateMessageContentOpened extends Update {
   String get tdType => 'updateMessageContentOpened';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Message identifier
   int53? message_id;
 
   UpdateMessageContentOpened({
@@ -445,13 +516,21 @@ class UpdateMessageContentOpened extends Update {
     return map;
   }
 }
+
+/// A message with an unread mention was read 
 class UpdateMessageMentionRead extends Update {
   String get tdType => 'updateMessageMentionRead';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Message identifier 
   int53? message_id;
+
+  /// The new number of unread mention messages left in the chat
   int32? unread_mention_count;
 
   UpdateMessageMentionRead({
@@ -485,14 +564,24 @@ class UpdateMessageMentionRead extends Update {
     return map;
   }
 }
+
+/// The list of unread reactions added to a message was changed 
 class UpdateMessageUnreadReactions extends Update {
   String get tdType => 'updateMessageUnreadReactions';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Message identifier 
   int53? message_id;
+
+  /// The new list of unread reactions 
   vector<UnreadReaction>? unread_reactions;
+
+  /// The new number of messages with unread reactions left in the chat
   int32? unread_reaction_count;
 
   UpdateMessageUnreadReactions({
@@ -534,12 +623,18 @@ class UpdateMessageUnreadReactions extends Update {
     return map;
   }
 }
+
+/// A message with a live location was viewed. When the update is received, the application is supposed to update the live location
 class UpdateMessageLiveLocationViewed extends Update {
   String get tdType => 'updateMessageLiveLocationViewed';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat with the live location message 
   int53? chat_id;
+
+  /// Identifier of the message with live location
   int53? message_id;
 
   UpdateMessageLiveLocationViewed({
@@ -570,11 +665,15 @@ class UpdateMessageLiveLocationViewed extends Update {
     return map;
   }
 }
+
+/// A new chat has been loaded/created. This update is guaranteed to come before the chat identifier is returned to the application. The chat field changes will be reported through separate updates 
 class UpdateNewChat extends Update {
   String get tdType => 'updateNewChat';
 
   String? extra;
   int? client_id;
+
+  /// The chat
   Chat? chat;
 
   UpdateNewChat({
@@ -602,12 +701,18 @@ class UpdateNewChat extends Update {
     return map;
   }
 }
+
+/// The title of a chat was changed 
 class UpdateChatTitle extends Update {
   String get tdType => 'updateChatTitle';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new chat title
   string? title;
 
   UpdateChatTitle({
@@ -638,12 +743,18 @@ class UpdateChatTitle extends Update {
     return map;
   }
 }
+
+/// A chat photo was changed 
 class UpdateChatPhoto extends Update {
   String get tdType => 'updateChatPhoto';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new chat photo; may be null
   ChatPhotoInfo? photo;
 
   UpdateChatPhoto({
@@ -674,12 +785,18 @@ class UpdateChatPhoto extends Update {
     return map;
   }
 }
+
+/// Chat permissions was changed 
 class UpdateChatPermissions extends Update {
   String get tdType => 'updateChatPermissions';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new chat permissions
   ChatPermissions? permissions;
 
   UpdateChatPermissions({
@@ -710,13 +827,21 @@ class UpdateChatPermissions extends Update {
     return map;
   }
 }
+
+/// The last message of a chat was changed. If last_message is null, then the last message in the chat became unknown. Some new unknown messages might be added to the chat in this case 
 class UpdateChatLastMessage extends Update {
   String get tdType => 'updateChatLastMessage';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new last message in the chat; may be null 
   Message? last_message;
+
+  /// The new chat positions in the chat lists
   vector<ChatPosition>? positions;
 
   UpdateChatLastMessage({
@@ -755,12 +880,18 @@ class UpdateChatLastMessage extends Update {
     return map;
   }
 }
+
+/// The position of a chat in a chat list has changed. Instead of this update updateChatLastMessage or updateChatDraftMessage might be sent 
 class UpdateChatPosition extends Update {
   String get tdType => 'updateChatPosition';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New chat position. If new order is 0, then the chat needs to be removed from the list
   ChatPosition? position;
 
   UpdateChatPosition({
@@ -791,13 +922,21 @@ class UpdateChatPosition extends Update {
     return map;
   }
 }
+
+/// Incoming messages were read or the number of unread messages has been changed 
 class UpdateChatReadInbox extends Update {
   String get tdType => 'updateChatReadInbox';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifier of the last read incoming message 
   int53? last_read_inbox_message_id;
+
+  /// The number of unread messages left in the chat
   int32? unread_count;
 
   UpdateChatReadInbox({
@@ -831,12 +970,18 @@ class UpdateChatReadInbox extends Update {
     return map;
   }
 }
+
+/// Outgoing messages were read 
 class UpdateChatReadOutbox extends Update {
   String get tdType => 'updateChatReadOutbox';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifier of last read outgoing message
   int53? last_read_outbox_message_id;
 
   UpdateChatReadOutbox({
@@ -867,12 +1012,18 @@ class UpdateChatReadOutbox extends Update {
     return map;
   }
 }
+
+/// The chat action bar was changed 
 class UpdateChatActionBar extends Update {
   String get tdType => 'updateChatActionBar';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new value of the action bar; may be null
   ChatActionBar? action_bar;
 
   UpdateChatActionBar({
@@ -903,12 +1054,18 @@ class UpdateChatActionBar extends Update {
     return map;
   }
 }
+
+/// The chat available reactions were changed 
 class UpdateChatAvailableReactions extends Update {
   String get tdType => 'updateChatAvailableReactions';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new list of reactions, available in the chat
   vector<string>? available_reactions;
 
   UpdateChatAvailableReactions({
@@ -944,13 +1101,21 @@ class UpdateChatAvailableReactions extends Update {
     return map;
   }
 }
+
+/// A chat draft has changed. Be aware that the update may come in the currently opened chat but with old content of the draft. If the user has changed the content of the draft, this update mustn't be applied 
 class UpdateChatDraftMessage extends Update {
   String get tdType => 'updateChatDraftMessage';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new draft message; may be null 
   DraftMessage? draft_message;
+
+  /// The new chat positions in the chat lists
   vector<ChatPosition>? positions;
 
   UpdateChatDraftMessage({
@@ -989,12 +1154,18 @@ class UpdateChatDraftMessage extends Update {
     return map;
   }
 }
+
+/// The message sender that is selected to send messages in a chat has changed 
 class UpdateChatMessageSender extends Update {
   String get tdType => 'updateChatMessageSender';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of message_sender_id; may be null if the user can't change message sender
   MessageSender? message_sender_id;
 
   UpdateChatMessageSender({
@@ -1025,12 +1196,18 @@ class UpdateChatMessageSender extends Update {
     return map;
   }
 }
+
+/// The message Time To Live setting for a chat was changed 
 class UpdateChatMessageTtl extends Update {
   String get tdType => 'updateChatMessageTtl';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of message_ttl
   int32? message_ttl;
 
   UpdateChatMessageTtl({
@@ -1061,12 +1238,18 @@ class UpdateChatMessageTtl extends Update {
     return map;
   }
 }
+
+/// Notification settings for a chat were changed 
 class UpdateChatNotificationSettings extends Update {
   String get tdType => 'updateChatNotificationSettings';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new notification settings
   ChatNotificationSettings? notification_settings;
 
   UpdateChatNotificationSettings({
@@ -1097,12 +1280,18 @@ class UpdateChatNotificationSettings extends Update {
     return map;
   }
 }
+
+/// The chat pending join requests were changed 
 class UpdateChatPendingJoinRequests extends Update {
   String get tdType => 'updateChatPendingJoinRequests';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new data about pending join requests; may be null
   ChatJoinRequestsInfo? pending_join_requests;
 
   UpdateChatPendingJoinRequests({
@@ -1133,12 +1322,18 @@ class UpdateChatPendingJoinRequests extends Update {
     return map;
   }
 }
+
+/// The default chat reply markup was changed. Can occur because new messages with reply markup were received or because an old reply markup was hidden by the user
 class UpdateChatReplyMarkup extends Update {
   String get tdType => 'updateChatReplyMarkup';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifier of the message from which reply markup needs to be used; 0 if there is no default custom reply markup in the chat
   int53? reply_markup_message_id;
 
   UpdateChatReplyMarkup({
@@ -1169,12 +1364,18 @@ class UpdateChatReplyMarkup extends Update {
     return map;
   }
 }
+
+/// The chat theme was changed 
 class UpdateChatTheme extends Update {
   String get tdType => 'updateChatTheme';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new name of the chat theme; may be empty if theme was reset to default
   string? theme_name;
 
   UpdateChatTheme({
@@ -1205,12 +1406,18 @@ class UpdateChatTheme extends Update {
     return map;
   }
 }
+
+/// The chat unread_mention_count has changed 
 class UpdateChatUnreadMentionCount extends Update {
   String get tdType => 'updateChatUnreadMentionCount';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The number of unread mention messages left in the chat
   int32? unread_mention_count;
 
   UpdateChatUnreadMentionCount({
@@ -1241,12 +1448,18 @@ class UpdateChatUnreadMentionCount extends Update {
     return map;
   }
 }
+
+/// The chat unread_reaction_count has changed 
 class UpdateChatUnreadReactionCount extends Update {
   String get tdType => 'updateChatUnreadReactionCount';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The number of messages with unread reactions left in the chat
   int32? unread_reaction_count;
 
   UpdateChatUnreadReactionCount({
@@ -1277,12 +1490,18 @@ class UpdateChatUnreadReactionCount extends Update {
     return map;
   }
 }
+
+/// A chat video chat state has changed 
 class UpdateChatVideoChat extends Update {
   String get tdType => 'updateChatVideoChat';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of video_chat
   VideoChat? video_chat;
 
   UpdateChatVideoChat({
@@ -1313,12 +1532,18 @@ class UpdateChatVideoChat extends Update {
     return map;
   }
 }
+
+/// The value of the default disable_notification parameter, used when a message is sent to the chat, was changed 
 class UpdateChatDefaultDisableNotification extends Update {
   String get tdType => 'updateChatDefaultDisableNotification';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// The new default_disable_notification value
   Bool? default_disable_notification;
 
   UpdateChatDefaultDisableNotification({
@@ -1349,12 +1574,18 @@ class UpdateChatDefaultDisableNotification extends Update {
     return map;
   }
 }
+
+/// A chat content was allowed or restricted for saving 
 class UpdateChatHasProtectedContent extends Update {
   String get tdType => 'updateChatHasProtectedContent';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of has_protected_content
   Bool? has_protected_content;
 
   UpdateChatHasProtectedContent({
@@ -1385,12 +1616,18 @@ class UpdateChatHasProtectedContent extends Update {
     return map;
   }
 }
+
+/// A chat's has_scheduled_messages field has changed 
 class UpdateChatHasScheduledMessages extends Update {
   String get tdType => 'updateChatHasScheduledMessages';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of has_scheduled_messages
   Bool? has_scheduled_messages;
 
   UpdateChatHasScheduledMessages({
@@ -1421,12 +1658,18 @@ class UpdateChatHasScheduledMessages extends Update {
     return map;
   }
 }
+
+/// A chat was blocked or unblocked 
 class UpdateChatIsBlocked extends Update {
   String get tdType => 'updateChatIsBlocked';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of is_blocked
   Bool? is_blocked;
 
   UpdateChatIsBlocked({
@@ -1457,12 +1700,18 @@ class UpdateChatIsBlocked extends Update {
     return map;
   }
 }
+
+/// A chat was marked as unread or was read 
 class UpdateChatIsMarkedAsUnread extends Update {
   String get tdType => 'updateChatIsMarkedAsUnread';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of is_marked_as_unread
   Bool? is_marked_as_unread;
 
   UpdateChatIsMarkedAsUnread({
@@ -1493,11 +1742,15 @@ class UpdateChatIsMarkedAsUnread extends Update {
     return map;
   }
 }
+
+/// The list of chat filters or a chat filter has changed 
 class UpdateChatFilters extends Update {
   String get tdType => 'updateChatFilters';
 
   String? extra;
   int? client_id;
+
+  /// The new list of chat filters
   vector<ChatFilterInfo>? chat_filters;
 
   UpdateChatFilters({
@@ -1530,12 +1783,18 @@ class UpdateChatFilters extends Update {
     return map;
   }
 }
+
+/// The number of online group members has changed. This update with non-zero number of online group members is sent only for currently opened chats. There is no guarantee that it will be sent just after the number of online users has changed 
 class UpdateChatOnlineMemberCount extends Update {
   String get tdType => 'updateChatOnlineMemberCount';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat 
   int53? chat_id;
+
+  /// New number of online members in the chat, or 0 if unknown
   int32? online_member_count;
 
   UpdateChatOnlineMemberCount({
@@ -1566,12 +1825,18 @@ class UpdateChatOnlineMemberCount extends Update {
     return map;
   }
 }
+
+/// Notification settings for some type of chats were updated 
 class UpdateScopeNotificationSettings extends Update {
   String get tdType => 'updateScopeNotificationSettings';
 
   String? extra;
   int? client_id;
+
+  /// Types of chats for which notification settings were updated 
   NotificationSettingsScope? scope;
+
+  /// The new notification settings
   ScopeNotificationSettings? notification_settings;
 
   UpdateScopeNotificationSettings({
@@ -1602,12 +1867,18 @@ class UpdateScopeNotificationSettings extends Update {
     return map;
   }
 }
+
+/// A notification was changed 
 class UpdateNotification extends Update {
   String get tdType => 'updateNotification';
 
   String? extra;
   int? client_id;
+
+  /// Unique notification group identifier 
   int32? notification_group_id;
+
+  /// Changed notification
   Notification? notification;
 
   UpdateNotification({
@@ -1638,18 +1909,36 @@ class UpdateNotification extends Update {
     return map;
   }
 }
+
+/// A list of active notifications in a notification group has changed
 class UpdateNotificationGroup extends Update {
   String get tdType => 'updateNotificationGroup';
 
   String? extra;
   int? client_id;
+
+  /// Unique notification group identifier
   int32? notification_group_id;
+
+  /// New type of the notification group
   NotificationGroupType? type;
+
+  /// Identifier of a chat to which all notifications in the group belong
   int53? chat_id;
+
+  /// Chat identifier, which notification settings must be applied to the added notifications
   int53? notification_settings_chat_id;
+
+  /// Identifier of the notification sound to be played; 0 if sound is disabled
   int64? notification_sound_id;
+
+  /// Total number of unread notifications in the group, can be bigger than number of active notifications
   int32? total_count;
+
+  /// List of added group notifications, sorted by notification ID 
   vector<Notification>? added_notifications;
+
+  /// Identifiers of removed group notifications, sorted by notification ID
   vector<int32>? removed_notification_ids;
 
   UpdateNotificationGroup({
@@ -1708,11 +1997,15 @@ class UpdateNotificationGroup extends Update {
     return map;
   }
 }
+
+/// Contains active notifications that was shown on previous application launches. This update is sent only if the message database is used. In that case it comes once before any updateNotification and updateNotificationGroup update 
 class UpdateActiveNotifications extends Update {
   String get tdType => 'updateActiveNotifications';
 
   String? extra;
   int? client_id;
+
+  /// Lists of active notification groups
   vector<NotificationGroup>? groups;
 
   UpdateActiveNotifications({
@@ -1745,12 +2038,18 @@ class UpdateActiveNotifications extends Update {
     return map;
   }
 }
+
+/// Describes whether there are some pending notification updates. Can be used to prevent application from killing, while there are some pending notifications
 class UpdateHavePendingNotifications extends Update {
   String get tdType => 'updateHavePendingNotifications';
 
   String? extra;
   int? client_id;
+
+  /// True, if there are some delayed notification updates, which will be sent soon
   Bool? have_delayed_notifications;
+
+  /// True, if there can be some yet unreceived notifications, which are being fetched from the server
   Bool? have_unreceived_notifications;
 
   UpdateHavePendingNotifications({
@@ -1781,14 +2080,24 @@ class UpdateHavePendingNotifications extends Update {
     return map;
   }
 }
+
+/// Some messages were deleted 
 class UpdateDeleteMessages extends Update {
   String get tdType => 'updateDeleteMessages';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifiers of the deleted messages
   vector<int53>? message_ids;
+
+  /// True, if the messages are permanently deleted by a user (as opposed to just becoming inaccessible)
   Bool? is_permanent;
+
+  /// True, if the messages are deleted only from the cache and can possibly be retrieved again in the future
   Bool? from_cache;
 
   UpdateDeleteMessages({
@@ -1830,14 +2139,24 @@ class UpdateDeleteMessages extends Update {
     return map;
   }
 }
+
+/// A message sender activity in the chat has changed 
 class UpdateChatAction extends Update {
   String get tdType => 'updateChatAction';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// If not 0, a message thread identifier in which the action was performed 
   int53? message_thread_id;
+
+  /// Identifier of a message sender performing the action 
   MessageSender? sender_id;
+
+  /// The action
   ChatAction? action;
 
   UpdateChatAction({
@@ -1874,12 +2193,18 @@ class UpdateChatAction extends Update {
     return map;
   }
 }
+
+/// The user went online or offline 
 class UpdateUserStatus extends Update {
   String get tdType => 'updateUserStatus';
 
   String? extra;
   int? client_id;
+
+  /// User identifier 
   int53? user_id;
+
+  /// New status of the user
   UserStatus? status;
 
   UpdateUserStatus({
@@ -1910,11 +2235,15 @@ class UpdateUserStatus extends Update {
     return map;
   }
 }
+
+/// Some data of a user has changed. This update is guaranteed to come before the user identifier is returned to the application 
 class UpdateUser extends Update {
   String get tdType => 'updateUser';
 
   String? extra;
   int? client_id;
+
+  /// New data about the user
   User? user;
 
   UpdateUser({
@@ -1942,11 +2271,15 @@ class UpdateUser extends Update {
     return map;
   }
 }
+
+/// Some data of a basic group has changed. This update is guaranteed to come before the basic group identifier is returned to the application 
 class UpdateBasicGroup extends Update {
   String get tdType => 'updateBasicGroup';
 
   String? extra;
   int? client_id;
+
+  /// New data about the group
   BasicGroup? basic_group;
 
   UpdateBasicGroup({
@@ -1974,11 +2307,15 @@ class UpdateBasicGroup extends Update {
     return map;
   }
 }
+
+/// Some data of a supergroup or a channel has changed. This update is guaranteed to come before the supergroup identifier is returned to the application 
 class UpdateSupergroup extends Update {
   String get tdType => 'updateSupergroup';
 
   String? extra;
   int? client_id;
+
+  /// New data about the supergroup
   Supergroup? supergroup;
 
   UpdateSupergroup({
@@ -2006,11 +2343,15 @@ class UpdateSupergroup extends Update {
     return map;
   }
 }
+
+/// Some data of a secret chat has changed. This update is guaranteed to come before the secret chat identifier is returned to the application 
 class UpdateSecretChat extends Update {
   String get tdType => 'updateSecretChat';
 
   String? extra;
   int? client_id;
+
+  /// New data about the secret chat
   SecretChat? secret_chat;
 
   UpdateSecretChat({
@@ -2038,12 +2379,18 @@ class UpdateSecretChat extends Update {
     return map;
   }
 }
+
+/// Some data in userFullInfo has been changed 
 class UpdateUserFullInfo extends Update {
   String get tdType => 'updateUserFullInfo';
 
   String? extra;
   int? client_id;
+
+  /// User identifier 
   int53? user_id;
+
+  /// New full information about the user
   UserFullInfo? user_full_info;
 
   UpdateUserFullInfo({
@@ -2074,12 +2421,18 @@ class UpdateUserFullInfo extends Update {
     return map;
   }
 }
+
+/// Some data in basicGroupFullInfo has been changed 
 class UpdateBasicGroupFullInfo extends Update {
   String get tdType => 'updateBasicGroupFullInfo';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of a basic group 
   int53? basic_group_id;
+
+  /// New full information about the group
   BasicGroupFullInfo? basic_group_full_info;
 
   UpdateBasicGroupFullInfo({
@@ -2110,12 +2463,18 @@ class UpdateBasicGroupFullInfo extends Update {
     return map;
   }
 }
+
+/// Some data in supergroupFullInfo has been changed 
 class UpdateSupergroupFullInfo extends Update {
   String get tdType => 'updateSupergroupFullInfo';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the supergroup or channel 
   int53? supergroup_id;
+
+  /// New full information about the supergroup
   SupergroupFullInfo? supergroup_full_info;
 
   UpdateSupergroupFullInfo({
@@ -2146,12 +2505,18 @@ class UpdateSupergroupFullInfo extends Update {
     return map;
   }
 }
+
+/// A service notification from the server was received. Upon receiving this the application must show a popup with the content of the notification
 class UpdateServiceNotification extends Update {
   String get tdType => 'updateServiceNotification';
 
   String? extra;
   int? client_id;
+
+  /// Notification type. If type begins with "AUTH_KEY_DROP_", then two buttons "Cancel" and "Log out" must be shown under notification; if user presses the second, all local data must be destroyed using Destroy method
   string? type;
+
+  /// Notification content
   MessageContent? content;
 
   UpdateServiceNotification({
@@ -2182,11 +2547,15 @@ class UpdateServiceNotification extends Update {
     return map;
   }
 }
+
+/// Information about a file was updated 
 class UpdateFile extends Update {
   String get tdType => 'updateFile';
 
   String? extra;
   int? client_id;
+
+  /// New data about the file
   File? file;
 
   UpdateFile({
@@ -2214,14 +2583,24 @@ class UpdateFile extends Update {
     return map;
   }
 }
+
+/// The file generation process needs to be started by the application
 class UpdateFileGenerationStart extends Update {
   String get tdType => 'updateFileGenerationStart';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier for the generation process
   int64? generation_id;
+
+  /// The path to a file from which a new file is generated; may be empty
   string? original_path;
+
+  /// The path to a file that must be created and where the new file is generated
   string? destination_path;
+
+  /// String specifying the conversion applied to the original file. If conversion is "#url#" than original_path contains an HTTP/HTTPS URL of a file, which must be downloaded by the application
   string? conversion;
 
   UpdateFileGenerationStart({
@@ -2258,11 +2637,15 @@ class UpdateFileGenerationStart extends Update {
     return map;
   }
 }
+
+/// File generation is no longer needed 
 class UpdateFileGenerationStop extends Update {
   String get tdType => 'updateFileGenerationStop';
 
   String? extra;
   int? client_id;
+
+  /// Unique identifier for the generation process
   int64? generation_id;
 
   UpdateFileGenerationStop({
@@ -2290,13 +2673,21 @@ class UpdateFileGenerationStop extends Update {
     return map;
   }
 }
+
+/// The state of the file download list has changed
 class UpdateFileDownloads extends Update {
   String get tdType => 'updateFileDownloads';
 
   String? extra;
   int? client_id;
+
+  /// Total size of files in the file download list, in bytes
   int53? total_size;
+
+  /// Total number of files in the file download list
   int32? total_count;
+
+  /// Total downloaded size of files in the file download list, in bytes
   int53? downloaded_size;
 
   UpdateFileDownloads({
@@ -2330,12 +2721,18 @@ class UpdateFileDownloads extends Update {
     return map;
   }
 }
+
+/// A file was added to the file download list. This update is sent only after file download list is loaded for the first time 
 class UpdateFileAddedToDownloads extends Update {
   String get tdType => 'updateFileAddedToDownloads';
 
   String? extra;
   int? client_id;
+
+  /// The added file download 
   FileDownload? file_download;
+
+  /// New number of being downloaded and recently downloaded files found
   DownloadedFileCounts? counts;
 
   UpdateFileAddedToDownloads({
@@ -2366,14 +2763,24 @@ class UpdateFileAddedToDownloads extends Update {
     return map;
   }
 }
+
+/// A file download was changed. This update is sent only after file download list is loaded for the first time 
 class UpdateFileDownload extends Update {
   String get tdType => 'updateFileDownload';
 
   String? extra;
   int? client_id;
+
+  /// File identifier
   int32? file_id;
+
+  /// Point in time (Unix timestamp) when the file downloading was completed; 0 if the file downloading isn't completed
   int32? complete_date;
+
+  /// True, if downloading of the file is paused
   Bool? is_paused;
+
+  /// New number of being downloaded and recently downloaded files found
   DownloadedFileCounts? counts;
 
   UpdateFileDownload({
@@ -2410,12 +2817,18 @@ class UpdateFileDownload extends Update {
     return map;
   }
 }
+
+/// A file was removed from the file download list. This update is sent only after file download list is loaded for the first time 
 class UpdateFileRemovedFromDownloads extends Update {
   String get tdType => 'updateFileRemovedFromDownloads';
 
   String? extra;
   int? client_id;
+
+  /// File identifier 
   int32? file_id;
+
+  /// New number of being downloaded and recently downloaded files found
   DownloadedFileCounts? counts;
 
   UpdateFileRemovedFromDownloads({
@@ -2446,11 +2859,15 @@ class UpdateFileRemovedFromDownloads extends Update {
     return map;
   }
 }
+
+/// New call was created or information about a call was updated 
 class UpdateCall extends Update {
   String get tdType => 'updateCall';
 
   String? extra;
   int? client_id;
+
+  /// New data about a call
   Call? call;
 
   UpdateCall({
@@ -2478,11 +2895,15 @@ class UpdateCall extends Update {
     return map;
   }
 }
+
+/// Information about a group call was updated 
 class UpdateGroupCall extends Update {
   String get tdType => 'updateGroupCall';
 
   String? extra;
   int? client_id;
+
+  /// New data about a group call
   GroupCall? group_call;
 
   UpdateGroupCall({
@@ -2510,12 +2931,18 @@ class UpdateGroupCall extends Update {
     return map;
   }
 }
+
+/// Information about a group call participant was changed. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined
 class UpdateGroupCallParticipant extends Update {
   String get tdType => 'updateGroupCallParticipant';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of group call 
   int32? group_call_id;
+
+  /// New data about a participant
   GroupCallParticipant? participant;
 
   UpdateGroupCallParticipant({
@@ -2546,12 +2973,18 @@ class UpdateGroupCallParticipant extends Update {
     return map;
   }
 }
+
+/// New call signaling data arrived 
 class UpdateNewCallSignalingData extends Update {
   String get tdType => 'updateNewCallSignalingData';
 
   String? extra;
   int? client_id;
+
+  /// The call identifier 
   int32? call_id;
+
+  /// The data
   bytes? data;
 
   UpdateNewCallSignalingData({
@@ -2582,12 +3015,18 @@ class UpdateNewCallSignalingData extends Update {
     return map;
   }
 }
+
+/// Some privacy setting rules have been changed 
 class UpdateUserPrivacySettingRules extends Update {
   String get tdType => 'updateUserPrivacySettingRules';
 
   String? extra;
   int? client_id;
+
+  /// The privacy setting 
   UserPrivacySetting? setting;
+
+  /// New privacy rules
   UserPrivacySettingRules? rules;
 
   UpdateUserPrivacySettingRules({
@@ -2618,13 +3057,21 @@ class UpdateUserPrivacySettingRules extends Update {
     return map;
   }
 }
+
+/// Number of unread messages in a chat list has changed. This update is sent only if the message database is used 
 class UpdateUnreadMessageCount extends Update {
   String get tdType => 'updateUnreadMessageCount';
 
   String? extra;
   int? client_id;
+
+  /// The chat list with changed number of unread messages
   ChatList? chat_list;
+
+  /// Total number of unread messages 
   int32? unread_count;
+
+  /// Total number of unread messages in unmuted chats
   int32? unread_unmuted_count;
 
   UpdateUnreadMessageCount({
@@ -2658,16 +3105,30 @@ class UpdateUnreadMessageCount extends Update {
     return map;
   }
 }
+
+/// Number of unread chats, i.e. with unread messages or marked as unread, has changed. This update is sent only if the message database is used
 class UpdateUnreadChatCount extends Update {
   String get tdType => 'updateUnreadChatCount';
 
   String? extra;
   int? client_id;
+
+  /// The chat list with changed number of unread messages
   ChatList? chat_list;
+
+  /// Approximate total number of chats in the chat list
   int32? total_count;
+
+  /// Total number of unread chats 
   int32? unread_count;
+
+  /// Total number of unread unmuted chats
   int32? unread_unmuted_count;
+
+  /// Total number of chats marked as unread 
   int32? marked_as_unread_count;
+
+  /// Total number of unmuted chats marked as unread
   int32? marked_as_unread_unmuted_count;
 
   UpdateUnreadChatCount({
@@ -2710,12 +3171,18 @@ class UpdateUnreadChatCount extends Update {
     return map;
   }
 }
+
+/// An option changed its value 
 class UpdateOption extends Update {
   String get tdType => 'updateOption';
 
   String? extra;
   int? client_id;
+
+  /// The option name 
   string? name;
+
+  /// The new option value
   OptionValue? value;
 
   UpdateOption({
@@ -2746,11 +3213,15 @@ class UpdateOption extends Update {
     return map;
   }
 }
+
+/// A sticker set has changed 
 class UpdateStickerSet extends Update {
   String get tdType => 'updateStickerSet';
 
   String? extra;
   int? client_id;
+
+  /// The sticker set
   StickerSet? sticker_set;
 
   UpdateStickerSet({
@@ -2778,12 +3249,18 @@ class UpdateStickerSet extends Update {
     return map;
   }
 }
+
+/// The list of installed sticker sets was updated 
 class UpdateInstalledStickerSets extends Update {
   String get tdType => 'updateInstalledStickerSets';
 
   String? extra;
   int? client_id;
+
+  /// True, if the list of installed mask sticker sets was updated 
   Bool? is_masks;
+
+  /// The new list of installed ordinary sticker sets
   vector<int64>? sticker_set_ids;
 
   UpdateInstalledStickerSets({
@@ -2819,11 +3296,15 @@ class UpdateInstalledStickerSets extends Update {
     return map;
   }
 }
+
+/// The list of trending sticker sets was updated or some of them were viewed 
 class UpdateTrendingStickerSets extends Update {
   String get tdType => 'updateTrendingStickerSets';
 
   String? extra;
   int? client_id;
+
+  /// The prefix of the list of trending sticker sets with the newest trending sticker sets
   StickerSets? sticker_sets;
 
   UpdateTrendingStickerSets({
@@ -2851,12 +3332,18 @@ class UpdateTrendingStickerSets extends Update {
     return map;
   }
 }
+
+/// The list of recently used stickers was updated 
 class UpdateRecentStickers extends Update {
   String get tdType => 'updateRecentStickers';
 
   String? extra;
   int? client_id;
+
+  /// True, if the list of stickers attached to photo or video files was updated, otherwise the list of sent stickers is updated 
   Bool? is_attached;
+
+  /// The new list of file identifiers of recently used stickers
   vector<int32>? sticker_ids;
 
   UpdateRecentStickers({
@@ -2892,11 +3379,15 @@ class UpdateRecentStickers extends Update {
     return map;
   }
 }
+
+/// The list of favorite stickers was updated 
 class UpdateFavoriteStickers extends Update {
   String get tdType => 'updateFavoriteStickers';
 
   String? extra;
   int? client_id;
+
+  /// The new list of file identifiers of favorite stickers
   vector<int32>? sticker_ids;
 
   UpdateFavoriteStickers({
@@ -2929,11 +3420,15 @@ class UpdateFavoriteStickers extends Update {
     return map;
   }
 }
+
+/// The list of saved animations was updated 
 class UpdateSavedAnimations extends Update {
   String get tdType => 'updateSavedAnimations';
 
   String? extra;
   int? client_id;
+
+  /// The new list of file identifiers of saved animations
   vector<int32>? animation_ids;
 
   UpdateSavedAnimations({
@@ -2966,11 +3461,15 @@ class UpdateSavedAnimations extends Update {
     return map;
   }
 }
+
+/// The list of saved notifications sounds was updated. This update may not be sent until information about a notification sound was requested for the first time 
 class UpdateSavedNotificationSounds extends Update {
   String get tdType => 'updateSavedNotificationSounds';
 
   String? extra;
   int? client_id;
+
+  /// The new list of identifiers of saved notification sounds
   vector<int64>? notification_sound_ids;
 
   UpdateSavedNotificationSounds({
@@ -3003,12 +3502,18 @@ class UpdateSavedNotificationSounds extends Update {
     return map;
   }
 }
+
+/// The selected background has changed 
 class UpdateSelectedBackground extends Update {
   String get tdType => 'updateSelectedBackground';
 
   String? extra;
   int? client_id;
+
+  /// True, if background for dark theme has changed 
   Bool? for_dark_theme;
+
+  /// The new selected background; may be null
   Background? background;
 
   UpdateSelectedBackground({
@@ -3039,11 +3544,15 @@ class UpdateSelectedBackground extends Update {
     return map;
   }
 }
+
+/// The list of available chat themes has changed 
 class UpdateChatThemes extends Update {
   String get tdType => 'updateChatThemes';
 
   String? extra;
   int? client_id;
+
+  /// The new list of chat themes
   vector<ChatTheme>? chat_themes;
 
   UpdateChatThemes({
@@ -3076,13 +3585,21 @@ class UpdateChatThemes extends Update {
     return map;
   }
 }
+
+/// Some language pack strings have been updated 
 class UpdateLanguagePackStrings extends Update {
   String get tdType => 'updateLanguagePackStrings';
 
   String? extra;
   int? client_id;
+
+  /// Localization target to which the language pack belongs 
   string? localization_target;
+
+  /// Identifier of the updated language pack 
   string? language_pack_id;
+
+  /// List of changed language pack strings
   vector<LanguagePackString>? strings;
 
   UpdateLanguagePackStrings({
@@ -3121,11 +3638,15 @@ class UpdateLanguagePackStrings extends Update {
     return map;
   }
 }
+
+/// The connection state has changed. This update must be used only to show a human-readable description of the connection state 
 class UpdateConnectionState extends Update {
   String get tdType => 'updateConnectionState';
 
   String? extra;
   int? client_id;
+
+  /// The new connection state
   ConnectionState? state;
 
   UpdateConnectionState({
@@ -3153,12 +3674,18 @@ class UpdateConnectionState extends Update {
     return map;
   }
 }
+
+/// New terms of service must be accepted by the user. If the terms of service are declined, then the deleteAccount method must be called with the reason "Decline ToS update" 
 class UpdateTermsOfService extends Update {
   String get tdType => 'updateTermsOfService';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the terms of service 
   string? terms_of_service_id;
+
+  /// The new terms of service
   TermsOfService? terms_of_service;
 
   UpdateTermsOfService({
@@ -3189,11 +3716,15 @@ class UpdateTermsOfService extends Update {
     return map;
   }
 }
+
+/// The list of users nearby has changed. The update is guaranteed to be sent only 60 seconds after a successful searchChatsNearby request 
 class UpdateUsersNearby extends Update {
   String get tdType => 'updateUsersNearby';
 
   String? extra;
   int? client_id;
+
+  /// The new list of users nearby
   vector<ChatNearby>? users_nearby;
 
   UpdateUsersNearby({
@@ -3226,11 +3757,15 @@ class UpdateUsersNearby extends Update {
     return map;
   }
 }
+
+/// The list of bots added to attachment menu has changed 
 class UpdateAttachmentMenuBots extends Update {
   String get tdType => 'updateAttachmentMenuBots';
 
   String? extra;
   int? client_id;
+
+  /// The new list of bots added to attachment menu. The bots must be shown in attachment menu only in private chats. The bots must not be shown on scheduled messages screen
   vector<AttachmentMenuBot>? bots;
 
   UpdateAttachmentMenuBots({
@@ -3263,11 +3798,15 @@ class UpdateAttachmentMenuBots extends Update {
     return map;
   }
 }
+
+/// A message was sent by an opened web app, so the web app needs to be closed 
 class UpdateWebAppMessageSent extends Update {
   String get tdType => 'updateWebAppMessageSent';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of web app launch
   int64? web_app_launch_id;
 
   UpdateWebAppMessageSent({
@@ -3295,11 +3834,15 @@ class UpdateWebAppMessageSent extends Update {
     return map;
   }
 }
+
+/// The list of supported reactions has changed 
 class UpdateReactions extends Update {
   String get tdType => 'updateReactions';
 
   String? extra;
   int? client_id;
+
+  /// The new list of supported reactions
   vector<Reaction>? reactions;
 
   UpdateReactions({
@@ -3332,11 +3875,15 @@ class UpdateReactions extends Update {
     return map;
   }
 }
+
+/// The list of supported dice emojis has changed 
 class UpdateDiceEmojis extends Update {
   String get tdType => 'updateDiceEmojis';
 
   String? extra;
   int? client_id;
+
+  /// The new list of supported dice emojis
   vector<string>? emojis;
 
   UpdateDiceEmojis({
@@ -3369,13 +3916,21 @@ class UpdateDiceEmojis extends Update {
     return map;
   }
 }
+
+/// Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played
 class UpdateAnimatedEmojiMessageClicked extends Update {
   String get tdType => 'updateAnimatedEmojiMessageClicked';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Message identifier 
   int53? message_id;
+
+  /// The animated sticker to be played
   Sticker? sticker;
 
   UpdateAnimatedEmojiMessageClicked({
@@ -3409,12 +3964,18 @@ class UpdateAnimatedEmojiMessageClicked extends Update {
     return map;
   }
 }
+
+/// The parameters of animation search through GetOption("animation_search_bot_username") bot has changed 
 class UpdateAnimationSearchParameters extends Update {
   String get tdType => 'updateAnimationSearchParameters';
 
   String? extra;
   int? client_id;
+
+  /// Name of the animation search provider 
   string? provider;
+
+  /// The new list of emojis suggested for searching
   vector<string>? emojis;
 
   UpdateAnimationSearchParameters({
@@ -3450,12 +4011,18 @@ class UpdateAnimationSearchParameters extends Update {
     return map;
   }
 }
+
+/// The list of suggested to the user actions has changed 
 class UpdateSuggestedActions extends Update {
   String get tdType => 'updateSuggestedActions';
 
   String? extra;
   int? client_id;
+
+  /// Added suggested actions 
   vector<SuggestedAction>? added_actions;
+
+  /// Removed suggested actions
   vector<SuggestedAction>? removed_actions;
 
   UpdateSuggestedActions({
@@ -3496,16 +4063,30 @@ class UpdateSuggestedActions extends Update {
     return map;
   }
 }
+
+/// A new incoming inline query; for bots only 
 class UpdateNewInlineQuery extends Update {
   String get tdType => 'updateNewInlineQuery';
 
   String? extra;
   int? client_id;
+
+  /// Unique query identifier 
   int64? id;
+
+  /// Identifier of the user who sent the query 
   int53? sender_user_id;
+
+  /// User location; may be null
   Location? user_location;
+
+  /// The type of the chat from which the query originated; may be null if unknown 
   ChatType? chat_type;
+
+  /// Text of the query 
   string? query;
+
+  /// Offset of the first entry to return
   string? offset;
 
   UpdateNewInlineQuery({
@@ -3548,15 +4129,27 @@ class UpdateNewInlineQuery extends Update {
     return map;
   }
 }
+
+/// The user has chosen a result of an inline query; for bots only 
 class UpdateNewChosenInlineResult extends Update {
   String get tdType => 'updateNewChosenInlineResult';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the user who sent the query 
   int53? sender_user_id;
+
+  /// User location; may be null
   Location? user_location;
+
+  /// Text of the query 
   string? query;
+
+  /// Identifier of the chosen result 
   string? result_id;
+
+  /// Identifier of the sent inline message, if known
   string? inline_message_id;
 
   UpdateNewChosenInlineResult({
@@ -3596,16 +4189,30 @@ class UpdateNewChosenInlineResult extends Update {
     return map;
   }
 }
+
+/// A new incoming callback query; for bots only 
 class UpdateNewCallbackQuery extends Update {
   String get tdType => 'updateNewCallbackQuery';
 
   String? extra;
   int? client_id;
+
+  /// Unique query identifier 
   int64? id;
+
+  /// Identifier of the user who sent the query
   int53? sender_user_id;
+
+  /// Identifier of the chat where the query was sent 
   int53? chat_id;
+
+  /// Identifier of the message from which the query originated
   int53? message_id;
+
+  /// Identifier that uniquely corresponds to the chat to which the message was sent 
   int64? chat_instance;
+
+  /// Query payload
   CallbackQueryPayload? payload;
 
   UpdateNewCallbackQuery({
@@ -3648,15 +4255,27 @@ class UpdateNewCallbackQuery extends Update {
     return map;
   }
 }
+
+/// A new incoming callback query from a message sent via a bot; for bots only 
 class UpdateNewInlineCallbackQuery extends Update {
   String get tdType => 'updateNewInlineCallbackQuery';
 
   String? extra;
   int? client_id;
+
+  /// Unique query identifier 
   int64? id;
+
+  /// Identifier of the user who sent the query 
   int53? sender_user_id;
+
+  /// Identifier of the inline message from which the query originated
   string? inline_message_id;
+
+  /// An identifier uniquely corresponding to the chat a message was sent to 
   int64? chat_instance;
+
+  /// Query payload
   CallbackQueryPayload? payload;
 
   UpdateNewInlineCallbackQuery({
@@ -3696,14 +4315,24 @@ class UpdateNewInlineCallbackQuery extends Update {
     return map;
   }
 }
+
+/// A new incoming shipping query; for bots only. Only for invoices with flexible price 
 class UpdateNewShippingQuery extends Update {
   String get tdType => 'updateNewShippingQuery';
 
   String? extra;
   int? client_id;
+
+  /// Unique query identifier 
   int64? id;
+
+  /// Identifier of the user who sent the query 
   int53? sender_user_id;
+
+  /// Invoice payload 
   string? invoice_payload;
+
+  /// User shipping address
   Address? shipping_address;
 
   UpdateNewShippingQuery({
@@ -3740,17 +4369,33 @@ class UpdateNewShippingQuery extends Update {
     return map;
   }
 }
+
+/// A new incoming pre-checkout query; for bots only. Contains full information about a checkout 
 class UpdateNewPreCheckoutQuery extends Update {
   String get tdType => 'updateNewPreCheckoutQuery';
 
   String? extra;
   int? client_id;
+
+  /// Unique query identifier 
   int64? id;
+
+  /// Identifier of the user who sent the query 
   int53? sender_user_id;
+
+  /// Currency for the product price 
   string? currency;
+
+  /// Total price for the product, in the smallest units of the currency
   int53? total_amount;
+
+  /// Invoice payload 
   bytes? invoice_payload;
+
+  /// Identifier of a shipping option chosen by the user; may be empty if not applicable 
   string? shipping_option_id;
+
+  /// Information about the order; may be null
   OrderInfo? order_info;
 
   UpdateNewPreCheckoutQuery({
@@ -3796,11 +4441,15 @@ class UpdateNewPreCheckoutQuery extends Update {
     return map;
   }
 }
+
+/// A new incoming event; for bots only 
 class UpdateNewCustomEvent extends Update {
   String get tdType => 'updateNewCustomEvent';
 
   String? extra;
   int? client_id;
+
+  /// A JSON-serialized event
   string? event;
 
   UpdateNewCustomEvent({
@@ -3828,13 +4477,21 @@ class UpdateNewCustomEvent extends Update {
     return map;
   }
 }
+
+/// A new incoming query; for bots only 
 class UpdateNewCustomQuery extends Update {
   String get tdType => 'updateNewCustomQuery';
 
   String? extra;
   int? client_id;
+
+  /// The query identifier 
   int64? id;
+
+  /// JSON-serialized query data 
   string? data;
+
+  /// Query timeout
   int32? timeout;
 
   UpdateNewCustomQuery({
@@ -3868,11 +4525,15 @@ class UpdateNewCustomQuery extends Update {
     return map;
   }
 }
+
+/// A poll was updated; for bots only 
 class UpdatePoll extends Update {
   String get tdType => 'updatePoll';
 
   String? extra;
   int? client_id;
+
+  /// New data about the poll
   Poll? poll;
 
   UpdatePoll({
@@ -3900,13 +4561,21 @@ class UpdatePoll extends Update {
     return map;
   }
 }
+
+/// A user changed the answer to a poll; for bots only 
 class UpdatePollAnswer extends Update {
   String get tdType => 'updatePollAnswer';
 
   String? extra;
   int? client_id;
+
+  /// Unique poll identifier 
   int64? poll_id;
+
+  /// The user, who changed the answer to the poll 
   int53? user_id;
+
+  /// 0-based identifiers of answer options, chosen by the user
   vector<int32>? option_ids;
 
   UpdatePollAnswer({
@@ -3945,16 +4614,30 @@ class UpdatePollAnswer extends Update {
     return map;
   }
 }
+
+/// User rights changed in a chat; for bots only 
 class UpdateChatMember extends Update {
   String get tdType => 'updateChatMember';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Identifier of the user, changing the rights
   int53? actor_user_id;
+
+  /// Point in time (Unix timestamp) when the user rights was changed 
   int32? date;
+
+  /// If user has joined the chat using an invite link, the invite link; may be null
   ChatInviteLink? invite_link;
+
+  /// Previous chat member 
   ChatMember? old_chat_member;
+
+  /// New chat member
   ChatMember? new_chat_member;
 
   UpdateChatMember({
@@ -3997,13 +4680,21 @@ class UpdateChatMember extends Update {
     return map;
   }
 }
+
+/// A user sent a join request to a chat; for bots only 
 class UpdateNewChatJoinRequest extends Update {
   String get tdType => 'updateNewChatJoinRequest';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Join request 
   ChatJoinRequest? request;
+
+  /// The invite link, which was used to send join request; may be null
   ChatInviteLink? invite_link;
 
   UpdateNewChatJoinRequest({

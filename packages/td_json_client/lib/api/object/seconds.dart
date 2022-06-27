@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains a value representing a number of seconds 
 class Seconds extends TdObject {
   String get tdType => 'seconds';
 
   String? extra;
   int? client_id;
+
+  /// Number of seconds
   double? seconds;
 
   Seconds({

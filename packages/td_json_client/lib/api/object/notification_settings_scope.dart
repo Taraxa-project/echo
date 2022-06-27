@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Describes the types of chats to which notification settings are relevant
 abstract class NotificationSettingsScope extends TdObject {}
 
+
+/// Notification settings applied to all private and secret chats when the corresponding chat setting has a default value
 class NotificationSettingsScopePrivateChats extends NotificationSettingsScope {
   String get tdType => 'notificationSettingsScopePrivateChats';
 
@@ -30,6 +33,8 @@ class NotificationSettingsScopePrivateChats extends NotificationSettingsScope {
     return map;
   }
 }
+
+/// Notification settings applied to all basic group and supergroup chats when the corresponding chat setting has a default value
 class NotificationSettingsScopeGroupChats extends NotificationSettingsScope {
   String get tdType => 'notificationSettingsScopeGroupChats';
 
@@ -58,6 +63,8 @@ class NotificationSettingsScopeGroupChats extends NotificationSettingsScope {
     return map;
   }
 }
+
+/// Notification settings applied to all channel chats when the corresponding chat setting has a default value
 class NotificationSettingsScopeChannelChats extends NotificationSettingsScope {
   String get tdType => 'notificationSettingsScopeChannelChats';
 

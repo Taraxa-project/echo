@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about a newest pinned message in the chat 
 class GetChatPinnedMessage extends TdFunction {
   String get tdType => 'getChatPinnedMessage';
   String get tdReturnType => 'Message';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat the message belongs to
   int53? chat_id;
 
   GetChatPinnedMessage({

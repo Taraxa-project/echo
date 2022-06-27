@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the last message sent in a chat no later than the specified date 
 class GetChatMessageByDate extends TdFunction {
   String get tdType => 'getChatMessageByDate';
   String get tdReturnType => 'Message';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// Point in time (Unix timestamp) relative to which to search for messages
   int32? date;
 
   GetChatMessageByDate({

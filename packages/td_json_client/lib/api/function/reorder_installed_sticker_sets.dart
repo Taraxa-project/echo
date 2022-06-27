@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the order of installed sticker sets 
 class ReorderInstalledStickerSets extends TdFunction {
   String get tdType => 'reorderInstalledStickerSets';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Pass true to change the order of mask sticker sets; pass false to change the order of ordinary sticker sets 
   Bool? is_masks;
+
+  /// Identifiers of installed sticker sets in the new correct order
   vector<int64>? sticker_set_ids;
 
   ReorderInstalledStickerSets({

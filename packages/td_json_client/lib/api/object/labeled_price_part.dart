@@ -1,11 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Portion of the price of a product (e.g., "delivery cost", "tax amount") 
 class LabeledPricePart extends TdObject {
   String get tdType => 'labeledPricePart';
 
   String? extra;
   int? client_id;
+
+  /// Label for this portion of the product price 
   string? label;
+
+  /// Currency amount in the smallest units of the currency
   int53? amount;
 
   LabeledPricePart({

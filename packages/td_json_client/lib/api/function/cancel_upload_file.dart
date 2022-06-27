@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Stops the uploading of a file. Supported only for files uploaded by using uploadFile. For other files the behavior is undefined 
 class CancelUploadFile extends TdFunction {
   String get tdType => 'cancelUploadFile';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the file to stop uploading
   int32? file_id;
 
   CancelUploadFile({

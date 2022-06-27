@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Contains the type of a Telegram Passport element
 abstract class PassportElementType extends TdObject {}
 
+
+/// A Telegram Passport element containing the user's personal details
 class PassportElementTypePersonalDetails extends PassportElementType {
   String get tdType => 'passportElementTypePersonalDetails';
 
@@ -30,6 +33,8 @@ class PassportElementTypePersonalDetails extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's passport
 class PassportElementTypePassport extends PassportElementType {
   String get tdType => 'passportElementTypePassport';
 
@@ -58,6 +63,8 @@ class PassportElementTypePassport extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's driver license
 class PassportElementTypeDriverLicense extends PassportElementType {
   String get tdType => 'passportElementTypeDriverLicense';
 
@@ -86,6 +93,8 @@ class PassportElementTypeDriverLicense extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's identity card
 class PassportElementTypeIdentityCard extends PassportElementType {
   String get tdType => 'passportElementTypeIdentityCard';
 
@@ -114,6 +123,8 @@ class PassportElementTypeIdentityCard extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's internal passport
 class PassportElementTypeInternalPassport extends PassportElementType {
   String get tdType => 'passportElementTypeInternalPassport';
 
@@ -142,6 +153,8 @@ class PassportElementTypeInternalPassport extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's address
 class PassportElementTypeAddress extends PassportElementType {
   String get tdType => 'passportElementTypeAddress';
 
@@ -170,6 +183,8 @@ class PassportElementTypeAddress extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's utility bill
 class PassportElementTypeUtilityBill extends PassportElementType {
   String get tdType => 'passportElementTypeUtilityBill';
 
@@ -198,6 +213,8 @@ class PassportElementTypeUtilityBill extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's bank statement
 class PassportElementTypeBankStatement extends PassportElementType {
   String get tdType => 'passportElementTypeBankStatement';
 
@@ -226,6 +243,8 @@ class PassportElementTypeBankStatement extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's rental agreement
 class PassportElementTypeRentalAgreement extends PassportElementType {
   String get tdType => 'passportElementTypeRentalAgreement';
 
@@ -254,6 +273,8 @@ class PassportElementTypeRentalAgreement extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the registration page of the user's passport
 class PassportElementTypePassportRegistration extends PassportElementType {
   String get tdType => 'passportElementTypePassportRegistration';
 
@@ -282,6 +303,8 @@ class PassportElementTypePassportRegistration extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's temporary registration
 class PassportElementTypeTemporaryRegistration extends PassportElementType {
   String get tdType => 'passportElementTypeTemporaryRegistration';
 
@@ -310,6 +333,8 @@ class PassportElementTypeTemporaryRegistration extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's phone number
 class PassportElementTypePhoneNumber extends PassportElementType {
   String get tdType => 'passportElementTypePhoneNumber';
 
@@ -338,6 +363,8 @@ class PassportElementTypePhoneNumber extends PassportElementType {
     return map;
   }
 }
+
+/// A Telegram Passport element containing the user's email address
 class PassportElementTypeEmailAddress extends PassportElementType {
   String get tdType => 'passportElementTypeEmailAddress';
 

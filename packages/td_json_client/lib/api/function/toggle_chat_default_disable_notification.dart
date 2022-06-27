@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the value of the default disable_notification parameter, used when a message is sent to a chat 
 class ToggleChatDefaultDisableNotification extends TdFunction {
   String get tdType => 'toggleChatDefaultDisableNotification';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of default_disable_notification
   Bool? default_disable_notification;
 
   ToggleChatDefaultDisableNotification({

@@ -1,13 +1,23 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains statistics about administrator actions done by a user
 class ChatStatisticsAdministratorActionsInfo extends TdObject {
   String get tdType => 'chatStatisticsAdministratorActionsInfo';
 
   String? extra;
   int? client_id;
+
+  /// Administrator user identifier
   int53? user_id;
+
+  /// Number of messages deleted by the administrator
   int32? deleted_message_count;
+
+  /// Number of users banned by the administrator
   int32? banned_user_count;
+
+  /// Number of users restricted by the administrator
   int32? restricted_user_count;
 
   ChatStatisticsAdministratorActionsInfo({

@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// A simple object containing a number; for testing only 
 class TestInt extends TdObject {
   String get tdType => 'testInt';
 
   String? extra;
   int? client_id;
+
+  /// Number
   int32? value;
 
   TestInt({

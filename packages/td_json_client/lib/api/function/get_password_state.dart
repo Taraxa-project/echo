@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns the current state of 2-step verification
 class GetPasswordState extends TdFunction {
   String get tdType => 'getPasswordState';
   String get tdReturnType => 'PasswordState';

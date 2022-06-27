@@ -12,41 +12,105 @@ import 'package:td_json_client/api/object/video_chat.dart';
 import 'package:td_json_client/api/object/chat_join_requests_info.dart';
 import 'package:td_json_client/api/object/draft_message.dart';
 
+
+/// A chat. (Can be a private chat, basic group, supergroup, or secret chat)
 class Chat extends TdObject {
   String get tdType => 'chat';
 
   String? extra;
   int? client_id;
+
+  /// Chat unique identifier
   int53? id;
+
+  /// Type of the chat
   ChatType? type;
+
+  /// Chat title
   string? title;
+
+  /// Chat photo; may be null
   ChatPhotoInfo? photo;
+
+  /// Actions that non-administrator chat members are allowed to take in the chat
   ChatPermissions? permissions;
+
+  /// Last message in the chat; may be null
   Message? last_message;
+
+  /// Positions of the chat in chat lists
   vector<ChatPosition>? positions;
+
+  /// Identifier of a user or chat that is selected to send messages in the chat; may be null if the user can't change message sender
   MessageSender? message_sender_id;
+
+  /// True, if chat content can't be saved locally, forwarded, or copied
   Bool? has_protected_content;
+
+  /// True, if the chat is marked as unread
   Bool? is_marked_as_unread;
+
+  /// True, if the chat is blocked by the current user and private messages from the chat can't be received
   Bool? is_blocked;
+
+  /// True, if the chat has scheduled messages
   Bool? has_scheduled_messages;
+
+  /// True, if the chat messages can be deleted only for the current user while other users will continue to see the messages
   Bool? can_be_deleted_only_for_self;
+
+  /// True, if the chat messages can be deleted for all users
   Bool? can_be_deleted_for_all_users;
+
+  /// True, if the chat can be reported to Telegram moderators through reportChat or reportChatPhoto
   Bool? can_be_reported;
+
+  /// Default value of the disable_notification parameter, used when a message is sent to the chat
   Bool? default_disable_notification;
+
+  /// Number of unread messages in the chat
   int32? unread_count;
+
+  /// Identifier of the last read incoming message
   int53? last_read_inbox_message_id;
+
+  /// Identifier of the last read outgoing message
   int53? last_read_outbox_message_id;
+
+  /// Number of unread messages with a mention/reply in the chat
   int32? unread_mention_count;
+
+  /// Number of messages with unread reactions in the chat
   int32? unread_reaction_count;
+
+  /// Notification settings for the chat
   ChatNotificationSettings? notification_settings;
+
+  /// List of reactions, available in the chat
   vector<string>? available_reactions;
+
+  /// Current message Time To Live setting (self-destruct timer) for the chat; 0 if not defined. TTL is counted from the time message or its content is viewed in secret chats and from the send date in other chats
   int32? message_ttl;
+
+  /// If non-empty, name of a theme, set for the chat
   string? theme_name;
+
+  /// Information about actions which must be possible to do through the chat action bar; may be null
   ChatActionBar? action_bar;
+
+  /// Information about video chat of the chat
   VideoChat? video_chat;
+
+  /// Information about pending join requests; may be null
   ChatJoinRequestsInfo? pending_join_requests;
+
+  /// Identifier of the message from which reply markup needs to be used; 0 if there is no default custom reply markup in the chat
   int53? reply_markup_message_id;
+
+  /// A draft of a message in the chat; may be null
   DraftMessage? draft_message;
+
+  /// Application-specific data associated with the chat. (For example, the chat scroll position or local chat notification settings can be stored here.) Persistent if the message database is used
   string? client_data;
 
   Chat({

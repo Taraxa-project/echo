@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Adds a custom server language pack to the list of installed language packs in current localization target. Can be called before authorization 
 class AddCustomServerLanguagePack extends TdFunction {
   String get tdType => 'addCustomServerLanguagePack';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of a language pack to be added; may be different from a name that is used in an "https://t.me/setlanguage/" link
   string? language_pack_id;
 
   AddCustomServerLanguagePack({

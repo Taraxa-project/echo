@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/background_type.dart';
 
+
+/// Constructs a persistent HTTP URL for a background 
 class GetBackgroundUrl extends TdFunction {
   String get tdType => 'getBackgroundUrl';
   String get tdReturnType => 'HttpUrl';
 
   String? extra;
   int? client_id;
+
+  /// Background name 
   string? name;
+
+  /// Background type
   BackgroundType? type;
 
   GetBackgroundUrl({

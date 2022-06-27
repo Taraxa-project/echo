@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Toggles whether the current user will receive a notification when the group call will start; scheduled group calls only
 class ToggleGroupCallEnabledStartNotification extends TdFunction {
   String get tdType => 'toggleGroupCallEnabledStartNotification';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier 
   int32? group_call_id;
+
+  /// New value of the enabled_start_notification setting
   Bool? enabled_start_notification;
 
   ToggleGroupCallEnabledStartNotification({

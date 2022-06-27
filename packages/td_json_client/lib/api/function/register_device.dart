@@ -2,13 +2,19 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/device_token.dart';
 
+
+/// Registers the currently used device for receiving push notifications. Returns a globally unique identifier of the push notification subscription 
 class RegisterDevice extends TdFunction {
   String get tdType => 'registerDevice';
   String get tdReturnType => 'PushReceiverId';
 
   String? extra;
   int? client_id;
+
+  /// Device token 
   DeviceToken? device_token;
+
+  /// List of user identifiers of other users currently using the application
   vector<int53>? other_user_ids;
 
   RegisterDevice({

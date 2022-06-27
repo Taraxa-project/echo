@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Informs TDLib that speaking state of a participant of an active group has changed 
 class SetGroupCallParticipantIsSpeaking extends TdFunction {
   String get tdType => 'setGroupCallParticipantIsSpeaking';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Group call identifier
   int32? group_call_id;
+
+  /// Group call participant's synchronization audio source identifier, or 0 for the current user 
   int32? audio_source;
+
+  /// Pass true if the user is speaking
   Bool? is_speaking;
 
   SetGroupCallParticipantIsSpeaking({

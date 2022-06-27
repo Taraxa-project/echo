@@ -3,13 +3,19 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/auto_download_settings.dart';
 import 'package:td_json_client/api/object/network_type.dart';
 
+
+/// Sets auto-download settings 
 class SetAutoDownloadSettings extends TdFunction {
   String get tdType => 'setAutoDownloadSettings';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// New user auto-download settings 
   AutoDownloadSettings? settings;
+
+  /// Type of the network for which the new settings are relevant
   NetworkType? type;
 
   SetAutoDownloadSettings({

@@ -8,14 +8,21 @@ import 'package:td_json_client/api/object/chat_location.dart';
 import 'package:td_json_client/api/object/chat_permissions.dart';
 import 'package:td_json_client/api/object/chat_photo.dart';
 
+/// Represents a chat event
 abstract class ChatEventAction extends TdObject {}
 
+
+/// A message was edited 
 class ChatEventMessageEdited extends ChatEventAction {
   String get tdType => 'chatEventMessageEdited';
 
   String? extra;
   int? client_id;
+
+  /// The original message before the edit 
   Message? old_message;
+
+  /// The message after it was edited
   Message? new_message;
 
   ChatEventMessageEdited({
@@ -46,11 +53,15 @@ class ChatEventMessageEdited extends ChatEventAction {
     return map;
   }
 }
+
+/// A message was deleted 
 class ChatEventMessageDeleted extends ChatEventAction {
   String get tdType => 'chatEventMessageDeleted';
 
   String? extra;
   int? client_id;
+
+  /// Deleted message
   Message? message;
 
   ChatEventMessageDeleted({
@@ -78,11 +89,15 @@ class ChatEventMessageDeleted extends ChatEventAction {
     return map;
   }
 }
+
+/// A message was pinned 
 class ChatEventMessagePinned extends ChatEventAction {
   String get tdType => 'chatEventMessagePinned';
 
   String? extra;
   int? client_id;
+
+  /// Pinned message
   Message? message;
 
   ChatEventMessagePinned({
@@ -110,11 +125,15 @@ class ChatEventMessagePinned extends ChatEventAction {
     return map;
   }
 }
+
+/// A message was unpinned 
 class ChatEventMessageUnpinned extends ChatEventAction {
   String get tdType => 'chatEventMessageUnpinned';
 
   String? extra;
   int? client_id;
+
+  /// Unpinned message
   Message? message;
 
   ChatEventMessageUnpinned({
@@ -142,11 +161,15 @@ class ChatEventMessageUnpinned extends ChatEventAction {
     return map;
   }
 }
+
+/// A poll in a message was stopped 
 class ChatEventPollStopped extends ChatEventAction {
   String get tdType => 'chatEventPollStopped';
 
   String? extra;
   int? client_id;
+
+  /// The message with the poll
   Message? message;
 
   ChatEventPollStopped({
@@ -174,6 +197,8 @@ class ChatEventPollStopped extends ChatEventAction {
     return map;
   }
 }
+
+/// A new member joined the chat
 class ChatEventMemberJoined extends ChatEventAction {
   String get tdType => 'chatEventMemberJoined';
 
@@ -202,11 +227,15 @@ class ChatEventMemberJoined extends ChatEventAction {
     return map;
   }
 }
+
+/// A new member joined the chat via an invite link 
 class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
   String get tdType => 'chatEventMemberJoinedByInviteLink';
 
   String? extra;
   int? client_id;
+
+  /// Invite link used to join the chat
   ChatInviteLink? invite_link;
 
   ChatEventMemberJoinedByInviteLink({
@@ -234,12 +263,18 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
     return map;
   }
 }
+
+/// A new member was accepted to the chat by an administrator 
 class ChatEventMemberJoinedByRequest extends ChatEventAction {
   String get tdType => 'chatEventMemberJoinedByRequest';
 
   String? extra;
   int? client_id;
+
+  /// User identifier of the chat administrator, approved user join request 
   int53? approver_user_id;
+
+  /// Invite link used to join the chat; may be null
   ChatInviteLink? invite_link;
 
   ChatEventMemberJoinedByRequest({
@@ -270,12 +305,18 @@ class ChatEventMemberJoinedByRequest extends ChatEventAction {
     return map;
   }
 }
+
+/// A new chat member was invited 
 class ChatEventMemberInvited extends ChatEventAction {
   String get tdType => 'chatEventMemberInvited';
 
   String? extra;
   int? client_id;
+
+  /// New member user identifier 
   int53? user_id;
+
+  /// New member status
   ChatMemberStatus? status;
 
   ChatEventMemberInvited({
@@ -306,6 +347,8 @@ class ChatEventMemberInvited extends ChatEventAction {
     return map;
   }
 }
+
+/// A member left the chat
 class ChatEventMemberLeft extends ChatEventAction {
   String get tdType => 'chatEventMemberLeft';
 
@@ -334,13 +377,21 @@ class ChatEventMemberLeft extends ChatEventAction {
     return map;
   }
 }
+
+/// A chat member has gained/lost administrator status, or the list of their administrator privileges has changed 
 class ChatEventMemberPromoted extends ChatEventAction {
   String get tdType => 'chatEventMemberPromoted';
 
   String? extra;
   int? client_id;
+
+  /// Affected chat member user identifier 
   int53? user_id;
+
+  /// Previous status of the chat member 
   ChatMemberStatus? old_status;
+
+  /// New status of the chat member
   ChatMemberStatus? new_status;
 
   ChatEventMemberPromoted({
@@ -374,13 +425,21 @@ class ChatEventMemberPromoted extends ChatEventAction {
     return map;
   }
 }
+
+/// A chat member was restricted/unrestricted or banned/unbanned, or the list of their restrictions has changed 
 class ChatEventMemberRestricted extends ChatEventAction {
   String get tdType => 'chatEventMemberRestricted';
 
   String? extra;
   int? client_id;
+
+  /// Affected chat member identifier 
   MessageSender? member_id;
+
+  /// Previous status of the chat member 
   ChatMemberStatus? old_status;
+
+  /// New status of the chat member
   ChatMemberStatus? new_status;
 
   ChatEventMemberRestricted({
@@ -414,12 +473,18 @@ class ChatEventMemberRestricted extends ChatEventAction {
     return map;
   }
 }
+
+/// The chat available reactions were changed 
 class ChatEventAvailableReactionsChanged extends ChatEventAction {
   String get tdType => 'chatEventAvailableReactionsChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous chat available reactions 
   vector<string>? old_available_reactions;
+
+  /// New chat available reactions
   vector<string>? new_available_reactions;
 
   ChatEventAvailableReactionsChanged({
@@ -460,12 +525,18 @@ class ChatEventAvailableReactionsChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The chat description was changed 
 class ChatEventDescriptionChanged extends ChatEventAction {
   String get tdType => 'chatEventDescriptionChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous chat description 
   string? old_description;
+
+  /// New chat description
   string? new_description;
 
   ChatEventDescriptionChanged({
@@ -496,12 +567,18 @@ class ChatEventDescriptionChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The linked chat of a supergroup was changed 
 class ChatEventLinkedChatChanged extends ChatEventAction {
   String get tdType => 'chatEventLinkedChatChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous supergroup linked chat identifier 
   int53? old_linked_chat_id;
+
+  /// New supergroup linked chat identifier
   int53? new_linked_chat_id;
 
   ChatEventLinkedChatChanged({
@@ -532,12 +609,18 @@ class ChatEventLinkedChatChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The supergroup location was changed 
 class ChatEventLocationChanged extends ChatEventAction {
   String get tdType => 'chatEventLocationChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous location; may be null 
   ChatLocation? old_location;
+
+  /// New location; may be null
   ChatLocation? new_location;
 
   ChatEventLocationChanged({
@@ -568,12 +651,18 @@ class ChatEventLocationChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The message TTL was changed 
 class ChatEventMessageTtlChanged extends ChatEventAction {
   String get tdType => 'chatEventMessageTtlChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous value of message_ttl 
   int32? old_message_ttl;
+
+  /// New value of message_ttl
   int32? new_message_ttl;
 
   ChatEventMessageTtlChanged({
@@ -604,12 +693,18 @@ class ChatEventMessageTtlChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The chat permissions was changed 
 class ChatEventPermissionsChanged extends ChatEventAction {
   String get tdType => 'chatEventPermissionsChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous chat permissions 
   ChatPermissions? old_permissions;
+
+  /// New chat permissions
   ChatPermissions? new_permissions;
 
   ChatEventPermissionsChanged({
@@ -640,12 +735,18 @@ class ChatEventPermissionsChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The chat photo was changed 
 class ChatEventPhotoChanged extends ChatEventAction {
   String get tdType => 'chatEventPhotoChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous chat photo value; may be null 
   ChatPhoto? old_photo;
+
+  /// New chat photo value; may be null
   ChatPhoto? new_photo;
 
   ChatEventPhotoChanged({
@@ -676,12 +777,18 @@ class ChatEventPhotoChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The slow_mode_delay setting of a supergroup was changed 
 class ChatEventSlowModeDelayChanged extends ChatEventAction {
   String get tdType => 'chatEventSlowModeDelayChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous value of slow_mode_delay, in seconds 
   int32? old_slow_mode_delay;
+
+  /// New value of slow_mode_delay, in seconds
   int32? new_slow_mode_delay;
 
   ChatEventSlowModeDelayChanged({
@@ -712,12 +819,18 @@ class ChatEventSlowModeDelayChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The supergroup sticker set was changed 
 class ChatEventStickerSetChanged extends ChatEventAction {
   String get tdType => 'chatEventStickerSetChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous identifier of the chat sticker set; 0 if none 
   int64? old_sticker_set_id;
+
+  /// New identifier of the chat sticker set; 0 if none
   int64? new_sticker_set_id;
 
   ChatEventStickerSetChanged({
@@ -748,12 +861,18 @@ class ChatEventStickerSetChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The chat title was changed 
 class ChatEventTitleChanged extends ChatEventAction {
   String get tdType => 'chatEventTitleChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous chat title 
   string? old_title;
+
+  /// New chat title
   string? new_title;
 
   ChatEventTitleChanged({
@@ -784,12 +903,18 @@ class ChatEventTitleChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The chat username was changed 
 class ChatEventUsernameChanged extends ChatEventAction {
   String get tdType => 'chatEventUsernameChanged';
 
   String? extra;
   int? client_id;
+
+  /// Previous chat username 
   string? old_username;
+
+  /// New chat username
   string? new_username;
 
   ChatEventUsernameChanged({
@@ -820,11 +945,15 @@ class ChatEventUsernameChanged extends ChatEventAction {
     return map;
   }
 }
+
+/// The has_protected_content setting of a channel was toggled 
 class ChatEventHasProtectedContentToggled extends ChatEventAction {
   String get tdType => 'chatEventHasProtectedContentToggled';
 
   String? extra;
   int? client_id;
+
+  /// New value of has_protected_content
   Bool? has_protected_content;
 
   ChatEventHasProtectedContentToggled({
@@ -852,11 +981,15 @@ class ChatEventHasProtectedContentToggled extends ChatEventAction {
     return map;
   }
 }
+
+/// The can_invite_users permission of a supergroup chat was toggled 
 class ChatEventInvitesToggled extends ChatEventAction {
   String get tdType => 'chatEventInvitesToggled';
 
   String? extra;
   int? client_id;
+
+  /// New value of can_invite_users permission
   Bool? can_invite_users;
 
   ChatEventInvitesToggled({
@@ -884,11 +1017,15 @@ class ChatEventInvitesToggled extends ChatEventAction {
     return map;
   }
 }
+
+/// The is_all_history_available setting of a supergroup was toggled 
 class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
   String get tdType => 'chatEventIsAllHistoryAvailableToggled';
 
   String? extra;
   int? client_id;
+
+  /// New value of is_all_history_available
   Bool? is_all_history_available;
 
   ChatEventIsAllHistoryAvailableToggled({
@@ -916,11 +1053,15 @@ class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
     return map;
   }
 }
+
+/// The sign_messages setting of a channel was toggled 
 class ChatEventSignMessagesToggled extends ChatEventAction {
   String get tdType => 'chatEventSignMessagesToggled';
 
   String? extra;
   int? client_id;
+
+  /// New value of sign_messages
   Bool? sign_messages;
 
   ChatEventSignMessagesToggled({
@@ -948,12 +1089,18 @@ class ChatEventSignMessagesToggled extends ChatEventAction {
     return map;
   }
 }
+
+/// A chat invite link was edited 
 class ChatEventInviteLinkEdited extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkEdited';
 
   String? extra;
   int? client_id;
+
+  /// Previous information about the invite link 
   ChatInviteLink? old_invite_link;
+
+  /// New information about the invite link
   ChatInviteLink? new_invite_link;
 
   ChatEventInviteLinkEdited({
@@ -984,11 +1131,15 @@ class ChatEventInviteLinkEdited extends ChatEventAction {
     return map;
   }
 }
+
+/// A chat invite link was revoked 
 class ChatEventInviteLinkRevoked extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkRevoked';
 
   String? extra;
   int? client_id;
+
+  /// The invite link
   ChatInviteLink? invite_link;
 
   ChatEventInviteLinkRevoked({
@@ -1016,11 +1167,15 @@ class ChatEventInviteLinkRevoked extends ChatEventAction {
     return map;
   }
 }
+
+/// A revoked chat invite link was deleted 
 class ChatEventInviteLinkDeleted extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkDeleted';
 
   String? extra;
   int? client_id;
+
+  /// The invite link
   ChatInviteLink? invite_link;
 
   ChatEventInviteLinkDeleted({
@@ -1048,11 +1203,15 @@ class ChatEventInviteLinkDeleted extends ChatEventAction {
     return map;
   }
 }
+
+/// A video chat was created 
 class ChatEventVideoChatCreated extends ChatEventAction {
   String get tdType => 'chatEventVideoChatCreated';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the video chat. The video chat can be received through the method getGroupCall
   int32? group_call_id;
 
   ChatEventVideoChatCreated({
@@ -1080,11 +1239,15 @@ class ChatEventVideoChatCreated extends ChatEventAction {
     return map;
   }
 }
+
+/// A video chat was ended 
 class ChatEventVideoChatEnded extends ChatEventAction {
   String get tdType => 'chatEventVideoChatEnded';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the video chat. The video chat can be received through the method getGroupCall
   int32? group_call_id;
 
   ChatEventVideoChatEnded({
@@ -1112,11 +1275,15 @@ class ChatEventVideoChatEnded extends ChatEventAction {
     return map;
   }
 }
+
+/// The mute_new_participants setting of a video chat was toggled 
 class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
   String get tdType => 'chatEventVideoChatMuteNewParticipantsToggled';
 
   String? extra;
   int? client_id;
+
+  /// New value of the mute_new_participants setting
   Bool? mute_new_participants;
 
   ChatEventVideoChatMuteNewParticipantsToggled({
@@ -1144,12 +1311,18 @@ class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
     return map;
   }
 }
+
+/// A video chat participant was muted or unmuted 
 class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
   String get tdType => 'chatEventVideoChatParticipantIsMutedToggled';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the affected group call participant 
   MessageSender? participant_id;
+
+  /// New value of is_muted
   Bool? is_muted;
 
   ChatEventVideoChatParticipantIsMutedToggled({
@@ -1180,12 +1353,18 @@ class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
     return map;
   }
 }
+
+/// A video chat participant volume level was changed 
 class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
   String get tdType => 'chatEventVideoChatParticipantVolumeLevelChanged';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the affected group call participant 
   MessageSender? participant_id;
+
+  /// New value of volume_level; 1-20000 in hundreds of percents
   int32? volume_level;
 
   ChatEventVideoChatParticipantVolumeLevelChanged({

@@ -1,7 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Represents result of checking whether a username can be set for a chat
 abstract class CheckChatUsernameResult extends TdObject {}
 
+
+/// The username can be set
 class CheckChatUsernameResultOk extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultOk';
 
@@ -30,6 +33,8 @@ class CheckChatUsernameResultOk extends CheckChatUsernameResult {
     return map;
   }
 }
+
+/// The username is invalid
 class CheckChatUsernameResultUsernameInvalid extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernameInvalid';
 
@@ -58,6 +63,8 @@ class CheckChatUsernameResultUsernameInvalid extends CheckChatUsernameResult {
     return map;
   }
 }
+
+/// The username is occupied
 class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernameOccupied';
 
@@ -86,6 +93,8 @@ class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
     return map;
   }
 }
+
+/// The user has too many chats with username, one of them must be made private first
 class CheckChatUsernameResultPublicChatsTooMuch extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicChatsTooMuch';
 
@@ -114,6 +123,8 @@ class CheckChatUsernameResultPublicChatsTooMuch extends CheckChatUsernameResult 
     return map;
   }
 }
+
+/// The user can't be a member of a public supergroup
 class CheckChatUsernameResultPublicGroupsUnavailable extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicGroupsUnavailable';
 

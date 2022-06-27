@@ -1,13 +1,23 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Stripe payment provider 
 class PaymentsProviderStripe extends TdObject {
   String get tdType => 'paymentsProviderStripe';
 
   String? extra;
   int? client_id;
+
+  /// Stripe API publishable key 
   string? publishable_key;
+
+  /// True, if the user country must be provided 
   Bool? need_country;
+
+  /// True, if the user ZIP/postal code must be provided 
   Bool? need_postal_code;
+
+  /// True, if the cardholder name must be provided
   Bool? need_cardholder_name;
 
   PaymentsProviderStripe({

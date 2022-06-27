@@ -1,12 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+/// Contains information about the origin of a forwarded message
 abstract class MessageForwardOrigin extends TdObject {}
 
+
+/// The message was originally sent by a known user 
 class MessageForwardOriginUser extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginUser';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the user that originally sent the message
   int53? sender_user_id;
 
   MessageForwardOriginUser({
@@ -34,12 +39,18 @@ class MessageForwardOriginUser extends MessageForwardOrigin {
     return map;
   }
 }
+
+/// The message was originally sent on behalf of a chat
 class MessageForwardOriginChat extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginChat';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat that originally sent the message
   int53? sender_chat_id;
+
+  /// For messages originally sent by an anonymous chat administrator, original message author signature
   string? author_signature;
 
   MessageForwardOriginChat({
@@ -70,11 +81,15 @@ class MessageForwardOriginChat extends MessageForwardOrigin {
     return map;
   }
 }
+
+/// The message was originally sent by a user, which is hidden by their privacy settings 
 class MessageForwardOriginHiddenUser extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginHiddenUser';
 
   String? extra;
   int? client_id;
+
+  /// Name of the sender
   string? sender_name;
 
   MessageForwardOriginHiddenUser({
@@ -102,13 +117,21 @@ class MessageForwardOriginHiddenUser extends MessageForwardOrigin {
     return map;
   }
 }
+
+/// The message was originally a post in a channel
 class MessageForwardOriginChannel extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginChannel';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat from which the message was originally forwarded
   int53? chat_id;
+
+  /// Message identifier of the original message
   int53? message_id;
+
+  /// Original post author signature
   string? author_signature;
 
   MessageForwardOriginChannel({
@@ -142,11 +165,15 @@ class MessageForwardOriginChannel extends MessageForwardOrigin {
     return map;
   }
 }
+
+/// The message was imported from an exported message history 
 class MessageForwardOriginMessageImport extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginMessageImport';
 
   String? extra;
   int? client_id;
+
+  /// Name of the sender
   string? sender_name;
 
   MessageForwardOriginMessageImport({

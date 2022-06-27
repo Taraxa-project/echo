@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains statistics about interactions with a message
 class ChatStatisticsMessageInteractionInfo extends TdObject {
   String get tdType => 'chatStatisticsMessageInteractionInfo';
 
   String? extra;
   int? client_id;
+
+  /// Message identifier
   int53? message_id;
+
+  /// Number of times the message was viewed
   int32? view_count;
+
+  /// Number of times the message was forwarded
   int32? forward_count;
 
   ChatStatisticsMessageInteractionInfo({

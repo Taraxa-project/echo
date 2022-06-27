@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 
+
+/// Edits the message reply markup; for bots only. Returns the edited message after the edit is completed on the server side
 class EditMessageReplyMarkup extends TdFunction {
   String get tdType => 'editMessageReplyMarkup';
   String get tdReturnType => 'Message';
 
   String? extra;
   int? client_id;
+
+  /// The chat the message belongs to
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
+
+  /// The new message reply markup; pass null if none
   ReplyMarkup? reply_markup;
 
   EditMessageReplyMarkup({

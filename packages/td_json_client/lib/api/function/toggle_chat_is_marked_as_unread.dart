@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes the marked as unread state of a chat 
 class ToggleChatIsMarkedAsUnread extends TdFunction {
   String get tdType => 'toggleChatIsMarkedAsUnread';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Chat identifier 
   int53? chat_id;
+
+  /// New value of is_marked_as_unread
   Bool? is_marked_as_unread;
 
   ToggleChatIsMarkedAsUnread({

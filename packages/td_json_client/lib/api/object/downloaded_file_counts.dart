@@ -1,12 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains number of being downloaded and recently downloaded files found
 class DownloadedFileCounts extends TdObject {
   String get tdType => 'downloadedFileCounts';
 
   String? extra;
   int? client_id;
+
+  /// Number of active file downloads found, including paused
   int32? active_count;
+
+  /// Number of paused file downloads found
   int32? paused_count;
+
+  /// Number of completed file downloads found
   int32? completed_count;
 
   DownloadedFileCounts({

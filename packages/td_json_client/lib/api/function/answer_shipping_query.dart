@@ -2,14 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/shipping_option.dart';
 
+
+/// Sets the result of a shipping query; for bots only 
 class AnswerShippingQuery extends TdFunction {
   String get tdType => 'answerShippingQuery';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the shipping query 
   int64? shipping_query_id;
+
+  /// Available shipping options 
   vector<ShippingOption>? shipping_options;
+
+  /// An error message, empty on success
   string? error_message;
 
   AnswerShippingQuery({

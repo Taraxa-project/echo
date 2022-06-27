@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/error.dart';
 
+
+/// Returns the specified error and ensures that the Error object is used; for testing only. Can be called synchronously 
 class TestReturnError extends TdFunction {
   String get tdType => 'testReturnError';
   String get tdReturnType => 'Error';
 
   String? extra;
   int? client_id;
+
+  /// The error to be returned
   Error? error;
 
   TestReturnError({

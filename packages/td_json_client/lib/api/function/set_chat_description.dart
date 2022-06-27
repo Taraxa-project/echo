@@ -1,12 +1,17 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Changes information about a chat. Available for basic groups, supergroups, and channels. Requires can_change_info administrator right 
 class SetChatDescription extends TdFunction {
   String get tdType => 'setChatDescription';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat 
   int53? chat_id;
+
   string? description;
 
   SetChatDescription({

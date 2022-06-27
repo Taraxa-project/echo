@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Searches a user by their phone number. Returns a 404 error if the user can't be found 
 class SearchUserByPhoneNumber extends TdFunction {
   String get tdType => 'searchUserByPhoneNumber';
   String get tdReturnType => 'User';
 
   String? extra;
   int? client_id;
+
+  /// Phone number to search for
   string? phone_number;
 
   SearchUserByPhoneNumber({

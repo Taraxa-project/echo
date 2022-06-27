@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns an existing chat corresponding to a known supergroup or channel 
 class CreateSupergroupChat extends TdFunction {
   String get tdType => 'createSupergroupChat';
   String get tdReturnType => 'Chat';
 
   String? extra;
   int? client_id;
+
+  /// Supergroup or channel identifier 
   int53? supergroup_id;
+
+  /// Pass true to create the chat without a network request. In this case all information about the chat except its type, title and photo can be incorrect
   Bool? force;
 
   CreateSupergroupChat({

@@ -3,15 +3,26 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/input_message_content.dart';
 
+
+/// Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption. If only the caption needs to be edited, use editMessageCaption instead.
+/// The media can't be edited if the message was set to self-destruct or to a self-destructing media. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa. Returns the edited message after the edit is completed on the server side
 class EditMessageMedia extends TdFunction {
   String get tdType => 'editMessageMedia';
   String get tdReturnType => 'Message';
 
   String? extra;
   int? client_id;
+
+  /// The chat the message belongs to
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
+
+  /// The new message reply markup; pass null if none; for bots only
   ReplyMarkup? reply_markup;
+
+  /// New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
   InputMessageContent? input_message_content;
 
   EditMessageMedia({

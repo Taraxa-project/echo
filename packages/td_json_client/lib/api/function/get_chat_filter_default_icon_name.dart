@@ -2,12 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_filter.dart';
 
+
+/// Returns default icon name for a filter. Can be called synchronously 
 class GetChatFilterDefaultIconName extends TdFunction {
   String get tdType => 'getChatFilterDefaultIconName';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// Chat filter
   ChatFilter? filter;
 
   GetChatFilterDefaultIconName({

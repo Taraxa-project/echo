@@ -1,13 +1,21 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns an HTML code for embedding the message. Available only for messages in supergroups and channels with a username
 class GetMessageEmbeddingCode extends TdFunction {
   String get tdType => 'getMessageEmbeddingCode';
   String get tdReturnType => 'Text';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to which the message belongs
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
+
+  /// Pass true to return an HTML code for embedding of the whole media album
   Bool? for_album;
 
   GetMessageEmbeddingCode({

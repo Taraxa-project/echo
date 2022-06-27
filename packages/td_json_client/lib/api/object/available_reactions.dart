@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Represents a list of available reactions 
 class AvailableReactions extends TdObject {
   String get tdType => 'availableReactions';
 
   String? extra;
   int? client_id;
+
+  /// List of reactions
   vector<string>? reactions;
 
   AvailableReactions({

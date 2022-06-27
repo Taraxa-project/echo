@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns all available Telegram Passport elements 
 class GetAllPassportElements extends TdFunction {
   String get tdType => 'getAllPassportElements';
   String get tdReturnType => 'PassportElements';
 
   String? extra;
   int? client_id;
+
+  /// Password of the current user
   string? password;
 
   GetAllPassportElements({

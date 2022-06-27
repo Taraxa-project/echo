@@ -2,15 +2,27 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file.dart';
 
+
+/// Describes an image in JPEG format 
 class PhotoSize extends TdObject {
   String get tdType => 'photoSize';
 
   String? extra;
   int? client_id;
+
+  /// Image type (see https://core.telegram.org/constructor/photoSize)
   string? type;
+
+  /// Information about the image file 
   File? photo;
+
+  /// Image width 
   int32? width;
+
+  /// Image height
   int32? height;
+
+  /// Sizes of progressive JPEG file prefixes, which can be used to preliminarily show the image; in bytes
   vector<int32>? progressive_sizes;
 
   PhotoSize({

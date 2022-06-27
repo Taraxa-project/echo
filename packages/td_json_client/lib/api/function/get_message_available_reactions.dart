@@ -1,12 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns reactions, which can be added to a message. The list can change after updateReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message
 class GetMessageAvailableReactions extends TdFunction {
   String get tdType => 'getMessageAvailableReactions';
   String get tdReturnType => 'AvailableReactions';
 
   String? extra;
   int? client_id;
+
+  /// Identifier of the chat to which the message belongs
   int53? chat_id;
+
+  /// Identifier of the message
   int53? message_id;
 
   GetMessageAvailableReactions({

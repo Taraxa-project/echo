@@ -1,5 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns information about existing countries. Can be called before authorization
 class GetCountries extends TdFunction {
   String get tdType => 'getCountries';
   String get tdReturnType => 'Countries';

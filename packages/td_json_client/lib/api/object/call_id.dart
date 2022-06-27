@@ -1,10 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Contains the call identifier 
 class CallId extends TdObject {
   String get tdType => 'callId';
 
   String? extra;
   int? client_id;
+
+  /// Call identifier
   int32? id;
 
   CallId({

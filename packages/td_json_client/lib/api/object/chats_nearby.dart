@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_nearby.dart';
 
+
+/// Represents a list of chats located nearby 
 class ChatsNearby extends TdObject {
   String get tdType => 'chatsNearby';
 
   String? extra;
   int? client_id;
+
+  /// List of users nearby 
   vector<ChatNearby>? users_nearby;
+
+  /// List of location-based supergroups nearby
   vector<ChatNearby>? supergroups_nearby;
 
   ChatsNearby({

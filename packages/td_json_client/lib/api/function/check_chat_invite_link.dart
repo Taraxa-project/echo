@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Checks the validity of an invite link for a chat and returns information about the corresponding chat 
 class CheckChatInviteLink extends TdFunction {
   String get tdType => 'checkChatInviteLink';
   String get tdReturnType => 'ChatInviteLinkInfo';
 
   String? extra;
   int? client_id;
+
+  /// Invite link to be checked
   string? invite_link;
 
   CheckChatInviteLink({

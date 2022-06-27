@@ -2,12 +2,18 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message.dart';
 
+
+/// Contains information about found messages sent on a specific day 
 class MessageCalendarDay extends TdObject {
   String get tdType => 'messageCalendarDay';
 
   String? extra;
   int? client_id;
+
+  /// Total number of found messages sent on the day 
   int32? total_count;
+
+  /// First message sent on the day
   Message? message;
 
   MessageCalendarDay({

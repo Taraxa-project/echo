@@ -1,11 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
+
+/// Returns full information about a basic group by its identifier 
 class GetBasicGroupFullInfo extends TdFunction {
   String get tdType => 'getBasicGroupFullInfo';
   String get tdReturnType => 'BasicGroupFullInfo';
 
   String? extra;
   int? client_id;
+
+  /// Basic group identifier
   int53? basic_group_id;
 
   GetBasicGroupFullInfo({

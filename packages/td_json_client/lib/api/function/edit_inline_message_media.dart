@@ -3,14 +3,22 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/input_message_content.dart';
 
+
+/// Edits the content of a message with an animation, an audio, a document, a photo or a video in an inline message sent via a bot; for bots only
 class EditInlineMessageMedia extends TdFunction {
   String get tdType => 'editInlineMessageMedia';
   String get tdReturnType => 'Ok';
 
   String? extra;
   int? client_id;
+
+  /// Inline message identifier
   string? inline_message_id;
+
+  /// The new message reply markup; pass null if none; for bots only
   ReplyMarkup? reply_markup;
+
+  /// New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
   InputMessageContent? input_message_content;
 
   EditInlineMessageMedia({
