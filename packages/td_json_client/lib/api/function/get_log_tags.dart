@@ -4,7 +4,7 @@ class GetLogTags extends TdFunction {
   String get tdType => 'getLogTags';
   String get tdReturnType => 'LogTags';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetLogTags({

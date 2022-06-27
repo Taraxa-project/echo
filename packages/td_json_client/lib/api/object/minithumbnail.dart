@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class Minithumbnail extends TdObject {
   String get tdType => 'minithumbnail';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? width;
   int32? height;

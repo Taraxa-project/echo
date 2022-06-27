@@ -4,7 +4,7 @@ class GetSavedOrderInfo extends TdFunction {
   String get tdType => 'getSavedOrderInfo';
   String get tdReturnType => 'OrderInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetSavedOrderInfo({

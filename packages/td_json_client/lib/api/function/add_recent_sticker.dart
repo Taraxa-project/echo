@@ -6,7 +6,7 @@ class AddRecentSticker extends TdFunction {
   String get tdType => 'addRecentSticker';
   String get tdReturnType => 'Stickers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_attached;
   InputFile? sticker;

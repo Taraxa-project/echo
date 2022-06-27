@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class TdlibParameters extends TdObject {
   String get tdType => 'tdlibParameters';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? use_test_dc;
   string? database_directory;

@@ -4,7 +4,7 @@ class GetTemporaryPasswordState extends TdFunction {
   String get tdType => 'getTemporaryPasswordState';
   String get tdReturnType => 'TemporaryPasswordState';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetTemporaryPasswordState({

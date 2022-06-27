@@ -4,7 +4,7 @@ class RequestPasswordRecovery extends TdFunction {
   String get tdType => 'requestPasswordRecovery';
   String get tdReturnType => 'EmailAddressAuthenticationCodeInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   RequestPasswordRecovery({

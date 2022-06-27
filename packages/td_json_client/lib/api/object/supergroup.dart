@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/chat_member_status.dart';
 class Supergroup extends TdObject {
   String get tdType => 'supergroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? id;
   string? username;

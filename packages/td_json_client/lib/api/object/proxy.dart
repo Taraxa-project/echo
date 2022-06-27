@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/proxy_type.dart';
 class Proxy extends TdObject {
   String get tdType => 'proxy';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? id;
   string? server;

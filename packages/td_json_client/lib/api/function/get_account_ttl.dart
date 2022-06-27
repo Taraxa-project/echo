@@ -4,7 +4,7 @@ class GetAccountTtl extends TdFunction {
   String get tdType => 'getAccountTtl';
   String get tdReturnType => 'AccountTtl';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetAccountTtl({

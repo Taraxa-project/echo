@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/message_sender.dart';
 class UnreadReaction extends TdObject {
   String get tdType => 'unreadReaction';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? reaction;
   MessageSender? sender_id;

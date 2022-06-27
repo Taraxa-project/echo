@@ -30,7 +30,7 @@ abstract class MessageContent extends TdObject {}
 class MessageText extends MessageContent {
   String get tdType => 'messageText';
 
-  string? extra;
+  String? extra;
   int? client_id;
   FormattedText? text;
   WebPage? web_page;
@@ -66,7 +66,7 @@ class MessageText extends MessageContent {
 class MessageAnimation extends MessageContent {
   String get tdType => 'messageAnimation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Animation? animation;
   FormattedText? caption;
@@ -106,7 +106,7 @@ class MessageAnimation extends MessageContent {
 class MessageAudio extends MessageContent {
   String get tdType => 'messageAudio';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Audio? audio;
   FormattedText? caption;
@@ -142,7 +142,7 @@ class MessageAudio extends MessageContent {
 class MessageDocument extends MessageContent {
   String get tdType => 'messageDocument';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Document? document;
   FormattedText? caption;
@@ -178,7 +178,7 @@ class MessageDocument extends MessageContent {
 class MessagePhoto extends MessageContent {
   String get tdType => 'messagePhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Photo? photo;
   FormattedText? caption;
@@ -218,7 +218,7 @@ class MessagePhoto extends MessageContent {
 class MessageExpiredPhoto extends MessageContent {
   String get tdType => 'messageExpiredPhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageExpiredPhoto({
@@ -246,7 +246,7 @@ class MessageExpiredPhoto extends MessageContent {
 class MessageSticker extends MessageContent {
   String get tdType => 'messageSticker';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Sticker? sticker;
 
@@ -278,7 +278,7 @@ class MessageSticker extends MessageContent {
 class MessageVideo extends MessageContent {
   String get tdType => 'messageVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Video? video;
   FormattedText? caption;
@@ -318,7 +318,7 @@ class MessageVideo extends MessageContent {
 class MessageExpiredVideo extends MessageContent {
   String get tdType => 'messageExpiredVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageExpiredVideo({
@@ -346,7 +346,7 @@ class MessageExpiredVideo extends MessageContent {
 class MessageVideoNote extends MessageContent {
   String get tdType => 'messageVideoNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   VideoNote? video_note;
   Bool? is_viewed;
@@ -386,7 +386,7 @@ class MessageVideoNote extends MessageContent {
 class MessageVoiceNote extends MessageContent {
   String get tdType => 'messageVoiceNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   VoiceNote? voice_note;
   FormattedText? caption;
@@ -426,7 +426,7 @@ class MessageVoiceNote extends MessageContent {
 class MessageLocation extends MessageContent {
   String get tdType => 'messageLocation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Location? location;
   int32? live_period;
@@ -474,7 +474,7 @@ class MessageLocation extends MessageContent {
 class MessageVenue extends MessageContent {
   String get tdType => 'messageVenue';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Venue? venue;
 
@@ -506,7 +506,7 @@ class MessageVenue extends MessageContent {
 class MessageContact extends MessageContent {
   String get tdType => 'messageContact';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Contact? contact;
 
@@ -538,7 +538,7 @@ class MessageContact extends MessageContent {
 class MessageAnimatedEmoji extends MessageContent {
   String get tdType => 'messageAnimatedEmoji';
 
-  string? extra;
+  String? extra;
   int? client_id;
   AnimatedEmoji? animated_emoji;
   string? emoji;
@@ -574,7 +574,7 @@ class MessageAnimatedEmoji extends MessageContent {
 class MessageDice extends MessageContent {
   String get tdType => 'messageDice';
 
-  string? extra;
+  String? extra;
   int? client_id;
   DiceStickers? initial_state;
   DiceStickers? final_state;
@@ -622,7 +622,7 @@ class MessageDice extends MessageContent {
 class MessageGame extends MessageContent {
   String get tdType => 'messageGame';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Game? game;
 
@@ -654,7 +654,7 @@ class MessageGame extends MessageContent {
 class MessagePoll extends MessageContent {
   String get tdType => 'messagePoll';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Poll? poll;
 
@@ -686,7 +686,7 @@ class MessagePoll extends MessageContent {
 class MessageInvoice extends MessageContent {
   String get tdType => 'messageInvoice';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
   string? description;
@@ -750,7 +750,7 @@ class MessageInvoice extends MessageContent {
 class MessageCall extends MessageContent {
   String get tdType => 'messageCall';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_video;
   CallDiscardReason? discard_reason;
@@ -790,7 +790,7 @@ class MessageCall extends MessageContent {
 class MessageVideoChatScheduled extends MessageContent {
   String get tdType => 'messageVideoChatScheduled';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
   int32? start_date;
@@ -826,7 +826,7 @@ class MessageVideoChatScheduled extends MessageContent {
 class MessageVideoChatStarted extends MessageContent {
   String get tdType => 'messageVideoChatStarted';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
 
@@ -858,7 +858,7 @@ class MessageVideoChatStarted extends MessageContent {
 class MessageVideoChatEnded extends MessageContent {
   String get tdType => 'messageVideoChatEnded';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? duration;
 
@@ -890,7 +890,7 @@ class MessageVideoChatEnded extends MessageContent {
 class MessageInviteVideoChatParticipants extends MessageContent {
   String get tdType => 'messageInviteVideoChatParticipants';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
   vector<int53>? user_ids;
@@ -931,7 +931,7 @@ class MessageInviteVideoChatParticipants extends MessageContent {
 class MessageBasicGroupChatCreate extends MessageContent {
   String get tdType => 'messageBasicGroupChatCreate';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
   vector<int53>? member_user_ids;
@@ -972,7 +972,7 @@ class MessageBasicGroupChatCreate extends MessageContent {
 class MessageSupergroupChatCreate extends MessageContent {
   String get tdType => 'messageSupergroupChatCreate';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
 
@@ -1004,7 +1004,7 @@ class MessageSupergroupChatCreate extends MessageContent {
 class MessageChatChangeTitle extends MessageContent {
   String get tdType => 'messageChatChangeTitle';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
 
@@ -1036,7 +1036,7 @@ class MessageChatChangeTitle extends MessageContent {
 class MessageChatChangePhoto extends MessageContent {
   String get tdType => 'messageChatChangePhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatPhoto? photo;
 
@@ -1068,7 +1068,7 @@ class MessageChatChangePhoto extends MessageContent {
 class MessageChatDeletePhoto extends MessageContent {
   String get tdType => 'messageChatDeletePhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageChatDeletePhoto({
@@ -1096,7 +1096,7 @@ class MessageChatDeletePhoto extends MessageContent {
 class MessageChatAddMembers extends MessageContent {
   String get tdType => 'messageChatAddMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int53>? member_user_ids;
 
@@ -1133,7 +1133,7 @@ class MessageChatAddMembers extends MessageContent {
 class MessageChatJoinByLink extends MessageContent {
   String get tdType => 'messageChatJoinByLink';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageChatJoinByLink({
@@ -1161,7 +1161,7 @@ class MessageChatJoinByLink extends MessageContent {
 class MessageChatJoinByRequest extends MessageContent {
   String get tdType => 'messageChatJoinByRequest';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageChatJoinByRequest({
@@ -1189,7 +1189,7 @@ class MessageChatJoinByRequest extends MessageContent {
 class MessageChatDeleteMember extends MessageContent {
   String get tdType => 'messageChatDeleteMember';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
 
@@ -1221,7 +1221,7 @@ class MessageChatDeleteMember extends MessageContent {
 class MessageChatUpgradeTo extends MessageContent {
   String get tdType => 'messageChatUpgradeTo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
 
@@ -1253,7 +1253,7 @@ class MessageChatUpgradeTo extends MessageContent {
 class MessageChatUpgradeFrom extends MessageContent {
   String get tdType => 'messageChatUpgradeFrom';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
   int53? basic_group_id;
@@ -1289,7 +1289,7 @@ class MessageChatUpgradeFrom extends MessageContent {
 class MessagePinMessage extends MessageContent {
   String get tdType => 'messagePinMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? message_id;
 
@@ -1321,7 +1321,7 @@ class MessagePinMessage extends MessageContent {
 class MessageScreenshotTaken extends MessageContent {
   String get tdType => 'messageScreenshotTaken';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageScreenshotTaken({
@@ -1349,7 +1349,7 @@ class MessageScreenshotTaken extends MessageContent {
 class MessageChatSetTheme extends MessageContent {
   String get tdType => 'messageChatSetTheme';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? theme_name;
 
@@ -1381,7 +1381,7 @@ class MessageChatSetTheme extends MessageContent {
 class MessageChatSetTtl extends MessageContent {
   String get tdType => 'messageChatSetTtl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? ttl;
 
@@ -1413,7 +1413,7 @@ class MessageChatSetTtl extends MessageContent {
 class MessageCustomServiceAction extends MessageContent {
   String get tdType => 'messageCustomServiceAction';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
 
@@ -1445,7 +1445,7 @@ class MessageCustomServiceAction extends MessageContent {
 class MessageGameScore extends MessageContent {
   String get tdType => 'messageGameScore';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? game_message_id;
   int64? game_id;
@@ -1485,7 +1485,7 @@ class MessageGameScore extends MessageContent {
 class MessagePaymentSuccessful extends MessageContent {
   String get tdType => 'messagePaymentSuccessful';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? invoice_chat_id;
   int53? invoice_message_id;
@@ -1529,7 +1529,7 @@ class MessagePaymentSuccessful extends MessageContent {
 class MessagePaymentSuccessfulBot extends MessageContent {
   String get tdType => 'messagePaymentSuccessfulBot';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? currency;
   int53? total_amount;
@@ -1585,7 +1585,7 @@ class MessagePaymentSuccessfulBot extends MessageContent {
 class MessageContactRegistered extends MessageContent {
   String get tdType => 'messageContactRegistered';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageContactRegistered({
@@ -1613,7 +1613,7 @@ class MessageContactRegistered extends MessageContent {
 class MessageWebsiteConnected extends MessageContent {
   String get tdType => 'messageWebsiteConnected';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? domain_name;
 
@@ -1645,7 +1645,7 @@ class MessageWebsiteConnected extends MessageContent {
 class MessageWebAppDataSent extends MessageContent {
   String get tdType => 'messageWebAppDataSent';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? button_text;
 
@@ -1677,7 +1677,7 @@ class MessageWebAppDataSent extends MessageContent {
 class MessageWebAppDataReceived extends MessageContent {
   String get tdType => 'messageWebAppDataReceived';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? button_text;
   string? data;
@@ -1713,7 +1713,7 @@ class MessageWebAppDataReceived extends MessageContent {
 class MessagePassportDataSent extends MessageContent {
   String get tdType => 'messagePassportDataSent';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<PassportElementType>? types;
 
@@ -1750,7 +1750,7 @@ class MessagePassportDataSent extends MessageContent {
 class MessagePassportDataReceived extends MessageContent {
   String get tdType => 'messagePassportDataReceived';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<EncryptedPassportElement>? elements;
   EncryptedCredentials? credentials;
@@ -1791,7 +1791,7 @@ class MessagePassportDataReceived extends MessageContent {
 class MessageProximityAlertTriggered extends MessageContent {
   String get tdType => 'messageProximityAlertTriggered';
 
-  string? extra;
+  String? extra;
   int? client_id;
   MessageSender? traveler_id;
   MessageSender? watcher_id;
@@ -1831,7 +1831,7 @@ class MessageProximityAlertTriggered extends MessageContent {
 class MessageUnsupported extends MessageContent {
   String get tdType => 'messageUnsupported';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageUnsupported({

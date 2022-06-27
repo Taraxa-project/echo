@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/passport_element_error_source.dart';
 class PassportElementError extends TdObject {
   String get tdType => 'passportElementError';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PassportElementType? type;
   string? message;

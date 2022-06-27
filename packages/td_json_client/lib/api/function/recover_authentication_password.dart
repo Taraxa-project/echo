@@ -4,7 +4,7 @@ class RecoverAuthenticationPassword extends TdFunction {
   String get tdType => 'recoverAuthenticationPassword';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? recovery_code;
   string? new_password;

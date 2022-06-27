@@ -4,7 +4,7 @@ class GetWebPageInstantView extends TdFunction {
   String get tdType => 'getWebPageInstantView';
   String get tdReturnType => 'WebPageInstantView';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
   Bool? force_full;

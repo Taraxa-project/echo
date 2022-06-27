@@ -4,7 +4,7 @@ class GetProxyLink extends TdFunction {
   String get tdType => 'getProxyLink';
   String get tdReturnType => 'HttpUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? proxy_id;
 

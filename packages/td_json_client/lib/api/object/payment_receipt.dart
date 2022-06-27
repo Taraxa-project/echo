@@ -8,7 +8,7 @@ import 'package:td_json_client/api/object/shipping_option.dart';
 class PaymentReceipt extends TdObject {
   String get tdType => 'paymentReceipt';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
   string? description;

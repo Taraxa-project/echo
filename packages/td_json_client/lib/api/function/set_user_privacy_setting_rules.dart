@@ -7,7 +7,7 @@ class SetUserPrivacySettingRules extends TdFunction {
   String get tdType => 'setUserPrivacySettingRules';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   UserPrivacySetting? setting;
   UserPrivacySettingRules? rules;

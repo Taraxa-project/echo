@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class Date extends TdObject {
   String get tdType => 'date';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? day;
   int32? month;

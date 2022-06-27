@@ -10,7 +10,7 @@ abstract class CallState extends TdObject {}
 class CallStatePending extends CallState {
   String get tdType => 'callStatePending';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_created;
   Bool? is_received;
@@ -46,7 +46,7 @@ class CallStatePending extends CallState {
 class CallStateExchangingKeys extends CallState {
   String get tdType => 'callStateExchangingKeys';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallStateExchangingKeys({
@@ -74,7 +74,7 @@ class CallStateExchangingKeys extends CallState {
 class CallStateReady extends CallState {
   String get tdType => 'callStateReady';
 
-  string? extra;
+  String? extra;
   int? client_id;
   CallProtocol? protocol;
   vector<CallServer>? servers;
@@ -136,7 +136,7 @@ class CallStateReady extends CallState {
 class CallStateHangingUp extends CallState {
   String get tdType => 'callStateHangingUp';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallStateHangingUp({
@@ -164,7 +164,7 @@ class CallStateHangingUp extends CallState {
 class CallStateDiscarded extends CallState {
   String get tdType => 'callStateDiscarded';
 
-  string? extra;
+  String? extra;
   int? client_id;
   CallDiscardReason? reason;
   Bool? need_rating;
@@ -208,7 +208,7 @@ class CallStateDiscarded extends CallState {
 class CallStateError extends CallState {
   String get tdType => 'callStateError';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Error? error;
 

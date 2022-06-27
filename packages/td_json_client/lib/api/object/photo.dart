@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/photo_size.dart';
 class Photo extends TdObject {
   String get tdType => 'photo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? has_stickers;
   Minithumbnail? minithumbnail;

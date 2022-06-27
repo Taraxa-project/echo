@@ -7,7 +7,7 @@ abstract class InputBackground extends TdObject {}
 class InputBackgroundLocal extends InputBackground {
   String get tdType => 'inputBackgroundLocal';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? background;
 
@@ -39,7 +39,7 @@ class InputBackgroundLocal extends InputBackground {
 class InputBackgroundRemote extends InputBackground {
   String get tdType => 'inputBackgroundRemote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? background_id;
 

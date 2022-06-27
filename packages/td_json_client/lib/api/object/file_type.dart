@@ -5,7 +5,7 @@ abstract class FileType extends TdObject {}
 class FileTypeNone extends FileType {
   String get tdType => 'fileTypeNone';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeNone({
@@ -33,7 +33,7 @@ class FileTypeNone extends FileType {
 class FileTypeAnimation extends FileType {
   String get tdType => 'fileTypeAnimation';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeAnimation({
@@ -61,7 +61,7 @@ class FileTypeAnimation extends FileType {
 class FileTypeAudio extends FileType {
   String get tdType => 'fileTypeAudio';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeAudio({
@@ -89,7 +89,7 @@ class FileTypeAudio extends FileType {
 class FileTypeDocument extends FileType {
   String get tdType => 'fileTypeDocument';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeDocument({
@@ -117,7 +117,7 @@ class FileTypeDocument extends FileType {
 class FileTypeNotificationSound extends FileType {
   String get tdType => 'fileTypeNotificationSound';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeNotificationSound({
@@ -145,7 +145,7 @@ class FileTypeNotificationSound extends FileType {
 class FileTypePhoto extends FileType {
   String get tdType => 'fileTypePhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypePhoto({
@@ -173,7 +173,7 @@ class FileTypePhoto extends FileType {
 class FileTypeProfilePhoto extends FileType {
   String get tdType => 'fileTypeProfilePhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeProfilePhoto({
@@ -201,7 +201,7 @@ class FileTypeProfilePhoto extends FileType {
 class FileTypeSecret extends FileType {
   String get tdType => 'fileTypeSecret';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeSecret({
@@ -229,7 +229,7 @@ class FileTypeSecret extends FileType {
 class FileTypeSecretThumbnail extends FileType {
   String get tdType => 'fileTypeSecretThumbnail';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeSecretThumbnail({
@@ -257,7 +257,7 @@ class FileTypeSecretThumbnail extends FileType {
 class FileTypeSecure extends FileType {
   String get tdType => 'fileTypeSecure';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeSecure({
@@ -285,7 +285,7 @@ class FileTypeSecure extends FileType {
 class FileTypeSticker extends FileType {
   String get tdType => 'fileTypeSticker';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeSticker({
@@ -313,7 +313,7 @@ class FileTypeSticker extends FileType {
 class FileTypeThumbnail extends FileType {
   String get tdType => 'fileTypeThumbnail';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeThumbnail({
@@ -341,7 +341,7 @@ class FileTypeThumbnail extends FileType {
 class FileTypeUnknown extends FileType {
   String get tdType => 'fileTypeUnknown';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeUnknown({
@@ -369,7 +369,7 @@ class FileTypeUnknown extends FileType {
 class FileTypeVideo extends FileType {
   String get tdType => 'fileTypeVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeVideo({
@@ -397,7 +397,7 @@ class FileTypeVideo extends FileType {
 class FileTypeVideoNote extends FileType {
   String get tdType => 'fileTypeVideoNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeVideoNote({
@@ -425,7 +425,7 @@ class FileTypeVideoNote extends FileType {
 class FileTypeVoiceNote extends FileType {
   String get tdType => 'fileTypeVoiceNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeVoiceNote({
@@ -453,7 +453,7 @@ class FileTypeVoiceNote extends FileType {
 class FileTypeWallpaper extends FileType {
   String get tdType => 'fileTypeWallpaper';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   FileTypeWallpaper({

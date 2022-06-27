@@ -4,7 +4,7 @@ class ReorderChatFilters extends TdFunction {
   String get tdType => 'reorderChatFilters';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int32>? chat_filter_ids;
 

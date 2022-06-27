@@ -6,7 +6,7 @@ class ToggleChatIsPinned extends TdFunction {
   String get tdType => 'toggleChatIsPinned';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatList? chat_list;
   int53? chat_id;

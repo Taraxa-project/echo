@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/authentication_code_type.dart';
 class AuthenticationCodeInfo extends TdObject {
   String get tdType => 'authenticationCodeInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? phone_number;
   AuthenticationCodeType? type;

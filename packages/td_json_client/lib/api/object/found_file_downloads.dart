@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/file_download.dart';
 class FoundFileDownloads extends TdObject {
   String get tdType => 'foundFileDownloads';
 
-  string? extra;
+  String? extra;
   int? client_id;
   DownloadedFileCounts? total_counts;
   vector<FileDownload>? files;

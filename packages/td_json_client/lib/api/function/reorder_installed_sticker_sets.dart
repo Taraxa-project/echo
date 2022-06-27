@@ -4,7 +4,7 @@ class ReorderInstalledStickerSets extends TdFunction {
   String get tdType => 'reorderInstalledStickerSets';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_masks;
   vector<int64>? sticker_set_ids;

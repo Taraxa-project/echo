@@ -4,7 +4,7 @@ class GetFileMimeType extends TdFunction {
   String get tdType => 'getFileMimeType';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? file_name;
 

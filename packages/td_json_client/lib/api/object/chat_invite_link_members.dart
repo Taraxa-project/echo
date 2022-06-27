@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/chat_invite_link_member.dart';
 class ChatInviteLinkMembers extends TdObject {
   String get tdType => 'chatInviteLinkMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? total_count;
   vector<ChatInviteLinkMember>? members;

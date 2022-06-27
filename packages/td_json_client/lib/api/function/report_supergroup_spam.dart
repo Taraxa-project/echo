@@ -4,7 +4,7 @@ class ReportSupergroupSpam extends TdFunction {
   String get tdType => 'reportSupergroupSpam';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
   vector<int53>? message_ids;

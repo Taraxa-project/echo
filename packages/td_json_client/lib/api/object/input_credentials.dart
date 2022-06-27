@@ -5,7 +5,7 @@ abstract class InputCredentials extends TdObject {}
 class InputCredentialsSaved extends InputCredentials {
   String get tdType => 'inputCredentialsSaved';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? saved_credentials_id;
 
@@ -37,7 +37,7 @@ class InputCredentialsSaved extends InputCredentials {
 class InputCredentialsNew extends InputCredentials {
   String get tdType => 'inputCredentialsNew';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? data;
   Bool? allow_save;
@@ -73,7 +73,7 @@ class InputCredentialsNew extends InputCredentials {
 class InputCredentialsApplePay extends InputCredentials {
   String get tdType => 'inputCredentialsApplePay';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? data;
 
@@ -105,7 +105,7 @@ class InputCredentialsApplePay extends InputCredentials {
 class InputCredentialsGooglePay extends InputCredentials {
   String get tdType => 'inputCredentialsGooglePay';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? data;
 

@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/mask_point.dart';
 class MaskPosition extends TdObject {
   String get tdType => 'maskPosition';
 
-  string? extra;
+  String? extra;
   int? client_id;
   MaskPoint? point;
   double? x_shift;

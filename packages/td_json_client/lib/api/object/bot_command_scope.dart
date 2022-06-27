@@ -5,7 +5,7 @@ abstract class BotCommandScope extends TdObject {}
 class BotCommandScopeDefault extends BotCommandScope {
   String get tdType => 'botCommandScopeDefault';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   BotCommandScopeDefault({
@@ -33,7 +33,7 @@ class BotCommandScopeDefault extends BotCommandScope {
 class BotCommandScopeAllPrivateChats extends BotCommandScope {
   String get tdType => 'botCommandScopeAllPrivateChats';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   BotCommandScopeAllPrivateChats({
@@ -61,7 +61,7 @@ class BotCommandScopeAllPrivateChats extends BotCommandScope {
 class BotCommandScopeAllGroupChats extends BotCommandScope {
   String get tdType => 'botCommandScopeAllGroupChats';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   BotCommandScopeAllGroupChats({
@@ -89,7 +89,7 @@ class BotCommandScopeAllGroupChats extends BotCommandScope {
 class BotCommandScopeAllChatAdministrators extends BotCommandScope {
   String get tdType => 'botCommandScopeAllChatAdministrators';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   BotCommandScopeAllChatAdministrators({
@@ -117,7 +117,7 @@ class BotCommandScopeAllChatAdministrators extends BotCommandScope {
 class BotCommandScopeChat extends BotCommandScope {
   String get tdType => 'botCommandScopeChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 
@@ -149,7 +149,7 @@ class BotCommandScopeChat extends BotCommandScope {
 class BotCommandScopeChatAdministrators extends BotCommandScope {
   String get tdType => 'botCommandScopeChatAdministrators';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 
@@ -181,7 +181,7 @@ class BotCommandScopeChatAdministrators extends BotCommandScope {
 class BotCommandScopeChatMember extends BotCommandScope {
   String get tdType => 'botCommandScopeChatMember';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? user_id;

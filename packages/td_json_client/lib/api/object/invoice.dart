@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/labeled_price_part.dart';
 class Invoice extends TdObject {
   String get tdType => 'invoice';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? currency;
   vector<LabeledPricePart>? price_parts;

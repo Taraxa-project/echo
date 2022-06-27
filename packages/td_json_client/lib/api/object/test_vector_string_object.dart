@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/test_string.dart';
 class TestVectorStringObject extends TdObject {
   String get tdType => 'testVectorStringObject';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<TestString>? value;
 

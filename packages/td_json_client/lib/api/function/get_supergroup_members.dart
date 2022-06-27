@@ -6,7 +6,7 @@ class GetSupergroupMembers extends TdFunction {
   String get tdType => 'getSupergroupMembers';
   String get tdReturnType => 'ChatMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
   SupergroupMembersFilter? filter;

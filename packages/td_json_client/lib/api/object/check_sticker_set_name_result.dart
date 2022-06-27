@@ -5,7 +5,7 @@ abstract class CheckStickerSetNameResult extends TdObject {}
 class CheckStickerSetNameResultOk extends CheckStickerSetNameResult {
   String get tdType => 'checkStickerSetNameResultOk';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CheckStickerSetNameResultOk({
@@ -33,7 +33,7 @@ class CheckStickerSetNameResultOk extends CheckStickerSetNameResult {
 class CheckStickerSetNameResultNameInvalid extends CheckStickerSetNameResult {
   String get tdType => 'checkStickerSetNameResultNameInvalid';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CheckStickerSetNameResultNameInvalid({
@@ -61,7 +61,7 @@ class CheckStickerSetNameResultNameInvalid extends CheckStickerSetNameResult {
 class CheckStickerSetNameResultNameOccupied extends CheckStickerSetNameResult {
   String get tdType => 'checkStickerSetNameResultNameOccupied';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CheckStickerSetNameResultNameOccupied({

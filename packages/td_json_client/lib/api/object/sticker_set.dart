@@ -9,7 +9,7 @@ import 'package:td_json_client/api/object/emojis.dart';
 class StickerSet extends TdObject {
   String get tdType => 'stickerSet';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   string? title;

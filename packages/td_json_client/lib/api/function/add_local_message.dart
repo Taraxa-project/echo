@@ -7,7 +7,7 @@ class AddLocalMessage extends TdFunction {
   String get tdType => 'addLocalMessage';
   String get tdReturnType => 'Message';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   MessageSender? sender_id;

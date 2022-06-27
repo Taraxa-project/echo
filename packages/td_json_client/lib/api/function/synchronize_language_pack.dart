@@ -4,7 +4,7 @@ class SynchronizeLanguagePack extends TdFunction {
   String get tdType => 'synchronizeLanguagePack';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? language_pack_id;
 

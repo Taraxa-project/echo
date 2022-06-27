@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class BotCommand extends TdObject {
   String get tdType => 'botCommand';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? command;
   string? description;

@@ -4,7 +4,7 @@ class SearchChats extends TdFunction {
   String get tdType => 'searchChats';
   String get tdReturnType => 'Chats';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
   int32? limit;

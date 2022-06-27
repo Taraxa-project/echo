@@ -5,7 +5,7 @@ abstract class TopChatCategory extends TdObject {}
 class TopChatCategoryUsers extends TopChatCategory {
   String get tdType => 'topChatCategoryUsers';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TopChatCategoryUsers({
@@ -33,7 +33,7 @@ class TopChatCategoryUsers extends TopChatCategory {
 class TopChatCategoryBots extends TopChatCategory {
   String get tdType => 'topChatCategoryBots';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TopChatCategoryBots({
@@ -61,7 +61,7 @@ class TopChatCategoryBots extends TopChatCategory {
 class TopChatCategoryGroups extends TopChatCategory {
   String get tdType => 'topChatCategoryGroups';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TopChatCategoryGroups({
@@ -89,7 +89,7 @@ class TopChatCategoryGroups extends TopChatCategory {
 class TopChatCategoryChannels extends TopChatCategory {
   String get tdType => 'topChatCategoryChannels';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TopChatCategoryChannels({
@@ -117,7 +117,7 @@ class TopChatCategoryChannels extends TopChatCategory {
 class TopChatCategoryInlineBots extends TopChatCategory {
   String get tdType => 'topChatCategoryInlineBots';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TopChatCategoryInlineBots({
@@ -145,7 +145,7 @@ class TopChatCategoryInlineBots extends TopChatCategory {
 class TopChatCategoryCalls extends TopChatCategory {
   String get tdType => 'topChatCategoryCalls';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TopChatCategoryCalls({
@@ -173,7 +173,7 @@ class TopChatCategoryCalls extends TopChatCategory {
 class TopChatCategoryForwardChats extends TopChatCategory {
   String get tdType => 'topChatCategoryForwardChats';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TopChatCategoryForwardChats({

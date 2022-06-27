@@ -4,7 +4,7 @@ class GetMessageImportConfirmationText extends TdFunction {
   String get tdType => 'getMessageImportConfirmationText';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 

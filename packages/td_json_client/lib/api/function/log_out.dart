@@ -4,7 +4,7 @@ class LogOut extends TdFunction {
   String get tdType => 'logOut';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   LogOut({

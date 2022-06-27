@@ -5,7 +5,7 @@ abstract class UserStatus extends TdObject {}
 class UserStatusEmpty extends UserStatus {
   String get tdType => 'userStatusEmpty';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserStatusEmpty({
@@ -33,7 +33,7 @@ class UserStatusEmpty extends UserStatus {
 class UserStatusOnline extends UserStatus {
   String get tdType => 'userStatusOnline';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? expires;
 
@@ -65,7 +65,7 @@ class UserStatusOnline extends UserStatus {
 class UserStatusOffline extends UserStatus {
   String get tdType => 'userStatusOffline';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? was_online;
 
@@ -97,7 +97,7 @@ class UserStatusOffline extends UserStatus {
 class UserStatusRecently extends UserStatus {
   String get tdType => 'userStatusRecently';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserStatusRecently({
@@ -125,7 +125,7 @@ class UserStatusRecently extends UserStatus {
 class UserStatusLastWeek extends UserStatus {
   String get tdType => 'userStatusLastWeek';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserStatusLastWeek({
@@ -153,7 +153,7 @@ class UserStatusLastWeek extends UserStatus {
 class UserStatusLastMonth extends UserStatus {
   String get tdType => 'userStatusLastMonth';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserStatusLastMonth({

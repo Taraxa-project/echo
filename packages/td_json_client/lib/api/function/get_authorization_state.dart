@@ -4,7 +4,7 @@ class GetAuthorizationState extends TdFunction {
   String get tdType => 'getAuthorizationState';
   String get tdReturnType => 'AuthorizationState';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetAuthorizationState({

@@ -7,7 +7,7 @@ class SetAutoDownloadSettings extends TdFunction {
   String get tdType => 'setAutoDownloadSettings';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   AutoDownloadSettings? settings;
   NetworkType? type;

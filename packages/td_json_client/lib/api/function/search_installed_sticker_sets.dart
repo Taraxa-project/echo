@@ -4,7 +4,7 @@ class SearchInstalledStickerSets extends TdFunction {
   String get tdType => 'searchInstalledStickerSets';
   String get tdReturnType => 'StickerSets';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_masks;
   string? query;

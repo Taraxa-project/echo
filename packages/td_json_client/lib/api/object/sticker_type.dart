@@ -7,7 +7,7 @@ abstract class StickerType extends TdObject {}
 class StickerTypeStatic extends StickerType {
   String get tdType => 'stickerTypeStatic';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   StickerTypeStatic({
@@ -35,7 +35,7 @@ class StickerTypeStatic extends StickerType {
 class StickerTypeAnimated extends StickerType {
   String get tdType => 'stickerTypeAnimated';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   StickerTypeAnimated({
@@ -63,7 +63,7 @@ class StickerTypeAnimated extends StickerType {
 class StickerTypeVideo extends StickerType {
   String get tdType => 'stickerTypeVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   StickerTypeVideo({
@@ -91,7 +91,7 @@ class StickerTypeVideo extends StickerType {
 class StickerTypeMask extends StickerType {
   String get tdType => 'stickerTypeMask';
 
-  string? extra;
+  String? extra;
   int? client_id;
   MaskPosition? mask_position;
 

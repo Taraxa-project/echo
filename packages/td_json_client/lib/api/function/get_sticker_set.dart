@@ -4,7 +4,7 @@ class GetStickerSet extends TdFunction {
   String get tdType => 'getStickerSet';
   String get tdReturnType => 'StickerSet';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? set_id;
 

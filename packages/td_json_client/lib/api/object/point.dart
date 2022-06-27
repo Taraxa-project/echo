@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class Point extends TdObject {
   String get tdType => 'point';
 
-  string? extra;
+  String? extra;
   int? client_id;
   double? x;
   double? y;

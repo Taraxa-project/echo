@@ -4,7 +4,7 @@ class GetBasicGroup extends TdFunction {
   String get tdType => 'getBasicGroup';
   String get tdReturnType => 'BasicGroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? basic_group_id;
 

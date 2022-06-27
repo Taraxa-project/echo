@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/message_calendar_day.dart';
 class MessageCalendar extends TdObject {
   String get tdType => 'messageCalendar';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? total_count;
   vector<MessageCalendarDay>? days;

@@ -6,7 +6,7 @@ class CheckCreatedPublicChatsLimit extends TdFunction {
   String get tdType => 'checkCreatedPublicChatsLimit';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PublicChatType? type;
 

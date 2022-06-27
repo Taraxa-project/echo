@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 class ChatPhotoInfo extends TdObject {
   String get tdType => 'chatPhotoInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   File? small;
   File? big;

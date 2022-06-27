@@ -4,7 +4,7 @@ class GetMessageFileType extends TdFunction {
   String get tdType => 'getMessageFileType';
   String get tdReturnType => 'MessageFileType';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? message_file_head;
 

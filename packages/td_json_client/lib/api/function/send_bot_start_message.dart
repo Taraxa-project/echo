@@ -4,7 +4,7 @@ class SendBotStartMessage extends TdFunction {
   String get tdType => 'sendBotStartMessage';
   String get tdReturnType => 'Message';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? bot_user_id;
   int53? chat_id;

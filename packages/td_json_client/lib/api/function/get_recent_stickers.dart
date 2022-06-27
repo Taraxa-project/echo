@@ -4,7 +4,7 @@ class GetRecentStickers extends TdFunction {
   String get tdType => 'getRecentStickers';
   String get tdReturnType => 'Stickers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_attached;
 

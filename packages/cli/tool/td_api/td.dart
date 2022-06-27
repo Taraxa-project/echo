@@ -264,7 +264,7 @@ class {{ className }} extends {{ extendsClassName }} {
   {{/ isFunction }}
 
   {{! class members }}
-  string? extra;
+  String? extra;
   int? client_id;
   {{# members }}
   {{ type }}? {{ name }};

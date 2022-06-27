@@ -8,7 +8,7 @@ import 'package:td_json_client/api/object/sticker.dart';
 class StickerSetInfo extends TdObject {
   String get tdType => 'stickerSetInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   string? title;

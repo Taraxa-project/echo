@@ -4,7 +4,7 @@ class GetCountries extends TdFunction {
   String get tdType => 'getCountries';
   String get tdReturnType => 'Countries';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetCountries({

@@ -4,7 +4,7 @@ class AddRecentlyFoundChat extends TdFunction {
   String get tdType => 'addRecentlyFoundChat';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 

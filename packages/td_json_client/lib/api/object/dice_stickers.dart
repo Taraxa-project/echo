@@ -7,7 +7,7 @@ abstract class DiceStickers extends TdObject {}
 class DiceStickersRegular extends DiceStickers {
   String get tdType => 'diceStickersRegular';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Sticker? sticker;
 
@@ -39,7 +39,7 @@ class DiceStickersRegular extends DiceStickers {
 class DiceStickersSlotMachine extends DiceStickers {
   String get tdType => 'diceStickersSlotMachine';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Sticker? background;
   Sticker? lever;

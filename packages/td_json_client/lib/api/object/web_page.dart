@@ -13,7 +13,7 @@ import 'package:td_json_client/api/object/voice_note.dart';
 class WebPage extends TdObject {
   String get tdType => 'webPage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
   string? display_url;

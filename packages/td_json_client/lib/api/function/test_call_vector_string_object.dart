@@ -6,7 +6,7 @@ class TestCallVectorStringObject extends TdFunction {
   String get tdType => 'testCallVectorStringObject';
   String get tdReturnType => 'TestVectorStringObject';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<TestString>? x;
 

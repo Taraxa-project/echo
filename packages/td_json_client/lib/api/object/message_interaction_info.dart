@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/message_reaction.dart';
 class MessageInteractionInfo extends TdObject {
   String get tdType => 'messageInteractionInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? view_count;
   int32? forward_count;

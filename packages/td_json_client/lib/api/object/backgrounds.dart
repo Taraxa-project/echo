@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/background.dart';
 class Backgrounds extends TdObject {
   String get tdType => 'backgrounds';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<Background>? backgrounds;
 

@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/text_entity.dart';
 class TextEntities extends TdObject {
   String get tdType => 'textEntities';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<TextEntity>? entities;
 

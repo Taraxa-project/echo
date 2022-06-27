@@ -7,7 +7,7 @@ abstract class JsonValue extends TdObject {}
 class JsonValueNull extends JsonValue {
   String get tdType => 'jsonValueNull';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   JsonValueNull({
@@ -35,7 +35,7 @@ class JsonValueNull extends JsonValue {
 class JsonValueBoolean extends JsonValue {
   String get tdType => 'jsonValueBoolean';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? value;
 
@@ -67,7 +67,7 @@ class JsonValueBoolean extends JsonValue {
 class JsonValueNumber extends JsonValue {
   String get tdType => 'jsonValueNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
   double? value;
 
@@ -99,7 +99,7 @@ class JsonValueNumber extends JsonValue {
 class JsonValueString extends JsonValue {
   String get tdType => 'jsonValueString';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? value;
 
@@ -131,7 +131,7 @@ class JsonValueString extends JsonValue {
 class JsonValueArray extends JsonValue {
   String get tdType => 'jsonValueArray';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<JsonValue>? values;
 
@@ -168,7 +168,7 @@ class JsonValueArray extends JsonValue {
 class JsonValueObject extends JsonValue {
   String get tdType => 'jsonValueObject';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<JsonObjectMember>? members;
 

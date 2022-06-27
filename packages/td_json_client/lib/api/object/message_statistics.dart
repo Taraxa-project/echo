@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/statistical_graph.dart';
 class MessageStatistics extends TdObject {
   String get tdType => 'messageStatistics';
 
-  string? extra;
+  String? extra;
   int? client_id;
   StatisticalGraph? message_interaction_graph;
 

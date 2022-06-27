@@ -5,7 +5,7 @@ abstract class SupergroupMembersFilter extends TdObject {}
 class SupergroupMembersFilterRecent extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterRecent';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SupergroupMembersFilterRecent({
@@ -33,7 +33,7 @@ class SupergroupMembersFilterRecent extends SupergroupMembersFilter {
 class SupergroupMembersFilterContacts extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterContacts';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
 
@@ -65,7 +65,7 @@ class SupergroupMembersFilterContacts extends SupergroupMembersFilter {
 class SupergroupMembersFilterAdministrators extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterAdministrators';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SupergroupMembersFilterAdministrators({
@@ -93,7 +93,7 @@ class SupergroupMembersFilterAdministrators extends SupergroupMembersFilter {
 class SupergroupMembersFilterSearch extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterSearch';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
 
@@ -125,7 +125,7 @@ class SupergroupMembersFilterSearch extends SupergroupMembersFilter {
 class SupergroupMembersFilterRestricted extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterRestricted';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
 
@@ -157,7 +157,7 @@ class SupergroupMembersFilterRestricted extends SupergroupMembersFilter {
 class SupergroupMembersFilterBanned extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterBanned';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
 
@@ -189,7 +189,7 @@ class SupergroupMembersFilterBanned extends SupergroupMembersFilter {
 class SupergroupMembersFilterMention extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterMention';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
   int53? message_thread_id;
@@ -225,7 +225,7 @@ class SupergroupMembersFilterMention extends SupergroupMembersFilter {
 class SupergroupMembersFilterBots extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterBots';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SupergroupMembersFilterBots({

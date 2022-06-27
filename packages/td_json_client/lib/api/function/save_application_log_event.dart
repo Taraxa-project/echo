@@ -6,7 +6,7 @@ class SaveApplicationLogEvent extends TdFunction {
   String get tdType => 'saveApplicationLogEvent';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? type;
   int53? chat_id;

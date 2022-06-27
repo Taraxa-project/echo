@@ -6,7 +6,7 @@ class GetChatNotificationSettingsExceptions extends TdFunction {
   String get tdType => 'getChatNotificationSettingsExceptions';
   String get tdReturnType => 'Chats';
 
-  string? extra;
+  String? extra;
   int? client_id;
   NotificationSettingsScope? scope;
   Bool? compare_sound;

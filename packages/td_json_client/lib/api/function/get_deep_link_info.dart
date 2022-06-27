@@ -4,7 +4,7 @@ class GetDeepLinkInfo extends TdFunction {
   String get tdType => 'getDeepLinkInfo';
   String get tdReturnType => 'DeepLinkInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? link;
 

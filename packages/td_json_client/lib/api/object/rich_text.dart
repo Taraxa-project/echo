@@ -7,7 +7,7 @@ abstract class RichText extends TdObject {}
 class RichTextPlain extends RichText {
   String get tdType => 'richTextPlain';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
 
@@ -39,7 +39,7 @@ class RichTextPlain extends RichText {
 class RichTextBold extends RichText {
   String get tdType => 'richTextBold';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
 
@@ -71,7 +71,7 @@ class RichTextBold extends RichText {
 class RichTextItalic extends RichText {
   String get tdType => 'richTextItalic';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
 
@@ -103,7 +103,7 @@ class RichTextItalic extends RichText {
 class RichTextUnderline extends RichText {
   String get tdType => 'richTextUnderline';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
 
@@ -135,7 +135,7 @@ class RichTextUnderline extends RichText {
 class RichTextStrikethrough extends RichText {
   String get tdType => 'richTextStrikethrough';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
 
@@ -167,7 +167,7 @@ class RichTextStrikethrough extends RichText {
 class RichTextFixed extends RichText {
   String get tdType => 'richTextFixed';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
 
@@ -199,7 +199,7 @@ class RichTextFixed extends RichText {
 class RichTextUrl extends RichText {
   String get tdType => 'richTextUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
   string? url;
@@ -239,7 +239,7 @@ class RichTextUrl extends RichText {
 class RichTextEmailAddress extends RichText {
   String get tdType => 'richTextEmailAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
   string? email_address;
@@ -275,7 +275,7 @@ class RichTextEmailAddress extends RichText {
 class RichTextSubscript extends RichText {
   String get tdType => 'richTextSubscript';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
 
@@ -307,7 +307,7 @@ class RichTextSubscript extends RichText {
 class RichTextSuperscript extends RichText {
   String get tdType => 'richTextSuperscript';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
 
@@ -339,7 +339,7 @@ class RichTextSuperscript extends RichText {
 class RichTextMarked extends RichText {
   String get tdType => 'richTextMarked';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
 
@@ -371,7 +371,7 @@ class RichTextMarked extends RichText {
 class RichTextPhoneNumber extends RichText {
   String get tdType => 'richTextPhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
   string? phone_number;
@@ -407,7 +407,7 @@ class RichTextPhoneNumber extends RichText {
 class RichTextIcon extends RichText {
   String get tdType => 'richTextIcon';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Document? document;
   int32? width;
@@ -447,7 +447,7 @@ class RichTextIcon extends RichText {
 class RichTextReference extends RichText {
   String get tdType => 'richTextReference';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
   string? anchor_name;
@@ -487,7 +487,7 @@ class RichTextReference extends RichText {
 class RichTextAnchor extends RichText {
   String get tdType => 'richTextAnchor';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? name;
 
@@ -519,7 +519,7 @@ class RichTextAnchor extends RichText {
 class RichTextAnchorLink extends RichText {
   String get tdType => 'richTextAnchorLink';
 
-  string? extra;
+  String? extra;
   int? client_id;
   RichText? text;
   string? anchor_name;
@@ -559,7 +559,7 @@ class RichTextAnchorLink extends RichText {
 class RichTexts extends RichText {
   String get tdType => 'richTexts';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<RichText>? texts;
 

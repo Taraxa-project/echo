@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/formatted_text.dart';
 class MessageCopyOptions extends TdObject {
   String get tdType => 'messageCopyOptions';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? send_copy;
   Bool? replace_caption;

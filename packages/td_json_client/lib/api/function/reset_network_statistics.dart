@@ -4,7 +4,7 @@ class ResetNetworkStatistics extends TdFunction {
   String get tdType => 'resetNetworkStatistics';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ResetNetworkStatistics({

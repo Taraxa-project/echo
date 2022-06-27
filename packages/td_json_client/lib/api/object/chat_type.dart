@@ -5,7 +5,7 @@ abstract class ChatType extends TdObject {}
 class ChatTypePrivate extends ChatType {
   String get tdType => 'chatTypePrivate';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
 
@@ -37,7 +37,7 @@ class ChatTypePrivate extends ChatType {
 class ChatTypeBasicGroup extends ChatType {
   String get tdType => 'chatTypeBasicGroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? basic_group_id;
 
@@ -69,7 +69,7 @@ class ChatTypeBasicGroup extends ChatType {
 class ChatTypeSupergroup extends ChatType {
   String get tdType => 'chatTypeSupergroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
   Bool? is_channel;
@@ -105,7 +105,7 @@ class ChatTypeSupergroup extends ChatType {
 class ChatTypeSecret extends ChatType {
   String get tdType => 'chatTypeSecret';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? secret_chat_id;
   int53? user_id;

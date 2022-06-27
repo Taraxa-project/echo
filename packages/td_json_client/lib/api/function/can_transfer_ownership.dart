@@ -4,7 +4,7 @@ class CanTransferOwnership extends TdFunction {
   String get tdType => 'canTransferOwnership';
   String get tdReturnType => 'CanTransferOwnershipResult';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CanTransferOwnership({

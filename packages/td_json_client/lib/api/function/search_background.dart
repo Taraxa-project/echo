@@ -4,7 +4,7 @@ class SearchBackground extends TdFunction {
   String get tdType => 'searchBackground';
   String get tdReturnType => 'Background';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? name;
 

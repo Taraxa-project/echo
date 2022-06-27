@@ -10,7 +10,7 @@ abstract class InputPassportElement extends TdObject {}
 class InputPassportElementPersonalDetails extends InputPassportElement {
   String get tdType => 'inputPassportElementPersonalDetails';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PersonalDetails? personal_details;
 
@@ -42,7 +42,7 @@ class InputPassportElementPersonalDetails extends InputPassportElement {
 class InputPassportElementPassport extends InputPassportElement {
   String get tdType => 'inputPassportElementPassport';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputIdentityDocument? passport;
 
@@ -74,7 +74,7 @@ class InputPassportElementPassport extends InputPassportElement {
 class InputPassportElementDriverLicense extends InputPassportElement {
   String get tdType => 'inputPassportElementDriverLicense';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputIdentityDocument? driver_license;
 
@@ -106,7 +106,7 @@ class InputPassportElementDriverLicense extends InputPassportElement {
 class InputPassportElementIdentityCard extends InputPassportElement {
   String get tdType => 'inputPassportElementIdentityCard';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputIdentityDocument? identity_card;
 
@@ -138,7 +138,7 @@ class InputPassportElementIdentityCard extends InputPassportElement {
 class InputPassportElementInternalPassport extends InputPassportElement {
   String get tdType => 'inputPassportElementInternalPassport';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputIdentityDocument? internal_passport;
 
@@ -170,7 +170,7 @@ class InputPassportElementInternalPassport extends InputPassportElement {
 class InputPassportElementAddress extends InputPassportElement {
   String get tdType => 'inputPassportElementAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Address? address;
 
@@ -202,7 +202,7 @@ class InputPassportElementAddress extends InputPassportElement {
 class InputPassportElementUtilityBill extends InputPassportElement {
   String get tdType => 'inputPassportElementUtilityBill';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputPersonalDocument? utility_bill;
 
@@ -234,7 +234,7 @@ class InputPassportElementUtilityBill extends InputPassportElement {
 class InputPassportElementBankStatement extends InputPassportElement {
   String get tdType => 'inputPassportElementBankStatement';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputPersonalDocument? bank_statement;
 
@@ -266,7 +266,7 @@ class InputPassportElementBankStatement extends InputPassportElement {
 class InputPassportElementRentalAgreement extends InputPassportElement {
   String get tdType => 'inputPassportElementRentalAgreement';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputPersonalDocument? rental_agreement;
 
@@ -298,7 +298,7 @@ class InputPassportElementRentalAgreement extends InputPassportElement {
 class InputPassportElementPassportRegistration extends InputPassportElement {
   String get tdType => 'inputPassportElementPassportRegistration';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputPersonalDocument? passport_registration;
 
@@ -330,7 +330,7 @@ class InputPassportElementPassportRegistration extends InputPassportElement {
 class InputPassportElementTemporaryRegistration extends InputPassportElement {
   String get tdType => 'inputPassportElementTemporaryRegistration';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputPersonalDocument? temporary_registration;
 
@@ -362,7 +362,7 @@ class InputPassportElementTemporaryRegistration extends InputPassportElement {
 class InputPassportElementPhoneNumber extends InputPassportElement {
   String get tdType => 'inputPassportElementPhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? phone_number;
 
@@ -394,7 +394,7 @@ class InputPassportElementPhoneNumber extends InputPassportElement {
 class InputPassportElementEmailAddress extends InputPassportElement {
   String get tdType => 'inputPassportElementEmailAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? email_address;
 

@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/file.dart';
 class VoiceNote extends TdObject {
   String get tdType => 'voiceNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? duration;
   bytes? waveform;

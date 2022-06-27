@@ -6,7 +6,7 @@ class GetChatMessageCalendar extends TdFunction {
   String get tdType => 'getChatMessageCalendar';
   String get tdReturnType => 'MessageCalendar';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   SearchMessagesFilter? filter;

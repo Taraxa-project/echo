@@ -4,7 +4,7 @@ class TestSquareInt extends TdFunction {
   String get tdType => 'testSquareInt';
   String get tdReturnType => 'TestInt';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? x;
 

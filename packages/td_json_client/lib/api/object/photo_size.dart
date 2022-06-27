@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/file.dart';
 class PhotoSize extends TdObject {
   String get tdType => 'photoSize';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? type;
   File? photo;

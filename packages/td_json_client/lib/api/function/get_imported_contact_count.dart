@@ -4,7 +4,7 @@ class GetImportedContactCount extends TdFunction {
   String get tdType => 'getImportedContactCount';
   String get tdReturnType => 'Count';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetImportedContactCount({

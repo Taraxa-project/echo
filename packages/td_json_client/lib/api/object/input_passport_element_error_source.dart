@@ -5,7 +5,7 @@ abstract class InputPassportElementErrorSource extends TdObject {}
 class InputPassportElementErrorSourceUnspecified extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceUnspecified';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? element_hash;
 
@@ -37,7 +37,7 @@ class InputPassportElementErrorSourceUnspecified extends InputPassportElementErr
 class InputPassportElementErrorSourceDataField extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceDataField';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? field_name;
   bytes? data_hash;
@@ -73,7 +73,7 @@ class InputPassportElementErrorSourceDataField extends InputPassportElementError
 class InputPassportElementErrorSourceFrontSide extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceFrontSide';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? file_hash;
 
@@ -105,7 +105,7 @@ class InputPassportElementErrorSourceFrontSide extends InputPassportElementError
 class InputPassportElementErrorSourceReverseSide extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceReverseSide';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? file_hash;
 
@@ -137,7 +137,7 @@ class InputPassportElementErrorSourceReverseSide extends InputPassportElementErr
 class InputPassportElementErrorSourceSelfie extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceSelfie';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? file_hash;
 
@@ -169,7 +169,7 @@ class InputPassportElementErrorSourceSelfie extends InputPassportElementErrorSou
 class InputPassportElementErrorSourceTranslationFile extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceTranslationFile';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? file_hash;
 
@@ -201,7 +201,7 @@ class InputPassportElementErrorSourceTranslationFile extends InputPassportElemen
 class InputPassportElementErrorSourceTranslationFiles extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceTranslationFiles';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<bytes>? file_hashes;
 
@@ -238,7 +238,7 @@ class InputPassportElementErrorSourceTranslationFiles extends InputPassportEleme
 class InputPassportElementErrorSourceFile extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceFile';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? file_hash;
 
@@ -270,7 +270,7 @@ class InputPassportElementErrorSourceFile extends InputPassportElementErrorSourc
 class InputPassportElementErrorSourceFiles extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceFiles';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<bytes>? file_hashes;
 

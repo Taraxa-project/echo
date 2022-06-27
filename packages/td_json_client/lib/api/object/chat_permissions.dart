@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class ChatPermissions extends TdObject {
   String get tdType => 'chatPermissions';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? can_send_messages;
   Bool? can_send_media_messages;

@@ -5,7 +5,7 @@ abstract class PassportElementType extends TdObject {}
 class PassportElementTypePersonalDetails extends PassportElementType {
   String get tdType => 'passportElementTypePersonalDetails';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypePersonalDetails({
@@ -33,7 +33,7 @@ class PassportElementTypePersonalDetails extends PassportElementType {
 class PassportElementTypePassport extends PassportElementType {
   String get tdType => 'passportElementTypePassport';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypePassport({
@@ -61,7 +61,7 @@ class PassportElementTypePassport extends PassportElementType {
 class PassportElementTypeDriverLicense extends PassportElementType {
   String get tdType => 'passportElementTypeDriverLicense';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypeDriverLicense({
@@ -89,7 +89,7 @@ class PassportElementTypeDriverLicense extends PassportElementType {
 class PassportElementTypeIdentityCard extends PassportElementType {
   String get tdType => 'passportElementTypeIdentityCard';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypeIdentityCard({
@@ -117,7 +117,7 @@ class PassportElementTypeIdentityCard extends PassportElementType {
 class PassportElementTypeInternalPassport extends PassportElementType {
   String get tdType => 'passportElementTypeInternalPassport';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypeInternalPassport({
@@ -145,7 +145,7 @@ class PassportElementTypeInternalPassport extends PassportElementType {
 class PassportElementTypeAddress extends PassportElementType {
   String get tdType => 'passportElementTypeAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypeAddress({
@@ -173,7 +173,7 @@ class PassportElementTypeAddress extends PassportElementType {
 class PassportElementTypeUtilityBill extends PassportElementType {
   String get tdType => 'passportElementTypeUtilityBill';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypeUtilityBill({
@@ -201,7 +201,7 @@ class PassportElementTypeUtilityBill extends PassportElementType {
 class PassportElementTypeBankStatement extends PassportElementType {
   String get tdType => 'passportElementTypeBankStatement';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypeBankStatement({
@@ -229,7 +229,7 @@ class PassportElementTypeBankStatement extends PassportElementType {
 class PassportElementTypeRentalAgreement extends PassportElementType {
   String get tdType => 'passportElementTypeRentalAgreement';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypeRentalAgreement({
@@ -257,7 +257,7 @@ class PassportElementTypeRentalAgreement extends PassportElementType {
 class PassportElementTypePassportRegistration extends PassportElementType {
   String get tdType => 'passportElementTypePassportRegistration';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypePassportRegistration({
@@ -285,7 +285,7 @@ class PassportElementTypePassportRegistration extends PassportElementType {
 class PassportElementTypeTemporaryRegistration extends PassportElementType {
   String get tdType => 'passportElementTypeTemporaryRegistration';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypeTemporaryRegistration({
@@ -313,7 +313,7 @@ class PassportElementTypeTemporaryRegistration extends PassportElementType {
 class PassportElementTypePhoneNumber extends PassportElementType {
   String get tdType => 'passportElementTypePhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypePhoneNumber({
@@ -341,7 +341,7 @@ class PassportElementTypePhoneNumber extends PassportElementType {
 class PassportElementTypeEmailAddress extends PassportElementType {
   String get tdType => 'passportElementTypeEmailAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementTypeEmailAddress({

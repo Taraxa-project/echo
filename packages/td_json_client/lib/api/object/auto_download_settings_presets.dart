@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/auto_download_settings.dart';
 class AutoDownloadSettingsPresets extends TdObject {
   String get tdType => 'autoDownloadSettingsPresets';
 
-  string? extra;
+  String? extra;
   int? client_id;
   AutoDownloadSettings? low;
   AutoDownloadSettings? medium;

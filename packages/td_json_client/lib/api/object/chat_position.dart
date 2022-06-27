@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/chat_source.dart';
 class ChatPosition extends TdObject {
   String get tdType => 'chatPosition';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatList? list;
   int64? order;

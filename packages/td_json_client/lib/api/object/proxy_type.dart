@@ -5,7 +5,7 @@ abstract class ProxyType extends TdObject {}
 class ProxyTypeSocks5 extends ProxyType {
   String get tdType => 'proxyTypeSocks5';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? username;
   string? password;
@@ -41,7 +41,7 @@ class ProxyTypeSocks5 extends ProxyType {
 class ProxyTypeHttp extends ProxyType {
   String get tdType => 'proxyTypeHttp';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? username;
   string? password;
@@ -81,7 +81,7 @@ class ProxyTypeHttp extends ProxyType {
 class ProxyTypeMtproto extends ProxyType {
   String get tdType => 'proxyTypeMtproto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? secret;
 

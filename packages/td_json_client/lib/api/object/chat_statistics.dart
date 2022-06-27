@@ -13,7 +13,7 @@ abstract class ChatStatistics extends TdObject {}
 class ChatStatisticsSupergroup extends ChatStatistics {
   String get tdType => 'chatStatisticsSupergroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   DateRange? period;
   StatisticalValue? member_count;
@@ -120,7 +120,7 @@ class ChatStatisticsSupergroup extends ChatStatistics {
 class ChatStatisticsChannel extends ChatStatistics {
   String get tdType => 'chatStatisticsChannel';
 
-  string? extra;
+  String? extra;
   int? client_id;
   DateRange? period;
   StatisticalValue? member_count;

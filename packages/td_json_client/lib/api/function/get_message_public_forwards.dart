@@ -4,7 +4,7 @@ class GetMessagePublicForwards extends TdFunction {
   String get tdType => 'getMessagePublicForwards';
   String get tdReturnType => 'FoundMessages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

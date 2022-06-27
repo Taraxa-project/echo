@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/notification_sound.dart';
 class NotificationSounds extends TdObject {
   String get tdType => 'notificationSounds';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<NotificationSound>? notification_sounds;
 

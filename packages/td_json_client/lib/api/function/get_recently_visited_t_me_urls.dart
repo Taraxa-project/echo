@@ -4,7 +4,7 @@ class GetRecentlyVisitedTMeUrls extends TdFunction {
   String get tdType => 'getRecentlyVisitedTMeUrls';
   String get tdReturnType => 'TMeUrls';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? referrer;
 

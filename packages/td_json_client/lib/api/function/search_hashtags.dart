@@ -4,7 +4,7 @@ class SearchHashtags extends TdFunction {
   String get tdType => 'searchHashtags';
   String get tdReturnType => 'Hashtags';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? prefix;
   int32? limit;

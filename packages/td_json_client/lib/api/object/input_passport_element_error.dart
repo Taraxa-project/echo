@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/input_passport_element_error_source.da
 class InputPassportElementError extends TdObject {
   String get tdType => 'inputPassportElementError';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PassportElementType? type;
   string? message;

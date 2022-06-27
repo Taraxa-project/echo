@@ -5,7 +5,7 @@ abstract class StatisticalGraph extends TdObject {}
 class StatisticalGraphData extends StatisticalGraph {
   String get tdType => 'statisticalGraphData';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? json_data;
   string? zoom_token;
@@ -41,7 +41,7 @@ class StatisticalGraphData extends StatisticalGraph {
 class StatisticalGraphAsync extends StatisticalGraph {
   String get tdType => 'statisticalGraphAsync';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? token;
 
@@ -73,7 +73,7 @@ class StatisticalGraphAsync extends StatisticalGraph {
 class StatisticalGraphError extends StatisticalGraph {
   String get tdType => 'statisticalGraphError';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? error_message;
 

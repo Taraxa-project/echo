@@ -4,7 +4,7 @@ class GetExternalLinkInfo extends TdFunction {
   String get tdType => 'getExternalLinkInfo';
   String get tdReturnType => 'LoginUrlInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? link;
 

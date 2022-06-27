@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/network_statistics_entry.dart';
 class NetworkStatistics extends TdObject {
   String get tdType => 'networkStatistics';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? since_date;
   vector<NetworkStatisticsEntry>? entries;

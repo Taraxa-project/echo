@@ -4,7 +4,7 @@ class GetPassportAuthorizationFormAvailableElements extends TdFunction {
   String get tdType => 'getPassportAuthorizationFormAvailableElements';
   String get tdReturnType => 'PassportElementsWithErrors';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? autorization_form_id;
   string? password;

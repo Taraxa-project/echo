@@ -4,7 +4,7 @@ class Close extends TdFunction {
   String get tdType => 'close';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   Close({

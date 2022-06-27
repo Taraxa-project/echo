@@ -5,7 +5,7 @@ abstract class TextParseMode extends TdObject {}
 class TextParseModeMarkdown extends TextParseMode {
   String get tdType => 'textParseModeMarkdown';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? version;
 
@@ -37,7 +37,7 @@ class TextParseModeMarkdown extends TextParseMode {
 class TextParseModeHTML extends TextParseMode {
   String get tdType => 'textParseModeHTML';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextParseModeHTML({

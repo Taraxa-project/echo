@@ -4,7 +4,7 @@ class GetInactiveSupergroupChats extends TdFunction {
   String get tdType => 'getInactiveSupergroupChats';
   String get tdReturnType => 'Chats';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetInactiveSupergroupChats({

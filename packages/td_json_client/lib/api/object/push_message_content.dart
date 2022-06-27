@@ -14,7 +14,7 @@ abstract class PushMessageContent extends TdObject {}
 class PushMessageContentHidden extends PushMessageContent {
   String get tdType => 'pushMessageContentHidden';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_pinned;
 
@@ -46,7 +46,7 @@ class PushMessageContentHidden extends PushMessageContent {
 class PushMessageContentAnimation extends PushMessageContent {
   String get tdType => 'pushMessageContentAnimation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Animation? animation;
   string? caption;
@@ -86,7 +86,7 @@ class PushMessageContentAnimation extends PushMessageContent {
 class PushMessageContentAudio extends PushMessageContent {
   String get tdType => 'pushMessageContentAudio';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Audio? audio;
   Bool? is_pinned;
@@ -122,7 +122,7 @@ class PushMessageContentAudio extends PushMessageContent {
 class PushMessageContentContact extends PushMessageContent {
   String get tdType => 'pushMessageContentContact';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? name;
   Bool? is_pinned;
@@ -158,7 +158,7 @@ class PushMessageContentContact extends PushMessageContent {
 class PushMessageContentContactRegistered extends PushMessageContent {
   String get tdType => 'pushMessageContentContactRegistered';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PushMessageContentContactRegistered({
@@ -186,7 +186,7 @@ class PushMessageContentContactRegistered extends PushMessageContent {
 class PushMessageContentDocument extends PushMessageContent {
   String get tdType => 'pushMessageContentDocument';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Document? document;
   Bool? is_pinned;
@@ -222,7 +222,7 @@ class PushMessageContentDocument extends PushMessageContent {
 class PushMessageContentGame extends PushMessageContent {
   String get tdType => 'pushMessageContentGame';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
   Bool? is_pinned;
@@ -258,7 +258,7 @@ class PushMessageContentGame extends PushMessageContent {
 class PushMessageContentGameScore extends PushMessageContent {
   String get tdType => 'pushMessageContentGameScore';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
   int32? score;
@@ -298,7 +298,7 @@ class PushMessageContentGameScore extends PushMessageContent {
 class PushMessageContentInvoice extends PushMessageContent {
   String get tdType => 'pushMessageContentInvoice';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? price;
   Bool? is_pinned;
@@ -334,7 +334,7 @@ class PushMessageContentInvoice extends PushMessageContent {
 class PushMessageContentLocation extends PushMessageContent {
   String get tdType => 'pushMessageContentLocation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_live;
   Bool? is_pinned;
@@ -370,7 +370,7 @@ class PushMessageContentLocation extends PushMessageContent {
 class PushMessageContentPhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentPhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Photo? photo;
   string? caption;
@@ -414,7 +414,7 @@ class PushMessageContentPhoto extends PushMessageContent {
 class PushMessageContentPoll extends PushMessageContent {
   String get tdType => 'pushMessageContentPoll';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? question;
   Bool? is_regular;
@@ -454,7 +454,7 @@ class PushMessageContentPoll extends PushMessageContent {
 class PushMessageContentScreenshotTaken extends PushMessageContent {
   String get tdType => 'pushMessageContentScreenshotTaken';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PushMessageContentScreenshotTaken({
@@ -482,7 +482,7 @@ class PushMessageContentScreenshotTaken extends PushMessageContent {
 class PushMessageContentSticker extends PushMessageContent {
   String get tdType => 'pushMessageContentSticker';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Sticker? sticker;
   string? emoji;
@@ -522,7 +522,7 @@ class PushMessageContentSticker extends PushMessageContent {
 class PushMessageContentText extends PushMessageContent {
   String get tdType => 'pushMessageContentText';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
   Bool? is_pinned;
@@ -558,7 +558,7 @@ class PushMessageContentText extends PushMessageContent {
 class PushMessageContentVideo extends PushMessageContent {
   String get tdType => 'pushMessageContentVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Video? video;
   string? caption;
@@ -602,7 +602,7 @@ class PushMessageContentVideo extends PushMessageContent {
 class PushMessageContentVideoNote extends PushMessageContent {
   String get tdType => 'pushMessageContentVideoNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   VideoNote? video_note;
   Bool? is_pinned;
@@ -638,7 +638,7 @@ class PushMessageContentVideoNote extends PushMessageContent {
 class PushMessageContentVoiceNote extends PushMessageContent {
   String get tdType => 'pushMessageContentVoiceNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   VoiceNote? voice_note;
   Bool? is_pinned;
@@ -674,7 +674,7 @@ class PushMessageContentVoiceNote extends PushMessageContent {
 class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
   String get tdType => 'pushMessageContentBasicGroupChatCreate';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PushMessageContentBasicGroupChatCreate({
@@ -702,7 +702,7 @@ class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
 class PushMessageContentChatAddMembers extends PushMessageContent {
   String get tdType => 'pushMessageContentChatAddMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? member_name;
   Bool? is_current_user;
@@ -742,7 +742,7 @@ class PushMessageContentChatAddMembers extends PushMessageContent {
 class PushMessageContentChatChangePhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentChatChangePhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PushMessageContentChatChangePhoto({
@@ -770,7 +770,7 @@ class PushMessageContentChatChangePhoto extends PushMessageContent {
 class PushMessageContentChatChangeTitle extends PushMessageContent {
   String get tdType => 'pushMessageContentChatChangeTitle';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
 
@@ -802,7 +802,7 @@ class PushMessageContentChatChangeTitle extends PushMessageContent {
 class PushMessageContentChatSetTheme extends PushMessageContent {
   String get tdType => 'pushMessageContentChatSetTheme';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? theme_name;
 
@@ -834,7 +834,7 @@ class PushMessageContentChatSetTheme extends PushMessageContent {
 class PushMessageContentChatDeleteMember extends PushMessageContent {
   String get tdType => 'pushMessageContentChatDeleteMember';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? member_name;
   Bool? is_current_user;
@@ -874,7 +874,7 @@ class PushMessageContentChatDeleteMember extends PushMessageContent {
 class PushMessageContentChatJoinByLink extends PushMessageContent {
   String get tdType => 'pushMessageContentChatJoinByLink';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PushMessageContentChatJoinByLink({
@@ -902,7 +902,7 @@ class PushMessageContentChatJoinByLink extends PushMessageContent {
 class PushMessageContentChatJoinByRequest extends PushMessageContent {
   String get tdType => 'pushMessageContentChatJoinByRequest';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PushMessageContentChatJoinByRequest({
@@ -930,7 +930,7 @@ class PushMessageContentChatJoinByRequest extends PushMessageContent {
 class PushMessageContentMessageForwards extends PushMessageContent {
   String get tdType => 'pushMessageContentMessageForwards';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? total_count;
 
@@ -962,7 +962,7 @@ class PushMessageContentMessageForwards extends PushMessageContent {
 class PushMessageContentMediaAlbum extends PushMessageContent {
   String get tdType => 'pushMessageContentMediaAlbum';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? total_count;
   Bool? has_photos;

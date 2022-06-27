@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/chat_member_status.dart';
 class BasicGroup extends TdObject {
   String get tdType => 'basicGroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? id;
   int32? member_count;

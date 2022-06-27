@@ -5,7 +5,7 @@ abstract class SuggestedAction extends TdObject {}
 class SuggestedActionEnableArchiveAndMuteNewChats extends SuggestedAction {
   String get tdType => 'suggestedActionEnableArchiveAndMuteNewChats';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SuggestedActionEnableArchiveAndMuteNewChats({
@@ -33,7 +33,7 @@ class SuggestedActionEnableArchiveAndMuteNewChats extends SuggestedAction {
 class SuggestedActionCheckPassword extends SuggestedAction {
   String get tdType => 'suggestedActionCheckPassword';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SuggestedActionCheckPassword({
@@ -61,7 +61,7 @@ class SuggestedActionCheckPassword extends SuggestedAction {
 class SuggestedActionCheckPhoneNumber extends SuggestedAction {
   String get tdType => 'suggestedActionCheckPhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SuggestedActionCheckPhoneNumber({
@@ -89,7 +89,7 @@ class SuggestedActionCheckPhoneNumber extends SuggestedAction {
 class SuggestedActionViewChecksHint extends SuggestedAction {
   String get tdType => 'suggestedActionViewChecksHint';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SuggestedActionViewChecksHint({
@@ -117,7 +117,7 @@ class SuggestedActionViewChecksHint extends SuggestedAction {
 class SuggestedActionConvertToBroadcastGroup extends SuggestedAction {
   String get tdType => 'suggestedActionConvertToBroadcastGroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
 
@@ -149,7 +149,7 @@ class SuggestedActionConvertToBroadcastGroup extends SuggestedAction {
 class SuggestedActionSetPassword extends SuggestedAction {
   String get tdType => 'suggestedActionSetPassword';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? authorization_delay;
 

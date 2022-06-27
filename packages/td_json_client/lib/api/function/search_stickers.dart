@@ -4,7 +4,7 @@ class SearchStickers extends TdFunction {
   String get tdType => 'searchStickers';
   String get tdReturnType => 'Stickers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? emoji;
   int32? limit;

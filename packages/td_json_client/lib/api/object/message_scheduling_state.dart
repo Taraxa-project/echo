@@ -5,7 +5,7 @@ abstract class MessageSchedulingState extends TdObject {}
 class MessageSchedulingStateSendAtDate extends MessageSchedulingState {
   String get tdType => 'messageSchedulingStateSendAtDate';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? send_date;
 
@@ -37,7 +37,7 @@ class MessageSchedulingStateSendAtDate extends MessageSchedulingState {
 class MessageSchedulingStateSendWhenOnline extends MessageSchedulingState {
   String get tdType => 'messageSchedulingStateSendWhenOnline';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageSchedulingStateSendWhenOnline({

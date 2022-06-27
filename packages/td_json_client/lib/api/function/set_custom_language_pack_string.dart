@@ -6,7 +6,7 @@ class SetCustomLanguagePackString extends TdFunction {
   String get tdType => 'setCustomLanguagePackString';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? language_pack_id;
   LanguagePackString? new_string;

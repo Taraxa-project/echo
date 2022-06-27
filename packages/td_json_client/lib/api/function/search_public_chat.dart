@@ -4,7 +4,7 @@ class SearchPublicChat extends TdFunction {
   String get tdType => 'searchPublicChat';
   String get tdReturnType => 'Chat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? username;
 

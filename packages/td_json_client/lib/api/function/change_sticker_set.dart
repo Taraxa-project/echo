@@ -4,7 +4,7 @@ class ChangeStickerSet extends TdFunction {
   String get tdType => 'changeStickerSet';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? set_id;
   Bool? is_installed;

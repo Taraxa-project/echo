@@ -5,7 +5,7 @@ abstract class CheckChatUsernameResult extends TdObject {}
 class CheckChatUsernameResultOk extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultOk';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CheckChatUsernameResultOk({
@@ -33,7 +33,7 @@ class CheckChatUsernameResultOk extends CheckChatUsernameResult {
 class CheckChatUsernameResultUsernameInvalid extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernameInvalid';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CheckChatUsernameResultUsernameInvalid({
@@ -61,7 +61,7 @@ class CheckChatUsernameResultUsernameInvalid extends CheckChatUsernameResult {
 class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernameOccupied';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CheckChatUsernameResultUsernameOccupied({
@@ -89,7 +89,7 @@ class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
 class CheckChatUsernameResultPublicChatsTooMuch extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicChatsTooMuch';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CheckChatUsernameResultPublicChatsTooMuch({
@@ -117,7 +117,7 @@ class CheckChatUsernameResultPublicChatsTooMuch extends CheckChatUsernameResult 
 class CheckChatUsernameResultPublicGroupsUnavailable extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicGroupsUnavailable';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CheckChatUsernameResultPublicGroupsUnavailable({

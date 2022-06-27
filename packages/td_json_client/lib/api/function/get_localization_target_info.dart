@@ -4,7 +4,7 @@ class GetLocalizationTargetInfo extends TdFunction {
   String get tdType => 'getLocalizationTargetInfo';
   String get tdReturnType => 'LocalizationTargetInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? only_local;
 

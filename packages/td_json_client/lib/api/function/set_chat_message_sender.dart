@@ -6,7 +6,7 @@ class SetChatMessageSender extends TdFunction {
   String get tdType => 'setChatMessageSender';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   MessageSender? message_sender_id;

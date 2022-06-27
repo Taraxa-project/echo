@@ -4,7 +4,7 @@ class GetTrendingStickerSets extends TdFunction {
   String get tdType => 'getTrendingStickerSets';
   String get tdReturnType => 'StickerSets';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? offset;
   int32? limit;

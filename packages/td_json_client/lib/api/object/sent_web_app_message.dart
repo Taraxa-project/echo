@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class SentWebAppMessage extends TdObject {
   String get tdType => 'sentWebAppMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? inline_message_id;
 

@@ -11,7 +11,7 @@ abstract class InputInlineQueryResult extends TdObject {}
 class InputInlineQueryResultAnimation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAnimation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? title;
@@ -83,7 +83,7 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
 class InputInlineQueryResultArticle extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultArticle';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? url;
@@ -151,7 +151,7 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
 class InputInlineQueryResultAudio extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAudio';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? title;
@@ -207,7 +207,7 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
 class InputInlineQueryResultContact extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultContact';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   Contact? contact;
@@ -263,7 +263,7 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
 class InputInlineQueryResultDocument extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultDocument';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? title;
@@ -331,7 +331,7 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
 class InputInlineQueryResultGame extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultGame';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? game_short_name;
@@ -371,7 +371,7 @@ class InputInlineQueryResultGame extends InputInlineQueryResult {
 class InputInlineQueryResultLocation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultLocation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   Location? location;
@@ -435,7 +435,7 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
 class InputInlineQueryResultPhoto extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultPhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? title;
@@ -499,7 +499,7 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
 class InputInlineQueryResultSticker extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultSticker';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? thumbnail_url;
@@ -555,7 +555,7 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
 class InputInlineQueryResultVenue extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVenue';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   Venue? venue;
@@ -611,7 +611,7 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
 class InputInlineQueryResultVideo extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? title;
@@ -683,7 +683,7 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
 class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVoiceNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? title;

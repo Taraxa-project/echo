@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class ChatAdministratorRights extends TdObject {
   String get tdType => 'chatAdministratorRights';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? can_manage_chat;
   Bool? can_change_info;

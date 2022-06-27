@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/update.dart';
 class Updates extends TdObject {
   String get tdType => 'updates';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<Update>? updates;
 

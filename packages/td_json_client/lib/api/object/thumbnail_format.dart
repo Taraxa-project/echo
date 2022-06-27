@@ -5,7 +5,7 @@ abstract class ThumbnailFormat extends TdObject {}
 class ThumbnailFormatJpeg extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatJpeg';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ThumbnailFormatJpeg({
@@ -33,7 +33,7 @@ class ThumbnailFormatJpeg extends ThumbnailFormat {
 class ThumbnailFormatGif extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatGif';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ThumbnailFormatGif({
@@ -61,7 +61,7 @@ class ThumbnailFormatGif extends ThumbnailFormat {
 class ThumbnailFormatMpeg4 extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatMpeg4';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ThumbnailFormatMpeg4({
@@ -89,7 +89,7 @@ class ThumbnailFormatMpeg4 extends ThumbnailFormat {
 class ThumbnailFormatPng extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatPng';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ThumbnailFormatPng({
@@ -117,7 +117,7 @@ class ThumbnailFormatPng extends ThumbnailFormat {
 class ThumbnailFormatTgs extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatTgs';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ThumbnailFormatTgs({
@@ -145,7 +145,7 @@ class ThumbnailFormatTgs extends ThumbnailFormat {
 class ThumbnailFormatWebm extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatWebm';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ThumbnailFormatWebm({
@@ -173,7 +173,7 @@ class ThumbnailFormatWebm extends ThumbnailFormat {
 class ThumbnailFormatWebp extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatWebp';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ThumbnailFormatWebp({

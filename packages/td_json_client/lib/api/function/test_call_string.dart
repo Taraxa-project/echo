@@ -4,7 +4,7 @@ class TestCallString extends TdFunction {
   String get tdType => 'testCallString';
   String get tdReturnType => 'TestString';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? x;
 

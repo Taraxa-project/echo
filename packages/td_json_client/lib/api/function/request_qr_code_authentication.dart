@@ -4,7 +4,7 @@ class RequestQrCodeAuthentication extends TdFunction {
   String get tdType => 'requestQrCodeAuthentication';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int53>? other_user_ids;
 

@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/chat_photo_info.dart';
 class ChatInviteLinkInfo extends TdObject {
   String get tdType => 'chatInviteLinkInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int32? accessible_for;

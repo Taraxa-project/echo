@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/file.dart';
 class AttachmentMenuBot extends TdObject {
   String get tdType => 'attachmentMenuBot';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? bot_user_id;
   string? name;

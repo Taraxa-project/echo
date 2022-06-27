@@ -4,7 +4,7 @@ class GetPollVoters extends TdFunction {
   String get tdType => 'getPollVoters';
   String get tdReturnType => 'Users';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

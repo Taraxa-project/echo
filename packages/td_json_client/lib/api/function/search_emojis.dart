@@ -4,7 +4,7 @@ class SearchEmojis extends TdFunction {
   String get tdType => 'searchEmojis';
   String get tdReturnType => 'Emojis';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
   Bool? exact_match;

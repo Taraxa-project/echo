@@ -5,7 +5,7 @@ abstract class KeyboardButtonType extends TdObject {}
 class KeyboardButtonTypeText extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeText';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   KeyboardButtonTypeText({
@@ -33,7 +33,7 @@ class KeyboardButtonTypeText extends KeyboardButtonType {
 class KeyboardButtonTypeRequestPhoneNumber extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeRequestPhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   KeyboardButtonTypeRequestPhoneNumber({
@@ -61,7 +61,7 @@ class KeyboardButtonTypeRequestPhoneNumber extends KeyboardButtonType {
 class KeyboardButtonTypeRequestLocation extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeRequestLocation';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   KeyboardButtonTypeRequestLocation({
@@ -89,7 +89,7 @@ class KeyboardButtonTypeRequestLocation extends KeyboardButtonType {
 class KeyboardButtonTypeRequestPoll extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeRequestPoll';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? force_regular;
   Bool? force_quiz;
@@ -125,7 +125,7 @@ class KeyboardButtonTypeRequestPoll extends KeyboardButtonType {
 class KeyboardButtonTypeWebApp extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeWebApp';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
 

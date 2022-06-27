@@ -6,7 +6,7 @@ class SendPhoneNumberConfirmationCode extends TdFunction {
   String get tdType => 'sendPhoneNumberConfirmationCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? hash;
   string? phone_number;

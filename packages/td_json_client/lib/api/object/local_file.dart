@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class LocalFile extends TdObject {
   String get tdType => 'localFile';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? path;
   Bool? can_be_downloaded;

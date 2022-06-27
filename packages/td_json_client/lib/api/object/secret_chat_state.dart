@@ -5,7 +5,7 @@ abstract class SecretChatState extends TdObject {}
 class SecretChatStatePending extends SecretChatState {
   String get tdType => 'secretChatStatePending';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SecretChatStatePending({
@@ -33,7 +33,7 @@ class SecretChatStatePending extends SecretChatState {
 class SecretChatStateReady extends SecretChatState {
   String get tdType => 'secretChatStateReady';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SecretChatStateReady({
@@ -61,7 +61,7 @@ class SecretChatStateReady extends SecretChatState {
 class SecretChatStateClosed extends SecretChatState {
   String get tdType => 'secretChatStateClosed';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SecretChatStateClosed({

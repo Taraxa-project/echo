@@ -4,7 +4,7 @@ class ReadAllChatReactions extends TdFunction {
   String get tdType => 'readAllChatReactions';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 

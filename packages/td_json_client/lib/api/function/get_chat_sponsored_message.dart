@@ -4,7 +4,7 @@ class GetChatSponsoredMessage extends TdFunction {
   String get tdType => 'getChatSponsoredMessage';
   String get tdReturnType => 'SponsoredMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 

@@ -5,7 +5,7 @@ abstract class MaskPoint extends TdObject {}
 class MaskPointForehead extends MaskPoint {
   String get tdType => 'maskPointForehead';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MaskPointForehead({
@@ -33,7 +33,7 @@ class MaskPointForehead extends MaskPoint {
 class MaskPointEyes extends MaskPoint {
   String get tdType => 'maskPointEyes';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MaskPointEyes({
@@ -61,7 +61,7 @@ class MaskPointEyes extends MaskPoint {
 class MaskPointMouth extends MaskPoint {
   String get tdType => 'maskPointMouth';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MaskPointMouth({
@@ -89,7 +89,7 @@ class MaskPointMouth extends MaskPoint {
 class MaskPointChin extends MaskPoint {
   String get tdType => 'maskPointChin';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MaskPointChin({

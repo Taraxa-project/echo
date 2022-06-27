@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/json_value.dart';
 class JsonObjectMember extends TdObject {
   String get tdType => 'jsonObjectMember';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? key;
   JsonValue? value;

@@ -4,7 +4,7 @@ class SetChatTitle extends TdFunction {
   String get tdType => 'setChatTitle';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   string? title;

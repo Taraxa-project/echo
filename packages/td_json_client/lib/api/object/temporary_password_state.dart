@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class TemporaryPasswordState extends TdObject {
   String get tdType => 'temporaryPasswordState';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? has_password;
   int32? valid_for;

@@ -7,7 +7,7 @@ import 'package:td_json_client/api/object/message_content.dart';
 class SponsoredMessage extends TdObject {
   String get tdType => 'sponsoredMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? message_id;
   int53? sponsor_chat_id;

@@ -6,7 +6,7 @@ class AddSavedAnimation extends TdFunction {
   String get tdType => 'addSavedAnimation';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? animation;
 

@@ -5,7 +5,7 @@ abstract class SessionType extends TdObject {}
 class SessionTypeAndroid extends SessionType {
   String get tdType => 'sessionTypeAndroid';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeAndroid({
@@ -33,7 +33,7 @@ class SessionTypeAndroid extends SessionType {
 class SessionTypeApple extends SessionType {
   String get tdType => 'sessionTypeApple';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeApple({
@@ -61,7 +61,7 @@ class SessionTypeApple extends SessionType {
 class SessionTypeBrave extends SessionType {
   String get tdType => 'sessionTypeBrave';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeBrave({
@@ -89,7 +89,7 @@ class SessionTypeBrave extends SessionType {
 class SessionTypeChrome extends SessionType {
   String get tdType => 'sessionTypeChrome';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeChrome({
@@ -117,7 +117,7 @@ class SessionTypeChrome extends SessionType {
 class SessionTypeEdge extends SessionType {
   String get tdType => 'sessionTypeEdge';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeEdge({
@@ -145,7 +145,7 @@ class SessionTypeEdge extends SessionType {
 class SessionTypeFirefox extends SessionType {
   String get tdType => 'sessionTypeFirefox';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeFirefox({
@@ -173,7 +173,7 @@ class SessionTypeFirefox extends SessionType {
 class SessionTypeIpad extends SessionType {
   String get tdType => 'sessionTypeIpad';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeIpad({
@@ -201,7 +201,7 @@ class SessionTypeIpad extends SessionType {
 class SessionTypeIphone extends SessionType {
   String get tdType => 'sessionTypeIphone';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeIphone({
@@ -229,7 +229,7 @@ class SessionTypeIphone extends SessionType {
 class SessionTypeLinux extends SessionType {
   String get tdType => 'sessionTypeLinux';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeLinux({
@@ -257,7 +257,7 @@ class SessionTypeLinux extends SessionType {
 class SessionTypeMac extends SessionType {
   String get tdType => 'sessionTypeMac';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeMac({
@@ -285,7 +285,7 @@ class SessionTypeMac extends SessionType {
 class SessionTypeOpera extends SessionType {
   String get tdType => 'sessionTypeOpera';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeOpera({
@@ -313,7 +313,7 @@ class SessionTypeOpera extends SessionType {
 class SessionTypeSafari extends SessionType {
   String get tdType => 'sessionTypeSafari';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeSafari({
@@ -341,7 +341,7 @@ class SessionTypeSafari extends SessionType {
 class SessionTypeUbuntu extends SessionType {
   String get tdType => 'sessionTypeUbuntu';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeUbuntu({
@@ -369,7 +369,7 @@ class SessionTypeUbuntu extends SessionType {
 class SessionTypeUnknown extends SessionType {
   String get tdType => 'sessionTypeUnknown';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeUnknown({
@@ -397,7 +397,7 @@ class SessionTypeUnknown extends SessionType {
 class SessionTypeVivaldi extends SessionType {
   String get tdType => 'sessionTypeVivaldi';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeVivaldi({
@@ -425,7 +425,7 @@ class SessionTypeVivaldi extends SessionType {
 class SessionTypeWindows extends SessionType {
   String get tdType => 'sessionTypeWindows';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeWindows({
@@ -453,7 +453,7 @@ class SessionTypeWindows extends SessionType {
 class SessionTypeXbox extends SessionType {
   String get tdType => 'sessionTypeXbox';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SessionTypeXbox({

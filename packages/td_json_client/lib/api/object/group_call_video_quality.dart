@@ -5,7 +5,7 @@ abstract class GroupCallVideoQuality extends TdObject {}
 class GroupCallVideoQualityThumbnail extends GroupCallVideoQuality {
   String get tdType => 'groupCallVideoQualityThumbnail';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GroupCallVideoQualityThumbnail({
@@ -33,7 +33,7 @@ class GroupCallVideoQualityThumbnail extends GroupCallVideoQuality {
 class GroupCallVideoQualityMedium extends GroupCallVideoQuality {
   String get tdType => 'groupCallVideoQualityMedium';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GroupCallVideoQualityMedium({
@@ -61,7 +61,7 @@ class GroupCallVideoQualityMedium extends GroupCallVideoQuality {
 class GroupCallVideoQualityFull extends GroupCallVideoQuality {
   String get tdType => 'groupCallVideoQualityFull';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GroupCallVideoQualityFull({

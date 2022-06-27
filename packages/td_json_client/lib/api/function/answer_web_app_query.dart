@@ -6,7 +6,7 @@ class AnswerWebAppQuery extends TdFunction {
   String get tdType => 'answerWebAppQuery';
   String get tdReturnType => 'SentWebAppMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? web_app_query_id;
   InputInlineQueryResult? result;

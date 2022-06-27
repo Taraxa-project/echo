@@ -4,7 +4,7 @@ class GetEmojiSuggestionsUrl extends TdFunction {
   String get tdType => 'getEmojiSuggestionsUrl';
   String get tdReturnType => 'HttpUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? language_code;
 

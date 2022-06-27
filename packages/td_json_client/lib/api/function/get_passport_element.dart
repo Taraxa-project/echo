@@ -6,7 +6,7 @@ class GetPassportElement extends TdFunction {
   String get tdType => 'getPassportElement';
   String get tdReturnType => 'PassportElement';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PassportElementType? type;
   string? password;

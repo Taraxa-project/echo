@@ -4,7 +4,7 @@ class GetFile extends TdFunction {
   String get tdType => 'getFile';
   String get tdReturnType => 'File';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
 

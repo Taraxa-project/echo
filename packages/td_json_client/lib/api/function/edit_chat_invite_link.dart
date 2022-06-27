@@ -4,7 +4,7 @@ class EditChatInviteLink extends TdFunction {
   String get tdType => 'editChatInviteLink';
   String get tdReturnType => 'ChatInviteLink';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   string? invite_link;

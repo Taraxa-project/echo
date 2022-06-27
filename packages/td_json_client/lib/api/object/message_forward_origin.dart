@@ -5,7 +5,7 @@ abstract class MessageForwardOrigin extends TdObject {}
 class MessageForwardOriginUser extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginUser';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? sender_user_id;
 
@@ -37,7 +37,7 @@ class MessageForwardOriginUser extends MessageForwardOrigin {
 class MessageForwardOriginChat extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? sender_chat_id;
   string? author_signature;
@@ -73,7 +73,7 @@ class MessageForwardOriginChat extends MessageForwardOrigin {
 class MessageForwardOriginHiddenUser extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginHiddenUser';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? sender_name;
 
@@ -105,7 +105,7 @@ class MessageForwardOriginHiddenUser extends MessageForwardOrigin {
 class MessageForwardOriginChannel extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginChannel';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -145,7 +145,7 @@ class MessageForwardOriginChannel extends MessageForwardOrigin {
 class MessageForwardOriginMessageImport extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginMessageImport';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? sender_name;
 

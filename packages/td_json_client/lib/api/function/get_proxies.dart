@@ -4,7 +4,7 @@ class GetProxies extends TdFunction {
   String get tdType => 'getProxies';
   String get tdReturnType => 'Proxies';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetProxies({

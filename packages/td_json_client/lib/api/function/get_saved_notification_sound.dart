@@ -4,7 +4,7 @@ class GetSavedNotificationSound extends TdFunction {
   String get tdType => 'getSavedNotificationSound';
   String get tdReturnType => 'NotificationSounds';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? notification_sound_id;
 

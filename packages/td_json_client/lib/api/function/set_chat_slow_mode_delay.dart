@@ -4,7 +4,7 @@ class SetChatSlowModeDelay extends TdFunction {
   String get tdType => 'setChatSlowModeDelay';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int32? slow_mode_delay;

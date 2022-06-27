@@ -4,7 +4,7 @@ class SetMessageReaction extends TdFunction {
   String get tdType => 'setMessageReaction';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

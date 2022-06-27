@@ -4,7 +4,7 @@ class GetVideoChatRtmpUrl extends TdFunction {
   String get tdType => 'getVideoChatRtmpUrl';
   String get tdReturnType => 'RtmpUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 

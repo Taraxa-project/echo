@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class TestInt extends TdObject {
   String get tdType => 'testInt';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? value;
 

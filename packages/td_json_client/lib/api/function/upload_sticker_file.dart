@@ -6,7 +6,7 @@ class UploadStickerFile extends TdFunction {
   String get tdType => 'uploadStickerFile';
   String get tdReturnType => 'File';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   InputSticker? sticker;

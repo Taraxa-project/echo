@@ -6,7 +6,7 @@ class SetMenuButton extends TdFunction {
   String get tdType => 'setMenuButton';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   BotMenuButton? menu_button;

@@ -4,7 +4,7 @@ class ConfirmQrCodeAuthentication extends TdFunction {
   String get tdType => 'confirmQrCodeAuthentication';
   String get tdReturnType => 'Session';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? link;
 

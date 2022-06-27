@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class RecoveryEmailAddress extends TdObject {
   String get tdType => 'recoveryEmailAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? recovery_email_address;
 

@@ -5,7 +5,7 @@ abstract class CallbackQueryPayload extends TdObject {}
 class CallbackQueryPayloadData extends CallbackQueryPayload {
   String get tdType => 'callbackQueryPayloadData';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? data;
 
@@ -37,7 +37,7 @@ class CallbackQueryPayloadData extends CallbackQueryPayload {
 class CallbackQueryPayloadDataWithPassword extends CallbackQueryPayload {
   String get tdType => 'callbackQueryPayloadDataWithPassword';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? password;
   bytes? data;
@@ -73,7 +73,7 @@ class CallbackQueryPayloadDataWithPassword extends CallbackQueryPayload {
 class CallbackQueryPayloadGame extends CallbackQueryPayload {
   String get tdType => 'callbackQueryPayloadGame';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? game_short_name;
 

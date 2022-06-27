@@ -4,7 +4,7 @@ class GetLanguagePackStrings extends TdFunction {
   String get tdType => 'getLanguagePackStrings';
   String get tdReturnType => 'LanguagePackStrings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? language_pack_id;
   vector<string>? keys;

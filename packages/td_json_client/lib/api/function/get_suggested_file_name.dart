@@ -4,7 +4,7 @@ class GetSuggestedFileName extends TdFunction {
   String get tdType => 'getSuggestedFileName';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
   string? directory;

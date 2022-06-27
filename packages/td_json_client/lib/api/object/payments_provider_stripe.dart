@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class PaymentsProviderStripe extends TdObject {
   String get tdType => 'paymentsProviderStripe';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? publishable_key;
   Bool? need_country;

@@ -4,7 +4,7 @@ class GetLogTagVerbosityLevel extends TdFunction {
   String get tdType => 'getLogTagVerbosityLevel';
   String get tdReturnType => 'LogVerbosityLevel';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? tag;
 

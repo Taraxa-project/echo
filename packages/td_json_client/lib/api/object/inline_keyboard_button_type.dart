@@ -5,7 +5,7 @@ abstract class InlineKeyboardButtonType extends TdObject {}
 class InlineKeyboardButtonTypeUrl extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
 
@@ -37,7 +37,7 @@ class InlineKeyboardButtonTypeUrl extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeLoginUrl extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeLoginUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
   int53? id;
@@ -77,7 +77,7 @@ class InlineKeyboardButtonTypeLoginUrl extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeWebApp extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeWebApp';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
 
@@ -109,7 +109,7 @@ class InlineKeyboardButtonTypeWebApp extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeCallback extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeCallback';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? data;
 
@@ -141,7 +141,7 @@ class InlineKeyboardButtonTypeCallback extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeCallbackWithPassword extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeCallbackWithPassword';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? data;
 
@@ -173,7 +173,7 @@ class InlineKeyboardButtonTypeCallbackWithPassword extends InlineKeyboardButtonT
 class InlineKeyboardButtonTypeCallbackGame extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeCallbackGame';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InlineKeyboardButtonTypeCallbackGame({
@@ -201,7 +201,7 @@ class InlineKeyboardButtonTypeCallbackGame extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeSwitchInline extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeSwitchInline';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
   Bool? in_current_chat;
@@ -237,7 +237,7 @@ class InlineKeyboardButtonTypeSwitchInline extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeBuy extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeBuy';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InlineKeyboardButtonTypeBuy({
@@ -265,7 +265,7 @@ class InlineKeyboardButtonTypeBuy extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeUser extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeUser';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
 

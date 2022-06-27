@@ -6,7 +6,7 @@ class EditCustomLanguagePackInfo extends TdFunction {
   String get tdType => 'editCustomLanguagePackInfo';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   LanguagePackInfo? info;
 

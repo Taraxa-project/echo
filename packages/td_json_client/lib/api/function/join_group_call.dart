@@ -6,7 +6,7 @@ class JoinGroupCall extends TdFunction {
   String get tdType => 'joinGroupCall';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
   MessageSender? participant_id;

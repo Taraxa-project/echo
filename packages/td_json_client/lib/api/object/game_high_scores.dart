@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/game_high_score.dart';
 class GameHighScores extends TdObject {
   String get tdType => 'gameHighScores';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<GameHighScore>? scores;
 

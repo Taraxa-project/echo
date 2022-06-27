@@ -4,7 +4,7 @@ class RevokeChatInviteLink extends TdFunction {
   String get tdType => 'revokeChatInviteLink';
   String get tdReturnType => 'ChatInviteLinks';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   string? invite_link;

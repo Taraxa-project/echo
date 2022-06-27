@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/passport_required_element.dart';
 class PassportAuthorizationForm extends TdObject {
   String get tdType => 'passportAuthorizationForm';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? id;
   vector<PassportRequiredElement>? required_elements;

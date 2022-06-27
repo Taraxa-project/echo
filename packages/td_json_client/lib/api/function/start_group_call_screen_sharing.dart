@@ -4,7 +4,7 @@ class StartGroupCallScreenSharing extends TdFunction {
   String get tdType => 'startGroupCallScreenSharing';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
   int32? audio_source_id;

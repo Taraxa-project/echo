@@ -7,7 +7,7 @@ class EditMessageText extends TdFunction {
   String get tdType => 'editMessageText';
   String get tdReturnType => 'Message';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

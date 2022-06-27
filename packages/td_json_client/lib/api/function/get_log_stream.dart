@@ -4,7 +4,7 @@ class GetLogStream extends TdFunction {
   String get tdType => 'getLogStream';
   String get tdReturnType => 'LogStream';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetLogStream({

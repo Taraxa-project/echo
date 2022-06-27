@@ -8,7 +8,7 @@ import 'package:td_json_client/api/object/file.dart';
 class Sticker extends TdObject {
   String get tdType => 'sticker';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? set_id;
   int32? width;

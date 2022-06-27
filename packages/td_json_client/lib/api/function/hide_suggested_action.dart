@@ -6,7 +6,7 @@ class HideSuggestedAction extends TdFunction {
   String get tdType => 'hideSuggestedAction';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   SuggestedAction? action;
 

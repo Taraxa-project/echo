@@ -6,7 +6,7 @@ class RemoveSavedAnimation extends TdFunction {
   String get tdType => 'removeSavedAnimation';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? animation;
 

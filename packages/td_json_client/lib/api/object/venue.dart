@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/location.dart';
 class Venue extends TdObject {
   String get tdType => 'venue';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Location? location;
   string? title;

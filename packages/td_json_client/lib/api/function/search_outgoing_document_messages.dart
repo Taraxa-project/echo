@@ -4,7 +4,7 @@ class SearchOutgoingDocumentMessages extends TdFunction {
   String get tdType => 'searchOutgoingDocumentMessages';
   String get tdReturnType => 'FoundMessages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
   int32? limit;

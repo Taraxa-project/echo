@@ -4,7 +4,7 @@ class GetActiveLiveLocationMessages extends TdFunction {
   String get tdType => 'getActiveLiveLocationMessages';
   String get tdReturnType => 'Messages';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetActiveLiveLocationMessages({

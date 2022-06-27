@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/date.dart';
 class PersonalDetails extends TdObject {
   String get tdType => 'personalDetails';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? first_name;
   string? middle_name;

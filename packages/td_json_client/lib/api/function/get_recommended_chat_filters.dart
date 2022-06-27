@@ -4,7 +4,7 @@ class GetRecommendedChatFilters extends TdFunction {
   String get tdType => 'getRecommendedChatFilters';
   String get tdReturnType => 'RecommendedChatFilters';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetRecommendedChatFilters({

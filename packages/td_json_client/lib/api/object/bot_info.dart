@@ -7,7 +7,7 @@ import 'package:td_json_client/api/object/chat_administrator_rights.dart';
 class BotInfo extends TdObject {
   String get tdType => 'botInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? share_text;
   string? description;

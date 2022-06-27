@@ -5,7 +5,7 @@ abstract class ChatList extends TdObject {}
 class ChatListMain extends ChatList {
   String get tdType => 'chatListMain';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatListMain({
@@ -33,7 +33,7 @@ class ChatListMain extends ChatList {
 class ChatListArchive extends ChatList {
   String get tdType => 'chatListArchive';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatListArchive({
@@ -61,7 +61,7 @@ class ChatListArchive extends ChatList {
 class ChatListFilter extends ChatList {
   String get tdType => 'chatListFilter';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? chat_filter_id;
 

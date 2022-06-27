@@ -6,7 +6,7 @@ class SetDefaultChannelAdministratorRights extends TdFunction {
   String get tdType => 'setDefaultChannelAdministratorRights';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatAdministratorRights? default_channel_administrator_rights;
 

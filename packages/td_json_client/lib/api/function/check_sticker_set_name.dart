@@ -4,7 +4,7 @@ class CheckStickerSetName extends TdFunction {
   String get tdType => 'checkStickerSetName';
   String get tdReturnType => 'CheckStickerSetNameResult';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? name;
 

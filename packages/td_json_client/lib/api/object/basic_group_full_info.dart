@@ -8,7 +8,7 @@ import 'package:td_json_client/api/object/bot_commands.dart';
 class BasicGroupFullInfo extends TdObject {
   String get tdType => 'basicGroupFullInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatPhoto? photo;
   string? description;

@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/country_info.dart';
 class PhoneNumberInfo extends TdObject {
   String get tdType => 'phoneNumberInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   CountryInfo? country;
   string? country_calling_code;

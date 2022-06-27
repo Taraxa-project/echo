@@ -5,7 +5,7 @@ abstract class CallProblem extends TdObject {}
 class CallProblemEcho extends CallProblem {
   String get tdType => 'callProblemEcho';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallProblemEcho({
@@ -33,7 +33,7 @@ class CallProblemEcho extends CallProblem {
 class CallProblemNoise extends CallProblem {
   String get tdType => 'callProblemNoise';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallProblemNoise({
@@ -61,7 +61,7 @@ class CallProblemNoise extends CallProblem {
 class CallProblemInterruptions extends CallProblem {
   String get tdType => 'callProblemInterruptions';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallProblemInterruptions({
@@ -89,7 +89,7 @@ class CallProblemInterruptions extends CallProblem {
 class CallProblemDistortedSpeech extends CallProblem {
   String get tdType => 'callProblemDistortedSpeech';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallProblemDistortedSpeech({
@@ -117,7 +117,7 @@ class CallProblemDistortedSpeech extends CallProblem {
 class CallProblemSilentLocal extends CallProblem {
   String get tdType => 'callProblemSilentLocal';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallProblemSilentLocal({
@@ -145,7 +145,7 @@ class CallProblemSilentLocal extends CallProblem {
 class CallProblemSilentRemote extends CallProblem {
   String get tdType => 'callProblemSilentRemote';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallProblemSilentRemote({
@@ -173,7 +173,7 @@ class CallProblemSilentRemote extends CallProblem {
 class CallProblemDropped extends CallProblem {
   String get tdType => 'callProblemDropped';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallProblemDropped({
@@ -201,7 +201,7 @@ class CallProblemDropped extends CallProblem {
 class CallProblemDistortedVideo extends CallProblem {
   String get tdType => 'callProblemDistortedVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallProblemDistortedVideo({
@@ -229,7 +229,7 @@ class CallProblemDistortedVideo extends CallProblem {
 class CallProblemPixelatedVideo extends CallProblem {
   String get tdType => 'callProblemPixelatedVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallProblemPixelatedVideo({

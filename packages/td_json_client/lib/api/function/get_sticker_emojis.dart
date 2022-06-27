@@ -6,7 +6,7 @@ class GetStickerEmojis extends TdFunction {
   String get tdType => 'getStickerEmojis';
   String get tdReturnType => 'Emojis';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? sticker;
 

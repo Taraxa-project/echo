@@ -6,7 +6,7 @@ class EditInlineMessageReplyMarkup extends TdFunction {
   String get tdType => 'editInlineMessageReplyMarkup';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? inline_message_id;
   ReplyMarkup? reply_markup;

@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/chat_nearby.dart';
 class ChatsNearby extends TdObject {
   String get tdType => 'chatsNearby';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<ChatNearby>? users_nearby;
   vector<ChatNearby>? supergroups_nearby;

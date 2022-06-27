@@ -4,7 +4,7 @@ class WriteGeneratedFilePart extends TdFunction {
   String get tdType => 'writeGeneratedFilePart';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? generation_id;
   int32? offset;

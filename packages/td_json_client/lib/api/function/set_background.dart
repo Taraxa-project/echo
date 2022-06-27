@@ -7,7 +7,7 @@ class SetBackground extends TdFunction {
   String get tdType => 'setBackground';
   String get tdReturnType => 'Background';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputBackground? background;
   BackgroundType? type;

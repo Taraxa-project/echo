@@ -68,7 +68,7 @@ abstract class Update extends TdObject {}
 class UpdateAuthorizationState extends Update {
   String get tdType => 'updateAuthorizationState';
 
-  string? extra;
+  String? extra;
   int? client_id;
   AuthorizationState? authorization_state;
 
@@ -100,7 +100,7 @@ class UpdateAuthorizationState extends Update {
 class UpdateNewMessage extends Update {
   String get tdType => 'updateNewMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Message? message;
 
@@ -132,7 +132,7 @@ class UpdateNewMessage extends Update {
 class UpdateMessageSendAcknowledged extends Update {
   String get tdType => 'updateMessageSendAcknowledged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -168,7 +168,7 @@ class UpdateMessageSendAcknowledged extends Update {
 class UpdateMessageSendSucceeded extends Update {
   String get tdType => 'updateMessageSendSucceeded';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Message? message;
   int53? old_message_id;
@@ -204,7 +204,7 @@ class UpdateMessageSendSucceeded extends Update {
 class UpdateMessageSendFailed extends Update {
   String get tdType => 'updateMessageSendFailed';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Message? message;
   int53? old_message_id;
@@ -248,7 +248,7 @@ class UpdateMessageSendFailed extends Update {
 class UpdateMessageContent extends Update {
   String get tdType => 'updateMessageContent';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -288,7 +288,7 @@ class UpdateMessageContent extends Update {
 class UpdateMessageEdited extends Update {
   String get tdType => 'updateMessageEdited';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -332,7 +332,7 @@ class UpdateMessageEdited extends Update {
 class UpdateMessageIsPinned extends Update {
   String get tdType => 'updateMessageIsPinned';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -372,7 +372,7 @@ class UpdateMessageIsPinned extends Update {
 class UpdateMessageInteractionInfo extends Update {
   String get tdType => 'updateMessageInteractionInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -412,7 +412,7 @@ class UpdateMessageInteractionInfo extends Update {
 class UpdateMessageContentOpened extends Update {
   String get tdType => 'updateMessageContentOpened';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -448,7 +448,7 @@ class UpdateMessageContentOpened extends Update {
 class UpdateMessageMentionRead extends Update {
   String get tdType => 'updateMessageMentionRead';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -488,7 +488,7 @@ class UpdateMessageMentionRead extends Update {
 class UpdateMessageUnreadReactions extends Update {
   String get tdType => 'updateMessageUnreadReactions';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -537,7 +537,7 @@ class UpdateMessageUnreadReactions extends Update {
 class UpdateMessageLiveLocationViewed extends Update {
   String get tdType => 'updateMessageLiveLocationViewed';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -573,7 +573,7 @@ class UpdateMessageLiveLocationViewed extends Update {
 class UpdateNewChat extends Update {
   String get tdType => 'updateNewChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Chat? chat;
 
@@ -605,7 +605,7 @@ class UpdateNewChat extends Update {
 class UpdateChatTitle extends Update {
   String get tdType => 'updateChatTitle';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   string? title;
@@ -641,7 +641,7 @@ class UpdateChatTitle extends Update {
 class UpdateChatPhoto extends Update {
   String get tdType => 'updateChatPhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   ChatPhotoInfo? photo;
@@ -677,7 +677,7 @@ class UpdateChatPhoto extends Update {
 class UpdateChatPermissions extends Update {
   String get tdType => 'updateChatPermissions';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   ChatPermissions? permissions;
@@ -713,7 +713,7 @@ class UpdateChatPermissions extends Update {
 class UpdateChatLastMessage extends Update {
   String get tdType => 'updateChatLastMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   Message? last_message;
@@ -758,7 +758,7 @@ class UpdateChatLastMessage extends Update {
 class UpdateChatPosition extends Update {
   String get tdType => 'updateChatPosition';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   ChatPosition? position;
@@ -794,7 +794,7 @@ class UpdateChatPosition extends Update {
 class UpdateChatReadInbox extends Update {
   String get tdType => 'updateChatReadInbox';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? last_read_inbox_message_id;
@@ -834,7 +834,7 @@ class UpdateChatReadInbox extends Update {
 class UpdateChatReadOutbox extends Update {
   String get tdType => 'updateChatReadOutbox';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? last_read_outbox_message_id;
@@ -870,7 +870,7 @@ class UpdateChatReadOutbox extends Update {
 class UpdateChatActionBar extends Update {
   String get tdType => 'updateChatActionBar';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   ChatActionBar? action_bar;
@@ -906,7 +906,7 @@ class UpdateChatActionBar extends Update {
 class UpdateChatAvailableReactions extends Update {
   String get tdType => 'updateChatAvailableReactions';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   vector<string>? available_reactions;
@@ -947,7 +947,7 @@ class UpdateChatAvailableReactions extends Update {
 class UpdateChatDraftMessage extends Update {
   String get tdType => 'updateChatDraftMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   DraftMessage? draft_message;
@@ -992,7 +992,7 @@ class UpdateChatDraftMessage extends Update {
 class UpdateChatMessageSender extends Update {
   String get tdType => 'updateChatMessageSender';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   MessageSender? message_sender_id;
@@ -1028,7 +1028,7 @@ class UpdateChatMessageSender extends Update {
 class UpdateChatMessageTtl extends Update {
   String get tdType => 'updateChatMessageTtl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int32? message_ttl;
@@ -1064,7 +1064,7 @@ class UpdateChatMessageTtl extends Update {
 class UpdateChatNotificationSettings extends Update {
   String get tdType => 'updateChatNotificationSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   ChatNotificationSettings? notification_settings;
@@ -1100,7 +1100,7 @@ class UpdateChatNotificationSettings extends Update {
 class UpdateChatPendingJoinRequests extends Update {
   String get tdType => 'updateChatPendingJoinRequests';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   ChatJoinRequestsInfo? pending_join_requests;
@@ -1136,7 +1136,7 @@ class UpdateChatPendingJoinRequests extends Update {
 class UpdateChatReplyMarkup extends Update {
   String get tdType => 'updateChatReplyMarkup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? reply_markup_message_id;
@@ -1172,7 +1172,7 @@ class UpdateChatReplyMarkup extends Update {
 class UpdateChatTheme extends Update {
   String get tdType => 'updateChatTheme';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   string? theme_name;
@@ -1208,7 +1208,7 @@ class UpdateChatTheme extends Update {
 class UpdateChatUnreadMentionCount extends Update {
   String get tdType => 'updateChatUnreadMentionCount';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int32? unread_mention_count;
@@ -1244,7 +1244,7 @@ class UpdateChatUnreadMentionCount extends Update {
 class UpdateChatUnreadReactionCount extends Update {
   String get tdType => 'updateChatUnreadReactionCount';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int32? unread_reaction_count;
@@ -1280,7 +1280,7 @@ class UpdateChatUnreadReactionCount extends Update {
 class UpdateChatVideoChat extends Update {
   String get tdType => 'updateChatVideoChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   VideoChat? video_chat;
@@ -1316,7 +1316,7 @@ class UpdateChatVideoChat extends Update {
 class UpdateChatDefaultDisableNotification extends Update {
   String get tdType => 'updateChatDefaultDisableNotification';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   Bool? default_disable_notification;
@@ -1352,7 +1352,7 @@ class UpdateChatDefaultDisableNotification extends Update {
 class UpdateChatHasProtectedContent extends Update {
   String get tdType => 'updateChatHasProtectedContent';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   Bool? has_protected_content;
@@ -1388,7 +1388,7 @@ class UpdateChatHasProtectedContent extends Update {
 class UpdateChatHasScheduledMessages extends Update {
   String get tdType => 'updateChatHasScheduledMessages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   Bool? has_scheduled_messages;
@@ -1424,7 +1424,7 @@ class UpdateChatHasScheduledMessages extends Update {
 class UpdateChatIsBlocked extends Update {
   String get tdType => 'updateChatIsBlocked';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   Bool? is_blocked;
@@ -1460,7 +1460,7 @@ class UpdateChatIsBlocked extends Update {
 class UpdateChatIsMarkedAsUnread extends Update {
   String get tdType => 'updateChatIsMarkedAsUnread';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   Bool? is_marked_as_unread;
@@ -1496,7 +1496,7 @@ class UpdateChatIsMarkedAsUnread extends Update {
 class UpdateChatFilters extends Update {
   String get tdType => 'updateChatFilters';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<ChatFilterInfo>? chat_filters;
 
@@ -1533,7 +1533,7 @@ class UpdateChatFilters extends Update {
 class UpdateChatOnlineMemberCount extends Update {
   String get tdType => 'updateChatOnlineMemberCount';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int32? online_member_count;
@@ -1569,7 +1569,7 @@ class UpdateChatOnlineMemberCount extends Update {
 class UpdateScopeNotificationSettings extends Update {
   String get tdType => 'updateScopeNotificationSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   NotificationSettingsScope? scope;
   ScopeNotificationSettings? notification_settings;
@@ -1605,7 +1605,7 @@ class UpdateScopeNotificationSettings extends Update {
 class UpdateNotification extends Update {
   String get tdType => 'updateNotification';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? notification_group_id;
   Notification? notification;
@@ -1641,7 +1641,7 @@ class UpdateNotification extends Update {
 class UpdateNotificationGroup extends Update {
   String get tdType => 'updateNotificationGroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? notification_group_id;
   NotificationGroupType? type;
@@ -1711,7 +1711,7 @@ class UpdateNotificationGroup extends Update {
 class UpdateActiveNotifications extends Update {
   String get tdType => 'updateActiveNotifications';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<NotificationGroup>? groups;
 
@@ -1748,7 +1748,7 @@ class UpdateActiveNotifications extends Update {
 class UpdateHavePendingNotifications extends Update {
   String get tdType => 'updateHavePendingNotifications';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? have_delayed_notifications;
   Bool? have_unreceived_notifications;
@@ -1784,7 +1784,7 @@ class UpdateHavePendingNotifications extends Update {
 class UpdateDeleteMessages extends Update {
   String get tdType => 'updateDeleteMessages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   vector<int53>? message_ids;
@@ -1833,7 +1833,7 @@ class UpdateDeleteMessages extends Update {
 class UpdateChatAction extends Update {
   String get tdType => 'updateChatAction';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_thread_id;
@@ -1877,7 +1877,7 @@ class UpdateChatAction extends Update {
 class UpdateUserStatus extends Update {
   String get tdType => 'updateUserStatus';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   UserStatus? status;
@@ -1913,7 +1913,7 @@ class UpdateUserStatus extends Update {
 class UpdateUser extends Update {
   String get tdType => 'updateUser';
 
-  string? extra;
+  String? extra;
   int? client_id;
   User? user;
 
@@ -1945,7 +1945,7 @@ class UpdateUser extends Update {
 class UpdateBasicGroup extends Update {
   String get tdType => 'updateBasicGroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   BasicGroup? basic_group;
 
@@ -1977,7 +1977,7 @@ class UpdateBasicGroup extends Update {
 class UpdateSupergroup extends Update {
   String get tdType => 'updateSupergroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Supergroup? supergroup;
 
@@ -2009,7 +2009,7 @@ class UpdateSupergroup extends Update {
 class UpdateSecretChat extends Update {
   String get tdType => 'updateSecretChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   SecretChat? secret_chat;
 
@@ -2041,7 +2041,7 @@ class UpdateSecretChat extends Update {
 class UpdateUserFullInfo extends Update {
   String get tdType => 'updateUserFullInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   UserFullInfo? user_full_info;
@@ -2077,7 +2077,7 @@ class UpdateUserFullInfo extends Update {
 class UpdateBasicGroupFullInfo extends Update {
   String get tdType => 'updateBasicGroupFullInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? basic_group_id;
   BasicGroupFullInfo? basic_group_full_info;
@@ -2113,7 +2113,7 @@ class UpdateBasicGroupFullInfo extends Update {
 class UpdateSupergroupFullInfo extends Update {
   String get tdType => 'updateSupergroupFullInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
   SupergroupFullInfo? supergroup_full_info;
@@ -2149,7 +2149,7 @@ class UpdateSupergroupFullInfo extends Update {
 class UpdateServiceNotification extends Update {
   String get tdType => 'updateServiceNotification';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? type;
   MessageContent? content;
@@ -2185,7 +2185,7 @@ class UpdateServiceNotification extends Update {
 class UpdateFile extends Update {
   String get tdType => 'updateFile';
 
-  string? extra;
+  String? extra;
   int? client_id;
   File? file;
 
@@ -2217,7 +2217,7 @@ class UpdateFile extends Update {
 class UpdateFileGenerationStart extends Update {
   String get tdType => 'updateFileGenerationStart';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? generation_id;
   string? original_path;
@@ -2261,7 +2261,7 @@ class UpdateFileGenerationStart extends Update {
 class UpdateFileGenerationStop extends Update {
   String get tdType => 'updateFileGenerationStop';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? generation_id;
 
@@ -2293,7 +2293,7 @@ class UpdateFileGenerationStop extends Update {
 class UpdateFileDownloads extends Update {
   String get tdType => 'updateFileDownloads';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? total_size;
   int32? total_count;
@@ -2333,7 +2333,7 @@ class UpdateFileDownloads extends Update {
 class UpdateFileAddedToDownloads extends Update {
   String get tdType => 'updateFileAddedToDownloads';
 
-  string? extra;
+  String? extra;
   int? client_id;
   FileDownload? file_download;
   DownloadedFileCounts? counts;
@@ -2369,7 +2369,7 @@ class UpdateFileAddedToDownloads extends Update {
 class UpdateFileDownload extends Update {
   String get tdType => 'updateFileDownload';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
   int32? complete_date;
@@ -2413,7 +2413,7 @@ class UpdateFileDownload extends Update {
 class UpdateFileRemovedFromDownloads extends Update {
   String get tdType => 'updateFileRemovedFromDownloads';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
   DownloadedFileCounts? counts;
@@ -2449,7 +2449,7 @@ class UpdateFileRemovedFromDownloads extends Update {
 class UpdateCall extends Update {
   String get tdType => 'updateCall';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Call? call;
 
@@ -2481,7 +2481,7 @@ class UpdateCall extends Update {
 class UpdateGroupCall extends Update {
   String get tdType => 'updateGroupCall';
 
-  string? extra;
+  String? extra;
   int? client_id;
   GroupCall? group_call;
 
@@ -2513,7 +2513,7 @@ class UpdateGroupCall extends Update {
 class UpdateGroupCallParticipant extends Update {
   String get tdType => 'updateGroupCallParticipant';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
   GroupCallParticipant? participant;
@@ -2549,7 +2549,7 @@ class UpdateGroupCallParticipant extends Update {
 class UpdateNewCallSignalingData extends Update {
   String get tdType => 'updateNewCallSignalingData';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? call_id;
   bytes? data;
@@ -2585,7 +2585,7 @@ class UpdateNewCallSignalingData extends Update {
 class UpdateUserPrivacySettingRules extends Update {
   String get tdType => 'updateUserPrivacySettingRules';
 
-  string? extra;
+  String? extra;
   int? client_id;
   UserPrivacySetting? setting;
   UserPrivacySettingRules? rules;
@@ -2621,7 +2621,7 @@ class UpdateUserPrivacySettingRules extends Update {
 class UpdateUnreadMessageCount extends Update {
   String get tdType => 'updateUnreadMessageCount';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatList? chat_list;
   int32? unread_count;
@@ -2661,7 +2661,7 @@ class UpdateUnreadMessageCount extends Update {
 class UpdateUnreadChatCount extends Update {
   String get tdType => 'updateUnreadChatCount';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatList? chat_list;
   int32? total_count;
@@ -2713,7 +2713,7 @@ class UpdateUnreadChatCount extends Update {
 class UpdateOption extends Update {
   String get tdType => 'updateOption';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? name;
   OptionValue? value;
@@ -2749,7 +2749,7 @@ class UpdateOption extends Update {
 class UpdateStickerSet extends Update {
   String get tdType => 'updateStickerSet';
 
-  string? extra;
+  String? extra;
   int? client_id;
   StickerSet? sticker_set;
 
@@ -2781,7 +2781,7 @@ class UpdateStickerSet extends Update {
 class UpdateInstalledStickerSets extends Update {
   String get tdType => 'updateInstalledStickerSets';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_masks;
   vector<int64>? sticker_set_ids;
@@ -2822,7 +2822,7 @@ class UpdateInstalledStickerSets extends Update {
 class UpdateTrendingStickerSets extends Update {
   String get tdType => 'updateTrendingStickerSets';
 
-  string? extra;
+  String? extra;
   int? client_id;
   StickerSets? sticker_sets;
 
@@ -2854,7 +2854,7 @@ class UpdateTrendingStickerSets extends Update {
 class UpdateRecentStickers extends Update {
   String get tdType => 'updateRecentStickers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_attached;
   vector<int32>? sticker_ids;
@@ -2895,7 +2895,7 @@ class UpdateRecentStickers extends Update {
 class UpdateFavoriteStickers extends Update {
   String get tdType => 'updateFavoriteStickers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int32>? sticker_ids;
 
@@ -2932,7 +2932,7 @@ class UpdateFavoriteStickers extends Update {
 class UpdateSavedAnimations extends Update {
   String get tdType => 'updateSavedAnimations';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int32>? animation_ids;
 
@@ -2969,7 +2969,7 @@ class UpdateSavedAnimations extends Update {
 class UpdateSavedNotificationSounds extends Update {
   String get tdType => 'updateSavedNotificationSounds';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int64>? notification_sound_ids;
 
@@ -3006,7 +3006,7 @@ class UpdateSavedNotificationSounds extends Update {
 class UpdateSelectedBackground extends Update {
   String get tdType => 'updateSelectedBackground';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? for_dark_theme;
   Background? background;
@@ -3042,7 +3042,7 @@ class UpdateSelectedBackground extends Update {
 class UpdateChatThemes extends Update {
   String get tdType => 'updateChatThemes';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<ChatTheme>? chat_themes;
 
@@ -3079,7 +3079,7 @@ class UpdateChatThemes extends Update {
 class UpdateLanguagePackStrings extends Update {
   String get tdType => 'updateLanguagePackStrings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? localization_target;
   string? language_pack_id;
@@ -3124,7 +3124,7 @@ class UpdateLanguagePackStrings extends Update {
 class UpdateConnectionState extends Update {
   String get tdType => 'updateConnectionState';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ConnectionState? state;
 
@@ -3156,7 +3156,7 @@ class UpdateConnectionState extends Update {
 class UpdateTermsOfService extends Update {
   String get tdType => 'updateTermsOfService';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? terms_of_service_id;
   TermsOfService? terms_of_service;
@@ -3192,7 +3192,7 @@ class UpdateTermsOfService extends Update {
 class UpdateUsersNearby extends Update {
   String get tdType => 'updateUsersNearby';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<ChatNearby>? users_nearby;
 
@@ -3229,7 +3229,7 @@ class UpdateUsersNearby extends Update {
 class UpdateAttachmentMenuBots extends Update {
   String get tdType => 'updateAttachmentMenuBots';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<AttachmentMenuBot>? bots;
 
@@ -3266,7 +3266,7 @@ class UpdateAttachmentMenuBots extends Update {
 class UpdateWebAppMessageSent extends Update {
   String get tdType => 'updateWebAppMessageSent';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? web_app_launch_id;
 
@@ -3298,7 +3298,7 @@ class UpdateWebAppMessageSent extends Update {
 class UpdateReactions extends Update {
   String get tdType => 'updateReactions';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<Reaction>? reactions;
 
@@ -3335,7 +3335,7 @@ class UpdateReactions extends Update {
 class UpdateDiceEmojis extends Update {
   String get tdType => 'updateDiceEmojis';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<string>? emojis;
 
@@ -3372,7 +3372,7 @@ class UpdateDiceEmojis extends Update {
 class UpdateAnimatedEmojiMessageClicked extends Update {
   String get tdType => 'updateAnimatedEmojiMessageClicked';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;
@@ -3412,7 +3412,7 @@ class UpdateAnimatedEmojiMessageClicked extends Update {
 class UpdateAnimationSearchParameters extends Update {
   String get tdType => 'updateAnimationSearchParameters';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? provider;
   vector<string>? emojis;
@@ -3453,7 +3453,7 @@ class UpdateAnimationSearchParameters extends Update {
 class UpdateSuggestedActions extends Update {
   String get tdType => 'updateSuggestedActions';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<SuggestedAction>? added_actions;
   vector<SuggestedAction>? removed_actions;
@@ -3499,7 +3499,7 @@ class UpdateSuggestedActions extends Update {
 class UpdateNewInlineQuery extends Update {
   String get tdType => 'updateNewInlineQuery';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   int53? sender_user_id;
@@ -3551,7 +3551,7 @@ class UpdateNewInlineQuery extends Update {
 class UpdateNewChosenInlineResult extends Update {
   String get tdType => 'updateNewChosenInlineResult';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? sender_user_id;
   Location? user_location;
@@ -3599,7 +3599,7 @@ class UpdateNewChosenInlineResult extends Update {
 class UpdateNewCallbackQuery extends Update {
   String get tdType => 'updateNewCallbackQuery';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   int53? sender_user_id;
@@ -3651,7 +3651,7 @@ class UpdateNewCallbackQuery extends Update {
 class UpdateNewInlineCallbackQuery extends Update {
   String get tdType => 'updateNewInlineCallbackQuery';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   int53? sender_user_id;
@@ -3699,7 +3699,7 @@ class UpdateNewInlineCallbackQuery extends Update {
 class UpdateNewShippingQuery extends Update {
   String get tdType => 'updateNewShippingQuery';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   int53? sender_user_id;
@@ -3743,7 +3743,7 @@ class UpdateNewShippingQuery extends Update {
 class UpdateNewPreCheckoutQuery extends Update {
   String get tdType => 'updateNewPreCheckoutQuery';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   int53? sender_user_id;
@@ -3799,7 +3799,7 @@ class UpdateNewPreCheckoutQuery extends Update {
 class UpdateNewCustomEvent extends Update {
   String get tdType => 'updateNewCustomEvent';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? event;
 
@@ -3831,7 +3831,7 @@ class UpdateNewCustomEvent extends Update {
 class UpdateNewCustomQuery extends Update {
   String get tdType => 'updateNewCustomQuery';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   string? data;
@@ -3871,7 +3871,7 @@ class UpdateNewCustomQuery extends Update {
 class UpdatePoll extends Update {
   String get tdType => 'updatePoll';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Poll? poll;
 
@@ -3903,7 +3903,7 @@ class UpdatePoll extends Update {
 class UpdatePollAnswer extends Update {
   String get tdType => 'updatePollAnswer';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? poll_id;
   int53? user_id;
@@ -3948,7 +3948,7 @@ class UpdatePollAnswer extends Update {
 class UpdateChatMember extends Update {
   String get tdType => 'updateChatMember';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? actor_user_id;
@@ -4000,7 +4000,7 @@ class UpdateChatMember extends Update {
 class UpdateNewChatJoinRequest extends Update {
   String get tdType => 'updateNewChatJoinRequest';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   ChatJoinRequest? request;

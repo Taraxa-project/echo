@@ -5,7 +5,7 @@ abstract class AuthenticationCodeType extends TdObject {}
 class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeTelegramMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? length;
 
@@ -37,7 +37,7 @@ class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
 class AuthenticationCodeTypeSms extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeSms';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? length;
 
@@ -69,7 +69,7 @@ class AuthenticationCodeTypeSms extends AuthenticationCodeType {
 class AuthenticationCodeTypeCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeCall';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? length;
 
@@ -101,7 +101,7 @@ class AuthenticationCodeTypeCall extends AuthenticationCodeType {
 class AuthenticationCodeTypeFlashCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeFlashCall';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? pattern;
 
@@ -133,7 +133,7 @@ class AuthenticationCodeTypeFlashCall extends AuthenticationCodeType {
 class AuthenticationCodeTypeMissedCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeMissedCall';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? phone_number_prefix;
   int32? length;

@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/bot_info.dart';
 class UserFullInfo extends TdObject {
   String get tdType => 'userFullInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatPhoto? photo;
   Bool? is_blocked;

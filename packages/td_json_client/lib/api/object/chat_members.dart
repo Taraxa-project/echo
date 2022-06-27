@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/chat_member.dart';
 class ChatMembers extends TdObject {
   String get tdType => 'chatMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? total_count;
   vector<ChatMember>? members;

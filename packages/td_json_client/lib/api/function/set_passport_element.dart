@@ -6,7 +6,7 @@ class SetPassportElement extends TdFunction {
   String get tdType => 'setPassportElement';
   String get tdReturnType => 'PassportElement';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputPassportElement? element;
   string? password;

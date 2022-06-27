@@ -4,7 +4,7 @@ class GetFavoriteStickers extends TdFunction {
   String get tdType => 'getFavoriteStickers';
   String get tdReturnType => 'Stickers';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetFavoriteStickers({

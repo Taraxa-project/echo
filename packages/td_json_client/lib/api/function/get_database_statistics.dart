@@ -4,7 +4,7 @@ class GetDatabaseStatistics extends TdFunction {
   String get tdType => 'getDatabaseStatistics';
   String get tdReturnType => 'DatabaseStatistics';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetDatabaseStatistics({

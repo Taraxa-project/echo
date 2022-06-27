@@ -4,7 +4,7 @@ class ReadFilePart extends TdFunction {
   String get tdType => 'readFilePart';
   String get tdReturnType => 'FilePart';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
   int32? offset;

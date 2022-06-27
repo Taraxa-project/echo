@@ -4,7 +4,7 @@ class JoinChatByInviteLink extends TdFunction {
   String get tdType => 'joinChatByInviteLink';
   String get tdReturnType => 'Chat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? invite_link;
 

@@ -4,7 +4,7 @@ class AnswerCustomQuery extends TdFunction {
   String get tdType => 'answerCustomQuery';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? custom_query_id;
   string? data;

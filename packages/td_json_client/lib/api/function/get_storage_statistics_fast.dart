@@ -4,7 +4,7 @@ class GetStorageStatisticsFast extends TdFunction {
   String get tdType => 'getStorageStatisticsFast';
   String get tdReturnType => 'StorageStatisticsFast';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetStorageStatisticsFast({

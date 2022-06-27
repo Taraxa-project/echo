@@ -6,7 +6,7 @@ class GetMapThumbnailFile extends TdFunction {
   String get tdType => 'getMapThumbnailFile';
   String get tdReturnType => 'File';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Location? location;
   int32? zoom;

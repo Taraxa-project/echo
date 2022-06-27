@@ -5,7 +5,7 @@ abstract class PageBlockVerticalAlignment extends TdObject {}
 class PageBlockVerticalAlignmentTop extends PageBlockVerticalAlignment {
   String get tdType => 'pageBlockVerticalAlignmentTop';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PageBlockVerticalAlignmentTop({
@@ -33,7 +33,7 @@ class PageBlockVerticalAlignmentTop extends PageBlockVerticalAlignment {
 class PageBlockVerticalAlignmentMiddle extends PageBlockVerticalAlignment {
   String get tdType => 'pageBlockVerticalAlignmentMiddle';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PageBlockVerticalAlignmentMiddle({
@@ -61,7 +61,7 @@ class PageBlockVerticalAlignmentMiddle extends PageBlockVerticalAlignment {
 class PageBlockVerticalAlignmentBottom extends PageBlockVerticalAlignment {
   String get tdType => 'pageBlockVerticalAlignmentBottom';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PageBlockVerticalAlignmentBottom({

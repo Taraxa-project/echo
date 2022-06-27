@@ -4,7 +4,7 @@ class CreateBasicGroupChat extends TdFunction {
   String get tdType => 'createBasicGroupChat';
   String get tdReturnType => 'Chat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? basic_group_id;
   Bool? force;

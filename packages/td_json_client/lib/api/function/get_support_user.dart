@@ -4,7 +4,7 @@ class GetSupportUser extends TdFunction {
   String get tdType => 'getSupportUser';
   String get tdReturnType => 'User';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetSupportUser({

@@ -4,7 +4,7 @@ class SearchStickerSets extends TdFunction {
   String get tdType => 'searchStickerSets';
   String get tdReturnType => 'StickerSets';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
 

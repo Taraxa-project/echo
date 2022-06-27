@@ -5,7 +5,7 @@ abstract class ChatMembersFilter extends TdObject {}
 class ChatMembersFilterContacts extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterContacts';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatMembersFilterContacts({
@@ -33,7 +33,7 @@ class ChatMembersFilterContacts extends ChatMembersFilter {
 class ChatMembersFilterAdministrators extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterAdministrators';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatMembersFilterAdministrators({
@@ -61,7 +61,7 @@ class ChatMembersFilterAdministrators extends ChatMembersFilter {
 class ChatMembersFilterMembers extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatMembersFilterMembers({
@@ -89,7 +89,7 @@ class ChatMembersFilterMembers extends ChatMembersFilter {
 class ChatMembersFilterMention extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterMention';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? message_thread_id;
 
@@ -121,7 +121,7 @@ class ChatMembersFilterMention extends ChatMembersFilter {
 class ChatMembersFilterRestricted extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterRestricted';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatMembersFilterRestricted({
@@ -149,7 +149,7 @@ class ChatMembersFilterRestricted extends ChatMembersFilter {
 class ChatMembersFilterBanned extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterBanned';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatMembersFilterBanned({
@@ -177,7 +177,7 @@ class ChatMembersFilterBanned extends ChatMembersFilter {
 class ChatMembersFilterBots extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterBots';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatMembersFilterBots({

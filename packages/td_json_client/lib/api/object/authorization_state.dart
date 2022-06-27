@@ -8,7 +8,7 @@ abstract class AuthorizationState extends TdObject {}
 class AuthorizationStateWaitTdlibParameters extends AuthorizationState {
   String get tdType => 'authorizationStateWaitTdlibParameters';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   AuthorizationStateWaitTdlibParameters({
@@ -36,7 +36,7 @@ class AuthorizationStateWaitTdlibParameters extends AuthorizationState {
 class AuthorizationStateWaitEncryptionKey extends AuthorizationState {
   String get tdType => 'authorizationStateWaitEncryptionKey';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_encrypted;
 
@@ -68,7 +68,7 @@ class AuthorizationStateWaitEncryptionKey extends AuthorizationState {
 class AuthorizationStateWaitPhoneNumber extends AuthorizationState {
   String get tdType => 'authorizationStateWaitPhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   AuthorizationStateWaitPhoneNumber({
@@ -96,7 +96,7 @@ class AuthorizationStateWaitPhoneNumber extends AuthorizationState {
 class AuthorizationStateWaitCode extends AuthorizationState {
   String get tdType => 'authorizationStateWaitCode';
 
-  string? extra;
+  String? extra;
   int? client_id;
   AuthenticationCodeInfo? code_info;
 
@@ -128,7 +128,7 @@ class AuthorizationStateWaitCode extends AuthorizationState {
 class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
   String get tdType => 'authorizationStateWaitOtherDeviceConfirmation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? link;
 
@@ -160,7 +160,7 @@ class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
 class AuthorizationStateWaitRegistration extends AuthorizationState {
   String get tdType => 'authorizationStateWaitRegistration';
 
-  string? extra;
+  String? extra;
   int? client_id;
   TermsOfService? terms_of_service;
 
@@ -192,7 +192,7 @@ class AuthorizationStateWaitRegistration extends AuthorizationState {
 class AuthorizationStateWaitPassword extends AuthorizationState {
   String get tdType => 'authorizationStateWaitPassword';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? password_hint;
   Bool? has_recovery_email_address;
@@ -232,7 +232,7 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
 class AuthorizationStateReady extends AuthorizationState {
   String get tdType => 'authorizationStateReady';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   AuthorizationStateReady({
@@ -260,7 +260,7 @@ class AuthorizationStateReady extends AuthorizationState {
 class AuthorizationStateLoggingOut extends AuthorizationState {
   String get tdType => 'authorizationStateLoggingOut';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   AuthorizationStateLoggingOut({
@@ -288,7 +288,7 @@ class AuthorizationStateLoggingOut extends AuthorizationState {
 class AuthorizationStateClosing extends AuthorizationState {
   String get tdType => 'authorizationStateClosing';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   AuthorizationStateClosing({
@@ -316,7 +316,7 @@ class AuthorizationStateClosing extends AuthorizationState {
 class AuthorizationStateClosed extends AuthorizationState {
   String get tdType => 'authorizationStateClosed';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   AuthorizationStateClosed({

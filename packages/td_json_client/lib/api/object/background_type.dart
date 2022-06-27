@@ -7,7 +7,7 @@ abstract class BackgroundType extends TdObject {}
 class BackgroundTypeWallpaper extends BackgroundType {
   String get tdType => 'backgroundTypeWallpaper';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_blurred;
   Bool? is_moving;
@@ -43,7 +43,7 @@ class BackgroundTypeWallpaper extends BackgroundType {
 class BackgroundTypePattern extends BackgroundType {
   String get tdType => 'backgroundTypePattern';
 
-  string? extra;
+  String? extra;
   int? client_id;
   BackgroundFill? fill;
   int32? intensity;
@@ -87,7 +87,7 @@ class BackgroundTypePattern extends BackgroundType {
 class BackgroundTypeFill extends BackgroundType {
   String get tdType => 'backgroundTypeFill';
 
-  string? extra;
+  String? extra;
   int? client_id;
   BackgroundFill? fill;
 

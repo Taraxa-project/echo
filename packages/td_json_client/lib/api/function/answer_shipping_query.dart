@@ -6,7 +6,7 @@ class AnswerShippingQuery extends TdFunction {
   String get tdType => 'answerShippingQuery';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? shipping_query_id;
   vector<ShippingOption>? shipping_options;

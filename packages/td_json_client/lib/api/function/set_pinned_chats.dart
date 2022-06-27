@@ -6,7 +6,7 @@ class SetPinnedChats extends TdFunction {
   String get tdType => 'setPinnedChats';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatList? chat_list;
   vector<int53>? chat_ids;

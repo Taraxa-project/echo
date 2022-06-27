@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/input_file.dart';
 class InputPersonalDocument extends TdObject {
   String get tdType => 'inputPersonalDocument';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<InputFile>? files;
   vector<InputFile>? translation;

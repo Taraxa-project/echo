@@ -6,7 +6,7 @@ class SearchChatsNearby extends TdFunction {
   String get tdType => 'searchChatsNearby';
   String get tdReturnType => 'ChatsNearby';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Location? location;
 

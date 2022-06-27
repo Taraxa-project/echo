@@ -5,7 +5,7 @@ abstract class PageBlockHorizontalAlignment extends TdObject {}
 class PageBlockHorizontalAlignmentLeft extends PageBlockHorizontalAlignment {
   String get tdType => 'pageBlockHorizontalAlignmentLeft';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PageBlockHorizontalAlignmentLeft({
@@ -33,7 +33,7 @@ class PageBlockHorizontalAlignmentLeft extends PageBlockHorizontalAlignment {
 class PageBlockHorizontalAlignmentCenter extends PageBlockHorizontalAlignment {
   String get tdType => 'pageBlockHorizontalAlignmentCenter';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PageBlockHorizontalAlignmentCenter({
@@ -61,7 +61,7 @@ class PageBlockHorizontalAlignmentCenter extends PageBlockHorizontalAlignment {
 class PageBlockHorizontalAlignmentRight extends PageBlockHorizontalAlignment {
   String get tdType => 'pageBlockHorizontalAlignmentRight';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PageBlockHorizontalAlignmentRight({

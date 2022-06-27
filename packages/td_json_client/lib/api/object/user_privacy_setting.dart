@@ -5,7 +5,7 @@ abstract class UserPrivacySetting extends TdObject {}
 class UserPrivacySettingShowStatus extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowStatus';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingShowStatus({
@@ -33,7 +33,7 @@ class UserPrivacySettingShowStatus extends UserPrivacySetting {
 class UserPrivacySettingShowProfilePhoto extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowProfilePhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingShowProfilePhoto({
@@ -61,7 +61,7 @@ class UserPrivacySettingShowProfilePhoto extends UserPrivacySetting {
 class UserPrivacySettingShowLinkInForwardedMessages extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowLinkInForwardedMessages';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingShowLinkInForwardedMessages({
@@ -89,7 +89,7 @@ class UserPrivacySettingShowLinkInForwardedMessages extends UserPrivacySetting {
 class UserPrivacySettingShowPhoneNumber extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowPhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingShowPhoneNumber({
@@ -117,7 +117,7 @@ class UserPrivacySettingShowPhoneNumber extends UserPrivacySetting {
 class UserPrivacySettingAllowChatInvites extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowChatInvites';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingAllowChatInvites({
@@ -145,7 +145,7 @@ class UserPrivacySettingAllowChatInvites extends UserPrivacySetting {
 class UserPrivacySettingAllowCalls extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowCalls';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingAllowCalls({
@@ -173,7 +173,7 @@ class UserPrivacySettingAllowCalls extends UserPrivacySetting {
 class UserPrivacySettingAllowPeerToPeerCalls extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowPeerToPeerCalls';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingAllowPeerToPeerCalls({
@@ -201,7 +201,7 @@ class UserPrivacySettingAllowPeerToPeerCalls extends UserPrivacySetting {
 class UserPrivacySettingAllowFindingByPhoneNumber extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowFindingByPhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingAllowFindingByPhoneNumber({

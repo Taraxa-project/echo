@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class ThemeParameters extends TdObject {
   String get tdType => 'themeParameters';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? background_color;
   int32? text_color;

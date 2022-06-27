@@ -6,7 +6,7 @@ class CreateNewSupergroupChat extends TdFunction {
   String get tdType => 'createNewSupergroupChat';
   String get tdReturnType => 'Chat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
   Bool? is_channel;

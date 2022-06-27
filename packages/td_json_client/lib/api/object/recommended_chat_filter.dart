@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/chat_filter.dart';
 class RecommendedChatFilter extends TdObject {
   String get tdType => 'recommendedChatFilter';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatFilter? filter;
   string? description;

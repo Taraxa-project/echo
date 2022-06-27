@@ -4,7 +4,7 @@ class GetCurrentState extends TdFunction {
   String get tdType => 'getCurrentState';
   String get tdReturnType => 'Updates';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetCurrentState({

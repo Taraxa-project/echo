@@ -4,7 +4,7 @@ class GetBackgrounds extends TdFunction {
   String get tdType => 'getBackgrounds';
   String get tdReturnType => 'Backgrounds';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? for_dark_theme;
 

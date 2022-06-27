@@ -4,7 +4,7 @@ class ToggleGroupCallScreenSharingIsPaused extends TdFunction {
   String get tdType => 'toggleGroupCallScreenSharingIsPaused';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
   Bool? is_paused;

@@ -6,7 +6,7 @@ class GetChatInviteLinkMembers extends TdFunction {
   String get tdType => 'getChatInviteLinkMembers';
   String get tdReturnType => 'ChatInviteLinkMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   string? invite_link;

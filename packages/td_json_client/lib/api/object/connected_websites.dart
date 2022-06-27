@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/connected_website.dart';
 class ConnectedWebsites extends TdObject {
   String get tdType => 'connectedWebsites';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<ConnectedWebsite>? websites;
 

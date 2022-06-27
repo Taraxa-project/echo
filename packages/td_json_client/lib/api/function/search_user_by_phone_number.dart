@@ -4,7 +4,7 @@ class SearchUserByPhoneNumber extends TdFunction {
   String get tdType => 'searchUserByPhoneNumber';
   String get tdReturnType => 'User';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? phone_number;
 

@@ -4,7 +4,7 @@ class ClearImportedContacts extends TdFunction {
   String get tdType => 'clearImportedContacts';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ClearImportedContacts({

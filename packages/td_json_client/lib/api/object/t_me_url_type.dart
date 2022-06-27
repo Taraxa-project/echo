@@ -7,7 +7,7 @@ abstract class TMeUrlType extends TdObject {}
 class TMeUrlTypeUser extends TMeUrlType {
   String get tdType => 'tMeUrlTypeUser';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
 
@@ -39,7 +39,7 @@ class TMeUrlTypeUser extends TMeUrlType {
 class TMeUrlTypeSupergroup extends TMeUrlType {
   String get tdType => 'tMeUrlTypeSupergroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
 
@@ -71,7 +71,7 @@ class TMeUrlTypeSupergroup extends TMeUrlType {
 class TMeUrlTypeChatInvite extends TMeUrlType {
   String get tdType => 'tMeUrlTypeChatInvite';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatInviteLinkInfo? info;
 
@@ -103,7 +103,7 @@ class TMeUrlTypeChatInvite extends TMeUrlType {
 class TMeUrlTypeStickerSet extends TMeUrlType {
   String get tdType => 'tMeUrlTypeStickerSet';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? sticker_set_id;
 

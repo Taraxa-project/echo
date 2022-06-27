@@ -4,7 +4,7 @@ class GetSuggestedStickerSetName extends TdFunction {
   String get tdType => 'getSuggestedStickerSetName';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
 

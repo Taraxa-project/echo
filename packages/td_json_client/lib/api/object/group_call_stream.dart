@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class GroupCallStream extends TdObject {
   String get tdType => 'groupCallStream';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? channel_id;
   int32? scale;

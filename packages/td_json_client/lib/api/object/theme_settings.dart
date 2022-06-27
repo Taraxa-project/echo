@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/background_fill.dart';
 class ThemeSettings extends TdObject {
   String get tdType => 'themeSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? accent_color;
   Background? background;

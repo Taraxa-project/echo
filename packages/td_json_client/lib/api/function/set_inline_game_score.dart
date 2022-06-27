@@ -4,7 +4,7 @@ class SetInlineGameScore extends TdFunction {
   String get tdType => 'setInlineGameScore';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? inline_message_id;
   Bool? edit_message;

@@ -6,7 +6,7 @@ class GetChatMessageCount extends TdFunction {
   String get tdType => 'getChatMessageCount';
   String get tdReturnType => 'Count';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   SearchMessagesFilter? filter;

@@ -6,7 +6,7 @@ class GetJsonString extends TdFunction {
   String get tdType => 'getJsonString';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   JsonValue? json_value;
 

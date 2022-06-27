@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/secret_chat_state.dart';
 class SecretChat extends TdObject {
   String get tdType => 'secretChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? id;
   int53? user_id;

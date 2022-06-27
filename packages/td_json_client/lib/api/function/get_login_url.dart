@@ -4,7 +4,7 @@ class GetLoginUrl extends TdFunction {
   String get tdType => 'getLoginUrl';
   String get tdReturnType => 'HttpUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

@@ -4,7 +4,7 @@ class GetUserProfilePhotos extends TdFunction {
   String get tdType => 'getUserProfilePhotos';
   String get tdReturnType => 'ChatPhotos';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   int32? offset;

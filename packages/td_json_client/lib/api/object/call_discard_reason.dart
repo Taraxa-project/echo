@@ -5,7 +5,7 @@ abstract class CallDiscardReason extends TdObject {}
 class CallDiscardReasonEmpty extends CallDiscardReason {
   String get tdType => 'callDiscardReasonEmpty';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallDiscardReasonEmpty({
@@ -33,7 +33,7 @@ class CallDiscardReasonEmpty extends CallDiscardReason {
 class CallDiscardReasonMissed extends CallDiscardReason {
   String get tdType => 'callDiscardReasonMissed';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallDiscardReasonMissed({
@@ -61,7 +61,7 @@ class CallDiscardReasonMissed extends CallDiscardReason {
 class CallDiscardReasonDeclined extends CallDiscardReason {
   String get tdType => 'callDiscardReasonDeclined';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallDiscardReasonDeclined({
@@ -89,7 +89,7 @@ class CallDiscardReasonDeclined extends CallDiscardReason {
 class CallDiscardReasonDisconnected extends CallDiscardReason {
   String get tdType => 'callDiscardReasonDisconnected';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallDiscardReasonDisconnected({
@@ -117,7 +117,7 @@ class CallDiscardReasonDisconnected extends CallDiscardReason {
 class CallDiscardReasonHungUp extends CallDiscardReason {
   String get tdType => 'callDiscardReasonHungUp';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CallDiscardReasonHungUp({

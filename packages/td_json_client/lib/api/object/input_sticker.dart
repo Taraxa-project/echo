@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/sticker_type.dart';
 class InputSticker extends TdObject {
   String get tdType => 'inputSticker';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? sticker;
   string? emojis;

@@ -6,7 +6,7 @@ class SetChatNotificationSettings extends TdFunction {
   String get tdType => 'setChatNotificationSettings';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   ChatNotificationSettings? notification_settings;

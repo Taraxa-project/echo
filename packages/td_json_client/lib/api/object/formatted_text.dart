@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/text_entity.dart';
 class FormattedText extends TdObject {
   String get tdType => 'formattedText';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
   vector<TextEntity>? entities;

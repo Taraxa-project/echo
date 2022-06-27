@@ -7,7 +7,7 @@ import 'package:td_json_client/api/object/animated_chat_photo.dart';
 class ChatPhoto extends TdObject {
   String get tdType => 'chatPhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   int32? added_date;

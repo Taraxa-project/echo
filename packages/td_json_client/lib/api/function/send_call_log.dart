@@ -6,7 +6,7 @@ class SendCallLog extends TdFunction {
   String get tdType => 'sendCallLog';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? call_id;
   InputFile? log_file;

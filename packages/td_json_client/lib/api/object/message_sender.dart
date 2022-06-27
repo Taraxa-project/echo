@@ -5,7 +5,7 @@ abstract class MessageSender extends TdObject {}
 class MessageSenderUser extends MessageSender {
   String get tdType => 'messageSenderUser';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
 
@@ -37,7 +37,7 @@ class MessageSenderUser extends MessageSender {
 class MessageSenderChat extends MessageSender {
   String get tdType => 'messageSenderChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 

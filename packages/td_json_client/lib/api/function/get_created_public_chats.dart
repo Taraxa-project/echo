@@ -6,7 +6,7 @@ class GetCreatedPublicChats extends TdFunction {
   String get tdType => 'getCreatedPublicChats';
   String get tdReturnType => 'Chats';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PublicChatType? type;
 

@@ -5,7 +5,7 @@ abstract class ChatAction extends TdObject {}
 class ChatActionTyping extends ChatAction {
   String get tdType => 'chatActionTyping';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionTyping({
@@ -33,7 +33,7 @@ class ChatActionTyping extends ChatAction {
 class ChatActionRecordingVideo extends ChatAction {
   String get tdType => 'chatActionRecordingVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionRecordingVideo({
@@ -61,7 +61,7 @@ class ChatActionRecordingVideo extends ChatAction {
 class ChatActionUploadingVideo extends ChatAction {
   String get tdType => 'chatActionUploadingVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? progress;
 
@@ -93,7 +93,7 @@ class ChatActionUploadingVideo extends ChatAction {
 class ChatActionRecordingVoiceNote extends ChatAction {
   String get tdType => 'chatActionRecordingVoiceNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionRecordingVoiceNote({
@@ -121,7 +121,7 @@ class ChatActionRecordingVoiceNote extends ChatAction {
 class ChatActionUploadingVoiceNote extends ChatAction {
   String get tdType => 'chatActionUploadingVoiceNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? progress;
 
@@ -153,7 +153,7 @@ class ChatActionUploadingVoiceNote extends ChatAction {
 class ChatActionUploadingPhoto extends ChatAction {
   String get tdType => 'chatActionUploadingPhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? progress;
 
@@ -185,7 +185,7 @@ class ChatActionUploadingPhoto extends ChatAction {
 class ChatActionUploadingDocument extends ChatAction {
   String get tdType => 'chatActionUploadingDocument';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? progress;
 
@@ -217,7 +217,7 @@ class ChatActionUploadingDocument extends ChatAction {
 class ChatActionChoosingSticker extends ChatAction {
   String get tdType => 'chatActionChoosingSticker';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionChoosingSticker({
@@ -245,7 +245,7 @@ class ChatActionChoosingSticker extends ChatAction {
 class ChatActionChoosingLocation extends ChatAction {
   String get tdType => 'chatActionChoosingLocation';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionChoosingLocation({
@@ -273,7 +273,7 @@ class ChatActionChoosingLocation extends ChatAction {
 class ChatActionChoosingContact extends ChatAction {
   String get tdType => 'chatActionChoosingContact';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionChoosingContact({
@@ -301,7 +301,7 @@ class ChatActionChoosingContact extends ChatAction {
 class ChatActionStartPlayingGame extends ChatAction {
   String get tdType => 'chatActionStartPlayingGame';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionStartPlayingGame({
@@ -329,7 +329,7 @@ class ChatActionStartPlayingGame extends ChatAction {
 class ChatActionRecordingVideoNote extends ChatAction {
   String get tdType => 'chatActionRecordingVideoNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionRecordingVideoNote({
@@ -357,7 +357,7 @@ class ChatActionRecordingVideoNote extends ChatAction {
 class ChatActionUploadingVideoNote extends ChatAction {
   String get tdType => 'chatActionUploadingVideoNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? progress;
 
@@ -389,7 +389,7 @@ class ChatActionUploadingVideoNote extends ChatAction {
 class ChatActionWatchingAnimations extends ChatAction {
   String get tdType => 'chatActionWatchingAnimations';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? emoji;
 
@@ -421,7 +421,7 @@ class ChatActionWatchingAnimations extends ChatAction {
 class ChatActionCancel extends ChatAction {
   String get tdType => 'chatActionCancel';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionCancel({

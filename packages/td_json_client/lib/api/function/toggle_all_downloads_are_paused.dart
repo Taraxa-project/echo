@@ -4,7 +4,7 @@ class ToggleAllDownloadsArePaused extends TdFunction {
   String get tdType => 'toggleAllDownloadsArePaused';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? are_paused;
 

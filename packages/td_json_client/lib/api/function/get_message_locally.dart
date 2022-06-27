@@ -4,7 +4,7 @@ class GetMessageLocally extends TdFunction {
   String get tdType => 'getMessageLocally';
   String get tdReturnType => 'Message';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

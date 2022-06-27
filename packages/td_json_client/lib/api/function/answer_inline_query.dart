@@ -6,7 +6,7 @@ class AnswerInlineQuery extends TdFunction {
   String get tdType => 'answerInlineQuery';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? inline_query_id;
   Bool? is_personal;

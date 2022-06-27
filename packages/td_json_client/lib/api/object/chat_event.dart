@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/chat_event_action.dart';
 class ChatEvent extends TdObject {
   String get tdType => 'chatEvent';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   int32? date;

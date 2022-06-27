@@ -4,7 +4,7 @@ class CheckDatabaseEncryptionKey extends TdFunction {
   String get tdType => 'checkDatabaseEncryptionKey';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? encryption_key;
 

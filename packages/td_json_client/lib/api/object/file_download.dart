@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/message.dart';
 class FileDownload extends TdObject {
   String get tdType => 'fileDownload';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
   Message? message;

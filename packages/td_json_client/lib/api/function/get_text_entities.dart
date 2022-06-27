@@ -4,7 +4,7 @@ class GetTextEntities extends TdFunction {
   String get tdType => 'getTextEntities';
   String get tdReturnType => 'TextEntities';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
 

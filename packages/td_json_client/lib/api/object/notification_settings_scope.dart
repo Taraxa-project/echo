@@ -5,7 +5,7 @@ abstract class NotificationSettingsScope extends TdObject {}
 class NotificationSettingsScopePrivateChats extends NotificationSettingsScope {
   String get tdType => 'notificationSettingsScopePrivateChats';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NotificationSettingsScopePrivateChats({
@@ -33,7 +33,7 @@ class NotificationSettingsScopePrivateChats extends NotificationSettingsScope {
 class NotificationSettingsScopeGroupChats extends NotificationSettingsScope {
   String get tdType => 'notificationSettingsScopeGroupChats';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NotificationSettingsScopeGroupChats({
@@ -61,7 +61,7 @@ class NotificationSettingsScopeGroupChats extends NotificationSettingsScope {
 class NotificationSettingsScopeChannelChats extends NotificationSettingsScope {
   String get tdType => 'notificationSettingsScopeChannelChats';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NotificationSettingsScopeChannelChats({

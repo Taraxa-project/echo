@@ -4,7 +4,7 @@ class GetSupergroup extends TdFunction {
   String get tdType => 'getSupergroup';
   String get tdReturnType => 'Supergroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
 

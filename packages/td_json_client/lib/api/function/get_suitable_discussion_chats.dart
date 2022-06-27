@@ -4,7 +4,7 @@ class GetSuitableDiscussionChats extends TdFunction {
   String get tdType => 'getSuitableDiscussionChats';
   String get tdReturnType => 'Chats';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetSuitableDiscussionChats({

@@ -4,7 +4,7 @@ class GetMe extends TdFunction {
   String get tdType => 'getMe';
   String get tdReturnType => 'User';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetMe({

@@ -4,7 +4,7 @@ class CheckChatUsername extends TdFunction {
   String get tdType => 'checkChatUsername';
   String get tdReturnType => 'CheckChatUsernameResult';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   string? username;

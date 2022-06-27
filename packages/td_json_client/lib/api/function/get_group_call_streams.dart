@@ -4,7 +4,7 @@ class GetGroupCallStreams extends TdFunction {
   String get tdType => 'getGroupCallStreams';
   String get tdReturnType => 'GroupCallStreams';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
 

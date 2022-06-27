@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class ChatNotificationSettings extends TdObject {
   String get tdType => 'chatNotificationSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? use_default_mute_for;
   int32? mute_for;

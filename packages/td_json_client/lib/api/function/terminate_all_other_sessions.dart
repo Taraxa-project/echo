@@ -4,7 +4,7 @@ class TerminateAllOtherSessions extends TdFunction {
   String get tdType => 'terminateAllOtherSessions';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TerminateAllOtherSessions({

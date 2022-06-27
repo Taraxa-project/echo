@@ -4,7 +4,7 @@ class GetMessageEmbeddingCode extends TdFunction {
   String get tdType => 'getMessageEmbeddingCode';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

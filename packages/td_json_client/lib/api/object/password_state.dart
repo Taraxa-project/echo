@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/email_address_authentication_code_info
 class PasswordState extends TdObject {
   String get tdType => 'passwordState';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? has_password;
   string? password_hint;

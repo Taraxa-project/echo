@@ -4,7 +4,7 @@ class SetDatabaseEncryptionKey extends TdFunction {
   String get tdType => 'setDatabaseEncryptionKey';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? new_encryption_key;
 

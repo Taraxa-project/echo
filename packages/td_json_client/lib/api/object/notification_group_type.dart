@@ -5,7 +5,7 @@ abstract class NotificationGroupType extends TdObject {}
 class NotificationGroupTypeMessages extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeMessages';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NotificationGroupTypeMessages({
@@ -33,7 +33,7 @@ class NotificationGroupTypeMessages extends NotificationGroupType {
 class NotificationGroupTypeMentions extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeMentions';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NotificationGroupTypeMentions({
@@ -61,7 +61,7 @@ class NotificationGroupTypeMentions extends NotificationGroupType {
 class NotificationGroupTypeSecretChat extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeSecretChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NotificationGroupTypeSecretChat({
@@ -89,7 +89,7 @@ class NotificationGroupTypeSecretChat extends NotificationGroupType {
 class NotificationGroupTypeCalls extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeCalls';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NotificationGroupTypeCalls({

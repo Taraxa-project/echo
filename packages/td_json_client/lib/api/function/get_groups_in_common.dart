@@ -4,7 +4,7 @@ class GetGroupsInCommon extends TdFunction {
   String get tdType => 'getGroupsInCommon';
   String get tdReturnType => 'Chats';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   int53? offset_chat_id;

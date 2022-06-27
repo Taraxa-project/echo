@@ -4,7 +4,7 @@ class CancelUploadFile extends TdFunction {
   String get tdType => 'cancelUploadFile';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
 

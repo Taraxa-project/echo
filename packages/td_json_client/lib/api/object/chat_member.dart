@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/chat_member_status.dart';
 class ChatMember extends TdObject {
   String get tdType => 'chatMember';
 
-  string? extra;
+  String? extra;
   int? client_id;
   MessageSender? member_id;
   int53? inviter_user_id;

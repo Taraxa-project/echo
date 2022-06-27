@@ -7,7 +7,7 @@ class SetScopeNotificationSettings extends TdFunction {
   String get tdType => 'setScopeNotificationSettings';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   NotificationSettingsScope? scope;
   ScopeNotificationSettings? notification_settings;

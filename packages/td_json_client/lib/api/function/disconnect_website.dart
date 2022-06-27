@@ -4,7 +4,7 @@ class DisconnectWebsite extends TdFunction {
   String get tdType => 'disconnectWebsite';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? website_id;
 

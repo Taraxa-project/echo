@@ -4,7 +4,7 @@ class DeleteSavedOrderInfo extends TdFunction {
   String get tdType => 'deleteSavedOrderInfo';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   DeleteSavedOrderInfo({

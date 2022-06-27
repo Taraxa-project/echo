@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class AutoDownloadSettings extends TdObject {
   String get tdType => 'autoDownloadSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_auto_download_enabled;
   int32? max_photo_file_size;

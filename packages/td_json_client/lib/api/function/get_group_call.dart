@@ -4,7 +4,7 @@ class GetGroupCall extends TdFunction {
   String get tdType => 'getGroupCall';
   String get tdReturnType => 'GroupCall';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
 

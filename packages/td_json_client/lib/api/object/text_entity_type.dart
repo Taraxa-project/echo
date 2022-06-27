@@ -5,7 +5,7 @@ abstract class TextEntityType extends TdObject {}
 class TextEntityTypeMention extends TextEntityType {
   String get tdType => 'textEntityTypeMention';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeMention({
@@ -33,7 +33,7 @@ class TextEntityTypeMention extends TextEntityType {
 class TextEntityTypeHashtag extends TextEntityType {
   String get tdType => 'textEntityTypeHashtag';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeHashtag({
@@ -61,7 +61,7 @@ class TextEntityTypeHashtag extends TextEntityType {
 class TextEntityTypeCashtag extends TextEntityType {
   String get tdType => 'textEntityTypeCashtag';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeCashtag({
@@ -89,7 +89,7 @@ class TextEntityTypeCashtag extends TextEntityType {
 class TextEntityTypeBotCommand extends TextEntityType {
   String get tdType => 'textEntityTypeBotCommand';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeBotCommand({
@@ -117,7 +117,7 @@ class TextEntityTypeBotCommand extends TextEntityType {
 class TextEntityTypeUrl extends TextEntityType {
   String get tdType => 'textEntityTypeUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeUrl({
@@ -145,7 +145,7 @@ class TextEntityTypeUrl extends TextEntityType {
 class TextEntityTypeEmailAddress extends TextEntityType {
   String get tdType => 'textEntityTypeEmailAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeEmailAddress({
@@ -173,7 +173,7 @@ class TextEntityTypeEmailAddress extends TextEntityType {
 class TextEntityTypePhoneNumber extends TextEntityType {
   String get tdType => 'textEntityTypePhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypePhoneNumber({
@@ -201,7 +201,7 @@ class TextEntityTypePhoneNumber extends TextEntityType {
 class TextEntityTypeBankCardNumber extends TextEntityType {
   String get tdType => 'textEntityTypeBankCardNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeBankCardNumber({
@@ -229,7 +229,7 @@ class TextEntityTypeBankCardNumber extends TextEntityType {
 class TextEntityTypeBold extends TextEntityType {
   String get tdType => 'textEntityTypeBold';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeBold({
@@ -257,7 +257,7 @@ class TextEntityTypeBold extends TextEntityType {
 class TextEntityTypeItalic extends TextEntityType {
   String get tdType => 'textEntityTypeItalic';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeItalic({
@@ -285,7 +285,7 @@ class TextEntityTypeItalic extends TextEntityType {
 class TextEntityTypeUnderline extends TextEntityType {
   String get tdType => 'textEntityTypeUnderline';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeUnderline({
@@ -313,7 +313,7 @@ class TextEntityTypeUnderline extends TextEntityType {
 class TextEntityTypeStrikethrough extends TextEntityType {
   String get tdType => 'textEntityTypeStrikethrough';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeStrikethrough({
@@ -341,7 +341,7 @@ class TextEntityTypeStrikethrough extends TextEntityType {
 class TextEntityTypeSpoiler extends TextEntityType {
   String get tdType => 'textEntityTypeSpoiler';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeSpoiler({
@@ -369,7 +369,7 @@ class TextEntityTypeSpoiler extends TextEntityType {
 class TextEntityTypeCode extends TextEntityType {
   String get tdType => 'textEntityTypeCode';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypeCode({
@@ -397,7 +397,7 @@ class TextEntityTypeCode extends TextEntityType {
 class TextEntityTypePre extends TextEntityType {
   String get tdType => 'textEntityTypePre';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TextEntityTypePre({
@@ -425,7 +425,7 @@ class TextEntityTypePre extends TextEntityType {
 class TextEntityTypePreCode extends TextEntityType {
   String get tdType => 'textEntityTypePreCode';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? language;
 
@@ -457,7 +457,7 @@ class TextEntityTypePreCode extends TextEntityType {
 class TextEntityTypeTextUrl extends TextEntityType {
   String get tdType => 'textEntityTypeTextUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
 
@@ -489,7 +489,7 @@ class TextEntityTypeTextUrl extends TextEntityType {
 class TextEntityTypeMentionName extends TextEntityType {
   String get tdType => 'textEntityTypeMentionName';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
 
@@ -521,7 +521,7 @@ class TextEntityTypeMentionName extends TextEntityType {
 class TextEntityTypeMediaTimestamp extends TextEntityType {
   String get tdType => 'textEntityTypeMediaTimestamp';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? media_timestamp;
 

@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/file.dart';
 class DatedFile extends TdObject {
   String get tdType => 'datedFile';
 
-  string? extra;
+  String? extra;
   int? client_id;
   File? file;
   int32? date;

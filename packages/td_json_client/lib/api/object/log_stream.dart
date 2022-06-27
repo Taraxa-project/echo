@@ -5,7 +5,7 @@ abstract class LogStream extends TdObject {}
 class LogStreamDefault extends LogStream {
   String get tdType => 'logStreamDefault';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   LogStreamDefault({
@@ -33,7 +33,7 @@ class LogStreamDefault extends LogStream {
 class LogStreamFile extends LogStream {
   String get tdType => 'logStreamFile';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? path;
   int53? max_file_size;
@@ -73,7 +73,7 @@ class LogStreamFile extends LogStream {
 class LogStreamEmpty extends LogStream {
   String get tdType => 'logStreamEmpty';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   LogStreamEmpty({

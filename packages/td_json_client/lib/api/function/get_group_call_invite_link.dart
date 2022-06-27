@@ -4,7 +4,7 @@ class GetGroupCallInviteLink extends TdFunction {
   String get tdType => 'getGroupCallInviteLink';
   String get tdReturnType => 'HttpUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
   Bool? can_self_unmute;

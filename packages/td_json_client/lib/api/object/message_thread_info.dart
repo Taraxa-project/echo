@@ -7,7 +7,7 @@ import 'package:td_json_client/api/object/draft_message.dart';
 class MessageThreadInfo extends TdObject {
   String get tdType => 'messageThreadInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_thread_id;

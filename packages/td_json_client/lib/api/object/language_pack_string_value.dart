@@ -5,7 +5,7 @@ abstract class LanguagePackStringValue extends TdObject {}
 class LanguagePackStringValueOrdinary extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValueOrdinary';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? value;
 
@@ -37,7 +37,7 @@ class LanguagePackStringValueOrdinary extends LanguagePackStringValue {
 class LanguagePackStringValuePluralized extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValuePluralized';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? zero_value;
   string? one_value;
@@ -89,7 +89,7 @@ class LanguagePackStringValuePluralized extends LanguagePackStringValue {
 class LanguagePackStringValueDeleted extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValueDeleted';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   LanguagePackStringValueDeleted({

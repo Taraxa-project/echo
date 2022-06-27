@@ -5,7 +5,7 @@ abstract class CanTransferOwnershipResult extends TdObject {}
 class CanTransferOwnershipResultOk extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultOk';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CanTransferOwnershipResultOk({
@@ -33,7 +33,7 @@ class CanTransferOwnershipResultOk extends CanTransferOwnershipResult {
 class CanTransferOwnershipResultPasswordNeeded extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultPasswordNeeded';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   CanTransferOwnershipResultPasswordNeeded({
@@ -61,7 +61,7 @@ class CanTransferOwnershipResultPasswordNeeded extends CanTransferOwnershipResul
 class CanTransferOwnershipResultPasswordTooFresh extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultPasswordTooFresh';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? retry_after;
 
@@ -93,7 +93,7 @@ class CanTransferOwnershipResultPasswordTooFresh extends CanTransferOwnershipRes
 class CanTransferOwnershipResultSessionTooFresh extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultSessionTooFresh';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? retry_after;
 

@@ -5,7 +5,7 @@ abstract class ResetPasswordResult extends TdObject {}
 class ResetPasswordResultOk extends ResetPasswordResult {
   String get tdType => 'resetPasswordResultOk';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ResetPasswordResultOk({
@@ -33,7 +33,7 @@ class ResetPasswordResultOk extends ResetPasswordResult {
 class ResetPasswordResultPending extends ResetPasswordResult {
   String get tdType => 'resetPasswordResultPending';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? pending_reset_date;
 
@@ -65,7 +65,7 @@ class ResetPasswordResultPending extends ResetPasswordResult {
 class ResetPasswordResultDeclined extends ResetPasswordResult {
   String get tdType => 'resetPasswordResultDeclined';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? retry_date;
 

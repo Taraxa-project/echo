@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/formatted_text.dart';
 class TermsOfService extends TdObject {
   String get tdType => 'termsOfService';
 
-  string? extra;
+  String? extra;
   int? client_id;
   FormattedText? text;
   int32? min_user_age;

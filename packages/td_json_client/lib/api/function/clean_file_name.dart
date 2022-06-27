@@ -4,7 +4,7 @@ class CleanFileName extends TdFunction {
   String get tdType => 'cleanFileName';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? file_name;
 

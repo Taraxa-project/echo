@@ -6,7 +6,7 @@ class OpenWebApp extends TdFunction {
   String get tdType => 'openWebApp';
   String get tdReturnType => 'WebAppInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? bot_user_id;

@@ -4,7 +4,7 @@ class ViewTrendingStickerSets extends TdFunction {
   String get tdType => 'viewTrendingStickerSets';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int64>? sticker_set_ids;
 

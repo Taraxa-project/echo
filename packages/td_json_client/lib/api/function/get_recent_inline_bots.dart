@@ -4,7 +4,7 @@ class GetRecentInlineBots extends TdFunction {
   String get tdType => 'getRecentInlineBots';
   String get tdReturnType => 'Users';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetRecentInlineBots({

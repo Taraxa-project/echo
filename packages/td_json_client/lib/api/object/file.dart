@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/remote_file.dart';
 class File extends TdObject {
   String get tdType => 'file';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? id;
   int32? size;

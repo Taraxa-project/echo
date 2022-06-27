@@ -4,7 +4,7 @@ class CreateNewBasicGroupChat extends TdFunction {
   String get tdType => 'createNewBasicGroupChat';
   String get tdReturnType => 'Chat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int53>? user_ids;
   string? title;

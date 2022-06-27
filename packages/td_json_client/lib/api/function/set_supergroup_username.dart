@@ -4,7 +4,7 @@ class SetSupergroupUsername extends TdFunction {
   String get tdType => 'setSupergroupUsername';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
   string? username;

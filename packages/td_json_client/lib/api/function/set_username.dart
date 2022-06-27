@@ -4,7 +4,7 @@ class SetUsername extends TdFunction {
   String get tdType => 'setUsername';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? username;
 

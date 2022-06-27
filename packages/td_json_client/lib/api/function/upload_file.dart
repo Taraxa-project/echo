@@ -7,7 +7,7 @@ class UploadFile extends TdFunction {
   String get tdType => 'uploadFile';
   String get tdReturnType => 'File';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? file;
   FileType? file_type;

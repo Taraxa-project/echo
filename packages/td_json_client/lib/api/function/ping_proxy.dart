@@ -4,7 +4,7 @@ class PingProxy extends TdFunction {
   String get tdType => 'pingProxy';
   String get tdReturnType => 'Seconds';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? proxy_id;
 

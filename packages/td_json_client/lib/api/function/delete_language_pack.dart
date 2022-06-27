@@ -4,7 +4,7 @@ class DeleteLanguagePack extends TdFunction {
   String get tdType => 'deleteLanguagePack';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? language_pack_id;
 

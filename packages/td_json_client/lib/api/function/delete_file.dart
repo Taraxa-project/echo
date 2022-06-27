@@ -4,7 +4,7 @@ class DeleteFile extends TdFunction {
   String get tdType => 'deleteFile';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
 

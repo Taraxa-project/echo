@@ -5,7 +5,7 @@ abstract class ChatReportReason extends TdObject {}
 class ChatReportReasonSpam extends ChatReportReason {
   String get tdType => 'chatReportReasonSpam';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonSpam({
@@ -33,7 +33,7 @@ class ChatReportReasonSpam extends ChatReportReason {
 class ChatReportReasonViolence extends ChatReportReason {
   String get tdType => 'chatReportReasonViolence';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonViolence({
@@ -61,7 +61,7 @@ class ChatReportReasonViolence extends ChatReportReason {
 class ChatReportReasonPornography extends ChatReportReason {
   String get tdType => 'chatReportReasonPornography';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonPornography({
@@ -89,7 +89,7 @@ class ChatReportReasonPornography extends ChatReportReason {
 class ChatReportReasonChildAbuse extends ChatReportReason {
   String get tdType => 'chatReportReasonChildAbuse';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonChildAbuse({
@@ -117,7 +117,7 @@ class ChatReportReasonChildAbuse extends ChatReportReason {
 class ChatReportReasonCopyright extends ChatReportReason {
   String get tdType => 'chatReportReasonCopyright';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonCopyright({
@@ -145,7 +145,7 @@ class ChatReportReasonCopyright extends ChatReportReason {
 class ChatReportReasonUnrelatedLocation extends ChatReportReason {
   String get tdType => 'chatReportReasonUnrelatedLocation';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonUnrelatedLocation({
@@ -173,7 +173,7 @@ class ChatReportReasonUnrelatedLocation extends ChatReportReason {
 class ChatReportReasonFake extends ChatReportReason {
   String get tdType => 'chatReportReasonFake';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonFake({
@@ -201,7 +201,7 @@ class ChatReportReasonFake extends ChatReportReason {
 class ChatReportReasonIllegalDrugs extends ChatReportReason {
   String get tdType => 'chatReportReasonIllegalDrugs';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonIllegalDrugs({
@@ -229,7 +229,7 @@ class ChatReportReasonIllegalDrugs extends ChatReportReason {
 class ChatReportReasonPersonalDetails extends ChatReportReason {
   String get tdType => 'chatReportReasonPersonalDetails';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonPersonalDetails({
@@ -257,7 +257,7 @@ class ChatReportReasonPersonalDetails extends ChatReportReason {
 class ChatReportReasonCustom extends ChatReportReason {
   String get tdType => 'chatReportReasonCustom';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatReportReasonCustom({

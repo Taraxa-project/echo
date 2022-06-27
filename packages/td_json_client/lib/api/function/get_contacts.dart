@@ -4,7 +4,7 @@ class GetContacts extends TdFunction {
   String get tdType => 'getContacts';
   String get tdReturnType => 'Users';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetContacts({

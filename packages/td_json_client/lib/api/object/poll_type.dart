@@ -7,7 +7,7 @@ abstract class PollType extends TdObject {}
 class PollTypeRegular extends PollType {
   String get tdType => 'pollTypeRegular';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? allow_multiple_answers;
 
@@ -39,7 +39,7 @@ class PollTypeRegular extends PollType {
 class PollTypeQuiz extends PollType {
   String get tdType => 'pollTypeQuiz';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? correct_option_id;
   FormattedText? explanation;

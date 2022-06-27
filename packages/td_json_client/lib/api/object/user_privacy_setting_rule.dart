@@ -5,7 +5,7 @@ abstract class UserPrivacySettingRule extends TdObject {}
 class UserPrivacySettingRuleAllowAll extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowAll';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingRuleAllowAll({
@@ -33,7 +33,7 @@ class UserPrivacySettingRuleAllowAll extends UserPrivacySettingRule {
 class UserPrivacySettingRuleAllowContacts extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowContacts';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingRuleAllowContacts({
@@ -61,7 +61,7 @@ class UserPrivacySettingRuleAllowContacts extends UserPrivacySettingRule {
 class UserPrivacySettingRuleAllowUsers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowUsers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int53>? user_ids;
 
@@ -98,7 +98,7 @@ class UserPrivacySettingRuleAllowUsers extends UserPrivacySettingRule {
 class UserPrivacySettingRuleAllowChatMembers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowChatMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int53>? chat_ids;
 
@@ -135,7 +135,7 @@ class UserPrivacySettingRuleAllowChatMembers extends UserPrivacySettingRule {
 class UserPrivacySettingRuleRestrictAll extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictAll';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingRuleRestrictAll({
@@ -163,7 +163,7 @@ class UserPrivacySettingRuleRestrictAll extends UserPrivacySettingRule {
 class UserPrivacySettingRuleRestrictContacts extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictContacts';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserPrivacySettingRuleRestrictContacts({
@@ -191,7 +191,7 @@ class UserPrivacySettingRuleRestrictContacts extends UserPrivacySettingRule {
 class UserPrivacySettingRuleRestrictUsers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictUsers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int53>? user_ids;
 
@@ -228,7 +228,7 @@ class UserPrivacySettingRuleRestrictUsers extends UserPrivacySettingRule {
 class UserPrivacySettingRuleRestrictChatMembers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictChatMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int53>? chat_ids;
 

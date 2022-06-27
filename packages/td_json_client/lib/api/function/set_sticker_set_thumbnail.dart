@@ -6,7 +6,7 @@ class SetStickerSetThumbnail extends TdFunction {
   String get tdType => 'setStickerSetThumbnail';
   String get tdReturnType => 'StickerSet';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   string? name;

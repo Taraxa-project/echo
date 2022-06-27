@@ -6,7 +6,7 @@ class GetGroupCallStreamSegment extends TdFunction {
   String get tdType => 'getGroupCallStreamSegment';
   String get tdReturnType => 'FilePart';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
   int53? time_offset;

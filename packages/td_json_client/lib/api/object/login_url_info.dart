@@ -5,7 +5,7 @@ abstract class LoginUrlInfo extends TdObject {}
 class LoginUrlInfoOpen extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoOpen';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
   Bool? skip_confirm;
@@ -41,7 +41,7 @@ class LoginUrlInfoOpen extends LoginUrlInfo {
 class LoginUrlInfoRequestConfirmation extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoRequestConfirmation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
   string? domain;

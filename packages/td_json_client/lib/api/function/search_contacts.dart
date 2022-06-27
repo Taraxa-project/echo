@@ -4,7 +4,7 @@ class SearchContacts extends TdFunction {
   String get tdType => 'searchContacts';
   String get tdReturnType => 'Users';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
   int32? limit;

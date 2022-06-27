@@ -4,7 +4,7 @@ class ResetPassword extends TdFunction {
   String get tdType => 'resetPassword';
   String get tdReturnType => 'ResetPasswordResult';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ResetPassword({

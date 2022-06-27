@@ -5,7 +5,7 @@ abstract class ConnectionState extends TdObject {}
 class ConnectionStateWaitingForNetwork extends ConnectionState {
   String get tdType => 'connectionStateWaitingForNetwork';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ConnectionStateWaitingForNetwork({
@@ -33,7 +33,7 @@ class ConnectionStateWaitingForNetwork extends ConnectionState {
 class ConnectionStateConnectingToProxy extends ConnectionState {
   String get tdType => 'connectionStateConnectingToProxy';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ConnectionStateConnectingToProxy({
@@ -61,7 +61,7 @@ class ConnectionStateConnectingToProxy extends ConnectionState {
 class ConnectionStateConnecting extends ConnectionState {
   String get tdType => 'connectionStateConnecting';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ConnectionStateConnecting({
@@ -89,7 +89,7 @@ class ConnectionStateConnecting extends ConnectionState {
 class ConnectionStateUpdating extends ConnectionState {
   String get tdType => 'connectionStateUpdating';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ConnectionStateUpdating({
@@ -117,7 +117,7 @@ class ConnectionStateUpdating extends ConnectionState {
 class ConnectionStateReady extends ConnectionState {
   String get tdType => 'connectionStateReady';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ConnectionStateReady({

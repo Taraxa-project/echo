@@ -10,7 +10,7 @@ abstract class PassportElement extends TdObject {}
 class PassportElementPersonalDetails extends PassportElement {
   String get tdType => 'passportElementPersonalDetails';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PersonalDetails? personal_details;
 
@@ -42,7 +42,7 @@ class PassportElementPersonalDetails extends PassportElement {
 class PassportElementPassport extends PassportElement {
   String get tdType => 'passportElementPassport';
 
-  string? extra;
+  String? extra;
   int? client_id;
   IdentityDocument? passport;
 
@@ -74,7 +74,7 @@ class PassportElementPassport extends PassportElement {
 class PassportElementDriverLicense extends PassportElement {
   String get tdType => 'passportElementDriverLicense';
 
-  string? extra;
+  String? extra;
   int? client_id;
   IdentityDocument? driver_license;
 
@@ -106,7 +106,7 @@ class PassportElementDriverLicense extends PassportElement {
 class PassportElementIdentityCard extends PassportElement {
   String get tdType => 'passportElementIdentityCard';
 
-  string? extra;
+  String? extra;
   int? client_id;
   IdentityDocument? identity_card;
 
@@ -138,7 +138,7 @@ class PassportElementIdentityCard extends PassportElement {
 class PassportElementInternalPassport extends PassportElement {
   String get tdType => 'passportElementInternalPassport';
 
-  string? extra;
+  String? extra;
   int? client_id;
   IdentityDocument? internal_passport;
 
@@ -170,7 +170,7 @@ class PassportElementInternalPassport extends PassportElement {
 class PassportElementAddress extends PassportElement {
   String get tdType => 'passportElementAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Address? address;
 
@@ -202,7 +202,7 @@ class PassportElementAddress extends PassportElement {
 class PassportElementUtilityBill extends PassportElement {
   String get tdType => 'passportElementUtilityBill';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PersonalDocument? utility_bill;
 
@@ -234,7 +234,7 @@ class PassportElementUtilityBill extends PassportElement {
 class PassportElementBankStatement extends PassportElement {
   String get tdType => 'passportElementBankStatement';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PersonalDocument? bank_statement;
 
@@ -266,7 +266,7 @@ class PassportElementBankStatement extends PassportElement {
 class PassportElementRentalAgreement extends PassportElement {
   String get tdType => 'passportElementRentalAgreement';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PersonalDocument? rental_agreement;
 
@@ -298,7 +298,7 @@ class PassportElementRentalAgreement extends PassportElement {
 class PassportElementPassportRegistration extends PassportElement {
   String get tdType => 'passportElementPassportRegistration';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PersonalDocument? passport_registration;
 
@@ -330,7 +330,7 @@ class PassportElementPassportRegistration extends PassportElement {
 class PassportElementTemporaryRegistration extends PassportElement {
   String get tdType => 'passportElementTemporaryRegistration';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PersonalDocument? temporary_registration;
 
@@ -362,7 +362,7 @@ class PassportElementTemporaryRegistration extends PassportElement {
 class PassportElementPhoneNumber extends PassportElement {
   String get tdType => 'passportElementPhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? phone_number;
 
@@ -394,7 +394,7 @@ class PassportElementPhoneNumber extends PassportElement {
 class PassportElementEmailAddress extends PassportElement {
   String get tdType => 'passportElementEmailAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? email_address;
 

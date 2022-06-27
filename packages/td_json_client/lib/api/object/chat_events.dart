@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/chat_event.dart';
 class ChatEvents extends TdObject {
   String get tdType => 'chatEvents';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<ChatEvent>? events;
 

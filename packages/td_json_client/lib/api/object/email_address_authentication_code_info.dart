@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class EmailAddressAuthenticationCodeInfo extends TdObject {
   String get tdType => 'emailAddressAuthenticationCodeInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? email_address_pattern;
   int32? length;

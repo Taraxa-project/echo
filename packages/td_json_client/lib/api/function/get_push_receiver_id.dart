@@ -4,7 +4,7 @@ class GetPushReceiverId extends TdFunction {
   String get tdType => 'getPushReceiverId';
   String get tdReturnType => 'PushReceiverId';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? payload;
 

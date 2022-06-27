@@ -6,7 +6,7 @@ class ChangeImportedContacts extends TdFunction {
   String get tdType => 'changeImportedContacts';
   String get tdReturnType => 'ImportedContacts';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<Contact>? contacts;
 

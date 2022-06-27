@@ -6,7 +6,7 @@ class ChangePhoneNumber extends TdFunction {
   String get tdType => 'changePhoneNumber';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? phone_number;
   PhoneNumberAuthenticationSettings? settings;

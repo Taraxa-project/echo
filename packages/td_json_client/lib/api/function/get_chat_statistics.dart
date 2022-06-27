@@ -4,7 +4,7 @@ class GetChatStatistics extends TdFunction {
   String get tdType => 'getChatStatistics';
   String get tdReturnType => 'ChatStatistics';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   Bool? is_dark;

@@ -4,7 +4,7 @@ class GetConnectedWebsites extends TdFunction {
   String get tdType => 'getConnectedWebsites';
   String get tdReturnType => 'ConnectedWebsites';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetConnectedWebsites({

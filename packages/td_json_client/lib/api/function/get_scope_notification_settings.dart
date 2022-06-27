@@ -6,7 +6,7 @@ class GetScopeNotificationSettings extends TdFunction {
   String get tdType => 'getScopeNotificationSettings';
   String get tdReturnType => 'ScopeNotificationSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   NotificationSettingsScope? scope;
 

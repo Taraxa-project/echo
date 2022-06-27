@@ -6,7 +6,7 @@ class GetRemoteFile extends TdFunction {
   String get tdType => 'getRemoteFile';
   String get tdReturnType => 'File';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? remote_file_id;
   FileType? file_type;

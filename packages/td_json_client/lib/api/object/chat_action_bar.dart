@@ -5,7 +5,7 @@ abstract class ChatActionBar extends TdObject {}
 class ChatActionBarReportSpam extends ChatActionBar {
   String get tdType => 'chatActionBarReportSpam';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? can_unarchive;
 
@@ -37,7 +37,7 @@ class ChatActionBarReportSpam extends ChatActionBar {
 class ChatActionBarReportUnrelatedLocation extends ChatActionBar {
   String get tdType => 'chatActionBarReportUnrelatedLocation';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionBarReportUnrelatedLocation({
@@ -65,7 +65,7 @@ class ChatActionBarReportUnrelatedLocation extends ChatActionBar {
 class ChatActionBarInviteMembers extends ChatActionBar {
   String get tdType => 'chatActionBarInviteMembers';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionBarInviteMembers({
@@ -93,7 +93,7 @@ class ChatActionBarInviteMembers extends ChatActionBar {
 class ChatActionBarReportAddBlock extends ChatActionBar {
   String get tdType => 'chatActionBarReportAddBlock';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? can_unarchive;
   int32? distance;
@@ -129,7 +129,7 @@ class ChatActionBarReportAddBlock extends ChatActionBar {
 class ChatActionBarAddContact extends ChatActionBar {
   String get tdType => 'chatActionBarAddContact';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionBarAddContact({
@@ -157,7 +157,7 @@ class ChatActionBarAddContact extends ChatActionBar {
 class ChatActionBarSharePhoneNumber extends ChatActionBar {
   String get tdType => 'chatActionBarSharePhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatActionBarSharePhoneNumber({
@@ -185,7 +185,7 @@ class ChatActionBarSharePhoneNumber extends ChatActionBar {
 class ChatActionBarJoinRequest extends ChatActionBar {
   String get tdType => 'chatActionBarJoinRequest';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
   Bool? is_channel;

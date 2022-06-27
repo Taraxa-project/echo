@@ -7,7 +7,7 @@ import 'package:td_json_client/api/object/file.dart';
 class VideoNote extends TdObject {
   String get tdType => 'videoNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? duration;
   int32? length;

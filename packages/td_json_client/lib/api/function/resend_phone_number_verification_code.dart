@@ -4,7 +4,7 @@ class ResendPhoneNumberVerificationCode extends TdFunction {
   String get tdType => 'resendPhoneNumberVerificationCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ResendPhoneNumberVerificationCode({

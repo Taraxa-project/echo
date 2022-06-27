@@ -5,7 +5,7 @@ abstract class InputFile extends TdObject {}
 class InputFileId extends InputFile {
   String get tdType => 'inputFileId';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? id;
 
@@ -37,7 +37,7 @@ class InputFileId extends InputFile {
 class InputFileRemote extends InputFile {
   String get tdType => 'inputFileRemote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
 
@@ -69,7 +69,7 @@ class InputFileRemote extends InputFile {
 class InputFileLocal extends InputFile {
   String get tdType => 'inputFileLocal';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? path;
 
@@ -101,7 +101,7 @@ class InputFileLocal extends InputFile {
 class InputFileGenerated extends InputFile {
   String get tdType => 'inputFileGenerated';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? original_path;
   string? conversion;

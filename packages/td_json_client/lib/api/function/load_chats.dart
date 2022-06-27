@@ -6,7 +6,7 @@ class LoadChats extends TdFunction {
   String get tdType => 'loadChats';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatList? chat_list;
   int32? limit;

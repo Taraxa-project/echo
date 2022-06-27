@@ -4,7 +4,7 @@ class CancelDownloadFile extends TdFunction {
   String get tdType => 'cancelDownloadFile';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
   Bool? only_if_pending;

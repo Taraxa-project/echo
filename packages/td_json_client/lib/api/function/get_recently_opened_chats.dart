@@ -4,7 +4,7 @@ class GetRecentlyOpenedChats extends TdFunction {
   String get tdType => 'getRecentlyOpenedChats';
   String get tdReturnType => 'Chats';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? limit;
 

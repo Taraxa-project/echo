@@ -7,7 +7,7 @@ class SetCustomLanguagePack extends TdFunction {
   String get tdType => 'setCustomLanguagePack';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   LanguagePackInfo? info;
   vector<LanguagePackString>? strings;

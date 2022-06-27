@@ -5,7 +5,7 @@ abstract class NetworkType extends TdObject {}
 class NetworkTypeNone extends NetworkType {
   String get tdType => 'networkTypeNone';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NetworkTypeNone({
@@ -33,7 +33,7 @@ class NetworkTypeNone extends NetworkType {
 class NetworkTypeMobile extends NetworkType {
   String get tdType => 'networkTypeMobile';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NetworkTypeMobile({
@@ -61,7 +61,7 @@ class NetworkTypeMobile extends NetworkType {
 class NetworkTypeMobileRoaming extends NetworkType {
   String get tdType => 'networkTypeMobileRoaming';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NetworkTypeMobileRoaming({
@@ -89,7 +89,7 @@ class NetworkTypeMobileRoaming extends NetworkType {
 class NetworkTypeWiFi extends NetworkType {
   String get tdType => 'networkTypeWiFi';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NetworkTypeWiFi({
@@ -117,7 +117,7 @@ class NetworkTypeWiFi extends NetworkType {
 class NetworkTypeOther extends NetworkType {
   String get tdType => 'networkTypeOther';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NetworkTypeOther({

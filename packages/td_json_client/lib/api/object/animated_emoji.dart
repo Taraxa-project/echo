@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/file.dart';
 class AnimatedEmoji extends TdObject {
   String get tdType => 'animatedEmoji';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Sticker? sticker;
   int32? fitzpatrick_type;

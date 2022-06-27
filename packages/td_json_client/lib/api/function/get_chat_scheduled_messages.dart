@@ -4,7 +4,7 @@ class GetChatScheduledMessages extends TdFunction {
   String get tdType => 'getChatScheduledMessages';
   String get tdReturnType => 'Messages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 

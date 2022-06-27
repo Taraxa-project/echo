@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class Error extends TdObject {
   String get tdType => 'error';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? code;
   string? message;

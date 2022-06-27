@@ -5,7 +5,7 @@ abstract class MessageSendingState extends TdObject {}
 class MessageSendingStatePending extends MessageSendingState {
   String get tdType => 'messageSendingStatePending';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageSendingStatePending({
@@ -33,7 +33,7 @@ class MessageSendingStatePending extends MessageSendingState {
 class MessageSendingStateFailed extends MessageSendingState {
   String get tdType => 'messageSendingStateFailed';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? error_code;
   string? error_message;

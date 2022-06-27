@@ -4,7 +4,7 @@ class ClearAllDraftMessages extends TdFunction {
   String get tdType => 'clearAllDraftMessages';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? exclude_secret_chats;
 

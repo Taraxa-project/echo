@@ -6,7 +6,7 @@ class CreateCall extends TdFunction {
   String get tdType => 'createCall';
   String get tdReturnType => 'CallId';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   CallProtocol? protocol;

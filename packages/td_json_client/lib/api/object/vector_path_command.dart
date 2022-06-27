@@ -7,7 +7,7 @@ abstract class VectorPathCommand extends TdObject {}
 class VectorPathCommandLine extends VectorPathCommand {
   String get tdType => 'vectorPathCommandLine';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Point? end_point;
 
@@ -39,7 +39,7 @@ class VectorPathCommandLine extends VectorPathCommand {
 class VectorPathCommandCubicBezierCurve extends VectorPathCommand {
   String get tdType => 'vectorPathCommandCubicBezierCurve';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Point? start_control_point;
   Point? end_control_point;

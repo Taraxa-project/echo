@@ -6,7 +6,7 @@ class SetDefaultGroupAdministratorRights extends TdFunction {
   String get tdType => 'setDefaultGroupAdministratorRights';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatAdministratorRights? default_group_administrator_rights;
 

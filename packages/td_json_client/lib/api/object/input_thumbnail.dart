@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/input_file.dart';
 class InputThumbnail extends TdObject {
   String get tdType => 'inputThumbnail';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? thumbnail;
   int32? width;

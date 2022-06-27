@@ -4,7 +4,7 @@ class BlockMessageSenderFromReplies extends TdFunction {
   String get tdType => 'blockMessageSenderFromReplies';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? message_id;
   Bool? delete_message;

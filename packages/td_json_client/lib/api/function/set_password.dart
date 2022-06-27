@@ -4,7 +4,7 @@ class SetPassword extends TdFunction {
   String get tdType => 'setPassword';
   String get tdReturnType => 'PasswordState';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? old_password;
   string? new_password;

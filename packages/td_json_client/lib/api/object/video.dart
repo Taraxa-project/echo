@@ -7,7 +7,7 @@ import 'package:td_json_client/api/object/file.dart';
 class Video extends TdObject {
   String get tdType => 'video';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? duration;
   int32? width;

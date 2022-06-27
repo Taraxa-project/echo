@@ -6,7 +6,7 @@ class TestReturnError extends TdFunction {
   String get tdType => 'testReturnError';
   String get tdReturnType => 'Error';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Error? error;
 

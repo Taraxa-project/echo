@@ -4,7 +4,7 @@ class GetMessageViewers extends TdFunction {
   String get tdType => 'getMessageViewers';
   String get tdReturnType => 'Users';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

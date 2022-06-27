@@ -5,7 +5,7 @@ abstract class BackgroundFill extends TdObject {}
 class BackgroundFillSolid extends BackgroundFill {
   String get tdType => 'backgroundFillSolid';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? color;
 
@@ -37,7 +37,7 @@ class BackgroundFillSolid extends BackgroundFill {
 class BackgroundFillGradient extends BackgroundFill {
   String get tdType => 'backgroundFillGradient';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? top_color;
   int32? bottom_color;
@@ -77,7 +77,7 @@ class BackgroundFillGradient extends BackgroundFill {
 class BackgroundFillFreeformGradient extends BackgroundFill {
   String get tdType => 'backgroundFillFreeformGradient';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int32>? colors;
 

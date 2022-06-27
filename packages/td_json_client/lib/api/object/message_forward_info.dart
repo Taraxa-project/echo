@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/message_forward_origin.dart';
 class MessageForwardInfo extends TdObject {
   String get tdType => 'messageForwardInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   MessageForwardOrigin? origin;
   int32? date;

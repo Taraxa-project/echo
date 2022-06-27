@@ -4,7 +4,7 @@ class GetInlineGameHighScores extends TdFunction {
   String get tdType => 'getInlineGameHighScores';
   String get tdReturnType => 'GameHighScores';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? inline_message_id;
   int53? user_id;

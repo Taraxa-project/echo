@@ -8,7 +8,7 @@ import 'package:td_json_client/api/object/saved_credentials.dart';
 class PaymentForm extends TdObject {
   String get tdType => 'paymentForm';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   Invoice? invoice;

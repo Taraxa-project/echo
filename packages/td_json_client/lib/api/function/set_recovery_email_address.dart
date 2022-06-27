@@ -4,7 +4,7 @@ class SetRecoveryEmailAddress extends TdFunction {
   String get tdType => 'setRecoveryEmailAddress';
   String get tdReturnType => 'PasswordState';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? password;
   string? new_recovery_email_address;

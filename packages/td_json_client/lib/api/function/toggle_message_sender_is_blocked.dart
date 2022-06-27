@@ -6,7 +6,7 @@ class ToggleMessageSenderIsBlocked extends TdFunction {
   String get tdType => 'toggleMessageSenderIsBlocked';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   MessageSender? sender_id;
   Bool? is_blocked;

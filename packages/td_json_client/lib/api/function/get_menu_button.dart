@@ -4,7 +4,7 @@ class GetMenuButton extends TdFunction {
   String get tdType => 'getMenuButton';
   String get tdReturnType => 'BotMenuButton';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
 

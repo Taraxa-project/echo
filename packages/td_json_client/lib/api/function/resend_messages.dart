@@ -4,7 +4,7 @@ class ResendMessages extends TdFunction {
   String get tdType => 'resendMessages';
   String get tdReturnType => 'Messages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   vector<int53>? message_ids;

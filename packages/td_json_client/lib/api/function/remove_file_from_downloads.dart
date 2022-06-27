@@ -4,7 +4,7 @@ class RemoveFileFromDownloads extends TdFunction {
   String get tdType => 'removeFileFromDownloads';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
   Bool? delete_from_cache;

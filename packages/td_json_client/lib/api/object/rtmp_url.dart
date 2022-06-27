@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class RtmpUrl extends TdObject {
   String get tdType => 'rtmpUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
   string? stream_key;

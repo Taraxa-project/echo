@@ -4,7 +4,7 @@ class GetPreferredCountryLanguage extends TdFunction {
   String get tdType => 'getPreferredCountryLanguage';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? country_code;
 

@@ -8,7 +8,7 @@ abstract class ChatMemberStatus extends TdObject {}
 class ChatMemberStatusCreator extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusCreator';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? custom_title;
   Bool? is_anonymous;
@@ -48,7 +48,7 @@ class ChatMemberStatusCreator extends ChatMemberStatus {
 class ChatMemberStatusAdministrator extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusAdministrator';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? custom_title;
   Bool? can_be_edited;
@@ -88,7 +88,7 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
 class ChatMemberStatusMember extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusMember';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatMemberStatusMember({
@@ -116,7 +116,7 @@ class ChatMemberStatusMember extends ChatMemberStatus {
 class ChatMemberStatusRestricted extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusRestricted';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_member;
   int32? restricted_until_date;
@@ -156,7 +156,7 @@ class ChatMemberStatusRestricted extends ChatMemberStatus {
 class ChatMemberStatusLeft extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusLeft';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatMemberStatusLeft({
@@ -184,7 +184,7 @@ class ChatMemberStatusLeft extends ChatMemberStatus {
 class ChatMemberStatusBanned extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusBanned';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? banned_until_date;
 

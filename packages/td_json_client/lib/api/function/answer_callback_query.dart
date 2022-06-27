@@ -4,7 +4,7 @@ class AnswerCallbackQuery extends TdFunction {
   String get tdType => 'answerCallbackQuery';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? callback_query_id;
   string? text;

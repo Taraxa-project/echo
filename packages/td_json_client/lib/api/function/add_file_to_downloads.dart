@@ -4,7 +4,7 @@ class AddFileToDownloads extends TdFunction {
   String get tdType => 'addFileToDownloads';
   String get tdReturnType => 'File';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
   int53? chat_id;

@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class ImportedContacts extends TdObject {
   String get tdType => 'importedContacts';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<int53>? user_ids;
   vector<int32>? importer_count;

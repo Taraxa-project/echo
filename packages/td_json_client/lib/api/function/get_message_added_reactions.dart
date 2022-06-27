@@ -4,7 +4,7 @@ class GetMessageAddedReactions extends TdFunction {
   String get tdType => 'getMessageAddedReactions';
   String get tdReturnType => 'AddedReactions';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

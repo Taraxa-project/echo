@@ -4,7 +4,7 @@ class DownloadFile extends TdFunction {
   String get tdType => 'downloadFile';
   String get tdReturnType => 'File';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_id;
   int32? priority;

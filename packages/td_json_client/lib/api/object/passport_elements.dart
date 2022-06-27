@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/passport_element.dart';
 class PassportElements extends TdObject {
   String get tdType => 'passportElements';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<PassportElement>? elements;
 

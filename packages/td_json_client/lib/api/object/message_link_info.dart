@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/message.dart';
 class MessageLinkInfo extends TdObject {
   String get tdType => 'messageLinkInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_public;
   int53? chat_id;

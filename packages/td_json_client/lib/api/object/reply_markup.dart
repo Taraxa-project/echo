@@ -8,7 +8,7 @@ abstract class ReplyMarkup extends TdObject {}
 class ReplyMarkupRemoveKeyboard extends ReplyMarkup {
   String get tdType => 'replyMarkupRemoveKeyboard';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_personal;
 
@@ -40,7 +40,7 @@ class ReplyMarkupRemoveKeyboard extends ReplyMarkup {
 class ReplyMarkupForceReply extends ReplyMarkup {
   String get tdType => 'replyMarkupForceReply';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_personal;
   string? input_field_placeholder;
@@ -76,7 +76,7 @@ class ReplyMarkupForceReply extends ReplyMarkup {
 class ReplyMarkupShowKeyboard extends ReplyMarkup {
   String get tdType => 'replyMarkupShowKeyboard';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<vector<KeyboardButton>>? rows;
   Bool? resize_keyboard;
@@ -133,7 +133,7 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
 class ReplyMarkupInlineKeyboard extends ReplyMarkup {
   String get tdType => 'replyMarkupInlineKeyboard';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<vector<InlineKeyboardButton>>? rows;
 

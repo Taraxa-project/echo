@@ -4,7 +4,7 @@ class GetAutoDownloadSettingsPresets extends TdFunction {
   String get tdType => 'getAutoDownloadSettingsPresets';
   String get tdReturnType => 'AutoDownloadSettingsPresets';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetAutoDownloadSettingsPresets({

@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class CallProtocol extends TdObject {
   String get tdType => 'callProtocol';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? udp_p2p;
   Bool? udp_reflector;

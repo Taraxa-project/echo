@@ -6,7 +6,7 @@ class GetBackgroundUrl extends TdFunction {
   String get tdType => 'getBackgroundUrl';
   String get tdReturnType => 'HttpUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? name;
   BackgroundType? type;

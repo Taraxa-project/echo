@@ -4,7 +4,7 @@ class GetPhoneNumberInfoSync extends TdFunction {
   String get tdType => 'getPhoneNumberInfoSync';
   String get tdReturnType => 'PhoneNumberInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? language_code;
   string? phone_number_prefix;

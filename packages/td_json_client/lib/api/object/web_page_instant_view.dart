@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/internal_link_type.dart';
 class WebPageInstantView extends TdObject {
   String get tdType => 'webPageInstantView';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<PageBlock>? page_blocks;
   int32? view_count;

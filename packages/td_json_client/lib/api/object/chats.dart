@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class Chats extends TdObject {
   String get tdType => 'chats';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? total_count;
   vector<int53>? chat_ids;

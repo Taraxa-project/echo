@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class ChatEventLogFilters extends TdObject {
   String get tdType => 'chatEventLogFilters';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? message_edits;
   Bool? message_deletions;

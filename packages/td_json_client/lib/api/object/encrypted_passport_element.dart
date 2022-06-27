@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/dated_file.dart';
 class EncryptedPassportElement extends TdObject {
   String get tdType => 'encryptedPassportElement';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PassportElementType? type;
   bytes? data;

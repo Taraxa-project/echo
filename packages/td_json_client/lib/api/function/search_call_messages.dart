@@ -4,7 +4,7 @@ class SearchCallMessages extends TdFunction {
   String get tdType => 'searchCallMessages';
   String get tdReturnType => 'Messages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? from_message_id;
   int32? limit;

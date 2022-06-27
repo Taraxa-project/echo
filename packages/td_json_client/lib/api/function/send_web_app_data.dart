@@ -4,7 +4,7 @@ class SendWebAppData extends TdFunction {
   String get tdType => 'sendWebAppData';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? bot_user_id;
   string? button_text;

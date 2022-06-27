@@ -4,7 +4,7 @@ class GetChatListsToAddChat extends TdFunction {
   String get tdType => 'getChatListsToAddChat';
   String get tdReturnType => 'ChatLists';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 

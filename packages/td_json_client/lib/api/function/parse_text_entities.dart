@@ -6,7 +6,7 @@ class ParseTextEntities extends TdFunction {
   String get tdType => 'parseTextEntities';
   String get tdReturnType => 'FormattedText';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
   TextParseMode? parse_mode;

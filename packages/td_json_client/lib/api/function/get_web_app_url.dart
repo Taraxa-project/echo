@@ -6,7 +6,7 @@ class GetWebAppUrl extends TdFunction {
   String get tdType => 'getWebAppUrl';
   String get tdReturnType => 'HttpUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? bot_user_id;
   string? url;

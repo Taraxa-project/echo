@@ -4,7 +4,7 @@ class ResendChangePhoneNumberCode extends TdFunction {
   String get tdType => 'resendChangePhoneNumberCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ResendChangePhoneNumberCode({

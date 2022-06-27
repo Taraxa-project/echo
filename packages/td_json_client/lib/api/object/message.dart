@@ -12,7 +12,7 @@ import 'package:td_json_client/api/object/reply_markup.dart';
 class Message extends TdObject {
   String get tdType => 'message';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? id;
   MessageSender? sender_id;

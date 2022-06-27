@@ -4,7 +4,7 @@ class GetSupergroupFullInfo extends TdFunction {
   String get tdType => 'getSupergroupFullInfo';
   String get tdReturnType => 'SupergroupFullInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
 

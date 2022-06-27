@@ -6,7 +6,7 @@ class SetNetworkType extends TdFunction {
   String get tdType => 'setNetworkType';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   NetworkType? type;
 

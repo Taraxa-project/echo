@@ -4,7 +4,7 @@ class SetFileGenerationProgress extends TdFunction {
   String get tdType => 'setFileGenerationProgress';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? generation_id;
   int32? expected_size;

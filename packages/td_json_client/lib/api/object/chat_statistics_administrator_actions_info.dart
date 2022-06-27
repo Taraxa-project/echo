@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class ChatStatisticsAdministratorActionsInfo extends TdObject {
   String get tdType => 'chatStatisticsAdministratorActionsInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   int32? deleted_message_count;

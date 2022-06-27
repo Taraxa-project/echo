@@ -4,7 +4,7 @@ class ToggleSupergroupSignMessages extends TdFunction {
   String get tdType => 'toggleSupergroupSignMessages';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? supergroup_id;
   Bool? sign_messages;

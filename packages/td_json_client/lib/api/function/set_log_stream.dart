@@ -6,7 +6,7 @@ class SetLogStream extends TdFunction {
   String get tdType => 'setLogStream';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   LogStream? log_stream;
 

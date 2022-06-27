@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/dated_file.dart';
 class IdentityDocument extends TdObject {
   String get tdType => 'identityDocument';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? number;
   Date? expiry_date;

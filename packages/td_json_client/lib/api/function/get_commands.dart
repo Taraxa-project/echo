@@ -6,7 +6,7 @@ class GetCommands extends TdFunction {
   String get tdType => 'getCommands';
   String get tdReturnType => 'BotCommands';
 
-  string? extra;
+  String? extra;
   int? client_id;
   BotCommandScope? scope;
   string? language_code;

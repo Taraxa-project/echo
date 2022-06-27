@@ -4,7 +4,7 @@ class GetApplicationConfig extends TdFunction {
   String get tdType => 'getApplicationConfig';
   String get tdReturnType => 'JsonValue';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetApplicationConfig({

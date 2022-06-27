@@ -6,7 +6,7 @@ class RemoveRecentSticker extends TdFunction {
   String get tdType => 'removeRecentSticker';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_attached;
   InputFile? sticker;

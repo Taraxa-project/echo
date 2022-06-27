@@ -6,7 +6,7 @@ class RemoveStickerFromSet extends TdFunction {
   String get tdType => 'removeStickerFromSet';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? sticker;
 

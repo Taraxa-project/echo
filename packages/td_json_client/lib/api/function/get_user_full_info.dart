@@ -4,7 +4,7 @@ class GetUserFullInfo extends TdFunction {
   String get tdType => 'getUserFullInfo';
   String get tdReturnType => 'UserFullInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
 

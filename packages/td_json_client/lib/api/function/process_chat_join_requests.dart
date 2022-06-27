@@ -4,7 +4,7 @@ class ProcessChatJoinRequests extends TdFunction {
   String get tdType => 'processChatJoinRequests';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   string? invite_link;

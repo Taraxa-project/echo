@@ -4,7 +4,7 @@ class TestCallBytes extends TdFunction {
   String get tdType => 'testCallBytes';
   String get tdReturnType => 'TestBytes';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? x;
 

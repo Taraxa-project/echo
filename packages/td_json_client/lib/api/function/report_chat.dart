@@ -6,7 +6,7 @@ class ReportChat extends TdFunction {
   String get tdType => 'reportChat';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   vector<int53>? message_ids;

@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class PhoneNumberAuthenticationSettings extends TdObject {
   String get tdType => 'phoneNumberAuthenticationSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? allow_flash_call;
   Bool? allow_missed_call;

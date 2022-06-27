@@ -9,7 +9,7 @@ abstract class InternalLinkType extends TdObject {}
 class InternalLinkTypeActiveSessions extends InternalLinkType {
   String get tdType => 'internalLinkTypeActiveSessions';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InternalLinkTypeActiveSessions({
@@ -37,7 +37,7 @@ class InternalLinkTypeActiveSessions extends InternalLinkType {
 class InternalLinkTypeAttachmentMenuBot extends InternalLinkType {
   String get tdType => 'internalLinkTypeAttachmentMenuBot';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InternalLinkType? chat_link;
   string? bot_username;
@@ -77,7 +77,7 @@ class InternalLinkTypeAttachmentMenuBot extends InternalLinkType {
 class InternalLinkTypeAuthenticationCode extends InternalLinkType {
   String get tdType => 'internalLinkTypeAuthenticationCode';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? code;
 
@@ -109,7 +109,7 @@ class InternalLinkTypeAuthenticationCode extends InternalLinkType {
 class InternalLinkTypeBackground extends InternalLinkType {
   String get tdType => 'internalLinkTypeBackground';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? background_name;
 
@@ -141,7 +141,7 @@ class InternalLinkTypeBackground extends InternalLinkType {
 class InternalLinkTypeBotStart extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStart';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? bot_username;
   string? start_parameter;
@@ -177,7 +177,7 @@ class InternalLinkTypeBotStart extends InternalLinkType {
 class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStartInGroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? bot_username;
   string? start_parameter;
@@ -217,7 +217,7 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
 class InternalLinkTypeBotAddToChannel extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotAddToChannel';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? bot_username;
   ChatAdministratorRights? administrator_rights;
@@ -253,7 +253,7 @@ class InternalLinkTypeBotAddToChannel extends InternalLinkType {
 class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
   String get tdType => 'internalLinkTypeChangePhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InternalLinkTypeChangePhoneNumber({
@@ -281,7 +281,7 @@ class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
 class InternalLinkTypeChatInvite extends InternalLinkType {
   String get tdType => 'internalLinkTypeChatInvite';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? invite_link;
 
@@ -313,7 +313,7 @@ class InternalLinkTypeChatInvite extends InternalLinkType {
 class InternalLinkTypeFilterSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeFilterSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InternalLinkTypeFilterSettings({
@@ -341,7 +341,7 @@ class InternalLinkTypeFilterSettings extends InternalLinkType {
 class InternalLinkTypeGame extends InternalLinkType {
   String get tdType => 'internalLinkTypeGame';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? bot_username;
   string? game_short_name;
@@ -377,7 +377,7 @@ class InternalLinkTypeGame extends InternalLinkType {
 class InternalLinkTypeLanguagePack extends InternalLinkType {
   String get tdType => 'internalLinkTypeLanguagePack';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? language_pack_id;
 
@@ -409,7 +409,7 @@ class InternalLinkTypeLanguagePack extends InternalLinkType {
 class InternalLinkTypeLanguageSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeLanguageSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InternalLinkTypeLanguageSettings({
@@ -437,7 +437,7 @@ class InternalLinkTypeLanguageSettings extends InternalLinkType {
 class InternalLinkTypeMessage extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
 
@@ -469,7 +469,7 @@ class InternalLinkTypeMessage extends InternalLinkType {
 class InternalLinkTypeMessageDraft extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessageDraft';
 
-  string? extra;
+  String? extra;
   int? client_id;
   FormattedText? text;
   Bool? contains_link;
@@ -505,7 +505,7 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
 class InternalLinkTypePassportDataRequest extends InternalLinkType {
   String get tdType => 'internalLinkTypePassportDataRequest';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? bot_user_id;
   string? scope;
@@ -553,7 +553,7 @@ class InternalLinkTypePassportDataRequest extends InternalLinkType {
 class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
   String get tdType => 'internalLinkTypePhoneNumberConfirmation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? hash;
   string? phone_number;
@@ -589,7 +589,7 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
 class InternalLinkTypePrivacyAndSecuritySettings extends InternalLinkType {
   String get tdType => 'internalLinkTypePrivacyAndSecuritySettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InternalLinkTypePrivacyAndSecuritySettings({
@@ -617,7 +617,7 @@ class InternalLinkTypePrivacyAndSecuritySettings extends InternalLinkType {
 class InternalLinkTypeProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeProxy';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? server;
   int32? port;
@@ -657,7 +657,7 @@ class InternalLinkTypeProxy extends InternalLinkType {
 class InternalLinkTypePublicChat extends InternalLinkType {
   String get tdType => 'internalLinkTypePublicChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? chat_username;
 
@@ -689,7 +689,7 @@ class InternalLinkTypePublicChat extends InternalLinkType {
 class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
   String get tdType => 'internalLinkTypeQrCodeAuthentication';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InternalLinkTypeQrCodeAuthentication({
@@ -717,7 +717,7 @@ class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
 class InternalLinkTypeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InternalLinkTypeSettings({
@@ -745,7 +745,7 @@ class InternalLinkTypeSettings extends InternalLinkType {
 class InternalLinkTypeStickerSet extends InternalLinkType {
   String get tdType => 'internalLinkTypeStickerSet';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? sticker_set_name;
 
@@ -777,7 +777,7 @@ class InternalLinkTypeStickerSet extends InternalLinkType {
 class InternalLinkTypeTheme extends InternalLinkType {
   String get tdType => 'internalLinkTypeTheme';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? theme_name;
 
@@ -809,7 +809,7 @@ class InternalLinkTypeTheme extends InternalLinkType {
 class InternalLinkTypeThemeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeThemeSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InternalLinkTypeThemeSettings({
@@ -837,7 +837,7 @@ class InternalLinkTypeThemeSettings extends InternalLinkType {
 class InternalLinkTypeUnknownDeepLink extends InternalLinkType {
   String get tdType => 'internalLinkTypeUnknownDeepLink';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? link;
 
@@ -869,7 +869,7 @@ class InternalLinkTypeUnknownDeepLink extends InternalLinkType {
 class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeUnsupportedProxy';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   InternalLinkTypeUnsupportedProxy({
@@ -897,7 +897,7 @@ class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
 class InternalLinkTypeUserPhoneNumber extends InternalLinkType {
   String get tdType => 'internalLinkTypeUserPhoneNumber';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? phone_number;
 
@@ -929,7 +929,7 @@ class InternalLinkTypeUserPhoneNumber extends InternalLinkType {
 class InternalLinkTypeVideoChat extends InternalLinkType {
   String get tdType => 'internalLinkTypeVideoChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? chat_username;
   string? invite_hash;

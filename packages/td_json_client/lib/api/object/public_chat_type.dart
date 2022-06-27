@@ -5,7 +5,7 @@ abstract class PublicChatType extends TdObject {}
 class PublicChatTypeHasUsername extends PublicChatType {
   String get tdType => 'publicChatTypeHasUsername';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PublicChatTypeHasUsername({
@@ -33,7 +33,7 @@ class PublicChatTypeHasUsername extends PublicChatType {
 class PublicChatTypeIsLocationBased extends PublicChatType {
   String get tdType => 'publicChatTypeIsLocationBased';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PublicChatTypeIsLocationBased({

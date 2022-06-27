@@ -5,7 +5,7 @@ abstract class SearchMessagesFilter extends TdObject {}
 class SearchMessagesFilterEmpty extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterEmpty';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterEmpty({
@@ -33,7 +33,7 @@ class SearchMessagesFilterEmpty extends SearchMessagesFilter {
 class SearchMessagesFilterAnimation extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterAnimation';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterAnimation({
@@ -61,7 +61,7 @@ class SearchMessagesFilterAnimation extends SearchMessagesFilter {
 class SearchMessagesFilterAudio extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterAudio';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterAudio({
@@ -89,7 +89,7 @@ class SearchMessagesFilterAudio extends SearchMessagesFilter {
 class SearchMessagesFilterDocument extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterDocument';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterDocument({
@@ -117,7 +117,7 @@ class SearchMessagesFilterDocument extends SearchMessagesFilter {
 class SearchMessagesFilterPhoto extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterPhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterPhoto({
@@ -145,7 +145,7 @@ class SearchMessagesFilterPhoto extends SearchMessagesFilter {
 class SearchMessagesFilterVideo extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterVideo({
@@ -173,7 +173,7 @@ class SearchMessagesFilterVideo extends SearchMessagesFilter {
 class SearchMessagesFilterVoiceNote extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVoiceNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterVoiceNote({
@@ -201,7 +201,7 @@ class SearchMessagesFilterVoiceNote extends SearchMessagesFilter {
 class SearchMessagesFilterPhotoAndVideo extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterPhotoAndVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterPhotoAndVideo({
@@ -229,7 +229,7 @@ class SearchMessagesFilterPhotoAndVideo extends SearchMessagesFilter {
 class SearchMessagesFilterUrl extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterUrl({
@@ -257,7 +257,7 @@ class SearchMessagesFilterUrl extends SearchMessagesFilter {
 class SearchMessagesFilterChatPhoto extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterChatPhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterChatPhoto({
@@ -285,7 +285,7 @@ class SearchMessagesFilterChatPhoto extends SearchMessagesFilter {
 class SearchMessagesFilterVideoNote extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVideoNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterVideoNote({
@@ -313,7 +313,7 @@ class SearchMessagesFilterVideoNote extends SearchMessagesFilter {
 class SearchMessagesFilterVoiceAndVideoNote extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVoiceAndVideoNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterVoiceAndVideoNote({
@@ -341,7 +341,7 @@ class SearchMessagesFilterVoiceAndVideoNote extends SearchMessagesFilter {
 class SearchMessagesFilterMention extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterMention';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterMention({
@@ -369,7 +369,7 @@ class SearchMessagesFilterMention extends SearchMessagesFilter {
 class SearchMessagesFilterUnreadMention extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterUnreadMention';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterUnreadMention({
@@ -397,7 +397,7 @@ class SearchMessagesFilterUnreadMention extends SearchMessagesFilter {
 class SearchMessagesFilterUnreadReaction extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterUnreadReaction';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterUnreadReaction({
@@ -425,7 +425,7 @@ class SearchMessagesFilterUnreadReaction extends SearchMessagesFilter {
 class SearchMessagesFilterFailedToSend extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterFailedToSend';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterFailedToSend({
@@ -453,7 +453,7 @@ class SearchMessagesFilterFailedToSend extends SearchMessagesFilter {
 class SearchMessagesFilterPinned extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterPinned';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   SearchMessagesFilterPinned({

@@ -7,7 +7,7 @@ import 'package:td_json_client/api/object/animation.dart';
 class Game extends TdObject {
   String get tdType => 'game';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   string? short_name;

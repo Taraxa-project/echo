@@ -4,7 +4,7 @@ class GetSavedAnimations extends TdFunction {
   String get tdType => 'getSavedAnimations';
   String get tdReturnType => 'Animations';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetSavedAnimations({

@@ -6,7 +6,7 @@ class CreateNewStickerSet extends TdFunction {
   String get tdType => 'createNewStickerSet';
   String get tdReturnType => 'StickerSet';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   string? title;

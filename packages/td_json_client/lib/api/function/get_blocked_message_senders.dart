@@ -4,7 +4,7 @@ class GetBlockedMessageSenders extends TdFunction {
   String get tdType => 'getBlockedMessageSenders';
   String get tdReturnType => 'MessageSenders';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? offset;
   int32? limit;

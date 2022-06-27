@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/animation.dart';
 class Animations extends TdObject {
   String get tdType => 'animations';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<Animation>? animations;
 

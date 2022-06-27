@@ -5,7 +5,7 @@ abstract class ChatSource extends TdObject {}
 class ChatSourceMtprotoProxy extends ChatSource {
   String get tdType => 'chatSourceMtprotoProxy';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatSourceMtprotoProxy({
@@ -33,7 +33,7 @@ class ChatSourceMtprotoProxy extends ChatSource {
 class ChatSourcePublicServiceAnnouncement extends ChatSource {
   String get tdType => 'chatSourcePublicServiceAnnouncement';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? type;
   string? text;

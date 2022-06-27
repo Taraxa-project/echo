@@ -6,7 +6,7 @@ class SetPassportElementErrors extends TdFunction {
   String get tdType => 'setPassportElementErrors';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   vector<InputPassportElementError>? errors;

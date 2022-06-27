@@ -6,7 +6,7 @@ class DeleteCommands extends TdFunction {
   String get tdType => 'deleteCommands';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   BotCommandScope? scope;
   string? language_code;

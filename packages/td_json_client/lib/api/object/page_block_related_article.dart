@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/photo.dart';
 class PageBlockRelatedArticle extends TdObject {
   String get tdType => 'pageBlockRelatedArticle';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
   string? title;

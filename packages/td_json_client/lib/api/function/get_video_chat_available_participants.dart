@@ -4,7 +4,7 @@ class GetVideoChatAvailableParticipants extends TdFunction {
   String get tdType => 'getVideoChatAvailableParticipants';
   String get tdReturnType => 'MessageSenders';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
 

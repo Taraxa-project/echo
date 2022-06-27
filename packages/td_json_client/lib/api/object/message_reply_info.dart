@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/message_sender.dart';
 class MessageReplyInfo extends TdObject {
   String get tdType => 'messageReplyInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? reply_count;
   vector<MessageSender>? recent_replier_ids;

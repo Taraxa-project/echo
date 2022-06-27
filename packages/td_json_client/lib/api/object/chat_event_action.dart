@@ -13,7 +13,7 @@ abstract class ChatEventAction extends TdObject {}
 class ChatEventMessageEdited extends ChatEventAction {
   String get tdType => 'chatEventMessageEdited';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Message? old_message;
   Message? new_message;
@@ -49,7 +49,7 @@ class ChatEventMessageEdited extends ChatEventAction {
 class ChatEventMessageDeleted extends ChatEventAction {
   String get tdType => 'chatEventMessageDeleted';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Message? message;
 
@@ -81,7 +81,7 @@ class ChatEventMessageDeleted extends ChatEventAction {
 class ChatEventMessagePinned extends ChatEventAction {
   String get tdType => 'chatEventMessagePinned';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Message? message;
 
@@ -113,7 +113,7 @@ class ChatEventMessagePinned extends ChatEventAction {
 class ChatEventMessageUnpinned extends ChatEventAction {
   String get tdType => 'chatEventMessageUnpinned';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Message? message;
 
@@ -145,7 +145,7 @@ class ChatEventMessageUnpinned extends ChatEventAction {
 class ChatEventPollStopped extends ChatEventAction {
   String get tdType => 'chatEventPollStopped';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Message? message;
 
@@ -177,7 +177,7 @@ class ChatEventPollStopped extends ChatEventAction {
 class ChatEventMemberJoined extends ChatEventAction {
   String get tdType => 'chatEventMemberJoined';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatEventMemberJoined({
@@ -205,7 +205,7 @@ class ChatEventMemberJoined extends ChatEventAction {
 class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
   String get tdType => 'chatEventMemberJoinedByInviteLink';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatInviteLink? invite_link;
 
@@ -237,7 +237,7 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
 class ChatEventMemberJoinedByRequest extends ChatEventAction {
   String get tdType => 'chatEventMemberJoinedByRequest';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? approver_user_id;
   ChatInviteLink? invite_link;
@@ -273,7 +273,7 @@ class ChatEventMemberJoinedByRequest extends ChatEventAction {
 class ChatEventMemberInvited extends ChatEventAction {
   String get tdType => 'chatEventMemberInvited';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   ChatMemberStatus? status;
@@ -309,7 +309,7 @@ class ChatEventMemberInvited extends ChatEventAction {
 class ChatEventMemberLeft extends ChatEventAction {
   String get tdType => 'chatEventMemberLeft';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ChatEventMemberLeft({
@@ -337,7 +337,7 @@ class ChatEventMemberLeft extends ChatEventAction {
 class ChatEventMemberPromoted extends ChatEventAction {
   String get tdType => 'chatEventMemberPromoted';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? user_id;
   ChatMemberStatus? old_status;
@@ -377,7 +377,7 @@ class ChatEventMemberPromoted extends ChatEventAction {
 class ChatEventMemberRestricted extends ChatEventAction {
   String get tdType => 'chatEventMemberRestricted';
 
-  string? extra;
+  String? extra;
   int? client_id;
   MessageSender? member_id;
   ChatMemberStatus? old_status;
@@ -417,7 +417,7 @@ class ChatEventMemberRestricted extends ChatEventAction {
 class ChatEventAvailableReactionsChanged extends ChatEventAction {
   String get tdType => 'chatEventAvailableReactionsChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<string>? old_available_reactions;
   vector<string>? new_available_reactions;
@@ -463,7 +463,7 @@ class ChatEventAvailableReactionsChanged extends ChatEventAction {
 class ChatEventDescriptionChanged extends ChatEventAction {
   String get tdType => 'chatEventDescriptionChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? old_description;
   string? new_description;
@@ -499,7 +499,7 @@ class ChatEventDescriptionChanged extends ChatEventAction {
 class ChatEventLinkedChatChanged extends ChatEventAction {
   String get tdType => 'chatEventLinkedChatChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? old_linked_chat_id;
   int53? new_linked_chat_id;
@@ -535,7 +535,7 @@ class ChatEventLinkedChatChanged extends ChatEventAction {
 class ChatEventLocationChanged extends ChatEventAction {
   String get tdType => 'chatEventLocationChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatLocation? old_location;
   ChatLocation? new_location;
@@ -571,7 +571,7 @@ class ChatEventLocationChanged extends ChatEventAction {
 class ChatEventMessageTtlChanged extends ChatEventAction {
   String get tdType => 'chatEventMessageTtlChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? old_message_ttl;
   int32? new_message_ttl;
@@ -607,7 +607,7 @@ class ChatEventMessageTtlChanged extends ChatEventAction {
 class ChatEventPermissionsChanged extends ChatEventAction {
   String get tdType => 'chatEventPermissionsChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatPermissions? old_permissions;
   ChatPermissions? new_permissions;
@@ -643,7 +643,7 @@ class ChatEventPermissionsChanged extends ChatEventAction {
 class ChatEventPhotoChanged extends ChatEventAction {
   String get tdType => 'chatEventPhotoChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatPhoto? old_photo;
   ChatPhoto? new_photo;
@@ -679,7 +679,7 @@ class ChatEventPhotoChanged extends ChatEventAction {
 class ChatEventSlowModeDelayChanged extends ChatEventAction {
   String get tdType => 'chatEventSlowModeDelayChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? old_slow_mode_delay;
   int32? new_slow_mode_delay;
@@ -715,7 +715,7 @@ class ChatEventSlowModeDelayChanged extends ChatEventAction {
 class ChatEventStickerSetChanged extends ChatEventAction {
   String get tdType => 'chatEventStickerSetChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? old_sticker_set_id;
   int64? new_sticker_set_id;
@@ -751,7 +751,7 @@ class ChatEventStickerSetChanged extends ChatEventAction {
 class ChatEventTitleChanged extends ChatEventAction {
   String get tdType => 'chatEventTitleChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? old_title;
   string? new_title;
@@ -787,7 +787,7 @@ class ChatEventTitleChanged extends ChatEventAction {
 class ChatEventUsernameChanged extends ChatEventAction {
   String get tdType => 'chatEventUsernameChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? old_username;
   string? new_username;
@@ -823,7 +823,7 @@ class ChatEventUsernameChanged extends ChatEventAction {
 class ChatEventHasProtectedContentToggled extends ChatEventAction {
   String get tdType => 'chatEventHasProtectedContentToggled';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? has_protected_content;
 
@@ -855,7 +855,7 @@ class ChatEventHasProtectedContentToggled extends ChatEventAction {
 class ChatEventInvitesToggled extends ChatEventAction {
   String get tdType => 'chatEventInvitesToggled';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? can_invite_users;
 
@@ -887,7 +887,7 @@ class ChatEventInvitesToggled extends ChatEventAction {
 class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
   String get tdType => 'chatEventIsAllHistoryAvailableToggled';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_all_history_available;
 
@@ -919,7 +919,7 @@ class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
 class ChatEventSignMessagesToggled extends ChatEventAction {
   String get tdType => 'chatEventSignMessagesToggled';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? sign_messages;
 
@@ -951,7 +951,7 @@ class ChatEventSignMessagesToggled extends ChatEventAction {
 class ChatEventInviteLinkEdited extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkEdited';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatInviteLink? old_invite_link;
   ChatInviteLink? new_invite_link;
@@ -987,7 +987,7 @@ class ChatEventInviteLinkEdited extends ChatEventAction {
 class ChatEventInviteLinkRevoked extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkRevoked';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatInviteLink? invite_link;
 
@@ -1019,7 +1019,7 @@ class ChatEventInviteLinkRevoked extends ChatEventAction {
 class ChatEventInviteLinkDeleted extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkDeleted';
 
-  string? extra;
+  String? extra;
   int? client_id;
   ChatInviteLink? invite_link;
 
@@ -1051,7 +1051,7 @@ class ChatEventInviteLinkDeleted extends ChatEventAction {
 class ChatEventVideoChatCreated extends ChatEventAction {
   String get tdType => 'chatEventVideoChatCreated';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
 
@@ -1083,7 +1083,7 @@ class ChatEventVideoChatCreated extends ChatEventAction {
 class ChatEventVideoChatEnded extends ChatEventAction {
   String get tdType => 'chatEventVideoChatEnded';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
 
@@ -1115,7 +1115,7 @@ class ChatEventVideoChatEnded extends ChatEventAction {
 class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
   String get tdType => 'chatEventVideoChatMuteNewParticipantsToggled';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? mute_new_participants;
 
@@ -1147,7 +1147,7 @@ class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
 class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
   String get tdType => 'chatEventVideoChatParticipantIsMutedToggled';
 
-  string? extra;
+  String? extra;
   int? client_id;
   MessageSender? participant_id;
   Bool? is_muted;
@@ -1183,7 +1183,7 @@ class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
 class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
   String get tdType => 'chatEventVideoChatParticipantVolumeLevelChanged';
 
-  string? extra;
+  String? extra;
   int? client_id;
   MessageSender? participant_id;
   int32? volume_level;

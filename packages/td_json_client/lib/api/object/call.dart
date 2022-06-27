@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/call_state.dart';
 class Call extends TdObject {
   String get tdType => 'call';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? id;
   int53? user_id;

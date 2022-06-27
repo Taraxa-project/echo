@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/message_sender.dart';
 class VideoChat extends TdObject {
   String get tdType => 'videoChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? group_call_id;
   Bool? has_participants;

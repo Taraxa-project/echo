@@ -4,7 +4,7 @@ class SendEmailAddressVerificationCode extends TdFunction {
   String get tdType => 'sendEmailAddressVerificationCode';
   String get tdReturnType => 'EmailAddressAuthenticationCodeInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? email_address;
 

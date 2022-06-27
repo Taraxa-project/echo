@@ -4,7 +4,7 @@ class CheckEmailAddressVerificationCode extends TdFunction {
   String get tdType => 'checkEmailAddressVerificationCode';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? code;
 

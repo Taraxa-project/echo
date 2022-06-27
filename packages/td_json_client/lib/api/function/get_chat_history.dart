@@ -4,7 +4,7 @@ class GetChatHistory extends TdFunction {
   String get tdType => 'getChatHistory';
   String get tdReturnType => 'Messages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? from_message_id;

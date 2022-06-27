@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/notification.dart';
 class NotificationGroup extends TdObject {
   String get tdType => 'notificationGroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? id;
   NotificationGroupType? type;

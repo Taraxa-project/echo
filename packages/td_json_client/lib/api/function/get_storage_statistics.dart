@@ -4,7 +4,7 @@ class GetStorageStatistics extends TdFunction {
   String get tdType => 'getStorageStatistics';
   String get tdReturnType => 'StorageStatistics';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? chat_limit;
 

@@ -4,7 +4,7 @@ class SearchFileDownloads extends TdFunction {
   String get tdType => 'searchFileDownloads';
   String get tdReturnType => 'FoundFileDownloads';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? query;
   Bool? only_active;

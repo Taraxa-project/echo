@@ -4,7 +4,7 @@ class DeleteChatFilter extends TdFunction {
   String get tdType => 'deleteChatFilter';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? chat_filter_id;
 

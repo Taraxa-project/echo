@@ -6,7 +6,7 @@ class GetInlineQueryResults extends TdFunction {
   String get tdType => 'getInlineQueryResults';
   String get tdReturnType => 'InlineQueryResults';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? bot_user_id;
   int53? chat_id;

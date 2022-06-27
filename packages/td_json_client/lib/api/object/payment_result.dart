@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class PaymentResult extends TdObject {
   String get tdType => 'paymentResult';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? success;
   string? verification_url;

@@ -4,7 +4,7 @@ class GetActiveSessions extends TdFunction {
   String get tdType => 'getActiveSessions';
   String get tdReturnType => 'Sessions';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetActiveSessions({

@@ -6,7 +6,7 @@ class GetMarkdownText extends TdFunction {
   String get tdType => 'getMarkdownText';
   String get tdReturnType => 'FormattedText';
 
-  string? extra;
+  String? extra;
   int? client_id;
   FormattedText? text;
 

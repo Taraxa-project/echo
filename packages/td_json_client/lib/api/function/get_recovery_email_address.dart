@@ -4,7 +4,7 @@ class GetRecoveryEmailAddress extends TdFunction {
   String get tdType => 'getRecoveryEmailAddress';
   String get tdReturnType => 'RecoveryEmailAddress';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? password;
 

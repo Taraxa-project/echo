@@ -4,7 +4,7 @@ class SetBotUpdatesStatus extends TdFunction {
   String get tdType => 'setBotUpdatesStatus';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? pending_update_count;
   string? error_message;

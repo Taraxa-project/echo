@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 class ProfilePhoto extends TdObject {
   String get tdType => 'profilePhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   File? small;

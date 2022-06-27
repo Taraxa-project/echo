@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/language_pack_string_value.dart';
 class LanguagePackString extends TdObject {
   String get tdType => 'languagePackString';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? key;
   LanguagePackStringValue? value;

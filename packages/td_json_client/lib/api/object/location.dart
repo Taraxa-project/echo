@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class Location extends TdObject {
   String get tdType => 'location';
 
-  string? extra;
+  String? extra;
   int? client_id;
   double? latitude;
   double? longitude;

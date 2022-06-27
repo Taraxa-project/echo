@@ -5,7 +5,7 @@ abstract class UserType extends TdObject {}
 class UserTypeRegular extends UserType {
   String get tdType => 'userTypeRegular';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserTypeRegular({
@@ -33,7 +33,7 @@ class UserTypeRegular extends UserType {
 class UserTypeDeleted extends UserType {
   String get tdType => 'userTypeDeleted';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserTypeDeleted({
@@ -61,7 +61,7 @@ class UserTypeDeleted extends UserType {
 class UserTypeBot extends UserType {
   String get tdType => 'userTypeBot';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? can_join_groups;
   Bool? can_read_all_group_messages;
@@ -113,7 +113,7 @@ class UserTypeBot extends UserType {
 class UserTypeUnknown extends UserType {
   String get tdType => 'userTypeUnknown';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   UserTypeUnknown({

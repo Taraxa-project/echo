@@ -4,7 +4,7 @@ class CheckAuthenticationPassword extends TdFunction {
   String get tdType => 'checkAuthenticationPassword';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? password;
 

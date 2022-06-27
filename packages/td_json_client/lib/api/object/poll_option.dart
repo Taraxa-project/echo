@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class PollOption extends TdObject {
   String get tdType => 'pollOption';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
   int32? voter_count;

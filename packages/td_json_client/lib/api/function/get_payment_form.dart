@@ -6,7 +6,7 @@ class GetPaymentForm extends TdFunction {
   String get tdType => 'getPaymentForm';
   String get tdReturnType => 'PaymentForm';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? message_id;

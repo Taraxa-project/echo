@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class CallbackQueryAnswer extends TdObject {
   String get tdType => 'callbackQueryAnswer';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
   Bool? show_alert;

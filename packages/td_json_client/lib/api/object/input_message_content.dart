@@ -15,7 +15,7 @@ abstract class InputMessageContent extends TdObject {}
 class InputMessageText extends InputMessageContent {
   String get tdType => 'inputMessageText';
 
-  string? extra;
+  String? extra;
   int? client_id;
   FormattedText? text;
   Bool? disable_web_page_preview;
@@ -55,7 +55,7 @@ class InputMessageText extends InputMessageContent {
 class InputMessageAnimation extends InputMessageContent {
   String get tdType => 'inputMessageAnimation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? animation;
   InputThumbnail? thumbnail;
@@ -116,7 +116,7 @@ class InputMessageAnimation extends InputMessageContent {
 class InputMessageAudio extends InputMessageContent {
   String get tdType => 'inputMessageAudio';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? audio;
   InputThumbnail? album_cover_thumbnail;
@@ -168,7 +168,7 @@ class InputMessageAudio extends InputMessageContent {
 class InputMessageDocument extends InputMessageContent {
   String get tdType => 'inputMessageDocument';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? document;
   InputThumbnail? thumbnail;
@@ -212,7 +212,7 @@ class InputMessageDocument extends InputMessageContent {
 class InputMessagePhoto extends InputMessageContent {
   String get tdType => 'inputMessagePhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? photo;
   InputThumbnail? thumbnail;
@@ -273,7 +273,7 @@ class InputMessagePhoto extends InputMessageContent {
 class InputMessageSticker extends InputMessageContent {
   String get tdType => 'inputMessageSticker';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? sticker;
   InputThumbnail? thumbnail;
@@ -321,7 +321,7 @@ class InputMessageSticker extends InputMessageContent {
 class InputMessageVideo extends InputMessageContent {
   String get tdType => 'inputMessageVideo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? video;
   InputThumbnail? thumbnail;
@@ -390,7 +390,7 @@ class InputMessageVideo extends InputMessageContent {
 class InputMessageVideoNote extends InputMessageContent {
   String get tdType => 'inputMessageVideoNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? video_note;
   InputThumbnail? thumbnail;
@@ -434,7 +434,7 @@ class InputMessageVideoNote extends InputMessageContent {
 class InputMessageVoiceNote extends InputMessageContent {
   String get tdType => 'inputMessageVoiceNote';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? voice_note;
   int32? duration;
@@ -478,7 +478,7 @@ class InputMessageVoiceNote extends InputMessageContent {
 class InputMessageLocation extends InputMessageContent {
   String get tdType => 'inputMessageLocation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Location? location;
   int32? live_period;
@@ -522,7 +522,7 @@ class InputMessageLocation extends InputMessageContent {
 class InputMessageVenue extends InputMessageContent {
   String get tdType => 'inputMessageVenue';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Venue? venue;
 
@@ -554,7 +554,7 @@ class InputMessageVenue extends InputMessageContent {
 class InputMessageContact extends InputMessageContent {
   String get tdType => 'inputMessageContact';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Contact? contact;
 
@@ -586,7 +586,7 @@ class InputMessageContact extends InputMessageContent {
 class InputMessageDice extends InputMessageContent {
   String get tdType => 'inputMessageDice';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? emoji;
   Bool? clear_draft;
@@ -622,7 +622,7 @@ class InputMessageDice extends InputMessageContent {
 class InputMessageGame extends InputMessageContent {
   String get tdType => 'inputMessageGame';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? bot_user_id;
   string? game_short_name;
@@ -658,7 +658,7 @@ class InputMessageGame extends InputMessageContent {
 class InputMessageInvoice extends InputMessageContent {
   String get tdType => 'inputMessageInvoice';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Invoice? invoice;
   string? title;
@@ -730,7 +730,7 @@ class InputMessageInvoice extends InputMessageContent {
 class InputMessagePoll extends InputMessageContent {
   String get tdType => 'inputMessagePoll';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? question;
   vector<string>? options;
@@ -791,7 +791,7 @@ class InputMessagePoll extends InputMessageContent {
 class InputMessageForwarded extends InputMessageContent {
   String get tdType => 'inputMessageForwarded';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? from_chat_id;
   int53? message_id;

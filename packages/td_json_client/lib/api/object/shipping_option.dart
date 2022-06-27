@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/labeled_price_part.dart';
 class ShippingOption extends TdObject {
   String get tdType => 'shippingOption';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? id;
   string? title;

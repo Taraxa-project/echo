@@ -9,7 +9,7 @@ abstract class NotificationType extends TdObject {}
 class NotificationTypeNewMessage extends NotificationType {
   String get tdType => 'notificationTypeNewMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Message? message;
 
@@ -41,7 +41,7 @@ class NotificationTypeNewMessage extends NotificationType {
 class NotificationTypeNewSecretChat extends NotificationType {
   String get tdType => 'notificationTypeNewSecretChat';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   NotificationTypeNewSecretChat({
@@ -69,7 +69,7 @@ class NotificationTypeNewSecretChat extends NotificationType {
 class NotificationTypeNewCall extends NotificationType {
   String get tdType => 'notificationTypeNewCall';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? call_id;
 
@@ -101,7 +101,7 @@ class NotificationTypeNewCall extends NotificationType {
 class NotificationTypeNewPushMessage extends NotificationType {
   String get tdType => 'notificationTypeNewPushMessage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? message_id;
   MessageSender? sender_id;

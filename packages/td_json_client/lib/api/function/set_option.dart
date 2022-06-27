@@ -6,7 +6,7 @@ class SetOption extends TdFunction {
   String get tdType => 'setOption';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? name;
   OptionValue? value;

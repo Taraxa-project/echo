@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/file.dart';
 class AnimatedChatPhoto extends TdObject {
   String get tdType => 'animatedChatPhoto';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? length;
   File? file;

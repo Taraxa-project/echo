@@ -4,7 +4,7 @@ class DisableProxy extends TdFunction {
   String get tdType => 'disableProxy';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   DisableProxy({

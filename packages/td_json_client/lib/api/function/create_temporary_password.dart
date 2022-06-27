@@ -4,7 +4,7 @@ class CreateTemporaryPassword extends TdFunction {
   String get tdType => 'createTemporaryPassword';
   String get tdReturnType => 'TemporaryPasswordState';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? password;
   int32? valid_for;

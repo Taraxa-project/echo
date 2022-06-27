@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class ScopeNotificationSettings extends TdObject {
   String get tdType => 'scopeNotificationSettings';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? mute_for;
   int64? sound_id;

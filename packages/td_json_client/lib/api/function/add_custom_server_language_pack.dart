@@ -4,7 +4,7 @@ class AddCustomServerLanguagePack extends TdFunction {
   String get tdType => 'addCustomServerLanguagePack';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? language_pack_id;
 

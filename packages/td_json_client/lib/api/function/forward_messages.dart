@@ -6,7 +6,7 @@ class ForwardMessages extends TdFunction {
   String get tdType => 'forwardMessages';
   String get tdReturnType => 'Messages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   int53? from_chat_id;

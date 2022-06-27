@@ -6,7 +6,7 @@ class OptimizeStorage extends TdFunction {
   String get tdType => 'optimizeStorage';
   String get tdReturnType => 'StorageStatistics';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? size;
   int32? ttl;

@@ -4,7 +4,7 @@ class TranslateText extends TdFunction {
   String get tdType => 'translateText';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? text;
   string? from_language_code;

@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/group_call_video_source_group.dart';
 class GroupCallParticipantVideoInfo extends TdObject {
   String get tdType => 'groupCallParticipantVideoInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   vector<GroupCallVideoSourceGroup>? source_groups;
   string? endpoint_id;

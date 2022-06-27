@@ -7,7 +7,7 @@ import 'package:td_json_client/api/object/file.dart';
 class Audio extends TdObject {
   String get tdType => 'audio';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? duration;
   string? title;

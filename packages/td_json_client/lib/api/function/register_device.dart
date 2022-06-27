@@ -6,7 +6,7 @@ class RegisterDevice extends TdFunction {
   String get tdType => 'registerDevice';
   String get tdReturnType => 'PushReceiverId';
 
-  string? extra;
+  String? extra;
   int? client_id;
   DeviceToken? device_token;
   vector<int53>? other_user_ids;

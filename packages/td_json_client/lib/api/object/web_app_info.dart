@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class WebAppInfo extends TdObject {
   String get tdType => 'webAppInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? launch_id;
   string? url;

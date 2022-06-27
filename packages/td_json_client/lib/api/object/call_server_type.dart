@@ -5,7 +5,7 @@ abstract class CallServerType extends TdObject {}
 class CallServerTypeTelegramReflector extends CallServerType {
   String get tdType => 'callServerTypeTelegramReflector';
 
-  string? extra;
+  String? extra;
   int? client_id;
   bytes? peer_tag;
 
@@ -37,7 +37,7 @@ class CallServerTypeTelegramReflector extends CallServerType {
 class CallServerTypeWebrtc extends CallServerType {
   String get tdType => 'callServerTypeWebrtc';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? username;
   string? password;

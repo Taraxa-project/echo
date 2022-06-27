@@ -6,7 +6,7 @@ class DeletePassportElement extends TdFunction {
   String get tdType => 'deletePassportElement';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PassportElementType? type;
 

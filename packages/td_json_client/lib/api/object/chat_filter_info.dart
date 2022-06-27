@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class ChatFilterInfo extends TdObject {
   String get tdType => 'chatFilterInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? id;
   string? title;

@@ -4,7 +4,7 @@ class GetApplicationDownloadLink extends TdFunction {
   String get tdType => 'getApplicationDownloadLink';
   String get tdReturnType => 'HttpUrl';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   GetApplicationDownloadLink({

@@ -7,7 +7,7 @@ import 'package:td_json_client/api/object/file.dart';
 class Document extends TdObject {
   String get tdType => 'document';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? file_name;
   string? mime_type;

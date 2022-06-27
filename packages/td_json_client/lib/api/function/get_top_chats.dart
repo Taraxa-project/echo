@@ -6,7 +6,7 @@ class GetTopChats extends TdFunction {
   String get tdType => 'getTopChats';
   String get tdReturnType => 'Chats';
 
-  string? extra;
+  String? extra;
   int? client_id;
   TopChatCategory? category;
   int32? limit;

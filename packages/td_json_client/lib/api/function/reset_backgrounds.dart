@@ -4,7 +4,7 @@ class ResetBackgrounds extends TdFunction {
   String get tdType => 'resetBackgrounds';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ResetBackgrounds({

@@ -6,7 +6,7 @@ import 'package:td_json_client/api/object/poll_type.dart';
 class Poll extends TdObject {
   String get tdType => 'poll';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? id;
   string? question;

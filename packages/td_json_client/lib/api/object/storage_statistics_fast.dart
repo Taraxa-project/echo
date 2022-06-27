@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class StorageStatisticsFast extends TdObject {
   String get tdType => 'storageStatisticsFast';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? files_size;
   int32? file_count;

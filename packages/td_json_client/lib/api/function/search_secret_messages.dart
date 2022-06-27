@@ -6,7 +6,7 @@ class SearchSecretMessages extends TdFunction {
   String get tdType => 'searchSecretMessages';
   String get tdReturnType => 'FoundMessages';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int53? chat_id;
   string? query;

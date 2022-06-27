@@ -6,7 +6,7 @@ class AddProxy extends TdFunction {
   String get tdType => 'addProxy';
   String get tdReturnType => 'Proxy';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? server;
   int32? port;

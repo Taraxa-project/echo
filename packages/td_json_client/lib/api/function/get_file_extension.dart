@@ -4,7 +4,7 @@ class GetFileExtension extends TdFunction {
   String get tdType => 'getFileExtension';
   String get tdReturnType => 'Text';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? mime_type;
 

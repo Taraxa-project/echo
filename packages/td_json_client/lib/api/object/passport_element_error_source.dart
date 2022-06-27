@@ -5,7 +5,7 @@ abstract class PassportElementErrorSource extends TdObject {}
 class PassportElementErrorSourceUnspecified extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceUnspecified';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementErrorSourceUnspecified({
@@ -33,7 +33,7 @@ class PassportElementErrorSourceUnspecified extends PassportElementErrorSource {
 class PassportElementErrorSourceDataField extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceDataField';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? field_name;
 
@@ -65,7 +65,7 @@ class PassportElementErrorSourceDataField extends PassportElementErrorSource {
 class PassportElementErrorSourceFrontSide extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceFrontSide';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementErrorSourceFrontSide({
@@ -93,7 +93,7 @@ class PassportElementErrorSourceFrontSide extends PassportElementErrorSource {
 class PassportElementErrorSourceReverseSide extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceReverseSide';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementErrorSourceReverseSide({
@@ -121,7 +121,7 @@ class PassportElementErrorSourceReverseSide extends PassportElementErrorSource {
 class PassportElementErrorSourceSelfie extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceSelfie';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementErrorSourceSelfie({
@@ -149,7 +149,7 @@ class PassportElementErrorSourceSelfie extends PassportElementErrorSource {
 class PassportElementErrorSourceTranslationFile extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceTranslationFile';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_index;
 
@@ -181,7 +181,7 @@ class PassportElementErrorSourceTranslationFile extends PassportElementErrorSour
 class PassportElementErrorSourceTranslationFiles extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceTranslationFiles';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementErrorSourceTranslationFiles({
@@ -209,7 +209,7 @@ class PassportElementErrorSourceTranslationFiles extends PassportElementErrorSou
 class PassportElementErrorSourceFile extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceFile';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? file_index;
 
@@ -241,7 +241,7 @@ class PassportElementErrorSourceFile extends PassportElementErrorSource {
 class PassportElementErrorSourceFiles extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceFiles';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   PassportElementErrorSourceFiles({

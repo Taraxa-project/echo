@@ -4,7 +4,7 @@ class GetArchivedStickerSets extends TdFunction {
   String get tdType => 'getArchivedStickerSets';
   String get tdReturnType => 'StickerSets';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_masks;
   int64? offset_sticker_set_id;

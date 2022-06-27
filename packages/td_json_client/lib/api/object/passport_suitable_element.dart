@@ -5,7 +5,7 @@ import 'package:td_json_client/api/object/passport_element_type.dart';
 class PassportSuitableElement extends TdObject {
   String get tdType => 'passportSuitableElement';
 
-  string? extra;
+  String? extra;
   int? client_id;
   PassportElementType? type;
   Bool? is_selfie_required;

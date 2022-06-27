@@ -8,7 +8,7 @@ abstract class NetworkStatisticsEntry extends TdObject {}
 class NetworkStatisticsEntryFile extends NetworkStatisticsEntry {
   String get tdType => 'networkStatisticsEntryFile';
 
-  string? extra;
+  String? extra;
   int? client_id;
   FileType? file_type;
   NetworkType? network_type;
@@ -52,7 +52,7 @@ class NetworkStatisticsEntryFile extends NetworkStatisticsEntry {
 class NetworkStatisticsEntryCall extends NetworkStatisticsEntry {
   String get tdType => 'networkStatisticsEntryCall';
 
-  string? extra;
+  String? extra;
   int? client_id;
   NetworkType? network_type;
   int53? sent_bytes;

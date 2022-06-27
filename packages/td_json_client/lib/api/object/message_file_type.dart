@@ -5,7 +5,7 @@ abstract class MessageFileType extends TdObject {}
 class MessageFileTypePrivate extends MessageFileType {
   String get tdType => 'messageFileTypePrivate';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? name;
 
@@ -37,7 +37,7 @@ class MessageFileTypePrivate extends MessageFileType {
 class MessageFileTypeGroup extends MessageFileType {
   String get tdType => 'messageFileTypeGroup';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? title;
 
@@ -69,7 +69,7 @@ class MessageFileTypeGroup extends MessageFileType {
 class MessageFileTypeUnknown extends MessageFileType {
   String get tdType => 'messageFileTypeUnknown';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   MessageFileTypeUnknown({

@@ -6,7 +6,7 @@ class EditProxy extends TdFunction {
   String get tdType => 'editProxy';
   String get tdReturnType => 'Proxy';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? proxy_id;
   string? server;

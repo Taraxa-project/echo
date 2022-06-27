@@ -6,7 +6,7 @@ class TestProxy extends TdFunction {
   String get tdType => 'testProxy';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? server;
   int32? port;

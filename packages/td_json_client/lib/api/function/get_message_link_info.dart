@@ -4,7 +4,7 @@ class GetMessageLinkInfo extends TdFunction {
   String get tdType => 'getMessageLinkInfo';
   String get tdReturnType => 'MessageLinkInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? url;
 

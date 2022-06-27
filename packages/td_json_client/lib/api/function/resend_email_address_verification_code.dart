@@ -4,7 +4,7 @@ class ResendEmailAddressVerificationCode extends TdFunction {
   String get tdType => 'resendEmailAddressVerificationCode';
   String get tdReturnType => 'EmailAddressAuthenticationCodeInfo';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   ResendEmailAddressVerificationCode({

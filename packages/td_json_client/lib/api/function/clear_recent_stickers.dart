@@ -4,7 +4,7 @@ class ClearRecentStickers extends TdFunction {
   String get tdType => 'clearRecentStickers';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? is_attached;
 

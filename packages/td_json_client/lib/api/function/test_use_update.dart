@@ -4,7 +4,7 @@ class TestUseUpdate extends TdFunction {
   String get tdType => 'testUseUpdate';
   String get tdReturnType => 'Update';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   TestUseUpdate({

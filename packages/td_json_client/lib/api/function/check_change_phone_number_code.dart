@@ -4,7 +4,7 @@ class CheckChangePhoneNumberCode extends TdFunction {
   String get tdType => 'checkChangePhoneNumberCode';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? code;
 

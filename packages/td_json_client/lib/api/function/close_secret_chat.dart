@@ -4,7 +4,7 @@ class CloseSecretChat extends TdFunction {
   String get tdType => 'closeSecretChat';
   String get tdReturnType => 'Ok';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int32? secret_chat_id;
 

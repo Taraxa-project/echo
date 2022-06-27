@@ -7,7 +7,7 @@ abstract class InputChatPhoto extends TdObject {}
 class InputChatPhotoPrevious extends InputChatPhoto {
   String get tdType => 'inputChatPhotoPrevious';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? chat_photo_id;
 
@@ -39,7 +39,7 @@ class InputChatPhotoPrevious extends InputChatPhoto {
 class InputChatPhotoStatic extends InputChatPhoto {
   String get tdType => 'inputChatPhotoStatic';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? photo;
 
@@ -71,7 +71,7 @@ class InputChatPhotoStatic extends InputChatPhoto {
 class InputChatPhotoAnimation extends InputChatPhoto {
   String get tdType => 'inputChatPhotoAnimation';
 
-  string? extra;
+  String? extra;
   int? client_id;
   InputFile? animation;
   double? main_frame_timestamp;

@@ -5,7 +5,7 @@ abstract class OptionValue extends TdObject {}
 class OptionValueBoolean extends OptionValue {
   String get tdType => 'optionValueBoolean';
 
-  string? extra;
+  String? extra;
   int? client_id;
   Bool? value;
 
@@ -37,7 +37,7 @@ class OptionValueBoolean extends OptionValue {
 class OptionValueEmpty extends OptionValue {
   String get tdType => 'optionValueEmpty';
 
-  string? extra;
+  String? extra;
   int? client_id;
 
   OptionValueEmpty({
@@ -65,7 +65,7 @@ class OptionValueEmpty extends OptionValue {
 class OptionValueInteger extends OptionValue {
   String get tdType => 'optionValueInteger';
 
-  string? extra;
+  String? extra;
   int? client_id;
   int64? value;
 
@@ -97,7 +97,7 @@ class OptionValueInteger extends OptionValue {
 class OptionValueString extends OptionValue {
   String get tdType => 'optionValueString';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? value;
 

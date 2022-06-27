@@ -3,7 +3,7 @@ import 'package:td_json_client/api/base.dart';
 class MessageLink extends TdObject {
   String get tdType => 'messageLink';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? link;
   Bool? is_public;

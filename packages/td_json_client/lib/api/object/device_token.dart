@@ -5,7 +5,7 @@ abstract class DeviceToken extends TdObject {}
 class DeviceTokenFirebaseCloudMessaging extends DeviceToken {
   String get tdType => 'deviceTokenFirebaseCloudMessaging';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? token;
   Bool? encrypt;
@@ -41,7 +41,7 @@ class DeviceTokenFirebaseCloudMessaging extends DeviceToken {
 class DeviceTokenApplePush extends DeviceToken {
   String get tdType => 'deviceTokenApplePush';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? device_token;
   Bool? is_app_sandbox;
@@ -77,7 +77,7 @@ class DeviceTokenApplePush extends DeviceToken {
 class DeviceTokenApplePushVoIP extends DeviceToken {
   String get tdType => 'deviceTokenApplePushVoIP';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? device_token;
   Bool? is_app_sandbox;
@@ -117,7 +117,7 @@ class DeviceTokenApplePushVoIP extends DeviceToken {
 class DeviceTokenWindowsPush extends DeviceToken {
   String get tdType => 'deviceTokenWindowsPush';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? access_token;
 
@@ -149,7 +149,7 @@ class DeviceTokenWindowsPush extends DeviceToken {
 class DeviceTokenMicrosoftPush extends DeviceToken {
   String get tdType => 'deviceTokenMicrosoftPush';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? channel_uri;
 
@@ -181,7 +181,7 @@ class DeviceTokenMicrosoftPush extends DeviceToken {
 class DeviceTokenMicrosoftPushVoIP extends DeviceToken {
   String get tdType => 'deviceTokenMicrosoftPushVoIP';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? channel_uri;
 
@@ -213,7 +213,7 @@ class DeviceTokenMicrosoftPushVoIP extends DeviceToken {
 class DeviceTokenWebPush extends DeviceToken {
   String get tdType => 'deviceTokenWebPush';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? endpoint;
   string? p256dh_base64url;
@@ -253,7 +253,7 @@ class DeviceTokenWebPush extends DeviceToken {
 class DeviceTokenSimplePush extends DeviceToken {
   String get tdType => 'deviceTokenSimplePush';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? endpoint;
 
@@ -285,7 +285,7 @@ class DeviceTokenSimplePush extends DeviceToken {
 class DeviceTokenUbuntuPush extends DeviceToken {
   String get tdType => 'deviceTokenUbuntuPush';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? token;
 
@@ -317,7 +317,7 @@ class DeviceTokenUbuntuPush extends DeviceToken {
 class DeviceTokenBlackBerryPush extends DeviceToken {
   String get tdType => 'deviceTokenBlackBerryPush';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? token;
 
@@ -349,7 +349,7 @@ class DeviceTokenBlackBerryPush extends DeviceToken {
 class DeviceTokenTizenPush extends DeviceToken {
   String get tdType => 'deviceTokenTizenPush';
 
-  string? extra;
+  String? extra;
   int? client_id;
   string? reg_id;
 

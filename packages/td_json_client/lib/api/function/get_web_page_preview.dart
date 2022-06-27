@@ -6,7 +6,7 @@ class GetWebPagePreview extends TdFunction {
   String get tdType => 'getWebPagePreview';
   String get tdReturnType => 'WebPage';
 
-  string? extra;
+  String? extra;
   int? client_id;
   FormattedText? text;
 
