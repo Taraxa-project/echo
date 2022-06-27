@@ -61,8 +61,9 @@ class TlType extends Tl {
   });
   String get tdName => isPrimitive ? name : _getTdName();
   bool get isPrimitive => TlPrimitives.primitives.contains(name);
-  bool get isVector => this.name.indexOf('vector<') != -1;
+  bool get isVector => this.name.indexOf('vector<') != -1 && !isVectorVector;
   bool get isVectorVector => this.name.indexOf('vector<vector<') != -1;
+  bool get isContainer => isVector || isVectorVector;
   String get tdSubName => _getTdSubName();
 
   String _getTdName() {

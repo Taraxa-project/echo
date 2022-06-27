@@ -20,8 +20,9 @@ class Api {
 
   String get apiPath => path.joinAll([tdApiPath, 'api']);
   String get basePath => path.joinAll([apiPath, 'base.dart']);
-  String get apiObjectPath => path.joinAll([tdApiPath, 'api', 'object']);
-  String get apiFunctionPath => path.joinAll([tdApiPath, 'api', 'function']);
+  String get mapPath => path.joinAll([apiPath, 'map.dart']);
+  String get objectPath => path.joinAll([tdApiPath, 'api', 'object']);
+  String get functionPath => path.joinAll([tdApiPath, 'api', 'function']);
 
   Map<String, TdFile> _tdFiles = {};
   Map<String, String> _typeToFile = {};
@@ -36,12 +37,12 @@ class Api {
   }
 
   void _prepareObject(TlObject tlObject) {
-    _addTypeToFile(tlObject, apiObjectPath);
+    _addTypeToFile(tlObject, 'object');
     var tdFile = _tdFiles.putIfAbsent(
         tlObject.superClassName,
         () => TdFile(
               typeName: tlObject.superClassName,
-              dirPath: apiObjectPath,
+              dirPath: objectPath,
               package: package,
               packageFilePath: path.joinAll(['api', 'object']),
             ));
@@ -58,12 +59,12 @@ class Api {
   }
 
   void _prepareFunction(TlFunction tlFunction) {
-    _addTypeToFile(tlFunction, apiObjectPath);
+    _addTypeToFile(tlFunction, 'function');
     var tdFile = _tdFiles.putIfAbsent(
         tlFunction.className,
         () => TdFile(
               typeName: tlFunction.className,
-              dirPath: apiFunctionPath,
+              dirPath: functionPath,
               package: package,
               packageFilePath: path.joinAll(['api', 'function']),
             ));
@@ -77,14 +78,44 @@ class Api {
 
   Future<void> writeFiles() async {
     await createDirectories();
-    await writeApi();
+
+    await writeMap();
     await writeBase();
+    await writeApi();
   }
 
   Future<void> createDirectories() async {
     await Directory(apiPath).create(recursive: true);
-    await Directory(apiObjectPath).create(recursive: true);
-    await Directory(apiFunctionPath).create(recursive: true);
+    await Directory(objectPath).create(recursive: true);
+    await Directory(functionPath).create(recursive: true);
+  }
+
+  Future<void> writeBase() async {
+    await File(basePath).writeAsString(
+        Template(TdFile.baseTemplate, htmlEscapeValues: false)
+            .renderString({}));
+  }
+
+  Future<void> writeMap() async {
+    Map<String, dynamic> map = {
+      'package': {'value': package},
+      'imports': [],
+      'map': []
+    };
+    Map<String, dynamic> imports = {};
+    for (var key in _typeToFile.keys) {
+      imports[_typeToFile[key]!] = {
+        'value': "import 'package:$package/api/${_typeToFile[key]}.dart';"
+      };
+      map['map'].add({
+        'name': ReCase(key).camelCase,
+        'type': key,
+      });
+    }
+    map['imports'] = imports.values;
+    await File(mapPath).writeAsString(
+        Template(TdFile.mapTemplate, htmlEscapeValues: false)
+            .renderString(map));
   }
 
   Future<void> writeApi() async {
@@ -96,12 +127,6 @@ class Api {
               .renderString(tdFile.toMap()));
     }
   }
-
-  Future<void> writeBase() async {
-    await File(basePath).writeAsString(
-        Template(TdFile.baseTemplate, htmlEscapeValues: false)
-            .renderString({}));
-  }
 }
 
 class TdFile {
@@ -111,6 +136,7 @@ class TdFile {
   String typeName;
   Map<String, String> imports = {};
   Map<String, Td> classes = {};
+  bool usesMap = false;
   TdFile(
       {required this.typeName,
       required this.dirPath,
@@ -128,13 +154,23 @@ class TdFile {
               members: [],
             ));
     tlDefinition.constructor.params.forEach((tlParam) {
-      td.members.add(TdMember(type: tlParam.type.tdName, name: tlParam.name));
+      var tdMember = TdMember(
+        type: tlParam.type.tdName,
+        name: tlParam.name,
+        isPrimitive: true,
+        isVector: tlParam.type.isVector,
+        isVectorVector: tlParam.type.isVectorVector,
+      );
       if (!tlParam.type.isPrimitive &&
           !TlPrimitives.primitives.contains(tlParam.type.tdSubName)) {
         if (this.typeName != tlParam.type.tdSubName) {
           imports[tlParam.type.tdSubName] = tlParam.type.tdSubName;
+          usesMap = true;
+          tdMember.isPrimitive = false;
         }
       }
+      tdMember.subName = tlParam.type.tdSubName;
+      td.members.add(tdMember);
     });
   }
 
@@ -143,9 +179,10 @@ class TdFile {
       'package': {'value': package},
       'imports': imports.values.map((e) => {
             'value':
-                "import 'package:/$package/api/object/${ReCase(e).snakeCase}.dart';",
+                "import 'package:$package/api/object/${ReCase(e).snakeCase}.dart';",
           }),
       'classes': classes.values.map((td) => td.toMap()),
+      'usesMap': usesMap,
     };
   }
 
@@ -206,6 +243,9 @@ abstract class TdFunction extends Td {
 
   static String get tdTemplate => '''
 import 'package:{{# package }}{{ value }}{{/ package }}/api/base.dart';
+{{# usesMap }}
+import 'package:{{# package }}{{ value }}{{/ package }}/api/map.dart';
+{{/ usesMap }}
 {{# imports }}
 {{ value }}
 {{/ imports }}
@@ -230,19 +270,98 @@ class {{ className }} extends {{ extendsClassName }} {
   {{ type }}? {{ name }};
   {{/ members }}
 
+  {{! default constructor }}
+  {{ className }}({
+    this.extra,
+    this.client_id,
+    {{# members }}
+    this.{{ name }},
+    {{/ members }}
+  });
+
   {{! fromMap constructor}}
   {{ className }}.fromMap(Map<String, dynamic> map) {
-
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    {{# members }}
+    {{# isContainer }}
+    if (map['{{ name }}']) {
+      {{ name }} = [];
+      {{# isVector }}
+      for (var someValue in map['{{ name }}']) {
+        {{#isPrimitive}}
+        {{ name }}?.add(someValue);
+        {{/isPrimitive}}
+        {{^isPrimitive}}
+        {{ name }}?.add(TdApiMap.fromMap(someValue) as {{ subName }});
+        {{/isPrimitive}}
+      }
+      {{/ isVector }}
+      {{# isVectorVector }}
+      for (var someValues in map['{{ name }}']) {
+        var objs = <{{ subName }}>[];
+        for (var someValue in someValues) {
+          {{#isPrimitive}}
+          objs?.add(someValue);
+          {{/isPrimitive}}
+          {{^isPrimitive}}
+          objs.add(TdApiMap.fromMap(someValue) as {{ subName }});
+          {{/isPrimitive}}
+        }
+        {{name}}?.add(objs);
+      }
+      {{/ isVectorVector }}
+    }
+    {{/ isContainer }}
+    {{^ isContainer }}
+    {{# isPrimitive }}
+    {{ name }} = map['{{ name }}'];
+    {{/ isPrimitive }}
+    {{^ isPrimitive }}
+    {{ name }} = TdApiMap.fromMap(map['{{ name }}']) as {{ subName }};
+    {{/ isPrimitive }}
+    {{/ isContainer }}
+    {{/ members }}
   }
 
   {{! toMap}}
-  Map<String, dynamic> toMap({skipNulls: true}) {
-    return {};
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      {{# members }}
+      '{{ name }}': {{ name }}?.toMap(skipNulls: skipNulls),
+      {{/ members }}
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
   }
-
 }
 {{/ isAbstract }}
 {{/ classes }}
+''';
+
+  static String get mapTemplate => '''
+import 'package:{{# package }}{{ value }}{{/ package }}/api/base.dart';
+
+{{# imports }}
+{{ value }}
+{{/ imports }}
+
+class TdApiMap {
+  static Map<String, dynamic Function(Map<String, dynamic>)> _tdMap = {
+    {{# map }}
+    '{{ name }}': (map) => {{ type }}.fromMap(map),
+    {{/ map }}
+  };
+
+  static Td? fromMap(Map<String, dynamic> map) {
+    return _tdMap.containsKey(map['@type']) ? _tdMap[map['@type']]!(map) : null;
+  }
+}
 ''';
 }
 
@@ -279,11 +398,27 @@ class Td {
 class TdMember {
   String type;
   String name;
-  TdMember({required this.type, required this.name});
-  Map<String, String> toMap() {
+  bool isPrimitive;
+  bool isVector = false;
+  bool isVectorVector = false;
+  bool get isContainer => isVector || isVectorVector;
+  String subName = '';
+  TdMember({
+    required this.type,
+    required this.name,
+    required this.isPrimitive,
+    this.isVector = false,
+    this.isVectorVector = false,
+  });
+  Map<String, dynamic> toMap() {
     return {
       'name': name,
       'type': type,
+      'isPrimitive': isPrimitive,
+      'isVectorVector': isVectorVector,
+      'isVector': isVector,
+      'isContainer': isContainer,
+      'subName': subName,
     };
   }
 }

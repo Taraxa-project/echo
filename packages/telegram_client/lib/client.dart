@@ -1,7 +1,20 @@
 import 'package:loggy/loggy.dart';
 
 import 'package:td_json_client/client.dart';
-import 'package:td_json_client/api.dart';
+
+import 'package:td_json_client/api/function/get_authorization_state.dart';
+import 'package:td_json_client/api/object/update.dart';
+import 'package:td_json_client/api/object/authorization_state.dart';
+
+import 'package:td_json_client/api/function/set_tdlib_parameters.dart';
+import 'package:td_json_client/api/object/tdlib_parameters.dart';
+
+import 'package:td_json_client/api/function/check_database_encryption_key.dart';
+import 'package:td_json_client/api/function/set_authentication_phone_number.dart';
+
+import 'package:td_json_client/api/function/check_authentication_code.dart';
+
+import 'package:td_json_client/api/function/get_chats.dart';
 
 mixin TelegramClientLoggy implements LoggyType {
   @override

@@ -4,7 +4,8 @@ import 'dart:convert' as convert;
 import 'package:loggy/loggy.dart';
 
 import 'package:td_json_client/src/lib_td_json.dart';
-import 'package:td_json_client/api.dart';
+import 'package:td_json_client/api/base.dart';
+import 'package:td_json_client/api/map.dart';
 
 mixin TdJsonClientLoggy implements LoggyType {
   @override
@@ -72,11 +73,11 @@ class TdJsonClient with TdJsonClientLoggy {
 
       var response = convert.jsonDecode(responseJson);
       if (response != null) {
-        var tlObject = TlMap.fromMap(response);
-        if (tlObject == null) {
+        var td = TdApiMap.fromMap(response);
+        if (td == null) {
           loggy.error('Could not find td mapping for: $responseJson.');
         } else {
-          yield tlObject;
+          yield td;
         }
       }
     }
