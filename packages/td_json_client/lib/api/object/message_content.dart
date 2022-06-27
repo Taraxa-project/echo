@@ -1642,6 +1642,74 @@ class MessageWebsiteConnected extends MessageContent {
     return map;
   }
 }
+class MessageWebAppDataSent extends MessageContent {
+  String get tdType => 'messageWebAppDataSent';
+
+  string? extra;
+  int? client_id;
+  string? button_text;
+
+  MessageWebAppDataSent({
+    this.extra,
+    this.client_id,
+    this.button_text,
+  });
+
+  MessageWebAppDataSent.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    button_text = map['button_text'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'button_text': button_text?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class MessageWebAppDataReceived extends MessageContent {
+  String get tdType => 'messageWebAppDataReceived';
+
+  string? extra;
+  int? client_id;
+  string? button_text;
+  string? data;
+
+  MessageWebAppDataReceived({
+    this.extra,
+    this.client_id,
+    this.button_text,
+    this.data,
+  });
+
+  MessageWebAppDataReceived.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    button_text = map['button_text'];
+    data = map['data'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'button_text': button_text?.toMap(skipNulls: skipNulls),
+      'data': data?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
 class MessagePassportDataSent extends MessageContent {
   String get tdType => 'messagePassportDataSent';
 

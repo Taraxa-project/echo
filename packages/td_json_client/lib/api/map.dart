@@ -24,6 +24,7 @@ import 'package:td_json_client/api/object/thumbnail_format.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/mask_point.dart';
 import 'package:td_json_client/api/object/mask_position.dart';
+import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/closed_vector_path.dart';
 import 'package:td_json_client/api/object/poll_option.dart';
 import 'package:td_json_client/api/object/poll_type.dart';
@@ -46,17 +47,20 @@ import 'package:td_json_client/api/object/chat_photo_info.dart';
 import 'package:td_json_client/api/object/user_type.dart';
 import 'package:td_json_client/api/object/bot_command.dart';
 import 'package:td_json_client/api/object/bot_commands.dart';
+import 'package:td_json_client/api/object/bot_menu_button.dart';
 import 'package:td_json_client/api/object/chat_location.dart';
 import 'package:td_json_client/api/object/animated_chat_photo.dart';
 import 'package:td_json_client/api/object/chat_photo.dart';
 import 'package:td_json_client/api/object/chat_photos.dart';
 import 'package:td_json_client/api/object/input_chat_photo.dart';
+import 'package:td_json_client/api/object/chat_permissions.dart';
+import 'package:td_json_client/api/object/chat_administrator_rights.dart';
 import 'package:td_json_client/api/object/user.dart';
+import 'package:td_json_client/api/object/bot_info.dart';
 import 'package:td_json_client/api/object/user_full_info.dart';
 import 'package:td_json_client/api/object/users.dart';
 import 'package:td_json_client/api/object/chat_administrator.dart';
 import 'package:td_json_client/api/object/chat_administrators.dart';
-import 'package:td_json_client/api/object/chat_permissions.dart';
 import 'package:td_json_client/api/object/chat_member_status.dart';
 import 'package:td_json_client/api/object/chat_member.dart';
 import 'package:td_json_client/api/object/chat_members.dart';
@@ -83,7 +87,9 @@ import 'package:td_json_client/api/object/message_senders.dart';
 import 'package:td_json_client/api/object/message_forward_origin.dart';
 import 'package:td_json_client/api/object/message_forward_info.dart';
 import 'package:td_json_client/api/object/message_reply_info.dart';
+import 'package:td_json_client/api/object/message_reaction.dart';
 import 'package:td_json_client/api/object/message_interaction_info.dart';
+import 'package:td_json_client/api/object/unread_reaction.dart';
 import 'package:td_json_client/api/object/message_sending_state.dart';
 import 'package:td_json_client/api/object/message.dart';
 import 'package:td_json_client/api/object/messages.dart';
@@ -93,6 +99,9 @@ import 'package:td_json_client/api/object/message_positions.dart';
 import 'package:td_json_client/api/object/message_calendar_day.dart';
 import 'package:td_json_client/api/object/message_calendar.dart';
 import 'package:td_json_client/api/object/sponsored_message.dart';
+import 'package:td_json_client/api/object/file_download.dart';
+import 'package:td_json_client/api/object/downloaded_file_counts.dart';
+import 'package:td_json_client/api/object/found_file_downloads.dart';
 import 'package:td_json_client/api/object/notification_settings_scope.dart';
 import 'package:td_json_client/api/object/chat_notification_settings.dart';
 import 'package:td_json_client/api/object/scope_notification_settings.dart';
@@ -119,6 +128,7 @@ import 'package:td_json_client/api/object/inline_keyboard_button_type.dart';
 import 'package:td_json_client/api/object/inline_keyboard_button.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/login_url_info.dart';
+import 'package:td_json_client/api/object/web_app_info.dart';
 import 'package:td_json_client/api/object/message_thread_info.dart';
 import 'package:td_json_client/api/object/rich_text.dart';
 import 'package:td_json_client/api/object/page_block_caption.dart';
@@ -136,6 +146,7 @@ import 'package:td_json_client/api/object/phone_number_info.dart';
 import 'package:td_json_client/api/object/bank_card_action_open_url.dart';
 import 'package:td_json_client/api/object/bank_card_info.dart';
 import 'package:td_json_client/api/object/address.dart';
+import 'package:td_json_client/api/object/theme_parameters.dart';
 import 'package:td_json_client/api/object/labeled_price_part.dart';
 import 'package:td_json_client/api/object/invoice.dart';
 import 'package:td_json_client/api/object/order_info.dart';
@@ -143,7 +154,6 @@ import 'package:td_json_client/api/object/shipping_option.dart';
 import 'package:td_json_client/api/object/saved_credentials.dart';
 import 'package:td_json_client/api/object/input_credentials.dart';
 import 'package:td_json_client/api/object/payments_provider_stripe.dart';
-import 'package:td_json_client/api/object/payment_form_theme.dart';
 import 'package:td_json_client/api/object/payment_form.dart';
 import 'package:td_json_client/api/object/validated_order_info.dart';
 import 'package:td_json_client/api/object/payment_result.dart';
@@ -192,6 +202,9 @@ import 'package:td_json_client/api/object/call_id.dart';
 import 'package:td_json_client/api/object/group_call_id.dart';
 import 'package:td_json_client/api/object/call_state.dart';
 import 'package:td_json_client/api/object/group_call_video_quality.dart';
+import 'package:td_json_client/api/object/group_call_stream.dart';
+import 'package:td_json_client/api/object/group_call_streams.dart';
+import 'package:td_json_client/api/object/rtmp_url.dart';
 import 'package:td_json_client/api/object/group_call_recent_speaker.dart';
 import 'package:td_json_client/api/object/group_call.dart';
 import 'package:td_json_client/api/object/group_call_video_source_group.dart';
@@ -200,9 +213,16 @@ import 'package:td_json_client/api/object/group_call_participant.dart';
 import 'package:td_json_client/api/object/call_problem.dart';
 import 'package:td_json_client/api/object/call.dart';
 import 'package:td_json_client/api/object/phone_number_authentication_settings.dart';
+import 'package:td_json_client/api/object/added_reaction.dart';
+import 'package:td_json_client/api/object/added_reactions.dart';
+import 'package:td_json_client/api/object/available_reactions.dart';
+import 'package:td_json_client/api/object/reaction.dart';
 import 'package:td_json_client/api/object/animations.dart';
 import 'package:td_json_client/api/object/dice_stickers.dart';
 import 'package:td_json_client/api/object/imported_contacts.dart';
+import 'package:td_json_client/api/object/attachment_menu_bot_color.dart';
+import 'package:td_json_client/api/object/attachment_menu_bot.dart';
+import 'package:td_json_client/api/object/sent_web_app_message.dart';
 import 'package:td_json_client/api/object/http_url.dart';
 import 'package:td_json_client/api/object/input_inline_query_result.dart';
 import 'package:td_json_client/api/object/inline_query_result.dart';
@@ -239,6 +259,8 @@ import 'package:td_json_client/api/object/message_file_type.dart';
 import 'package:td_json_client/api/object/push_message_content.dart';
 import 'package:td_json_client/api/object/notification_type.dart';
 import 'package:td_json_client/api/object/notification_group_type.dart';
+import 'package:td_json_client/api/object/notification_sound.dart';
+import 'package:td_json_client/api/object/notification_sounds.dart';
 import 'package:td_json_client/api/object/notification.dart';
 import 'package:td_json_client/api/object/notification_group.dart';
 import 'package:td_json_client/api/object/option_value.dart';
@@ -248,6 +270,7 @@ import 'package:td_json_client/api/object/user_privacy_setting_rule.dart';
 import 'package:td_json_client/api/object/user_privacy_setting_rules.dart';
 import 'package:td_json_client/api/object/user_privacy_setting.dart';
 import 'package:td_json_client/api/object/account_ttl.dart';
+import 'package:td_json_client/api/object/session_type.dart';
 import 'package:td_json_client/api/object/session.dart';
 import 'package:td_json_client/api/object/sessions.dart';
 import 'package:td_json_client/api/object/connected_website.dart';
@@ -385,6 +408,7 @@ import 'package:td_json_client/api/function/search_chat_messages.dart';
 import 'package:td_json_client/api/function/search_messages.dart';
 import 'package:td_json_client/api/function/search_secret_messages.dart';
 import 'package:td_json_client/api/function/search_call_messages.dart';
+import 'package:td_json_client/api/function/search_outgoing_document_messages.dart';
 import 'package:td_json_client/api/function/delete_all_call_messages.dart';
 import 'package:td_json_client/api/function/search_chat_recent_location_messages.dart';
 import 'package:td_json_client/api/function/get_active_live_location_messages.dart';
@@ -400,6 +424,7 @@ import 'package:td_json_client/api/function/remove_notification_group.dart';
 import 'package:td_json_client/api/function/get_message_link.dart';
 import 'package:td_json_client/api/function/get_message_embedding_code.dart';
 import 'package:td_json_client/api/function/get_message_link_info.dart';
+import 'package:td_json_client/api/function/translate_text.dart';
 import 'package:td_json_client/api/function/get_chat_available_message_senders.dart';
 import 'package:td_json_client/api/function/set_chat_message_sender.dart';
 import 'package:td_json_client/api/function/send_message.dart';
@@ -424,6 +449,9 @@ import 'package:td_json_client/api/function/edit_inline_message_media.dart';
 import 'package:td_json_client/api/function/edit_inline_message_caption.dart';
 import 'package:td_json_client/api/function/edit_inline_message_reply_markup.dart';
 import 'package:td_json_client/api/function/edit_message_scheduling_state.dart';
+import 'package:td_json_client/api/function/get_message_available_reactions.dart';
+import 'package:td_json_client/api/function/set_message_reaction.dart';
+import 'package:td_json_client/api/function/get_message_added_reactions.dart';
 import 'package:td_json_client/api/function/get_text_entities.dart';
 import 'package:td_json_client/api/function/parse_text_entities.dart';
 import 'package:td_json_client/api/function/parse_markdown.dart';
@@ -434,6 +462,7 @@ import 'package:td_json_client/api/function/clean_file_name.dart';
 import 'package:td_json_client/api/function/get_language_pack_string.dart';
 import 'package:td_json_client/api/function/get_json_value.dart';
 import 'package:td_json_client/api/function/get_json_string.dart';
+import 'package:td_json_client/api/function/get_theme_parameters_json_string.dart';
 import 'package:td_json_client/api/function/set_poll_answer.dart';
 import 'package:td_json_client/api/function/get_poll_voters.dart';
 import 'package:td_json_client/api/function/stop_poll.dart';
@@ -442,6 +471,11 @@ import 'package:td_json_client/api/function/get_login_url_info.dart';
 import 'package:td_json_client/api/function/get_login_url.dart';
 import 'package:td_json_client/api/function/get_inline_query_results.dart';
 import 'package:td_json_client/api/function/answer_inline_query.dart';
+import 'package:td_json_client/api/function/get_web_app_url.dart';
+import 'package:td_json_client/api/function/send_web_app_data.dart';
+import 'package:td_json_client/api/function/open_web_app.dart';
+import 'package:td_json_client/api/function/close_web_app.dart';
+import 'package:td_json_client/api/function/answer_web_app_query.dart';
 import 'package:td_json_client/api/function/get_callback_query_answer.dart';
 import 'package:td_json_client/api/function/answer_callback_query.dart';
 import 'package:td_json_client/api/function/answer_shipping_query.dart';
@@ -461,6 +495,7 @@ import 'package:td_json_client/api/function/get_internal_link_type.dart';
 import 'package:td_json_client/api/function/get_external_link_info.dart';
 import 'package:td_json_client/api/function/get_external_link.dart';
 import 'package:td_json_client/api/function/read_all_chat_mentions.dart';
+import 'package:td_json_client/api/function/read_all_chat_reactions.dart';
 import 'package:td_json_client/api/function/create_private_chat.dart';
 import 'package:td_json_client/api/function/create_basic_group_chat.dart';
 import 'package:td_json_client/api/function/create_supergroup_chat.dart';
@@ -488,6 +523,7 @@ import 'package:td_json_client/api/function/set_chat_notification_settings.dart'
 import 'package:td_json_client/api/function/toggle_chat_has_protected_content.dart';
 import 'package:td_json_client/api/function/toggle_chat_is_marked_as_unread.dart';
 import 'package:td_json_client/api/function/toggle_chat_default_disable_notification.dart';
+import 'package:td_json_client/api/function/set_chat_available_reactions.dart';
 import 'package:td_json_client/api/function/set_chat_client_data.dart';
 import 'package:td_json_client/api/function/set_chat_description.dart';
 import 'package:td_json_client/api/function/set_chat_discussion_group.dart';
@@ -508,12 +544,18 @@ import 'package:td_json_client/api/function/get_chat_member.dart';
 import 'package:td_json_client/api/function/search_chat_members.dart';
 import 'package:td_json_client/api/function/get_chat_administrators.dart';
 import 'package:td_json_client/api/function/clear_all_draft_messages.dart';
+import 'package:td_json_client/api/function/get_saved_notification_sound.dart';
+import 'package:td_json_client/api/function/get_saved_notification_sounds.dart';
+import 'package:td_json_client/api/function/add_saved_notification_sound.dart';
+import 'package:td_json_client/api/function/remove_saved_notification_sound.dart';
 import 'package:td_json_client/api/function/get_chat_notification_settings_exceptions.dart';
 import 'package:td_json_client/api/function/get_scope_notification_settings.dart';
 import 'package:td_json_client/api/function/set_scope_notification_settings.dart';
 import 'package:td_json_client/api/function/reset_all_notification_settings.dart';
 import 'package:td_json_client/api/function/toggle_chat_is_pinned.dart';
 import 'package:td_json_client/api/function/set_pinned_chats.dart';
+import 'package:td_json_client/api/function/get_attachment_menu_bot.dart';
+import 'package:td_json_client/api/function/toggle_bot_is_added_to_attachment_menu.dart';
 import 'package:td_json_client/api/function/download_file.dart';
 import 'package:td_json_client/api/function/get_file_downloaded_prefix_size.dart';
 import 'package:td_json_client/api/function/cancel_download_file.dart';
@@ -525,6 +567,12 @@ import 'package:td_json_client/api/function/set_file_generation_progress.dart';
 import 'package:td_json_client/api/function/finish_file_generation.dart';
 import 'package:td_json_client/api/function/read_file_part.dart';
 import 'package:td_json_client/api/function/delete_file.dart';
+import 'package:td_json_client/api/function/add_file_to_downloads.dart';
+import 'package:td_json_client/api/function/toggle_download_is_paused.dart';
+import 'package:td_json_client/api/function/toggle_all_downloads_are_paused.dart';
+import 'package:td_json_client/api/function/remove_file_from_downloads.dart';
+import 'package:td_json_client/api/function/remove_all_files_from_downloads.dart';
+import 'package:td_json_client/api/function/search_file_downloads.dart';
 import 'package:td_json_client/api/function/get_message_file_type.dart';
 import 'package:td_json_client/api/function/get_message_import_confirmation_text.dart';
 import 'package:td_json_client/api/function/import_messages.dart';
@@ -549,9 +597,12 @@ import 'package:td_json_client/api/function/send_call_signaling_data.dart';
 import 'package:td_json_client/api/function/discard_call.dart';
 import 'package:td_json_client/api/function/send_call_rating.dart';
 import 'package:td_json_client/api/function/send_call_debug_information.dart';
+import 'package:td_json_client/api/function/send_call_log.dart';
 import 'package:td_json_client/api/function/get_video_chat_available_participants.dart';
 import 'package:td_json_client/api/function/set_video_chat_default_participant.dart';
 import 'package:td_json_client/api/function/create_video_chat.dart';
+import 'package:td_json_client/api/function/get_video_chat_rtmp_url.dart';
+import 'package:td_json_client/api/function/replace_video_chat_rtmp_url.dart';
 import 'package:td_json_client/api/function/get_group_call.dart';
 import 'package:td_json_client/api/function/start_scheduled_group_call.dart';
 import 'package:td_json_client/api/function/toggle_group_call_enabled_start_notification.dart';
@@ -575,6 +626,7 @@ import 'package:td_json_client/api/function/toggle_group_call_participant_is_han
 import 'package:td_json_client/api/function/load_group_call_participants.dart';
 import 'package:td_json_client/api/function/leave_group_call.dart';
 import 'package:td_json_client/api/function/end_group_call.dart';
+import 'package:td_json_client/api/function/get_group_call_streams.dart';
 import 'package:td_json_client/api/function/get_group_call_stream_segment.dart';
 import 'package:td_json_client/api/function/toggle_message_sender_is_blocked.dart';
 import 'package:td_json_client/api/function/block_message_sender_from_replies.dart';
@@ -587,6 +639,7 @@ import 'package:td_json_client/api/function/remove_contacts.dart';
 import 'package:td_json_client/api/function/get_imported_contact_count.dart';
 import 'package:td_json_client/api/function/change_imported_contacts.dart';
 import 'package:td_json_client/api/function/clear_imported_contacts.dart';
+import 'package:td_json_client/api/function/search_user_by_phone_number.dart';
 import 'package:td_json_client/api/function/share_phone_number.dart';
 import 'package:td_json_client/api/function/get_user_profile_photos.dart';
 import 'package:td_json_client/api/function/get_stickers.dart';
@@ -633,6 +686,10 @@ import 'package:td_json_client/api/function/check_change_phone_number_code.dart'
 import 'package:td_json_client/api/function/set_commands.dart';
 import 'package:td_json_client/api/function/delete_commands.dart';
 import 'package:td_json_client/api/function/get_commands.dart';
+import 'package:td_json_client/api/function/set_menu_button.dart';
+import 'package:td_json_client/api/function/get_menu_button.dart';
+import 'package:td_json_client/api/function/set_default_group_administrator_rights.dart';
+import 'package:td_json_client/api/function/set_default_channel_administrator_rights.dart';
 import 'package:td_json_client/api/function/get_active_sessions.dart';
 import 'package:td_json_client/api/function/terminate_session.dart';
 import 'package:td_json_client/api/function/terminate_all_other_sessions.dart';
@@ -812,17 +869,22 @@ class TdApiMap {
     'photoSize': (map) => PhotoSize.fromMap(map),
     'minithumbnail': (map) => Minithumbnail.fromMap(map),
     'thumbnailFormatJpeg': (map) => ThumbnailFormatJpeg.fromMap(map),
-    'thumbnailFormatPng': (map) => ThumbnailFormatPng.fromMap(map),
-    'thumbnailFormatWebp': (map) => ThumbnailFormatWebp.fromMap(map),
     'thumbnailFormatGif': (map) => ThumbnailFormatGif.fromMap(map),
-    'thumbnailFormatTgs': (map) => ThumbnailFormatTgs.fromMap(map),
     'thumbnailFormatMpeg4': (map) => ThumbnailFormatMpeg4.fromMap(map),
+    'thumbnailFormatPng': (map) => ThumbnailFormatPng.fromMap(map),
+    'thumbnailFormatTgs': (map) => ThumbnailFormatTgs.fromMap(map),
+    'thumbnailFormatWebm': (map) => ThumbnailFormatWebm.fromMap(map),
+    'thumbnailFormatWebp': (map) => ThumbnailFormatWebp.fromMap(map),
     'thumbnail': (map) => Thumbnail.fromMap(map),
     'maskPointForehead': (map) => MaskPointForehead.fromMap(map),
     'maskPointEyes': (map) => MaskPointEyes.fromMap(map),
     'maskPointMouth': (map) => MaskPointMouth.fromMap(map),
     'maskPointChin': (map) => MaskPointChin.fromMap(map),
     'maskPosition': (map) => MaskPosition.fromMap(map),
+    'stickerTypeStatic': (map) => StickerTypeStatic.fromMap(map),
+    'stickerTypeAnimated': (map) => StickerTypeAnimated.fromMap(map),
+    'stickerTypeVideo': (map) => StickerTypeVideo.fromMap(map),
+    'stickerTypeMask': (map) => StickerTypeMask.fromMap(map),
     'closedVectorPath': (map) => ClosedVectorPath.fromMap(map),
     'pollOption': (map) => PollOption.fromMap(map),
     'pollTypeRegular': (map) => PollTypeRegular.fromMap(map),
@@ -849,6 +911,7 @@ class TdApiMap {
     'userTypeUnknown': (map) => UserTypeUnknown.fromMap(map),
     'botCommand': (map) => BotCommand.fromMap(map),
     'botCommands': (map) => BotCommands.fromMap(map),
+    'botMenuButton': (map) => BotMenuButton.fromMap(map),
     'chatLocation': (map) => ChatLocation.fromMap(map),
     'animatedChatPhoto': (map) => AnimatedChatPhoto.fromMap(map),
     'chatPhoto': (map) => ChatPhoto.fromMap(map),
@@ -856,12 +919,14 @@ class TdApiMap {
     'inputChatPhotoPrevious': (map) => InputChatPhotoPrevious.fromMap(map),
     'inputChatPhotoStatic': (map) => InputChatPhotoStatic.fromMap(map),
     'inputChatPhotoAnimation': (map) => InputChatPhotoAnimation.fromMap(map),
+    'chatPermissions': (map) => ChatPermissions.fromMap(map),
+    'chatAdministratorRights': (map) => ChatAdministratorRights.fromMap(map),
     'user': (map) => User.fromMap(map),
+    'botInfo': (map) => BotInfo.fromMap(map),
     'userFullInfo': (map) => UserFullInfo.fromMap(map),
     'users': (map) => Users.fromMap(map),
     'chatAdministrator': (map) => ChatAdministrator.fromMap(map),
     'chatAdministrators': (map) => ChatAdministrators.fromMap(map),
-    'chatPermissions': (map) => ChatPermissions.fromMap(map),
     'chatMemberStatusCreator': (map) => ChatMemberStatusCreator.fromMap(map),
     'chatMemberStatusAdministrator': (map) => ChatMemberStatusAdministrator.fromMap(map),
     'chatMemberStatusMember': (map) => ChatMemberStatusMember.fromMap(map),
@@ -913,7 +978,9 @@ class TdApiMap {
     'messageForwardOriginMessageImport': (map) => MessageForwardOriginMessageImport.fromMap(map),
     'messageForwardInfo': (map) => MessageForwardInfo.fromMap(map),
     'messageReplyInfo': (map) => MessageReplyInfo.fromMap(map),
+    'messageReaction': (map) => MessageReaction.fromMap(map),
     'messageInteractionInfo': (map) => MessageInteractionInfo.fromMap(map),
+    'unreadReaction': (map) => UnreadReaction.fromMap(map),
     'messageSendingStatePending': (map) => MessageSendingStatePending.fromMap(map),
     'messageSendingStateFailed': (map) => MessageSendingStateFailed.fromMap(map),
     'message': (map) => Message.fromMap(map),
@@ -924,6 +991,9 @@ class TdApiMap {
     'messageCalendarDay': (map) => MessageCalendarDay.fromMap(map),
     'messageCalendar': (map) => MessageCalendar.fromMap(map),
     'sponsoredMessage': (map) => SponsoredMessage.fromMap(map),
+    'fileDownload': (map) => FileDownload.fromMap(map),
+    'downloadedFileCounts': (map) => DownloadedFileCounts.fromMap(map),
+    'foundFileDownloads': (map) => FoundFileDownloads.fromMap(map),
     'notificationSettingsScopePrivateChats': (map) => NotificationSettingsScopePrivateChats.fromMap(map),
     'notificationSettingsScopeGroupChats': (map) => NotificationSettingsScopeGroupChats.fromMap(map),
     'notificationSettingsScopeChannelChats': (map) => NotificationSettingsScopeChannelChats.fromMap(map),
@@ -963,9 +1033,11 @@ class TdApiMap {
     'keyboardButtonTypeRequestPhoneNumber': (map) => KeyboardButtonTypeRequestPhoneNumber.fromMap(map),
     'keyboardButtonTypeRequestLocation': (map) => KeyboardButtonTypeRequestLocation.fromMap(map),
     'keyboardButtonTypeRequestPoll': (map) => KeyboardButtonTypeRequestPoll.fromMap(map),
+    'keyboardButtonTypeWebApp': (map) => KeyboardButtonTypeWebApp.fromMap(map),
     'keyboardButton': (map) => KeyboardButton.fromMap(map),
     'inlineKeyboardButtonTypeUrl': (map) => InlineKeyboardButtonTypeUrl.fromMap(map),
     'inlineKeyboardButtonTypeLoginUrl': (map) => InlineKeyboardButtonTypeLoginUrl.fromMap(map),
+    'inlineKeyboardButtonTypeWebApp': (map) => InlineKeyboardButtonTypeWebApp.fromMap(map),
     'inlineKeyboardButtonTypeCallback': (map) => InlineKeyboardButtonTypeCallback.fromMap(map),
     'inlineKeyboardButtonTypeCallbackWithPassword': (map) => InlineKeyboardButtonTypeCallbackWithPassword.fromMap(map),
     'inlineKeyboardButtonTypeCallbackGame': (map) => InlineKeyboardButtonTypeCallbackGame.fromMap(map),
@@ -979,6 +1051,7 @@ class TdApiMap {
     'replyMarkupInlineKeyboard': (map) => ReplyMarkupInlineKeyboard.fromMap(map),
     'loginUrlInfoOpen': (map) => LoginUrlInfoOpen.fromMap(map),
     'loginUrlInfoRequestConfirmation': (map) => LoginUrlInfoRequestConfirmation.fromMap(map),
+    'webAppInfo': (map) => WebAppInfo.fromMap(map),
     'messageThreadInfo': (map) => MessageThreadInfo.fromMap(map),
     'richTextPlain': (map) => RichTextPlain.fromMap(map),
     'richTextBold': (map) => RichTextBold.fromMap(map),
@@ -1044,6 +1117,7 @@ class TdApiMap {
     'bankCardActionOpenUrl': (map) => BankCardActionOpenUrl.fromMap(map),
     'bankCardInfo': (map) => BankCardInfo.fromMap(map),
     'address': (map) => Address.fromMap(map),
+    'themeParameters': (map) => ThemeParameters.fromMap(map),
     'labeledPricePart': (map) => LabeledPricePart.fromMap(map),
     'invoice': (map) => Invoice.fromMap(map),
     'orderInfo': (map) => OrderInfo.fromMap(map),
@@ -1054,7 +1128,6 @@ class TdApiMap {
     'inputCredentialsApplePay': (map) => InputCredentialsApplePay.fromMap(map),
     'inputCredentialsGooglePay': (map) => InputCredentialsGooglePay.fromMap(map),
     'paymentsProviderStripe': (map) => PaymentsProviderStripe.fromMap(map),
-    'paymentFormTheme': (map) => PaymentFormTheme.fromMap(map),
     'paymentForm': (map) => PaymentForm.fromMap(map),
     'validatedOrderInfo': (map) => ValidatedOrderInfo.fromMap(map),
     'paymentResult': (map) => PaymentResult.fromMap(map),
@@ -1177,6 +1250,8 @@ class TdApiMap {
     'messagePaymentSuccessfulBot': (map) => MessagePaymentSuccessfulBot.fromMap(map),
     'messageContactRegistered': (map) => MessageContactRegistered.fromMap(map),
     'messageWebsiteConnected': (map) => MessageWebsiteConnected.fromMap(map),
+    'messageWebAppDataSent': (map) => MessageWebAppDataSent.fromMap(map),
+    'messageWebAppDataReceived': (map) => MessageWebAppDataReceived.fromMap(map),
     'messagePassportDataSent': (map) => MessagePassportDataSent.fromMap(map),
     'messagePassportDataReceived': (map) => MessagePassportDataReceived.fromMap(map),
     'messageProximityAlertTriggered': (map) => MessageProximityAlertTriggered.fromMap(map),
@@ -1193,6 +1268,7 @@ class TdApiMap {
     'textEntityTypeItalic': (map) => TextEntityTypeItalic.fromMap(map),
     'textEntityTypeUnderline': (map) => TextEntityTypeUnderline.fromMap(map),
     'textEntityTypeStrikethrough': (map) => TextEntityTypeStrikethrough.fromMap(map),
+    'textEntityTypeSpoiler': (map) => TextEntityTypeSpoiler.fromMap(map),
     'textEntityTypeCode': (map) => TextEntityTypeCode.fromMap(map),
     'textEntityTypePre': (map) => TextEntityTypePre.fromMap(map),
     'textEntityTypePreCode': (map) => TextEntityTypePreCode.fromMap(map),
@@ -1235,6 +1311,7 @@ class TdApiMap {
     'searchMessagesFilterVoiceAndVideoNote': (map) => SearchMessagesFilterVoiceAndVideoNote.fromMap(map),
     'searchMessagesFilterMention': (map) => SearchMessagesFilterMention.fromMap(map),
     'searchMessagesFilterUnreadMention': (map) => SearchMessagesFilterUnreadMention.fromMap(map),
+    'searchMessagesFilterUnreadReaction': (map) => SearchMessagesFilterUnreadReaction.fromMap(map),
     'searchMessagesFilterFailedToSend': (map) => SearchMessagesFilterFailedToSend.fromMap(map),
     'searchMessagesFilterPinned': (map) => SearchMessagesFilterPinned.fromMap(map),
     'chatActionTyping': (map) => ChatActionTyping.fromMap(map),
@@ -1283,6 +1360,9 @@ class TdApiMap {
     'groupCallVideoQualityThumbnail': (map) => GroupCallVideoQualityThumbnail.fromMap(map),
     'groupCallVideoQualityMedium': (map) => GroupCallVideoQualityMedium.fromMap(map),
     'groupCallVideoQualityFull': (map) => GroupCallVideoQualityFull.fromMap(map),
+    'groupCallStream': (map) => GroupCallStream.fromMap(map),
+    'groupCallStreams': (map) => GroupCallStreams.fromMap(map),
+    'rtmpUrl': (map) => RtmpUrl.fromMap(map),
     'groupCallRecentSpeaker': (map) => GroupCallRecentSpeaker.fromMap(map),
     'groupCall': (map) => GroupCall.fromMap(map),
     'groupCallVideoSourceGroup': (map) => GroupCallVideoSourceGroup.fromMap(map),
@@ -1299,10 +1379,17 @@ class TdApiMap {
     'callProblemPixelatedVideo': (map) => CallProblemPixelatedVideo.fromMap(map),
     'call': (map) => Call.fromMap(map),
     'phoneNumberAuthenticationSettings': (map) => PhoneNumberAuthenticationSettings.fromMap(map),
+    'addedReaction': (map) => AddedReaction.fromMap(map),
+    'addedReactions': (map) => AddedReactions.fromMap(map),
+    'availableReactions': (map) => AvailableReactions.fromMap(map),
+    'reaction': (map) => Reaction.fromMap(map),
     'animations': (map) => Animations.fromMap(map),
     'diceStickersRegular': (map) => DiceStickersRegular.fromMap(map),
     'diceStickersSlotMachine': (map) => DiceStickersSlotMachine.fromMap(map),
     'importedContacts': (map) => ImportedContacts.fromMap(map),
+    'attachmentMenuBotColor': (map) => AttachmentMenuBotColor.fromMap(map),
+    'attachmentMenuBot': (map) => AttachmentMenuBot.fromMap(map),
+    'sentWebAppMessage': (map) => SentWebAppMessage.fromMap(map),
     'httpUrl': (map) => HttpUrl.fromMap(map),
     'inputInlineQueryResultAnimation': (map) => InputInlineQueryResultAnimation.fromMap(map),
     'inputInlineQueryResultArticle': (map) => InputInlineQueryResultArticle.fromMap(map),
@@ -1338,38 +1425,39 @@ class TdApiMap {
     'gameHighScores': (map) => GameHighScores.fromMap(map),
     'chatEventMessageEdited': (map) => ChatEventMessageEdited.fromMap(map),
     'chatEventMessageDeleted': (map) => ChatEventMessageDeleted.fromMap(map),
-    'chatEventPollStopped': (map) => ChatEventPollStopped.fromMap(map),
     'chatEventMessagePinned': (map) => ChatEventMessagePinned.fromMap(map),
     'chatEventMessageUnpinned': (map) => ChatEventMessageUnpinned.fromMap(map),
+    'chatEventPollStopped': (map) => ChatEventPollStopped.fromMap(map),
     'chatEventMemberJoined': (map) => ChatEventMemberJoined.fromMap(map),
     'chatEventMemberJoinedByInviteLink': (map) => ChatEventMemberJoinedByInviteLink.fromMap(map),
     'chatEventMemberJoinedByRequest': (map) => ChatEventMemberJoinedByRequest.fromMap(map),
-    'chatEventMemberLeft': (map) => ChatEventMemberLeft.fromMap(map),
     'chatEventMemberInvited': (map) => ChatEventMemberInvited.fromMap(map),
+    'chatEventMemberLeft': (map) => ChatEventMemberLeft.fromMap(map),
     'chatEventMemberPromoted': (map) => ChatEventMemberPromoted.fromMap(map),
     'chatEventMemberRestricted': (map) => ChatEventMemberRestricted.fromMap(map),
-    'chatEventTitleChanged': (map) => ChatEventTitleChanged.fromMap(map),
-    'chatEventPermissionsChanged': (map) => ChatEventPermissionsChanged.fromMap(map),
+    'chatEventAvailableReactionsChanged': (map) => ChatEventAvailableReactionsChanged.fromMap(map),
     'chatEventDescriptionChanged': (map) => ChatEventDescriptionChanged.fromMap(map),
-    'chatEventUsernameChanged': (map) => ChatEventUsernameChanged.fromMap(map),
-    'chatEventPhotoChanged': (map) => ChatEventPhotoChanged.fromMap(map),
-    'chatEventInvitesToggled': (map) => ChatEventInvitesToggled.fromMap(map),
     'chatEventLinkedChatChanged': (map) => ChatEventLinkedChatChanged.fromMap(map),
-    'chatEventSlowModeDelayChanged': (map) => ChatEventSlowModeDelayChanged.fromMap(map),
-    'chatEventMessageTtlChanged': (map) => ChatEventMessageTtlChanged.fromMap(map),
-    'chatEventSignMessagesToggled': (map) => ChatEventSignMessagesToggled.fromMap(map),
-    'chatEventHasProtectedContentToggled': (map) => ChatEventHasProtectedContentToggled.fromMap(map),
-    'chatEventStickerSetChanged': (map) => ChatEventStickerSetChanged.fromMap(map),
     'chatEventLocationChanged': (map) => ChatEventLocationChanged.fromMap(map),
+    'chatEventMessageTtlChanged': (map) => ChatEventMessageTtlChanged.fromMap(map),
+    'chatEventPermissionsChanged': (map) => ChatEventPermissionsChanged.fromMap(map),
+    'chatEventPhotoChanged': (map) => ChatEventPhotoChanged.fromMap(map),
+    'chatEventSlowModeDelayChanged': (map) => ChatEventSlowModeDelayChanged.fromMap(map),
+    'chatEventStickerSetChanged': (map) => ChatEventStickerSetChanged.fromMap(map),
+    'chatEventTitleChanged': (map) => ChatEventTitleChanged.fromMap(map),
+    'chatEventUsernameChanged': (map) => ChatEventUsernameChanged.fromMap(map),
+    'chatEventHasProtectedContentToggled': (map) => ChatEventHasProtectedContentToggled.fromMap(map),
+    'chatEventInvitesToggled': (map) => ChatEventInvitesToggled.fromMap(map),
     'chatEventIsAllHistoryAvailableToggled': (map) => ChatEventIsAllHistoryAvailableToggled.fromMap(map),
+    'chatEventSignMessagesToggled': (map) => ChatEventSignMessagesToggled.fromMap(map),
     'chatEventInviteLinkEdited': (map) => ChatEventInviteLinkEdited.fromMap(map),
     'chatEventInviteLinkRevoked': (map) => ChatEventInviteLinkRevoked.fromMap(map),
     'chatEventInviteLinkDeleted': (map) => ChatEventInviteLinkDeleted.fromMap(map),
     'chatEventVideoChatCreated': (map) => ChatEventVideoChatCreated.fromMap(map),
     'chatEventVideoChatEnded': (map) => ChatEventVideoChatEnded.fromMap(map),
+    'chatEventVideoChatMuteNewParticipantsToggled': (map) => ChatEventVideoChatMuteNewParticipantsToggled.fromMap(map),
     'chatEventVideoChatParticipantIsMutedToggled': (map) => ChatEventVideoChatParticipantIsMutedToggled.fromMap(map),
     'chatEventVideoChatParticipantVolumeLevelChanged': (map) => ChatEventVideoChatParticipantVolumeLevelChanged.fromMap(map),
-    'chatEventVideoChatMuteNewParticipantsToggled': (map) => ChatEventVideoChatMuteNewParticipantsToggled.fromMap(map),
     'chatEvent': (map) => ChatEvent.fromMap(map),
     'chatEvents': (map) => ChatEvents.fromMap(map),
     'chatEventLogFilters': (map) => ChatEventLogFilters.fromMap(map),
@@ -1459,6 +1547,8 @@ class TdApiMap {
     'notificationGroupTypeMentions': (map) => NotificationGroupTypeMentions.fromMap(map),
     'notificationGroupTypeSecretChat': (map) => NotificationGroupTypeSecretChat.fromMap(map),
     'notificationGroupTypeCalls': (map) => NotificationGroupTypeCalls.fromMap(map),
+    'notificationSound': (map) => NotificationSound.fromMap(map),
+    'notificationSounds': (map) => NotificationSounds.fromMap(map),
     'notification': (map) => Notification.fromMap(map),
     'notificationGroup': (map) => NotificationGroup.fromMap(map),
     'optionValueBoolean': (map) => OptionValueBoolean.fromMap(map),
@@ -1490,6 +1580,23 @@ class TdApiMap {
     'userPrivacySettingAllowPeerToPeerCalls': (map) => UserPrivacySettingAllowPeerToPeerCalls.fromMap(map),
     'userPrivacySettingAllowFindingByPhoneNumber': (map) => UserPrivacySettingAllowFindingByPhoneNumber.fromMap(map),
     'accountTtl': (map) => AccountTtl.fromMap(map),
+    'sessionTypeAndroid': (map) => SessionTypeAndroid.fromMap(map),
+    'sessionTypeApple': (map) => SessionTypeApple.fromMap(map),
+    'sessionTypeBrave': (map) => SessionTypeBrave.fromMap(map),
+    'sessionTypeChrome': (map) => SessionTypeChrome.fromMap(map),
+    'sessionTypeEdge': (map) => SessionTypeEdge.fromMap(map),
+    'sessionTypeFirefox': (map) => SessionTypeFirefox.fromMap(map),
+    'sessionTypeIpad': (map) => SessionTypeIpad.fromMap(map),
+    'sessionTypeIphone': (map) => SessionTypeIphone.fromMap(map),
+    'sessionTypeLinux': (map) => SessionTypeLinux.fromMap(map),
+    'sessionTypeMac': (map) => SessionTypeMac.fromMap(map),
+    'sessionTypeOpera': (map) => SessionTypeOpera.fromMap(map),
+    'sessionTypeSafari': (map) => SessionTypeSafari.fromMap(map),
+    'sessionTypeUbuntu': (map) => SessionTypeUbuntu.fromMap(map),
+    'sessionTypeUnknown': (map) => SessionTypeUnknown.fromMap(map),
+    'sessionTypeVivaldi': (map) => SessionTypeVivaldi.fromMap(map),
+    'sessionTypeWindows': (map) => SessionTypeWindows.fromMap(map),
+    'sessionTypeXbox': (map) => SessionTypeXbox.fromMap(map),
     'session': (map) => Session.fromMap(map),
     'sessions': (map) => Sessions.fromMap(map),
     'connectedWebsite': (map) => ConnectedWebsite.fromMap(map),
@@ -1501,21 +1608,27 @@ class TdApiMap {
     'chatReportReasonCopyright': (map) => ChatReportReasonCopyright.fromMap(map),
     'chatReportReasonUnrelatedLocation': (map) => ChatReportReasonUnrelatedLocation.fromMap(map),
     'chatReportReasonFake': (map) => ChatReportReasonFake.fromMap(map),
+    'chatReportReasonIllegalDrugs': (map) => ChatReportReasonIllegalDrugs.fromMap(map),
+    'chatReportReasonPersonalDetails': (map) => ChatReportReasonPersonalDetails.fromMap(map),
     'chatReportReasonCustom': (map) => ChatReportReasonCustom.fromMap(map),
     'internalLinkTypeActiveSessions': (map) => InternalLinkTypeActiveSessions.fromMap(map),
+    'internalLinkTypeAttachmentMenuBot': (map) => InternalLinkTypeAttachmentMenuBot.fromMap(map),
     'internalLinkTypeAuthenticationCode': (map) => InternalLinkTypeAuthenticationCode.fromMap(map),
     'internalLinkTypeBackground': (map) => InternalLinkTypeBackground.fromMap(map),
     'internalLinkTypeBotStart': (map) => InternalLinkTypeBotStart.fromMap(map),
     'internalLinkTypeBotStartInGroup': (map) => InternalLinkTypeBotStartInGroup.fromMap(map),
+    'internalLinkTypeBotAddToChannel': (map) => InternalLinkTypeBotAddToChannel.fromMap(map),
     'internalLinkTypeChangePhoneNumber': (map) => InternalLinkTypeChangePhoneNumber.fromMap(map),
     'internalLinkTypeChatInvite': (map) => InternalLinkTypeChatInvite.fromMap(map),
     'internalLinkTypeFilterSettings': (map) => InternalLinkTypeFilterSettings.fromMap(map),
     'internalLinkTypeGame': (map) => InternalLinkTypeGame.fromMap(map),
     'internalLinkTypeLanguagePack': (map) => InternalLinkTypeLanguagePack.fromMap(map),
+    'internalLinkTypeLanguageSettings': (map) => InternalLinkTypeLanguageSettings.fromMap(map),
     'internalLinkTypeMessage': (map) => InternalLinkTypeMessage.fromMap(map),
     'internalLinkTypeMessageDraft': (map) => InternalLinkTypeMessageDraft.fromMap(map),
     'internalLinkTypePassportDataRequest': (map) => InternalLinkTypePassportDataRequest.fromMap(map),
     'internalLinkTypePhoneNumberConfirmation': (map) => InternalLinkTypePhoneNumberConfirmation.fromMap(map),
+    'internalLinkTypePrivacyAndSecuritySettings': (map) => InternalLinkTypePrivacyAndSecuritySettings.fromMap(map),
     'internalLinkTypeProxy': (map) => InternalLinkTypeProxy.fromMap(map),
     'internalLinkTypePublicChat': (map) => InternalLinkTypePublicChat.fromMap(map),
     'internalLinkTypeQrCodeAuthentication': (map) => InternalLinkTypeQrCodeAuthentication.fromMap(map),
@@ -1525,6 +1638,7 @@ class TdApiMap {
     'internalLinkTypeThemeSettings': (map) => InternalLinkTypeThemeSettings.fromMap(map),
     'internalLinkTypeUnknownDeepLink': (map) => InternalLinkTypeUnknownDeepLink.fromMap(map),
     'internalLinkTypeUnsupportedProxy': (map) => InternalLinkTypeUnsupportedProxy.fromMap(map),
+    'internalLinkTypeUserPhoneNumber': (map) => InternalLinkTypeUserPhoneNumber.fromMap(map),
     'internalLinkTypeVideoChat': (map) => InternalLinkTypeVideoChat.fromMap(map),
     'messageLink': (map) => MessageLink.fromMap(map),
     'messageLinkInfo': (map) => MessageLinkInfo.fromMap(map),
@@ -1533,6 +1647,7 @@ class TdApiMap {
     'fileTypeAnimation': (map) => FileTypeAnimation.fromMap(map),
     'fileTypeAudio': (map) => FileTypeAudio.fromMap(map),
     'fileTypeDocument': (map) => FileTypeDocument.fromMap(map),
+    'fileTypeNotificationSound': (map) => FileTypeNotificationSound.fromMap(map),
     'fileTypePhoto': (map) => FileTypePhoto.fromMap(map),
     'fileTypeProfilePhoto': (map) => FileTypeProfilePhoto.fromMap(map),
     'fileTypeSecret': (map) => FileTypeSecret.fromMap(map),
@@ -1595,8 +1710,7 @@ class TdApiMap {
     'proxyTypeMtproto': (map) => ProxyTypeMtproto.fromMap(map),
     'proxy': (map) => Proxy.fromMap(map),
     'proxies': (map) => Proxies.fromMap(map),
-    'inputStickerStatic': (map) => InputStickerStatic.fromMap(map),
-    'inputStickerAnimated': (map) => InputStickerAnimated.fromMap(map),
+    'inputSticker': (map) => InputSticker.fromMap(map),
     'dateRange': (map) => DateRange.fromMap(map),
     'statisticalValue': (map) => StatisticalValue.fromMap(map),
     'statisticalGraphData': (map) => StatisticalGraphData.fromMap(map),
@@ -1630,6 +1744,7 @@ class TdApiMap {
     'updateMessageInteractionInfo': (map) => UpdateMessageInteractionInfo.fromMap(map),
     'updateMessageContentOpened': (map) => UpdateMessageContentOpened.fromMap(map),
     'updateMessageMentionRead': (map) => UpdateMessageMentionRead.fromMap(map),
+    'updateMessageUnreadReactions': (map) => UpdateMessageUnreadReactions.fromMap(map),
     'updateMessageLiveLocationViewed': (map) => UpdateMessageLiveLocationViewed.fromMap(map),
     'updateNewChat': (map) => UpdateNewChat.fromMap(map),
     'updateChatTitle': (map) => UpdateChatTitle.fromMap(map),
@@ -1640,6 +1755,7 @@ class TdApiMap {
     'updateChatReadInbox': (map) => UpdateChatReadInbox.fromMap(map),
     'updateChatReadOutbox': (map) => UpdateChatReadOutbox.fromMap(map),
     'updateChatActionBar': (map) => UpdateChatActionBar.fromMap(map),
+    'updateChatAvailableReactions': (map) => UpdateChatAvailableReactions.fromMap(map),
     'updateChatDraftMessage': (map) => UpdateChatDraftMessage.fromMap(map),
     'updateChatMessageSender': (map) => UpdateChatMessageSender.fromMap(map),
     'updateChatMessageTtl': (map) => UpdateChatMessageTtl.fromMap(map),
@@ -1648,6 +1764,7 @@ class TdApiMap {
     'updateChatReplyMarkup': (map) => UpdateChatReplyMarkup.fromMap(map),
     'updateChatTheme': (map) => UpdateChatTheme.fromMap(map),
     'updateChatUnreadMentionCount': (map) => UpdateChatUnreadMentionCount.fromMap(map),
+    'updateChatUnreadReactionCount': (map) => UpdateChatUnreadReactionCount.fromMap(map),
     'updateChatVideoChat': (map) => UpdateChatVideoChat.fromMap(map),
     'updateChatDefaultDisableNotification': (map) => UpdateChatDefaultDisableNotification.fromMap(map),
     'updateChatHasProtectedContent': (map) => UpdateChatHasProtectedContent.fromMap(map),
@@ -1675,6 +1792,10 @@ class TdApiMap {
     'updateFile': (map) => UpdateFile.fromMap(map),
     'updateFileGenerationStart': (map) => UpdateFileGenerationStart.fromMap(map),
     'updateFileGenerationStop': (map) => UpdateFileGenerationStop.fromMap(map),
+    'updateFileDownloads': (map) => UpdateFileDownloads.fromMap(map),
+    'updateFileAddedToDownloads': (map) => UpdateFileAddedToDownloads.fromMap(map),
+    'updateFileDownload': (map) => UpdateFileDownload.fromMap(map),
+    'updateFileRemovedFromDownloads': (map) => UpdateFileRemovedFromDownloads.fromMap(map),
     'updateCall': (map) => UpdateCall.fromMap(map),
     'updateGroupCall': (map) => UpdateGroupCall.fromMap(map),
     'updateGroupCallParticipant': (map) => UpdateGroupCallParticipant.fromMap(map),
@@ -1689,12 +1810,16 @@ class TdApiMap {
     'updateRecentStickers': (map) => UpdateRecentStickers.fromMap(map),
     'updateFavoriteStickers': (map) => UpdateFavoriteStickers.fromMap(map),
     'updateSavedAnimations': (map) => UpdateSavedAnimations.fromMap(map),
+    'updateSavedNotificationSounds': (map) => UpdateSavedNotificationSounds.fromMap(map),
     'updateSelectedBackground': (map) => UpdateSelectedBackground.fromMap(map),
     'updateChatThemes': (map) => UpdateChatThemes.fromMap(map),
     'updateLanguagePackStrings': (map) => UpdateLanguagePackStrings.fromMap(map),
     'updateConnectionState': (map) => UpdateConnectionState.fromMap(map),
     'updateTermsOfService': (map) => UpdateTermsOfService.fromMap(map),
     'updateUsersNearby': (map) => UpdateUsersNearby.fromMap(map),
+    'updateAttachmentMenuBots': (map) => UpdateAttachmentMenuBots.fromMap(map),
+    'updateWebAppMessageSent': (map) => UpdateWebAppMessageSent.fromMap(map),
+    'updateReactions': (map) => UpdateReactions.fromMap(map),
     'updateDiceEmojis': (map) => UpdateDiceEmojis.fromMap(map),
     'updateAnimatedEmojiMessageClicked': (map) => UpdateAnimatedEmojiMessageClicked.fromMap(map),
     'updateAnimationSearchParameters': (map) => UpdateAnimationSearchParameters.fromMap(map),
@@ -1802,6 +1927,7 @@ class TdApiMap {
     'searchMessages': (map) => SearchMessages.fromMap(map),
     'searchSecretMessages': (map) => SearchSecretMessages.fromMap(map),
     'searchCallMessages': (map) => SearchCallMessages.fromMap(map),
+    'searchOutgoingDocumentMessages': (map) => SearchOutgoingDocumentMessages.fromMap(map),
     'deleteAllCallMessages': (map) => DeleteAllCallMessages.fromMap(map),
     'searchChatRecentLocationMessages': (map) => SearchChatRecentLocationMessages.fromMap(map),
     'getActiveLiveLocationMessages': (map) => GetActiveLiveLocationMessages.fromMap(map),
@@ -1817,6 +1943,7 @@ class TdApiMap {
     'getMessageLink': (map) => GetMessageLink.fromMap(map),
     'getMessageEmbeddingCode': (map) => GetMessageEmbeddingCode.fromMap(map),
     'getMessageLinkInfo': (map) => GetMessageLinkInfo.fromMap(map),
+    'translateText': (map) => TranslateText.fromMap(map),
     'getChatAvailableMessageSenders': (map) => GetChatAvailableMessageSenders.fromMap(map),
     'setChatMessageSender': (map) => SetChatMessageSender.fromMap(map),
     'sendMessage': (map) => SendMessage.fromMap(map),
@@ -1841,6 +1968,9 @@ class TdApiMap {
     'editInlineMessageCaption': (map) => EditInlineMessageCaption.fromMap(map),
     'editInlineMessageReplyMarkup': (map) => EditInlineMessageReplyMarkup.fromMap(map),
     'editMessageSchedulingState': (map) => EditMessageSchedulingState.fromMap(map),
+    'getMessageAvailableReactions': (map) => GetMessageAvailableReactions.fromMap(map),
+    'setMessageReaction': (map) => SetMessageReaction.fromMap(map),
+    'getMessageAddedReactions': (map) => GetMessageAddedReactions.fromMap(map),
     'getTextEntities': (map) => GetTextEntities.fromMap(map),
     'parseTextEntities': (map) => ParseTextEntities.fromMap(map),
     'parseMarkdown': (map) => ParseMarkdown.fromMap(map),
@@ -1851,6 +1981,7 @@ class TdApiMap {
     'getLanguagePackString': (map) => GetLanguagePackString.fromMap(map),
     'getJsonValue': (map) => GetJsonValue.fromMap(map),
     'getJsonString': (map) => GetJsonString.fromMap(map),
+    'getThemeParametersJsonString': (map) => GetThemeParametersJsonString.fromMap(map),
     'setPollAnswer': (map) => SetPollAnswer.fromMap(map),
     'getPollVoters': (map) => GetPollVoters.fromMap(map),
     'stopPoll': (map) => StopPoll.fromMap(map),
@@ -1859,6 +1990,11 @@ class TdApiMap {
     'getLoginUrl': (map) => GetLoginUrl.fromMap(map),
     'getInlineQueryResults': (map) => GetInlineQueryResults.fromMap(map),
     'answerInlineQuery': (map) => AnswerInlineQuery.fromMap(map),
+    'getWebAppUrl': (map) => GetWebAppUrl.fromMap(map),
+    'sendWebAppData': (map) => SendWebAppData.fromMap(map),
+    'openWebApp': (map) => OpenWebApp.fromMap(map),
+    'closeWebApp': (map) => CloseWebApp.fromMap(map),
+    'answerWebAppQuery': (map) => AnswerWebAppQuery.fromMap(map),
     'getCallbackQueryAnswer': (map) => GetCallbackQueryAnswer.fromMap(map),
     'answerCallbackQuery': (map) => AnswerCallbackQuery.fromMap(map),
     'answerShippingQuery': (map) => AnswerShippingQuery.fromMap(map),
@@ -1878,6 +2014,7 @@ class TdApiMap {
     'getExternalLinkInfo': (map) => GetExternalLinkInfo.fromMap(map),
     'getExternalLink': (map) => GetExternalLink.fromMap(map),
     'readAllChatMentions': (map) => ReadAllChatMentions.fromMap(map),
+    'readAllChatReactions': (map) => ReadAllChatReactions.fromMap(map),
     'createPrivateChat': (map) => CreatePrivateChat.fromMap(map),
     'createBasicGroupChat': (map) => CreateBasicGroupChat.fromMap(map),
     'createSupergroupChat': (map) => CreateSupergroupChat.fromMap(map),
@@ -1905,6 +2042,7 @@ class TdApiMap {
     'toggleChatHasProtectedContent': (map) => ToggleChatHasProtectedContent.fromMap(map),
     'toggleChatIsMarkedAsUnread': (map) => ToggleChatIsMarkedAsUnread.fromMap(map),
     'toggleChatDefaultDisableNotification': (map) => ToggleChatDefaultDisableNotification.fromMap(map),
+    'setChatAvailableReactions': (map) => SetChatAvailableReactions.fromMap(map),
     'setChatClientData': (map) => SetChatClientData.fromMap(map),
     'setChatDescription': (map) => SetChatDescription.fromMap(map),
     'setChatDiscussionGroup': (map) => SetChatDiscussionGroup.fromMap(map),
@@ -1925,12 +2063,18 @@ class TdApiMap {
     'searchChatMembers': (map) => SearchChatMembers.fromMap(map),
     'getChatAdministrators': (map) => GetChatAdministrators.fromMap(map),
     'clearAllDraftMessages': (map) => ClearAllDraftMessages.fromMap(map),
+    'getSavedNotificationSound': (map) => GetSavedNotificationSound.fromMap(map),
+    'getSavedNotificationSounds': (map) => GetSavedNotificationSounds.fromMap(map),
+    'addSavedNotificationSound': (map) => AddSavedNotificationSound.fromMap(map),
+    'removeSavedNotificationSound': (map) => RemoveSavedNotificationSound.fromMap(map),
     'getChatNotificationSettingsExceptions': (map) => GetChatNotificationSettingsExceptions.fromMap(map),
     'getScopeNotificationSettings': (map) => GetScopeNotificationSettings.fromMap(map),
     'setScopeNotificationSettings': (map) => SetScopeNotificationSettings.fromMap(map),
     'resetAllNotificationSettings': (map) => ResetAllNotificationSettings.fromMap(map),
     'toggleChatIsPinned': (map) => ToggleChatIsPinned.fromMap(map),
     'setPinnedChats': (map) => SetPinnedChats.fromMap(map),
+    'getAttachmentMenuBot': (map) => GetAttachmentMenuBot.fromMap(map),
+    'toggleBotIsAddedToAttachmentMenu': (map) => ToggleBotIsAddedToAttachmentMenu.fromMap(map),
     'downloadFile': (map) => DownloadFile.fromMap(map),
     'getFileDownloadedPrefixSize': (map) => GetFileDownloadedPrefixSize.fromMap(map),
     'cancelDownloadFile': (map) => CancelDownloadFile.fromMap(map),
@@ -1942,6 +2086,12 @@ class TdApiMap {
     'finishFileGeneration': (map) => FinishFileGeneration.fromMap(map),
     'readFilePart': (map) => ReadFilePart.fromMap(map),
     'deleteFile': (map) => DeleteFile.fromMap(map),
+    'addFileToDownloads': (map) => AddFileToDownloads.fromMap(map),
+    'toggleDownloadIsPaused': (map) => ToggleDownloadIsPaused.fromMap(map),
+    'toggleAllDownloadsArePaused': (map) => ToggleAllDownloadsArePaused.fromMap(map),
+    'removeFileFromDownloads': (map) => RemoveFileFromDownloads.fromMap(map),
+    'removeAllFilesFromDownloads': (map) => RemoveAllFilesFromDownloads.fromMap(map),
+    'searchFileDownloads': (map) => SearchFileDownloads.fromMap(map),
     'getMessageFileType': (map) => GetMessageFileType.fromMap(map),
     'getMessageImportConfirmationText': (map) => GetMessageImportConfirmationText.fromMap(map),
     'importMessages': (map) => ImportMessages.fromMap(map),
@@ -1966,9 +2116,12 @@ class TdApiMap {
     'discardCall': (map) => DiscardCall.fromMap(map),
     'sendCallRating': (map) => SendCallRating.fromMap(map),
     'sendCallDebugInformation': (map) => SendCallDebugInformation.fromMap(map),
+    'sendCallLog': (map) => SendCallLog.fromMap(map),
     'getVideoChatAvailableParticipants': (map) => GetVideoChatAvailableParticipants.fromMap(map),
     'setVideoChatDefaultParticipant': (map) => SetVideoChatDefaultParticipant.fromMap(map),
     'createVideoChat': (map) => CreateVideoChat.fromMap(map),
+    'getVideoChatRtmpUrl': (map) => GetVideoChatRtmpUrl.fromMap(map),
+    'replaceVideoChatRtmpUrl': (map) => ReplaceVideoChatRtmpUrl.fromMap(map),
     'getGroupCall': (map) => GetGroupCall.fromMap(map),
     'startScheduledGroupCall': (map) => StartScheduledGroupCall.fromMap(map),
     'toggleGroupCallEnabledStartNotification': (map) => ToggleGroupCallEnabledStartNotification.fromMap(map),
@@ -1992,6 +2145,7 @@ class TdApiMap {
     'loadGroupCallParticipants': (map) => LoadGroupCallParticipants.fromMap(map),
     'leaveGroupCall': (map) => LeaveGroupCall.fromMap(map),
     'endGroupCall': (map) => EndGroupCall.fromMap(map),
+    'getGroupCallStreams': (map) => GetGroupCallStreams.fromMap(map),
     'getGroupCallStreamSegment': (map) => GetGroupCallStreamSegment.fromMap(map),
     'toggleMessageSenderIsBlocked': (map) => ToggleMessageSenderIsBlocked.fromMap(map),
     'blockMessageSenderFromReplies': (map) => BlockMessageSenderFromReplies.fromMap(map),
@@ -2004,6 +2158,7 @@ class TdApiMap {
     'getImportedContactCount': (map) => GetImportedContactCount.fromMap(map),
     'changeImportedContacts': (map) => ChangeImportedContacts.fromMap(map),
     'clearImportedContacts': (map) => ClearImportedContacts.fromMap(map),
+    'searchUserByPhoneNumber': (map) => SearchUserByPhoneNumber.fromMap(map),
     'sharePhoneNumber': (map) => SharePhoneNumber.fromMap(map),
     'getUserProfilePhotos': (map) => GetUserProfilePhotos.fromMap(map),
     'getStickers': (map) => GetStickers.fromMap(map),
@@ -2050,6 +2205,10 @@ class TdApiMap {
     'setCommands': (map) => SetCommands.fromMap(map),
     'deleteCommands': (map) => DeleteCommands.fromMap(map),
     'getCommands': (map) => GetCommands.fromMap(map),
+    'setMenuButton': (map) => SetMenuButton.fromMap(map),
+    'getMenuButton': (map) => GetMenuButton.fromMap(map),
+    'setDefaultGroupAdministratorRights': (map) => SetDefaultGroupAdministratorRights.fromMap(map),
+    'setDefaultChannelAdministratorRights': (map) => SetDefaultChannelAdministratorRights.fromMap(map),
     'getActiveSessions': (map) => GetActiveSessions.fromMap(map),
     'terminateSession': (map) => TerminateSession.fromMap(map),
     'terminateAllOtherSessions': (map) => TerminateAllOtherSessions.fromMap(map),

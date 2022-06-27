@@ -1,33 +1,31 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
-import 'package:td_json_client/api/object/mask_position.dart';
+import 'package:td_json_client/api/object/sticker_type.dart';
 
-abstract class InputSticker extends TdObject {}
-
-class InputStickerStatic extends InputSticker {
-  String get tdType => 'inputStickerStatic';
+class InputSticker extends TdObject {
+  String get tdType => 'inputSticker';
 
   string? extra;
   int? client_id;
   InputFile? sticker;
   string? emojis;
-  MaskPosition? mask_position;
+  StickerType? type;
 
-  InputStickerStatic({
+  InputSticker({
     this.extra,
     this.client_id,
     this.sticker,
     this.emojis,
-    this.mask_position,
+    this.type,
   });
 
-  InputStickerStatic.fromMap(Map<String, dynamic> map) {
+  InputSticker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
     emojis = map['emojis'];
-    mask_position = TdApiMap.fromMap(map['mask_position']) as MaskPosition;
+    type = TdApiMap.fromMap(map['type']) as StickerType;
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -37,43 +35,7 @@ class InputStickerStatic extends InputSticker {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'sticker': sticker?.toMap(skipNulls: skipNulls),
       'emojis': emojis?.toMap(skipNulls: skipNulls),
-      'mask_position': mask_position?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-class InputStickerAnimated extends InputSticker {
-  String get tdType => 'inputStickerAnimated';
-
-  string? extra;
-  int? client_id;
-  InputFile? sticker;
-  string? emojis;
-
-  InputStickerAnimated({
-    this.extra,
-    this.client_id,
-    this.sticker,
-    this.emojis,
-  });
-
-  InputStickerAnimated.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
-    emojis = map['emojis'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'sticker': sticker?.toMap(skipNulls: skipNulls),
-      'emojis': emojis?.toMap(skipNulls: skipNulls),
+      'type': type?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

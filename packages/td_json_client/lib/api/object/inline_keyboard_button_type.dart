@@ -74,6 +74,38 @@ class InlineKeyboardButtonTypeLoginUrl extends InlineKeyboardButtonType {
     return map;
   }
 }
+class InlineKeyboardButtonTypeWebApp extends InlineKeyboardButtonType {
+  String get tdType => 'inlineKeyboardButtonTypeWebApp';
+
+  string? extra;
+  int? client_id;
+  string? url;
+
+  InlineKeyboardButtonTypeWebApp({
+    this.extra,
+    this.client_id,
+    this.url,
+  });
+
+  InlineKeyboardButtonTypeWebApp.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    url = map['url'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'url': url?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
 class InlineKeyboardButtonTypeCallback extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeCallback';
 

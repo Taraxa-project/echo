@@ -37,7 +37,9 @@ class Chat extends TdObject {
   int53? last_read_inbox_message_id;
   int53? last_read_outbox_message_id;
   int32? unread_mention_count;
+  int32? unread_reaction_count;
   ChatNotificationSettings? notification_settings;
+  vector<string>? available_reactions;
   int32? message_ttl;
   string? theme_name;
   ChatActionBar? action_bar;
@@ -70,7 +72,9 @@ class Chat extends TdObject {
     this.last_read_inbox_message_id,
     this.last_read_outbox_message_id,
     this.unread_mention_count,
+    this.unread_reaction_count,
     this.notification_settings,
+    this.available_reactions,
     this.message_ttl,
     this.theme_name,
     this.action_bar,
@@ -109,7 +113,14 @@ class Chat extends TdObject {
     last_read_inbox_message_id = map['last_read_inbox_message_id'];
     last_read_outbox_message_id = map['last_read_outbox_message_id'];
     unread_mention_count = map['unread_mention_count'];
+    unread_reaction_count = map['unread_reaction_count'];
     notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
+    if (map['available_reactions']) {
+      available_reactions = [];
+      for (var someValue in map['available_reactions']) {
+        available_reactions?.add(someValue);
+      }
+    }
     message_ttl = map['message_ttl'];
     theme_name = map['theme_name'];
     action_bar = TdApiMap.fromMap(map['action_bar']) as ChatActionBar;
@@ -145,7 +156,9 @@ class Chat extends TdObject {
       'last_read_inbox_message_id': last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
       'last_read_outbox_message_id': last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
       'unread_mention_count': unread_mention_count?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
       'notification_settings': notification_settings?.toMap(skipNulls: skipNulls),
+      'available_reactions': available_reactions?.toMap(skipNulls: skipNulls),
       'message_ttl': message_ttl?.toMap(skipNulls: skipNulls),
       'theme_name': theme_name?.toMap(skipNulls: skipNulls),
       'action_bar': action_bar?.toMap(skipNulls: skipNulls),

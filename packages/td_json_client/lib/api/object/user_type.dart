@@ -68,6 +68,7 @@ class UserTypeBot extends UserType {
   Bool? is_inline;
   string? inline_query_placeholder;
   Bool? need_location;
+  Bool? can_be_added_to_attachment_menu;
 
   UserTypeBot({
     this.extra,
@@ -77,6 +78,7 @@ class UserTypeBot extends UserType {
     this.is_inline,
     this.inline_query_placeholder,
     this.need_location,
+    this.can_be_added_to_attachment_menu,
   });
 
   UserTypeBot.fromMap(Map<String, dynamic> map) {
@@ -87,6 +89,7 @@ class UserTypeBot extends UserType {
     is_inline = map['is_inline'];
     inline_query_placeholder = map['inline_query_placeholder'];
     need_location = map['need_location'];
+    can_be_added_to_attachment_menu = map['can_be_added_to_attachment_menu'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -99,6 +102,7 @@ class UserTypeBot extends UserType {
       'is_inline': is_inline?.toMap(skipNulls: skipNulls),
       'inline_query_placeholder': inline_query_placeholder?.toMap(skipNulls: skipNulls),
       'need_location': need_location?.toMap(skipNulls: skipNulls),
+      'can_be_added_to_attachment_menu': can_be_added_to_attachment_menu?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

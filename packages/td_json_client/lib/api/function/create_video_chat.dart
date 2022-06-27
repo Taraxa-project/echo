@@ -9,6 +9,7 @@ class CreateVideoChat extends TdFunction {
   int53? chat_id;
   string? title;
   int32? start_date;
+  Bool? is_rtmp_stream;
 
   CreateVideoChat({
     this.extra,
@@ -16,6 +17,7 @@ class CreateVideoChat extends TdFunction {
     this.chat_id,
     this.title,
     this.start_date,
+    this.is_rtmp_stream,
   });
 
   CreateVideoChat.fromMap(Map<String, dynamic> map) {
@@ -24,6 +26,7 @@ class CreateVideoChat extends TdFunction {
     chat_id = map['chat_id'];
     title = map['title'];
     start_date = map['start_date'];
+    is_rtmp_stream = map['is_rtmp_stream'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -34,6 +37,7 @@ class CreateVideoChat extends TdFunction {
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
       'start_date': start_date?.toMap(skipNulls: skipNulls),
+      'is_rtmp_stream': is_rtmp_stream?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

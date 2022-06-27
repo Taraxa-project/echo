@@ -12,10 +12,12 @@ class GroupCall extends TdObject {
   int32? scheduled_start_date;
   Bool? enabled_start_notification;
   Bool? is_active;
+  Bool? is_rtmp_stream;
   Bool? is_joined;
   Bool? need_rejoin;
   Bool? can_be_managed;
   int32? participant_count;
+  Bool? has_hidden_listeners;
   Bool? loaded_all_participants;
   vector<GroupCallRecentSpeaker>? recent_speakers;
   Bool? is_my_video_enabled;
@@ -35,10 +37,12 @@ class GroupCall extends TdObject {
     this.scheduled_start_date,
     this.enabled_start_notification,
     this.is_active,
+    this.is_rtmp_stream,
     this.is_joined,
     this.need_rejoin,
     this.can_be_managed,
     this.participant_count,
+    this.has_hidden_listeners,
     this.loaded_all_participants,
     this.recent_speakers,
     this.is_my_video_enabled,
@@ -59,10 +63,12 @@ class GroupCall extends TdObject {
     scheduled_start_date = map['scheduled_start_date'];
     enabled_start_notification = map['enabled_start_notification'];
     is_active = map['is_active'];
+    is_rtmp_stream = map['is_rtmp_stream'];
     is_joined = map['is_joined'];
     need_rejoin = map['need_rejoin'];
     can_be_managed = map['can_be_managed'];
     participant_count = map['participant_count'];
+    has_hidden_listeners = map['has_hidden_listeners'];
     loaded_all_participants = map['loaded_all_participants'];
     if (map['recent_speakers']) {
       recent_speakers = [];
@@ -90,10 +96,12 @@ class GroupCall extends TdObject {
       'scheduled_start_date': scheduled_start_date?.toMap(skipNulls: skipNulls),
       'enabled_start_notification': enabled_start_notification?.toMap(skipNulls: skipNulls),
       'is_active': is_active?.toMap(skipNulls: skipNulls),
+      'is_rtmp_stream': is_rtmp_stream?.toMap(skipNulls: skipNulls),
       'is_joined': is_joined?.toMap(skipNulls: skipNulls),
       'need_rejoin': need_rejoin?.toMap(skipNulls: skipNulls),
       'can_be_managed': can_be_managed?.toMap(skipNulls: skipNulls),
       'participant_count': participant_count?.toMap(skipNulls: skipNulls),
+      'has_hidden_listeners': has_hidden_listeners?.toMap(skipNulls: skipNulls),
       'loaded_all_participants': loaded_all_participants?.toMap(skipNulls: skipNulls),
       'recent_speakers': recent_speakers?.toMap(skipNulls: skipNulls),
       'is_my_video_enabled': is_my_video_enabled?.toMap(skipNulls: skipNulls),

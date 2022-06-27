@@ -2,6 +2,7 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/closed_vector_path.dart';
+import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/emojis.dart';
 
@@ -18,8 +19,7 @@ class StickerSet extends TdObject {
   Bool? is_installed;
   Bool? is_archived;
   Bool? is_official;
-  Bool? is_animated;
-  Bool? is_masks;
+  StickerType? sticker_type;
   Bool? is_viewed;
   vector<Sticker>? stickers;
   vector<Emojis>? emojis;
@@ -35,8 +35,7 @@ class StickerSet extends TdObject {
     this.is_installed,
     this.is_archived,
     this.is_official,
-    this.is_animated,
-    this.is_masks,
+    this.sticker_type,
     this.is_viewed,
     this.stickers,
     this.emojis,
@@ -58,8 +57,7 @@ class StickerSet extends TdObject {
     is_installed = map['is_installed'];
     is_archived = map['is_archived'];
     is_official = map['is_official'];
-    is_animated = map['is_animated'];
-    is_masks = map['is_masks'];
+    sticker_type = TdApiMap.fromMap(map['sticker_type']) as StickerType;
     is_viewed = map['is_viewed'];
     if (map['stickers']) {
       stickers = [];
@@ -88,8 +86,7 @@ class StickerSet extends TdObject {
       'is_installed': is_installed?.toMap(skipNulls: skipNulls),
       'is_archived': is_archived?.toMap(skipNulls: skipNulls),
       'is_official': is_official?.toMap(skipNulls: skipNulls),
-      'is_animated': is_animated?.toMap(skipNulls: skipNulls),
-      'is_masks': is_masks?.toMap(skipNulls: skipNulls),
+      'sticker_type': sticker_type?.toMap(skipNulls: skipNulls),
       'is_viewed': is_viewed?.toMap(skipNulls: skipNulls),
       'stickers': stickers?.toMap(skipNulls: skipNulls),
       'emojis': emojis?.toMap(skipNulls: skipNulls),

@@ -8,7 +8,7 @@ class ChatNotificationSettings extends TdObject {
   Bool? use_default_mute_for;
   int32? mute_for;
   Bool? use_default_sound;
-  string? sound;
+  int64? sound_id;
   Bool? use_default_show_preview;
   Bool? show_preview;
   Bool? use_default_disable_pinned_message_notifications;
@@ -22,7 +22,7 @@ class ChatNotificationSettings extends TdObject {
     this.use_default_mute_for,
     this.mute_for,
     this.use_default_sound,
-    this.sound,
+    this.sound_id,
     this.use_default_show_preview,
     this.show_preview,
     this.use_default_disable_pinned_message_notifications,
@@ -37,7 +37,7 @@ class ChatNotificationSettings extends TdObject {
     use_default_mute_for = map['use_default_mute_for'];
     mute_for = map['mute_for'];
     use_default_sound = map['use_default_sound'];
-    sound = map['sound'];
+    sound_id = map['sound_id'];
     use_default_show_preview = map['use_default_show_preview'];
     show_preview = map['show_preview'];
     use_default_disable_pinned_message_notifications = map['use_default_disable_pinned_message_notifications'];
@@ -54,7 +54,7 @@ class ChatNotificationSettings extends TdObject {
       'use_default_mute_for': use_default_mute_for?.toMap(skipNulls: skipNulls),
       'mute_for': mute_for?.toMap(skipNulls: skipNulls),
       'use_default_sound': use_default_sound?.toMap(skipNulls: skipNulls),
-      'sound': sound?.toMap(skipNulls: skipNulls),
+      'sound_id': sound_id?.toMap(skipNulls: skipNulls),
       'use_default_show_preview': use_default_show_preview?.toMap(skipNulls: skipNulls),
       'show_preview': show_preview?.toMap(skipNulls: skipNulls),
       'use_default_disable_pinned_message_notifications': use_default_disable_pinned_message_notifications?.toMap(skipNulls: skipNulls),

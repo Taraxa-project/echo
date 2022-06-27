@@ -5,6 +5,7 @@ import 'package:td_json_client/api/object/message.dart';
 import 'package:td_json_client/api/object/message_content.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/message_interaction_info.dart';
+import 'package:td_json_client/api/object/unread_reaction.dart';
 import 'package:td_json_client/api/object/chat.dart';
 import 'package:td_json_client/api/object/chat_photo_info.dart';
 import 'package:td_json_client/api/object/chat_permissions.dart';
@@ -31,6 +32,8 @@ import 'package:td_json_client/api/object/user_full_info.dart';
 import 'package:td_json_client/api/object/basic_group_full_info.dart';
 import 'package:td_json_client/api/object/supergroup_full_info.dart';
 import 'package:td_json_client/api/object/file.dart';
+import 'package:td_json_client/api/object/file_download.dart';
+import 'package:td_json_client/api/object/downloaded_file_counts.dart';
 import 'package:td_json_client/api/object/call.dart';
 import 'package:td_json_client/api/object/group_call.dart';
 import 'package:td_json_client/api/object/group_call_participant.dart';
@@ -46,6 +49,8 @@ import 'package:td_json_client/api/object/language_pack_string.dart';
 import 'package:td_json_client/api/object/connection_state.dart';
 import 'package:td_json_client/api/object/terms_of_service.dart';
 import 'package:td_json_client/api/object/chat_nearby.dart';
+import 'package:td_json_client/api/object/attachment_menu_bot.dart';
+import 'package:td_json_client/api/object/reaction.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/suggested_action.dart';
 import 'package:td_json_client/api/object/location.dart';
@@ -480,6 +485,55 @@ class UpdateMessageMentionRead extends Update {
     return map;
   }
 }
+class UpdateMessageUnreadReactions extends Update {
+  String get tdType => 'updateMessageUnreadReactions';
+
+  string? extra;
+  int? client_id;
+  int53? chat_id;
+  int53? message_id;
+  vector<UnreadReaction>? unread_reactions;
+  int32? unread_reaction_count;
+
+  UpdateMessageUnreadReactions({
+    this.extra,
+    this.client_id,
+    this.chat_id,
+    this.message_id,
+    this.unread_reactions,
+    this.unread_reaction_count,
+  });
+
+  UpdateMessageUnreadReactions.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    message_id = map['message_id'];
+    if (map['unread_reactions']) {
+      unread_reactions = [];
+      for (var someValue in map['unread_reactions']) {
+        unread_reactions?.add(TdApiMap.fromMap(someValue) as UnreadReaction);
+      }
+    }
+    unread_reaction_count = map['unread_reaction_count'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'message_id': message_id?.toMap(skipNulls: skipNulls),
+      'unread_reactions': unread_reactions?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
 class UpdateMessageLiveLocationViewed extends Update {
   String get tdType => 'updateMessageLiveLocationViewed';
 
@@ -849,6 +903,47 @@ class UpdateChatActionBar extends Update {
     return map;
   }
 }
+class UpdateChatAvailableReactions extends Update {
+  String get tdType => 'updateChatAvailableReactions';
+
+  string? extra;
+  int? client_id;
+  int53? chat_id;
+  vector<string>? available_reactions;
+
+  UpdateChatAvailableReactions({
+    this.extra,
+    this.client_id,
+    this.chat_id,
+    this.available_reactions,
+  });
+
+  UpdateChatAvailableReactions.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    if (map['available_reactions']) {
+      available_reactions = [];
+      for (var someValue in map['available_reactions']) {
+        available_reactions?.add(someValue);
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'available_reactions': available_reactions?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
 class UpdateChatDraftMessage extends Update {
   String get tdType => 'updateChatDraftMessage';
 
@@ -1139,6 +1234,42 @@ class UpdateChatUnreadMentionCount extends Update {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'unread_mention_count': unread_mention_count?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class UpdateChatUnreadReactionCount extends Update {
+  String get tdType => 'updateChatUnreadReactionCount';
+
+  string? extra;
+  int? client_id;
+  int53? chat_id;
+  int32? unread_reaction_count;
+
+  UpdateChatUnreadReactionCount({
+    this.extra,
+    this.client_id,
+    this.chat_id,
+    this.unread_reaction_count,
+  });
+
+  UpdateChatUnreadReactionCount.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    unread_reaction_count = map['unread_reaction_count'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1516,7 +1647,7 @@ class UpdateNotificationGroup extends Update {
   NotificationGroupType? type;
   int53? chat_id;
   int53? notification_settings_chat_id;
-  Bool? is_silent;
+  int64? notification_sound_id;
   int32? total_count;
   vector<Notification>? added_notifications;
   vector<int32>? removed_notification_ids;
@@ -1528,7 +1659,7 @@ class UpdateNotificationGroup extends Update {
     this.type,
     this.chat_id,
     this.notification_settings_chat_id,
-    this.is_silent,
+    this.notification_sound_id,
     this.total_count,
     this.added_notifications,
     this.removed_notification_ids,
@@ -1541,7 +1672,7 @@ class UpdateNotificationGroup extends Update {
     type = TdApiMap.fromMap(map['type']) as NotificationGroupType;
     chat_id = map['chat_id'];
     notification_settings_chat_id = map['notification_settings_chat_id'];
-    is_silent = map['is_silent'];
+    notification_sound_id = map['notification_sound_id'];
     total_count = map['total_count'];
     if (map['added_notifications']) {
       added_notifications = [];
@@ -1566,7 +1697,7 @@ class UpdateNotificationGroup extends Update {
       'type': type?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'notification_settings_chat_id': notification_settings_chat_id?.toMap(skipNulls: skipNulls),
-      'is_silent': is_silent?.toMap(skipNulls: skipNulls),
+      'notification_sound_id': notification_sound_id?.toMap(skipNulls: skipNulls),
       'total_count': total_count?.toMap(skipNulls: skipNulls),
       'added_notifications': added_notifications?.toMap(skipNulls: skipNulls),
       'removed_notification_ids': removed_notification_ids?.toMap(skipNulls: skipNulls),
@@ -2159,6 +2290,162 @@ class UpdateFileGenerationStop extends Update {
     return map;
   }
 }
+class UpdateFileDownloads extends Update {
+  String get tdType => 'updateFileDownloads';
+
+  string? extra;
+  int? client_id;
+  int53? total_size;
+  int32? total_count;
+  int53? downloaded_size;
+
+  UpdateFileDownloads({
+    this.extra,
+    this.client_id,
+    this.total_size,
+    this.total_count,
+    this.downloaded_size,
+  });
+
+  UpdateFileDownloads.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    total_size = map['total_size'];
+    total_count = map['total_count'];
+    downloaded_size = map['downloaded_size'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'total_size': total_size?.toMap(skipNulls: skipNulls),
+      'total_count': total_count?.toMap(skipNulls: skipNulls),
+      'downloaded_size': downloaded_size?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class UpdateFileAddedToDownloads extends Update {
+  String get tdType => 'updateFileAddedToDownloads';
+
+  string? extra;
+  int? client_id;
+  FileDownload? file_download;
+  DownloadedFileCounts? counts;
+
+  UpdateFileAddedToDownloads({
+    this.extra,
+    this.client_id,
+    this.file_download,
+    this.counts,
+  });
+
+  UpdateFileAddedToDownloads.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    file_download = TdApiMap.fromMap(map['file_download']) as FileDownload;
+    counts = TdApiMap.fromMap(map['counts']) as DownloadedFileCounts;
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'file_download': file_download?.toMap(skipNulls: skipNulls),
+      'counts': counts?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class UpdateFileDownload extends Update {
+  String get tdType => 'updateFileDownload';
+
+  string? extra;
+  int? client_id;
+  int32? file_id;
+  int32? complete_date;
+  Bool? is_paused;
+  DownloadedFileCounts? counts;
+
+  UpdateFileDownload({
+    this.extra,
+    this.client_id,
+    this.file_id,
+    this.complete_date,
+    this.is_paused,
+    this.counts,
+  });
+
+  UpdateFileDownload.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    file_id = map['file_id'];
+    complete_date = map['complete_date'];
+    is_paused = map['is_paused'];
+    counts = TdApiMap.fromMap(map['counts']) as DownloadedFileCounts;
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'file_id': file_id?.toMap(skipNulls: skipNulls),
+      'complete_date': complete_date?.toMap(skipNulls: skipNulls),
+      'is_paused': is_paused?.toMap(skipNulls: skipNulls),
+      'counts': counts?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class UpdateFileRemovedFromDownloads extends Update {
+  String get tdType => 'updateFileRemovedFromDownloads';
+
+  string? extra;
+  int? client_id;
+  int32? file_id;
+  DownloadedFileCounts? counts;
+
+  UpdateFileRemovedFromDownloads({
+    this.extra,
+    this.client_id,
+    this.file_id,
+    this.counts,
+  });
+
+  UpdateFileRemovedFromDownloads.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    file_id = map['file_id'];
+    counts = TdApiMap.fromMap(map['counts']) as DownloadedFileCounts;
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'file_id': file_id?.toMap(skipNulls: skipNulls),
+      'counts': counts?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
 class UpdateCall extends Update {
   String get tdType => 'updateCall';
 
@@ -2679,6 +2966,43 @@ class UpdateSavedAnimations extends Update {
     return map;
   }
 }
+class UpdateSavedNotificationSounds extends Update {
+  String get tdType => 'updateSavedNotificationSounds';
+
+  string? extra;
+  int? client_id;
+  vector<int64>? notification_sound_ids;
+
+  UpdateSavedNotificationSounds({
+    this.extra,
+    this.client_id,
+    this.notification_sound_ids,
+  });
+
+  UpdateSavedNotificationSounds.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['notification_sound_ids']) {
+      notification_sound_ids = [];
+      for (var someValue in map['notification_sound_ids']) {
+        notification_sound_ids?.add(someValue);
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'notification_sound_ids': notification_sound_ids?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
 class UpdateSelectedBackground extends Update {
   String get tdType => 'updateSelectedBackground';
 
@@ -2895,6 +3219,112 @@ class UpdateUsersNearby extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'users_nearby': users_nearby?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class UpdateAttachmentMenuBots extends Update {
+  String get tdType => 'updateAttachmentMenuBots';
+
+  string? extra;
+  int? client_id;
+  vector<AttachmentMenuBot>? bots;
+
+  UpdateAttachmentMenuBots({
+    this.extra,
+    this.client_id,
+    this.bots,
+  });
+
+  UpdateAttachmentMenuBots.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['bots']) {
+      bots = [];
+      for (var someValue in map['bots']) {
+        bots?.add(TdApiMap.fromMap(someValue) as AttachmentMenuBot);
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'bots': bots?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class UpdateWebAppMessageSent extends Update {
+  String get tdType => 'updateWebAppMessageSent';
+
+  string? extra;
+  int? client_id;
+  int64? web_app_launch_id;
+
+  UpdateWebAppMessageSent({
+    this.extra,
+    this.client_id,
+    this.web_app_launch_id,
+  });
+
+  UpdateWebAppMessageSent.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    web_app_launch_id = map['web_app_launch_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'web_app_launch_id': web_app_launch_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class UpdateReactions extends Update {
+  String get tdType => 'updateReactions';
+
+  string? extra;
+  int? client_id;
+  vector<Reaction>? reactions;
+
+  UpdateReactions({
+    this.extra,
+    this.client_id,
+    this.reactions,
+  });
+
+  UpdateReactions.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['reactions']) {
+      reactions = [];
+      for (var someValue in map['reactions']) {
+        reactions?.add(TdApiMap.fromMap(someValue) as Reaction);
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'reactions': reactions?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -1,6 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
-import 'package:td_json_client/api/object/mask_position.dart';
+import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/closed_vector_path.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
@@ -14,9 +14,7 @@ class Sticker extends TdObject {
   int32? width;
   int32? height;
   string? emoji;
-  Bool? is_animated;
-  Bool? is_mask;
-  MaskPosition? mask_position;
+  StickerType? type;
   vector<ClosedVectorPath>? outline;
   Thumbnail? thumbnail;
   File? sticker;
@@ -28,9 +26,7 @@ class Sticker extends TdObject {
     this.width,
     this.height,
     this.emoji,
-    this.is_animated,
-    this.is_mask,
-    this.mask_position,
+    this.type,
     this.outline,
     this.thumbnail,
     this.sticker,
@@ -43,9 +39,7 @@ class Sticker extends TdObject {
     width = map['width'];
     height = map['height'];
     emoji = map['emoji'];
-    is_animated = map['is_animated'];
-    is_mask = map['is_mask'];
-    mask_position = TdApiMap.fromMap(map['mask_position']) as MaskPosition;
+    type = TdApiMap.fromMap(map['type']) as StickerType;
     if (map['outline']) {
       outline = [];
       for (var someValue in map['outline']) {
@@ -65,9 +59,7 @@ class Sticker extends TdObject {
       'width': width?.toMap(skipNulls: skipNulls),
       'height': height?.toMap(skipNulls: skipNulls),
       'emoji': emoji?.toMap(skipNulls: skipNulls),
-      'is_animated': is_animated?.toMap(skipNulls: skipNulls),
-      'is_mask': is_mask?.toMap(skipNulls: skipNulls),
-      'mask_position': mask_position?.toMap(skipNulls: skipNulls),
+      'type': type?.toMap(skipNulls: skipNulls),
       'outline': outline?.toMap(skipNulls: skipNulls),
       'thumbnail': thumbnail?.toMap(skipNulls: skipNulls),
       'sticker': sticker?.toMap(skipNulls: skipNulls),

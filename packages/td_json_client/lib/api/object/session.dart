@@ -1,4 +1,6 @@
 import 'package:td_json_client/api/base.dart';
+import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/session_type.dart';
 
 class Session extends TdObject {
   String get tdType => 'session';
@@ -10,6 +12,7 @@ class Session extends TdObject {
   Bool? is_password_pending;
   Bool? can_accept_secret_chats;
   Bool? can_accept_calls;
+  SessionType? type;
   int32? api_id;
   string? application_name;
   string? application_version;
@@ -31,6 +34,7 @@ class Session extends TdObject {
     this.is_password_pending,
     this.can_accept_secret_chats,
     this.can_accept_calls,
+    this.type,
     this.api_id,
     this.application_name,
     this.application_version,
@@ -53,6 +57,7 @@ class Session extends TdObject {
     is_password_pending = map['is_password_pending'];
     can_accept_secret_chats = map['can_accept_secret_chats'];
     can_accept_calls = map['can_accept_calls'];
+    type = TdApiMap.fromMap(map['type']) as SessionType;
     api_id = map['api_id'];
     application_name = map['application_name'];
     application_version = map['application_version'];
@@ -77,6 +82,7 @@ class Session extends TdObject {
       'is_password_pending': is_password_pending?.toMap(skipNulls: skipNulls),
       'can_accept_secret_chats': can_accept_secret_chats?.toMap(skipNulls: skipNulls),
       'can_accept_calls': can_accept_calls?.toMap(skipNulls: skipNulls),
+      'type': type?.toMap(skipNulls: skipNulls),
       'api_id': api_id?.toMap(skipNulls: skipNulls),
       'application_name': application_name?.toMap(skipNulls: skipNulls),
       'application_version': application_version?.toMap(skipNulls: skipNulls),

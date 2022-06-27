@@ -11,7 +11,6 @@ class CreateNewStickerSet extends TdFunction {
   int53? user_id;
   string? title;
   string? name;
-  Bool? is_masks;
   vector<InputSticker>? stickers;
   string? source;
 
@@ -21,7 +20,6 @@ class CreateNewStickerSet extends TdFunction {
     this.user_id,
     this.title,
     this.name,
-    this.is_masks,
     this.stickers,
     this.source,
   });
@@ -32,7 +30,6 @@ class CreateNewStickerSet extends TdFunction {
     user_id = map['user_id'];
     title = map['title'];
     name = map['name'];
-    is_masks = map['is_masks'];
     if (map['stickers']) {
       stickers = [];
       for (var someValue in map['stickers']) {
@@ -50,7 +47,6 @@ class CreateNewStickerSet extends TdFunction {
       'user_id': user_id?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),
-      'is_masks': is_masks?.toMap(skipNulls: skipNulls),
       'stickers': stickers?.toMap(skipNulls: skipNulls),
       'source': source?.toMap(skipNulls: skipNulls),
     };

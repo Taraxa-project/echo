@@ -1,5 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/chat_administrator_rights.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 import 'package:td_json_client/api/object/proxy_type.dart';
 
@@ -26,6 +27,46 @@ class InternalLinkTypeActiveSessions extends InternalLinkType {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class InternalLinkTypeAttachmentMenuBot extends InternalLinkType {
+  String get tdType => 'internalLinkTypeAttachmentMenuBot';
+
+  string? extra;
+  int? client_id;
+  InternalLinkType? chat_link;
+  string? bot_username;
+  string? url;
+
+  InternalLinkTypeAttachmentMenuBot({
+    this.extra,
+    this.client_id,
+    this.chat_link,
+    this.bot_username,
+    this.url,
+  });
+
+  InternalLinkTypeAttachmentMenuBot.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_link = map['chat_link'];
+    bot_username = map['bot_username'];
+    url = map['url'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_link': chat_link?.toMap(skipNulls: skipNulls),
+      'bot_username': bot_username?.toMap(skipNulls: skipNulls),
+      'url': url?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -140,12 +181,14 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   int? client_id;
   string? bot_username;
   string? start_parameter;
+  ChatAdministratorRights? administrator_rights;
 
   InternalLinkTypeBotStartInGroup({
     this.extra,
     this.client_id,
     this.bot_username,
     this.start_parameter,
+    this.administrator_rights,
   });
 
   InternalLinkTypeBotStartInGroup.fromMap(Map<String, dynamic> map) {
@@ -153,6 +196,7 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
     client_id = map['@client_id'];
     bot_username = map['bot_username'];
     start_parameter = map['start_parameter'];
+    administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -162,6 +206,43 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'bot_username': bot_username?.toMap(skipNulls: skipNulls),
       'start_parameter': start_parameter?.toMap(skipNulls: skipNulls),
+      'administrator_rights': administrator_rights?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class InternalLinkTypeBotAddToChannel extends InternalLinkType {
+  String get tdType => 'internalLinkTypeBotAddToChannel';
+
+  string? extra;
+  int? client_id;
+  string? bot_username;
+  ChatAdministratorRights? administrator_rights;
+
+  InternalLinkTypeBotAddToChannel({
+    this.extra,
+    this.client_id,
+    this.bot_username,
+    this.administrator_rights,
+  });
+
+  InternalLinkTypeBotAddToChannel.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    bot_username = map['bot_username'];
+    administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'bot_username': bot_username?.toMap(skipNulls: skipNulls),
+      'administrator_rights': administrator_rights?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -325,6 +406,34 @@ class InternalLinkTypeLanguagePack extends InternalLinkType {
     return map;
   }
 }
+class InternalLinkTypeLanguageSettings extends InternalLinkType {
+  String get tdType => 'internalLinkTypeLanguageSettings';
+
+  string? extra;
+  int? client_id;
+
+  InternalLinkTypeLanguageSettings({
+    this.extra,
+    this.client_id,
+  });
+
+  InternalLinkTypeLanguageSettings.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
 class InternalLinkTypeMessage extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessage';
 
@@ -470,6 +579,34 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'hash': hash?.toMap(skipNulls: skipNulls),
       'phone_number': phone_number?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class InternalLinkTypePrivacyAndSecuritySettings extends InternalLinkType {
+  String get tdType => 'internalLinkTypePrivacyAndSecuritySettings';
+
+  string? extra;
+  int? client_id;
+
+  InternalLinkTypePrivacyAndSecuritySettings({
+    this.extra,
+    this.client_id,
+  });
+
+  InternalLinkTypePrivacyAndSecuritySettings.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -750,6 +887,38 @@ class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+class InternalLinkTypeUserPhoneNumber extends InternalLinkType {
+  String get tdType => 'internalLinkTypeUserPhoneNumber';
+
+  string? extra;
+  int? client_id;
+  string? phone_number;
+
+  InternalLinkTypeUserPhoneNumber({
+    this.extra,
+    this.client_id,
+    this.phone_number,
+  });
+
+  InternalLinkTypeUserPhoneNumber.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    phone_number = map['phone_number'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'phone_number': phone_number?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

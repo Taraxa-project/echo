@@ -5,6 +5,7 @@ import 'package:td_json_client/api/object/message_sending_state.dart';
 import 'package:td_json_client/api/object/message_scheduling_state.dart';
 import 'package:td_json_client/api/object/message_forward_info.dart';
 import 'package:td_json_client/api/object/message_interaction_info.dart';
+import 'package:td_json_client/api/object/unread_reaction.dart';
 import 'package:td_json_client/api/object/message_content.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 
@@ -25,6 +26,7 @@ class Message extends TdObject {
   Bool? can_be_saved;
   Bool? can_be_deleted_only_for_self;
   Bool? can_be_deleted_for_all_users;
+  Bool? can_get_added_reactions;
   Bool? can_get_statistics;
   Bool? can_get_message_thread;
   Bool? can_get_viewers;
@@ -36,6 +38,7 @@ class Message extends TdObject {
   int32? edit_date;
   MessageForwardInfo? forward_info;
   MessageInteractionInfo? interaction_info;
+  vector<UnreadReaction>? unread_reactions;
   int53? reply_in_chat_id;
   int53? reply_to_message_id;
   int53? message_thread_id;
@@ -63,6 +66,7 @@ class Message extends TdObject {
     this.can_be_saved,
     this.can_be_deleted_only_for_self,
     this.can_be_deleted_for_all_users,
+    this.can_get_added_reactions,
     this.can_get_statistics,
     this.can_get_message_thread,
     this.can_get_viewers,
@@ -74,6 +78,7 @@ class Message extends TdObject {
     this.edit_date,
     this.forward_info,
     this.interaction_info,
+    this.unread_reactions,
     this.reply_in_chat_id,
     this.reply_to_message_id,
     this.message_thread_id,
@@ -102,6 +107,7 @@ class Message extends TdObject {
     can_be_saved = map['can_be_saved'];
     can_be_deleted_only_for_self = map['can_be_deleted_only_for_self'];
     can_be_deleted_for_all_users = map['can_be_deleted_for_all_users'];
+    can_get_added_reactions = map['can_get_added_reactions'];
     can_get_statistics = map['can_get_statistics'];
     can_get_message_thread = map['can_get_message_thread'];
     can_get_viewers = map['can_get_viewers'];
@@ -113,6 +119,12 @@ class Message extends TdObject {
     edit_date = map['edit_date'];
     forward_info = TdApiMap.fromMap(map['forward_info']) as MessageForwardInfo;
     interaction_info = TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
+    if (map['unread_reactions']) {
+      unread_reactions = [];
+      for (var someValue in map['unread_reactions']) {
+        unread_reactions?.add(TdApiMap.fromMap(someValue) as UnreadReaction);
+      }
+    }
     reply_in_chat_id = map['reply_in_chat_id'];
     reply_to_message_id = map['reply_to_message_id'];
     message_thread_id = map['message_thread_id'];
@@ -143,6 +155,7 @@ class Message extends TdObject {
       'can_be_saved': can_be_saved?.toMap(skipNulls: skipNulls),
       'can_be_deleted_only_for_self': can_be_deleted_only_for_self?.toMap(skipNulls: skipNulls),
       'can_be_deleted_for_all_users': can_be_deleted_for_all_users?.toMap(skipNulls: skipNulls),
+      'can_get_added_reactions': can_get_added_reactions?.toMap(skipNulls: skipNulls),
       'can_get_statistics': can_get_statistics?.toMap(skipNulls: skipNulls),
       'can_get_message_thread': can_get_message_thread?.toMap(skipNulls: skipNulls),
       'can_get_viewers': can_get_viewers?.toMap(skipNulls: skipNulls),
@@ -154,6 +167,7 @@ class Message extends TdObject {
       'edit_date': edit_date?.toMap(skipNulls: skipNulls),
       'forward_info': forward_info?.toMap(skipNulls: skipNulls),
       'interaction_info': interaction_info?.toMap(skipNulls: skipNulls),
+      'unread_reactions': unread_reactions?.toMap(skipNulls: skipNulls),
       'reply_in_chat_id': reply_in_chat_id?.toMap(skipNulls: skipNulls),
       'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
       'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),

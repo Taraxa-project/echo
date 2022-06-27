@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_photo.dart';
-import 'package:td_json_client/api/object/bot_command.dart';
+import 'package:td_json_client/api/object/bot_info.dart';
 
 class UserFullInfo extends TdObject {
   String get tdType => 'userFullInfo';
@@ -16,10 +16,8 @@ class UserFullInfo extends TdObject {
   Bool? has_private_forwards;
   Bool? need_phone_number_privacy_exception;
   string? bio;
-  string? share_text;
-  string? description;
   int32? group_in_common_count;
-  vector<BotCommand>? commands;
+  BotInfo? bot_info;
 
   UserFullInfo({
     this.extra,
@@ -32,10 +30,8 @@ class UserFullInfo extends TdObject {
     this.has_private_forwards,
     this.need_phone_number_privacy_exception,
     this.bio,
-    this.share_text,
-    this.description,
     this.group_in_common_count,
-    this.commands,
+    this.bot_info,
   });
 
   UserFullInfo.fromMap(Map<String, dynamic> map) {
@@ -49,15 +45,8 @@ class UserFullInfo extends TdObject {
     has_private_forwards = map['has_private_forwards'];
     need_phone_number_privacy_exception = map['need_phone_number_privacy_exception'];
     bio = map['bio'];
-    share_text = map['share_text'];
-    description = map['description'];
     group_in_common_count = map['group_in_common_count'];
-    if (map['commands']) {
-      commands = [];
-      for (var someValue in map['commands']) {
-        commands?.add(TdApiMap.fromMap(someValue) as BotCommand);
-      }
-    }
+    bot_info = TdApiMap.fromMap(map['bot_info']) as BotInfo;
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -73,10 +62,8 @@ class UserFullInfo extends TdObject {
       'has_private_forwards': has_private_forwards?.toMap(skipNulls: skipNulls),
       'need_phone_number_privacy_exception': need_phone_number_privacy_exception?.toMap(skipNulls: skipNulls),
       'bio': bio?.toMap(skipNulls: skipNulls),
-      'share_text': share_text?.toMap(skipNulls: skipNulls),
-      'description': description?.toMap(skipNulls: skipNulls),
       'group_in_common_count': group_in_common_count?.toMap(skipNulls: skipNulls),
-      'commands': commands?.toMap(skipNulls: skipNulls),
+      'bot_info': bot_info?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

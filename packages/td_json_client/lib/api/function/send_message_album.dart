@@ -14,6 +14,7 @@ class SendMessageAlbum extends TdFunction {
   int53? reply_to_message_id;
   MessageSendOptions? options;
   vector<InputMessageContent>? input_message_contents;
+  Bool? only_preview;
 
   SendMessageAlbum({
     this.extra,
@@ -23,6 +24,7 @@ class SendMessageAlbum extends TdFunction {
     this.reply_to_message_id,
     this.options,
     this.input_message_contents,
+    this.only_preview,
   });
 
   SendMessageAlbum.fromMap(Map<String, dynamic> map) {
@@ -38,6 +40,7 @@ class SendMessageAlbum extends TdFunction {
         input_message_contents?.add(TdApiMap.fromMap(someValue) as InputMessageContent);
       }
     }
+    only_preview = map['only_preview'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -50,6 +53,7 @@ class SendMessageAlbum extends TdFunction {
       'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
       'options': options?.toMap(skipNulls: skipNulls),
       'input_message_contents': input_message_contents?.toMap(skipNulls: skipNulls),
+      'only_preview': only_preview?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
