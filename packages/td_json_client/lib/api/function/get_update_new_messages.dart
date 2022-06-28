@@ -1,8 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
-import 'package:td_json_client/api/object/message.dart';
+import 'package:td_json_client/api/object/formatted_text.dart';
 
-/// Returns an ordered list of chats from the beginning of a chat list. For informational purposes only. Use loadChats and updates processing instead to maintain chat lists in a consistent state
+/// Listen to new messages from all subscribed chats
 class GetUpdateNewMessages extends TdFunction {
   String get tdType => 'GetUpdateNewMessages';
   String get tdReturnType => 'Updates';
@@ -11,23 +11,18 @@ class GetUpdateNewMessages extends TdFunction {
   int? client_id;
 
   /// The new message
-  Message? message;
-
-  /// The maximum number of chats to be returned
-  int32? limit;
+  FormattedText? text;
 
   GetUpdateNewMessages({
     this.extra,
     this.client_id,
-    this.message,
-    this.limit,
+    this.text,
   });
 
   GetUpdateNewMessages.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
-    limit = map['limit'];
+    text = TdApiMap.fromMap(map['text']) as FormattedText;
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -35,8 +30,7 @@ class GetUpdateNewMessages extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'message': message?.toMap(skipNulls: skipNulls),
-      'limit': limit?.toMap(skipNulls: skipNulls),
+      'text': text?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

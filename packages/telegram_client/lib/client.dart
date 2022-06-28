@@ -124,7 +124,7 @@ class TelegramClient with TelegramClientLoggy {
 
   Stream<dynamic> getMessages(
       {required int clientId, double waitTimeout = waitTimeout}) async* {
-    _tdJsonClient.send(clientId, GetUpdateNewMessages(limit: 1000));
+    _tdJsonClient.send(clientId, GetUpdateNewMessages());
 
     await for (var response in _tdJsonClient
         .receive(waitTimeout: waitTimeout)
