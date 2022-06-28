@@ -35,6 +35,7 @@ void main(List<String> arguments) {
     ..readTelegramCode = readTelegramCode
     ..addCommand(TelegramCommandLogin())
     ..addCommand(TelegramCommandsChats())
+    ..addCommand(TelegramCommandsMessages())
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
       print(error);
