@@ -21,6 +21,7 @@ class Api {
   String get apiPath => path.joinAll([tdApiPath, 'api']);
   String get basePath => path.joinAll([apiPath, 'base.dart']);
   String get mapPath => path.joinAll([apiPath, 'map.dart']);
+  String get exportPath => path.joinAll([tdApiPath, '$package.dart']);
   String get objectPath => path.joinAll([tdApiPath, 'api', 'object']);
   String get functionPath => path.joinAll([tdApiPath, 'api', 'function']);
 
@@ -80,12 +81,12 @@ class Api {
   }
 
   Future<void> writeFiles() async {
-    // return;
     await createDirectories();
 
     await writeMap();
     await writeBase();
     await writeApi();
+    await writeExport();
   }
 
   Future<void> createDirectories() async {
@@ -130,6 +131,17 @@ class Api {
           .writeAsString(Template(TdFile.tdTemplate, htmlEscapeValues: false)
               .renderString(tdFile.toMap()));
     }
+  }
+
+  Future<void> writeExport() async {
+    await File(exportPath).writeAsString(Template(
+      TdFile.exportTemplate,
+      htmlEscapeValues: false,
+    ).renderString({
+      'files': _typeToFile.values.toSet().toList().map((e) => {
+            'value': e,
+          }),
+    }));
   }
 }
 
@@ -389,6 +401,17 @@ class TdApiMap {
     return _tdMap.containsKey(map['@type']) ? _tdMap[map['@type']]!(map) : null;
   }
 }
+''';
+
+  static String get exportTemplate => '''
+export 'client.dart';
+
+export 'api/base.dart';
+export 'api/map.dart';
+
+{{# files }}
+export 'api/{{ value }}.dart';
+{{/ files }}
 ''';
 }
 
