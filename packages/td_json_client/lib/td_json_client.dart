@@ -375,6 +375,7 @@ export 'api/function/get_supergroup_full_info.dart';
 export 'api/function/get_secret_chat.dart';
 export 'api/function/get_chat.dart';
 export 'api/function/get_message.dart';
+export 'api/function/get_update_new_messages.dart';
 export 'api/function/get_message_locally.dart';
 export 'api/function/get_replied_message.dart';
 export 'api/function/get_chat_pinned_message.dart';

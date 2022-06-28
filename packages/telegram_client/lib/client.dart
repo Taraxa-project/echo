@@ -1,5 +1,4 @@
 import 'package:loggy/loggy.dart';
-
 import 'package:td_json_client/td_json_client.dart';
 
 mixin TelegramClientLoggy implements LoggyType {
@@ -122,10 +121,10 @@ class TelegramClient with TelegramClientLoggy {
       yield response;
     }
   }
-  
+
   Stream<dynamic> getMessages(
       {required int clientId, double waitTimeout = waitTimeout}) async* {
-    _tdJsonClient.send(clientId, UpdateNewMessage());
+    _tdJsonClient.send(clientId, GetUpdateNewMessages(limit: 1000));
 
     await for (var response in _tdJsonClient
         .receive(waitTimeout: waitTimeout)
