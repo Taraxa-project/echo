@@ -19,5 +19,5 @@ build/
 .DS_store
 
 # env
-*.env
+.env*
 *.local
