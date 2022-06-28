@@ -3,9 +3,9 @@ import 'package:ffi/ffi.dart' as ffi_ext;
 import 'dart:convert' as convert;
 import 'package:loggy/loggy.dart';
 
-import 'package:td_json_client/src/lib_td_json.dart';
-import 'package:td_json_client/api/base.dart';
-import 'package:td_json_client/api/map.dart';
+import 'src/lib_td_json.dart';
+import 'api/base.dart';
+import 'api/map.dart';
 
 mixin TdJsonClientLoggy implements LoggyType {
   @override
