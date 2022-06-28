@@ -2,6 +2,11 @@
 
 Social Listen Application with Dart implementing Telegram's tdlib
 
+## Docker
+```bash
+docker-compose up --build
+```
+
 ## Dev
 
 Install Dart SDK -> https://dart.dev/get-dart
@@ -10,7 +15,7 @@ Windows:
 
 Use Chocolatey
 ```bash
-choco install dart-sdk`
+choco install dart-sdk
 ```
 
 
@@ -34,13 +39,21 @@ Mac:
 brew tap dart-lang/dart
 brew install dart
 ```
-Create App:
+
+Install dependencies:
 ```bash
-dart create -t {template} {dir}
+dart pub get
+```
+
+Add env file and vars:
+```bash
+dart pub global activate dotenv
+dart pub global run dotenv:new
+printf 'API_ID=""\nAPI_HASH=""\nPHONE=""\nLIB_TD_JSON_PATH=""\n' >> .env
+printf 'cp .env env.local'
 ```
 
 Start App:
 ```bash
-cd {dir}
-dart run
+dart run packages/cli/bin/main.dart
 ```

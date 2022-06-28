@@ -2,3 +2,9 @@ name: echo
 
 packages:
   - packages/**
+
+scripts:
+  analyze:
+    exec: dart analyze .
+  get:
+    exec: dart pub get
