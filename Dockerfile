@@ -46,5 +46,7 @@ RUN dart pub global activate melos
 RUN melos bootstrap
 RUN melos run get
 
-ENTRYPOINT [ "/usr/lib/dart/bin/dart", "run"]
-CMD ["/app/packages/cli/bin/main.dart"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+RUN dart run /app/packages/cli/bin/main.dart --api-id=${API_ID} \
+    --api-hash=${API_HASH} --phone-number=${PHONE} \
+    --libtdjson-path=${PATH_TD_JSON_LIB} login -h
