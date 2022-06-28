@@ -1,4 +1,4 @@
-name: sl
+name: echo
 
 packages:
   - packages/**

@@ -1,7 +1,6 @@
 import 'package:loggy/loggy.dart';
 
-import 'package:td_json_client/client.dart';
-import 'package:td_json_client/api.dart';
+import 'package:td_json_client/td_json_client.dart';
 
 mixin TelegramClientLoggy implements LoggyType {
   @override
