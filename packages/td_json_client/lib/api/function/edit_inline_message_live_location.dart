@@ -41,8 +41,12 @@ class EditInlineMessageLiveLocation extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     inline_message_id = map['inline_message_id'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    location = TdApiMap.fromMap(map['location']) as Location;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as Location;
+    }
     heading = map['heading'];
     proximity_alert_radius = map['proximity_alert_radius'];
   }

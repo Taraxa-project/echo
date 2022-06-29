@@ -85,7 +85,7 @@ class TMeUrlTypeChatInvite extends TMeUrlType {
   String? extra;
   int? client_id;
 
-  /// Information about the chat invite link
+  /// Chat invite link info
   ChatInviteLinkInfo? info;
 
   TMeUrlTypeChatInvite({
@@ -97,7 +97,9 @@ class TMeUrlTypeChatInvite extends TMeUrlType {
   TMeUrlTypeChatInvite.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    info = TdApiMap.fromMap(map['info']) as ChatInviteLinkInfo;
+    if (map['info'] != null) {
+      info = TdApiMap.fromMap(map['info']) as ChatInviteLinkInfo;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

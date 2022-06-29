@@ -28,7 +28,9 @@ class DeleteChatMessagesBySender extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    if (map['sender_id'] != null) {
+      sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

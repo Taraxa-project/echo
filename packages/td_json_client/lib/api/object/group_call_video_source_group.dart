@@ -25,7 +25,7 @@ class GroupCallVideoSourceGroup extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     semantics = map['semantics'];
-    if (map['source_ids']) {
+    if (map['source_ids'] != null) {
       source_ids = [];
       for (var someValue in map['source_ids']) {
         source_ids?.add(someValue);

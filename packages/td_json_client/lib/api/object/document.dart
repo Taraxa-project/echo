@@ -42,9 +42,15 @@ class Document extends TdObject {
     client_id = map['@client_id'];
     file_name = map['file_name'];
     mime_type = map['mime_type'];
-    minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
-    document = TdApiMap.fromMap(map['document']) as File;
+    if (map['minithumbnail'] != null) {
+      minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
+    if (map['document'] != null) {
+      document = TdApiMap.fromMap(map['document']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

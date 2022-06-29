@@ -28,10 +28,12 @@ class SetPassportElementErrors extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     user_id = map['user_id'];
-    if (map['errors']) {
+    if (map['errors'] != null) {
       errors = [];
       for (var someValue in map['errors']) {
-        errors?.add(TdApiMap.fromMap(someValue) as InputPassportElementError);
+        if (someValue != null) {
+          errors?.add(TdApiMap.fromMap(someValue) as InputPassportElementError);
+        }
       }
     }
   }

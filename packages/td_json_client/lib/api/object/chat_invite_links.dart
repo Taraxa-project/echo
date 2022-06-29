@@ -10,7 +10,7 @@ class ChatInviteLinks extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of chat invite links found 
+  /// Approximate total count of chat invite links found 
   int32? total_count;
 
   /// List of invite links
@@ -27,10 +27,12 @@ class ChatInviteLinks extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['invite_links']) {
+    if (map['invite_links'] != null) {
       invite_links = [];
       for (var someValue in map['invite_links']) {
-        invite_links?.add(TdApiMap.fromMap(someValue) as ChatInviteLink);
+        if (someValue != null) {
+          invite_links?.add(TdApiMap.fromMap(someValue) as ChatInviteLink);
+        }
       }
     }
   }

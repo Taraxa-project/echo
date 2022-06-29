@@ -38,10 +38,12 @@ class SendCallRating extends TdFunction {
     call_id = map['call_id'];
     rating = map['rating'];
     comment = map['comment'];
-    if (map['problems']) {
+    if (map['problems'] != null) {
       problems = [];
       for (var someValue in map['problems']) {
-        problems?.add(TdApiMap.fromMap(someValue) as CallProblem);
+        if (someValue != null) {
+          problems?.add(TdApiMap.fromMap(someValue) as CallProblem);
+        }
       }
     }
   }

@@ -9,7 +9,7 @@ class GetBackgrounds extends TdFunction {
   String? extra;
   int? client_id;
 
-  /// Pass true to order returned backgrounds for a dark theme
+  /// True, if the backgrounds must be ordered for dark theme
   Bool? for_dark_theme;
 
   GetBackgrounds({

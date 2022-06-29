@@ -19,7 +19,7 @@ class SendMessage extends TdFunction {
   /// If not 0, a message thread identifier in which the message will be sent
   int53? message_thread_id;
 
-  /// Identifier of the replied message; 0 if none
+  /// Identifier of the message to reply to or 0
   int53? reply_to_message_id;
 
   /// Options to be used to send the message; pass null to use default options
@@ -48,9 +48,15 @@ class SendMessage extends TdFunction {
     chat_id = map['chat_id'];
     message_thread_id = map['message_thread_id'];
     reply_to_message_id = map['reply_to_message_id'];
-    options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['options'] != null) {
+      options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    }
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

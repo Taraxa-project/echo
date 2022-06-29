@@ -23,7 +23,9 @@ class EditCustomLanguagePackInfo extends TdFunction {
   EditCustomLanguagePackInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    info = TdApiMap.fromMap(map['info']) as LanguagePackInfo;
+    if (map['info'] != null) {
+      info = TdApiMap.fromMap(map['info']) as LanguagePackInfo;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

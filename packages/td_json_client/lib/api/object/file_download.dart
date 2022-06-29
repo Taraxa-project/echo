@@ -39,7 +39,9 @@ class FileDownload extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     file_id = map['file_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
     add_date = map['add_date'];
     complete_date = map['complete_date'];
     is_paused = map['is_paused'];

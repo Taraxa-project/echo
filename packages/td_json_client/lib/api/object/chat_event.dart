@@ -37,8 +37,12 @@ class ChatEvent extends TdObject {
     client_id = map['@client_id'];
     id = map['id'];
     date = map['date'];
-    member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
-    action = TdApiMap.fromMap(map['action']) as ChatEventAction;
+    if (map['member_id'] != null) {
+      member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
+    }
+    if (map['action'] != null) {
+      action = TdApiMap.fromMap(map['action']) as ChatEventAction;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

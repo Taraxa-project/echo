@@ -64,7 +64,7 @@ class UserTypeDeleted extends UserType {
   }
 }
 
-/// A bot (see https://core.telegram.org/bots)
+/// A bot (see https://core.telegram.org/bots) 
 class UserTypeBot extends UserType {
   String get tdType => 'userTypeBot';
 
@@ -77,17 +77,14 @@ class UserTypeBot extends UserType {
   /// True, if the bot can read all messages in basic group or supergroup chats and not just those addressed to the bot. In private and channel chats a bot can always read all messages
   Bool? can_read_all_group_messages;
 
-  /// True, if the bot supports inline queries
+  /// True, if the bot supports inline queries 
   Bool? is_inline;
 
-  /// Placeholder for inline queries (displayed on the application input field)
+  /// Placeholder for inline queries (displayed on the application input field) 
   string? inline_query_placeholder;
 
   /// True, if the location of the user is expected to be sent with every inline query to this bot
   Bool? need_location;
-
-  /// True, if the bot can be added to attachment menu
-  Bool? can_be_added_to_attachment_menu;
 
   UserTypeBot({
     this.extra,
@@ -97,7 +94,6 @@ class UserTypeBot extends UserType {
     this.is_inline,
     this.inline_query_placeholder,
     this.need_location,
-    this.can_be_added_to_attachment_menu,
   });
 
   UserTypeBot.fromMap(Map<String, dynamic> map) {
@@ -108,7 +104,6 @@ class UserTypeBot extends UserType {
     is_inline = map['is_inline'];
     inline_query_placeholder = map['inline_query_placeholder'];
     need_location = map['need_location'];
-    can_be_added_to_attachment_menu = map['can_be_added_to_attachment_menu'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -121,7 +116,6 @@ class UserTypeBot extends UserType {
       'is_inline': is_inline?.toMap(skipNulls: skipNulls),
       'inline_query_placeholder': inline_query_placeholder?.toMap(skipNulls: skipNulls),
       'need_location': need_location?.toMap(skipNulls: skipNulls),
-      'can_be_added_to_attachment_menu': can_be_added_to_attachment_menu?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

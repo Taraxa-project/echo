@@ -23,10 +23,10 @@ class JoinGroupCall extends TdFunction {
   /// Group call join payload; received from tgcalls
   string? payload;
 
-  /// Pass true to join the call with muted microphone
+  /// True, if the user's microphone is muted
   Bool? is_muted;
 
-  /// Pass true if the user's video is enabled
+  /// True, if the user's video is enabled
   Bool? is_my_video_enabled;
 
   /// If non-empty, invite hash to be used to join the group call without being muted by administrators
@@ -48,7 +48,9 @@ class JoinGroupCall extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     group_call_id = map['group_call_id'];
-    participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    if (map['participant_id'] != null) {
+      participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    }
     audio_source_id = map['audio_source_id'];
     payload = map['payload'];
     is_muted = map['is_muted'];

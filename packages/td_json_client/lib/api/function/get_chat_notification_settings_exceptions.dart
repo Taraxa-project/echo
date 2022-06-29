@@ -14,7 +14,7 @@ class GetChatNotificationSettingsExceptions extends TdFunction {
   /// If specified, only chats from the scope will be returned; pass null to return chats from all scopes
   NotificationSettingsScope? scope;
 
-  /// Pass true to include in the response chats with only non-default sound
+  /// If true, also chats with non-default sound will be returned
   Bool? compare_sound;
 
   GetChatNotificationSettingsExceptions({
@@ -27,7 +27,9 @@ class GetChatNotificationSettingsExceptions extends TdFunction {
   GetChatNotificationSettingsExceptions.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    scope = TdApiMap.fromMap(map['scope']) as NotificationSettingsScope;
+    if (map['scope'] != null) {
+      scope = TdApiMap.fromMap(map['scope']) as NotificationSettingsScope;
+    }
     compare_sound = map['compare_sound'];
   }
 

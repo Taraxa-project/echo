@@ -8,7 +8,7 @@ class Error extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Error code; subject to future changes. If the error coååde is 406, the error message must not be processed in any way and must not be displayed to the user
+  /// Error code; subject to future changes. If the error code is 406, the error message must not be processed in any way and must not be displayed to the user
   int32? code;
 
   /// Error message; subject to future changes

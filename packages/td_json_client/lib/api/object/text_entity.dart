@@ -32,7 +32,9 @@ class TextEntity extends TdObject {
     client_id = map['@client_id'];
     offset = map['offset'];
     length = map['length'];
-    type = TdApiMap.fromMap(map['type']) as TextEntityType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as TextEntityType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

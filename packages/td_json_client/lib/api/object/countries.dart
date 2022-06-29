@@ -22,10 +22,12 @@ class Countries extends TdObject {
   Countries.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['countries']) {
+    if (map['countries'] != null) {
       countries = [];
       for (var someValue in map['countries']) {
-        countries?.add(TdApiMap.fromMap(someValue) as CountryInfo);
+        if (someValue != null) {
+          countries?.add(TdApiMap.fromMap(someValue) as CountryInfo);
+        }
       }
     }
   }

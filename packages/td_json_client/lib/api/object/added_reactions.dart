@@ -31,10 +31,12 @@ class AddedReactions extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['reactions']) {
+    if (map['reactions'] != null) {
       reactions = [];
       for (var someValue in map['reactions']) {
-        reactions?.add(TdApiMap.fromMap(someValue) as AddedReaction);
+        if (someValue != null) {
+          reactions?.add(TdApiMap.fromMap(someValue) as AddedReaction);
+        }
       }
     }
     next_offset = map['next_offset'];

@@ -21,7 +21,7 @@ class ReorderChatFilters extends TdFunction {
   ReorderChatFilters.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['chat_filter_ids']) {
+    if (map['chat_filter_ids'] != null) {
       chat_filter_ids = [];
       for (var someValue in map['chat_filter_ids']) {
         chat_filter_ids?.add(someValue);

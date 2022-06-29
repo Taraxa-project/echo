@@ -20,7 +20,7 @@ class AvailableReactions extends TdObject {
   AvailableReactions.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['reactions']) {
+    if (map['reactions'] != null) {
       reactions = [];
       for (var someValue in map['reactions']) {
         reactions?.add(someValue);

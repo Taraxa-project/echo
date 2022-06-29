@@ -26,7 +26,9 @@ class DatedFile extends TdObject {
   DatedFile.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    file = TdApiMap.fromMap(map['file']) as File;
+    if (map['file'] != null) {
+      file = TdApiMap.fromMap(map['file']) as File;
+    }
     date = map['date'];
   }
 

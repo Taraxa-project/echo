@@ -37,7 +37,9 @@ class OrderInfo extends TdObject {
     name = map['name'];
     phone_number = map['phone_number'];
     email_address = map['email_address'];
-    shipping_address = TdApiMap.fromMap(map['shipping_address']) as Address;
+    if (map['shipping_address'] != null) {
+      shipping_address = TdApiMap.fromMap(map['shipping_address']) as Address;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

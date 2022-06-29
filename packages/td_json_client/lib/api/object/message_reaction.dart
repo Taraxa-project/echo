@@ -37,10 +37,12 @@ class MessageReaction extends TdObject {
     reaction = map['reaction'];
     total_count = map['total_count'];
     is_chosen = map['is_chosen'];
-    if (map['recent_sender_ids']) {
+    if (map['recent_sender_ids'] != null) {
       recent_sender_ids = [];
       for (var someValue in map['recent_sender_ids']) {
-        recent_sender_ids?.add(TdApiMap.fromMap(someValue) as MessageSender);
+        if (someValue != null) {
+          recent_sender_ids?.add(TdApiMap.fromMap(someValue) as MessageSender);
+        }
       }
     }
   }

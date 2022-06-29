@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_photo.dart';
-import 'package:td_json_client/api/object/bot_info.dart';
+import 'package:td_json_client/api/object/bot_command.dart';
 
 
 /// Contains full information about a user
@@ -35,11 +35,16 @@ class UserFullInfo extends TdObject {
   /// A short user bio
   string? bio;
 
+  /// For bots, the text that is shown on the bot's profile page and is sent together with the link when users share the bot
+  string? share_text;
+
+  string? description;
+
   /// Number of group chats where both the other user and the current user are a member; 0 for the current user
   int32? group_in_common_count;
 
-  /// For bots, information about the bot; may be null
-  BotInfo? bot_info;
+  /// For bots, list of the bot commands
+  vector<BotCommand>? commands;
 
   UserFullInfo({
     this.extra,
@@ -52,14 +57,18 @@ class UserFullInfo extends TdObject {
     this.has_private_forwards,
     this.need_phone_number_privacy_exception,
     this.bio,
+    this.share_text,
+    this.description,
     this.group_in_common_count,
-    this.bot_info,
+    this.commands,
   });
 
   UserFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    }
     is_blocked = map['is_blocked'];
     can_be_called = map['can_be_called'];
     supports_video_calls = map['supports_video_calls'];
@@ -67,8 +76,17 @@ class UserFullInfo extends TdObject {
     has_private_forwards = map['has_private_forwards'];
     need_phone_number_privacy_exception = map['need_phone_number_privacy_exception'];
     bio = map['bio'];
+    share_text = map['share_text'];
+    description = map['description'];
     group_in_common_count = map['group_in_common_count'];
-    bot_info = TdApiMap.fromMap(map['bot_info']) as BotInfo;
+    if (map['commands'] != null) {
+      commands = [];
+      for (var someValue in map['commands']) {
+        if (someValue != null) {
+          commands?.add(TdApiMap.fromMap(someValue) as BotCommand);
+        }
+      }
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -84,8 +102,10 @@ class UserFullInfo extends TdObject {
       'has_private_forwards': has_private_forwards?.toMap(skipNulls: skipNulls),
       'need_phone_number_privacy_exception': need_phone_number_privacy_exception?.toMap(skipNulls: skipNulls),
       'bio': bio?.toMap(skipNulls: skipNulls),
+      'share_text': share_text?.toMap(skipNulls: skipNulls),
+      'description': description?.toMap(skipNulls: skipNulls),
       'group_in_common_count': group_in_common_count?.toMap(skipNulls: skipNulls),
-      'bot_info': bot_info?.toMap(skipNulls: skipNulls),
+      'commands': commands?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

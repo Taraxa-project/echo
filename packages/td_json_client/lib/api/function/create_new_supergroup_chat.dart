@@ -14,7 +14,7 @@ class CreateNewSupergroupChat extends TdFunction {
   /// Title of the new chat; 1-128 characters
   string? title;
 
-  /// Pass true to create a channel chat
+  /// True, if a channel chat needs to be created
   Bool? is_channel;
 
   string? description;
@@ -22,7 +22,7 @@ class CreateNewSupergroupChat extends TdFunction {
   /// Chat location if a location-based supergroup is being created; pass null to create an ordinary supergroup chat
   ChatLocation? location;
 
-  /// Pass true to create a supergroup for importing messages using importMessage
+  /// True, if the supergroup is created for importing messages using importMessage
   Bool? for_import;
 
   CreateNewSupergroupChat({
@@ -41,7 +41,9 @@ class CreateNewSupergroupChat extends TdFunction {
     title = map['title'];
     is_channel = map['is_channel'];
     description = map['description'];
-    location = TdApiMap.fromMap(map['location']) as ChatLocation;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as ChatLocation;
+    }
     for_import = map['for_import'];
   }
 

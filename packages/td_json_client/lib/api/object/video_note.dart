@@ -42,9 +42,15 @@ class VideoNote extends TdObject {
     client_id = map['@client_id'];
     duration = map['duration'];
     length = map['length'];
-    minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
-    video = TdApiMap.fromMap(map['video']) as File;
+    if (map['minithumbnail'] != null) {
+      minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
+    if (map['video'] != null) {
+      video = TdApiMap.fromMap(map['video']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

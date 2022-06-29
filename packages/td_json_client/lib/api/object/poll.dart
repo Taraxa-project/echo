@@ -61,21 +61,25 @@ class Poll extends TdObject {
     client_id = map['@client_id'];
     id = map['id'];
     question = map['question'];
-    if (map['options']) {
+    if (map['options'] != null) {
       options = [];
       for (var someValue in map['options']) {
-        options?.add(TdApiMap.fromMap(someValue) as PollOption);
+        if (someValue != null) {
+          options?.add(TdApiMap.fromMap(someValue) as PollOption);
+        }
       }
     }
     total_voter_count = map['total_voter_count'];
-    if (map['recent_voter_user_ids']) {
+    if (map['recent_voter_user_ids'] != null) {
       recent_voter_user_ids = [];
       for (var someValue in map['recent_voter_user_ids']) {
         recent_voter_user_ids?.add(someValue);
       }
     }
     is_anonymous = map['is_anonymous'];
-    type = TdApiMap.fromMap(map['type']) as PollType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as PollType;
+    }
     open_period = map['open_period'];
     close_date = map['close_date'];
     is_closed = map['is_closed'];

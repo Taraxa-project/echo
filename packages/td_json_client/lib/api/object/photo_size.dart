@@ -39,10 +39,12 @@ class PhotoSize extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     type = map['type'];
-    photo = TdApiMap.fromMap(map['photo']) as File;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as File;
+    }
     width = map['width'];
     height = map['height'];
-    if (map['progressive_sizes']) {
+    if (map['progressive_sizes'] != null) {
       progressive_sizes = [];
       for (var someValue in map['progressive_sizes']) {
         progressive_sizes?.add(someValue);

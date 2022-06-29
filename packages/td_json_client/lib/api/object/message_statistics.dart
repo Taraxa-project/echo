@@ -22,7 +22,9 @@ class MessageStatistics extends TdObject {
   MessageStatistics.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    message_interaction_graph = TdApiMap.fromMap(map['message_interaction_graph']) as StatisticalGraph;
+    if (map['message_interaction_graph'] != null) {
+      message_interaction_graph = TdApiMap.fromMap(map['message_interaction_graph']) as StatisticalGraph;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -57,9 +57,15 @@ class Audio extends TdObject {
     performer = map['performer'];
     file_name = map['file_name'];
     mime_type = map['mime_type'];
-    album_cover_minithumbnail = TdApiMap.fromMap(map['album_cover_minithumbnail']) as Minithumbnail;
-    album_cover_thumbnail = TdApiMap.fromMap(map['album_cover_thumbnail']) as Thumbnail;
-    audio = TdApiMap.fromMap(map['audio']) as File;
+    if (map['album_cover_minithumbnail'] != null) {
+      album_cover_minithumbnail = TdApiMap.fromMap(map['album_cover_minithumbnail']) as Minithumbnail;
+    }
+    if (map['album_cover_thumbnail'] != null) {
+      album_cover_thumbnail = TdApiMap.fromMap(map['album_cover_thumbnail']) as Thumbnail;
+    }
+    if (map['audio'] != null) {
+      audio = TdApiMap.fromMap(map['audio']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

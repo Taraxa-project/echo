@@ -27,10 +27,12 @@ class BankCardInfo extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     title = map['title'];
-    if (map['actions']) {
+    if (map['actions'] != null) {
       actions = [];
       for (var someValue in map['actions']) {
-        actions?.add(TdApiMap.fromMap(someValue) as BankCardActionOpenUrl);
+        if (someValue != null) {
+          actions?.add(TdApiMap.fromMap(someValue) as BankCardActionOpenUrl);
+        }
       }
     }
   }

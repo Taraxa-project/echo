@@ -31,10 +31,12 @@ class PassportAuthorizationForm extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    if (map['required_elements']) {
+    if (map['required_elements'] != null) {
       required_elements = [];
       for (var someValue in map['required_elements']) {
-        required_elements?.add(TdApiMap.fromMap(someValue) as PassportRequiredElement);
+        if (someValue != null) {
+          required_elements?.add(TdApiMap.fromMap(someValue) as PassportRequiredElement);
+        }
       }
     }
     privacy_policy_url = map['privacy_policy_url'];

@@ -32,10 +32,12 @@ class ShippingOption extends TdObject {
     client_id = map['@client_id'];
     id = map['id'];
     title = map['title'];
-    if (map['price_parts']) {
+    if (map['price_parts'] != null) {
       price_parts = [];
       for (var someValue in map['price_parts']) {
-        price_parts?.add(TdApiMap.fromMap(someValue) as LabeledPricePart);
+        if (someValue != null) {
+          price_parts?.add(TdApiMap.fromMap(someValue) as LabeledPricePart);
+        }
       }
     }
   }

@@ -27,10 +27,12 @@ class BotCommands extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     bot_user_id = map['bot_user_id'];
-    if (map['commands']) {
+    if (map['commands'] != null) {
       commands = [];
       for (var someValue in map['commands']) {
-        commands?.add(TdApiMap.fromMap(someValue) as BotCommand);
+        if (someValue != null) {
+          commands?.add(TdApiMap.fromMap(someValue) as BotCommand);
+        }
       }
     }
   }

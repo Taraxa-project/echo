@@ -81,7 +81,9 @@ class Supergroup extends TdObject {
     id = map['id'];
     username = map['username'];
     date = map['date'];
-    status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
+    if (map['status'] != null) {
+      status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
+    }
     member_count = map['member_count'];
     has_linked_chat = map['has_linked_chat'];
     has_location = map['has_location'];

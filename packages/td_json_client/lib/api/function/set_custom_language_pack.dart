@@ -28,11 +28,15 @@ class SetCustomLanguagePack extends TdFunction {
   SetCustomLanguagePack.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    info = TdApiMap.fromMap(map['info']) as LanguagePackInfo;
-    if (map['strings']) {
+    if (map['info'] != null) {
+      info = TdApiMap.fromMap(map['info']) as LanguagePackInfo;
+    }
+    if (map['strings'] != null) {
       strings = [];
       for (var someValue in map['strings']) {
-        strings?.add(TdApiMap.fromMap(someValue) as LanguagePackString);
+        if (someValue != null) {
+          strings?.add(TdApiMap.fromMap(someValue) as LanguagePackString);
+        }
       }
     }
   }

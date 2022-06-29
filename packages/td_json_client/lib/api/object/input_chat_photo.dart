@@ -61,7 +61,9 @@ class InputChatPhotoStatic extends InputChatPhoto {
   InputChatPhotoStatic.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as InputFile;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as InputFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -101,7 +103,9 @@ class InputChatPhotoAnimation extends InputChatPhoto {
   InputChatPhotoAnimation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    animation = TdApiMap.fromMap(map['animation']) as InputFile;
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as InputFile;
+    }
     main_frame_timestamp = map['main_frame_timestamp'];
   }
 

@@ -30,7 +30,9 @@ class StorageStatisticsByFileType extends TdObject {
   StorageStatisticsByFileType.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    file_type = TdApiMap.fromMap(map['file_type']) as FileType;
+    if (map['file_type'] != null) {
+      file_type = TdApiMap.fromMap(map['file_type']) as FileType;
+    }
     size = map['size'];
     count = map['count'];
   }

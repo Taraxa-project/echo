@@ -22,10 +22,12 @@ class RecommendedChatFilters extends TdObject {
   RecommendedChatFilters.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['chat_filters']) {
+    if (map['chat_filters'] != null) {
       chat_filters = [];
       for (var someValue in map['chat_filters']) {
-        chat_filters?.add(TdApiMap.fromMap(someValue) as RecommendedChatFilter);
+        if (someValue != null) {
+          chat_filters?.add(TdApiMap.fromMap(someValue) as RecommendedChatFilter);
+        }
       }
     }
   }

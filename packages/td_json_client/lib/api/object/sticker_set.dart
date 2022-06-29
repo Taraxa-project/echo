@@ -2,7 +2,6 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/closed_vector_path.dart';
-import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/emojis.dart';
 
@@ -23,7 +22,7 @@ class StickerSet extends TdObject {
   /// Name of the sticker set 
   string? name;
 
-  /// Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null. The file can be downloaded only before the thumbnail is changed
+  /// Sticker set thumbnail in WEBP or TGS format with width and height 100; may be null. The file can be downloaded only before the thumbnail is changed
   Thumbnail? thumbnail;
 
   /// Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty. The coordinate system origin is in the upper-left corner
@@ -38,8 +37,11 @@ class StickerSet extends TdObject {
   /// True, if the sticker set is official 
   Bool? is_official;
 
-  /// Type of the stickers in the set 
-  StickerType? sticker_type;
+  /// True, is the stickers in the set are animated 
+  Bool? is_animated;
+
+  /// True, if the stickers in the set are masks 
+  Bool? is_masks;
 
   /// True for already viewed trending sticker sets
   Bool? is_viewed;
@@ -61,7 +63,8 @@ class StickerSet extends TdObject {
     this.is_installed,
     this.is_archived,
     this.is_official,
-    this.sticker_type,
+    this.is_animated,
+    this.is_masks,
     this.is_viewed,
     this.stickers,
     this.emojis,
@@ -73,28 +76,37 @@ class StickerSet extends TdObject {
     id = map['id'];
     title = map['title'];
     name = map['name'];
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
-    if (map['thumbnail_outline']) {
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
+    if (map['thumbnail_outline'] != null) {
       thumbnail_outline = [];
       for (var someValue in map['thumbnail_outline']) {
-        thumbnail_outline?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
+        if (someValue != null) {
+          thumbnail_outline?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
+        }
       }
     }
     is_installed = map['is_installed'];
     is_archived = map['is_archived'];
     is_official = map['is_official'];
-    sticker_type = TdApiMap.fromMap(map['sticker_type']) as StickerType;
+    is_animated = map['is_animated'];
+    is_masks = map['is_masks'];
     is_viewed = map['is_viewed'];
-    if (map['stickers']) {
+    if (map['stickers'] != null) {
       stickers = [];
       for (var someValue in map['stickers']) {
-        stickers?.add(TdApiMap.fromMap(someValue) as Sticker);
+        if (someValue != null) {
+          stickers?.add(TdApiMap.fromMap(someValue) as Sticker);
+        }
       }
     }
-    if (map['emojis']) {
+    if (map['emojis'] != null) {
       emojis = [];
       for (var someValue in map['emojis']) {
-        emojis?.add(TdApiMap.fromMap(someValue) as Emojis);
+        if (someValue != null) {
+          emojis?.add(TdApiMap.fromMap(someValue) as Emojis);
+        }
       }
     }
   }
@@ -112,7 +124,8 @@ class StickerSet extends TdObject {
       'is_installed': is_installed?.toMap(skipNulls: skipNulls),
       'is_archived': is_archived?.toMap(skipNulls: skipNulls),
       'is_official': is_official?.toMap(skipNulls: skipNulls),
-      'sticker_type': sticker_type?.toMap(skipNulls: skipNulls),
+      'is_animated': is_animated?.toMap(skipNulls: skipNulls),
+      'is_masks': is_masks?.toMap(skipNulls: skipNulls),
       'is_viewed': is_viewed?.toMap(skipNulls: skipNulls),
       'stickers': stickers?.toMap(skipNulls: skipNulls),
       'emojis': emojis?.toMap(skipNulls: skipNulls),

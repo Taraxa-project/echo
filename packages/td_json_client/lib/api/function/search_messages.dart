@@ -31,7 +31,7 @@ class SearchMessages extends TdFunction {
   /// The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
   int32? limit;
 
-  /// Additional filter for messages to search; pass null to search for all messages. Filters searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, searchMessagesFilterFailedToSend, and searchMessagesFilterPinned are unsupported in this function
+  /// Additional filter for messages to search; pass null to search for all messages. Filters searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterFailedToSend and searchMessagesFilterPinned are unsupported in this function
   SearchMessagesFilter? filter;
 
   /// If not 0, the minimum date of the messages to return
@@ -57,13 +57,17 @@ class SearchMessages extends TdFunction {
   SearchMessages.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
+    if (map['chat_list'] != null) {
+      chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
+    }
     query = map['query'];
     offset_date = map['offset_date'];
     offset_chat_id = map['offset_chat_id'];
     offset_message_id = map['offset_message_id'];
     limit = map['limit'];
-    filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    }
     min_date = map['min_date'];
     max_date = map['max_date'];
   }

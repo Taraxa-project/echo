@@ -12,7 +12,7 @@ class SearchEmojis extends TdFunction {
   /// Text to search for 
   string? text;
 
-  /// Pass true if only emojis, which exactly match the text, needs to be returned 
+  /// True, if only emojis, which exactly match text needs to be returned 
   Bool? exact_match;
 
   /// List of possible IETF language tags of the user's input language; may be empty if unknown
@@ -31,7 +31,7 @@ class SearchEmojis extends TdFunction {
     client_id = map['@client_id'];
     text = map['text'];
     exact_match = map['exact_match'];
-    if (map['input_language_codes']) {
+    if (map['input_language_codes'] != null) {
       input_language_codes = [];
       for (var someValue in map['input_language_codes']) {
         input_language_codes?.add(someValue);

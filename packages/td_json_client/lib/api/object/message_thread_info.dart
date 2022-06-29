@@ -46,15 +46,21 @@ class MessageThreadInfo extends TdObject {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_thread_id = map['message_thread_id'];
-    reply_info = TdApiMap.fromMap(map['reply_info']) as MessageReplyInfo;
+    if (map['reply_info'] != null) {
+      reply_info = TdApiMap.fromMap(map['reply_info']) as MessageReplyInfo;
+    }
     unread_message_count = map['unread_message_count'];
-    if (map['messages']) {
+    if (map['messages'] != null) {
       messages = [];
       for (var someValue in map['messages']) {
-        messages?.add(TdApiMap.fromMap(someValue) as Message);
+        if (someValue != null) {
+          messages?.add(TdApiMap.fromMap(someValue) as Message);
+        }
       }
     }
-    draft_message = TdApiMap.fromMap(map['draft_message']) as DraftMessage;
+    if (map['draft_message'] != null) {
+      draft_message = TdApiMap.fromMap(map['draft_message']) as DraftMessage;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

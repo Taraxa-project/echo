@@ -52,8 +52,12 @@ class MessageText extends MessageContent {
   MessageText.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as FormattedText;
-    web_page = TdApiMap.fromMap(map['web_page']) as WebPage;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as FormattedText;
+    }
+    if (map['web_page'] != null) {
+      web_page = TdApiMap.fromMap(map['web_page']) as WebPage;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -98,8 +102,12 @@ class MessageAnimation extends MessageContent {
   MessageAnimation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    animation = TdApiMap.fromMap(map['animation']) as Animation;
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as Animation;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
     is_secret = map['is_secret'];
   }
 
@@ -142,8 +150,12 @@ class MessageAudio extends MessageContent {
   MessageAudio.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    audio = TdApiMap.fromMap(map['audio']) as Audio;
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['audio'] != null) {
+      audio = TdApiMap.fromMap(map['audio']) as Audio;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -184,8 +196,12 @@ class MessageDocument extends MessageContent {
   MessageDocument.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    document = TdApiMap.fromMap(map['document']) as Document;
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['document'] != null) {
+      document = TdApiMap.fromMap(map['document']) as Document;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -230,8 +246,12 @@ class MessagePhoto extends MessageContent {
   MessagePhoto.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as Photo;
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as Photo;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
     is_secret = map['is_secret'];
   }
 
@@ -300,7 +320,9 @@ class MessageSticker extends MessageContent {
   MessageSticker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -344,8 +366,12 @@ class MessageVideo extends MessageContent {
   MessageVideo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    video = TdApiMap.fromMap(map['video']) as Video;
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['video'] != null) {
+      video = TdApiMap.fromMap(map['video']) as Video;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
     is_secret = map['is_secret'];
   }
 
@@ -422,7 +448,9 @@ class MessageVideoNote extends MessageContent {
   MessageVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    video_note = TdApiMap.fromMap(map['video_note']) as VideoNote;
+    if (map['video_note'] != null) {
+      video_note = TdApiMap.fromMap(map['video_note']) as VideoNote;
+    }
     is_viewed = map['is_viewed'];
     is_secret = map['is_secret'];
   }
@@ -470,8 +498,12 @@ class MessageVoiceNote extends MessageContent {
   MessageVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['voice_note'] != null) {
+      voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
     is_listened = map['is_listened'];
   }
 
@@ -526,7 +558,9 @@ class MessageLocation extends MessageContent {
   MessageLocation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    location = TdApiMap.fromMap(map['location']) as Location;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as Location;
+    }
     live_period = map['live_period'];
     expires_in = map['expires_in'];
     heading = map['heading'];
@@ -570,7 +604,9 @@ class MessageVenue extends MessageContent {
   MessageVenue.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    venue = TdApiMap.fromMap(map['venue']) as Venue;
+    if (map['venue'] != null) {
+      venue = TdApiMap.fromMap(map['venue']) as Venue;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -606,7 +642,9 @@ class MessageContact extends MessageContent {
   MessageContact.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    contact = TdApiMap.fromMap(map['contact']) as Contact;
+    if (map['contact'] != null) {
+      contact = TdApiMap.fromMap(map['contact']) as Contact;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -646,7 +684,9 @@ class MessageAnimatedEmoji extends MessageContent {
   MessageAnimatedEmoji.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    animated_emoji = TdApiMap.fromMap(map['animated_emoji']) as AnimatedEmoji;
+    if (map['animated_emoji'] != null) {
+      animated_emoji = TdApiMap.fromMap(map['animated_emoji']) as AnimatedEmoji;
+    }
     emoji = map['emoji'];
   }
 
@@ -700,8 +740,12 @@ class MessageDice extends MessageContent {
   MessageDice.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    initial_state = TdApiMap.fromMap(map['initial_state']) as DiceStickers;
-    final_state = TdApiMap.fromMap(map['final_state']) as DiceStickers;
+    if (map['initial_state'] != null) {
+      initial_state = TdApiMap.fromMap(map['initial_state']) as DiceStickers;
+    }
+    if (map['final_state'] != null) {
+      final_state = TdApiMap.fromMap(map['final_state']) as DiceStickers;
+    }
     emoji = map['emoji'];
     value = map['value'];
     success_animation_frame_number = map['success_animation_frame_number'];
@@ -744,7 +788,9 @@ class MessageGame extends MessageContent {
   MessageGame.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    game = TdApiMap.fromMap(map['game']) as Game;
+    if (map['game'] != null) {
+      game = TdApiMap.fromMap(map['game']) as Game;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -780,7 +826,9 @@ class MessagePoll extends MessageContent {
   MessagePoll.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    poll = TdApiMap.fromMap(map['poll']) as Poll;
+    if (map['poll'] != null) {
+      poll = TdApiMap.fromMap(map['poll']) as Poll;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -849,7 +897,9 @@ class MessageInvoice extends MessageContent {
     client_id = map['@client_id'];
     title = map['title'];
     description = map['description'];
-    photo = TdApiMap.fromMap(map['photo']) as Photo;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as Photo;
+    }
     currency = map['currency'];
     total_amount = map['total_amount'];
     start_parameter = map['start_parameter'];
@@ -908,7 +958,9 @@ class MessageCall extends MessageContent {
     extra = map['@extra'];
     client_id = map['@client_id'];
     is_video = map['is_video'];
-    discard_reason = TdApiMap.fromMap(map['discard_reason']) as CallDiscardReason;
+    if (map['discard_reason'] != null) {
+      discard_reason = TdApiMap.fromMap(map['discard_reason']) as CallDiscardReason;
+    }
     duration = map['duration'];
   }
 
@@ -1066,7 +1118,7 @@ class MessageInviteVideoChatParticipants extends MessageContent {
     extra = map['@extra'];
     client_id = map['@client_id'];
     group_call_id = map['group_call_id'];
-    if (map['user_ids']) {
+    if (map['user_ids'] != null) {
       user_ids = [];
       for (var someValue in map['user_ids']) {
         user_ids?.add(someValue);
@@ -1113,7 +1165,7 @@ class MessageBasicGroupChatCreate extends MessageContent {
     extra = map['@extra'];
     client_id = map['@client_id'];
     title = map['title'];
-    if (map['member_user_ids']) {
+    if (map['member_user_ids'] != null) {
       member_user_ids = [];
       for (var someValue in map['member_user_ids']) {
         member_user_ids?.add(someValue);
@@ -1227,7 +1279,9 @@ class MessageChatChangePhoto extends MessageContent {
   MessageChatChangePhoto.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1293,7 +1347,7 @@ class MessageChatAddMembers extends MessageContent {
   MessageChatAddMembers.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['member_user_ids']) {
+    if (map['member_user_ids'] != null) {
       member_user_ids = [];
       for (var someValue in map['member_user_ids']) {
         member_user_ids?.add(someValue);
@@ -1812,7 +1866,9 @@ class MessagePaymentSuccessfulBot extends MessageContent {
     total_amount = map['total_amount'];
     invoice_payload = map['invoice_payload'];
     shipping_option_id = map['shipping_option_id'];
-    order_info = TdApiMap.fromMap(map['order_info']) as OrderInfo;
+    if (map['order_info'] != null) {
+      order_info = TdApiMap.fromMap(map['order_info']) as OrderInfo;
+    }
     telegram_payment_charge_id = map['telegram_payment_charge_id'];
     provider_payment_charge_id = map['provider_payment_charge_id'];
   }
@@ -1903,85 +1959,7 @@ class MessageWebsiteConnected extends MessageContent {
   }
 }
 
-/// Data from a web app has been sent to a bot 
-class MessageWebAppDataSent extends MessageContent {
-  String get tdType => 'messageWebAppDataSent';
-
-  String? extra;
-  int? client_id;
-
-  /// Text of the keyboardButtonTypeWebApp button, which opened the web app
-  string? button_text;
-
-  MessageWebAppDataSent({
-    this.extra,
-    this.client_id,
-    this.button_text,
-  });
-
-  MessageWebAppDataSent.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    button_text = map['button_text'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'button_text': button_text?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// Data from a web app has been received; for bots only 
-class MessageWebAppDataReceived extends MessageContent {
-  String get tdType => 'messageWebAppDataReceived';
-
-  String? extra;
-  int? client_id;
-
-  /// Text of the keyboardButtonTypeWebApp button, which opened the web app 
-  string? button_text;
-
-  /// Received data
-  string? data;
-
-  MessageWebAppDataReceived({
-    this.extra,
-    this.client_id,
-    this.button_text,
-    this.data,
-  });
-
-  MessageWebAppDataReceived.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    button_text = map['button_text'];
-    data = map['data'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'button_text': button_text?.toMap(skipNulls: skipNulls),
-      'data': data?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// Telegram Passport data has been sent to a bot 
+/// Telegram Passport data has been sent 
 class MessagePassportDataSent extends MessageContent {
   String get tdType => 'messagePassportDataSent';
 
@@ -2000,10 +1978,12 @@ class MessagePassportDataSent extends MessageContent {
   MessagePassportDataSent.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['types']) {
+    if (map['types'] != null) {
       types = [];
       for (var someValue in map['types']) {
-        types?.add(TdApiMap.fromMap(someValue) as PassportElementType);
+        if (someValue != null) {
+          types?.add(TdApiMap.fromMap(someValue) as PassportElementType);
+        }
       }
     }
   }
@@ -2045,13 +2025,17 @@ class MessagePassportDataReceived extends MessageContent {
   MessagePassportDataReceived.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['elements']) {
+    if (map['elements'] != null) {
       elements = [];
       for (var someValue in map['elements']) {
-        elements?.add(TdApiMap.fromMap(someValue) as EncryptedPassportElement);
+        if (someValue != null) {
+          elements?.add(TdApiMap.fromMap(someValue) as EncryptedPassportElement);
+        }
       }
     }
-    credentials = TdApiMap.fromMap(map['credentials']) as EncryptedCredentials;
+    if (map['credentials'] != null) {
+      credentials = TdApiMap.fromMap(map['credentials']) as EncryptedCredentials;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -2096,8 +2080,12 @@ class MessageProximityAlertTriggered extends MessageContent {
   MessageProximityAlertTriggered.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    traveler_id = TdApiMap.fromMap(map['traveler_id']) as MessageSender;
-    watcher_id = TdApiMap.fromMap(map['watcher_id']) as MessageSender;
+    if (map['traveler_id'] != null) {
+      traveler_id = TdApiMap.fromMap(map['traveler_id']) as MessageSender;
+    }
+    if (map['watcher_id'] != null) {
+      watcher_id = TdApiMap.fromMap(map['watcher_id']) as MessageSender;
+    }
     distance = map['distance'];
   }
 

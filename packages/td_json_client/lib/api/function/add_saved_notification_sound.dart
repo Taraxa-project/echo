@@ -23,7 +23,9 @@ class AddSavedNotificationSound extends TdFunction {
   AddSavedNotificationSound.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sound = TdApiMap.fromMap(map['sound']) as InputFile;
+    if (map['sound'] != null) {
+      sound = TdApiMap.fromMap(map['sound']) as InputFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -42,7 +42,9 @@ class CallServer extends TdObject {
     ip_address = map['ip_address'];
     ipv6_address = map['ipv6_address'];
     port = map['port'];
-    type = TdApiMap.fromMap(map['type']) as CallServerType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as CallServerType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

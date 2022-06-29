@@ -21,7 +21,7 @@ class InputMessageText extends InputMessageContent {
   String? extra;
   int? client_id;
 
-  /// Formatted text to be sent; 1-GetOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
+  /// Formatted text to be sent; 1-GetOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
   FormattedText? text;
 
   /// True, if rich web page previews for URLs in the message text must be disabled 
@@ -41,7 +41,9 @@ class InputMessageText extends InputMessageContent {
   InputMessageText.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as FormattedText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as FormattedText;
+    }
     disable_web_page_preview = map['disable_web_page_preview'];
     clear_draft = map['clear_draft'];
   }
@@ -105,9 +107,13 @@ class InputMessageAnimation extends InputMessageContent {
   InputMessageAnimation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    animation = TdApiMap.fromMap(map['animation']) as InputFile;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
-    if (map['added_sticker_file_ids']) {
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as InputFile;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
+    }
+    if (map['added_sticker_file_ids'] != null) {
       added_sticker_file_ids = [];
       for (var someValue in map['added_sticker_file_ids']) {
         added_sticker_file_ids?.add(someValue);
@@ -116,7 +122,9 @@ class InputMessageAnimation extends InputMessageContent {
     duration = map['duration'];
     width = map['width'];
     height = map['height'];
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -178,12 +186,18 @@ class InputMessageAudio extends InputMessageContent {
   InputMessageAudio.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    audio = TdApiMap.fromMap(map['audio']) as InputFile;
-    album_cover_thumbnail = TdApiMap.fromMap(map['album_cover_thumbnail']) as InputThumbnail;
+    if (map['audio'] != null) {
+      audio = TdApiMap.fromMap(map['audio']) as InputFile;
+    }
+    if (map['album_cover_thumbnail'] != null) {
+      album_cover_thumbnail = TdApiMap.fromMap(map['album_cover_thumbnail']) as InputThumbnail;
+    }
     duration = map['duration'];
     title = map['title'];
     performer = map['performer'];
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -236,10 +250,16 @@ class InputMessageDocument extends InputMessageContent {
   InputMessageDocument.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    document = TdApiMap.fromMap(map['document']) as InputFile;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
+    if (map['document'] != null) {
+      document = TdApiMap.fromMap(map['document']) as InputFile;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
+    }
     disable_content_type_detection = map['disable_content_type_detection'];
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -302,9 +322,13 @@ class InputMessagePhoto extends InputMessageContent {
   InputMessagePhoto.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as InputFile;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
-    if (map['added_sticker_file_ids']) {
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as InputFile;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
+    }
+    if (map['added_sticker_file_ids'] != null) {
       added_sticker_file_ids = [];
       for (var someValue in map['added_sticker_file_ids']) {
         added_sticker_file_ids?.add(someValue);
@@ -312,7 +336,9 @@ class InputMessagePhoto extends InputMessageContent {
     }
     width = map['width'];
     height = map['height'];
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
     ttl = map['ttl'];
   }
 
@@ -371,8 +397,12 @@ class InputMessageSticker extends InputMessageContent {
   InputMessageSticker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
+    }
     width = map['width'];
     height = map['height'];
     emoji = map['emoji'];
@@ -447,9 +477,13 @@ class InputMessageVideo extends InputMessageContent {
   InputMessageVideo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    video = TdApiMap.fromMap(map['video']) as InputFile;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
-    if (map['added_sticker_file_ids']) {
+    if (map['video'] != null) {
+      video = TdApiMap.fromMap(map['video']) as InputFile;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
+    }
+    if (map['added_sticker_file_ids'] != null) {
       added_sticker_file_ids = [];
       for (var someValue in map['added_sticker_file_ids']) {
         added_sticker_file_ids?.add(someValue);
@@ -459,7 +493,9 @@ class InputMessageVideo extends InputMessageContent {
     width = map['width'];
     height = map['height'];
     supports_streaming = map['supports_streaming'];
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
     ttl = map['ttl'];
   }
 
@@ -516,8 +552,12 @@ class InputMessageVideoNote extends InputMessageContent {
   InputMessageVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    video_note = TdApiMap.fromMap(map['video_note']) as InputFile;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
+    if (map['video_note'] != null) {
+      video_note = TdApiMap.fromMap(map['video_note']) as InputFile;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputThumbnail;
+    }
     duration = map['duration'];
     length = map['length'];
   }
@@ -570,10 +610,14 @@ class InputMessageVoiceNote extends InputMessageContent {
   InputMessageVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    voice_note = TdApiMap.fromMap(map['voice_note']) as InputFile;
+    if (map['voice_note'] != null) {
+      voice_note = TdApiMap.fromMap(map['voice_note']) as InputFile;
+    }
     duration = map['duration'];
     waveform = map['waveform'];
-    caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as FormattedText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -624,7 +668,9 @@ class InputMessageLocation extends InputMessageContent {
   InputMessageLocation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    location = TdApiMap.fromMap(map['location']) as Location;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as Location;
+    }
     live_period = map['live_period'];
     heading = map['heading'];
     proximity_alert_radius = map['proximity_alert_radius'];
@@ -666,7 +712,9 @@ class InputMessageVenue extends InputMessageContent {
   InputMessageVenue.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    venue = TdApiMap.fromMap(map['venue']) as Venue;
+    if (map['venue'] != null) {
+      venue = TdApiMap.fromMap(map['venue']) as Venue;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -702,7 +750,9 @@ class InputMessageContact extends InputMessageContent {
   InputMessageContact.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    contact = TdApiMap.fromMap(map['contact']) as Contact;
+    if (map['contact'] != null) {
+      contact = TdApiMap.fromMap(map['contact']) as Contact;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -861,7 +911,9 @@ class InputMessageInvoice extends InputMessageContent {
   InputMessageInvoice.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    invoice = TdApiMap.fromMap(map['invoice']) as Invoice;
+    if (map['invoice'] != null) {
+      invoice = TdApiMap.fromMap(map['invoice']) as Invoice;
+    }
     title = map['title'];
     description = map['description'];
     photo_url = map['photo_url'];
@@ -942,14 +994,16 @@ class InputMessagePoll extends InputMessageContent {
     extra = map['@extra'];
     client_id = map['@client_id'];
     question = map['question'];
-    if (map['options']) {
+    if (map['options'] != null) {
       options = [];
       for (var someValue in map['options']) {
         options?.add(someValue);
       }
     }
     is_anonymous = map['is_anonymous'];
-    type = TdApiMap.fromMap(map['type']) as PollType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as PollType;
+    }
     open_period = map['open_period'];
     close_date = map['close_date'];
     is_closed = map['is_closed'];
@@ -1009,7 +1063,9 @@ class InputMessageForwarded extends InputMessageContent {
     from_chat_id = map['from_chat_id'];
     message_id = map['message_id'];
     in_game_share = map['in_game_share'];
-    copy_options = TdApiMap.fromMap(map['copy_options']) as MessageCopyOptions;
+    if (map['copy_options'] != null) {
+      copy_options = TdApiMap.fromMap(map['copy_options']) as MessageCopyOptions;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

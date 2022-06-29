@@ -83,7 +83,7 @@ class UserPrivacySettingRuleAllowUsers extends UserPrivacySettingRule {
   UserPrivacySettingRuleAllowUsers.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['user_ids']) {
+    if (map['user_ids'] != null) {
       user_ids = [];
       for (var someValue in map['user_ids']) {
         user_ids?.add(someValue);
@@ -124,7 +124,7 @@ class UserPrivacySettingRuleAllowChatMembers extends UserPrivacySettingRule {
   UserPrivacySettingRuleAllowChatMembers.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['chat_ids']) {
+    if (map['chat_ids'] != null) {
       chat_ids = [];
       for (var someValue in map['chat_ids']) {
         chat_ids?.add(someValue);
@@ -225,7 +225,7 @@ class UserPrivacySettingRuleRestrictUsers extends UserPrivacySettingRule {
   UserPrivacySettingRuleRestrictUsers.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['user_ids']) {
+    if (map['user_ids'] != null) {
       user_ids = [];
       for (var someValue in map['user_ids']) {
         user_ids?.add(someValue);
@@ -266,7 +266,7 @@ class UserPrivacySettingRuleRestrictChatMembers extends UserPrivacySettingRule {
   UserPrivacySettingRuleRestrictChatMembers.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['chat_ids']) {
+    if (map['chat_ids'] != null) {
       chat_ids = [];
       for (var someValue in map['chat_ids']) {
         chat_ids?.add(someValue);

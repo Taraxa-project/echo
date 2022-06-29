@@ -23,7 +23,9 @@ class AddSavedAnimation extends TdFunction {
   AddSavedAnimation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    animation = TdApiMap.fromMap(map['animation']) as InputFile;
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as InputFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -55,11 +55,15 @@ class SearchChatMessages extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     query = map['query'];
-    sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    if (map['sender_id'] != null) {
+      sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    }
     from_message_id = map['from_message_id'];
     offset = map['offset'];
     limit = map['limit'];
-    filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    }
     message_thread_id = map['message_thread_id'];
   }
 

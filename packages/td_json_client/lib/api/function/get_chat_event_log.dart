@@ -47,8 +47,10 @@ class GetChatEventLog extends TdFunction {
     query = map['query'];
     from_event_id = map['from_event_id'];
     limit = map['limit'];
-    filters = TdApiMap.fromMap(map['filters']) as ChatEventLogFilters;
-    if (map['user_ids']) {
+    if (map['filters'] != null) {
+      filters = TdApiMap.fromMap(map['filters']) as ChatEventLogFilters;
+    }
+    if (map['user_ids'] != null) {
       user_ids = [];
       for (var someValue in map['user_ids']) {
         user_ids?.add(someValue);

@@ -46,8 +46,12 @@ class EditMessageLiveLocation extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_id = map['message_id'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    location = TdApiMap.fromMap(map['location']) as Location;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as Location;
+    }
     heading = map['heading'];
     proximity_alert_radius = map['proximity_alert_radius'];
   }

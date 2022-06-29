@@ -21,7 +21,7 @@ class ViewTrendingStickerSets extends TdFunction {
   ViewTrendingStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['sticker_set_ids']) {
+    if (map['sticker_set_ids'] != null) {
       sticker_set_ids = [];
       for (var someValue in map['sticker_set_ids']) {
         sticker_set_ids?.add(someValue);

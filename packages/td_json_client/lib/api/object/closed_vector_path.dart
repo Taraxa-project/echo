@@ -22,10 +22,12 @@ class ClosedVectorPath extends TdObject {
   ClosedVectorPath.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['commands']) {
+    if (map['commands'] != null) {
       commands = [];
       for (var someValue in map['commands']) {
-        commands?.add(TdApiMap.fromMap(someValue) as VectorPathCommand);
+        if (someValue != null) {
+          commands?.add(TdApiMap.fromMap(someValue) as VectorPathCommand);
+        }
       }
     }
   }

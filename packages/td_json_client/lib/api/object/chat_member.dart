@@ -35,10 +35,14 @@ class ChatMember extends TdObject {
   ChatMember.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
+    if (map['member_id'] != null) {
+      member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
+    }
     inviter_user_id = map['inviter_user_id'];
     joined_chat_date = map['joined_chat_date'];
-    status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
+    if (map['status'] != null) {
+      status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

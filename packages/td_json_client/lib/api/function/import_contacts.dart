@@ -23,10 +23,12 @@ class ImportContacts extends TdFunction {
   ImportContacts.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['contacts']) {
+    if (map['contacts'] != null) {
       contacts = [];
       for (var someValue in map['contacts']) {
-        contacts?.add(TdApiMap.fromMap(someValue) as Contact);
+        if (someValue != null) {
+          contacts?.add(TdApiMap.fromMap(someValue) as Contact);
+        }
       }
     }
   }

@@ -11,10 +11,10 @@ class AddContact extends TdFunction {
   String? extra;
   int? client_id;
 
-  /// The contact to add or edit; phone number may be empty and needs to be specified only if known, vCard is ignored
+  /// The contact to add or edit; phone number can be empty and needs to be specified only if known, vCard is ignored
   Contact? contact;
 
-  /// Pass true to share the current user's phone number with the new contact. A corresponding rule to userPrivacySettingShowPhoneNumber will be added if needed. Use the field userFullInfo.need_phone_number_privacy_exception to check whether the current user needs to be asked to share their phone number
+  /// True, if the new contact needs to be allowed to see current user's phone number. A corresponding rule to userPrivacySettingShowPhoneNumber will be added if needed. Use the field userFullInfo.need_phone_number_privacy_exception to check whether the current user needs to be asked to share their phone number
   Bool? share_phone_number;
 
   AddContact({
@@ -27,7 +27,9 @@ class AddContact extends TdFunction {
   AddContact.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    contact = TdApiMap.fromMap(map['contact']) as Contact;
+    if (map['contact'] != null) {
+      contact = TdApiMap.fromMap(map['contact']) as Contact;
+    }
     share_phone_number = map['share_phone_number'];
   }
 

@@ -23,7 +23,9 @@ class SetAccountTtl extends TdFunction {
   SetAccountTtl.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    ttl = TdApiMap.fromMap(map['ttl']) as AccountTtl;
+    if (map['ttl'] != null) {
+      ttl = TdApiMap.fromMap(map['ttl']) as AccountTtl;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

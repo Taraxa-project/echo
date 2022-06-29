@@ -22,10 +22,12 @@ class GroupCallStreams extends TdObject {
   GroupCallStreams.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['streams']) {
+    if (map['streams'] != null) {
       streams = [];
       for (var someValue in map['streams']) {
-        streams?.add(TdApiMap.fromMap(someValue) as GroupCallStream);
+        if (someValue != null) {
+          streams?.add(TdApiMap.fromMap(someValue) as GroupCallStream);
+        }
       }
     }
   }

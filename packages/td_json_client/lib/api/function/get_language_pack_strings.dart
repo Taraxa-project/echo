@@ -26,7 +26,7 @@ class GetLanguagePackStrings extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     language_pack_id = map['language_pack_id'];
-    if (map['keys']) {
+    if (map['keys'] != null) {
       keys = [];
       for (var someValue in map['keys']) {
         keys?.add(someValue);

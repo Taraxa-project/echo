@@ -26,7 +26,7 @@ class GetMapThumbnailFile extends TdFunction {
   /// Map scale; 1-3 
   int32? scale;
 
-  /// Identifier of a chat in which the thumbnail will be shown. Use 0 if unknown
+  /// Identifier of a chat, in which the thumbnail will be shown. Use 0 if unknown
   int53? chat_id;
 
   GetMapThumbnailFile({
@@ -43,7 +43,9 @@ class GetMapThumbnailFile extends TdFunction {
   GetMapThumbnailFile.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    location = TdApiMap.fromMap(map['location']) as Location;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as Location;
+    }
     zoom = map['zoom'];
     width = map['width'];
     height = map['height'];

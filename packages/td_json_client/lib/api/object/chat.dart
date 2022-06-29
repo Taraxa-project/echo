@@ -80,14 +80,8 @@ class Chat extends TdObject {
   /// Number of unread messages with a mention/reply in the chat
   int32? unread_mention_count;
 
-  /// Number of messages with unread reactions in the chat
-  int32? unread_reaction_count;
-
-  /// Notification settings for the chat
+  /// Notification settings for this chat
   ChatNotificationSettings? notification_settings;
-
-  /// List of reactions, available in the chat
-  vector<string>? available_reactions;
 
   /// Current message Time To Live setting (self-destruct timer) for the chat; 0 if not defined. TTL is counted from the time message or its content is viewed in secret chats and from the send date in other chats
   int32? message_ttl;
@@ -136,9 +130,7 @@ class Chat extends TdObject {
     this.last_read_inbox_message_id,
     this.last_read_outbox_message_id,
     this.unread_mention_count,
-    this.unread_reaction_count,
     this.notification_settings,
-    this.available_reactions,
     this.message_ttl,
     this.theme_name,
     this.action_bar,
@@ -153,18 +145,30 @@ class Chat extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    type = TdApiMap.fromMap(map['type']) as ChatType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ChatType;
+    }
     title = map['title'];
-    photo = TdApiMap.fromMap(map['photo']) as ChatPhotoInfo;
-    permissions = TdApiMap.fromMap(map['permissions']) as ChatPermissions;
-    last_message = TdApiMap.fromMap(map['last_message']) as Message;
-    if (map['positions']) {
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as ChatPhotoInfo;
+    }
+    if (map['permissions'] != null) {
+      permissions = TdApiMap.fromMap(map['permissions']) as ChatPermissions;
+    }
+    if (map['last_message'] != null) {
+      last_message = TdApiMap.fromMap(map['last_message']) as Message;
+    }
+    if (map['positions'] != null) {
       positions = [];
       for (var someValue in map['positions']) {
-        positions?.add(TdApiMap.fromMap(someValue) as ChatPosition);
+        if (someValue != null) {
+          positions?.add(TdApiMap.fromMap(someValue) as ChatPosition);
+        }
       }
     }
-    message_sender_id = TdApiMap.fromMap(map['message_sender_id']) as MessageSender;
+    if (map['message_sender_id'] != null) {
+      message_sender_id = TdApiMap.fromMap(map['message_sender_id']) as MessageSender;
+    }
     has_protected_content = map['has_protected_content'];
     is_marked_as_unread = map['is_marked_as_unread'];
     is_blocked = map['is_blocked'];
@@ -177,21 +181,24 @@ class Chat extends TdObject {
     last_read_inbox_message_id = map['last_read_inbox_message_id'];
     last_read_outbox_message_id = map['last_read_outbox_message_id'];
     unread_mention_count = map['unread_mention_count'];
-    unread_reaction_count = map['unread_reaction_count'];
-    notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
-    if (map['available_reactions']) {
-      available_reactions = [];
-      for (var someValue in map['available_reactions']) {
-        available_reactions?.add(someValue);
-      }
+    if (map['notification_settings'] != null) {
+      notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
     }
     message_ttl = map['message_ttl'];
     theme_name = map['theme_name'];
-    action_bar = TdApiMap.fromMap(map['action_bar']) as ChatActionBar;
-    video_chat = TdApiMap.fromMap(map['video_chat']) as VideoChat;
-    pending_join_requests = TdApiMap.fromMap(map['pending_join_requests']) as ChatJoinRequestsInfo;
+    if (map['action_bar'] != null) {
+      action_bar = TdApiMap.fromMap(map['action_bar']) as ChatActionBar;
+    }
+    if (map['video_chat'] != null) {
+      video_chat = TdApiMap.fromMap(map['video_chat']) as VideoChat;
+    }
+    if (map['pending_join_requests'] != null) {
+      pending_join_requests = TdApiMap.fromMap(map['pending_join_requests']) as ChatJoinRequestsInfo;
+    }
     reply_markup_message_id = map['reply_markup_message_id'];
-    draft_message = TdApiMap.fromMap(map['draft_message']) as DraftMessage;
+    if (map['draft_message'] != null) {
+      draft_message = TdApiMap.fromMap(map['draft_message']) as DraftMessage;
+    }
     client_data = map['client_data'];
   }
 
@@ -220,9 +227,7 @@ class Chat extends TdObject {
       'last_read_inbox_message_id': last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
       'last_read_outbox_message_id': last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
       'unread_mention_count': unread_mention_count?.toMap(skipNulls: skipNulls),
-      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
       'notification_settings': notification_settings?.toMap(skipNulls: skipNulls),
-      'available_reactions': available_reactions?.toMap(skipNulls: skipNulls),
       'message_ttl': message_ttl?.toMap(skipNulls: skipNulls),
       'theme_name': theme_name?.toMap(skipNulls: skipNulls),
       'action_bar': action_bar?.toMap(skipNulls: skipNulls),

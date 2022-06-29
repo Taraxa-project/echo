@@ -14,7 +14,7 @@ class ReportChat extends TdFunction {
   /// Chat identifier 
   int53? chat_id;
 
-  /// Identifiers of reported messages; may be empty to report the whole chat 
+  /// Identifiers of reported messages, if any 
   vector<int53>? message_ids;
 
   /// The reason for reporting the chat 
@@ -36,13 +36,15 @@ class ReportChat extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    if (map['message_ids']) {
+    if (map['message_ids'] != null) {
       message_ids = [];
       for (var someValue in map['message_ids']) {
         message_ids?.add(someValue);
       }
     }
-    reason = TdApiMap.fromMap(map['reason']) as ChatReportReason;
+    if (map['reason'] != null) {
+      reason = TdApiMap.fromMap(map['reason']) as ChatReportReason;
+    }
     text = map['text'];
   }
 

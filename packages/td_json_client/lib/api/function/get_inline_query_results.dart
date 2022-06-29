@@ -41,7 +41,9 @@ class GetInlineQueryResults extends TdFunction {
     client_id = map['@client_id'];
     bot_user_id = map['bot_user_id'];
     chat_id = map['chat_id'];
-    user_location = TdApiMap.fromMap(map['user_location']) as Location;
+    if (map['user_location'] != null) {
+      user_location = TdApiMap.fromMap(map['user_location']) as Location;
+    }
     query = map['query'];
     offset = map['offset'];
   }

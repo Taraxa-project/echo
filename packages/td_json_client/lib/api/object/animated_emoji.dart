@@ -17,7 +17,7 @@ class AnimatedEmoji extends TdObject {
   /// Emoji modifier fitzpatrick type; 0-6; 0 if none
   int32? fitzpatrick_type;
 
-  /// File containing the sound to be played when the animated emoji is clicked; may be null. The sound is encoded with the Opus codec, and stored inside an OGG container
+  /// File containing the sound to be played when the animated emoji is clicked if any; may be null. The sound is encoded with the Opus codec, and stored inside an OGG container
   File? sound;
 
   AnimatedEmoji({
@@ -31,9 +31,13 @@ class AnimatedEmoji extends TdObject {
   AnimatedEmoji.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    }
     fitzpatrick_type = map['fitzpatrick_type'];
-    sound = TdApiMap.fromMap(map['sound']) as File;
+    if (map['sound'] != null) {
+      sound = TdApiMap.fromMap(map['sound']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

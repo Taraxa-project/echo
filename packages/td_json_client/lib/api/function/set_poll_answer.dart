@@ -9,7 +9,7 @@ class SetPollAnswer extends TdFunction {
   String? extra;
   int? client_id;
 
-  /// Identifier of the chat to which the poll belongs
+  /// Identifier of the chat to which the poll belongs 
   int53? chat_id;
 
   /// Identifier of the message containing the poll
@@ -31,7 +31,7 @@ class SetPollAnswer extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_id = map['message_id'];
-    if (map['option_ids']) {
+    if (map['option_ids'] != null) {
       option_ids = [];
       for (var someValue in map['option_ids']) {
         option_ids?.add(someValue);

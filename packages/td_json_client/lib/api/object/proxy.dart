@@ -47,7 +47,9 @@ class Proxy extends TdObject {
     port = map['port'];
     last_used_date = map['last_used_date'];
     is_enabled = map['is_enabled'];
-    type = TdApiMap.fromMap(map['type']) as ProxyType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ProxyType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -20,7 +20,10 @@ class CreateNewStickerSet extends TdFunction {
   /// Sticker set name. Can contain only English letters, digits and underscores. Must end with *"_by_<bot username>"* (*<bot_username>* is case insensitive) for bots; 1-64 characters
   string? name;
 
-  /// List of stickers to be added to the set; must be non-empty. All stickers must have the same format. For TGS stickers, uploadStickerFile must be used before the sticker is shown
+  /// True, if stickers are masks. Animated stickers can't be masks
+  Bool? is_masks;
+
+  /// List of stickers to be added to the set; must be non-empty. All stickers must be of the same type. For animated stickers, uploadStickerFile must be used before the sticker is shown
   vector<InputSticker>? stickers;
 
   /// Source of the sticker set; may be empty if unknown
@@ -32,6 +35,7 @@ class CreateNewStickerSet extends TdFunction {
     this.user_id,
     this.title,
     this.name,
+    this.is_masks,
     this.stickers,
     this.source,
   });
@@ -42,10 +46,13 @@ class CreateNewStickerSet extends TdFunction {
     user_id = map['user_id'];
     title = map['title'];
     name = map['name'];
-    if (map['stickers']) {
+    is_masks = map['is_masks'];
+    if (map['stickers'] != null) {
       stickers = [];
       for (var someValue in map['stickers']) {
-        stickers?.add(TdApiMap.fromMap(someValue) as InputSticker);
+        if (someValue != null) {
+          stickers?.add(TdApiMap.fromMap(someValue) as InputSticker);
+        }
       }
     }
     source = map['source'];
@@ -59,6 +66,7 @@ class CreateNewStickerSet extends TdFunction {
       'user_id': user_id?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),
+      'is_masks': is_masks?.toMap(skipNulls: skipNulls),
       'stickers': stickers?.toMap(skipNulls: skipNulls),
       'source': source?.toMap(skipNulls: skipNulls),
     };

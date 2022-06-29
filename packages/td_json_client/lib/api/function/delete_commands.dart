@@ -14,7 +14,7 @@ class DeleteCommands extends TdFunction {
   /// The scope to which the commands are relevant; pass null to delete commands in the default bot command scope
   BotCommandScope? scope;
 
-  /// A two-letter ISO 639-1 language code or an empty string
+  /// A two-letter ISO 639-1 country code or an empty string
   string? language_code;
 
   DeleteCommands({
@@ -27,7 +27,9 @@ class DeleteCommands extends TdFunction {
   DeleteCommands.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    scope = TdApiMap.fromMap(map['scope']) as BotCommandScope;
+    if (map['scope'] != null) {
+      scope = TdApiMap.fromMap(map['scope']) as BotCommandScope;
+    }
     language_code = map['language_code'];
   }
 

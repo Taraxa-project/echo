@@ -22,10 +22,12 @@ class UserPrivacySettingRules extends TdObject {
   UserPrivacySettingRules.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['rules']) {
+    if (map['rules'] != null) {
       rules = [];
       for (var someValue in map['rules']) {
-        rules?.add(TdApiMap.fromMap(someValue) as UserPrivacySettingRule);
+        if (someValue != null) {
+          rules?.add(TdApiMap.fromMap(someValue) as UserPrivacySettingRule);
+        }
       }
     }
   }

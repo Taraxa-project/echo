@@ -20,7 +20,7 @@ class TestProxy extends TdFunction {
   /// Proxy type
   ProxyType? type;
 
-  /// Identifier of a datacenter with which to test connection 
+  /// Identifier of a datacenter, with which to test connection 
   int32? dc_id;
 
   /// The maximum overall timeout for the request
@@ -41,7 +41,9 @@ class TestProxy extends TdFunction {
     client_id = map['@client_id'];
     server = map['server'];
     port = map['port'];
-    type = TdApiMap.fromMap(map['type']) as ProxyType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ProxyType;
+    }
     dc_id = map['dc_id'];
     timeout = map['timeout'];
   }

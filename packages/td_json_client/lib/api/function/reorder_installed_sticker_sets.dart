@@ -26,7 +26,7 @@ class ReorderInstalledStickerSets extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     is_masks = map['is_masks'];
-    if (map['sticker_set_ids']) {
+    if (map['sticker_set_ids'] != null) {
       sticker_set_ids = [];
       for (var someValue in map['sticker_set_ids']) {
         sticker_set_ids?.add(someValue);

@@ -28,7 +28,9 @@ class RemoveRecentSticker extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     is_attached = map['is_attached'];
-    sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

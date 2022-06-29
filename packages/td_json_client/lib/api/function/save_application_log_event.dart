@@ -33,7 +33,9 @@ class SaveApplicationLogEvent extends TdFunction {
     client_id = map['@client_id'];
     type = map['type'];
     chat_id = map['chat_id'];
-    data = TdApiMap.fromMap(map['data']) as JsonValue;
+    if (map['data'] != null) {
+      data = TdApiMap.fromMap(map['data']) as JsonValue;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

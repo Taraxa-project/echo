@@ -22,10 +22,12 @@ class PassportRequiredElement extends TdObject {
   PassportRequiredElement.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['suitable_elements']) {
+    if (map['suitable_elements'] != null) {
       suitable_elements = [];
       for (var someValue in map['suitable_elements']) {
-        suitable_elements?.add(TdApiMap.fromMap(someValue) as PassportSuitableElement);
+        if (someValue != null) {
+          suitable_elements?.add(TdApiMap.fromMap(someValue) as PassportSuitableElement);
+        }
       }
     }
   }

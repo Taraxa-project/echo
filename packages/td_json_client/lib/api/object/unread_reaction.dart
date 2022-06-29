@@ -31,7 +31,9 @@ class UnreadReaction extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     reaction = map['reaction'];
-    sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    if (map['sender_id'] != null) {
+      sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    }
     is_big = map['is_big'];
   }
 

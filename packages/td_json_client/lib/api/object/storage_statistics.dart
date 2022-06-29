@@ -32,10 +32,12 @@ class StorageStatistics extends TdObject {
     client_id = map['@client_id'];
     size = map['size'];
     count = map['count'];
-    if (map['by_chat']) {
+    if (map['by_chat'] != null) {
       by_chat = [];
       for (var someValue in map['by_chat']) {
-        by_chat?.add(TdApiMap.fromMap(someValue) as StorageStatisticsByChat);
+        if (someValue != null) {
+          by_chat?.add(TdApiMap.fromMap(someValue) as StorageStatisticsByChat);
+        }
       }
     }
   }

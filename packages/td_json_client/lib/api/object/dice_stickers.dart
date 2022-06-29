@@ -25,7 +25,9 @@ class DiceStickersRegular extends DiceStickers {
   DiceStickersRegular.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -77,11 +79,21 @@ class DiceStickersSlotMachine extends DiceStickers {
   DiceStickersSlotMachine.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    background = TdApiMap.fromMap(map['background']) as Sticker;
-    lever = TdApiMap.fromMap(map['lever']) as Sticker;
-    left_reel = TdApiMap.fromMap(map['left_reel']) as Sticker;
-    center_reel = TdApiMap.fromMap(map['center_reel']) as Sticker;
-    right_reel = TdApiMap.fromMap(map['right_reel']) as Sticker;
+    if (map['background'] != null) {
+      background = TdApiMap.fromMap(map['background']) as Sticker;
+    }
+    if (map['lever'] != null) {
+      lever = TdApiMap.fromMap(map['lever']) as Sticker;
+    }
+    if (map['left_reel'] != null) {
+      left_reel = TdApiMap.fromMap(map['left_reel']) as Sticker;
+    }
+    if (map['center_reel'] != null) {
+      center_reel = TdApiMap.fromMap(map['center_reel']) as Sticker;
+    }
+    if (map['right_reel'] != null) {
+      right_reel = TdApiMap.fromMap(map['right_reel']) as Sticker;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

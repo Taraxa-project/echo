@@ -23,7 +23,9 @@ class HideSuggestedAction extends TdFunction {
   HideSuggestedAction.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    action = TdApiMap.fromMap(map['action']) as SuggestedAction;
+    if (map['action'] != null) {
+      action = TdApiMap.fromMap(map['action']) as SuggestedAction;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

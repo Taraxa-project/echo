@@ -27,10 +27,12 @@ class ChatPhotos extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['photos']) {
+    if (map['photos'] != null) {
       photos = [];
       for (var someValue in map['photos']) {
-        photos?.add(TdApiMap.fromMap(someValue) as ChatPhoto);
+        if (someValue != null) {
+          photos?.add(TdApiMap.fromMap(someValue) as ChatPhoto);
+        }
       }
     }
   }

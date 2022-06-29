@@ -12,13 +12,13 @@ class DiscardCall extends TdFunction {
   /// Call identifier 
   int32? call_id;
 
-  /// Pass true if the user was disconnected 
+  /// True, if the user was disconnected 
   Bool? is_disconnected;
 
   /// The call duration, in seconds 
   int32? duration;
 
-  /// Pass true if the call was a video call 
+  /// True, if the call was a video call 
   Bool? is_video;
 
   /// Identifier of the connection used during the call

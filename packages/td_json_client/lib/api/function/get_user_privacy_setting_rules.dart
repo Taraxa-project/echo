@@ -23,7 +23,9 @@ class GetUserPrivacySettingRules extends TdFunction {
   GetUserPrivacySettingRules.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    setting = TdApiMap.fromMap(map['setting']) as UserPrivacySetting;
+    if (map['setting'] != null) {
+      setting = TdApiMap.fromMap(map['setting']) as UserPrivacySetting;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

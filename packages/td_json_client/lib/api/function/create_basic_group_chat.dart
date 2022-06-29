@@ -12,7 +12,7 @@ class CreateBasicGroupChat extends TdFunction {
   /// Basic group identifier 
   int53? basic_group_id;
 
-  /// Pass true to create the chat without a network request. In this case all information about the chat except its type, title and photo can be incorrect
+  /// If true, the chat will be created without network request. In this case all information about the chat except its type, title and photo can be incorrect
   Bool? force;
 
   CreateBasicGroupChat({

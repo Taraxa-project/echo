@@ -28,7 +28,9 @@ class InputPassportElementPersonalDetails extends InputPassportElement {
   InputPassportElementPersonalDetails.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    personal_details = TdApiMap.fromMap(map['personal_details']) as PersonalDetails;
+    if (map['personal_details'] != null) {
+      personal_details = TdApiMap.fromMap(map['personal_details']) as PersonalDetails;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -64,7 +66,9 @@ class InputPassportElementPassport extends InputPassportElement {
   InputPassportElementPassport.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    passport = TdApiMap.fromMap(map['passport']) as InputIdentityDocument;
+    if (map['passport'] != null) {
+      passport = TdApiMap.fromMap(map['passport']) as InputIdentityDocument;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -100,7 +104,9 @@ class InputPassportElementDriverLicense extends InputPassportElement {
   InputPassportElementDriverLicense.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    driver_license = TdApiMap.fromMap(map['driver_license']) as InputIdentityDocument;
+    if (map['driver_license'] != null) {
+      driver_license = TdApiMap.fromMap(map['driver_license']) as InputIdentityDocument;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -136,7 +142,9 @@ class InputPassportElementIdentityCard extends InputPassportElement {
   InputPassportElementIdentityCard.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    identity_card = TdApiMap.fromMap(map['identity_card']) as InputIdentityDocument;
+    if (map['identity_card'] != null) {
+      identity_card = TdApiMap.fromMap(map['identity_card']) as InputIdentityDocument;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -172,7 +180,9 @@ class InputPassportElementInternalPassport extends InputPassportElement {
   InputPassportElementInternalPassport.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    internal_passport = TdApiMap.fromMap(map['internal_passport']) as InputIdentityDocument;
+    if (map['internal_passport'] != null) {
+      internal_passport = TdApiMap.fromMap(map['internal_passport']) as InputIdentityDocument;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -208,7 +218,9 @@ class InputPassportElementAddress extends InputPassportElement {
   InputPassportElementAddress.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    address = TdApiMap.fromMap(map['address']) as Address;
+    if (map['address'] != null) {
+      address = TdApiMap.fromMap(map['address']) as Address;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -244,7 +256,9 @@ class InputPassportElementUtilityBill extends InputPassportElement {
   InputPassportElementUtilityBill.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    utility_bill = TdApiMap.fromMap(map['utility_bill']) as InputPersonalDocument;
+    if (map['utility_bill'] != null) {
+      utility_bill = TdApiMap.fromMap(map['utility_bill']) as InputPersonalDocument;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -280,7 +294,9 @@ class InputPassportElementBankStatement extends InputPassportElement {
   InputPassportElementBankStatement.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    bank_statement = TdApiMap.fromMap(map['bank_statement']) as InputPersonalDocument;
+    if (map['bank_statement'] != null) {
+      bank_statement = TdApiMap.fromMap(map['bank_statement']) as InputPersonalDocument;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -316,7 +332,9 @@ class InputPassportElementRentalAgreement extends InputPassportElement {
   InputPassportElementRentalAgreement.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    rental_agreement = TdApiMap.fromMap(map['rental_agreement']) as InputPersonalDocument;
+    if (map['rental_agreement'] != null) {
+      rental_agreement = TdApiMap.fromMap(map['rental_agreement']) as InputPersonalDocument;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -352,7 +370,9 @@ class InputPassportElementPassportRegistration extends InputPassportElement {
   InputPassportElementPassportRegistration.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    passport_registration = TdApiMap.fromMap(map['passport_registration']) as InputPersonalDocument;
+    if (map['passport_registration'] != null) {
+      passport_registration = TdApiMap.fromMap(map['passport_registration']) as InputPersonalDocument;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -388,7 +408,9 @@ class InputPassportElementTemporaryRegistration extends InputPassportElement {
   InputPassportElementTemporaryRegistration.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    temporary_registration = TdApiMap.fromMap(map['temporary_registration']) as InputPersonalDocument;
+    if (map['temporary_registration'] != null) {
+      temporary_registration = TdApiMap.fromMap(map['temporary_registration']) as InputPersonalDocument;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -17,7 +17,7 @@ class ToggleGroupCallParticipantIsMuted extends TdFunction {
   /// Participant identifier 
   MessageSender? participant_id;
 
-  /// Pass true to mute the user; pass false to unmute the them
+  /// Pass true if the user must be muted and false otherwise
   Bool? is_muted;
 
   ToggleGroupCallParticipantIsMuted({
@@ -32,7 +32,9 @@ class ToggleGroupCallParticipantIsMuted extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     group_call_id = map['group_call_id'];
-    participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    if (map['participant_id'] != null) {
+      participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    }
     is_muted = map['is_muted'];
   }
 

@@ -31,11 +31,15 @@ class FoundFileDownloads extends TdObject {
   FoundFileDownloads.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    total_counts = TdApiMap.fromMap(map['total_counts']) as DownloadedFileCounts;
-    if (map['files']) {
+    if (map['total_counts'] != null) {
+      total_counts = TdApiMap.fromMap(map['total_counts']) as DownloadedFileCounts;
+    }
+    if (map['files'] != null) {
       files = [];
       for (var someValue in map['files']) {
-        files?.add(TdApiMap.fromMap(someValue) as FileDownload);
+        if (someValue != null) {
+          files?.add(TdApiMap.fromMap(someValue) as FileDownload);
+        }
       }
     }
     next_offset = map['next_offset'];

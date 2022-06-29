@@ -23,13 +23,13 @@ class ForwardMessages extends TdFunction {
   /// Options to be used to send the messages; pass null to use default options
   MessageSendOptions? options;
 
-  /// Pass true to copy content of the messages without reference to the original sender. Always true if the messages are forwarded to a secret chat or are local
+  /// If true, content of the messages will be copied without reference to the original sender. Always true if the messages are forwarded to a secret chat or are local
   Bool? send_copy;
 
-  /// Pass true to remove media captions of message copies. Ignored if send_copy is false
+  /// If true, media caption of message copies will be removed. Ignored if send_copy is false
   Bool? remove_caption;
 
-  /// Pass true to get fake messages instead of actually forwarding them
+  /// If true, messages will not be forwarded and instead fake messages will be returned
   Bool? only_preview;
 
   ForwardMessages({
@@ -49,13 +49,15 @@ class ForwardMessages extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     from_chat_id = map['from_chat_id'];
-    if (map['message_ids']) {
+    if (map['message_ids'] != null) {
       message_ids = [];
       for (var someValue in map['message_ids']) {
         message_ids?.add(someValue);
       }
     }
-    options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    if (map['options'] != null) {
+      options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    }
     send_copy = map['send_copy'];
     remove_caption = map['remove_caption'];
     only_preview = map['only_preview'];

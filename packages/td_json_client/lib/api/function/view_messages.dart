@@ -18,7 +18,7 @@ class ViewMessages extends TdFunction {
   /// The identifiers of the messages being viewed
   vector<int53>? message_ids;
 
-  /// Pass true to mark as read the specified messages even the chat is closed
+  /// True, if messages in closed chats must be marked as read by the request
   Bool? force_read;
 
   ViewMessages({
@@ -35,7 +35,7 @@ class ViewMessages extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_thread_id = map['message_thread_id'];
-    if (map['message_ids']) {
+    if (map['message_ids'] != null) {
       message_ids = [];
       for (var someValue in map['message_ids']) {
         message_ids?.add(someValue);

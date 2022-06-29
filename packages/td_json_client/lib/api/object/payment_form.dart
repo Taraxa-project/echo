@@ -62,13 +62,21 @@ class PaymentForm extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    invoice = TdApiMap.fromMap(map['invoice']) as Invoice;
+    if (map['invoice'] != null) {
+      invoice = TdApiMap.fromMap(map['invoice']) as Invoice;
+    }
     url = map['url'];
     seller_bot_user_id = map['seller_bot_user_id'];
     payments_provider_user_id = map['payments_provider_user_id'];
-    payments_provider = TdApiMap.fromMap(map['payments_provider']) as PaymentsProviderStripe;
-    saved_order_info = TdApiMap.fromMap(map['saved_order_info']) as OrderInfo;
-    saved_credentials = TdApiMap.fromMap(map['saved_credentials']) as SavedCredentials;
+    if (map['payments_provider'] != null) {
+      payments_provider = TdApiMap.fromMap(map['payments_provider']) as PaymentsProviderStripe;
+    }
+    if (map['saved_order_info'] != null) {
+      saved_order_info = TdApiMap.fromMap(map['saved_order_info']) as OrderInfo;
+    }
+    if (map['saved_credentials'] != null) {
+      saved_credentials = TdApiMap.fromMap(map['saved_credentials']) as SavedCredentials;
+    }
     can_save_credentials = map['can_save_credentials'];
     need_password = map['need_password'];
   }

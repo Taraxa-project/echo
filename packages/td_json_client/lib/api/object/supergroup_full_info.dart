@@ -63,7 +63,7 @@ class SupergroupFullInfo extends TdObject {
   /// Location to which the supergroup is connected; may be null
   ChatLocation? location;
 
-  /// Primary invite link for the chat; may be null. For chat administrators with can_invite_users right only
+  /// Primary invite link for this chat; may be null. For chat administrators with can_invite_users right only
   ChatInviteLink? invite_link;
 
   /// List of commands of bots in the group
@@ -104,7 +104,9 @@ class SupergroupFullInfo extends TdObject {
   SupergroupFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    }
     description = map['description'];
     member_count = map['member_count'];
     administrator_count = map['administrator_count'];
@@ -120,12 +122,18 @@ class SupergroupFullInfo extends TdObject {
     can_get_statistics = map['can_get_statistics'];
     is_all_history_available = map['is_all_history_available'];
     sticker_set_id = map['sticker_set_id'];
-    location = TdApiMap.fromMap(map['location']) as ChatLocation;
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
-    if (map['bot_commands']) {
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as ChatLocation;
+    }
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
+    if (map['bot_commands'] != null) {
       bot_commands = [];
       for (var someValue in map['bot_commands']) {
-        bot_commands?.add(TdApiMap.fromMap(someValue) as BotCommands);
+        if (someValue != null) {
+          bot_commands?.add(TdApiMap.fromMap(someValue) as BotCommands);
+        }
       }
     }
     upgraded_from_basic_group_id = map['upgraded_from_basic_group_id'];

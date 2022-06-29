@@ -10,7 +10,7 @@ class Messages extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of messages found 
+  /// Approximate total count of messages found 
   int32? total_count;
 
   /// List of messages; messages may be null
@@ -27,10 +27,12 @@ class Messages extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['messages']) {
+    if (map['messages'] != null) {
       messages = [];
       for (var someValue in map['messages']) {
-        messages?.add(TdApiMap.fromMap(someValue) as Message);
+        if (someValue != null) {
+          messages?.add(TdApiMap.fromMap(someValue) as Message);
+        }
       }
     }
   }

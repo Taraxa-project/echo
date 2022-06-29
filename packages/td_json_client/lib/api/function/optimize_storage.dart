@@ -17,7 +17,7 @@ class OptimizeStorage extends TdFunction {
   /// Limit on the time that has passed since the last time a file was accessed (or creation time for some filesystems). Pass -1 to use the default limit
   int32? ttl;
 
-  /// Limit on the total number of files after deletion. Pass -1 to use the default limit
+  /// Limit on the total count of files after deletion. Pass -1 to use the default limit
   int32? count;
 
   /// The amount of time after the creation of a file during which it can't be deleted, in seconds. Pass -1 to use the default value
@@ -59,19 +59,21 @@ class OptimizeStorage extends TdFunction {
     ttl = map['ttl'];
     count = map['count'];
     immunity_delay = map['immunity_delay'];
-    if (map['file_types']) {
+    if (map['file_types'] != null) {
       file_types = [];
       for (var someValue in map['file_types']) {
-        file_types?.add(TdApiMap.fromMap(someValue) as FileType);
+        if (someValue != null) {
+          file_types?.add(TdApiMap.fromMap(someValue) as FileType);
+        }
       }
     }
-    if (map['chat_ids']) {
+    if (map['chat_ids'] != null) {
       chat_ids = [];
       for (var someValue in map['chat_ids']) {
         chat_ids?.add(someValue);
       }
     }
-    if (map['exclude_chat_ids']) {
+    if (map['exclude_chat_ids'] != null) {
       exclude_chat_ids = [];
       for (var someValue in map['exclude_chat_ids']) {
         exclude_chat_ids?.add(someValue);

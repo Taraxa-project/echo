@@ -38,7 +38,9 @@ class SearchChatMembers extends TdFunction {
     chat_id = map['chat_id'];
     query = map['query'];
     limit = map['limit'];
-    filter = TdApiMap.fromMap(map['filter']) as ChatMembersFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as ChatMembersFilter;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

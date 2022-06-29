@@ -17,7 +17,7 @@ class SetStickerSetThumbnail extends TdFunction {
   /// Sticker set name
   string? name;
 
-  /// Thumbnail to set in PNG, TGS, or WEBM format; pass null to remove the sticker set thumbnail. Thumbnail format must match the format of stickers in the set
+  /// Thumbnail to set in PNG or TGS format; pass null to remove the sticker set thumbnail. Animated thumbnail must be set for animated sticker sets and only for them
   InputFile? thumbnail;
 
   SetStickerSetThumbnail({
@@ -33,7 +33,9 @@ class SetStickerSetThumbnail extends TdFunction {
     client_id = map['@client_id'];
     user_id = map['user_id'];
     name = map['name'];
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputFile;
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

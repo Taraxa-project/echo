@@ -32,7 +32,9 @@ class VideoChat extends TdObject {
     client_id = map['@client_id'];
     group_call_id = map['group_call_id'];
     has_participants = map['has_participants'];
-    default_participant_id = TdApiMap.fromMap(map['default_participant_id']) as MessageSender;
+    if (map['default_participant_id'] != null) {
+      default_participant_id = TdApiMap.fromMap(map['default_participant_id']) as MessageSender;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -33,7 +33,9 @@ class GetCallbackQueryAnswer extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_id = map['message_id'];
-    payload = TdApiMap.fromMap(map['payload']) as CallbackQueryPayload;
+    if (map['payload'] != null) {
+      payload = TdApiMap.fromMap(map['payload']) as CallbackQueryPayload;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

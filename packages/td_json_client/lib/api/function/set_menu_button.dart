@@ -28,7 +28,9 @@ class SetMenuButton extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     user_id = map['user_id'];
-    menu_button = TdApiMap.fromMap(map['menu_button']) as BotMenuButton;
+    if (map['menu_button'] != null) {
+      menu_button = TdApiMap.fromMap(map['menu_button']) as BotMenuButton;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

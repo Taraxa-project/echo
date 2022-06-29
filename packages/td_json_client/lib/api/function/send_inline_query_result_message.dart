@@ -17,7 +17,7 @@ class SendInlineQueryResultMessage extends TdFunction {
   /// If not 0, a message thread identifier in which the message will be sent
   int53? message_thread_id;
 
-  /// Identifier of a replied message; 0 if none
+  /// Identifier of a message to reply to or 0
   int53? reply_to_message_id;
 
   /// Options to be used to send the message; pass null to use default options
@@ -29,7 +29,7 @@ class SendInlineQueryResultMessage extends TdFunction {
   /// Identifier of the inline result
   string? result_id;
 
-  /// Pass true to hide the bot, via which the message is sent. Can be used only for bots GetOption("animation_search_bot_username"), GetOption("photo_search_bot_username"), and GetOption("venue_search_bot_username")
+  /// If true, there will be no mention of a bot, via which the message is sent. Can be used only for bots GetOption("animation_search_bot_username"), GetOption("photo_search_bot_username") and GetOption("venue_search_bot_username")
   Bool? hide_via_bot;
 
   SendInlineQueryResultMessage({
@@ -50,7 +50,9 @@ class SendInlineQueryResultMessage extends TdFunction {
     chat_id = map['chat_id'];
     message_thread_id = map['message_thread_id'];
     reply_to_message_id = map['reply_to_message_id'];
-    options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    if (map['options'] != null) {
+      options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    }
     query_id = map['query_id'];
     result_id = map['result_id'];
     hide_via_bot = map['hide_via_bot'];

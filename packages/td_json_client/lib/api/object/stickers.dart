@@ -22,10 +22,12 @@ class Stickers extends TdObject {
   Stickers.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['stickers']) {
+    if (map['stickers'] != null) {
       stickers = [];
       for (var someValue in map['stickers']) {
-        stickers?.add(TdApiMap.fromMap(someValue) as Sticker);
+        if (someValue != null) {
+          stickers?.add(TdApiMap.fromMap(someValue) as Sticker);
+        }
       }
     }
   }

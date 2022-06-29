@@ -40,7 +40,7 @@ class PhoneNumberAuthenticationSettings extends TdObject {
     allow_missed_call = map['allow_missed_call'];
     is_current_phone_number = map['is_current_phone_number'];
     allow_sms_retriever_api = map['allow_sms_retriever_api'];
-    if (map['authentication_tokens']) {
+    if (map['authentication_tokens'] != null) {
       authentication_tokens = [];
       for (var someValue in map['authentication_tokens']) {
         authentication_tokens?.add(someValue);

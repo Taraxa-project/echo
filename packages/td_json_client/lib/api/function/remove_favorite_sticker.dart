@@ -23,7 +23,9 @@ class RemoveFavoriteSticker extends TdFunction {
   RemoveFavoriteSticker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

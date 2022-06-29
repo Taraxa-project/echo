@@ -33,7 +33,9 @@ class GetWebAppUrl extends TdFunction {
     client_id = map['@client_id'];
     bot_user_id = map['bot_user_id'];
     url = map['url'];
-    theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
+    if (map['theme'] != null) {
+      theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

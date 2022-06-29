@@ -243,7 +243,7 @@ extension StringMap on String {
 }
 
 extension ListMap on List {
-  List toMap({skipNulls: true}) => this;
+  List toMap({skipNulls: true}) => this.map((e) => e.ToMap()).toList();
 }
 
 abstract class Td {
@@ -324,7 +324,7 @@ class {{ className }} extends {{ extendsClassName }} {
     client_id = map['@client_id'];
     {{# members }}
     {{# isContainer }}
-    if (map['{{ name }}']) {
+    if (map['{{ name }}'] != null) {
       {{ name }} = [];
       {{# isVector }}
       for (var someValue in map['{{ name }}']) {
@@ -332,7 +332,9 @@ class {{ className }} extends {{ extendsClassName }} {
         {{ name }}?.add(someValue);
         {{/isPrimitive}}
         {{^isPrimitive}}
-        {{ name }}?.add(TdApiMap.fromMap(someValue) as {{ subName }});
+        if (someValue != null) {
+          {{ name }}?.add(TdApiMap.fromMap(someValue) as {{ subName }});
+        }
         {{/isPrimitive}}
       }
       {{/ isVector }}
@@ -344,7 +346,9 @@ class {{ className }} extends {{ extendsClassName }} {
           objs?.add(someValue);
           {{/isPrimitive}}
           {{^isPrimitive}}
-          objs.add(TdApiMap.fromMap(someValue) as {{ subName }});
+          if (someValue != null) {
+            objs.add(TdApiMap.fromMap(someValue) as {{ subName }});
+          }
           {{/isPrimitive}}
         }
         {{name}}?.add(objs);
@@ -357,7 +361,9 @@ class {{ className }} extends {{ extendsClassName }} {
     {{ name }} = map['{{ name }}'];
     {{/ isPrimitive }}
     {{^ isPrimitive }}
-    {{ name }} = TdApiMap.fromMap(map['{{ name }}']) as {{ subName }};
+    if (map['{{ name }}'] != null) {
+      {{ name }} = TdApiMap.fromMap(map['{{ name }}']) as {{ subName }};
+    }
     {{/ isPrimitive }}
     {{/ isContainer }}
     {{/ members }}

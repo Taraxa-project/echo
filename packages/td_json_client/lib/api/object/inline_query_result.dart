@@ -60,7 +60,9 @@ class InlineQueryResultArticle extends InlineQueryResult {
     hide_url = map['hide_url'];
     title = map['title'];
     description = map['description'];
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -110,8 +112,12 @@ class InlineQueryResultContact extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    contact = TdApiMap.fromMap(map['contact']) as Contact;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    if (map['contact'] != null) {
+      contact = TdApiMap.fromMap(map['contact']) as Contact;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -162,9 +168,13 @@ class InlineQueryResultLocation extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    location = TdApiMap.fromMap(map['location']) as Location;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as Location;
+    }
     title = map['title'];
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -212,8 +222,12 @@ class InlineQueryResultVenue extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    venue = TdApiMap.fromMap(map['venue']) as Venue;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    if (map['venue'] != null) {
+      venue = TdApiMap.fromMap(map['venue']) as Venue;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -256,7 +270,9 @@ class InlineQueryResultGame extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    game = TdApiMap.fromMap(map['game']) as Game;
+    if (map['game'] != null) {
+      game = TdApiMap.fromMap(map['game']) as Game;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -302,7 +318,9 @@ class InlineQueryResultAnimation extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    animation = TdApiMap.fromMap(map['animation']) as Animation;
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as Animation;
+    }
     title = map['title'];
   }
 
@@ -346,7 +364,9 @@ class InlineQueryResultAudio extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    audio = TdApiMap.fromMap(map['audio']) as Audio;
+    if (map['audio'] != null) {
+      audio = TdApiMap.fromMap(map['audio']) as Audio;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -395,7 +415,9 @@ class InlineQueryResultDocument extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    document = TdApiMap.fromMap(map['document']) as Document;
+    if (map['document'] != null) {
+      document = TdApiMap.fromMap(map['document']) as Document;
+    }
     title = map['title'];
     description = map['description'];
   }
@@ -448,7 +470,9 @@ class InlineQueryResultPhoto extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    photo = TdApiMap.fromMap(map['photo']) as Photo;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as Photo;
+    }
     title = map['title'];
     description = map['description'];
   }
@@ -494,7 +518,9 @@ class InlineQueryResultSticker extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -543,7 +569,9 @@ class InlineQueryResultVideo extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    video = TdApiMap.fromMap(map['video']) as Video;
+    if (map['video'] != null) {
+      video = TdApiMap.fromMap(map['video']) as Video;
+    }
     title = map['title'];
     description = map['description'];
   }
@@ -593,7 +621,9 @@ class InlineQueryResultVoiceNote extends InlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
+    if (map['voice_note'] != null) {
+      voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
+    }
     title = map['title'];
   }
 

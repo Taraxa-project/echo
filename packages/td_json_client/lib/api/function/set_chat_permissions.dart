@@ -28,7 +28,9 @@ class SetChatPermissions extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    permissions = TdApiMap.fromMap(map['permissions']) as ChatPermissions;
+    if (map['permissions'] != null) {
+      permissions = TdApiMap.fromMap(map['permissions']) as ChatPermissions;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

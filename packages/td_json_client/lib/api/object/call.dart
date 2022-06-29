@@ -42,7 +42,9 @@ class Call extends TdObject {
     user_id = map['user_id'];
     is_outgoing = map['is_outgoing'];
     is_video = map['is_video'];
-    state = TdApiMap.fromMap(map['state']) as CallState;
+    if (map['state'] != null) {
+      state = TdApiMap.fromMap(map['state']) as CallState;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

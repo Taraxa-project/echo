@@ -20,7 +20,7 @@ class Hashtags extends TdObject {
   Hashtags.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['hashtags']) {
+    if (map['hashtags'] != null) {
       hashtags = [];
       for (var someValue in map['hashtags']) {
         hashtags?.add(someValue);

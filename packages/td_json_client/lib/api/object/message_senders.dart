@@ -10,7 +10,7 @@ class MessageSenders extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of messages senders found 
+  /// Approximate total count of messages senders found 
   int32? total_count;
 
   /// List of message senders
@@ -27,10 +27,12 @@ class MessageSenders extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['senders']) {
+    if (map['senders'] != null) {
       senders = [];
       for (var someValue in map['senders']) {
-        senders?.add(TdApiMap.fromMap(someValue) as MessageSender);
+        if (someValue != null) {
+          senders?.add(TdApiMap.fromMap(someValue) as MessageSender);
+        }
       }
     }
   }

@@ -33,7 +33,9 @@ class SendPhoneNumberConfirmationCode extends TdFunction {
     client_id = map['@client_id'];
     hash = map['hash'];
     phone_number = map['phone_number'];
-    settings = TdApiMap.fromMap(map['settings']) as PhoneNumberAuthenticationSettings;
+    if (map['settings'] != null) {
+      settings = TdApiMap.fromMap(map['settings']) as PhoneNumberAuthenticationSettings;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

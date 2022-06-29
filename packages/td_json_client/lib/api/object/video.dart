@@ -67,9 +67,15 @@ class Video extends TdObject {
     mime_type = map['mime_type'];
     has_stickers = map['has_stickers'];
     supports_streaming = map['supports_streaming'];
-    minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
-    video = TdApiMap.fromMap(map['video']) as File;
+    if (map['minithumbnail'] != null) {
+      minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
+    if (map['video'] != null) {
+      video = TdApiMap.fromMap(map['video']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

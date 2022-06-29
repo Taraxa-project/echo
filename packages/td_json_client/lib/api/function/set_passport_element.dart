@@ -27,7 +27,9 @@ class SetPassportElement extends TdFunction {
   SetPassportElement.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    element = TdApiMap.fromMap(map['element']) as InputPassportElement;
+    if (map['element'] != null) {
+      element = TdApiMap.fromMap(map['element']) as InputPassportElement;
+    }
     password = map['password'];
   }
 

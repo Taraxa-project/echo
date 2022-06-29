@@ -35,9 +35,15 @@ class ChatPhotoInfo extends TdObject {
   ChatPhotoInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    small = TdApiMap.fromMap(map['small']) as File;
-    big = TdApiMap.fromMap(map['big']) as File;
-    minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
+    if (map['small'] != null) {
+      small = TdApiMap.fromMap(map['small']) as File;
+    }
+    if (map['big'] != null) {
+      big = TdApiMap.fromMap(map['big']) as File;
+    }
+    if (map['minithumbnail'] != null) {
+      minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
+    }
     has_animation = map['has_animation'];
   }
 

@@ -36,7 +36,9 @@ class PageBlockTitle extends PageBlock {
   PageBlockTitle.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    title = TdApiMap.fromMap(map['title']) as RichText;
+    if (map['title'] != null) {
+      title = TdApiMap.fromMap(map['title']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -72,7 +74,9 @@ class PageBlockSubtitle extends PageBlock {
   PageBlockSubtitle.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    subtitle = TdApiMap.fromMap(map['subtitle']) as RichText;
+    if (map['subtitle'] != null) {
+      subtitle = TdApiMap.fromMap(map['subtitle']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -112,7 +116,9 @@ class PageBlockAuthorDate extends PageBlock {
   PageBlockAuthorDate.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    author = TdApiMap.fromMap(map['author']) as RichText;
+    if (map['author'] != null) {
+      author = TdApiMap.fromMap(map['author']) as RichText;
+    }
     publish_date = map['publish_date'];
   }
 
@@ -150,7 +156,9 @@ class PageBlockHeader extends PageBlock {
   PageBlockHeader.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    header = TdApiMap.fromMap(map['header']) as RichText;
+    if (map['header'] != null) {
+      header = TdApiMap.fromMap(map['header']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -186,7 +194,9 @@ class PageBlockSubheader extends PageBlock {
   PageBlockSubheader.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    subheader = TdApiMap.fromMap(map['subheader']) as RichText;
+    if (map['subheader'] != null) {
+      subheader = TdApiMap.fromMap(map['subheader']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -222,7 +232,9 @@ class PageBlockKicker extends PageBlock {
   PageBlockKicker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    kicker = TdApiMap.fromMap(map['kicker']) as RichText;
+    if (map['kicker'] != null) {
+      kicker = TdApiMap.fromMap(map['kicker']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -258,7 +270,9 @@ class PageBlockParagraph extends PageBlock {
   PageBlockParagraph.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as RichText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -298,7 +312,9 @@ class PageBlockPreformatted extends PageBlock {
   PageBlockPreformatted.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as RichText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as RichText;
+    }
     language = map['language'];
   }
 
@@ -336,7 +352,9 @@ class PageBlockFooter extends PageBlock {
   PageBlockFooter.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    footer = TdApiMap.fromMap(map['footer']) as RichText;
+    if (map['footer'] != null) {
+      footer = TdApiMap.fromMap(map['footer']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -438,10 +456,12 @@ class PageBlockList extends PageBlock {
   PageBlockList.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['items']) {
+    if (map['items'] != null) {
       items = [];
       for (var someValue in map['items']) {
-        items?.add(TdApiMap.fromMap(someValue) as PageBlockListItem);
+        if (someValue != null) {
+          items?.add(TdApiMap.fromMap(someValue) as PageBlockListItem);
+        }
       }
     }
   }
@@ -483,8 +503,12 @@ class PageBlockBlockQuote extends PageBlock {
   PageBlockBlockQuote.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as RichText;
-    credit = TdApiMap.fromMap(map['credit']) as RichText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as RichText;
+    }
+    if (map['credit'] != null) {
+      credit = TdApiMap.fromMap(map['credit']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -525,8 +549,12 @@ class PageBlockPullQuote extends PageBlock {
   PageBlockPullQuote.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as RichText;
-    credit = TdApiMap.fromMap(map['credit']) as RichText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as RichText;
+    }
+    if (map['credit'] != null) {
+      credit = TdApiMap.fromMap(map['credit']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -571,8 +599,12 @@ class PageBlockAnimation extends PageBlock {
   PageBlockAnimation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    animation = TdApiMap.fromMap(map['animation']) as Animation;
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as Animation;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
     need_autoplay = map['need_autoplay'];
   }
 
@@ -615,8 +647,12 @@ class PageBlockAudio extends PageBlock {
   PageBlockAudio.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    audio = TdApiMap.fromMap(map['audio']) as Audio;
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['audio'] != null) {
+      audio = TdApiMap.fromMap(map['audio']) as Audio;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -661,8 +697,12 @@ class PageBlockPhoto extends PageBlock {
   PageBlockPhoto.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as Photo;
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as Photo;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
     url = map['url'];
   }
 
@@ -713,8 +753,12 @@ class PageBlockVideo extends PageBlock {
   PageBlockVideo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    video = TdApiMap.fromMap(map['video']) as Video;
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['video'] != null) {
+      video = TdApiMap.fromMap(map['video']) as Video;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
     need_autoplay = map['need_autoplay'];
     is_looped = map['is_looped'];
   }
@@ -759,8 +803,12 @@ class PageBlockVoiceNote extends PageBlock {
   PageBlockVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['voice_note'] != null) {
+      voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
+    }
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -863,10 +911,14 @@ class PageBlockEmbedded extends PageBlock {
     client_id = map['@client_id'];
     url = map['url'];
     html = map['html'];
-    poster_photo = TdApiMap.fromMap(map['poster_photo']) as Photo;
+    if (map['poster_photo'] != null) {
+      poster_photo = TdApiMap.fromMap(map['poster_photo']) as Photo;
+    }
     width = map['width'];
     height = map['height'];
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
     is_full_width = map['is_full_width'];
     allow_scrolling = map['allow_scrolling'];
   }
@@ -933,15 +985,19 @@ class PageBlockEmbeddedPost extends PageBlock {
     client_id = map['@client_id'];
     url = map['url'];
     author = map['author'];
-    author_photo = TdApiMap.fromMap(map['author_photo']) as Photo;
+    if (map['author_photo'] != null) {
+      author_photo = TdApiMap.fromMap(map['author_photo']) as Photo;
+    }
     date = map['date'];
-    if (map['page_blocks']) {
+    if (map['page_blocks'] != null) {
       page_blocks = [];
       for (var someValue in map['page_blocks']) {
         page_blocks?.add(someValue);
       }
     }
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -986,13 +1042,15 @@ class PageBlockCollage extends PageBlock {
   PageBlockCollage.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['page_blocks']) {
+    if (map['page_blocks'] != null) {
       page_blocks = [];
       for (var someValue in map['page_blocks']) {
         page_blocks?.add(someValue);
       }
     }
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1033,13 +1091,15 @@ class PageBlockSlideshow extends PageBlock {
   PageBlockSlideshow.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['page_blocks']) {
+    if (map['page_blocks'] != null) {
       page_blocks = [];
       for (var someValue in map['page_blocks']) {
         page_blocks?.add(someValue);
       }
     }
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1070,7 +1130,7 @@ class PageBlockChatLink extends PageBlock {
   /// Chat photo; may be null 
   ChatPhotoInfo? photo;
 
-  /// Chat username by which all other information about the chat can be resolved
+  /// Chat username, by which all other information about the chat can be resolved
   string? username;
 
   PageBlockChatLink({
@@ -1085,7 +1145,9 @@ class PageBlockChatLink extends PageBlock {
     extra = map['@extra'];
     client_id = map['@client_id'];
     title = map['title'];
-    photo = TdApiMap.fromMap(map['photo']) as ChatPhotoInfo;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as ChatPhotoInfo;
+    }
     username = map['username'];
   }
 
@@ -1136,13 +1198,17 @@ class PageBlockTable extends PageBlock {
   PageBlockTable.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    caption = TdApiMap.fromMap(map['caption']) as RichText;
-    if (map['cells']) {
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as RichText;
+    }
+    if (map['cells'] != null) {
       cells = [];
       for (var someValues in map['cells']) {
         var objs = <PageBlockTableCell>[];
         for (var someValue in someValues) {
-          objs.add(TdApiMap.fromMap(someValue) as PageBlockTableCell);
+          if (someValue != null) {
+            objs.add(TdApiMap.fromMap(someValue) as PageBlockTableCell);
+          }
         }
         cells?.add(objs);
       }
@@ -1195,8 +1261,10 @@ class PageBlockDetails extends PageBlock {
   PageBlockDetails.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    header = TdApiMap.fromMap(map['header']) as RichText;
-    if (map['page_blocks']) {
+    if (map['header'] != null) {
+      header = TdApiMap.fromMap(map['header']) as RichText;
+    }
+    if (map['page_blocks'] != null) {
       page_blocks = [];
       for (var someValue in map['page_blocks']) {
         page_blocks?.add(someValue);
@@ -1244,11 +1312,15 @@ class PageBlockRelatedArticles extends PageBlock {
   PageBlockRelatedArticles.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    header = TdApiMap.fromMap(map['header']) as RichText;
-    if (map['articles']) {
+    if (map['header'] != null) {
+      header = TdApiMap.fromMap(map['header']) as RichText;
+    }
+    if (map['articles'] != null) {
       articles = [];
       for (var someValue in map['articles']) {
-        articles?.add(TdApiMap.fromMap(someValue) as PageBlockRelatedArticle);
+        if (someValue != null) {
+          articles?.add(TdApiMap.fromMap(someValue) as PageBlockRelatedArticle);
+        }
       }
     }
   }
@@ -1303,11 +1375,15 @@ class PageBlockMap extends PageBlock {
   PageBlockMap.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    location = TdApiMap.fromMap(map['location']) as Location;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as Location;
+    }
     zoom = map['zoom'];
     width = map['width'];
     height = map['height'];
-    caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    if (map['caption'] != null) {
+      caption = TdApiMap.fromMap(map['caption']) as PageBlockCaption;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

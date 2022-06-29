@@ -15,7 +15,7 @@ class GetChatSparseMessagePositions extends TdFunction {
   /// Identifier of the chat in which to return information about message positions
   int53? chat_id;
 
-  /// Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, and searchMessagesFilterUnreadReaction are unsupported in this function
+  /// Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention and searchMessagesFilterUnreadMention are unsupported in this function
   SearchMessagesFilter? filter;
 
   /// The message identifier from which to return information about message positions
@@ -37,7 +37,9 @@ class GetChatSparseMessagePositions extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    }
     from_message_id = map['from_message_id'];
     limit = map['limit'];
   }

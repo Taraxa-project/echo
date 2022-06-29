@@ -4,9 +4,9 @@ import 'package:td_json_client/api/object/message.dart';
 import 'package:td_json_client/api/object/chat_invite_link.dart';
 import 'package:td_json_client/api/object/chat_member_status.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
-import 'package:td_json_client/api/object/chat_location.dart';
 import 'package:td_json_client/api/object/chat_permissions.dart';
 import 'package:td_json_client/api/object/chat_photo.dart';
+import 'package:td_json_client/api/object/chat_location.dart';
 
 /// Represents a chat event
 abstract class ChatEventAction extends TdObject {}
@@ -35,8 +35,12 @@ class ChatEventMessageEdited extends ChatEventAction {
   ChatEventMessageEdited.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    old_message = TdApiMap.fromMap(map['old_message']) as Message;
-    new_message = TdApiMap.fromMap(map['new_message']) as Message;
+    if (map['old_message'] != null) {
+      old_message = TdApiMap.fromMap(map['old_message']) as Message;
+    }
+    if (map['new_message'] != null) {
+      new_message = TdApiMap.fromMap(map['new_message']) as Message;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -73,79 +77,9 @@ class ChatEventMessageDeleted extends ChatEventAction {
   ChatEventMessageDeleted.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'message': message?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
     }
-    return map;
-  }
-}
-
-/// A message was pinned 
-class ChatEventMessagePinned extends ChatEventAction {
-  String get tdType => 'chatEventMessagePinned';
-
-  String? extra;
-  int? client_id;
-
-  /// Pinned message
-  Message? message;
-
-  ChatEventMessagePinned({
-    this.extra,
-    this.client_id,
-    this.message,
-  });
-
-  ChatEventMessagePinned.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'message': message?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// A message was unpinned 
-class ChatEventMessageUnpinned extends ChatEventAction {
-  String get tdType => 'chatEventMessageUnpinned';
-
-  String? extra;
-  int? client_id;
-
-  /// Unpinned message
-  Message? message;
-
-  ChatEventMessageUnpinned({
-    this.extra,
-    this.client_id,
-    this.message,
-  });
-
-  ChatEventMessageUnpinned.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -181,7 +115,85 @@ class ChatEventPollStopped extends ChatEventAction {
   ChatEventPollStopped.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'message': message?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A message was pinned 
+class ChatEventMessagePinned extends ChatEventAction {
+  String get tdType => 'chatEventMessagePinned';
+
+  String? extra;
+  int? client_id;
+
+  /// Pinned message
+  Message? message;
+
+  ChatEventMessagePinned({
+    this.extra,
+    this.client_id,
+    this.message,
+  });
+
+  ChatEventMessagePinned.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'message': message?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A message was unpinned 
+class ChatEventMessageUnpinned extends ChatEventAction {
+  String get tdType => 'chatEventMessageUnpinned';
+
+  String? extra;
+  int? client_id;
+
+  /// Unpinned message
+  Message? message;
+
+  ChatEventMessageUnpinned({
+    this.extra,
+    this.client_id,
+    this.message,
+  });
+
+  ChatEventMessageUnpinned.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -247,7 +259,9 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
   ChatEventMemberJoinedByInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -288,7 +302,9 @@ class ChatEventMemberJoinedByRequest extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     approver_user_id = map['approver_user_id'];
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -298,48 +314,6 @@ class ChatEventMemberJoinedByRequest extends ChatEventAction {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'approver_user_id': approver_user_id?.toMap(skipNulls: skipNulls),
       'invite_link': invite_link?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// A new chat member was invited 
-class ChatEventMemberInvited extends ChatEventAction {
-  String get tdType => 'chatEventMemberInvited';
-
-  String? extra;
-  int? client_id;
-
-  /// New member user identifier 
-  int53? user_id;
-
-  /// New member status
-  ChatMemberStatus? status;
-
-  ChatEventMemberInvited({
-    this.extra,
-    this.client_id,
-    this.user_id,
-    this.status,
-  });
-
-  ChatEventMemberInvited.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    user_id = map['user_id'];
-    status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'user_id': user_id?.toMap(skipNulls: skipNulls),
-      'status': status?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -378,6 +352,50 @@ class ChatEventMemberLeft extends ChatEventAction {
   }
 }
 
+/// A new chat member was invited 
+class ChatEventMemberInvited extends ChatEventAction {
+  String get tdType => 'chatEventMemberInvited';
+
+  String? extra;
+  int? client_id;
+
+  /// New member user identifier 
+  int53? user_id;
+
+  /// New member status
+  ChatMemberStatus? status;
+
+  ChatEventMemberInvited({
+    this.extra,
+    this.client_id,
+    this.user_id,
+    this.status,
+  });
+
+  ChatEventMemberInvited.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    user_id = map['user_id'];
+    if (map['status'] != null) {
+      status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'user_id': user_id?.toMap(skipNulls: skipNulls),
+      'status': status?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A chat member has gained/lost administrator status, or the list of their administrator privileges has changed 
 class ChatEventMemberPromoted extends ChatEventAction {
   String get tdType => 'chatEventMemberPromoted';
@@ -406,8 +424,12 @@ class ChatEventMemberPromoted extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     user_id = map['user_id'];
-    old_status = TdApiMap.fromMap(map['old_status']) as ChatMemberStatus;
-    new_status = TdApiMap.fromMap(map['new_status']) as ChatMemberStatus;
+    if (map['old_status'] != null) {
+      old_status = TdApiMap.fromMap(map['old_status']) as ChatMemberStatus;
+    }
+    if (map['new_status'] != null) {
+      new_status = TdApiMap.fromMap(map['new_status']) as ChatMemberStatus;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -453,9 +475,15 @@ class ChatEventMemberRestricted extends ChatEventAction {
   ChatEventMemberRestricted.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
-    old_status = TdApiMap.fromMap(map['old_status']) as ChatMemberStatus;
-    new_status = TdApiMap.fromMap(map['new_status']) as ChatMemberStatus;
+    if (map['member_id'] != null) {
+      member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
+    }
+    if (map['old_status'] != null) {
+      old_status = TdApiMap.fromMap(map['old_status']) as ChatMemberStatus;
+    }
+    if (map['new_status'] != null) {
+      new_status = TdApiMap.fromMap(map['new_status']) as ChatMemberStatus;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -466,394 +494,6 @@ class ChatEventMemberRestricted extends ChatEventAction {
       'member_id': member_id?.toMap(skipNulls: skipNulls),
       'old_status': old_status?.toMap(skipNulls: skipNulls),
       'new_status': new_status?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The chat available reactions were changed 
-class ChatEventAvailableReactionsChanged extends ChatEventAction {
-  String get tdType => 'chatEventAvailableReactionsChanged';
-
-  String? extra;
-  int? client_id;
-
-  /// Previous chat available reactions 
-  vector<string>? old_available_reactions;
-
-  /// New chat available reactions
-  vector<string>? new_available_reactions;
-
-  ChatEventAvailableReactionsChanged({
-    this.extra,
-    this.client_id,
-    this.old_available_reactions,
-    this.new_available_reactions,
-  });
-
-  ChatEventAvailableReactionsChanged.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    if (map['old_available_reactions']) {
-      old_available_reactions = [];
-      for (var someValue in map['old_available_reactions']) {
-        old_available_reactions?.add(someValue);
-      }
-    }
-    if (map['new_available_reactions']) {
-      new_available_reactions = [];
-      for (var someValue in map['new_available_reactions']) {
-        new_available_reactions?.add(someValue);
-      }
-    }
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_available_reactions': old_available_reactions?.toMap(skipNulls: skipNulls),
-      'new_available_reactions': new_available_reactions?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The chat description was changed 
-class ChatEventDescriptionChanged extends ChatEventAction {
-  String get tdType => 'chatEventDescriptionChanged';
-
-  String? extra;
-  int? client_id;
-
-  /// Previous chat description 
-  string? old_description;
-
-  /// New chat description
-  string? new_description;
-
-  ChatEventDescriptionChanged({
-    this.extra,
-    this.client_id,
-    this.old_description,
-    this.new_description,
-  });
-
-  ChatEventDescriptionChanged.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    old_description = map['old_description'];
-    new_description = map['new_description'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_description': old_description?.toMap(skipNulls: skipNulls),
-      'new_description': new_description?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The linked chat of a supergroup was changed 
-class ChatEventLinkedChatChanged extends ChatEventAction {
-  String get tdType => 'chatEventLinkedChatChanged';
-
-  String? extra;
-  int? client_id;
-
-  /// Previous supergroup linked chat identifier 
-  int53? old_linked_chat_id;
-
-  /// New supergroup linked chat identifier
-  int53? new_linked_chat_id;
-
-  ChatEventLinkedChatChanged({
-    this.extra,
-    this.client_id,
-    this.old_linked_chat_id,
-    this.new_linked_chat_id,
-  });
-
-  ChatEventLinkedChatChanged.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    old_linked_chat_id = map['old_linked_chat_id'];
-    new_linked_chat_id = map['new_linked_chat_id'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_linked_chat_id': old_linked_chat_id?.toMap(skipNulls: skipNulls),
-      'new_linked_chat_id': new_linked_chat_id?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The supergroup location was changed 
-class ChatEventLocationChanged extends ChatEventAction {
-  String get tdType => 'chatEventLocationChanged';
-
-  String? extra;
-  int? client_id;
-
-  /// Previous location; may be null 
-  ChatLocation? old_location;
-
-  /// New location; may be null
-  ChatLocation? new_location;
-
-  ChatEventLocationChanged({
-    this.extra,
-    this.client_id,
-    this.old_location,
-    this.new_location,
-  });
-
-  ChatEventLocationChanged.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    old_location = TdApiMap.fromMap(map['old_location']) as ChatLocation;
-    new_location = TdApiMap.fromMap(map['new_location']) as ChatLocation;
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_location': old_location?.toMap(skipNulls: skipNulls),
-      'new_location': new_location?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The message TTL was changed 
-class ChatEventMessageTtlChanged extends ChatEventAction {
-  String get tdType => 'chatEventMessageTtlChanged';
-
-  String? extra;
-  int? client_id;
-
-  /// Previous value of message_ttl 
-  int32? old_message_ttl;
-
-  /// New value of message_ttl
-  int32? new_message_ttl;
-
-  ChatEventMessageTtlChanged({
-    this.extra,
-    this.client_id,
-    this.old_message_ttl,
-    this.new_message_ttl,
-  });
-
-  ChatEventMessageTtlChanged.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    old_message_ttl = map['old_message_ttl'];
-    new_message_ttl = map['new_message_ttl'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_message_ttl': old_message_ttl?.toMap(skipNulls: skipNulls),
-      'new_message_ttl': new_message_ttl?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The chat permissions was changed 
-class ChatEventPermissionsChanged extends ChatEventAction {
-  String get tdType => 'chatEventPermissionsChanged';
-
-  String? extra;
-  int? client_id;
-
-  /// Previous chat permissions 
-  ChatPermissions? old_permissions;
-
-  /// New chat permissions
-  ChatPermissions? new_permissions;
-
-  ChatEventPermissionsChanged({
-    this.extra,
-    this.client_id,
-    this.old_permissions,
-    this.new_permissions,
-  });
-
-  ChatEventPermissionsChanged.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    old_permissions = TdApiMap.fromMap(map['old_permissions']) as ChatPermissions;
-    new_permissions = TdApiMap.fromMap(map['new_permissions']) as ChatPermissions;
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_permissions': old_permissions?.toMap(skipNulls: skipNulls),
-      'new_permissions': new_permissions?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The chat photo was changed 
-class ChatEventPhotoChanged extends ChatEventAction {
-  String get tdType => 'chatEventPhotoChanged';
-
-  String? extra;
-  int? client_id;
-
-  /// Previous chat photo value; may be null 
-  ChatPhoto? old_photo;
-
-  /// New chat photo value; may be null
-  ChatPhoto? new_photo;
-
-  ChatEventPhotoChanged({
-    this.extra,
-    this.client_id,
-    this.old_photo,
-    this.new_photo,
-  });
-
-  ChatEventPhotoChanged.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    old_photo = TdApiMap.fromMap(map['old_photo']) as ChatPhoto;
-    new_photo = TdApiMap.fromMap(map['new_photo']) as ChatPhoto;
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_photo': old_photo?.toMap(skipNulls: skipNulls),
-      'new_photo': new_photo?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The slow_mode_delay setting of a supergroup was changed 
-class ChatEventSlowModeDelayChanged extends ChatEventAction {
-  String get tdType => 'chatEventSlowModeDelayChanged';
-
-  String? extra;
-  int? client_id;
-
-  /// Previous value of slow_mode_delay, in seconds 
-  int32? old_slow_mode_delay;
-
-  /// New value of slow_mode_delay, in seconds
-  int32? new_slow_mode_delay;
-
-  ChatEventSlowModeDelayChanged({
-    this.extra,
-    this.client_id,
-    this.old_slow_mode_delay,
-    this.new_slow_mode_delay,
-  });
-
-  ChatEventSlowModeDelayChanged.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    old_slow_mode_delay = map['old_slow_mode_delay'];
-    new_slow_mode_delay = map['new_slow_mode_delay'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_slow_mode_delay': old_slow_mode_delay?.toMap(skipNulls: skipNulls),
-      'new_slow_mode_delay': new_slow_mode_delay?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The supergroup sticker set was changed 
-class ChatEventStickerSetChanged extends ChatEventAction {
-  String get tdType => 'chatEventStickerSetChanged';
-
-  String? extra;
-  int? client_id;
-
-  /// Previous identifier of the chat sticker set; 0 if none 
-  int64? old_sticker_set_id;
-
-  /// New identifier of the chat sticker set; 0 if none
-  int64? new_sticker_set_id;
-
-  ChatEventStickerSetChanged({
-    this.extra,
-    this.client_id,
-    this.old_sticker_set_id,
-    this.new_sticker_set_id,
-  });
-
-  ChatEventStickerSetChanged.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    old_sticker_set_id = map['old_sticker_set_id'];
-    new_sticker_set_id = map['new_sticker_set_id'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_sticker_set_id': old_sticker_set_id?.toMap(skipNulls: skipNulls),
-      'new_sticker_set_id': new_sticker_set_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -904,6 +544,94 @@ class ChatEventTitleChanged extends ChatEventAction {
   }
 }
 
+/// The chat permissions was changed 
+class ChatEventPermissionsChanged extends ChatEventAction {
+  String get tdType => 'chatEventPermissionsChanged';
+
+  String? extra;
+  int? client_id;
+
+  /// Previous chat permissions 
+  ChatPermissions? old_permissions;
+
+  /// New chat permissions
+  ChatPermissions? new_permissions;
+
+  ChatEventPermissionsChanged({
+    this.extra,
+    this.client_id,
+    this.old_permissions,
+    this.new_permissions,
+  });
+
+  ChatEventPermissionsChanged.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['old_permissions'] != null) {
+      old_permissions = TdApiMap.fromMap(map['old_permissions']) as ChatPermissions;
+    }
+    if (map['new_permissions'] != null) {
+      new_permissions = TdApiMap.fromMap(map['new_permissions']) as ChatPermissions;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'old_permissions': old_permissions?.toMap(skipNulls: skipNulls),
+      'new_permissions': new_permissions?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The chat description was changed 
+class ChatEventDescriptionChanged extends ChatEventAction {
+  String get tdType => 'chatEventDescriptionChanged';
+
+  String? extra;
+  int? client_id;
+
+  /// Previous chat description 
+  string? old_description;
+
+  /// New chat description
+  string? new_description;
+
+  ChatEventDescriptionChanged({
+    this.extra,
+    this.client_id,
+    this.old_description,
+    this.new_description,
+  });
+
+  ChatEventDescriptionChanged.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    old_description = map['old_description'];
+    new_description = map['new_description'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'old_description': old_description?.toMap(skipNulls: skipNulls),
+      'new_description': new_description?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// The chat username was changed 
 class ChatEventUsernameChanged extends ChatEventAction {
   String get tdType => 'chatEventUsernameChanged';
@@ -946,26 +674,35 @@ class ChatEventUsernameChanged extends ChatEventAction {
   }
 }
 
-/// The has_protected_content setting of a channel was toggled 
-class ChatEventHasProtectedContentToggled extends ChatEventAction {
-  String get tdType => 'chatEventHasProtectedContentToggled';
+/// The chat photo was changed 
+class ChatEventPhotoChanged extends ChatEventAction {
+  String get tdType => 'chatEventPhotoChanged';
 
   String? extra;
   int? client_id;
 
-  /// New value of has_protected_content
-  Bool? has_protected_content;
+  /// Previous chat photo value; may be null 
+  ChatPhoto? old_photo;
 
-  ChatEventHasProtectedContentToggled({
+  /// New chat photo value; may be null
+  ChatPhoto? new_photo;
+
+  ChatEventPhotoChanged({
     this.extra,
     this.client_id,
-    this.has_protected_content,
+    this.old_photo,
+    this.new_photo,
   });
 
-  ChatEventHasProtectedContentToggled.fromMap(Map<String, dynamic> map) {
+  ChatEventPhotoChanged.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    has_protected_content = map['has_protected_content'];
+    if (map['old_photo'] != null) {
+      old_photo = TdApiMap.fromMap(map['old_photo']) as ChatPhoto;
+    }
+    if (map['new_photo'] != null) {
+      new_photo = TdApiMap.fromMap(map['new_photo']) as ChatPhoto;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -973,7 +710,8 @@ class ChatEventHasProtectedContentToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'has_protected_content': has_protected_content?.toMap(skipNulls: skipNulls),
+      'old_photo': old_photo?.toMap(skipNulls: skipNulls),
+      'new_photo': new_photo?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1018,26 +756,31 @@ class ChatEventInvitesToggled extends ChatEventAction {
   }
 }
 
-/// The is_all_history_available setting of a supergroup was toggled 
-class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
-  String get tdType => 'chatEventIsAllHistoryAvailableToggled';
+/// The linked chat of a supergroup was changed 
+class ChatEventLinkedChatChanged extends ChatEventAction {
+  String get tdType => 'chatEventLinkedChatChanged';
 
   String? extra;
   int? client_id;
 
-  /// New value of is_all_history_available
-  Bool? is_all_history_available;
+  /// Previous supergroup linked chat identifier 
+  int53? old_linked_chat_id;
 
-  ChatEventIsAllHistoryAvailableToggled({
+  /// New supergroup linked chat identifier
+  int53? new_linked_chat_id;
+
+  ChatEventLinkedChatChanged({
     this.extra,
     this.client_id,
-    this.is_all_history_available,
+    this.old_linked_chat_id,
+    this.new_linked_chat_id,
   });
 
-  ChatEventIsAllHistoryAvailableToggled.fromMap(Map<String, dynamic> map) {
+  ChatEventLinkedChatChanged.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    is_all_history_available = map['is_all_history_available'];
+    old_linked_chat_id = map['old_linked_chat_id'];
+    new_linked_chat_id = map['new_linked_chat_id'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1045,7 +788,92 @@ class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'is_all_history_available': is_all_history_available?.toMap(skipNulls: skipNulls),
+      'old_linked_chat_id': old_linked_chat_id?.toMap(skipNulls: skipNulls),
+      'new_linked_chat_id': new_linked_chat_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The slow_mode_delay setting of a supergroup was changed 
+class ChatEventSlowModeDelayChanged extends ChatEventAction {
+  String get tdType => 'chatEventSlowModeDelayChanged';
+
+  String? extra;
+  int? client_id;
+
+  /// Previous value of slow_mode_delay, in seconds 
+  int32? old_slow_mode_delay;
+
+  /// New value of slow_mode_delay, in seconds
+  int32? new_slow_mode_delay;
+
+  ChatEventSlowModeDelayChanged({
+    this.extra,
+    this.client_id,
+    this.old_slow_mode_delay,
+    this.new_slow_mode_delay,
+  });
+
+  ChatEventSlowModeDelayChanged.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    old_slow_mode_delay = map['old_slow_mode_delay'];
+    new_slow_mode_delay = map['new_slow_mode_delay'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'old_slow_mode_delay': old_slow_mode_delay?.toMap(skipNulls: skipNulls),
+      'new_slow_mode_delay': new_slow_mode_delay?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The message TTL was changed 
+class ChatEventMessageTtlChanged extends ChatEventAction {
+  String get tdType => 'chatEventMessageTtlChanged';
+
+  String? extra;
+  int? client_id;
+
+  /// Previous value of message_ttl 
+  int32? old_message_ttl;
+
+  /// New value of message_ttl
+  int32? new_message_ttl;
+
+  ChatEventMessageTtlChanged({
+    this.extra,
+    this.client_id,
+    this.old_message_ttl,
+    this.new_message_ttl,
+  });
+
+  ChatEventMessageTtlChanged.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    old_message_ttl = map['old_message_ttl'];
+    new_message_ttl = map['new_message_ttl'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'old_message_ttl': old_message_ttl?.toMap(skipNulls: skipNulls),
+      'new_message_ttl': new_message_ttl?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1090,6 +918,166 @@ class ChatEventSignMessagesToggled extends ChatEventAction {
   }
 }
 
+/// The has_protected_content setting of a channel was toggled 
+class ChatEventHasProtectedContentToggled extends ChatEventAction {
+  String get tdType => 'chatEventHasProtectedContentToggled';
+
+  String? extra;
+  int? client_id;
+
+  /// New value of has_protected_content
+  Bool? has_protected_content;
+
+  ChatEventHasProtectedContentToggled({
+    this.extra,
+    this.client_id,
+    this.has_protected_content,
+  });
+
+  ChatEventHasProtectedContentToggled.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    has_protected_content = map['has_protected_content'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'has_protected_content': has_protected_content?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The supergroup sticker set was changed 
+class ChatEventStickerSetChanged extends ChatEventAction {
+  String get tdType => 'chatEventStickerSetChanged';
+
+  String? extra;
+  int? client_id;
+
+  /// Previous identifier of the chat sticker set; 0 if none 
+  int64? old_sticker_set_id;
+
+  /// New identifier of the chat sticker set; 0 if none
+  int64? new_sticker_set_id;
+
+  ChatEventStickerSetChanged({
+    this.extra,
+    this.client_id,
+    this.old_sticker_set_id,
+    this.new_sticker_set_id,
+  });
+
+  ChatEventStickerSetChanged.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    old_sticker_set_id = map['old_sticker_set_id'];
+    new_sticker_set_id = map['new_sticker_set_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'old_sticker_set_id': old_sticker_set_id?.toMap(skipNulls: skipNulls),
+      'new_sticker_set_id': new_sticker_set_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The supergroup location was changed 
+class ChatEventLocationChanged extends ChatEventAction {
+  String get tdType => 'chatEventLocationChanged';
+
+  String? extra;
+  int? client_id;
+
+  /// Previous location; may be null 
+  ChatLocation? old_location;
+
+  /// New location; may be null
+  ChatLocation? new_location;
+
+  ChatEventLocationChanged({
+    this.extra,
+    this.client_id,
+    this.old_location,
+    this.new_location,
+  });
+
+  ChatEventLocationChanged.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['old_location'] != null) {
+      old_location = TdApiMap.fromMap(map['old_location']) as ChatLocation;
+    }
+    if (map['new_location'] != null) {
+      new_location = TdApiMap.fromMap(map['new_location']) as ChatLocation;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'old_location': old_location?.toMap(skipNulls: skipNulls),
+      'new_location': new_location?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The is_all_history_available setting of a supergroup was toggled 
+class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
+  String get tdType => 'chatEventIsAllHistoryAvailableToggled';
+
+  String? extra;
+  int? client_id;
+
+  /// New value of is_all_history_available
+  Bool? is_all_history_available;
+
+  ChatEventIsAllHistoryAvailableToggled({
+    this.extra,
+    this.client_id,
+    this.is_all_history_available,
+  });
+
+  ChatEventIsAllHistoryAvailableToggled.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    is_all_history_available = map['is_all_history_available'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'is_all_history_available': is_all_history_available?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A chat invite link was edited 
 class ChatEventInviteLinkEdited extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkEdited';
@@ -1113,8 +1101,12 @@ class ChatEventInviteLinkEdited extends ChatEventAction {
   ChatEventInviteLinkEdited.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    old_invite_link = TdApiMap.fromMap(map['old_invite_link']) as ChatInviteLink;
-    new_invite_link = TdApiMap.fromMap(map['new_invite_link']) as ChatInviteLink;
+    if (map['old_invite_link'] != null) {
+      old_invite_link = TdApiMap.fromMap(map['old_invite_link']) as ChatInviteLink;
+    }
+    if (map['new_invite_link'] != null) {
+      new_invite_link = TdApiMap.fromMap(map['new_invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1151,7 +1143,9 @@ class ChatEventInviteLinkRevoked extends ChatEventAction {
   ChatEventInviteLinkRevoked.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1187,7 +1181,9 @@ class ChatEventInviteLinkDeleted extends ChatEventAction {
   ChatEventInviteLinkDeleted.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1276,42 +1272,6 @@ class ChatEventVideoChatEnded extends ChatEventAction {
   }
 }
 
-/// The mute_new_participants setting of a video chat was toggled 
-class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
-  String get tdType => 'chatEventVideoChatMuteNewParticipantsToggled';
-
-  String? extra;
-  int? client_id;
-
-  /// New value of the mute_new_participants setting
-  Bool? mute_new_participants;
-
-  ChatEventVideoChatMuteNewParticipantsToggled({
-    this.extra,
-    this.client_id,
-    this.mute_new_participants,
-  });
-
-  ChatEventVideoChatMuteNewParticipantsToggled.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    mute_new_participants = map['mute_new_participants'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'mute_new_participants': mute_new_participants?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
 /// A video chat participant was muted or unmuted 
 class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
   String get tdType => 'chatEventVideoChatParticipantIsMutedToggled';
@@ -1335,7 +1295,9 @@ class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
   ChatEventVideoChatParticipantIsMutedToggled.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    if (map['participant_id'] != null) {
+      participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    }
     is_muted = map['is_muted'];
   }
 
@@ -1377,7 +1339,9 @@ class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
   ChatEventVideoChatParticipantVolumeLevelChanged.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    if (map['participant_id'] != null) {
+      participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    }
     volume_level = map['volume_level'];
   }
 
@@ -1388,6 +1352,42 @@ class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'participant_id': participant_id?.toMap(skipNulls: skipNulls),
       'volume_level': volume_level?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The mute_new_participants setting of a video chat was toggled 
+class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
+  String get tdType => 'chatEventVideoChatMuteNewParticipantsToggled';
+
+  String? extra;
+  int? client_id;
+
+  /// New value of the mute_new_participants setting
+  Bool? mute_new_participants;
+
+  ChatEventVideoChatMuteNewParticipantsToggled({
+    this.extra,
+    this.client_id,
+    this.mute_new_participants,
+  });
+
+  ChatEventVideoChatMuteNewParticipantsToggled.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    mute_new_participants = map['mute_new_participants'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'mute_new_participants': mute_new_participants?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

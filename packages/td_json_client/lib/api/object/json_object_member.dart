@@ -27,7 +27,9 @@ class JsonObjectMember extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     key = map['key'];
-    value = TdApiMap.fromMap(map['value']) as JsonValue;
+    if (map['value'] != null) {
+      value = TdApiMap.fromMap(map['value']) as JsonValue;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

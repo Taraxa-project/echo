@@ -28,7 +28,9 @@ class AddChatToList extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
+    if (map['chat_list'] != null) {
+      chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

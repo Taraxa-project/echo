@@ -18,7 +18,7 @@ class SetBackground extends TdFunction {
   /// Background type; pass null to use the default type of the remote background or to remove the current background
   BackgroundType? type;
 
-  /// Pass true if the background is changed for a dark theme
+  /// True, if the background is chosen for dark theme
   Bool? for_dark_theme;
 
   SetBackground({
@@ -32,8 +32,12 @@ class SetBackground extends TdFunction {
   SetBackground.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    background = TdApiMap.fromMap(map['background']) as InputBackground;
-    type = TdApiMap.fromMap(map['type']) as BackgroundType;
+    if (map['background'] != null) {
+      background = TdApiMap.fromMap(map['background']) as InputBackground;
+    }
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as BackgroundType;
+    }
     for_dark_theme = map['for_dark_theme'];
   }
 

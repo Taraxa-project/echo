@@ -33,7 +33,9 @@ class SetChatDraftMessage extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_thread_id = map['message_thread_id'];
-    draft_message = TdApiMap.fromMap(map['draft_message']) as DraftMessage;
+    if (map['draft_message'] != null) {
+      draft_message = TdApiMap.fromMap(map['draft_message']) as DraftMessage;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

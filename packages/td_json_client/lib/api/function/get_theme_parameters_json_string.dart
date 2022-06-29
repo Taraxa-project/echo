@@ -23,7 +23,9 @@ class GetThemeParametersJsonString extends TdFunction {
   GetThemeParametersJsonString.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
+    if (map['theme'] != null) {
+      theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

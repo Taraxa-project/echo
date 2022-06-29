@@ -40,8 +40,12 @@ class ThemeSettings extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     accent_color = map['accent_color'];
-    background = TdApiMap.fromMap(map['background']) as Background;
-    outgoing_message_fill = TdApiMap.fromMap(map['outgoing_message_fill']) as BackgroundFill;
+    if (map['background'] != null) {
+      background = TdApiMap.fromMap(map['background']) as Background;
+    }
+    if (map['outgoing_message_fill'] != null) {
+      outgoing_message_fill = TdApiMap.fromMap(map['outgoing_message_fill']) as BackgroundFill;
+    }
     animate_outgoing_message_fill = map['animate_outgoing_message_fill'];
     outgoing_message_accent_color = map['outgoing_message_accent_color'];
   }

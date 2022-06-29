@@ -47,7 +47,9 @@ class NotificationSound extends TdObject {
     date = map['date'];
     title = map['title'];
     data = map['data'];
-    sound = TdApiMap.fromMap(map['sound']) as File;
+    if (map['sound'] != null) {
+      sound = TdApiMap.fromMap(map['sound']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

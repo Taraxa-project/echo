@@ -22,10 +22,12 @@ class LocalizationTargetInfo extends TdObject {
   LocalizationTargetInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['language_packs']) {
+    if (map['language_packs'] != null) {
       language_packs = [];
       for (var someValue in map['language_packs']) {
-        language_packs?.add(TdApiMap.fromMap(someValue) as LanguagePackInfo);
+        if (someValue != null) {
+          language_packs?.add(TdApiMap.fromMap(someValue) as LanguagePackInfo);
+        }
       }
     }
   }

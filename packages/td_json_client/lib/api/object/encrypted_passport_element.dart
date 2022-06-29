@@ -55,21 +55,33 @@ class EncryptedPassportElement extends TdObject {
   EncryptedPassportElement.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    type = TdApiMap.fromMap(map['type']) as PassportElementType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as PassportElementType;
+    }
     data = map['data'];
-    front_side = TdApiMap.fromMap(map['front_side']) as DatedFile;
-    reverse_side = TdApiMap.fromMap(map['reverse_side']) as DatedFile;
-    selfie = TdApiMap.fromMap(map['selfie']) as DatedFile;
-    if (map['translation']) {
+    if (map['front_side'] != null) {
+      front_side = TdApiMap.fromMap(map['front_side']) as DatedFile;
+    }
+    if (map['reverse_side'] != null) {
+      reverse_side = TdApiMap.fromMap(map['reverse_side']) as DatedFile;
+    }
+    if (map['selfie'] != null) {
+      selfie = TdApiMap.fromMap(map['selfie']) as DatedFile;
+    }
+    if (map['translation'] != null) {
       translation = [];
       for (var someValue in map['translation']) {
-        translation?.add(TdApiMap.fromMap(someValue) as DatedFile);
+        if (someValue != null) {
+          translation?.add(TdApiMap.fromMap(someValue) as DatedFile);
+        }
       }
     }
-    if (map['files']) {
+    if (map['files'] != null) {
       files = [];
       for (var someValue in map['files']) {
-        files?.add(TdApiMap.fromMap(someValue) as DatedFile);
+        if (someValue != null) {
+          files?.add(TdApiMap.fromMap(someValue) as DatedFile);
+        }
       }
     }
     value = map['value'];

@@ -52,7 +52,9 @@ class SendPaymentForm extends TdFunction {
     payment_form_id = map['payment_form_id'];
     order_info_id = map['order_info_id'];
     shipping_option_id = map['shipping_option_id'];
-    credentials = TdApiMap.fromMap(map['credentials']) as InputCredentials;
+    if (map['credentials'] != null) {
+      credentials = TdApiMap.fromMap(map['credentials']) as InputCredentials;
+    }
     tip_amount = map['tip_amount'];
   }
 

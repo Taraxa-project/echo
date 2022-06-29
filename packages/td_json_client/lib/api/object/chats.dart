@@ -8,7 +8,7 @@ class Chats extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of chats found 
+  /// Approximate total count of chats found 
   int32? total_count;
 
   /// List of chat identifiers
@@ -25,7 +25,7 @@ class Chats extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['chat_ids']) {
+    if (map['chat_ids'] != null) {
       chat_ids = [];
       for (var someValue in map['chat_ids']) {
         chat_ids?.add(someValue);

@@ -26,7 +26,7 @@ class SetChatAvailableReactions extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    if (map['available_reactions']) {
+    if (map['available_reactions'] != null) {
       available_reactions = [];
       for (var someValue in map['available_reactions']) {
         available_reactions?.add(someValue);

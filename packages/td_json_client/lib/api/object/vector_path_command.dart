@@ -25,7 +25,9 @@ class VectorPathCommandLine extends VectorPathCommand {
   VectorPathCommandLine.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    end_point = TdApiMap.fromMap(map['end_point']) as Point;
+    if (map['end_point'] != null) {
+      end_point = TdApiMap.fromMap(map['end_point']) as Point;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -69,9 +71,15 @@ class VectorPathCommandCubicBezierCurve extends VectorPathCommand {
   VectorPathCommandCubicBezierCurve.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    start_control_point = TdApiMap.fromMap(map['start_control_point']) as Point;
-    end_control_point = TdApiMap.fromMap(map['end_control_point']) as Point;
-    end_point = TdApiMap.fromMap(map['end_point']) as Point;
+    if (map['start_control_point'] != null) {
+      start_control_point = TdApiMap.fromMap(map['start_control_point']) as Point;
+    }
+    if (map['end_control_point'] != null) {
+      end_control_point = TdApiMap.fromMap(map['end_control_point']) as Point;
+    }
+    if (map['end_point'] != null) {
+      end_point = TdApiMap.fromMap(map['end_point']) as Point;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

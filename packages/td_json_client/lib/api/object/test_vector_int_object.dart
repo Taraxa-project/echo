@@ -22,10 +22,12 @@ class TestVectorIntObject extends TdObject {
   TestVectorIntObject.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['value']) {
+    if (map['value'] != null) {
       value = [];
       for (var someValue in map['value']) {
-        value?.add(TdApiMap.fromMap(someValue) as TestInt);
+        if (someValue != null) {
+          value?.add(TdApiMap.fromMap(someValue) as TestInt);
+        }
       }
     }
   }

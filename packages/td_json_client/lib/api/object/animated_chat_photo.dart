@@ -31,7 +31,9 @@ class AnimatedChatPhoto extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     length = map['length'];
-    file = TdApiMap.fromMap(map['file']) as File;
+    if (map['file'] != null) {
+      file = TdApiMap.fromMap(map['file']) as File;
+    }
     main_frame_timestamp = map['main_frame_timestamp'];
   }
 

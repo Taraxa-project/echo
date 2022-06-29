@@ -40,13 +40,17 @@ class NotificationGroup extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    type = TdApiMap.fromMap(map['type']) as NotificationGroupType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as NotificationGroupType;
+    }
     chat_id = map['chat_id'];
     total_count = map['total_count'];
-    if (map['notifications']) {
+    if (map['notifications'] != null) {
       notifications = [];
       for (var someValue in map['notifications']) {
-        notifications?.add(TdApiMap.fromMap(someValue) as Notification);
+        if (someValue != null) {
+          notifications?.add(TdApiMap.fromMap(someValue) as Notification);
+        }
       }
     }
   }

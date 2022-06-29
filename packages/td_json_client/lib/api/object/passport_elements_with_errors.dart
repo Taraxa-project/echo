@@ -27,16 +27,20 @@ class PassportElementsWithErrors extends TdObject {
   PassportElementsWithErrors.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['elements']) {
+    if (map['elements'] != null) {
       elements = [];
       for (var someValue in map['elements']) {
-        elements?.add(TdApiMap.fromMap(someValue) as PassportElement);
+        if (someValue != null) {
+          elements?.add(TdApiMap.fromMap(someValue) as PassportElement);
+        }
       }
     }
-    if (map['errors']) {
+    if (map['errors'] != null) {
       errors = [];
       for (var someValue in map['errors']) {
-        errors?.add(TdApiMap.fromMap(someValue) as PassportElementError);
+        if (someValue != null) {
+          errors?.add(TdApiMap.fromMap(someValue) as PassportElementError);
+        }
       }
     }
   }

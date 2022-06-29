@@ -44,7 +44,9 @@ class PageBlockRelatedArticle extends TdObject {
     url = map['url'];
     title = map['title'];
     description = map['description'];
-    photo = TdApiMap.fromMap(map['photo']) as Photo;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as Photo;
+    }
     author = map['author'];
     publish_date = map['publish_date'];
   }

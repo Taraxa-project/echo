@@ -114,21 +114,39 @@ class WebPage extends TdObject {
     type = map['type'];
     site_name = map['site_name'];
     title = map['title'];
-    description = TdApiMap.fromMap(map['description']) as FormattedText;
-    photo = TdApiMap.fromMap(map['photo']) as Photo;
+    if (map['description'] != null) {
+      description = TdApiMap.fromMap(map['description']) as FormattedText;
+    }
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as Photo;
+    }
     embed_url = map['embed_url'];
     embed_type = map['embed_type'];
     embed_width = map['embed_width'];
     embed_height = map['embed_height'];
     duration = map['duration'];
     author = map['author'];
-    animation = TdApiMap.fromMap(map['animation']) as Animation;
-    audio = TdApiMap.fromMap(map['audio']) as Audio;
-    document = TdApiMap.fromMap(map['document']) as Document;
-    sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
-    video = TdApiMap.fromMap(map['video']) as Video;
-    video_note = TdApiMap.fromMap(map['video_note']) as VideoNote;
-    voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as Animation;
+    }
+    if (map['audio'] != null) {
+      audio = TdApiMap.fromMap(map['audio']) as Audio;
+    }
+    if (map['document'] != null) {
+      document = TdApiMap.fromMap(map['document']) as Document;
+    }
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    }
+    if (map['video'] != null) {
+      video = TdApiMap.fromMap(map['video']) as Video;
+    }
+    if (map['video_note'] != null) {
+      video_note = TdApiMap.fromMap(map['video_note']) as VideoNote;
+    }
+    if (map['voice_note'] != null) {
+      voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
+    }
     instant_view_version = map['instant_view_version'];
   }
 

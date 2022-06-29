@@ -10,7 +10,7 @@ class DraftMessage extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Identifier of the replied message; 0 if none
+  /// Identifier of the message to reply to; 0 if none
   int53? reply_to_message_id;
 
   /// Point in time (Unix timestamp) when the draft was created
@@ -32,7 +32,9 @@ class DraftMessage extends TdObject {
     client_id = map['@client_id'];
     reply_to_message_id = map['reply_to_message_id'];
     date = map['date'];
-    input_message_text = TdApiMap.fromMap(map['input_message_text']) as InputMessageContent;
+    if (map['input_message_text'] != null) {
+      input_message_text = TdApiMap.fromMap(map['input_message_text']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

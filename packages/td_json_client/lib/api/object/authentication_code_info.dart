@@ -35,8 +35,12 @@ class AuthenticationCodeInfo extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     phone_number = map['phone_number'];
-    type = TdApiMap.fromMap(map['type']) as AuthenticationCodeType;
-    next_type = TdApiMap.fromMap(map['next_type']) as AuthenticationCodeType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as AuthenticationCodeType;
+    }
+    if (map['next_type'] != null) {
+      next_type = TdApiMap.fromMap(map['next_type']) as AuthenticationCodeType;
+    }
     timeout = map['timeout'];
   }
 

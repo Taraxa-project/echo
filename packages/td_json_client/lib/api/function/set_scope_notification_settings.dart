@@ -28,8 +28,12 @@ class SetScopeNotificationSettings extends TdFunction {
   SetScopeNotificationSettings.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    scope = TdApiMap.fromMap(map['scope']) as NotificationSettingsScope;
-    notification_settings = TdApiMap.fromMap(map['notification_settings']) as ScopeNotificationSettings;
+    if (map['scope'] != null) {
+      scope = TdApiMap.fromMap(map['scope']) as NotificationSettingsScope;
+    }
+    if (map['notification_settings'] != null) {
+      notification_settings = TdApiMap.fromMap(map['notification_settings']) as ScopeNotificationSettings;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

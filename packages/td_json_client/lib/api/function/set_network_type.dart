@@ -24,7 +24,9 @@ class SetNetworkType extends TdFunction {
   SetNetworkType.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    type = TdApiMap.fromMap(map['type']) as NetworkType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as NetworkType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -13,7 +13,7 @@ class TermsOfService extends TdObject {
   /// Text of the terms of service 
   FormattedText? text;
 
-  /// The minimum age of a user to be able to accept the terms; 0 if age isn't restricted 
+  /// The minimum age of a user to be able to accept the terms; 0 if any 
   int32? min_user_age;
 
   /// True, if a blocking popup with terms of service must be shown to the user
@@ -30,7 +30,9 @@ class TermsOfService extends TdObject {
   TermsOfService.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as FormattedText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as FormattedText;
+    }
     min_user_age = map['min_user_age'];
     show_popup = map['show_popup'];
   }

@@ -1,6 +1,5 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
-import 'package:td_json_client/api/object/chat_administrator_rights.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 import 'package:td_json_client/api/object/proxy_type.dart';
 
@@ -30,57 +29,6 @@ class InternalLinkTypeActiveSessions extends InternalLinkType {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The link is a link to an attachment menu bot to be opened in the specified chat. Process given chat_link to open corresponding chat.
-/// Then call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then use getAttachmentMenuBot to receive information about the bot.
-/// If the bot isn't added to attachment menu, then user needs to confirm adding the bot to attachment menu. If user confirms adding, then use toggleBotIsAddedToAttachmentMenu to add it.
-/// If attachment menu bots can't be used in the current chat, show an error to the user. If the bot is added to attachment menu, then use openWebApp with the given URL
-class InternalLinkTypeAttachmentMenuBot extends InternalLinkType {
-  String get tdType => 'internalLinkTypeAttachmentMenuBot';
-
-  String? extra;
-  int? client_id;
-
-  /// An internal link pointing to a chat; may be null if the current chat needs to be kept 
-  InternalLinkType? chat_link;
-
-  /// Username of the bot 
-  string? bot_username;
-
-  /// URL to be passed to openWebApp
-  string? url;
-
-  InternalLinkTypeAttachmentMenuBot({
-    this.extra,
-    this.client_id,
-    this.chat_link,
-    this.bot_username,
-    this.url,
-  });
-
-  InternalLinkTypeAttachmentMenuBot.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    chat_link = map['chat_link'];
-    bot_username = map['bot_username'];
-    url = map['url'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'chat_link': chat_link?.toMap(skipNulls: skipNulls),
-      'bot_username': bot_username?.toMap(skipNulls: skipNulls),
-      'url': url?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -205,11 +153,7 @@ class InternalLinkTypeBotStart extends InternalLinkType {
 }
 
 /// The link is a link to a Telegram bot, which is supposed to be added to a group chat. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to groups,
-/// ask the current user to select a basic group or a supergroup chat to add the bot to, taking into account that bots can be added to a public supergroup only by administrators of the supergroup.
-/// If administrator rights are provided by the link, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator,
-/// check that the current user can edit its administrator rights, combine received rights with the requested administrator rights, show confirmation box to the user,
-/// and call setChatMemberStatus with the chosen chat and confirmed administrator rights. Before call to setChatMemberStatus it may be required to upgrade the chosen basic group chat to a supergroup chat.
-/// Then if start_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat, otherwise just send /start message with bot's username added to the chat.
+/// ask the current user to select a group to add the bot to, and then call sendBotStartMessage with the given start parameter and the chosen group chat. Bots can be added to a public group only by administrators of the group
 class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStartInGroup';
 
@@ -219,18 +163,14 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   /// Username of the bot 
   string? bot_username;
 
-  /// The parameter to be passed to sendBotStartMessage 
+  /// The parameter to be passed to sendBotStartMessage
   string? start_parameter;
-
-  /// Expected administrator rights for the bot; may be null
-  ChatAdministratorRights? administrator_rights;
 
   InternalLinkTypeBotStartInGroup({
     this.extra,
     this.client_id,
     this.bot_username,
     this.start_parameter,
-    this.administrator_rights,
   });
 
   InternalLinkTypeBotStartInGroup.fromMap(Map<String, dynamic> map) {
@@ -238,7 +178,6 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
     client_id = map['@client_id'];
     bot_username = map['bot_username'];
     start_parameter = map['start_parameter'];
-    administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -248,51 +187,6 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'bot_username': bot_username?.toMap(skipNulls: skipNulls),
       'start_parameter': start_parameter?.toMap(skipNulls: skipNulls),
-      'administrator_rights': administrator_rights?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The link is a link to a Telegram bot, which is supposed to be added to a channel chat as an administrator. Call searchPublicChat with the given bot username and check that the user is a bot,
-/// ask the current user to select a channel chat to add the bot to as an administrator. Then call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator,
-/// check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights
-class InternalLinkTypeBotAddToChannel extends InternalLinkType {
-  String get tdType => 'internalLinkTypeBotAddToChannel';
-
-  String? extra;
-  int? client_id;
-
-  /// Username of the bot 
-  string? bot_username;
-
-  /// Expected administrator rights for the bot
-  ChatAdministratorRights? administrator_rights;
-
-  InternalLinkTypeBotAddToChannel({
-    this.extra,
-    this.client_id,
-    this.bot_username,
-    this.administrator_rights,
-  });
-
-  InternalLinkTypeBotAddToChannel.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    bot_username = map['bot_username'];
-    administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'bot_username': bot_username?.toMap(skipNulls: skipNulls),
-      'administrator_rights': administrator_rights?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -475,36 +369,6 @@ class InternalLinkTypeLanguagePack extends InternalLinkType {
   }
 }
 
-/// The link is a link to the language settings section of the app
-class InternalLinkTypeLanguageSettings extends InternalLinkType {
-  String get tdType => 'internalLinkTypeLanguageSettings';
-
-  String? extra;
-  int? client_id;
-
-  InternalLinkTypeLanguageSettings({
-    this.extra,
-    this.client_id,
-  });
-
-  InternalLinkTypeLanguageSettings.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
 /// The link is a link to a Telegram message. Call getMessageLinkInfo with the given URL to process the link 
 class InternalLinkTypeMessage extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessage';
@@ -564,7 +428,9 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
   InternalLinkTypeMessageDraft.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as FormattedText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as FormattedText;
+    }
     contains_link = map['contains_link'];
   }
 
@@ -685,36 +551,6 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
   }
 }
 
-/// The link is a link to the privacy and security settings section of the app
-class InternalLinkTypePrivacyAndSecuritySettings extends InternalLinkType {
-  String get tdType => 'internalLinkTypePrivacyAndSecuritySettings';
-
-  String? extra;
-  int? client_id;
-
-  InternalLinkTypePrivacyAndSecuritySettings({
-    this.extra,
-    this.client_id,
-  });
-
-  InternalLinkTypePrivacyAndSecuritySettings.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
 /// The link is a link to a proxy. Call addProxy with the given parameters to process the link and add the proxy
 class InternalLinkTypeProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeProxy';
@@ -744,7 +580,9 @@ class InternalLinkTypeProxy extends InternalLinkType {
     client_id = map['@client_id'];
     server = map['server'];
     port = map['port'];
-    type = TdApiMap.fromMap(map['type']) as ProxyType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ProxyType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1028,43 +866,7 @@ class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
   }
 }
 
-/// The link is a link to a user by its phone number. Call searchUserByPhoneNumber with the given phone number to process the link 
-class InternalLinkTypeUserPhoneNumber extends InternalLinkType {
-  String get tdType => 'internalLinkTypeUserPhoneNumber';
-
-  String? extra;
-  int? client_id;
-
-  /// Phone number of the user
-  string? phone_number;
-
-  InternalLinkTypeUserPhoneNumber({
-    this.extra,
-    this.client_id,
-    this.phone_number,
-  });
-
-  InternalLinkTypeUserPhoneNumber.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    phone_number = map['phone_number'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'phone_number': phone_number?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The link is a link to a video chat. Call searchPublicChat with the given chat username, and then joinGroupCall with the given invite hash to process the link
+/// The link is a link to a video chat. Call searchPublicChat with the given chat username, and then joinGoupCall with the given invite hash to process the link
 class InternalLinkTypeVideoChat extends InternalLinkType {
   String get tdType => 'internalLinkTypeVideoChat';
 

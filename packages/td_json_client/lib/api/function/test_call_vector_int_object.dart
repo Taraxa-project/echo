@@ -23,10 +23,12 @@ class TestCallVectorIntObject extends TdFunction {
   TestCallVectorIntObject.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['x']) {
+    if (map['x'] != null) {
       x = [];
       for (var someValue in map['x']) {
-        x?.add(TdApiMap.fromMap(someValue) as TestInt);
+        if (someValue != null) {
+          x?.add(TdApiMap.fromMap(someValue) as TestInt);
+        }
       }
     }
   }

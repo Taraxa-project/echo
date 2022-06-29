@@ -22,10 +22,12 @@ class ConnectedWebsites extends TdObject {
   ConnectedWebsites.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['websites']) {
+    if (map['websites'] != null) {
       websites = [];
       for (var someValue in map['websites']) {
-        websites?.add(TdApiMap.fromMap(someValue) as ConnectedWebsite);
+        if (someValue != null) {
+          websites?.add(TdApiMap.fromMap(someValue) as ConnectedWebsite);
+        }
       }
     }
   }

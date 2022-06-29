@@ -35,10 +35,14 @@ class Thumbnail extends TdObject {
   Thumbnail.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    format = TdApiMap.fromMap(map['format']) as ThumbnailFormat;
+    if (map['format'] != null) {
+      format = TdApiMap.fromMap(map['format']) as ThumbnailFormat;
+    }
     width = map['width'];
     height = map['height'];
-    file = TdApiMap.fromMap(map['file']) as File;
+    if (map['file'] != null) {
+      file = TdApiMap.fromMap(map['file']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

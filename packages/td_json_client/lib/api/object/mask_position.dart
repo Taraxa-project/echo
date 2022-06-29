@@ -34,7 +34,9 @@ class MaskPosition extends TdObject {
   MaskPosition.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    point = TdApiMap.fromMap(map['point']) as MaskPoint;
+    if (map['point'] != null) {
+      point = TdApiMap.fromMap(map['point']) as MaskPoint;
+    }
     x_shift = map['x_shift'];
     y_shift = map['y_shift'];
     scale = map['scale'];

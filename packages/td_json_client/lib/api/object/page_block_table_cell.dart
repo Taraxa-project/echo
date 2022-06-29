@@ -44,12 +44,18 @@ class PageBlockTableCell extends TdObject {
   PageBlockTableCell.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as RichText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as RichText;
+    }
     is_header = map['is_header'];
     colspan = map['colspan'];
     rowspan = map['rowspan'];
-    align = TdApiMap.fromMap(map['align']) as PageBlockHorizontalAlignment;
-    valign = TdApiMap.fromMap(map['valign']) as PageBlockVerticalAlignment;
+    if (map['align'] != null) {
+      align = TdApiMap.fromMap(map['align']) as PageBlockHorizontalAlignment;
+    }
+    if (map['valign'] != null) {
+      valign = TdApiMap.fromMap(map['valign']) as PageBlockVerticalAlignment;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

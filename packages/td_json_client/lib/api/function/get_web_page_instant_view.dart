@@ -12,7 +12,7 @@ class GetWebPageInstantView extends TdFunction {
   /// The web page URL 
   string? url;
 
-  /// Pass true to get full instant view for the web page
+  /// If true, the full instant view for the web page will be returned
   Bool? force_full;
 
   GetWebPageInstantView({

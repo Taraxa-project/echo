@@ -17,7 +17,7 @@ class AddProxy extends TdFunction {
   /// Proxy server port 
   int32? port;
 
-  /// Pass true to immediately enable the proxy 
+  /// True, if the proxy needs to be enabled 
   Bool? enable;
 
   /// Proxy type
@@ -38,7 +38,9 @@ class AddProxy extends TdFunction {
     server = map['server'];
     port = map['port'];
     enable = map['enable'];
-    type = TdApiMap.fromMap(map['type']) as ProxyType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ProxyType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

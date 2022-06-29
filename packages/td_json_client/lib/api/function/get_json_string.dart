@@ -23,7 +23,9 @@ class GetJsonString extends TdFunction {
   GetJsonString.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    json_value = TdApiMap.fromMap(map['json_value']) as JsonValue;
+    if (map['json_value'] != null) {
+      json_value = TdApiMap.fromMap(map['json_value']) as JsonValue;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

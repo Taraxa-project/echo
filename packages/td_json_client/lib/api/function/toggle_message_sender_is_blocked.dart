@@ -27,7 +27,9 @@ class ToggleMessageSenderIsBlocked extends TdFunction {
   ToggleMessageSenderIsBlocked.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    if (map['sender_id'] != null) {
+      sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    }
     is_blocked = map['is_blocked'];
   }
 

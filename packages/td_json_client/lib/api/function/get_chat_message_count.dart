@@ -17,7 +17,7 @@ class GetChatMessageCount extends TdFunction {
   /// Filter for message content; searchMessagesFilterEmpty is unsupported in this function 
   SearchMessagesFilter? filter;
 
-  /// Pass true to get the number of messages without sending network requests, or -1 if the number of messages is unknown locally
+  /// If true, returns count that is available locally without sending network requests, returning -1 if the number of messages is unknown
   Bool? return_local;
 
   GetChatMessageCount({
@@ -32,7 +32,9 @@ class GetChatMessageCount extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    }
     return_local = map['return_local'];
   }
 

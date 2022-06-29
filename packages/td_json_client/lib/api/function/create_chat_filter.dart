@@ -23,7 +23,9 @@ class CreateChatFilter extends TdFunction {
   CreateChatFilter.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    filter = TdApiMap.fromMap(map['filter']) as ChatFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as ChatFilter;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

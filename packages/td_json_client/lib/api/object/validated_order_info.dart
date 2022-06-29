@@ -27,10 +27,12 @@ class ValidatedOrderInfo extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     order_info_id = map['order_info_id'];
-    if (map['shipping_options']) {
+    if (map['shipping_options'] != null) {
       shipping_options = [];
       for (var someValue in map['shipping_options']) {
-        shipping_options?.add(TdApiMap.fromMap(someValue) as ShippingOption);
+        if (someValue != null) {
+          shipping_options?.add(TdApiMap.fromMap(someValue) as ShippingOption);
+        }
       }
     }
   }

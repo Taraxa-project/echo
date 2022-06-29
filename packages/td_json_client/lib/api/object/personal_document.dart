@@ -26,16 +26,20 @@ class PersonalDocument extends TdObject {
   PersonalDocument.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['files']) {
+    if (map['files'] != null) {
       files = [];
       for (var someValue in map['files']) {
-        files?.add(TdApiMap.fromMap(someValue) as DatedFile);
+        if (someValue != null) {
+          files?.add(TdApiMap.fromMap(someValue) as DatedFile);
+        }
       }
     }
-    if (map['translation']) {
+    if (map['translation'] != null) {
       translation = [];
       for (var someValue in map['translation']) {
-        translation?.add(TdApiMap.fromMap(someValue) as DatedFile);
+        if (someValue != null) {
+          translation?.add(TdApiMap.fromMap(someValue) as DatedFile);
+        }
       }
     }
   }

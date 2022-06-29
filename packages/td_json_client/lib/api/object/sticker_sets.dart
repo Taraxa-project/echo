@@ -27,10 +27,12 @@ class StickerSets extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['sets']) {
+    if (map['sets'] != null) {
       sets = [];
       for (var someValue in map['sets']) {
-        sets?.add(TdApiMap.fromMap(someValue) as StickerSetInfo);
+        if (someValue != null) {
+          sets?.add(TdApiMap.fromMap(someValue) as StickerSetInfo);
+        }
       }
     }
   }

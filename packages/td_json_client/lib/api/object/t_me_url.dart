@@ -27,7 +27,9 @@ class TMeUrl extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     url = map['url'];
-    type = TdApiMap.fromMap(map['type']) as TMeUrlType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as TMeUrlType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

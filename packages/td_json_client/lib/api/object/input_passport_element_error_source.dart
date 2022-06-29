@@ -245,7 +245,7 @@ class InputPassportElementErrorSourceTranslationFiles extends InputPassportEleme
   InputPassportElementErrorSourceTranslationFiles.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['file_hashes']) {
+    if (map['file_hashes'] != null) {
       file_hashes = [];
       for (var someValue in map['file_hashes']) {
         file_hashes?.add(someValue);
@@ -322,7 +322,7 @@ class InputPassportElementErrorSourceFiles extends InputPassportElementErrorSour
   InputPassportElementErrorSourceFiles.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['file_hashes']) {
+    if (map['file_hashes'] != null) {
       file_hashes = [];
       for (var someValue in map['file_hashes']) {
         file_hashes?.add(someValue);

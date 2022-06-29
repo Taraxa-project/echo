@@ -40,10 +40,12 @@ class InlineQueryResults extends TdObject {
     client_id = map['@client_id'];
     inline_query_id = map['inline_query_id'];
     next_offset = map['next_offset'];
-    if (map['results']) {
+    if (map['results'] != null) {
       results = [];
       for (var someValue in map['results']) {
-        results?.add(TdApiMap.fromMap(someValue) as InlineQueryResult);
+        if (someValue != null) {
+          results?.add(TdApiMap.fromMap(someValue) as InlineQueryResult);
+        }
       }
     }
     switch_pm_text = map['switch_pm_text'];

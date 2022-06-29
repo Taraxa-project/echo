@@ -28,7 +28,9 @@ class FinishFileGeneration extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     generation_id = map['generation_id'];
-    error = TdApiMap.fromMap(map['error']) as Error;
+    if (map['error'] != null) {
+      error = TdApiMap.fromMap(map['error']) as Error;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

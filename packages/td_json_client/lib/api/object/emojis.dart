@@ -20,7 +20,7 @@ class Emojis extends TdObject {
   Emojis.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['emojis']) {
+    if (map['emojis'] != null) {
       emojis = [];
       for (var someValue in map['emojis']) {
         emojis?.add(someValue);

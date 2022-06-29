@@ -22,10 +22,12 @@ class TextEntities extends TdObject {
   TextEntities.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['entities']) {
+    if (map['entities'] != null) {
       entities = [];
       for (var someValue in map['entities']) {
-        entities?.add(TdApiMap.fromMap(someValue) as TextEntity);
+        if (someValue != null) {
+          entities?.add(TdApiMap.fromMap(someValue) as TextEntity);
+        }
       }
     }
   }

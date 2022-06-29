@@ -42,7 +42,9 @@ class Venue extends TdObject {
   Venue.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    location = TdApiMap.fromMap(map['location']) as Location;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as Location;
+    }
     title = map['title'];
     address = map['address'];
     provider = map['provider'];
