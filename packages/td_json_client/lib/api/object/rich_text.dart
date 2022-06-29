@@ -489,7 +489,9 @@ class RichTextIcon extends RichText {
   RichTextIcon.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    document = TdApiMap.fromMap(map['document']) as Document;
+    if (map['document'] != null) {
+      document = TdApiMap.fromMap(map['document']) as Document;
+    }
     width = map['width'];
     height = map['height'];
   }
@@ -661,7 +663,7 @@ class RichTexts extends RichText {
   RichTexts.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['texts']) {
+    if (map['texts'] != null) {
       texts = [];
       for (var someValue in map['texts']) {
         texts?.add(someValue);

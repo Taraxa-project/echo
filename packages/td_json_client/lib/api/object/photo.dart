@@ -32,11 +32,15 @@ class Photo extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     has_stickers = map['has_stickers'];
-    minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
-    if (map['sizes']) {
+    if (map['minithumbnail'] != null) {
+      minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
+    }
+    if (map['sizes'] != null) {
       sizes = [];
       for (var someValue in map['sizes']) {
-        sizes?.add(TdApiMap.fromMap(someValue) as PhotoSize);
+        if (someValue != null) {
+          sizes?.add(TdApiMap.fromMap(someValue) as PhotoSize);
+        }
       }
     }
   }

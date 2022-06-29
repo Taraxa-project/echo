@@ -30,9 +30,15 @@ class AutoDownloadSettingsPresets extends TdObject {
   AutoDownloadSettingsPresets.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    low = TdApiMap.fromMap(map['low']) as AutoDownloadSettings;
-    medium = TdApiMap.fromMap(map['medium']) as AutoDownloadSettings;
-    high = TdApiMap.fromMap(map['high']) as AutoDownloadSettings;
+    if (map['low'] != null) {
+      low = TdApiMap.fromMap(map['low']) as AutoDownloadSettings;
+    }
+    if (map['medium'] != null) {
+      medium = TdApiMap.fromMap(map['medium']) as AutoDownloadSettings;
+    }
+    if (map['high'] != null) {
+      high = TdApiMap.fromMap(map['high']) as AutoDownloadSettings;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

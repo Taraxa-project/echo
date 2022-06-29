@@ -26,7 +26,9 @@ class DeepLinkInfo extends TdObject {
   DeepLinkInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as FormattedText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as FormattedText;
+    }
     need_update_application = map['need_update_application'];
   }
 

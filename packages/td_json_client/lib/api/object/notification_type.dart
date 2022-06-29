@@ -27,7 +27,9 @@ class NotificationTypeNewMessage extends NotificationType {
   NotificationTypeNewMessage.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -146,10 +148,14 @@ class NotificationTypeNewPushMessage extends NotificationType {
     extra = map['@extra'];
     client_id = map['@client_id'];
     message_id = map['message_id'];
-    sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    if (map['sender_id'] != null) {
+      sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    }
     sender_name = map['sender_name'];
     is_outgoing = map['is_outgoing'];
-    content = TdApiMap.fromMap(map['content']) as PushMessageContent;
+    if (map['content'] != null) {
+      content = TdApiMap.fromMap(map['content']) as PushMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

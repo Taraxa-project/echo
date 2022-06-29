@@ -28,7 +28,9 @@ class SetChatNotificationSettings extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
+    if (map['notification_settings'] != null) {
+      notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

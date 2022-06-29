@@ -67,14 +67,16 @@ class Invoice extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     currency = map['currency'];
-    if (map['price_parts']) {
+    if (map['price_parts'] != null) {
       price_parts = [];
       for (var someValue in map['price_parts']) {
-        price_parts?.add(TdApiMap.fromMap(someValue) as LabeledPricePart);
+        if (someValue != null) {
+          price_parts?.add(TdApiMap.fromMap(someValue) as LabeledPricePart);
+        }
       }
     }
     max_tip_amount = map['max_tip_amount'];
-    if (map['suggested_tip_amounts']) {
+    if (map['suggested_tip_amounts'] != null) {
       suggested_tip_amounts = [];
       for (var someValue in map['suggested_tip_amounts']) {
         suggested_tip_amounts?.add(someValue);

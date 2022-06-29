@@ -50,10 +50,16 @@ class Game extends TdObject {
     id = map['id'];
     short_name = map['short_name'];
     title = map['title'];
-    text = TdApiMap.fromMap(map['text']) as FormattedText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as FormattedText;
+    }
     description = map['description'];
-    photo = TdApiMap.fromMap(map['photo']) as Photo;
-    animation = TdApiMap.fromMap(map['animation']) as Animation;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as Photo;
+    }
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as Animation;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -31,7 +31,9 @@ class ToggleChatIsPinned extends TdFunction {
   ToggleChatIsPinned.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
+    if (map['chat_list'] != null) {
+      chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
+    }
     chat_id = map['chat_id'];
     is_pinned = map['is_pinned'];
   }

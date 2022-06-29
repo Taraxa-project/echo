@@ -38,8 +38,12 @@ class EditMessageText extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_id = map['message_id'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

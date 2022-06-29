@@ -23,7 +23,9 @@ class SetLogStream extends TdFunction {
   SetLogStream.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    log_stream = TdApiMap.fromMap(map['log_stream']) as LogStream;
+    if (map['log_stream'] != null) {
+      log_stream = TdApiMap.fromMap(map['log_stream']) as LogStream;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -27,7 +27,9 @@ class AddContact extends TdFunction {
   AddContact.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    contact = TdApiMap.fromMap(map['contact']) as Contact;
+    if (map['contact'] != null) {
+      contact = TdApiMap.fromMap(map['contact']) as Contact;
+    }
     share_phone_number = map['share_phone_number'];
   }
 

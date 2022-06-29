@@ -93,8 +93,12 @@ class User extends TdObject {
     last_name = map['last_name'];
     username = map['username'];
     phone_number = map['phone_number'];
-    status = TdApiMap.fromMap(map['status']) as UserStatus;
-    profile_photo = TdApiMap.fromMap(map['profile_photo']) as ProfilePhoto;
+    if (map['status'] != null) {
+      status = TdApiMap.fromMap(map['status']) as UserStatus;
+    }
+    if (map['profile_photo'] != null) {
+      profile_photo = TdApiMap.fromMap(map['profile_photo']) as ProfilePhoto;
+    }
     is_contact = map['is_contact'];
     is_mutual_contact = map['is_mutual_contact'];
     is_verified = map['is_verified'];
@@ -103,7 +107,9 @@ class User extends TdObject {
     is_scam = map['is_scam'];
     is_fake = map['is_fake'];
     have_access = map['have_access'];
-    type = TdApiMap.fromMap(map['type']) as UserType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as UserType;
+    }
     language_code = map['language_code'];
   }
 

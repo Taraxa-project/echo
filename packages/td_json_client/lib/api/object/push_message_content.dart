@@ -76,7 +76,9 @@ class PushMessageContentAnimation extends PushMessageContent {
   PushMessageContentAnimation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    animation = TdApiMap.fromMap(map['animation']) as Animation;
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as Animation;
+    }
     caption = map['caption'];
     is_pinned = map['is_pinned'];
   }
@@ -120,7 +122,9 @@ class PushMessageContentAudio extends PushMessageContent {
   PushMessageContentAudio.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    audio = TdApiMap.fromMap(map['audio']) as Audio;
+    if (map['audio'] != null) {
+      audio = TdApiMap.fromMap(map['audio']) as Audio;
+    }
     is_pinned = map['is_pinned'];
   }
 
@@ -234,7 +238,9 @@ class PushMessageContentDocument extends PushMessageContent {
   PushMessageContentDocument.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    document = TdApiMap.fromMap(map['document']) as Document;
+    if (map['document'] != null) {
+      document = TdApiMap.fromMap(map['document']) as Document;
+    }
     is_pinned = map['is_pinned'];
   }
 
@@ -458,7 +464,9 @@ class PushMessageContentPhoto extends PushMessageContent {
   PushMessageContentPhoto.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as Photo;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as Photo;
+    }
     caption = map['caption'];
     is_secret = map['is_secret'];
     is_pinned = map['is_pinned'];
@@ -586,7 +594,9 @@ class PushMessageContentSticker extends PushMessageContent {
   PushMessageContentSticker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    }
     emoji = map['emoji'];
     is_pinned = map['is_pinned'];
   }
@@ -680,7 +690,9 @@ class PushMessageContentVideo extends PushMessageContent {
   PushMessageContentVideo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    video = TdApiMap.fromMap(map['video']) as Video;
+    if (map['video'] != null) {
+      video = TdApiMap.fromMap(map['video']) as Video;
+    }
     caption = map['caption'];
     is_secret = map['is_secret'];
     is_pinned = map['is_pinned'];
@@ -726,7 +738,9 @@ class PushMessageContentVideoNote extends PushMessageContent {
   PushMessageContentVideoNote.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    video_note = TdApiMap.fromMap(map['video_note']) as VideoNote;
+    if (map['video_note'] != null) {
+      video_note = TdApiMap.fromMap(map['video_note']) as VideoNote;
+    }
     is_pinned = map['is_pinned'];
   }
 
@@ -768,7 +782,9 @@ class PushMessageContentVoiceNote extends PushMessageContent {
   PushMessageContentVoiceNote.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
+    if (map['voice_note'] != null) {
+      voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
+    }
     is_pinned = map['is_pinned'];
   }
 

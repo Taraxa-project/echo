@@ -43,7 +43,9 @@ class OpenWebApp extends TdFunction {
     chat_id = map['chat_id'];
     bot_user_id = map['bot_user_id'];
     url = map['url'];
-    theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
+    if (map['theme'] != null) {
+      theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
+    }
     reply_to_message_id = map['reply_to_message_id'];
   }
 

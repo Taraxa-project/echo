@@ -22,10 +22,12 @@ class GameHighScores extends TdObject {
   GameHighScores.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['scores']) {
+    if (map['scores'] != null) {
       scores = [];
       for (var someValue in map['scores']) {
-        scores?.add(TdApiMap.fromMap(someValue) as GameHighScore);
+        if (someValue != null) {
+          scores?.add(TdApiMap.fromMap(someValue) as GameHighScore);
+        }
       }
     }
   }

@@ -25,7 +25,7 @@ class Chats extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['chat_ids']) {
+    if (map['chat_ids'] != null) {
       chat_ids = [];
       for (var someValue in map['chat_ids']) {
         chat_ids?.add(someValue);

@@ -23,7 +23,9 @@ class TestReturnError extends TdFunction {
   TestReturnError.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    error = TdApiMap.fromMap(map['error']) as Error;
+    if (map['error'] != null) {
+      error = TdApiMap.fromMap(map['error']) as Error;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

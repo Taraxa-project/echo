@@ -39,10 +39,12 @@ class MessageReplyInfo extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     reply_count = map['reply_count'];
-    if (map['recent_replier_ids']) {
+    if (map['recent_replier_ids'] != null) {
       recent_replier_ids = [];
       for (var someValue in map['recent_replier_ids']) {
-        recent_replier_ids?.add(TdApiMap.fromMap(someValue) as MessageSender);
+        if (someValue != null) {
+          recent_replier_ids?.add(TdApiMap.fromMap(someValue) as MessageSender);
+        }
       }
     }
     last_read_inbox_message_id = map['last_read_inbox_message_id'];

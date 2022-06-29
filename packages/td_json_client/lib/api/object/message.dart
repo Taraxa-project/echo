@@ -170,10 +170,16 @@ class Message extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    if (map['sender_id'] != null) {
+      sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    }
     chat_id = map['chat_id'];
-    sending_state = TdApiMap.fromMap(map['sending_state']) as MessageSendingState;
-    scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
+    if (map['sending_state'] != null) {
+      sending_state = TdApiMap.fromMap(map['sending_state']) as MessageSendingState;
+    }
+    if (map['scheduling_state'] != null) {
+      scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
+    }
     is_outgoing = map['is_outgoing'];
     is_pinned = map['is_pinned'];
     can_be_edited = map['can_be_edited'];
@@ -191,12 +197,18 @@ class Message extends TdObject {
     contains_unread_mention = map['contains_unread_mention'];
     date = map['date'];
     edit_date = map['edit_date'];
-    forward_info = TdApiMap.fromMap(map['forward_info']) as MessageForwardInfo;
-    interaction_info = TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
-    if (map['unread_reactions']) {
+    if (map['forward_info'] != null) {
+      forward_info = TdApiMap.fromMap(map['forward_info']) as MessageForwardInfo;
+    }
+    if (map['interaction_info'] != null) {
+      interaction_info = TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
+    }
+    if (map['unread_reactions'] != null) {
       unread_reactions = [];
       for (var someValue in map['unread_reactions']) {
-        unread_reactions?.add(TdApiMap.fromMap(someValue) as UnreadReaction);
+        if (someValue != null) {
+          unread_reactions?.add(TdApiMap.fromMap(someValue) as UnreadReaction);
+        }
       }
     }
     reply_in_chat_id = map['reply_in_chat_id'];
@@ -208,8 +220,12 @@ class Message extends TdObject {
     author_signature = map['author_signature'];
     media_album_id = map['media_album_id'];
     restriction_reason = map['restriction_reason'];
-    content = TdApiMap.fromMap(map['content']) as MessageContent;
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    if (map['content'] != null) {
+      content = TdApiMap.fromMap(map['content']) as MessageContent;
+    }
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

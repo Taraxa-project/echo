@@ -33,7 +33,9 @@ class SendChatAction extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_thread_id = map['message_thread_id'];
-    action = TdApiMap.fromMap(map['action']) as ChatAction;
+    if (map['action'] != null) {
+      action = TdApiMap.fromMap(map['action']) as ChatAction;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

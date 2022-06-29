@@ -28,10 +28,12 @@ class FormattedText extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     text = map['text'];
-    if (map['entities']) {
+    if (map['entities'] != null) {
       entities = [];
       for (var someValue in map['entities']) {
-        entities?.add(TdApiMap.fromMap(someValue) as TextEntity);
+        if (someValue != null) {
+          entities?.add(TdApiMap.fromMap(someValue) as TextEntity);
+        }
       }
     }
   }

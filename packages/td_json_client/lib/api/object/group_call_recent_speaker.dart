@@ -26,7 +26,9 @@ class GroupCallRecentSpeaker extends TdObject {
   GroupCallRecentSpeaker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    if (map['participant_id'] != null) {
+      participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    }
     is_speaking = map['is_speaking'];
   }
 

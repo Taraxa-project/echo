@@ -28,8 +28,12 @@ class SetAutoDownloadSettings extends TdFunction {
   SetAutoDownloadSettings.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    settings = TdApiMap.fromMap(map['settings']) as AutoDownloadSettings;
-    type = TdApiMap.fromMap(map['type']) as NetworkType;
+    if (map['settings'] != null) {
+      settings = TdApiMap.fromMap(map['settings']) as AutoDownloadSettings;
+    }
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as NetworkType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

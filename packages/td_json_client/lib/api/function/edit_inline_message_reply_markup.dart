@@ -28,7 +28,9 @@ class EditInlineMessageReplyMarkup extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     inline_message_id = map['inline_message_id'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

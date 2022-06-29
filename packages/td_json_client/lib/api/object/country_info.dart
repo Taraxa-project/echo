@@ -40,7 +40,7 @@ class CountryInfo extends TdObject {
     name = map['name'];
     english_name = map['english_name'];
     is_hidden = map['is_hidden'];
-    if (map['calling_codes']) {
+    if (map['calling_codes'] != null) {
       calling_codes = [];
       for (var someValue in map['calling_codes']) {
         calling_codes?.add(someValue);

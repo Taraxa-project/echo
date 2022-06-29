@@ -114,10 +114,12 @@ class GroupCall extends TdObject {
     participant_count = map['participant_count'];
     has_hidden_listeners = map['has_hidden_listeners'];
     loaded_all_participants = map['loaded_all_participants'];
-    if (map['recent_speakers']) {
+    if (map['recent_speakers'] != null) {
       recent_speakers = [];
       for (var someValue in map['recent_speakers']) {
-        recent_speakers?.add(TdApiMap.fromMap(someValue) as GroupCallRecentSpeaker);
+        if (someValue != null) {
+          recent_speakers?.add(TdApiMap.fromMap(someValue) as GroupCallRecentSpeaker);
+        }
       }
     }
     is_my_video_enabled = map['is_my_video_enabled'];

@@ -32,7 +32,9 @@ class GetChatMessageCount extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    }
     return_local = map['return_local'];
   }
 

@@ -59,7 +59,9 @@ class UserFullInfo extends TdObject {
   UserFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    }
     is_blocked = map['is_blocked'];
     can_be_called = map['can_be_called'];
     supports_video_calls = map['supports_video_calls'];
@@ -68,7 +70,9 @@ class UserFullInfo extends TdObject {
     need_phone_number_privacy_exception = map['need_phone_number_privacy_exception'];
     bio = map['bio'];
     group_in_common_count = map['group_in_common_count'];
-    bot_info = TdApiMap.fromMap(map['bot_info']) as BotInfo;
+    if (map['bot_info'] != null) {
+      bot_info = TdApiMap.fromMap(map['bot_info']) as BotInfo;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

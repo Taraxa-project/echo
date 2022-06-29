@@ -21,7 +21,7 @@ class TestCallVectorInt extends TdFunction {
   TestCallVectorInt.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['x']) {
+    if (map['x'] != null) {
       x = [];
       for (var someValue in map['x']) {
         x?.add(someValue);

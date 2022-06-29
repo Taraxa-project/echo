@@ -107,7 +107,7 @@ class BackgroundFillFreeformGradient extends BackgroundFill {
   BackgroundFillFreeformGradient.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['colors']) {
+    if (map['colors'] != null) {
       colors = [];
       for (var someValue in map['colors']) {
         colors?.add(someValue);

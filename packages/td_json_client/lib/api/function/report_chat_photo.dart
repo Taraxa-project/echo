@@ -37,7 +37,9 @@ class ReportChatPhoto extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     file_id = map['file_id'];
-    reason = TdApiMap.fromMap(map['reason']) as ChatReportReason;
+    if (map['reason'] != null) {
+      reason = TdApiMap.fromMap(map['reason']) as ChatReportReason;
+    }
     text = map['text'];
   }
 

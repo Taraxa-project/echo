@@ -27,10 +27,12 @@ class ChatJoinRequests extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['requests']) {
+    if (map['requests'] != null) {
       requests = [];
       for (var someValue in map['requests']) {
-        requests?.add(TdApiMap.fromMap(someValue) as ChatJoinRequest);
+        if (someValue != null) {
+          requests?.add(TdApiMap.fromMap(someValue) as ChatJoinRequest);
+        }
       }
     }
   }

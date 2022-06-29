@@ -28,7 +28,9 @@ class SetChatPhoto extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    photo = TdApiMap.fromMap(map['photo']) as InputChatPhoto;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as InputChatPhoto;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

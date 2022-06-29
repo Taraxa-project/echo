@@ -27,8 +27,10 @@ class SetPinnedChats extends TdFunction {
   SetPinnedChats.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
-    if (map['chat_ids']) {
+    if (map['chat_list'] != null) {
+      chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
+    }
+    if (map['chat_ids'] != null) {
       chat_ids = [];
       for (var someValue in map['chat_ids']) {
         chat_ids?.add(someValue);

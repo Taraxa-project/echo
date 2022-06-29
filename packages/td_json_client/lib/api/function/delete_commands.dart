@@ -27,7 +27,9 @@ class DeleteCommands extends TdFunction {
   DeleteCommands.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    scope = TdApiMap.fromMap(map['scope']) as BotCommandScope;
+    if (map['scope'] != null) {
+      scope = TdApiMap.fromMap(map['scope']) as BotCommandScope;
+    }
     language_code = map['language_code'];
   }
 

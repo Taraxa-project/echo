@@ -61,13 +61,27 @@ class Reaction extends TdObject {
     reaction = map['reaction'];
     title = map['title'];
     is_active = map['is_active'];
-    static_icon = TdApiMap.fromMap(map['static_icon']) as Sticker;
-    appear_animation = TdApiMap.fromMap(map['appear_animation']) as Sticker;
-    select_animation = TdApiMap.fromMap(map['select_animation']) as Sticker;
-    activate_animation = TdApiMap.fromMap(map['activate_animation']) as Sticker;
-    effect_animation = TdApiMap.fromMap(map['effect_animation']) as Sticker;
-    around_animation = TdApiMap.fromMap(map['around_animation']) as Sticker;
-    center_animation = TdApiMap.fromMap(map['center_animation']) as Sticker;
+    if (map['static_icon'] != null) {
+      static_icon = TdApiMap.fromMap(map['static_icon']) as Sticker;
+    }
+    if (map['appear_animation'] != null) {
+      appear_animation = TdApiMap.fromMap(map['appear_animation']) as Sticker;
+    }
+    if (map['select_animation'] != null) {
+      select_animation = TdApiMap.fromMap(map['select_animation']) as Sticker;
+    }
+    if (map['activate_animation'] != null) {
+      activate_animation = TdApiMap.fromMap(map['activate_animation']) as Sticker;
+    }
+    if (map['effect_animation'] != null) {
+      effect_animation = TdApiMap.fromMap(map['effect_animation']) as Sticker;
+    }
+    if (map['around_animation'] != null) {
+      around_animation = TdApiMap.fromMap(map['around_animation']) as Sticker;
+    }
+    if (map['center_animation'] != null) {
+      center_animation = TdApiMap.fromMap(map['center_animation']) as Sticker;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

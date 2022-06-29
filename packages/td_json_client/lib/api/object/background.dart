@@ -47,8 +47,12 @@ class Background extends TdObject {
     is_default = map['is_default'];
     is_dark = map['is_dark'];
     name = map['name'];
-    document = TdApiMap.fromMap(map['document']) as Document;
-    type = TdApiMap.fromMap(map['type']) as BackgroundType;
+    if (map['document'] != null) {
+      document = TdApiMap.fromMap(map['document']) as Document;
+    }
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as BackgroundType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

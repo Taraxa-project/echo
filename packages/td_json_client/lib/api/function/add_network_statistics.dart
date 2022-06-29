@@ -23,7 +23,9 @@ class AddNetworkStatistics extends TdFunction {
   AddNetworkStatistics.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    entry = TdApiMap.fromMap(map['entry']) as NetworkStatisticsEntry;
+    if (map['entry'] != null) {
+      entry = TdApiMap.fromMap(map['entry']) as NetworkStatisticsEntry;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

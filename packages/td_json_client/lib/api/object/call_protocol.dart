@@ -40,7 +40,7 @@ class CallProtocol extends TdObject {
     udp_reflector = map['udp_reflector'];
     min_layer = map['min_layer'];
     max_layer = map['max_layer'];
-    if (map['library_versions']) {
+    if (map['library_versions'] != null) {
       library_versions = [];
       for (var someValue in map['library_versions']) {
         library_versions?.add(someValue);

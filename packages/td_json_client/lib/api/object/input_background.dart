@@ -25,7 +25,9 @@ class InputBackgroundLocal extends InputBackground {
   InputBackgroundLocal.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    background = TdApiMap.fromMap(map['background']) as InputFile;
+    if (map['background'] != null) {
+      background = TdApiMap.fromMap(map['background']) as InputFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -50,7 +50,9 @@ class SendInlineQueryResultMessage extends TdFunction {
     chat_id = map['chat_id'];
     message_thread_id = map['message_thread_id'];
     reply_to_message_id = map['reply_to_message_id'];
-    options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    if (map['options'] != null) {
+      options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    }
     query_id = map['query_id'];
     result_id = map['result_id'];
     hide_via_bot = map['hide_via_bot'];

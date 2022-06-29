@@ -91,11 +91,17 @@ class GroupCallParticipant extends TdObject {
   GroupCallParticipant.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    if (map['participant_id'] != null) {
+      participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    }
     audio_source_id = map['audio_source_id'];
     screen_sharing_audio_source_id = map['screen_sharing_audio_source_id'];
-    video_info = TdApiMap.fromMap(map['video_info']) as GroupCallParticipantVideoInfo;
-    screen_sharing_video_info = TdApiMap.fromMap(map['screen_sharing_video_info']) as GroupCallParticipantVideoInfo;
+    if (map['video_info'] != null) {
+      video_info = TdApiMap.fromMap(map['video_info']) as GroupCallParticipantVideoInfo;
+    }
+    if (map['screen_sharing_video_info'] != null) {
+      screen_sharing_video_info = TdApiMap.fromMap(map['screen_sharing_video_info']) as GroupCallParticipantVideoInfo;
+    }
     bio = map['bio'];
     is_current_user = map['is_current_user'];
     is_speaking = map['is_speaking'];

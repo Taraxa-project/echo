@@ -46,7 +46,9 @@ class PasswordState extends TdObject {
     password_hint = map['password_hint'];
     has_recovery_email_address = map['has_recovery_email_address'];
     has_passport_data = map['has_passport_data'];
-    recovery_email_address_code_info = TdApiMap.fromMap(map['recovery_email_address_code_info']) as EmailAddressAuthenticationCodeInfo;
+    if (map['recovery_email_address_code_info'] != null) {
+      recovery_email_address_code_info = TdApiMap.fromMap(map['recovery_email_address_code_info']) as EmailAddressAuthenticationCodeInfo;
+    }
     pending_reset_date = map['pending_reset_date'];
   }
 

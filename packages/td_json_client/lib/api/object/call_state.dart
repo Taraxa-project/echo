@@ -120,16 +120,20 @@ class CallStateReady extends CallState {
   CallStateReady.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    protocol = TdApiMap.fromMap(map['protocol']) as CallProtocol;
-    if (map['servers']) {
+    if (map['protocol'] != null) {
+      protocol = TdApiMap.fromMap(map['protocol']) as CallProtocol;
+    }
+    if (map['servers'] != null) {
       servers = [];
       for (var someValue in map['servers']) {
-        servers?.add(TdApiMap.fromMap(someValue) as CallServer);
+        if (someValue != null) {
+          servers?.add(TdApiMap.fromMap(someValue) as CallServer);
+        }
       }
     }
     config = map['config'];
     encryption_key = map['encryption_key'];
-    if (map['emojis']) {
+    if (map['emojis'] != null) {
       emojis = [];
       for (var someValue in map['emojis']) {
         emojis?.add(someValue);
@@ -218,7 +222,9 @@ class CallStateDiscarded extends CallState {
   CallStateDiscarded.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    reason = TdApiMap.fromMap(map['reason']) as CallDiscardReason;
+    if (map['reason'] != null) {
+      reason = TdApiMap.fromMap(map['reason']) as CallDiscardReason;
+    }
     need_rating = map['need_rating'];
     need_debug_information = map['need_debug_information'];
     need_log = map['need_log'];
@@ -260,7 +266,9 @@ class CallStateError extends CallState {
   CallStateError.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    error = TdApiMap.fromMap(map['error']) as Error;
+    if (map['error'] != null) {
+      error = TdApiMap.fromMap(map['error']) as Error;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

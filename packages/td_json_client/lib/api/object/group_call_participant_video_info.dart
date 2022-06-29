@@ -30,10 +30,12 @@ class GroupCallParticipantVideoInfo extends TdObject {
   GroupCallParticipantVideoInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['source_groups']) {
+    if (map['source_groups'] != null) {
       source_groups = [];
       for (var someValue in map['source_groups']) {
-        source_groups?.add(TdApiMap.fromMap(someValue) as GroupCallVideoSourceGroup);
+        if (someValue != null) {
+          source_groups?.add(TdApiMap.fromMap(someValue) as GroupCallVideoSourceGroup);
+        }
       }
     }
     endpoint_id = map['endpoint_id'];

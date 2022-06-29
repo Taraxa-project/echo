@@ -57,13 +57,27 @@ class AttachmentMenuBot extends TdObject {
     client_id = map['@client_id'];
     bot_user_id = map['bot_user_id'];
     name = map['name'];
-    name_color = TdApiMap.fromMap(map['name_color']) as AttachmentMenuBotColor;
-    default_icon = TdApiMap.fromMap(map['default_icon']) as File;
-    ios_static_icon = TdApiMap.fromMap(map['ios_static_icon']) as File;
-    ios_animated_icon = TdApiMap.fromMap(map['ios_animated_icon']) as File;
-    android_icon = TdApiMap.fromMap(map['android_icon']) as File;
-    macos_icon = TdApiMap.fromMap(map['macos_icon']) as File;
-    icon_color = TdApiMap.fromMap(map['icon_color']) as AttachmentMenuBotColor;
+    if (map['name_color'] != null) {
+      name_color = TdApiMap.fromMap(map['name_color']) as AttachmentMenuBotColor;
+    }
+    if (map['default_icon'] != null) {
+      default_icon = TdApiMap.fromMap(map['default_icon']) as File;
+    }
+    if (map['ios_static_icon'] != null) {
+      ios_static_icon = TdApiMap.fromMap(map['ios_static_icon']) as File;
+    }
+    if (map['ios_animated_icon'] != null) {
+      ios_animated_icon = TdApiMap.fromMap(map['ios_animated_icon']) as File;
+    }
+    if (map['android_icon'] != null) {
+      android_icon = TdApiMap.fromMap(map['android_icon']) as File;
+    }
+    if (map['macos_icon'] != null) {
+      macos_icon = TdApiMap.fromMap(map['macos_icon']) as File;
+    }
+    if (map['icon_color'] != null) {
+      icon_color = TdApiMap.fromMap(map['icon_color']) as AttachmentMenuBotColor;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

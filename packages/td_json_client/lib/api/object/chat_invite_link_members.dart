@@ -27,10 +27,12 @@ class ChatInviteLinkMembers extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['members']) {
+    if (map['members'] != null) {
       members = [];
       for (var someValue in map['members']) {
-        members?.add(TdApiMap.fromMap(someValue) as ChatInviteLinkMember);
+        if (someValue != null) {
+          members?.add(TdApiMap.fromMap(someValue) as ChatInviteLinkMember);
+        }
       }
     }
   }

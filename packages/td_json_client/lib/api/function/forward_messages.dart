@@ -49,13 +49,15 @@ class ForwardMessages extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     from_chat_id = map['from_chat_id'];
-    if (map['message_ids']) {
+    if (map['message_ids'] != null) {
       message_ids = [];
       for (var someValue in map['message_ids']) {
         message_ids?.add(someValue);
       }
     }
-    options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    if (map['options'] != null) {
+      options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    }
     send_copy = map['send_copy'];
     remove_caption = map['remove_caption'];
     only_preview = map['only_preview'];

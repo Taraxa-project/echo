@@ -27,10 +27,12 @@ class PageBlockListItem extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     label = map['label'];
-    if (map['page_blocks']) {
+    if (map['page_blocks'] != null) {
       page_blocks = [];
       for (var someValue in map['page_blocks']) {
-        page_blocks?.add(TdApiMap.fromMap(someValue) as PageBlock);
+        if (someValue != null) {
+          page_blocks?.add(TdApiMap.fromMap(someValue) as PageBlock);
+        }
       }
     }
   }

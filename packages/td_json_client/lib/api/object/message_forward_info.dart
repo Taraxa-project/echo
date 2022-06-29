@@ -38,7 +38,9 @@ class MessageForwardInfo extends TdObject {
   MessageForwardInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    origin = TdApiMap.fromMap(map['origin']) as MessageForwardOrigin;
+    if (map['origin'] != null) {
+      origin = TdApiMap.fromMap(map['origin']) as MessageForwardOrigin;
+    }
     date = map['date'];
     public_service_announcement_type = map['public_service_announcement_type'];
     from_chat_id = map['from_chat_id'];

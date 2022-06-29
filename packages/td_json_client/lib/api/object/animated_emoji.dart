@@ -31,9 +31,13 @@ class AnimatedEmoji extends TdObject {
   AnimatedEmoji.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    }
     fitzpatrick_type = map['fitzpatrick_type'];
-    sound = TdApiMap.fromMap(map['sound']) as File;
+    if (map['sound'] != null) {
+      sound = TdApiMap.fromMap(map['sound']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -29,7 +29,9 @@ class GetRemoteFile extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     remote_file_id = map['remote_file_id'];
-    file_type = TdApiMap.fromMap(map['file_type']) as FileType;
+    if (map['file_type'] != null) {
+      file_type = TdApiMap.fromMap(map['file_type']) as FileType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

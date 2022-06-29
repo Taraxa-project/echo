@@ -32,11 +32,15 @@ class ImportMessages extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    message_file = TdApiMap.fromMap(map['message_file']) as InputFile;
-    if (map['attached_files']) {
+    if (map['message_file'] != null) {
+      message_file = TdApiMap.fromMap(map['message_file']) as InputFile;
+    }
+    if (map['attached_files'] != null) {
       attached_files = [];
       for (var someValue in map['attached_files']) {
-        attached_files?.add(TdApiMap.fromMap(someValue) as InputFile);
+        if (someValue != null) {
+          attached_files?.add(TdApiMap.fromMap(someValue) as InputFile);
+        }
       }
     }
   }

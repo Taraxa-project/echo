@@ -23,7 +23,9 @@ class SetTdlibParameters extends TdFunction {
   SetTdlibParameters.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    parameters = TdApiMap.fromMap(map['parameters']) as TdlibParameters;
+    if (map['parameters'] != null) {
+      parameters = TdApiMap.fromMap(map['parameters']) as TdlibParameters;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

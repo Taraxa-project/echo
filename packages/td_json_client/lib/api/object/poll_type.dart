@@ -66,7 +66,9 @@ class PollTypeQuiz extends PollType {
     extra = map['@extra'];
     client_id = map['@client_id'];
     correct_option_id = map['correct_option_id'];
-    explanation = TdApiMap.fromMap(map['explanation']) as FormattedText;
+    if (map['explanation'] != null) {
+      explanation = TdApiMap.fromMap(map['explanation']) as FormattedText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

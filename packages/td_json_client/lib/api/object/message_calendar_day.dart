@@ -27,7 +27,9 @@ class MessageCalendarDay extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    message = TdApiMap.fromMap(map['message']) as Message;
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

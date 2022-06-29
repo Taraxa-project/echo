@@ -45,15 +45,23 @@ class BotInfo extends TdObject {
     client_id = map['@client_id'];
     share_text = map['share_text'];
     description = map['description'];
-    menu_button = TdApiMap.fromMap(map['menu_button']) as BotMenuButton;
-    if (map['commands']) {
+    if (map['menu_button'] != null) {
+      menu_button = TdApiMap.fromMap(map['menu_button']) as BotMenuButton;
+    }
+    if (map['commands'] != null) {
       commands = [];
       for (var someValue in map['commands']) {
-        commands?.add(TdApiMap.fromMap(someValue) as BotCommand);
+        if (someValue != null) {
+          commands?.add(TdApiMap.fromMap(someValue) as BotCommand);
+        }
       }
     }
-    default_group_administrator_rights = TdApiMap.fromMap(map['default_group_administrator_rights']) as ChatAdministratorRights;
-    default_channel_administrator_rights = TdApiMap.fromMap(map['default_channel_administrator_rights']) as ChatAdministratorRights;
+    if (map['default_group_administrator_rights'] != null) {
+      default_group_administrator_rights = TdApiMap.fromMap(map['default_group_administrator_rights']) as ChatAdministratorRights;
+    }
+    if (map['default_channel_administrator_rights'] != null) {
+      default_channel_administrator_rights = TdApiMap.fromMap(map['default_channel_administrator_rights']) as ChatAdministratorRights;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

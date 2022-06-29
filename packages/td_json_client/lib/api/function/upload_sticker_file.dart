@@ -28,7 +28,9 @@ class UploadStickerFile extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     user_id = map['user_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as InputSticker;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as InputSticker;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

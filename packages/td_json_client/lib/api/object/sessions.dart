@@ -26,10 +26,12 @@ class Sessions extends TdObject {
   Sessions.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['sessions']) {
+    if (map['sessions'] != null) {
       sessions = [];
       for (var someValue in map['sessions']) {
-        sessions?.add(TdApiMap.fromMap(someValue) as Session);
+        if (someValue != null) {
+          sessions?.add(TdApiMap.fromMap(someValue) as Session);
+        }
       }
     }
     inactive_session_ttl_days = map['inactive_session_ttl_days'];

@@ -57,13 +57,17 @@ class SearchMessages extends TdFunction {
   SearchMessages.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
+    if (map['chat_list'] != null) {
+      chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
+    }
     query = map['query'];
     offset_date = map['offset_date'];
     offset_chat_id = map['offset_chat_id'];
     offset_message_id = map['offset_message_id'];
     limit = map['limit'];
-    filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    }
     min_date = map['min_date'];
     max_date = map['max_date'];
   }

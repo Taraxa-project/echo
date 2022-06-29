@@ -28,7 +28,9 @@ class AnswerWebAppQuery extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     web_app_query_id = map['web_app_query_id'];
-    result = TdApiMap.fromMap(map['result']) as InputInlineQueryResult;
+    if (map['result'] != null) {
+      result = TdApiMap.fromMap(map['result']) as InputInlineQueryResult;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

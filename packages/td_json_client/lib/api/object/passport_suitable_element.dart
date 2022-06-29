@@ -34,7 +34,9 @@ class PassportSuitableElement extends TdObject {
   PassportSuitableElement.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    type = TdApiMap.fromMap(map['type']) as PassportElementType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as PassportElementType;
+    }
     is_selfie_required = map['is_selfie_required'];
     is_translation_required = map['is_translation_required'];
     is_native_name_required = map['is_native_name_required'];

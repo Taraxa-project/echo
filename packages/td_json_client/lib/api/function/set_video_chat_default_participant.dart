@@ -28,7 +28,9 @@ class SetVideoChatDefaultParticipant extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    default_participant_id = TdApiMap.fromMap(map['default_participant_id']) as MessageSender;
+    if (map['default_participant_id'] != null) {
+      default_participant_id = TdApiMap.fromMap(map['default_participant_id']) as MessageSender;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

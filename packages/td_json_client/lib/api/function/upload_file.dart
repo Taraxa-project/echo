@@ -32,8 +32,12 @@ class UploadFile extends TdFunction {
   UploadFile.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    file = TdApiMap.fromMap(map['file']) as InputFile;
-    file_type = TdApiMap.fromMap(map['file_type']) as FileType;
+    if (map['file'] != null) {
+      file = TdApiMap.fromMap(map['file']) as InputFile;
+    }
+    if (map['file_type'] != null) {
+      file_type = TdApiMap.fromMap(map['file_type']) as FileType;
+    }
     priority = map['priority'];
   }
 

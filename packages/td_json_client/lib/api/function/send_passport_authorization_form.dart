@@ -28,10 +28,12 @@ class SendPassportAuthorizationForm extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     autorization_form_id = map['autorization_form_id'];
-    if (map['types']) {
+    if (map['types'] != null) {
       types = [];
       for (var someValue in map['types']) {
-        types?.add(TdApiMap.fromMap(someValue) as PassportElementType);
+        if (someValue != null) {
+          types?.add(TdApiMap.fromMap(someValue) as PassportElementType);
+        }
       }
     }
   }

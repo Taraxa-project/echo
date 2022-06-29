@@ -44,14 +44,24 @@ class InputIdentityDocument extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     number = map['number'];
-    expiry_date = TdApiMap.fromMap(map['expiry_date']) as Date;
-    front_side = TdApiMap.fromMap(map['front_side']) as InputFile;
-    reverse_side = TdApiMap.fromMap(map['reverse_side']) as InputFile;
-    selfie = TdApiMap.fromMap(map['selfie']) as InputFile;
-    if (map['translation']) {
+    if (map['expiry_date'] != null) {
+      expiry_date = TdApiMap.fromMap(map['expiry_date']) as Date;
+    }
+    if (map['front_side'] != null) {
+      front_side = TdApiMap.fromMap(map['front_side']) as InputFile;
+    }
+    if (map['reverse_side'] != null) {
+      reverse_side = TdApiMap.fromMap(map['reverse_side']) as InputFile;
+    }
+    if (map['selfie'] != null) {
+      selfie = TdApiMap.fromMap(map['selfie']) as InputFile;
+    }
+    if (map['translation'] != null) {
       translation = [];
       for (var someValue in map['translation']) {
-        translation?.add(TdApiMap.fromMap(someValue) as InputFile);
+        if (someValue != null) {
+          translation?.add(TdApiMap.fromMap(someValue) as InputFile);
+        }
       }
     }
   }

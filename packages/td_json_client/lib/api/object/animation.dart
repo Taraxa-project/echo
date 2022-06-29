@@ -62,9 +62,15 @@ class Animation extends TdObject {
     file_name = map['file_name'];
     mime_type = map['mime_type'];
     has_stickers = map['has_stickers'];
-    minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
-    animation = TdApiMap.fromMap(map['animation']) as File;
+    if (map['minithumbnail'] != null) {
+      minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
+    }
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

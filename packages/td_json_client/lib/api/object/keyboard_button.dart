@@ -27,7 +27,9 @@ class KeyboardButton extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     text = map['text'];
-    type = TdApiMap.fromMap(map['type']) as KeyboardButtonType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as KeyboardButtonType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

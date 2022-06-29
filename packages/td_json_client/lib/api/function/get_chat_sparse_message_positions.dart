@@ -37,7 +37,9 @@ class GetChatSparseMessagePositions extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    }
     from_message_id = map['from_message_id'];
     limit = map['limit'];
   }

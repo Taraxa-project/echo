@@ -31,9 +31,13 @@ class InputSticker extends TdObject {
   InputSticker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
+    }
     emojis = map['emojis'];
-    type = TdApiMap.fromMap(map['type']) as StickerType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as StickerType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

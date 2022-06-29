@@ -22,10 +22,12 @@ class Proxies extends TdObject {
   Proxies.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['proxies']) {
+    if (map['proxies'] != null) {
       proxies = [];
       for (var someValue in map['proxies']) {
-        proxies?.add(TdApiMap.fromMap(someValue) as Proxy);
+        if (someValue != null) {
+          proxies?.add(TdApiMap.fromMap(someValue) as Proxy);
+        }
       }
     }
   }

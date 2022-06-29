@@ -28,7 +28,9 @@ class SetCustomLanguagePackString extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     language_pack_id = map['language_pack_id'];
-    new_string = TdApiMap.fromMap(map['new_string']) as LanguagePackString;
+    if (map['new_string'] != null) {
+      new_string = TdApiMap.fromMap(map['new_string']) as LanguagePackString;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

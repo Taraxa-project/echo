@@ -73,28 +73,38 @@ class StickerSet extends TdObject {
     id = map['id'];
     title = map['title'];
     name = map['name'];
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
-    if (map['thumbnail_outline']) {
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
+    if (map['thumbnail_outline'] != null) {
       thumbnail_outline = [];
       for (var someValue in map['thumbnail_outline']) {
-        thumbnail_outline?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
+        if (someValue != null) {
+          thumbnail_outline?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
+        }
       }
     }
     is_installed = map['is_installed'];
     is_archived = map['is_archived'];
     is_official = map['is_official'];
-    sticker_type = TdApiMap.fromMap(map['sticker_type']) as StickerType;
+    if (map['sticker_type'] != null) {
+      sticker_type = TdApiMap.fromMap(map['sticker_type']) as StickerType;
+    }
     is_viewed = map['is_viewed'];
-    if (map['stickers']) {
+    if (map['stickers'] != null) {
       stickers = [];
       for (var someValue in map['stickers']) {
-        stickers?.add(TdApiMap.fromMap(someValue) as Sticker);
+        if (someValue != null) {
+          stickers?.add(TdApiMap.fromMap(someValue) as Sticker);
+        }
       }
     }
-    if (map['emojis']) {
+    if (map['emojis'] != null) {
       emojis = [];
       for (var someValue in map['emojis']) {
-        emojis?.add(TdApiMap.fromMap(someValue) as Emojis);
+        if (someValue != null) {
+          emojis?.add(TdApiMap.fromMap(someValue) as Emojis);
+        }
       }
     }
   }

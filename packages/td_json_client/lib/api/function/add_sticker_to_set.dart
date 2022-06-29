@@ -33,7 +33,9 @@ class AddStickerToSet extends TdFunction {
     client_id = map['@client_id'];
     user_id = map['user_id'];
     name = map['name'];
-    sticker = TdApiMap.fromMap(map['sticker']) as InputSticker;
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as InputSticker;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

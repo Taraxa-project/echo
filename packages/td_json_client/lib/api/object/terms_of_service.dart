@@ -30,7 +30,9 @@ class TermsOfService extends TdObject {
   TermsOfService.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as FormattedText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as FormattedText;
+    }
     min_user_age = map['min_user_age'];
     show_popup = map['show_popup'];
   }

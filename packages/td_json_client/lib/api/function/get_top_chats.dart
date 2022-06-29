@@ -27,7 +27,9 @@ class GetTopChats extends TdFunction {
   GetTopChats.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    category = TdApiMap.fromMap(map['category']) as TopChatCategory;
+    if (map['category'] != null) {
+      category = TdApiMap.fromMap(map['category']) as TopChatCategory;
+    }
     limit = map['limit'];
   }
 

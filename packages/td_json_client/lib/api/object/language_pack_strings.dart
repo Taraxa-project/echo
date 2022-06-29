@@ -22,10 +22,12 @@ class LanguagePackStrings extends TdObject {
   LanguagePackStrings.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['strings']) {
+    if (map['strings'] != null) {
       strings = [];
       for (var someValue in map['strings']) {
-        strings?.add(TdApiMap.fromMap(someValue) as LanguagePackString);
+        if (someValue != null) {
+          strings?.add(TdApiMap.fromMap(someValue) as LanguagePackString);
+        }
       }
     }
   }

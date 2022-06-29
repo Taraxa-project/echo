@@ -27,10 +27,12 @@ class MessageSenders extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['senders']) {
+    if (map['senders'] != null) {
       senders = [];
       for (var someValue in map['senders']) {
-        senders?.add(TdApiMap.fromMap(someValue) as MessageSender);
+        if (someValue != null) {
+          senders?.add(TdApiMap.fromMap(someValue) as MessageSender);
+        }
       }
     }
   }

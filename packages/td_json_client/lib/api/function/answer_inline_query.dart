@@ -49,10 +49,12 @@ class AnswerInlineQuery extends TdFunction {
     client_id = map['@client_id'];
     inline_query_id = map['inline_query_id'];
     is_personal = map['is_personal'];
-    if (map['results']) {
+    if (map['results'] != null) {
       results = [];
       for (var someValue in map['results']) {
-        results?.add(TdApiMap.fromMap(someValue) as InputInlineQueryResult);
+        if (someValue != null) {
+          results?.add(TdApiMap.fromMap(someValue) as InputInlineQueryResult);
+        }
       }
     }
     cache_time = map['cache_time'];

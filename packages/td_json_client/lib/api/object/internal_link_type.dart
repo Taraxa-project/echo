@@ -238,7 +238,9 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
     client_id = map['@client_id'];
     bot_username = map['bot_username'];
     start_parameter = map['start_parameter'];
-    administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
+    if (map['administrator_rights'] != null) {
+      administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -283,7 +285,9 @@ class InternalLinkTypeBotAddToChannel extends InternalLinkType {
     extra = map['@extra'];
     client_id = map['@client_id'];
     bot_username = map['bot_username'];
-    administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
+    if (map['administrator_rights'] != null) {
+      administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -564,7 +568,9 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
   InternalLinkTypeMessageDraft.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as FormattedText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as FormattedText;
+    }
     contains_link = map['contains_link'];
   }
 
@@ -744,7 +750,9 @@ class InternalLinkTypeProxy extends InternalLinkType {
     client_id = map['@client_id'];
     server = map['server'];
     port = map['port'];
-    type = TdApiMap.fromMap(map['type']) as ProxyType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ProxyType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

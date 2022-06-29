@@ -30,7 +30,9 @@ class InputThumbnail extends TdObject {
   InputThumbnail.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputFile;
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputFile;
+    }
     width = map['width'];
     height = map['height'];
   }

@@ -37,7 +37,9 @@ class ValidateOrderInfo extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_id = map['message_id'];
-    order_info = TdApiMap.fromMap(map['order_info']) as OrderInfo;
+    if (map['order_info'] != null) {
+      order_info = TdApiMap.fromMap(map['order_info']) as OrderInfo;
+    }
     allow_save = map['allow_save'];
   }
 

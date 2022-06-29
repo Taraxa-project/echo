@@ -43,17 +43,21 @@ class WebPageInstantView extends TdObject {
   WebPageInstantView.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['page_blocks']) {
+    if (map['page_blocks'] != null) {
       page_blocks = [];
       for (var someValue in map['page_blocks']) {
-        page_blocks?.add(TdApiMap.fromMap(someValue) as PageBlock);
+        if (someValue != null) {
+          page_blocks?.add(TdApiMap.fromMap(someValue) as PageBlock);
+        }
       }
     }
     view_count = map['view_count'];
     version = map['version'];
     is_rtl = map['is_rtl'];
     is_full = map['is_full'];
-    feedback_link = TdApiMap.fromMap(map['feedback_link']) as InternalLinkType;
+    if (map['feedback_link'] != null) {
+      feedback_link = TdApiMap.fromMap(map['feedback_link']) as InternalLinkType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

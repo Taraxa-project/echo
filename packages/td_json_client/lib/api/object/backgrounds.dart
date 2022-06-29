@@ -22,10 +22,12 @@ class Backgrounds extends TdObject {
   Backgrounds.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['backgrounds']) {
+    if (map['backgrounds'] != null) {
       backgrounds = [];
       for (var someValue in map['backgrounds']) {
-        backgrounds?.add(TdApiMap.fromMap(someValue) as Background);
+        if (someValue != null) {
+          backgrounds?.add(TdApiMap.fromMap(someValue) as Background);
+        }
       }
     }
   }

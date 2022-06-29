@@ -40,7 +40,9 @@ class BasicGroup extends TdObject {
     client_id = map['@client_id'];
     id = map['id'];
     member_count = map['member_count'];
-    status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
+    if (map['status'] != null) {
+      status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
+    }
     is_active = map['is_active'];
     upgraded_to_supergroup_id = map['upgraded_to_supergroup_id'];
   }

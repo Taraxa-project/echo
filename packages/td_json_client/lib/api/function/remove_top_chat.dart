@@ -27,7 +27,9 @@ class RemoveTopChat extends TdFunction {
   RemoveTopChat.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    category = TdApiMap.fromMap(map['category']) as TopChatCategory;
+    if (map['category'] != null) {
+      category = TdApiMap.fromMap(map['category']) as TopChatCategory;
+    }
     chat_id = map['chat_id'];
   }
 

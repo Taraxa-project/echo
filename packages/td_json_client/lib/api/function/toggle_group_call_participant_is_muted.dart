@@ -32,7 +32,9 @@ class ToggleGroupCallParticipantIsMuted extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     group_call_id = map['group_call_id'];
-    participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    if (map['participant_id'] != null) {
+      participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    }
     is_muted = map['is_muted'];
   }
 

@@ -36,7 +36,9 @@ class BanChatMember extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
+    if (map['member_id'] != null) {
+      member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
+    }
     banned_until_date = map['banned_until_date'];
     revoke_messages = map['revoke_messages'];
   }

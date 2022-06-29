@@ -27,10 +27,12 @@ class MessagePositions extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['positions']) {
+    if (map['positions'] != null) {
       positions = [];
       for (var someValue in map['positions']) {
-        positions?.add(TdApiMap.fromMap(someValue) as MessagePosition);
+        if (someValue != null) {
+          positions?.add(TdApiMap.fromMap(someValue) as MessagePosition);
+        }
       }
     }
   }

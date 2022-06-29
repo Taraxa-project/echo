@@ -57,15 +57,23 @@ class Sticker extends TdObject {
     width = map['width'];
     height = map['height'];
     emoji = map['emoji'];
-    type = TdApiMap.fromMap(map['type']) as StickerType;
-    if (map['outline']) {
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as StickerType;
+    }
+    if (map['outline'] != null) {
       outline = [];
       for (var someValue in map['outline']) {
-        outline?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
+        if (someValue != null) {
+          outline?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
+        }
       }
     }
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
-    sticker = TdApiMap.fromMap(map['sticker']) as File;
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
+    }
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

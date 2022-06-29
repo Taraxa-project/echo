@@ -28,7 +28,9 @@ class SetChatLocation extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    location = TdApiMap.fromMap(map['location']) as ChatLocation;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as ChatLocation;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

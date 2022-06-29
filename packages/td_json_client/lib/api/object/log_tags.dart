@@ -20,7 +20,7 @@ class LogTags extends TdObject {
   LogTags.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['tags']) {
+    if (map['tags'] != null) {
       tags = [];
       for (var someValue in map['tags']) {
         tags?.add(someValue);

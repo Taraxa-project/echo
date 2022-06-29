@@ -32,7 +32,9 @@ class CreateCall extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     user_id = map['user_id'];
-    protocol = TdApiMap.fromMap(map['protocol']) as CallProtocol;
+    if (map['protocol'] != null) {
+      protocol = TdApiMap.fromMap(map['protocol']) as CallProtocol;
+    }
     is_video = map['is_video'];
   }
 

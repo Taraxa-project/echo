@@ -60,12 +60,16 @@ class ChatInviteLinkInfo extends TdObject {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     accessible_for = map['accessible_for'];
-    type = TdApiMap.fromMap(map['type']) as ChatType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ChatType;
+    }
     title = map['title'];
-    photo = TdApiMap.fromMap(map['photo']) as ChatPhotoInfo;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as ChatPhotoInfo;
+    }
     description = map['description'];
     member_count = map['member_count'];
-    if (map['member_user_ids']) {
+    if (map['member_user_ids'] != null) {
       member_user_ids = [];
       for (var someValue in map['member_user_ids']) {
         member_user_ids?.add(someValue);

@@ -66,13 +66,21 @@ class PaymentReceipt extends TdObject {
     client_id = map['@client_id'];
     title = map['title'];
     description = map['description'];
-    photo = TdApiMap.fromMap(map['photo']) as Photo;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as Photo;
+    }
     date = map['date'];
     seller_bot_user_id = map['seller_bot_user_id'];
     payments_provider_user_id = map['payments_provider_user_id'];
-    invoice = TdApiMap.fromMap(map['invoice']) as Invoice;
-    order_info = TdApiMap.fromMap(map['order_info']) as OrderInfo;
-    shipping_option = TdApiMap.fromMap(map['shipping_option']) as ShippingOption;
+    if (map['invoice'] != null) {
+      invoice = TdApiMap.fromMap(map['invoice']) as Invoice;
+    }
+    if (map['order_info'] != null) {
+      order_info = TdApiMap.fromMap(map['order_info']) as OrderInfo;
+    }
+    if (map['shipping_option'] != null) {
+      shipping_option = TdApiMap.fromMap(map['shipping_option']) as ShippingOption;
+    }
     credentials_title = map['credentials_title'];
     tip_amount = map['tip_amount'];
   }

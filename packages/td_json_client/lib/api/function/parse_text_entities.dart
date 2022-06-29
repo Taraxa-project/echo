@@ -28,7 +28,9 @@ class ParseTextEntities extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     text = map['text'];
-    parse_mode = TdApiMap.fromMap(map['parse_mode']) as TextParseMode;
+    if (map['parse_mode'] != null) {
+      parse_mode = TdApiMap.fromMap(map['parse_mode']) as TextParseMode;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

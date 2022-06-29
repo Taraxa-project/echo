@@ -22,10 +22,12 @@ class TMeUrls extends TdObject {
   TMeUrls.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['urls']) {
+    if (map['urls'] != null) {
       urls = [];
       for (var someValue in map['urls']) {
-        urls?.add(TdApiMap.fromMap(someValue) as TMeUrl);
+        if (someValue != null) {
+          urls?.add(TdApiMap.fromMap(someValue) as TMeUrl);
+        }
       }
     }
   }

@@ -31,7 +31,7 @@ class SearchEmojis extends TdFunction {
     client_id = map['@client_id'];
     text = map['text'];
     exact_match = map['exact_match'];
-    if (map['input_language_codes']) {
+    if (map['input_language_codes'] != null) {
       input_language_codes = [];
       for (var someValue in map['input_language_codes']) {
         input_language_codes?.add(someValue);

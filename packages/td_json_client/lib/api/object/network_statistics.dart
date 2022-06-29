@@ -27,10 +27,12 @@ class NetworkStatistics extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     since_date = map['since_date'];
-    if (map['entries']) {
+    if (map['entries'] != null) {
       entries = [];
       for (var someValue in map['entries']) {
-        entries?.add(TdApiMap.fromMap(someValue) as NetworkStatisticsEntry);
+        if (someValue != null) {
+          entries?.add(TdApiMap.fromMap(someValue) as NetworkStatisticsEntry);
+        }
       }
     }
   }

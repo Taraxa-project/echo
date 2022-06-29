@@ -35,10 +35,14 @@ class ChatPosition extends TdObject {
   ChatPosition.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    list = TdApiMap.fromMap(map['list']) as ChatList;
+    if (map['list'] != null) {
+      list = TdApiMap.fromMap(map['list']) as ChatList;
+    }
     order = map['order'];
     is_pinned = map['is_pinned'];
-    source = TdApiMap.fromMap(map['source']) as ChatSource;
+    if (map['source'] != null) {
+      source = TdApiMap.fromMap(map['source']) as ChatSource;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

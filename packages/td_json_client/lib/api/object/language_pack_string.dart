@@ -27,7 +27,9 @@ class LanguagePackString extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     key = map['key'];
-    value = TdApiMap.fromMap(map['value']) as LanguagePackStringValue;
+    if (map['value'] != null) {
+      value = TdApiMap.fromMap(map['value']) as LanguagePackStringValue;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

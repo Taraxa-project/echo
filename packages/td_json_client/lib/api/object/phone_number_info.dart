@@ -30,7 +30,9 @@ class PhoneNumberInfo extends TdObject {
   PhoneNumberInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    country = TdApiMap.fromMap(map['country']) as CountryInfo;
+    if (map['country'] != null) {
+      country = TdApiMap.fromMap(map['country']) as CountryInfo;
+    }
     country_calling_code = map['country_calling_code'];
     formatted_phone_number = map['formatted_phone_number'];
   }

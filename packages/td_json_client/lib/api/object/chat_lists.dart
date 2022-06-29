@@ -22,10 +22,12 @@ class ChatLists extends TdObject {
   ChatLists.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['chat_lists']) {
+    if (map['chat_lists'] != null) {
       chat_lists = [];
       for (var someValue in map['chat_lists']) {
-        chat_lists?.add(TdApiMap.fromMap(someValue) as ChatList);
+        if (someValue != null) {
+          chat_lists?.add(TdApiMap.fromMap(someValue) as ChatList);
+        }
       }
     }
   }

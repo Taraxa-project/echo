@@ -33,7 +33,9 @@ class StopPoll extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_id = map['message_id'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

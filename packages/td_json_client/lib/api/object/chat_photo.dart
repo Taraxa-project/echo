@@ -42,14 +42,20 @@ class ChatPhoto extends TdObject {
     client_id = map['@client_id'];
     id = map['id'];
     added_date = map['added_date'];
-    minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
-    if (map['sizes']) {
+    if (map['minithumbnail'] != null) {
+      minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
+    }
+    if (map['sizes'] != null) {
       sizes = [];
       for (var someValue in map['sizes']) {
-        sizes?.add(TdApiMap.fromMap(someValue) as PhotoSize);
+        if (someValue != null) {
+          sizes?.add(TdApiMap.fromMap(someValue) as PhotoSize);
+        }
       }
     }
-    animation = TdApiMap.fromMap(map['animation']) as AnimatedChatPhoto;
+    if (map['animation'] != null) {
+      animation = TdApiMap.fromMap(map['animation']) as AnimatedChatPhoto;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -26,7 +26,7 @@ class InviteGroupCallParticipants extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     group_call_id = map['group_call_id'];
-    if (map['user_ids']) {
+    if (map['user_ids'] != null) {
       user_ids = [];
       for (var someValue in map['user_ids']) {
         user_ids?.add(someValue);

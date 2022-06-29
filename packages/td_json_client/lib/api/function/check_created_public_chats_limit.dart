@@ -23,7 +23,9 @@ class CheckCreatedPublicChatsLimit extends TdFunction {
   CheckCreatedPublicChatsLimit.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    type = TdApiMap.fromMap(map['type']) as PublicChatType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as PublicChatType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -122,7 +122,9 @@ class AuthorizationStateWaitCode extends AuthorizationState {
   AuthorizationStateWaitCode.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    code_info = TdApiMap.fromMap(map['code_info']) as AuthenticationCodeInfo;
+    if (map['code_info'] != null) {
+      code_info = TdApiMap.fromMap(map['code_info']) as AuthenticationCodeInfo;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -194,7 +196,9 @@ class AuthorizationStateWaitRegistration extends AuthorizationState {
   AuthorizationStateWaitRegistration.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    terms_of_service = TdApiMap.fromMap(map['terms_of_service']) as TermsOfService;
+    if (map['terms_of_service'] != null) {
+      terms_of_service = TdApiMap.fromMap(map['terms_of_service']) as TermsOfService;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

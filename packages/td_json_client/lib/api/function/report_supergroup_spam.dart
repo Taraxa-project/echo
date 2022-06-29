@@ -26,7 +26,7 @@ class ReportSupergroupSpam extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     supergroup_id = map['supergroup_id'];
-    if (map['message_ids']) {
+    if (map['message_ids'] != null) {
       message_ids = [];
       for (var someValue in map['message_ids']) {
         message_ids?.add(someValue);

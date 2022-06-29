@@ -41,10 +41,14 @@ class AddLocalMessage extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    if (map['sender_id'] != null) {
+      sender_id = TdApiMap.fromMap(map['sender_id']) as MessageSender;
+    }
     reply_to_message_id = map['reply_to_message_id'];
     disable_notification = map['disable_notification'];
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

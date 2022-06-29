@@ -41,7 +41,9 @@ class CreateNewSupergroupChat extends TdFunction {
     title = map['title'];
     is_channel = map['is_channel'];
     description = map['description'];
-    location = TdApiMap.fromMap(map['location']) as ChatLocation;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as ChatLocation;
+    }
     for_import = map['for_import'];
   }
 

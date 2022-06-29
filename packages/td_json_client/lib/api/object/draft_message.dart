@@ -32,7 +32,9 @@ class DraftMessage extends TdObject {
     client_id = map['@client_id'];
     reply_to_message_id = map['reply_to_message_id'];
     date = map['date'];
-    input_message_text = TdApiMap.fromMap(map['input_message_text']) as InputMessageContent;
+    if (map['input_message_text'] != null) {
+      input_message_text = TdApiMap.fromMap(map['input_message_text']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

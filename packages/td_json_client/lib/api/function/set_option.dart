@@ -28,7 +28,9 @@ class SetOption extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     name = map['name'];
-    value = TdApiMap.fromMap(map['value']) as OptionValue;
+    if (map['value'] != null) {
+      value = TdApiMap.fromMap(map['value']) as OptionValue;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -84,7 +84,9 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
     client_id = map['@client_id'];
     custom_title = map['custom_title'];
     can_be_edited = map['can_be_edited'];
-    rights = TdApiMap.fromMap(map['rights']) as ChatAdministratorRights;
+    if (map['rights'] != null) {
+      rights = TdApiMap.fromMap(map['rights']) as ChatAdministratorRights;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -162,7 +164,9 @@ class ChatMemberStatusRestricted extends ChatMemberStatus {
     client_id = map['@client_id'];
     is_member = map['is_member'];
     restricted_until_date = map['restricted_until_date'];
-    permissions = TdApiMap.fromMap(map['permissions']) as ChatPermissions;
+    if (map['permissions'] != null) {
+      permissions = TdApiMap.fromMap(map['permissions']) as ChatPermissions;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

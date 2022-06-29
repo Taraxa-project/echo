@@ -33,7 +33,9 @@ class GetPaymentForm extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_id = map['message_id'];
-    theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
+    if (map['theme'] != null) {
+      theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

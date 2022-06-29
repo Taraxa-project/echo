@@ -33,7 +33,9 @@ class EditMessageSchedulingState extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_id = map['message_id'];
-    scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
+    if (map['scheduling_state'] != null) {
+      scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

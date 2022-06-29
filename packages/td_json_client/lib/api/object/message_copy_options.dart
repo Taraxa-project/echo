@@ -32,7 +32,9 @@ class MessageCopyOptions extends TdObject {
     client_id = map['@client_id'];
     send_copy = map['send_copy'];
     replace_caption = map['replace_caption'];
-    new_caption = TdApiMap.fromMap(map['new_caption']) as FormattedText;
+    if (map['new_caption'] != null) {
+      new_caption = TdApiMap.fromMap(map['new_caption']) as FormattedText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

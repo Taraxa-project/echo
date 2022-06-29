@@ -120,12 +120,14 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
   ReplyMarkupShowKeyboard.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['rows']) {
+    if (map['rows'] != null) {
       rows = [];
       for (var someValues in map['rows']) {
         var objs = <KeyboardButton>[];
         for (var someValue in someValues) {
-          objs.add(TdApiMap.fromMap(someValue) as KeyboardButton);
+          if (someValue != null) {
+            objs.add(TdApiMap.fromMap(someValue) as KeyboardButton);
+          }
         }
         rows?.add(objs);
       }
@@ -173,12 +175,14 @@ class ReplyMarkupInlineKeyboard extends ReplyMarkup {
   ReplyMarkupInlineKeyboard.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['rows']) {
+    if (map['rows'] != null) {
       rows = [];
       for (var someValues in map['rows']) {
         var objs = <InlineKeyboardButton>[];
         for (var someValue in someValues) {
-          objs.add(TdApiMap.fromMap(someValue) as InlineKeyboardButton);
+          if (someValue != null) {
+            objs.add(TdApiMap.fromMap(someValue) as InlineKeyboardButton);
+          }
         }
         rows?.add(objs);
       }

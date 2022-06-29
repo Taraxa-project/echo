@@ -37,11 +37,15 @@ class MessageInteractionInfo extends TdObject {
     client_id = map['@client_id'];
     view_count = map['view_count'];
     forward_count = map['forward_count'];
-    reply_info = TdApiMap.fromMap(map['reply_info']) as MessageReplyInfo;
-    if (map['reactions']) {
+    if (map['reply_info'] != null) {
+      reply_info = TdApiMap.fromMap(map['reply_info']) as MessageReplyInfo;
+    }
+    if (map['reactions'] != null) {
       reactions = [];
       for (var someValue in map['reactions']) {
-        reactions?.add(TdApiMap.fromMap(someValue) as MessageReaction);
+        if (someValue != null) {
+          reactions?.add(TdApiMap.fromMap(someValue) as MessageReaction);
+        }
       }
     }
   }

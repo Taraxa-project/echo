@@ -42,8 +42,12 @@ class File extends TdObject {
     id = map['id'];
     size = map['size'];
     expected_size = map['expected_size'];
-    local = TdApiMap.fromMap(map['local']) as LocalFile;
-    remote = TdApiMap.fromMap(map['remote']) as RemoteFile;
+    if (map['local'] != null) {
+      local = TdApiMap.fromMap(map['local']) as LocalFile;
+    }
+    if (map['remote'] != null) {
+      remote = TdApiMap.fromMap(map['remote']) as RemoteFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

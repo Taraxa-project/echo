@@ -44,7 +44,9 @@ class MessageLinkInfo extends TdObject {
     client_id = map['@client_id'];
     is_public = map['is_public'];
     chat_id = map['chat_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
     media_timestamp = map['media_timestamp'];
     for_album = map['for_album'];
     for_comment = map['for_comment'];

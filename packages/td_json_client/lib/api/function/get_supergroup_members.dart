@@ -36,7 +36,9 @@ class GetSupergroupMembers extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     supergroup_id = map['supergroup_id'];
-    filter = TdApiMap.fromMap(map['filter']) as SupergroupMembersFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as SupergroupMembersFilter;
+    }
     offset = map['offset'];
     limit = map['limit'];
   }

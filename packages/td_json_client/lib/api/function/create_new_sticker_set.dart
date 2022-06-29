@@ -42,10 +42,12 @@ class CreateNewStickerSet extends TdFunction {
     user_id = map['user_id'];
     title = map['title'];
     name = map['name'];
-    if (map['stickers']) {
+    if (map['stickers'] != null) {
       stickers = [];
       for (var someValue in map['stickers']) {
-        stickers?.add(TdApiMap.fromMap(someValue) as InputSticker);
+        if (someValue != null) {
+          stickers?.add(TdApiMap.fromMap(someValue) as InputSticker);
+        }
       }
     }
     source = map['source'];

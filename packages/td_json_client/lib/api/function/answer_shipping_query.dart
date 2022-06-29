@@ -32,10 +32,12 @@ class AnswerShippingQuery extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     shipping_query_id = map['shipping_query_id'];
-    if (map['shipping_options']) {
+    if (map['shipping_options'] != null) {
       shipping_options = [];
       for (var someValue in map['shipping_options']) {
-        shipping_options?.add(TdApiMap.fromMap(someValue) as ShippingOption);
+        if (someValue != null) {
+          shipping_options?.add(TdApiMap.fromMap(someValue) as ShippingOption);
+        }
       }
     }
     error_message = map['error_message'];

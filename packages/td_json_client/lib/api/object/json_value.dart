@@ -163,7 +163,7 @@ class JsonValueArray extends JsonValue {
   JsonValueArray.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['values']) {
+    if (map['values'] != null) {
       values = [];
       for (var someValue in map['values']) {
         values?.add(someValue);
@@ -204,10 +204,12 @@ class JsonValueObject extends JsonValue {
   JsonValueObject.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['members']) {
+    if (map['members'] != null) {
       members = [];
       for (var someValue in map['members']) {
-        members?.add(TdApiMap.fromMap(someValue) as JsonObjectMember);
+        if (someValue != null) {
+          members?.add(TdApiMap.fromMap(someValue) as JsonObjectMember);
+        }
       }
     }
   }

@@ -78,8 +78,12 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
     video_duration = map['video_duration'];
     video_width = map['video_width'];
     video_height = map['video_height'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -168,8 +172,12 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
     thumbnail_url = map['thumbnail_url'];
     thumbnail_width = map['thumbnail_width'];
     thumbnail_height = map['thumbnail_height'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -243,8 +251,12 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
     performer = map['performer'];
     audio_url = map['audio_url'];
     audio_duration = map['audio_duration'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -311,12 +323,18 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    contact = TdApiMap.fromMap(map['contact']) as Contact;
+    if (map['contact'] != null) {
+      contact = TdApiMap.fromMap(map['contact']) as Contact;
+    }
     thumbnail_url = map['thumbnail_url'];
     thumbnail_width = map['thumbnail_width'];
     thumbnail_height = map['thumbnail_height'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -401,8 +419,12 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
     thumbnail_url = map['thumbnail_url'];
     thumbnail_width = map['thumbnail_width'];
     thumbnail_height = map['thumbnail_height'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -457,7 +479,9 @@ class InputInlineQueryResultGame extends InputInlineQueryResult {
     client_id = map['@client_id'];
     id = map['id'];
     game_short_name = map['game_short_name'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -528,14 +552,20 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    location = TdApiMap.fromMap(map['location']) as Location;
+    if (map['location'] != null) {
+      location = TdApiMap.fromMap(map['location']) as Location;
+    }
     live_period = map['live_period'];
     title = map['title'];
     thumbnail_url = map['thumbnail_url'];
     thumbnail_width = map['thumbnail_width'];
     thumbnail_height = map['thumbnail_height'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -617,8 +647,12 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
     photo_url = map['photo_url'];
     photo_width = map['photo_width'];
     photo_height = map['photo_height'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -691,8 +725,12 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
     sticker_url = map['sticker_url'];
     sticker_width = map['sticker_width'];
     sticker_height = map['sticker_height'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -759,12 +797,18 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
     extra = map['@extra'];
     client_id = map['@client_id'];
     id = map['id'];
-    venue = TdApiMap.fromMap(map['venue']) as Venue;
+    if (map['venue'] != null) {
+      venue = TdApiMap.fromMap(map['venue']) as Venue;
+    }
     thumbnail_url = map['thumbnail_url'];
     thumbnail_width = map['thumbnail_width'];
     thumbnail_height = map['thumbnail_height'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -854,8 +898,12 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
     video_width = map['video_width'];
     video_height = map['video_height'];
     video_duration = map['video_duration'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -925,8 +973,12 @@ class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
     title = map['title'];
     voice_note_url = map['voice_note_url'];
     voice_note_duration = map['voice_note_duration'];
-    reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
-    input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    if (map['reply_markup'] != null) {
+      reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
+    }
+    if (map['input_message_content'] != null) {
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

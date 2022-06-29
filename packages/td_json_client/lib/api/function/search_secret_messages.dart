@@ -43,7 +43,9 @@ class SearchSecretMessages extends TdFunction {
     query = map['query'];
     offset = map['offset'];
     limit = map['limit'];
-    filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    if (map['filter'] != null) {
+      filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

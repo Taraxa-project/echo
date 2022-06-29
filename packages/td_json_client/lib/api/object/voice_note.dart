@@ -37,7 +37,9 @@ class VoiceNote extends TdObject {
     duration = map['duration'];
     waveform = map['waveform'];
     mime_type = map['mime_type'];
-    voice = TdApiMap.fromMap(map['voice']) as File;
+    if (map['voice'] != null) {
+      voice = TdApiMap.fromMap(map['voice']) as File;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

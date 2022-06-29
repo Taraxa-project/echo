@@ -115,7 +115,9 @@ class StickerTypeMask extends StickerType {
   StickerTypeMask.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    mask_position = TdApiMap.fromMap(map['mask_position']) as MaskPosition;
+    if (map['mask_position'] != null) {
+      mask_position = TdApiMap.fromMap(map['mask_position']) as MaskPosition;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

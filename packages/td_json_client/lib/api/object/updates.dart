@@ -22,10 +22,12 @@ class Updates extends TdObject {
   Updates.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['updates']) {
+    if (map['updates'] != null) {
       updates = [];
       for (var someValue in map['updates']) {
-        updates?.add(TdApiMap.fromMap(someValue) as Update);
+        if (someValue != null) {
+          updates?.add(TdApiMap.fromMap(someValue) as Update);
+        }
       }
     }
   }

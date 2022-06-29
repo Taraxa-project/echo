@@ -44,20 +44,28 @@ class BasicGroupFullInfo extends TdObject {
   BasicGroupFullInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    }
     description = map['description'];
     creator_user_id = map['creator_user_id'];
-    if (map['members']) {
+    if (map['members'] != null) {
       members = [];
       for (var someValue in map['members']) {
-        members?.add(TdApiMap.fromMap(someValue) as ChatMember);
+        if (someValue != null) {
+          members?.add(TdApiMap.fromMap(someValue) as ChatMember);
+        }
       }
     }
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
-    if (map['bot_commands']) {
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
+    if (map['bot_commands'] != null) {
       bot_commands = [];
       for (var someValue in map['bot_commands']) {
-        bot_commands?.add(TdApiMap.fromMap(someValue) as BotCommands);
+        if (someValue != null) {
+          bot_commands?.add(TdApiMap.fromMap(someValue) as BotCommands);
+        }
       }
     }
   }

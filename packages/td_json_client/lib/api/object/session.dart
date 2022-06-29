@@ -95,7 +95,9 @@ class Session extends TdObject {
     is_password_pending = map['is_password_pending'];
     can_accept_secret_chats = map['can_accept_secret_chats'];
     can_accept_calls = map['can_accept_calls'];
-    type = TdApiMap.fromMap(map['type']) as SessionType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as SessionType;
+    }
     api_id = map['api_id'];
     application_name = map['application_name'];
     application_version = map['application_version'];

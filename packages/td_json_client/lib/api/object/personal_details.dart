@@ -64,7 +64,9 @@ class PersonalDetails extends TdObject {
     native_first_name = map['native_first_name'];
     native_middle_name = map['native_middle_name'];
     native_last_name = map['native_last_name'];
-    birthdate = TdApiMap.fromMap(map['birthdate']) as Date;
+    if (map['birthdate'] != null) {
+      birthdate = TdApiMap.fromMap(map['birthdate']) as Date;
+    }
     gender = map['gender'];
     country_code = map['country_code'];
     residence_country_code = map['residence_country_code'];

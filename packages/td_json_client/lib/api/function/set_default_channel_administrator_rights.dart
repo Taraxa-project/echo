@@ -23,7 +23,9 @@ class SetDefaultChannelAdministratorRights extends TdFunction {
   SetDefaultChannelAdministratorRights.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    default_channel_administrator_rights = TdApiMap.fromMap(map['default_channel_administrator_rights']) as ChatAdministratorRights;
+    if (map['default_channel_administrator_rights'] != null) {
+      default_channel_administrator_rights = TdApiMap.fromMap(map['default_channel_administrator_rights']) as ChatAdministratorRights;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

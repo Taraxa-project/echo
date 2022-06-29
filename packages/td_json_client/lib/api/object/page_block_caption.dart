@@ -26,8 +26,12 @@ class PageBlockCaption extends TdObject {
   PageBlockCaption.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as RichText;
-    credit = TdApiMap.fromMap(map['credit']) as RichText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as RichText;
+    }
+    if (map['credit'] != null) {
+      credit = TdApiMap.fromMap(map['credit']) as RichText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

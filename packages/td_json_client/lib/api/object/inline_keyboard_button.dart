@@ -27,7 +27,9 @@ class InlineKeyboardButton extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     text = map['text'];
-    type = TdApiMap.fromMap(map['type']) as InlineKeyboardButtonType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as InlineKeyboardButtonType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

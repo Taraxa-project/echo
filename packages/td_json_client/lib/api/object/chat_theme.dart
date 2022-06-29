@@ -31,8 +31,12 @@ class ChatTheme extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     name = map['name'];
-    light_settings = TdApiMap.fromMap(map['light_settings']) as ThemeSettings;
-    dark_settings = TdApiMap.fromMap(map['dark_settings']) as ThemeSettings;
+    if (map['light_settings'] != null) {
+      light_settings = TdApiMap.fromMap(map['light_settings']) as ThemeSettings;
+    }
+    if (map['dark_settings'] != null) {
+      dark_settings = TdApiMap.fromMap(map['dark_settings']) as ThemeSettings;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

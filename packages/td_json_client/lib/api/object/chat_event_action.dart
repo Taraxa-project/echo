@@ -35,8 +35,12 @@ class ChatEventMessageEdited extends ChatEventAction {
   ChatEventMessageEdited.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    old_message = TdApiMap.fromMap(map['old_message']) as Message;
-    new_message = TdApiMap.fromMap(map['new_message']) as Message;
+    if (map['old_message'] != null) {
+      old_message = TdApiMap.fromMap(map['old_message']) as Message;
+    }
+    if (map['new_message'] != null) {
+      new_message = TdApiMap.fromMap(map['new_message']) as Message;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -73,7 +77,9 @@ class ChatEventMessageDeleted extends ChatEventAction {
   ChatEventMessageDeleted.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -109,7 +115,9 @@ class ChatEventMessagePinned extends ChatEventAction {
   ChatEventMessagePinned.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -145,7 +153,9 @@ class ChatEventMessageUnpinned extends ChatEventAction {
   ChatEventMessageUnpinned.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -181,7 +191,9 @@ class ChatEventPollStopped extends ChatEventAction {
   ChatEventPollStopped.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    message = TdApiMap.fromMap(map['message']) as Message;
+    if (map['message'] != null) {
+      message = TdApiMap.fromMap(map['message']) as Message;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -247,7 +259,9 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
   ChatEventMemberJoinedByInviteLink.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -288,7 +302,9 @@ class ChatEventMemberJoinedByRequest extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     approver_user_id = map['approver_user_id'];
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -330,7 +346,9 @@ class ChatEventMemberInvited extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     user_id = map['user_id'];
-    status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
+    if (map['status'] != null) {
+      status = TdApiMap.fromMap(map['status']) as ChatMemberStatus;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -406,8 +424,12 @@ class ChatEventMemberPromoted extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     user_id = map['user_id'];
-    old_status = TdApiMap.fromMap(map['old_status']) as ChatMemberStatus;
-    new_status = TdApiMap.fromMap(map['new_status']) as ChatMemberStatus;
+    if (map['old_status'] != null) {
+      old_status = TdApiMap.fromMap(map['old_status']) as ChatMemberStatus;
+    }
+    if (map['new_status'] != null) {
+      new_status = TdApiMap.fromMap(map['new_status']) as ChatMemberStatus;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -453,9 +475,15 @@ class ChatEventMemberRestricted extends ChatEventAction {
   ChatEventMemberRestricted.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
-    old_status = TdApiMap.fromMap(map['old_status']) as ChatMemberStatus;
-    new_status = TdApiMap.fromMap(map['new_status']) as ChatMemberStatus;
+    if (map['member_id'] != null) {
+      member_id = TdApiMap.fromMap(map['member_id']) as MessageSender;
+    }
+    if (map['old_status'] != null) {
+      old_status = TdApiMap.fromMap(map['old_status']) as ChatMemberStatus;
+    }
+    if (map['new_status'] != null) {
+      new_status = TdApiMap.fromMap(map['new_status']) as ChatMemberStatus;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -497,13 +525,13 @@ class ChatEventAvailableReactionsChanged extends ChatEventAction {
   ChatEventAvailableReactionsChanged.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['old_available_reactions']) {
+    if (map['old_available_reactions'] != null) {
       old_available_reactions = [];
       for (var someValue in map['old_available_reactions']) {
         old_available_reactions?.add(someValue);
       }
     }
-    if (map['new_available_reactions']) {
+    if (map['new_available_reactions'] != null) {
       new_available_reactions = [];
       for (var someValue in map['new_available_reactions']) {
         new_available_reactions?.add(someValue);
@@ -633,8 +661,12 @@ class ChatEventLocationChanged extends ChatEventAction {
   ChatEventLocationChanged.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    old_location = TdApiMap.fromMap(map['old_location']) as ChatLocation;
-    new_location = TdApiMap.fromMap(map['new_location']) as ChatLocation;
+    if (map['old_location'] != null) {
+      old_location = TdApiMap.fromMap(map['old_location']) as ChatLocation;
+    }
+    if (map['new_location'] != null) {
+      new_location = TdApiMap.fromMap(map['new_location']) as ChatLocation;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -717,8 +749,12 @@ class ChatEventPermissionsChanged extends ChatEventAction {
   ChatEventPermissionsChanged.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    old_permissions = TdApiMap.fromMap(map['old_permissions']) as ChatPermissions;
-    new_permissions = TdApiMap.fromMap(map['new_permissions']) as ChatPermissions;
+    if (map['old_permissions'] != null) {
+      old_permissions = TdApiMap.fromMap(map['old_permissions']) as ChatPermissions;
+    }
+    if (map['new_permissions'] != null) {
+      new_permissions = TdApiMap.fromMap(map['new_permissions']) as ChatPermissions;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -759,8 +795,12 @@ class ChatEventPhotoChanged extends ChatEventAction {
   ChatEventPhotoChanged.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    old_photo = TdApiMap.fromMap(map['old_photo']) as ChatPhoto;
-    new_photo = TdApiMap.fromMap(map['new_photo']) as ChatPhoto;
+    if (map['old_photo'] != null) {
+      old_photo = TdApiMap.fromMap(map['old_photo']) as ChatPhoto;
+    }
+    if (map['new_photo'] != null) {
+      new_photo = TdApiMap.fromMap(map['new_photo']) as ChatPhoto;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1113,8 +1153,12 @@ class ChatEventInviteLinkEdited extends ChatEventAction {
   ChatEventInviteLinkEdited.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    old_invite_link = TdApiMap.fromMap(map['old_invite_link']) as ChatInviteLink;
-    new_invite_link = TdApiMap.fromMap(map['new_invite_link']) as ChatInviteLink;
+    if (map['old_invite_link'] != null) {
+      old_invite_link = TdApiMap.fromMap(map['old_invite_link']) as ChatInviteLink;
+    }
+    if (map['new_invite_link'] != null) {
+      new_invite_link = TdApiMap.fromMap(map['new_invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1151,7 +1195,9 @@ class ChatEventInviteLinkRevoked extends ChatEventAction {
   ChatEventInviteLinkRevoked.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1187,7 +1233,9 @@ class ChatEventInviteLinkDeleted extends ChatEventAction {
   ChatEventInviteLinkDeleted.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    if (map['invite_link'] != null) {
+      invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1335,7 +1383,9 @@ class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
   ChatEventVideoChatParticipantIsMutedToggled.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    if (map['participant_id'] != null) {
+      participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    }
     is_muted = map['is_muted'];
   }
 
@@ -1377,7 +1427,9 @@ class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
   ChatEventVideoChatParticipantVolumeLevelChanged.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    if (map['participant_id'] != null) {
+      participant_id = TdApiMap.fromMap(map['participant_id']) as MessageSender;
+    }
     volume_level = map['volume_level'];
   }
 

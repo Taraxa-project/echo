@@ -79,7 +79,9 @@ class BackgroundTypePattern extends BackgroundType {
   BackgroundTypePattern.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    fill = TdApiMap.fromMap(map['fill']) as BackgroundFill;
+    if (map['fill'] != null) {
+      fill = TdApiMap.fromMap(map['fill']) as BackgroundFill;
+    }
     intensity = map['intensity'];
     is_inverted = map['is_inverted'];
     is_moving = map['is_moving'];
@@ -121,7 +123,9 @@ class BackgroundTypeFill extends BackgroundType {
   BackgroundTypeFill.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    fill = TdApiMap.fromMap(map['fill']) as BackgroundFill;
+    if (map['fill'] != null) {
+      fill = TdApiMap.fromMap(map['fill']) as BackgroundFill;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

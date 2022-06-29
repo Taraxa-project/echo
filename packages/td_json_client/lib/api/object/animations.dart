@@ -22,10 +22,12 @@ class Animations extends TdObject {
   Animations.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['animations']) {
+    if (map['animations'] != null) {
       animations = [];
       for (var someValue in map['animations']) {
-        animations?.add(TdApiMap.fromMap(someValue) as Animation);
+        if (someValue != null) {
+          animations?.add(TdApiMap.fromMap(someValue) as Animation);
+        }
       }
     }
   }

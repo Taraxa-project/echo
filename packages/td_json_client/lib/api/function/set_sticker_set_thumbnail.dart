@@ -33,7 +33,9 @@ class SetStickerSetThumbnail extends TdFunction {
     client_id = map['@client_id'];
     user_id = map['user_id'];
     name = map['name'];
-    thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputFile;
+    if (map['thumbnail'] != null) {
+      thumbnail = TdApiMap.fromMap(map['thumbnail']) as InputFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

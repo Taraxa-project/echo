@@ -91,35 +91,67 @@ class ChatStatisticsSupergroup extends ChatStatistics {
   ChatStatisticsSupergroup.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    period = TdApiMap.fromMap(map['period']) as DateRange;
-    member_count = TdApiMap.fromMap(map['member_count']) as StatisticalValue;
-    message_count = TdApiMap.fromMap(map['message_count']) as StatisticalValue;
-    viewer_count = TdApiMap.fromMap(map['viewer_count']) as StatisticalValue;
-    sender_count = TdApiMap.fromMap(map['sender_count']) as StatisticalValue;
-    member_count_graph = TdApiMap.fromMap(map['member_count_graph']) as StatisticalGraph;
-    join_graph = TdApiMap.fromMap(map['join_graph']) as StatisticalGraph;
-    join_by_source_graph = TdApiMap.fromMap(map['join_by_source_graph']) as StatisticalGraph;
-    language_graph = TdApiMap.fromMap(map['language_graph']) as StatisticalGraph;
-    message_content_graph = TdApiMap.fromMap(map['message_content_graph']) as StatisticalGraph;
-    action_graph = TdApiMap.fromMap(map['action_graph']) as StatisticalGraph;
-    day_graph = TdApiMap.fromMap(map['day_graph']) as StatisticalGraph;
-    week_graph = TdApiMap.fromMap(map['week_graph']) as StatisticalGraph;
-    if (map['top_senders']) {
+    if (map['period'] != null) {
+      period = TdApiMap.fromMap(map['period']) as DateRange;
+    }
+    if (map['member_count'] != null) {
+      member_count = TdApiMap.fromMap(map['member_count']) as StatisticalValue;
+    }
+    if (map['message_count'] != null) {
+      message_count = TdApiMap.fromMap(map['message_count']) as StatisticalValue;
+    }
+    if (map['viewer_count'] != null) {
+      viewer_count = TdApiMap.fromMap(map['viewer_count']) as StatisticalValue;
+    }
+    if (map['sender_count'] != null) {
+      sender_count = TdApiMap.fromMap(map['sender_count']) as StatisticalValue;
+    }
+    if (map['member_count_graph'] != null) {
+      member_count_graph = TdApiMap.fromMap(map['member_count_graph']) as StatisticalGraph;
+    }
+    if (map['join_graph'] != null) {
+      join_graph = TdApiMap.fromMap(map['join_graph']) as StatisticalGraph;
+    }
+    if (map['join_by_source_graph'] != null) {
+      join_by_source_graph = TdApiMap.fromMap(map['join_by_source_graph']) as StatisticalGraph;
+    }
+    if (map['language_graph'] != null) {
+      language_graph = TdApiMap.fromMap(map['language_graph']) as StatisticalGraph;
+    }
+    if (map['message_content_graph'] != null) {
+      message_content_graph = TdApiMap.fromMap(map['message_content_graph']) as StatisticalGraph;
+    }
+    if (map['action_graph'] != null) {
+      action_graph = TdApiMap.fromMap(map['action_graph']) as StatisticalGraph;
+    }
+    if (map['day_graph'] != null) {
+      day_graph = TdApiMap.fromMap(map['day_graph']) as StatisticalGraph;
+    }
+    if (map['week_graph'] != null) {
+      week_graph = TdApiMap.fromMap(map['week_graph']) as StatisticalGraph;
+    }
+    if (map['top_senders'] != null) {
       top_senders = [];
       for (var someValue in map['top_senders']) {
-        top_senders?.add(TdApiMap.fromMap(someValue) as ChatStatisticsMessageSenderInfo);
+        if (someValue != null) {
+          top_senders?.add(TdApiMap.fromMap(someValue) as ChatStatisticsMessageSenderInfo);
+        }
       }
     }
-    if (map['top_administrators']) {
+    if (map['top_administrators'] != null) {
       top_administrators = [];
       for (var someValue in map['top_administrators']) {
-        top_administrators?.add(TdApiMap.fromMap(someValue) as ChatStatisticsAdministratorActionsInfo);
+        if (someValue != null) {
+          top_administrators?.add(TdApiMap.fromMap(someValue) as ChatStatisticsAdministratorActionsInfo);
+        }
       }
     }
-    if (map['top_inviters']) {
+    if (map['top_inviters'] != null) {
       top_inviters = [];
       for (var someValue in map['top_inviters']) {
-        top_inviters?.add(TdApiMap.fromMap(someValue) as ChatStatisticsInviterInfo);
+        if (someValue != null) {
+          top_inviters?.add(TdApiMap.fromMap(someValue) as ChatStatisticsInviterInfo);
+        }
       }
     }
   }
@@ -228,24 +260,52 @@ class ChatStatisticsChannel extends ChatStatistics {
   ChatStatisticsChannel.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    period = TdApiMap.fromMap(map['period']) as DateRange;
-    member_count = TdApiMap.fromMap(map['member_count']) as StatisticalValue;
-    mean_view_count = TdApiMap.fromMap(map['mean_view_count']) as StatisticalValue;
-    mean_share_count = TdApiMap.fromMap(map['mean_share_count']) as StatisticalValue;
+    if (map['period'] != null) {
+      period = TdApiMap.fromMap(map['period']) as DateRange;
+    }
+    if (map['member_count'] != null) {
+      member_count = TdApiMap.fromMap(map['member_count']) as StatisticalValue;
+    }
+    if (map['mean_view_count'] != null) {
+      mean_view_count = TdApiMap.fromMap(map['mean_view_count']) as StatisticalValue;
+    }
+    if (map['mean_share_count'] != null) {
+      mean_share_count = TdApiMap.fromMap(map['mean_share_count']) as StatisticalValue;
+    }
     enabled_notifications_percentage = map['enabled_notifications_percentage'];
-    member_count_graph = TdApiMap.fromMap(map['member_count_graph']) as StatisticalGraph;
-    join_graph = TdApiMap.fromMap(map['join_graph']) as StatisticalGraph;
-    mute_graph = TdApiMap.fromMap(map['mute_graph']) as StatisticalGraph;
-    view_count_by_hour_graph = TdApiMap.fromMap(map['view_count_by_hour_graph']) as StatisticalGraph;
-    view_count_by_source_graph = TdApiMap.fromMap(map['view_count_by_source_graph']) as StatisticalGraph;
-    join_by_source_graph = TdApiMap.fromMap(map['join_by_source_graph']) as StatisticalGraph;
-    language_graph = TdApiMap.fromMap(map['language_graph']) as StatisticalGraph;
-    message_interaction_graph = TdApiMap.fromMap(map['message_interaction_graph']) as StatisticalGraph;
-    instant_view_interaction_graph = TdApiMap.fromMap(map['instant_view_interaction_graph']) as StatisticalGraph;
-    if (map['recent_message_interactions']) {
+    if (map['member_count_graph'] != null) {
+      member_count_graph = TdApiMap.fromMap(map['member_count_graph']) as StatisticalGraph;
+    }
+    if (map['join_graph'] != null) {
+      join_graph = TdApiMap.fromMap(map['join_graph']) as StatisticalGraph;
+    }
+    if (map['mute_graph'] != null) {
+      mute_graph = TdApiMap.fromMap(map['mute_graph']) as StatisticalGraph;
+    }
+    if (map['view_count_by_hour_graph'] != null) {
+      view_count_by_hour_graph = TdApiMap.fromMap(map['view_count_by_hour_graph']) as StatisticalGraph;
+    }
+    if (map['view_count_by_source_graph'] != null) {
+      view_count_by_source_graph = TdApiMap.fromMap(map['view_count_by_source_graph']) as StatisticalGraph;
+    }
+    if (map['join_by_source_graph'] != null) {
+      join_by_source_graph = TdApiMap.fromMap(map['join_by_source_graph']) as StatisticalGraph;
+    }
+    if (map['language_graph'] != null) {
+      language_graph = TdApiMap.fromMap(map['language_graph']) as StatisticalGraph;
+    }
+    if (map['message_interaction_graph'] != null) {
+      message_interaction_graph = TdApiMap.fromMap(map['message_interaction_graph']) as StatisticalGraph;
+    }
+    if (map['instant_view_interaction_graph'] != null) {
+      instant_view_interaction_graph = TdApiMap.fromMap(map['instant_view_interaction_graph']) as StatisticalGraph;
+    }
+    if (map['recent_message_interactions'] != null) {
       recent_message_interactions = [];
       for (var someValue in map['recent_message_interactions']) {
-        recent_message_interactions?.add(TdApiMap.fromMap(someValue) as ChatStatisticsMessageInteractionInfo);
+        if (someValue != null) {
+          recent_message_interactions?.add(TdApiMap.fromMap(someValue) as ChatStatisticsMessageInteractionInfo);
+        }
       }
     }
   }

@@ -25,7 +25,7 @@ class Users extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['user_ids']) {
+    if (map['user_ids'] != null) {
       user_ids = [];
       for (var someValue in map['user_ids']) {
         user_ids?.add(someValue);

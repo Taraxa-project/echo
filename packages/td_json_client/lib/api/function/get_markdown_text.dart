@@ -23,7 +23,9 @@ class GetMarkdownText extends TdFunction {
   GetMarkdownText.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    text = TdApiMap.fromMap(map['text']) as FormattedText;
+    if (map['text'] != null) {
+      text = TdApiMap.fromMap(map['text']) as FormattedText;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

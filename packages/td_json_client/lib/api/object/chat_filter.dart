@@ -71,19 +71,19 @@ class ChatFilter extends TdObject {
     client_id = map['@client_id'];
     title = map['title'];
     icon_name = map['icon_name'];
-    if (map['pinned_chat_ids']) {
+    if (map['pinned_chat_ids'] != null) {
       pinned_chat_ids = [];
       for (var someValue in map['pinned_chat_ids']) {
         pinned_chat_ids?.add(someValue);
       }
     }
-    if (map['included_chat_ids']) {
+    if (map['included_chat_ids'] != null) {
       included_chat_ids = [];
       for (var someValue in map['included_chat_ids']) {
         included_chat_ids?.add(someValue);
       }
     }
-    if (map['excluded_chat_ids']) {
+    if (map['excluded_chat_ids'] != null) {
       excluded_chat_ids = [];
       for (var someValue in map['excluded_chat_ids']) {
         excluded_chat_ids?.add(someValue);

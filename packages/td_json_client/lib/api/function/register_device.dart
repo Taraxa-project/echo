@@ -27,8 +27,10 @@ class RegisterDevice extends TdFunction {
   RegisterDevice.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    device_token = TdApiMap.fromMap(map['device_token']) as DeviceToken;
-    if (map['other_user_ids']) {
+    if (map['device_token'] != null) {
+      device_token = TdApiMap.fromMap(map['device_token']) as DeviceToken;
+    }
+    if (map['other_user_ids'] != null) {
       other_user_ids = [];
       for (var someValue in map['other_user_ids']) {
         other_user_ids?.add(someValue);

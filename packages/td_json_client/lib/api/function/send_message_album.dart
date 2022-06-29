@@ -47,11 +47,15 @@ class SendMessageAlbum extends TdFunction {
     chat_id = map['chat_id'];
     message_thread_id = map['message_thread_id'];
     reply_to_message_id = map['reply_to_message_id'];
-    options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
-    if (map['input_message_contents']) {
+    if (map['options'] != null) {
+      options = TdApiMap.fromMap(map['options']) as MessageSendOptions;
+    }
+    if (map['input_message_contents'] != null) {
       input_message_contents = [];
       for (var someValue in map['input_message_contents']) {
-        input_message_contents?.add(TdApiMap.fromMap(someValue) as InputMessageContent);
+        if (someValue != null) {
+          input_message_contents?.add(TdApiMap.fromMap(someValue) as InputMessageContent);
+        }
       }
     }
     only_preview = map['only_preview'];

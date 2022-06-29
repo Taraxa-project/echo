@@ -43,7 +43,9 @@ class GetGroupCallStreamSegment extends TdFunction {
     time_offset = map['time_offset'];
     scale = map['scale'];
     channel_id = map['channel_id'];
-    video_quality = TdApiMap.fromMap(map['video_quality']) as GroupCallVideoQuality;
+    if (map['video_quality'] != null) {
+      video_quality = TdApiMap.fromMap(map['video_quality']) as GroupCallVideoQuality;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

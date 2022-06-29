@@ -37,7 +37,9 @@ class MessageSendOptions extends TdObject {
     disable_notification = map['disable_notification'];
     from_background = map['from_background'];
     protect_content = map['protect_content'];
-    scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
+    if (map['scheduling_state'] != null) {
+      scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

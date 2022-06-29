@@ -45,7 +45,9 @@ class SecretChat extends TdObject {
     client_id = map['@client_id'];
     id = map['id'];
     user_id = map['user_id'];
-    state = TdApiMap.fromMap(map['state']) as SecretChatState;
+    if (map['state'] != null) {
+      state = TdApiMap.fromMap(map['state']) as SecretChatState;
+    }
     is_outbound = map['is_outbound'];
     key_hash = map['key_hash'];
     layer = map['layer'];

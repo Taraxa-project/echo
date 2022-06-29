@@ -41,7 +41,9 @@ class TestProxy extends TdFunction {
     client_id = map['@client_id'];
     server = map['server'];
     port = map['port'];
-    type = TdApiMap.fromMap(map['type']) as ProxyType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ProxyType;
+    }
     dc_id = map['dc_id'];
     timeout = map['timeout'];
   }

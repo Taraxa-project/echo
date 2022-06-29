@@ -27,10 +27,12 @@ class MessageCalendar extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     total_count = map['total_count'];
-    if (map['days']) {
+    if (map['days'] != null) {
       days = [];
       for (var someValue in map['days']) {
-        days?.add(TdApiMap.fromMap(someValue) as MessageCalendarDay);
+        if (someValue != null) {
+          days?.add(TdApiMap.fromMap(someValue) as MessageCalendarDay);
+        }
       }
     }
   }

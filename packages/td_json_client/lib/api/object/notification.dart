@@ -37,7 +37,9 @@ class Notification extends TdObject {
     id = map['id'];
     date = map['date'];
     is_silent = map['is_silent'];
-    type = TdApiMap.fromMap(map['type']) as NotificationType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as NotificationType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

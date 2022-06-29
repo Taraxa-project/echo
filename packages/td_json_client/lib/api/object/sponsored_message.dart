@@ -42,9 +42,15 @@ class SponsoredMessage extends TdObject {
     client_id = map['@client_id'];
     message_id = map['message_id'];
     sponsor_chat_id = map['sponsor_chat_id'];
-    sponsor_chat_info = TdApiMap.fromMap(map['sponsor_chat_info']) as ChatInviteLinkInfo;
-    link = TdApiMap.fromMap(map['link']) as InternalLinkType;
-    content = TdApiMap.fromMap(map['content']) as MessageContent;
+    if (map['sponsor_chat_info'] != null) {
+      sponsor_chat_info = TdApiMap.fromMap(map['sponsor_chat_info']) as ChatInviteLinkInfo;
+    }
+    if (map['link'] != null) {
+      link = TdApiMap.fromMap(map['link']) as InternalLinkType;
+    }
+    if (map['content'] != null) {
+      content = TdApiMap.fromMap(map['content']) as MessageContent;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

@@ -38,8 +38,12 @@ class NetworkStatisticsEntryFile extends NetworkStatisticsEntry {
   NetworkStatisticsEntryFile.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    file_type = TdApiMap.fromMap(map['file_type']) as FileType;
-    network_type = TdApiMap.fromMap(map['network_type']) as NetworkType;
+    if (map['file_type'] != null) {
+      file_type = TdApiMap.fromMap(map['file_type']) as FileType;
+    }
+    if (map['network_type'] != null) {
+      network_type = TdApiMap.fromMap(map['network_type']) as NetworkType;
+    }
     sent_bytes = map['sent_bytes'];
     received_bytes = map['received_bytes'];
   }
@@ -92,7 +96,9 @@ class NetworkStatisticsEntryCall extends NetworkStatisticsEntry {
   NetworkStatisticsEntryCall.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    network_type = TdApiMap.fromMap(map['network_type']) as NetworkType;
+    if (map['network_type'] != null) {
+      network_type = TdApiMap.fromMap(map['network_type']) as NetworkType;
+    }
     sent_bytes = map['sent_bytes'];
     received_bytes = map['received_bytes'];
     duration = map['duration'];

@@ -28,7 +28,9 @@ class AcceptCall extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     call_id = map['call_id'];
-    protocol = TdApiMap.fromMap(map['protocol']) as CallProtocol;
+    if (map['protocol'] != null) {
+      protocol = TdApiMap.fromMap(map['protocol']) as CallProtocol;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

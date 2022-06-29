@@ -28,7 +28,9 @@ class GetBackgroundUrl extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     name = map['name'];
-    type = TdApiMap.fromMap(map['type']) as BackgroundType;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as BackgroundType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {

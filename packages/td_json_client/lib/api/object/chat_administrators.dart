@@ -22,10 +22,12 @@ class ChatAdministrators extends TdObject {
   ChatAdministrators.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['administrators']) {
+    if (map['administrators'] != null) {
       administrators = [];
       for (var someValue in map['administrators']) {
-        administrators?.add(TdApiMap.fromMap(someValue) as ChatAdministrator);
+        if (someValue != null) {
+          administrators?.add(TdApiMap.fromMap(someValue) as ChatAdministrator);
+        }
       }
     }
   }

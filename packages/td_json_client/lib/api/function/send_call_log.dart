@@ -28,7 +28,9 @@ class SendCallLog extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     call_id = map['call_id'];
-    log_file = TdApiMap.fromMap(map['log_file']) as InputFile;
+    if (map['log_file'] != null) {
+      log_file = TdApiMap.fromMap(map['log_file']) as InputFile;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
