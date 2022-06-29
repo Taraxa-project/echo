@@ -12,10 +12,10 @@ class SetGameScore extends TdFunction {
   /// The chat to which the message with the game belongs 
   int53? chat_id;
 
-  /// Identifier of the message
+  /// Identifier of the message 
   int53? message_id;
 
-  /// Pass true to edit the game message to include the current scoreboard 
+  /// True, if the message needs to be edited 
   Bool? edit_message;
 
   /// User identifier 

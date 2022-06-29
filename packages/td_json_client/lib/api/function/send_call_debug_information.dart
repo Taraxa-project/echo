@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Sends debug information for a call to Telegram servers 
+/// Sends debug information for a call 
 class SendCallDebugInformation extends TdFunction {
   String get tdType => 'sendCallDebugInformation';
   String get tdReturnType => 'Ok';

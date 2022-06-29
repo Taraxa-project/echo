@@ -3,7 +3,7 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 
 
-/// Changes the pinned state of a chat. There can be up to GetOption("pinned_chat_count_max")/GetOption("pinned_archived_chat_count_max") pinned non-secret chats and the same number of secret chats in the main/archive chat list
+/// Changes the pinned state of a chat. There can be up to GetOption("pinned_chat_count_max")/GetOption("pinned_archived_chat_count_max") pinned non-secret chats and the same number of secret chats in the main/arhive chat list
 class ToggleChatIsPinned extends TdFunction {
   String get tdType => 'toggleChatIsPinned';
   String get tdReturnType => 'Ok';
@@ -17,7 +17,7 @@ class ToggleChatIsPinned extends TdFunction {
   /// Chat identifier 
   int53? chat_id;
 
-  /// Pass true to pin the chat; pass false to unpin it
+  /// True, if the chat is pinned
   Bool? is_pinned;
 
   ToggleChatIsPinned({

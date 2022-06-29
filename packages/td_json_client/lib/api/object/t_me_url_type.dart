@@ -85,7 +85,7 @@ class TMeUrlTypeChatInvite extends TMeUrlType {
   String? extra;
   int? client_id;
 
-  /// Information about the chat invite link
+  /// Chat invite link info
   ChatInviteLinkInfo? info;
 
   TMeUrlTypeChatInvite({

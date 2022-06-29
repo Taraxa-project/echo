@@ -204,11 +204,8 @@ class CallStateDiscarded extends CallState {
   /// True, if the call rating must be sent to the server 
   Bool? need_rating;
 
-  /// True, if the call debug information must be sent to the server 
+  /// True, if the call debug information must be sent to the server
   Bool? need_debug_information;
-
-  /// True, if the call log must be sent to the server
-  Bool? need_log;
 
   CallStateDiscarded({
     this.extra,
@@ -216,7 +213,6 @@ class CallStateDiscarded extends CallState {
     this.reason,
     this.need_rating,
     this.need_debug_information,
-    this.need_log,
   });
 
   CallStateDiscarded.fromMap(Map<String, dynamic> map) {
@@ -227,7 +223,6 @@ class CallStateDiscarded extends CallState {
     }
     need_rating = map['need_rating'];
     need_debug_information = map['need_debug_information'];
-    need_log = map['need_log'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -238,7 +233,6 @@ class CallStateDiscarded extends CallState {
       'reason': reason?.toMap(skipNulls: skipNulls),
       'need_rating': need_rating?.toMap(skipNulls: skipNulls),
       'need_debug_information': need_debug_information?.toMap(skipNulls: skipNulls),
-      'need_log': need_log?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

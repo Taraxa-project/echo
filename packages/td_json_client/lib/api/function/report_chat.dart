@@ -14,7 +14,7 @@ class ReportChat extends TdFunction {
   /// Chat identifier 
   int53? chat_id;
 
-  /// Identifiers of reported messages; may be empty to report the whole chat 
+  /// Identifiers of reported messages, if any 
   vector<int53>? message_ids;
 
   /// The reason for reporting the chat 

@@ -9,7 +9,7 @@ class GetLocalizationTargetInfo extends TdFunction {
   String? extra;
   int? client_id;
 
-  /// Pass true to get only locally available information without sending network requests
+  /// If true, returns only locally available information without sending network requests
   Bool? only_local;
 
   GetLocalizationTargetInfo({

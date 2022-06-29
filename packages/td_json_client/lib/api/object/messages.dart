@@ -10,7 +10,7 @@ class Messages extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of messages found 
+  /// Approximate total count of messages found 
   int32? total_count;
 
   /// List of messages; messages may be null

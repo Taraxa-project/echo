@@ -10,7 +10,7 @@ class ChatInviteLinks extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of chat invite links found 
+  /// Approximate total count of chat invite links found 
   int32? total_count;
 
   /// List of invite links

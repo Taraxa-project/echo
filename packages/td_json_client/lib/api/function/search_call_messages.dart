@@ -12,10 +12,10 @@ class SearchCallMessages extends TdFunction {
   /// Identifier of the message from which to search; use 0 to get results from the last message
   int53? from_message_id;
 
-  /// The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+  /// The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit 
   int32? limit;
 
-  /// Pass true to search only for messages with missed/declined calls
+  /// If true, returns only messages with missed/declined calls
   Bool? only_missed;
 
   SearchCallMessages({

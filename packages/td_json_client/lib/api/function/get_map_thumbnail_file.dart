@@ -26,7 +26,7 @@ class GetMapThumbnailFile extends TdFunction {
   /// Map scale; 1-3 
   int32? scale;
 
-  /// Identifier of a chat in which the thumbnail will be shown. Use 0 if unknown
+  /// Identifier of a chat, in which the thumbnail will be shown. Use 0 if unknown
   int53? chat_id;
 
   GetMapThumbnailFile({

@@ -12,7 +12,7 @@ class GetExternalLink extends TdFunction {
   /// The HTTP link 
   string? link;
 
-  /// Pass true if the current user allowed the bot, returned in getExternalLinkInfo, to send them messages
+  /// True, if the current user allowed the bot, returned in getExternalLinkInfo, to send them messages
   Bool? allow_write_access;
 
   GetExternalLink({

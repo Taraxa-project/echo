@@ -10,7 +10,7 @@ class ChatMembers extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of chat members found 
+  /// Approximate total count of chat members found 
   int32? total_count;
 
   /// A list of chat members

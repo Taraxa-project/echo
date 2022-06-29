@@ -17,7 +17,7 @@ class CreateCall extends TdFunction {
   /// The call protocols supported by the application 
   CallProtocol? protocol;
 
-  /// Pass true to create a video call
+  /// True, if a video call needs to be created
   Bool? is_video;
 
   CreateCall({

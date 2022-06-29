@@ -17,7 +17,7 @@ class AddProxy extends TdFunction {
   /// Proxy server port 
   int32? port;
 
-  /// Pass true to immediately enable the proxy 
+  /// True, if the proxy needs to be enabled 
   Bool? enable;
 
   /// Proxy type

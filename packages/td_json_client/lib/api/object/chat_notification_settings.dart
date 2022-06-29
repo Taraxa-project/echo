@@ -14,11 +14,11 @@ class ChatNotificationSettings extends TdObject {
   /// Time left before notifications will be unmuted, in seconds
   int32? mute_for;
 
-  /// If true, the value for the relevant type of chat is used instead of sound_id 
+  /// If true, sound is ignored and the value for the relevant type of chat is used instead 
   Bool? use_default_sound;
 
-  /// Identifier of the notification sound to be played; 0 if sound is disabled
-  int64? sound_id;
+  /// The name of an audio file to be used for notification sounds; only applies to iOS applications
+  string? sound;
 
   /// If true, show_preview is ignored and the value for the relevant type of chat is used instead 
   Bool? use_default_show_preview;
@@ -44,7 +44,7 @@ class ChatNotificationSettings extends TdObject {
     this.use_default_mute_for,
     this.mute_for,
     this.use_default_sound,
-    this.sound_id,
+    this.sound,
     this.use_default_show_preview,
     this.show_preview,
     this.use_default_disable_pinned_message_notifications,
@@ -59,7 +59,7 @@ class ChatNotificationSettings extends TdObject {
     use_default_mute_for = map['use_default_mute_for'];
     mute_for = map['mute_for'];
     use_default_sound = map['use_default_sound'];
-    sound_id = map['sound_id'];
+    sound = map['sound'];
     use_default_show_preview = map['use_default_show_preview'];
     show_preview = map['show_preview'];
     use_default_disable_pinned_message_notifications = map['use_default_disable_pinned_message_notifications'];
@@ -76,7 +76,7 @@ class ChatNotificationSettings extends TdObject {
       'use_default_mute_for': use_default_mute_for?.toMap(skipNulls: skipNulls),
       'mute_for': mute_for?.toMap(skipNulls: skipNulls),
       'use_default_sound': use_default_sound?.toMap(skipNulls: skipNulls),
-      'sound_id': sound_id?.toMap(skipNulls: skipNulls),
+      'sound': sound?.toMap(skipNulls: skipNulls),
       'use_default_show_preview': use_default_show_preview?.toMap(skipNulls: skipNulls),
       'show_preview': show_preview?.toMap(skipNulls: skipNulls),
       'use_default_disable_pinned_message_notifications': use_default_disable_pinned_message_notifications?.toMap(skipNulls: skipNulls),

@@ -1,6 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
-import 'package:td_json_client/api/object/theme_parameters.dart';
+import 'package:td_json_client/api/object/payment_form_theme.dart';
 
 
 /// Returns an invoice payment form. This method must be called when the user presses inlineKeyboardButtonBuy
@@ -18,7 +18,7 @@ class GetPaymentForm extends TdFunction {
   int53? message_id;
 
   /// Preferred payment form theme; pass null to use the default theme
-  ThemeParameters? theme;
+  PaymentFormTheme? theme;
 
   GetPaymentForm({
     this.extra,
@@ -34,7 +34,7 @@ class GetPaymentForm extends TdFunction {
     chat_id = map['chat_id'];
     message_id = map['message_id'];
     if (map['theme'] != null) {
-      theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
+      theme = TdApiMap.fromMap(map['theme']) as PaymentFormTheme;
     }
   }
 

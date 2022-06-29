@@ -214,66 +214,6 @@ class ChatReportReasonFake extends ChatReportReason {
   }
 }
 
-/// The chat has illegal drugs related content
-class ChatReportReasonIllegalDrugs extends ChatReportReason {
-  String get tdType => 'chatReportReasonIllegalDrugs';
-
-  String? extra;
-  int? client_id;
-
-  ChatReportReasonIllegalDrugs({
-    this.extra,
-    this.client_id,
-  });
-
-  ChatReportReasonIllegalDrugs.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The chat contains messages with personal details
-class ChatReportReasonPersonalDetails extends ChatReportReason {
-  String get tdType => 'chatReportReasonPersonalDetails';
-
-  String? extra;
-  int? client_id;
-
-  ChatReportReasonPersonalDetails({
-    this.extra,
-    this.client_id,
-  });
-
-  ChatReportReasonPersonalDetails.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
 /// A custom reason provided by the user
 class ChatReportReasonCustom extends ChatReportReason {
   String get tdType => 'chatReportReasonCustom';

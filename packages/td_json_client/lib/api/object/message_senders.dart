@@ -10,7 +10,7 @@ class MessageSenders extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of messages senders found 
+  /// Approximate total count of messages senders found 
   int32? total_count;
 
   /// List of message senders

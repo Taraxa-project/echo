@@ -20,7 +20,7 @@ class ValidateOrderInfo extends TdFunction {
   /// The order information, provided by the user; pass null if empty
   OrderInfo? order_info;
 
-  /// Pass true to save the order information
+  /// True, if the order information can be saved
   Bool? allow_save;
 
   ValidateOrderInfo({

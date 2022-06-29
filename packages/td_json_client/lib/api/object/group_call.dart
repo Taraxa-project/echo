@@ -25,9 +25,6 @@ class GroupCall extends TdObject {
   /// True, if the call is active
   Bool? is_active;
 
-  /// True, if the chat is an RTMP stream instead of an ordinary video chat
-  Bool? is_rtmp_stream;
-
   /// True, if the call is joined
   Bool? is_joined;
 
@@ -39,9 +36,6 @@ class GroupCall extends TdObject {
 
   /// Number of participants in the group call
   int32? participant_count;
-
-  /// True, if group call participants, which are muted, aren't returned in participant list
-  Bool? has_hidden_listeners;
 
   /// True, if all group call participants are loaded
   Bool? loaded_all_participants;
@@ -81,12 +75,10 @@ class GroupCall extends TdObject {
     this.scheduled_start_date,
     this.enabled_start_notification,
     this.is_active,
-    this.is_rtmp_stream,
     this.is_joined,
     this.need_rejoin,
     this.can_be_managed,
     this.participant_count,
-    this.has_hidden_listeners,
     this.loaded_all_participants,
     this.recent_speakers,
     this.is_my_video_enabled,
@@ -107,12 +99,10 @@ class GroupCall extends TdObject {
     scheduled_start_date = map['scheduled_start_date'];
     enabled_start_notification = map['enabled_start_notification'];
     is_active = map['is_active'];
-    is_rtmp_stream = map['is_rtmp_stream'];
     is_joined = map['is_joined'];
     need_rejoin = map['need_rejoin'];
     can_be_managed = map['can_be_managed'];
     participant_count = map['participant_count'];
-    has_hidden_listeners = map['has_hidden_listeners'];
     loaded_all_participants = map['loaded_all_participants'];
     if (map['recent_speakers'] != null) {
       recent_speakers = [];
@@ -142,12 +132,10 @@ class GroupCall extends TdObject {
       'scheduled_start_date': scheduled_start_date?.toMap(skipNulls: skipNulls),
       'enabled_start_notification': enabled_start_notification?.toMap(skipNulls: skipNulls),
       'is_active': is_active?.toMap(skipNulls: skipNulls),
-      'is_rtmp_stream': is_rtmp_stream?.toMap(skipNulls: skipNulls),
       'is_joined': is_joined?.toMap(skipNulls: skipNulls),
       'need_rejoin': need_rejoin?.toMap(skipNulls: skipNulls),
       'can_be_managed': can_be_managed?.toMap(skipNulls: skipNulls),
       'participant_count': participant_count?.toMap(skipNulls: skipNulls),
-      'has_hidden_listeners': has_hidden_listeners?.toMap(skipNulls: skipNulls),
       'loaded_all_participants': loaded_all_participants?.toMap(skipNulls: skipNulls),
       'recent_speakers': recent_speakers?.toMap(skipNulls: skipNulls),
       'is_my_video_enabled': is_my_video_enabled?.toMap(skipNulls: skipNulls),

@@ -677,7 +677,7 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
   }
 }
 
-/// Represents a link to a WEBP, TGS, or WEBM sticker 
+/// Represents a link to a WEBP or TGS sticker 
 class InputInlineQueryResultSticker extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultSticker';
 
@@ -690,7 +690,7 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
   /// URL of the sticker thumbnail, if it exists
   string? thumbnail_url;
 
-  /// The URL of the WEBP, TGS, or WEBM sticker (sticker file size must not exceed 5MB) 
+  /// The URL of the WEBP or TGS sticker (sticker file size must not exceed 5MB) 
   string? sticker_url;
 
   /// Width of the sticker 

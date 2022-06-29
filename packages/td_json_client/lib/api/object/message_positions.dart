@@ -10,7 +10,7 @@ class MessagePositions extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Total number of messages found 
+  /// Total count of messages found 
   int32? total_count;
 
   /// List of message positions

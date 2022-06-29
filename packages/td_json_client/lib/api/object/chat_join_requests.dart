@@ -10,7 +10,7 @@ class ChatJoinRequests extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of requests found 
+  /// Approximate total count of requests found 
   int32? total_count;
 
   /// List of the requests

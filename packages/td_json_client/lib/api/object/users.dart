@@ -8,7 +8,7 @@ class Users extends TdObject {
   String? extra;
   int? client_id;
 
-  /// Approximate total number of users found 
+  /// Approximate total count of users found 
   int32? total_count;
 
   /// A list of user identifiers

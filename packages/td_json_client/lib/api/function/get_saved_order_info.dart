@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Returns saved order information. Returns a 404 error if there is no saved order information
+/// Returns saved order info, if any
 class GetSavedOrderInfo extends TdFunction {
   String get tdType => 'getSavedOrderInfo';
   String get tdReturnType => 'OrderInfo';

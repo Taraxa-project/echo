@@ -54,7 +54,7 @@ class User extends TdObject {
   /// True, if many users reported this user as a fake account
   Bool? is_fake;
 
-  /// If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method except GetUser
+  /// If false, the user is inaccessible, and the only information known about the user is inside this class. It can't be passed to any method except GetUser
   Bool? have_access;
 
   /// Type of the user

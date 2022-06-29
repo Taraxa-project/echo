@@ -364,36 +364,6 @@ class TextEntityTypeStrikethrough extends TextEntityType {
   }
 }
 
-/// A spoiler text. Not supported in secret chats
-class TextEntityTypeSpoiler extends TextEntityType {
-  String get tdType => 'textEntityTypeSpoiler';
-
-  String? extra;
-  int? client_id;
-
-  TextEntityTypeSpoiler({
-    this.extra,
-    this.client_id,
-  });
-
-  TextEntityTypeSpoiler.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
 /// Text that must be formatted as if inside a code HTML tag
 class TextEntityTypeCode extends TextEntityType {
   String get tdType => 'textEntityTypeCode';

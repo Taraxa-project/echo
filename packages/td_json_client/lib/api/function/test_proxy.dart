@@ -20,7 +20,7 @@ class TestProxy extends TdFunction {
   /// Proxy type
   ProxyType? type;
 
-  /// Identifier of a datacenter with which to test connection 
+  /// Identifier of a datacenter, with which to test connection 
   int32? dc_id;
 
   /// The maximum overall timeout for the request

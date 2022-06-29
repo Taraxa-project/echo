@@ -6,10 +6,13 @@ class TlGrammarDefinition extends GrammarDefinition {
 
   Parser start() => ref0(term).end();
 
-  Parser term() =>
-      (ref0(object).plus() & ref0(switchToFunctions) & ref0(function).plus())
-          .map((value) => [value[0], value[2]]);
+  Parser term() => (ref0(ignorePrimitives) &
+          ref0(object).plus() &
+          ref0(switchToFunctions) &
+          ref0(function).plus())
+      .map((value) => [value[1], value[3]]);
 
+  Parser ignorePrimitives() => noneOf('/').star().flatten();
   Parser object() => (ref0(definition)).map((value) => TlObject(
         constructor: value.constructor,
         comment: value.comment,

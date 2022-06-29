@@ -18,7 +18,7 @@ class SendMessageAlbum extends TdFunction {
   /// If not 0, a message thread identifier in which the messages will be sent
   int53? message_thread_id;
 
-  /// Identifier of a replied message; 0 if none
+  /// Identifier of a message to reply to or 0
   int53? reply_to_message_id;
 
   /// Options to be used to send the messages; pass null to use default options
@@ -26,9 +26,6 @@ class SendMessageAlbum extends TdFunction {
 
   /// Contents of messages to be sent. At most 10 messages can be added to an album
   vector<InputMessageContent>? input_message_contents;
-
-  /// Pass true to get fake messages instead of actually sending them
-  Bool? only_preview;
 
   SendMessageAlbum({
     this.extra,
@@ -38,7 +35,6 @@ class SendMessageAlbum extends TdFunction {
     this.reply_to_message_id,
     this.options,
     this.input_message_contents,
-    this.only_preview,
   });
 
   SendMessageAlbum.fromMap(Map<String, dynamic> map) {
@@ -58,7 +54,6 @@ class SendMessageAlbum extends TdFunction {
         }
       }
     }
-    only_preview = map['only_preview'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -71,7 +66,6 @@ class SendMessageAlbum extends TdFunction {
       'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
       'options': options?.toMap(skipNulls: skipNulls),
       'input_message_contents': input_message_contents?.toMap(skipNulls: skipNulls),
-      'only_preview': only_preview?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

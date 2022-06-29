@@ -18,7 +18,7 @@ class AddLocalMessage extends TdFunction {
   /// Identifier of the sender of the message
   MessageSender? sender_id;
 
-  /// Identifier of the replied message; 0 if none
+  /// Identifier of the message to reply to or 0
   int53? reply_to_message_id;
 
   /// Pass true to disable notification for the message

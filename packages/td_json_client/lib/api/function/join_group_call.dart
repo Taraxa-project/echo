@@ -23,10 +23,10 @@ class JoinGroupCall extends TdFunction {
   /// Group call join payload; received from tgcalls
   string? payload;
 
-  /// Pass true to join the call with muted microphone
+  /// True, if the user's microphone is muted
   Bool? is_muted;
 
-  /// Pass true if the user's video is enabled
+  /// True, if the user's video is enabled
   Bool? is_my_video_enabled;
 
   /// If non-empty, invite hash to be used to join the group call without being muted by administrators

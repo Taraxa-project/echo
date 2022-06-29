@@ -14,7 +14,7 @@ class DeleteCommands extends TdFunction {
   /// The scope to which the commands are relevant; pass null to delete commands in the default bot command scope
   BotCommandScope? scope;
 
-  /// A two-letter ISO 639-1 language code or an empty string
+  /// A two-letter ISO 639-1 country code or an empty string
   string? language_code;
 
   DeleteCommands({
