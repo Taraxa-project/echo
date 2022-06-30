@@ -1,7 +1,7 @@
 import 'package:loggy/loggy.dart';
 
 import 'package:td_json_client/td_json_client.dart';
-import 'package:telegram_client/request/request.dart';
+import 'package:telegram_client/api/base.dart';
 
 mixin TelegramClientLoggy implements LoggyType {
   @override
@@ -35,7 +35,7 @@ class TelegramClient with TelegramClientLoggy {
     setLogLevel(loglevel);
   }
 
-  Future<void> send(Request request) async {
-    request.execute(_tdJsonClient, _clientId);
+  Future<Response> send(Request request) async {
+    return await request.execute(_tdJsonClient, _clientId);
   }
 }

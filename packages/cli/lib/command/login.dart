@@ -1,7 +1,7 @@
 import 'package:td_json_client/td_json_client.dart';
 
 import 'package:telegram_client/client.dart';
-import 'package:telegram_client/request/login.dart';
+import 'package:telegram_client/api/login.dart';
 
 import 'base.dart';
 
@@ -20,7 +20,7 @@ class TelegramCommandLogin extends TelegramCommand {
       loglevel: globalResults!['loglevel'],
     );
 
-    await telegramClient.send(LoginRequest(
+    var loginResponse = await telegramClient.send(LoginRequest(
       setTdlibParameters: SetTdlibParameters(
         parameters: TdlibParameters(
           api_id: int.parse(globalResults!['api-id']),
@@ -52,6 +52,13 @@ class TelegramCommandLogin extends TelegramCommand {
       checkAuthenticationPasswordWithCallback:
           CheckAuthenticationPasswordWithCallback(
               readUserPassword: readUserPassword),
-    ));
+    )) as LoginResponse;
+
+    if (loginResponse.isAuthorized) {
+      print('Login success.');
+    }
+    if (loginResponse.isClosed) {
+      print('Libtd closed');
+    }
   }
 }

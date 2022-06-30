@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:td_json_client/td_json_client.dart';
 
 import 'package:telegram_client/client.dart';
-import 'package:telegram_client/request/login.dart';
-import 'package:telegram_client/request/get_chats.dart';
+import 'package:telegram_client/api/login.dart';
+import 'package:telegram_client/api/get_chats.dart';
 
 import 'base.dart';
 
@@ -21,7 +23,7 @@ class TelegramCommandsGetChats extends TelegramCommand {
       loglevel: globalResults!['loglevel'],
     );
 
-    await telegramClient.send(LoginRequest(
+    var loginResponse = await telegramClient.send(LoginRequest(
       setTdlibParameters: SetTdlibParameters(
         parameters: TdlibParameters(
           api_id: int.parse(globalResults!['api-id']),
@@ -53,12 +55,20 @@ class TelegramCommandsGetChats extends TelegramCommand {
       checkAuthenticationPasswordWithCallback:
           CheckAuthenticationPasswordWithCallback(
               readUserPassword: readUserPassword),
-    ));
+    )) as LoginResponse;
 
-    await telegramClient.send(GetChatsRequest(
-      getChats: GetChats(
-        limit: 100,
-      ),
-    ));
+    if (loginResponse.isClosed) {
+      print('Tdlib closed.');
+      exit(1);
+    }
+
+    var getChatsResponse = await telegramClient.send(GetChatsRequest(
+        getChats: GetChats(
+      limit: 100,
+    ))) as GetChatsResponse;
+
+    await for (var chat in getChatsResponse.chats) {
+      print(chat);
+    }
   }
 }

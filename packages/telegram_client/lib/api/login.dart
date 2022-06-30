@@ -1,7 +1,7 @@
 import 'package:td_json_client/td_json_client.dart';
-import 'package:telegram_client/request/request.dart';
 
 import '../exception.dart';
+import 'base.dart';
 
 class LoginRequest extends Request {
   final SetTdlibParameters setTdlibParameters;
@@ -30,7 +30,7 @@ class LoginRequest extends Request {
   });
 
   @override
-  Future<dynamic> execute(
+  Future<LoginResponse> execute(
     TdJsonClient tdJsonClient,
     int clientId, {
     double waitTimeout = 10.0,
@@ -126,6 +126,10 @@ class LoginRequest extends Request {
         break;
       }
     }
+    return LoginResponse(
+      isAuthorized: _isAuthorized,
+      isClosed: _isClosed,
+    );
   }
 }
 
@@ -163,4 +167,13 @@ class CheckAuthenticationPasswordWithCallback
 
 class LoginMessageException extends MessageException {
   LoginMessageException({super.code, super.message});
+}
+
+class LoginResponse extends Response {
+  final bool isAuthorized;
+  final bool isClosed;
+  LoginResponse({
+    required this.isAuthorized,
+    required this.isClosed,
+  });
 }

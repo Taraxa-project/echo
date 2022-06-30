@@ -25,7 +25,9 @@ extension StringMap on String {
 }
 
 extension ListMap on List {
-  List toMap({skipNulls: true}) => this.map((e) => e.ToMap()).toList();
+  List toMap({skipNulls: true}) => this;
+  // List toMap({skipNulls: true}) =>
+  //     this.map((e) => e.toMap(skipNulls: skipNulls)).toList();
 }
 
 abstract class Td {
