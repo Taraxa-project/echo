@@ -6,12 +6,10 @@ class ResendRecoveryEmailAddressCode extends TdFunction {
   String get tdType => 'resendRecoveryEmailAddressCode';
   String get tdReturnType => 'PasswordState';
 
-  String? extra;
-  int? client_id;
 
   ResendRecoveryEmailAddressCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ResendRecoveryEmailAddressCode.fromMap(Map<String, dynamic> map) {

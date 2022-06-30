@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class LabeledPricePart extends TdObject {
   String get tdType => 'labeledPricePart';
 
-  String? extra;
-  int? client_id;
 
   /// Label for this portion of the product price 
   string? label;
@@ -15,8 +13,8 @@ class LabeledPricePart extends TdObject {
   int53? amount;
 
   LabeledPricePart({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.label,
     this.amount,
   });

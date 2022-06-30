@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class StorageStatisticsFast extends TdObject {
   String get tdType => 'storageStatisticsFast';
 
-  String? extra;
-  int? client_id;
 
   /// Approximate total size of files, in bytes 
   int53? files_size;
@@ -24,8 +22,8 @@ class StorageStatisticsFast extends TdObject {
   int53? log_size;
 
   StorageStatisticsFast({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.files_size,
     this.file_count,
     this.database_size,

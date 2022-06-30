@@ -6,8 +6,6 @@ class GetSuggestedFileName extends TdFunction {
   String get tdType => 'getSuggestedFileName';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the file 
   int32? file_id;
@@ -16,8 +14,8 @@ class GetSuggestedFileName extends TdFunction {
   string? directory;
 
   GetSuggestedFileName({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
     this.directory,
   });

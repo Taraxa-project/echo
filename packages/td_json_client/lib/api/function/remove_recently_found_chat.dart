@@ -6,15 +6,13 @@ class RemoveRecentlyFoundChat extends TdFunction {
   String get tdType => 'removeRecentlyFoundChat';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat to be removed
   int53? chat_id;
 
   RemoveRecentlyFoundChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

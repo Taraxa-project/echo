@@ -6,8 +6,6 @@ class SearchChats extends TdFunction {
   String get tdType => 'searchChats';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for. If the query is empty, returns up to 50 recently found chats 
   string? query;
@@ -16,8 +14,8 @@ class SearchChats extends TdFunction {
   int32? limit;
 
   SearchChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
     this.limit,
   });

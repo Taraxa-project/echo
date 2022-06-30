@@ -8,15 +8,13 @@ class SetAccountTtl extends TdFunction {
   String get tdType => 'setAccountTtl';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// New account TTL
   AccountTtl? ttl;
 
   SetAccountTtl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.ttl,
   });
 

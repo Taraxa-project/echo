@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/t_me_url_type.dart';
 class TMeUrl extends TdObject {
   String get tdType => 'tMeUrl';
 
-  String? extra;
-  int? client_id;
 
   /// URL 
   string? url;
@@ -17,8 +15,8 @@ class TMeUrl extends TdObject {
   TMeUrlType? type;
 
   TMeUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
     this.type,
   });

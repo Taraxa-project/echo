@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents result of checking whether a name can be used for a new sticker set
-abstract class CheckStickerSetNameResult extends TdObject {}
+abstract class CheckStickerSetNameResult extends TdObject {
+  CheckStickerSetNameResult({super.extra, super.client_id});
+}
 
 
 /// The name can be set
 class CheckStickerSetNameResultOk extends CheckStickerSetNameResult {
   String get tdType => 'checkStickerSetNameResultOk';
 
-  String? extra;
-  int? client_id;
 
   CheckStickerSetNameResultOk({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CheckStickerSetNameResultOk.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class CheckStickerSetNameResultOk extends CheckStickerSetNameResult {
 class CheckStickerSetNameResultNameInvalid extends CheckStickerSetNameResult {
   String get tdType => 'checkStickerSetNameResultNameInvalid';
 
-  String? extra;
-  int? client_id;
 
   CheckStickerSetNameResultNameInvalid({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CheckStickerSetNameResultNameInvalid.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class CheckStickerSetNameResultNameInvalid extends CheckStickerSetNameResult {
 class CheckStickerSetNameResultNameOccupied extends CheckStickerSetNameResult {
   String get tdType => 'checkStickerSetNameResultNameOccupied';
 
-  String? extra;
-  int? client_id;
 
   CheckStickerSetNameResultNameOccupied({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CheckStickerSetNameResultNameOccupied.fromMap(Map<String, dynamic> map) {

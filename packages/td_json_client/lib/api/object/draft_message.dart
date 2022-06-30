@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/input_message_content.dart';
 class DraftMessage extends TdObject {
   String get tdType => 'draftMessage';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the message to reply to; 0 if none
   int53? reply_to_message_id;
@@ -20,8 +18,8 @@ class DraftMessage extends TdObject {
   InputMessageContent? input_message_text;
 
   DraftMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.reply_to_message_id,
     this.date,
     this.input_message_text,

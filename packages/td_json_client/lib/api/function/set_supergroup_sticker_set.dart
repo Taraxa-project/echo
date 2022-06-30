@@ -6,8 +6,6 @@ class SetSupergroupStickerSet extends TdFunction {
   String get tdType => 'setSupergroupStickerSet';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the supergroup 
   int53? supergroup_id;
@@ -16,8 +14,8 @@ class SetSupergroupStickerSet extends TdFunction {
   int64? sticker_set_id;
 
   SetSupergroupStickerSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
     this.sticker_set_id,
   });

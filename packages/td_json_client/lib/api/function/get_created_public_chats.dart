@@ -8,15 +8,13 @@ class GetCreatedPublicChats extends TdFunction {
   String get tdType => 'getCreatedPublicChats';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   /// Type of the public chats to return
   PublicChatType? type;
 
   GetCreatedPublicChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.type,
   });
 

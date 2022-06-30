@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message_sender.dart';
 class GroupCallRecentSpeaker extends TdObject {
   String get tdType => 'groupCallRecentSpeaker';
 
-  String? extra;
-  int? client_id;
 
   /// Group call participant identifier 
   MessageSender? participant_id;
@@ -17,8 +15,8 @@ class GroupCallRecentSpeaker extends TdObject {
   Bool? is_speaking;
 
   GroupCallRecentSpeaker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.participant_id,
     this.is_speaking,
   });

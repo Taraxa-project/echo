@@ -6,8 +6,6 @@ class RegisterUser extends TdFunction {
   String get tdType => 'registerUser';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The first name of the user; 1-64 characters 
   string? first_name;
@@ -16,8 +14,8 @@ class RegisterUser extends TdFunction {
   string? last_name;
 
   RegisterUser({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.first_name,
     this.last_name,
   });

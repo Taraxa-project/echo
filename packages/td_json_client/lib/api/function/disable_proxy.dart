@@ -6,12 +6,10 @@ class DisableProxy extends TdFunction {
   String get tdType => 'disableProxy';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   DisableProxy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   DisableProxy.fromMap(Map<String, dynamic> map) {

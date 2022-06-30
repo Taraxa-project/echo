@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the current state of the connection to Telegram servers
-abstract class ConnectionState extends TdObject {}
+abstract class ConnectionState extends TdObject {
+  ConnectionState({super.extra, super.client_id});
+}
 
 
 /// Currently waiting for the network to become available. Use setNetworkType to change the available network type
 class ConnectionStateWaitingForNetwork extends ConnectionState {
   String get tdType => 'connectionStateWaitingForNetwork';
 
-  String? extra;
-  int? client_id;
 
   ConnectionStateWaitingForNetwork({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ConnectionStateWaitingForNetwork.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class ConnectionStateWaitingForNetwork extends ConnectionState {
 class ConnectionStateConnectingToProxy extends ConnectionState {
   String get tdType => 'connectionStateConnectingToProxy';
 
-  String? extra;
-  int? client_id;
 
   ConnectionStateConnectingToProxy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ConnectionStateConnectingToProxy.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class ConnectionStateConnectingToProxy extends ConnectionState {
 class ConnectionStateConnecting extends ConnectionState {
   String get tdType => 'connectionStateConnecting';
 
-  String? extra;
-  int? client_id;
 
   ConnectionStateConnecting({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ConnectionStateConnecting.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class ConnectionStateConnecting extends ConnectionState {
 class ConnectionStateUpdating extends ConnectionState {
   String get tdType => 'connectionStateUpdating';
 
-  String? extra;
-  int? client_id;
 
   ConnectionStateUpdating({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ConnectionStateUpdating.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class ConnectionStateUpdating extends ConnectionState {
 class ConnectionStateReady extends ConnectionState {
   String get tdType => 'connectionStateReady';
 
-  String? extra;
-  int? client_id;
 
   ConnectionStateReady({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ConnectionStateReady.fromMap(Map<String, dynamic> map) {

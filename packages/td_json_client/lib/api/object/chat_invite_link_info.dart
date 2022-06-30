@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/chat_photo_info.dart';
 class ChatInviteLinkInfo extends TdObject {
   String get tdType => 'chatInviteLinkInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier of the invite link; 0 if the user has no access to the chat before joining
   int53? chat_id;
@@ -41,8 +39,8 @@ class ChatInviteLinkInfo extends TdObject {
   Bool? is_public;
 
   ChatInviteLinkInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.accessible_for,
     this.type,

@@ -6,15 +6,13 @@ class GetEmojiSuggestionsUrl extends TdFunction {
   String get tdType => 'getEmojiSuggestionsUrl';
   String get tdReturnType => 'HttpUrl';
 
-  String? extra;
-  int? client_id;
 
   /// Language code for which the emoji replacements will be suggested
   string? language_code;
 
   GetEmojiSuggestionsUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language_code,
   });
 

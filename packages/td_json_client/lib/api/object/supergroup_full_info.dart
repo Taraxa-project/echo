@@ -10,8 +10,6 @@ import 'package:td_json_client/api/object/bot_commands.dart';
 class SupergroupFullInfo extends TdObject {
   String get tdType => 'supergroupFullInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Chat photo; may be null
   ChatPhoto? photo;
@@ -76,8 +74,8 @@ class SupergroupFullInfo extends TdObject {
   int53? upgraded_from_max_message_id;
 
   SupergroupFullInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.photo,
     this.description,
     this.member_count,

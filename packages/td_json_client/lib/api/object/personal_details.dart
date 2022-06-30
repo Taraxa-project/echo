@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/date.dart';
 class PersonalDetails extends TdObject {
   String get tdType => 'personalDetails';
 
-  String? extra;
-  int? client_id;
 
   /// First name of the user written in English; 1-255 characters 
   string? first_name;
@@ -41,8 +39,8 @@ class PersonalDetails extends TdObject {
   string? residence_country_code;
 
   PersonalDetails({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.first_name,
     this.middle_name,
     this.last_name,

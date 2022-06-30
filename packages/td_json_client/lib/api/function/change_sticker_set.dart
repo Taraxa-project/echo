@@ -6,8 +6,6 @@ class ChangeStickerSet extends TdFunction {
   String get tdType => 'changeStickerSet';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the sticker set 
   int64? set_id;
@@ -19,8 +17,8 @@ class ChangeStickerSet extends TdFunction {
   Bool? is_archived;
 
   ChangeStickerSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.set_id,
     this.is_installed,
     this.is_archived,

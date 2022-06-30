@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatPermissions extends TdObject {
   String get tdType => 'chatPermissions';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the user can send text messages, contacts, locations, and venues
   Bool? can_send_messages;
@@ -33,8 +31,8 @@ class ChatPermissions extends TdObject {
   Bool? can_pin_messages;
 
   ChatPermissions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.can_send_messages,
     this.can_send_media_messages,
     this.can_send_polls,

@@ -8,8 +8,6 @@ class ToggleChatIsPinned extends TdFunction {
   String get tdType => 'toggleChatIsPinned';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat list in which to change the pinned state of the chat 
   ChatList? chat_list;
@@ -21,8 +19,8 @@ class ToggleChatIsPinned extends TdFunction {
   Bool? is_pinned;
 
   ToggleChatIsPinned({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_list,
     this.chat_id,
     this.is_pinned,

@@ -9,8 +9,6 @@ import 'package:td_json_client/api/object/sticker.dart';
 class StickerSetInfo extends TdObject {
   String get tdType => 'stickerSetInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the sticker set 
   int64? id;
@@ -52,8 +50,8 @@ class StickerSetInfo extends TdObject {
   vector<Sticker>? covers;
 
   StickerSetInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.name,

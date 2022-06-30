@@ -8,8 +8,6 @@ class AddProxy extends TdFunction {
   String get tdType => 'addProxy';
   String get tdReturnType => 'Proxy';
 
-  String? extra;
-  int? client_id;
 
   /// Proxy server IP address 
   string? server;
@@ -24,8 +22,8 @@ class AddProxy extends TdFunction {
   ProxyType? type;
 
   AddProxy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.server,
     this.port,
     this.enable,

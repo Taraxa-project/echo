@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Specifies the kind of chat members to return in searchChatMembers
-abstract class ChatMembersFilter extends TdObject {}
+abstract class ChatMembersFilter extends TdObject {
+  ChatMembersFilter({super.extra, super.client_id});
+}
 
 
 /// Returns contacts of the user
 class ChatMembersFilterContacts extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterContacts';
 
-  String? extra;
-  int? client_id;
 
   ChatMembersFilterContacts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatMembersFilterContacts.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class ChatMembersFilterContacts extends ChatMembersFilter {
 class ChatMembersFilterAdministrators extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterAdministrators';
 
-  String? extra;
-  int? client_id;
 
   ChatMembersFilterAdministrators({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatMembersFilterAdministrators.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class ChatMembersFilterAdministrators extends ChatMembersFilter {
 class ChatMembersFilterMembers extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterMembers';
 
-  String? extra;
-  int? client_id;
 
   ChatMembersFilterMembers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatMembersFilterMembers.fromMap(Map<String, dynamic> map) {
@@ -98,15 +94,13 @@ class ChatMembersFilterMembers extends ChatMembersFilter {
 class ChatMembersFilterMention extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterMention';
 
-  String? extra;
-  int? client_id;
 
   /// If non-zero, the identifier of the current message thread
   int53? message_thread_id;
 
   ChatMembersFilterMention({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message_thread_id,
   });
 
@@ -134,12 +128,10 @@ class ChatMembersFilterMention extends ChatMembersFilter {
 class ChatMembersFilterRestricted extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterRestricted';
 
-  String? extra;
-  int? client_id;
 
   ChatMembersFilterRestricted({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatMembersFilterRestricted.fromMap(Map<String, dynamic> map) {
@@ -164,12 +156,10 @@ class ChatMembersFilterRestricted extends ChatMembersFilter {
 class ChatMembersFilterBanned extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterBanned';
 
-  String? extra;
-  int? client_id;
 
   ChatMembersFilterBanned({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatMembersFilterBanned.fromMap(Map<String, dynamic> map) {
@@ -194,12 +184,10 @@ class ChatMembersFilterBanned extends ChatMembersFilter {
 class ChatMembersFilterBots extends ChatMembersFilter {
   String get tdType => 'chatMembersFilterBots';
 
-  String? extra;
-  int? client_id;
 
   ChatMembersFilterBots({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatMembersFilterBots.fromMap(Map<String, dynamic> map) {

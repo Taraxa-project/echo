@@ -6,15 +6,13 @@ class TestCallBytes extends TdFunction {
   String get tdType => 'testCallBytes';
   String get tdReturnType => 'TestBytes';
 
-  String? extra;
-  int? client_id;
 
   /// Bytes to return
   bytes? x;
 
   TestCallBytes({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.x,
   });
 

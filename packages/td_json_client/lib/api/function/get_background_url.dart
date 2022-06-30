@@ -8,8 +8,6 @@ class GetBackgroundUrl extends TdFunction {
   String get tdType => 'getBackgroundUrl';
   String get tdReturnType => 'HttpUrl';
 
-  String? extra;
-  int? client_id;
 
   /// Background name 
   string? name;
@@ -18,8 +16,8 @@ class GetBackgroundUrl extends TdFunction {
   BackgroundType? type;
 
   GetBackgroundUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.name,
     this.type,
   });

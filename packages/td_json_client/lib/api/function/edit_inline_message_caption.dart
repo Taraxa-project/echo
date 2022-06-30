@@ -9,8 +9,6 @@ class EditInlineMessageCaption extends TdFunction {
   String get tdType => 'editInlineMessageCaption';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Inline message identifier
   string? inline_message_id;
@@ -22,8 +20,8 @@ class EditInlineMessageCaption extends TdFunction {
   FormattedText? caption;
 
   EditInlineMessageCaption({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.inline_message_id,
     this.reply_markup,
     this.caption,

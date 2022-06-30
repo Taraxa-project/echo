@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/labeled_price_part.dart';
 class Invoice extends TdObject {
   String get tdType => 'invoice';
 
-  String? extra;
-  int? client_id;
 
   /// ISO 4217 currency code
   string? currency;
@@ -47,8 +45,8 @@ class Invoice extends TdObject {
   Bool? is_flexible;
 
   Invoice({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.currency,
     this.price_parts,
     this.max_tip_amount,

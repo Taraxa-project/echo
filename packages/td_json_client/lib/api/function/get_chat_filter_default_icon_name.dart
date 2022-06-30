@@ -8,15 +8,13 @@ class GetChatFilterDefaultIconName extends TdFunction {
   String get tdType => 'getChatFilterDefaultIconName';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// Chat filter
   ChatFilter? filter;
 
   GetChatFilterDefaultIconName({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.filter,
   });
 

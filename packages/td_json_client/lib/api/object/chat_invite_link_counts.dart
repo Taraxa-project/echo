@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/chat_invite_link_count.dart';
 class ChatInviteLinkCounts extends TdObject {
   String get tdType => 'chatInviteLinkCounts';
 
-  String? extra;
-  int? client_id;
 
   /// List of invite link counts
   vector<ChatInviteLinkCount>? invite_link_counts;
 
   ChatInviteLinkCounts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.invite_link_counts,
   });
 

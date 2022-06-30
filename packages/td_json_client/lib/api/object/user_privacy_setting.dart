@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes available user privacy settings
-abstract class UserPrivacySetting extends TdObject {}
+abstract class UserPrivacySetting extends TdObject {
+  UserPrivacySetting({super.extra, super.client_id});
+}
 
 
 /// A privacy setting for managing whether the user's online status is visible
 class UserPrivacySettingShowStatus extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowStatus';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingShowStatus({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingShowStatus.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class UserPrivacySettingShowStatus extends UserPrivacySetting {
 class UserPrivacySettingShowProfilePhoto extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowProfilePhoto';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingShowProfilePhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingShowProfilePhoto.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class UserPrivacySettingShowProfilePhoto extends UserPrivacySetting {
 class UserPrivacySettingShowLinkInForwardedMessages extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowLinkInForwardedMessages';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingShowLinkInForwardedMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingShowLinkInForwardedMessages.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class UserPrivacySettingShowLinkInForwardedMessages extends UserPrivacySetting {
 class UserPrivacySettingShowPhoneNumber extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingShowPhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingShowPhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingShowPhoneNumber.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class UserPrivacySettingShowPhoneNumber extends UserPrivacySetting {
 class UserPrivacySettingAllowChatInvites extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowChatInvites';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingAllowChatInvites({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingAllowChatInvites.fromMap(Map<String, dynamic> map) {
@@ -158,12 +150,10 @@ class UserPrivacySettingAllowChatInvites extends UserPrivacySetting {
 class UserPrivacySettingAllowCalls extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowCalls';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingAllowCalls({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingAllowCalls.fromMap(Map<String, dynamic> map) {
@@ -188,12 +178,10 @@ class UserPrivacySettingAllowCalls extends UserPrivacySetting {
 class UserPrivacySettingAllowPeerToPeerCalls extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowPeerToPeerCalls';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingAllowPeerToPeerCalls({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingAllowPeerToPeerCalls.fromMap(Map<String, dynamic> map) {
@@ -218,12 +206,10 @@ class UserPrivacySettingAllowPeerToPeerCalls extends UserPrivacySetting {
 class UserPrivacySettingAllowFindingByPhoneNumber extends UserPrivacySetting {
   String get tdType => 'userPrivacySettingAllowFindingByPhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingAllowFindingByPhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingAllowFindingByPhoneNumber.fromMap(Map<String, dynamic> map) {

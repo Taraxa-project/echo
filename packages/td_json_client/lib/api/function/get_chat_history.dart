@@ -7,8 +7,6 @@ class GetChatHistory extends TdFunction {
   String get tdType => 'getChatHistory';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
@@ -26,8 +24,8 @@ class GetChatHistory extends TdFunction {
   Bool? only_local;
 
   GetChatHistory({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.from_message_id,
     this.offset,

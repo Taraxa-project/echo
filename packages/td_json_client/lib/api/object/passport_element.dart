@@ -6,22 +6,22 @@ import 'package:td_json_client/api/object/address.dart';
 import 'package:td_json_client/api/object/personal_document.dart';
 
 /// Contains information about a Telegram Passport element
-abstract class PassportElement extends TdObject {}
+abstract class PassportElement extends TdObject {
+  PassportElement({super.extra, super.client_id});
+}
 
 
 /// A Telegram Passport element containing the user's personal details 
 class PassportElementPersonalDetails extends PassportElement {
   String get tdType => 'passportElementPersonalDetails';
 
-  String? extra;
-  int? client_id;
 
   /// Personal details of the user
   PersonalDetails? personal_details;
 
   PassportElementPersonalDetails({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.personal_details,
   });
 
@@ -51,15 +51,13 @@ class PassportElementPersonalDetails extends PassportElement {
 class PassportElementPassport extends PassportElement {
   String get tdType => 'passportElementPassport';
 
-  String? extra;
-  int? client_id;
 
   /// Passport
   IdentityDocument? passport;
 
   PassportElementPassport({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.passport,
   });
 
@@ -89,15 +87,13 @@ class PassportElementPassport extends PassportElement {
 class PassportElementDriverLicense extends PassportElement {
   String get tdType => 'passportElementDriverLicense';
 
-  String? extra;
-  int? client_id;
 
   /// Driver license
   IdentityDocument? driver_license;
 
   PassportElementDriverLicense({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.driver_license,
   });
 
@@ -127,15 +123,13 @@ class PassportElementDriverLicense extends PassportElement {
 class PassportElementIdentityCard extends PassportElement {
   String get tdType => 'passportElementIdentityCard';
 
-  String? extra;
-  int? client_id;
 
   /// Identity card
   IdentityDocument? identity_card;
 
   PassportElementIdentityCard({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.identity_card,
   });
 
@@ -165,15 +159,13 @@ class PassportElementIdentityCard extends PassportElement {
 class PassportElementInternalPassport extends PassportElement {
   String get tdType => 'passportElementInternalPassport';
 
-  String? extra;
-  int? client_id;
 
   /// Internal passport
   IdentityDocument? internal_passport;
 
   PassportElementInternalPassport({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.internal_passport,
   });
 
@@ -203,15 +195,13 @@ class PassportElementInternalPassport extends PassportElement {
 class PassportElementAddress extends PassportElement {
   String get tdType => 'passportElementAddress';
 
-  String? extra;
-  int? client_id;
 
   /// Address
   Address? address;
 
   PassportElementAddress({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.address,
   });
 
@@ -241,15 +231,13 @@ class PassportElementAddress extends PassportElement {
 class PassportElementUtilityBill extends PassportElement {
   String get tdType => 'passportElementUtilityBill';
 
-  String? extra;
-  int? client_id;
 
   /// Utility bill
   PersonalDocument? utility_bill;
 
   PassportElementUtilityBill({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.utility_bill,
   });
 
@@ -279,15 +267,13 @@ class PassportElementUtilityBill extends PassportElement {
 class PassportElementBankStatement extends PassportElement {
   String get tdType => 'passportElementBankStatement';
 
-  String? extra;
-  int? client_id;
 
   /// Bank statement
   PersonalDocument? bank_statement;
 
   PassportElementBankStatement({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bank_statement,
   });
 
@@ -317,15 +303,13 @@ class PassportElementBankStatement extends PassportElement {
 class PassportElementRentalAgreement extends PassportElement {
   String get tdType => 'passportElementRentalAgreement';
 
-  String? extra;
-  int? client_id;
 
   /// Rental agreement
   PersonalDocument? rental_agreement;
 
   PassportElementRentalAgreement({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.rental_agreement,
   });
 
@@ -355,15 +339,13 @@ class PassportElementRentalAgreement extends PassportElement {
 class PassportElementPassportRegistration extends PassportElement {
   String get tdType => 'passportElementPassportRegistration';
 
-  String? extra;
-  int? client_id;
 
   /// Passport registration pages
   PersonalDocument? passport_registration;
 
   PassportElementPassportRegistration({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.passport_registration,
   });
 
@@ -393,15 +375,13 @@ class PassportElementPassportRegistration extends PassportElement {
 class PassportElementTemporaryRegistration extends PassportElement {
   String get tdType => 'passportElementTemporaryRegistration';
 
-  String? extra;
-  int? client_id;
 
   /// Temporary registration
   PersonalDocument? temporary_registration;
 
   PassportElementTemporaryRegistration({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.temporary_registration,
   });
 
@@ -431,15 +411,13 @@ class PassportElementTemporaryRegistration extends PassportElement {
 class PassportElementPhoneNumber extends PassportElement {
   String get tdType => 'passportElementPhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   /// Phone number
   string? phone_number;
 
   PassportElementPhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.phone_number,
   });
 
@@ -467,15 +445,13 @@ class PassportElementPhoneNumber extends PassportElement {
 class PassportElementEmailAddress extends PassportElement {
   String get tdType => 'passportElementEmailAddress';
 
-  String? extra;
-  int? client_id;
 
   /// Email address
   string? email_address;
 
   PassportElementEmailAddress({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.email_address,
   });
 

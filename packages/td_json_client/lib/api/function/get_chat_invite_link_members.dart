@@ -8,8 +8,6 @@ class GetChatInviteLinkMembers extends TdFunction {
   String get tdType => 'getChatInviteLinkMembers';
   String get tdReturnType => 'ChatInviteLinkMembers';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -24,8 +22,8 @@ class GetChatInviteLinkMembers extends TdFunction {
   int32? limit;
 
   GetChatInviteLinkMembers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.invite_link,
     this.offset_member,

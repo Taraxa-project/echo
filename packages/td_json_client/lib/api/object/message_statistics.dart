@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/statistical_graph.dart';
 class MessageStatistics extends TdObject {
   String get tdType => 'messageStatistics';
 
-  String? extra;
-  int? client_id;
 
   /// A graph containing number of message views and shares
   StatisticalGraph? message_interaction_graph;
 
   MessageStatistics({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message_interaction_graph,
   });
 

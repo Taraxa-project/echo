@@ -6,8 +6,6 @@ class RemoveNotificationGroup extends TdFunction {
   String get tdType => 'removeNotificationGroup';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Notification group identifier 
   int32? notification_group_id;
@@ -16,8 +14,8 @@ class RemoveNotificationGroup extends TdFunction {
   int32? max_notification_id;
 
   RemoveNotificationGroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.notification_group_id,
     this.max_notification_id,
   });

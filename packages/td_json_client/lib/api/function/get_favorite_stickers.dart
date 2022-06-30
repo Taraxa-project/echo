@@ -6,12 +6,10 @@ class GetFavoriteStickers extends TdFunction {
   String get tdType => 'getFavoriteStickers';
   String get tdReturnType => 'Stickers';
 
-  String? extra;
-  int? client_id;
 
   GetFavoriteStickers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetFavoriteStickers.fromMap(Map<String, dynamic> map) {

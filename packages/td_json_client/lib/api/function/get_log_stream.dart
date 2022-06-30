@@ -6,12 +6,10 @@ class GetLogStream extends TdFunction {
   String get tdType => 'getLogStream';
   String get tdReturnType => 'LogStream';
 
-  String? extra;
-  int? client_id;
 
   GetLogStream({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetLogStream.fromMap(Map<String, dynamic> map) {

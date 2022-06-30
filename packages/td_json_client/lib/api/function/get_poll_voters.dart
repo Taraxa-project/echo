@@ -6,8 +6,6 @@ class GetPollVoters extends TdFunction {
   String get tdType => 'getPollVoters';
   String get tdReturnType => 'Users';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat to which the poll belongs 
   int53? chat_id;
@@ -25,8 +23,8 @@ class GetPollVoters extends TdFunction {
   int32? limit;
 
   GetPollVoters({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.option_id,

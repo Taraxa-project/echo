@@ -6,15 +6,13 @@ class GetLocalizationTargetInfo extends TdFunction {
   String get tdType => 'getLocalizationTargetInfo';
   String get tdReturnType => 'LocalizationTargetInfo';
 
-  String? extra;
-  int? client_id;
 
   /// If true, returns only locally available information without sending network requests
   Bool? only_local;
 
   GetLocalizationTargetInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.only_local,
   });
 

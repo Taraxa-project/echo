@@ -6,15 +6,13 @@ class CheckChangePhoneNumberCode extends TdFunction {
   String get tdType => 'checkChangePhoneNumberCode';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Authentication code to check
   string? code;
 
   CheckChangePhoneNumberCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.code,
   });
 

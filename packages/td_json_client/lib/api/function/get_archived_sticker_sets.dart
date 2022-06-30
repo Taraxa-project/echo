@@ -6,8 +6,6 @@ class GetArchivedStickerSets extends TdFunction {
   String get tdType => 'getArchivedStickerSets';
   String get tdReturnType => 'StickerSets';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to return mask stickers sets; pass false to return ordinary sticker sets 
   Bool? is_masks;
@@ -19,8 +17,8 @@ class GetArchivedStickerSets extends TdFunction {
   int32? limit;
 
   GetArchivedStickerSets({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_masks,
     this.offset_sticker_set_id,
     this.limit,

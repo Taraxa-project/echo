@@ -6,8 +6,6 @@ class ToggleSessionCanAcceptCalls extends TdFunction {
   String get tdType => 'toggleSessionCanAcceptCalls';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Session identifier 
   int64? session_id;
@@ -16,8 +14,8 @@ class ToggleSessionCanAcceptCalls extends TdFunction {
   Bool? can_accept_calls;
 
   ToggleSessionCanAcceptCalls({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.session_id,
     this.can_accept_calls,
   });

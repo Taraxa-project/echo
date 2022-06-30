@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class TdlibParameters extends TdObject {
   String get tdType => 'tdlibParameters';
 
-  String? extra;
-  int? client_id;
 
   /// If set to true, the Telegram test environment will be used instead of the production environment
   Bool? use_test_dc;
@@ -54,8 +52,8 @@ class TdlibParameters extends TdObject {
   Bool? ignore_file_names;
 
   TdlibParameters({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.use_test_dc,
     this.database_directory,
     this.files_directory,

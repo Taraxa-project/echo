@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Contains information about a file with messages exported from another app
-abstract class MessageFileType extends TdObject {}
+abstract class MessageFileType extends TdObject {
+  MessageFileType({super.extra, super.client_id});
+}
 
 
 /// The messages was exported from a private chat 
 class MessageFileTypePrivate extends MessageFileType {
   String get tdType => 'messageFileTypePrivate';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the other party; may be empty if unrecognized
   string? name;
 
   MessageFileTypePrivate({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.name,
   });
 
@@ -44,15 +44,13 @@ class MessageFileTypePrivate extends MessageFileType {
 class MessageFileTypeGroup extends MessageFileType {
   String get tdType => 'messageFileTypeGroup';
 
-  String? extra;
-  int? client_id;
 
   /// Title of the group chat; may be empty if unrecognized
   string? title;
 
   MessageFileTypeGroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
   });
 
@@ -80,12 +78,10 @@ class MessageFileTypeGroup extends MessageFileType {
 class MessageFileTypeUnknown extends MessageFileType {
   String get tdType => 'messageFileTypeUnknown';
 
-  String? extra;
-  int? client_id;
 
   MessageFileTypeUnknown({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageFileTypeUnknown.fromMap(Map<String, dynamic> map) {

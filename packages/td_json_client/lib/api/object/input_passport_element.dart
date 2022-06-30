@@ -6,22 +6,22 @@ import 'package:td_json_client/api/object/address.dart';
 import 'package:td_json_client/api/object/input_personal_document.dart';
 
 /// Contains information about a Telegram Passport element to be saved
-abstract class InputPassportElement extends TdObject {}
+abstract class InputPassportElement extends TdObject {
+  InputPassportElement({super.extra, super.client_id});
+}
 
 
 /// A Telegram Passport element to be saved containing the user's personal details 
 class InputPassportElementPersonalDetails extends InputPassportElement {
   String get tdType => 'inputPassportElementPersonalDetails';
 
-  String? extra;
-  int? client_id;
 
   /// Personal details of the user
   PersonalDetails? personal_details;
 
   InputPassportElementPersonalDetails({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.personal_details,
   });
 
@@ -51,15 +51,13 @@ class InputPassportElementPersonalDetails extends InputPassportElement {
 class InputPassportElementPassport extends InputPassportElement {
   String get tdType => 'inputPassportElementPassport';
 
-  String? extra;
-  int? client_id;
 
   /// The passport to be saved
   InputIdentityDocument? passport;
 
   InputPassportElementPassport({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.passport,
   });
 
@@ -89,15 +87,13 @@ class InputPassportElementPassport extends InputPassportElement {
 class InputPassportElementDriverLicense extends InputPassportElement {
   String get tdType => 'inputPassportElementDriverLicense';
 
-  String? extra;
-  int? client_id;
 
   /// The driver license to be saved
   InputIdentityDocument? driver_license;
 
   InputPassportElementDriverLicense({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.driver_license,
   });
 
@@ -127,15 +123,13 @@ class InputPassportElementDriverLicense extends InputPassportElement {
 class InputPassportElementIdentityCard extends InputPassportElement {
   String get tdType => 'inputPassportElementIdentityCard';
 
-  String? extra;
-  int? client_id;
 
   /// The identity card to be saved
   InputIdentityDocument? identity_card;
 
   InputPassportElementIdentityCard({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.identity_card,
   });
 
@@ -165,15 +159,13 @@ class InputPassportElementIdentityCard extends InputPassportElement {
 class InputPassportElementInternalPassport extends InputPassportElement {
   String get tdType => 'inputPassportElementInternalPassport';
 
-  String? extra;
-  int? client_id;
 
   /// The internal passport to be saved
   InputIdentityDocument? internal_passport;
 
   InputPassportElementInternalPassport({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.internal_passport,
   });
 
@@ -203,15 +195,13 @@ class InputPassportElementInternalPassport extends InputPassportElement {
 class InputPassportElementAddress extends InputPassportElement {
   String get tdType => 'inputPassportElementAddress';
 
-  String? extra;
-  int? client_id;
 
   /// The address to be saved
   Address? address;
 
   InputPassportElementAddress({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.address,
   });
 
@@ -241,15 +231,13 @@ class InputPassportElementAddress extends InputPassportElement {
 class InputPassportElementUtilityBill extends InputPassportElement {
   String get tdType => 'inputPassportElementUtilityBill';
 
-  String? extra;
-  int? client_id;
 
   /// The utility bill to be saved
   InputPersonalDocument? utility_bill;
 
   InputPassportElementUtilityBill({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.utility_bill,
   });
 
@@ -279,15 +267,13 @@ class InputPassportElementUtilityBill extends InputPassportElement {
 class InputPassportElementBankStatement extends InputPassportElement {
   String get tdType => 'inputPassportElementBankStatement';
 
-  String? extra;
-  int? client_id;
 
   /// The bank statement to be saved
   InputPersonalDocument? bank_statement;
 
   InputPassportElementBankStatement({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bank_statement,
   });
 
@@ -317,15 +303,13 @@ class InputPassportElementBankStatement extends InputPassportElement {
 class InputPassportElementRentalAgreement extends InputPassportElement {
   String get tdType => 'inputPassportElementRentalAgreement';
 
-  String? extra;
-  int? client_id;
 
   /// The rental agreement to be saved
   InputPersonalDocument? rental_agreement;
 
   InputPassportElementRentalAgreement({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.rental_agreement,
   });
 
@@ -355,15 +339,13 @@ class InputPassportElementRentalAgreement extends InputPassportElement {
 class InputPassportElementPassportRegistration extends InputPassportElement {
   String get tdType => 'inputPassportElementPassportRegistration';
 
-  String? extra;
-  int? client_id;
 
   /// The passport registration page to be saved
   InputPersonalDocument? passport_registration;
 
   InputPassportElementPassportRegistration({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.passport_registration,
   });
 
@@ -393,15 +375,13 @@ class InputPassportElementPassportRegistration extends InputPassportElement {
 class InputPassportElementTemporaryRegistration extends InputPassportElement {
   String get tdType => 'inputPassportElementTemporaryRegistration';
 
-  String? extra;
-  int? client_id;
 
   /// The temporary registration document to be saved
   InputPersonalDocument? temporary_registration;
 
   InputPassportElementTemporaryRegistration({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.temporary_registration,
   });
 
@@ -431,15 +411,13 @@ class InputPassportElementTemporaryRegistration extends InputPassportElement {
 class InputPassportElementPhoneNumber extends InputPassportElement {
   String get tdType => 'inputPassportElementPhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   /// The phone number to be saved
   string? phone_number;
 
   InputPassportElementPhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.phone_number,
   });
 
@@ -467,15 +445,13 @@ class InputPassportElementPhoneNumber extends InputPassportElement {
 class InputPassportElementEmailAddress extends InputPassportElement {
   String get tdType => 'inputPassportElementEmailAddress';
 
-  String? extra;
-  int? client_id;
 
   /// The email address to be saved
   string? email_address;
 
   InputPassportElementEmailAddress({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.email_address,
   });
 

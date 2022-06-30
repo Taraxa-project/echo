@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class CountryInfo extends TdObject {
   String get tdType => 'countryInfo';
 
-  String? extra;
-  int? client_id;
 
   /// A two-letter ISO 3166-1 alpha-2 country code
   string? country_code;
@@ -24,8 +22,8 @@ class CountryInfo extends TdObject {
   vector<string>? calling_codes;
 
   CountryInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.country_code,
     this.name,
     this.english_name,

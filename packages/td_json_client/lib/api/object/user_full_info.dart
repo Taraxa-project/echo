@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/bot_command.dart';
 class UserFullInfo extends TdObject {
   String get tdType => 'userFullInfo';
 
-  String? extra;
-  int? client_id;
 
   /// User profile photo; may be null
   ChatPhoto? photo;
@@ -47,8 +45,8 @@ class UserFullInfo extends TdObject {
   vector<BotCommand>? commands;
 
   UserFullInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.photo,
     this.is_blocked,
     this.can_be_called,

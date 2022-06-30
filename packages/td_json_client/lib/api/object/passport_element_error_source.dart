@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Contains the description of an error in a Telegram Passport element
-abstract class PassportElementErrorSource extends TdObject {}
+abstract class PassportElementErrorSource extends TdObject {
+  PassportElementErrorSource({super.extra, super.client_id});
+}
 
 
 /// The element contains an error in an unspecified place. The error will be considered resolved when new data is added
 class PassportElementErrorSourceUnspecified extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceUnspecified';
 
-  String? extra;
-  int? client_id;
 
   PassportElementErrorSourceUnspecified({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PassportElementErrorSourceUnspecified.fromMap(Map<String, dynamic> map) {
@@ -38,15 +38,13 @@ class PassportElementErrorSourceUnspecified extends PassportElementErrorSource {
 class PassportElementErrorSourceDataField extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceDataField';
 
-  String? extra;
-  int? client_id;
 
   /// Field name
   string? field_name;
 
   PassportElementErrorSourceDataField({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.field_name,
   });
 
@@ -74,12 +72,10 @@ class PassportElementErrorSourceDataField extends PassportElementErrorSource {
 class PassportElementErrorSourceFrontSide extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceFrontSide';
 
-  String? extra;
-  int? client_id;
 
   PassportElementErrorSourceFrontSide({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PassportElementErrorSourceFrontSide.fromMap(Map<String, dynamic> map) {
@@ -104,12 +100,10 @@ class PassportElementErrorSourceFrontSide extends PassportElementErrorSource {
 class PassportElementErrorSourceReverseSide extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceReverseSide';
 
-  String? extra;
-  int? client_id;
 
   PassportElementErrorSourceReverseSide({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PassportElementErrorSourceReverseSide.fromMap(Map<String, dynamic> map) {
@@ -134,12 +128,10 @@ class PassportElementErrorSourceReverseSide extends PassportElementErrorSource {
 class PassportElementErrorSourceSelfie extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceSelfie';
 
-  String? extra;
-  int? client_id;
 
   PassportElementErrorSourceSelfie({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PassportElementErrorSourceSelfie.fromMap(Map<String, dynamic> map) {
@@ -164,15 +156,13 @@ class PassportElementErrorSourceSelfie extends PassportElementErrorSource {
 class PassportElementErrorSourceTranslationFile extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceTranslationFile';
 
-  String? extra;
-  int? client_id;
 
   /// Index of a file with the error
   int32? file_index;
 
   PassportElementErrorSourceTranslationFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_index,
   });
 
@@ -200,12 +190,10 @@ class PassportElementErrorSourceTranslationFile extends PassportElementErrorSour
 class PassportElementErrorSourceTranslationFiles extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceTranslationFiles';
 
-  String? extra;
-  int? client_id;
 
   PassportElementErrorSourceTranslationFiles({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PassportElementErrorSourceTranslationFiles.fromMap(Map<String, dynamic> map) {
@@ -230,15 +218,13 @@ class PassportElementErrorSourceTranslationFiles extends PassportElementErrorSou
 class PassportElementErrorSourceFile extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceFile';
 
-  String? extra;
-  int? client_id;
 
   /// Index of a file with the error
   int32? file_index;
 
   PassportElementErrorSourceFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_index,
   });
 
@@ -266,12 +252,10 @@ class PassportElementErrorSourceFile extends PassportElementErrorSource {
 class PassportElementErrorSourceFiles extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceFiles';
 
-  String? extra;
-  int? client_id;
 
   PassportElementErrorSourceFiles({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PassportElementErrorSourceFiles.fromMap(Map<String, dynamic> map) {

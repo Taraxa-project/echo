@@ -26,15 +26,15 @@ import 'package:td_json_client/api/object/encrypted_credentials.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
 /// Contains the content of a message
-abstract class MessageContent extends TdObject {}
+abstract class MessageContent extends TdObject {
+  MessageContent({super.extra, super.client_id});
+}
 
 
 /// A text message 
 class MessageText extends MessageContent {
   String get tdType => 'messageText';
 
-  String? extra;
-  int? client_id;
 
   /// Text of the message 
   FormattedText? text;
@@ -43,8 +43,8 @@ class MessageText extends MessageContent {
   WebPage? web_page;
 
   MessageText({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.web_page,
   });
@@ -79,8 +79,6 @@ class MessageText extends MessageContent {
 class MessageAnimation extends MessageContent {
   String get tdType => 'messageAnimation';
 
-  String? extra;
-  int? client_id;
 
   /// The animation description 
   Animation? animation;
@@ -92,8 +90,8 @@ class MessageAnimation extends MessageContent {
   Bool? is_secret;
 
   MessageAnimation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.animation,
     this.caption,
     this.is_secret,
@@ -131,8 +129,6 @@ class MessageAnimation extends MessageContent {
 class MessageAudio extends MessageContent {
   String get tdType => 'messageAudio';
 
-  String? extra;
-  int? client_id;
 
   /// The audio description 
   Audio? audio;
@@ -141,8 +137,8 @@ class MessageAudio extends MessageContent {
   FormattedText? caption;
 
   MessageAudio({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.audio,
     this.caption,
   });
@@ -177,8 +173,6 @@ class MessageAudio extends MessageContent {
 class MessageDocument extends MessageContent {
   String get tdType => 'messageDocument';
 
-  String? extra;
-  int? client_id;
 
   /// The document description 
   Document? document;
@@ -187,8 +181,8 @@ class MessageDocument extends MessageContent {
   FormattedText? caption;
 
   MessageDocument({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.document,
     this.caption,
   });
@@ -223,8 +217,6 @@ class MessageDocument extends MessageContent {
 class MessagePhoto extends MessageContent {
   String get tdType => 'messagePhoto';
 
-  String? extra;
-  int? client_id;
 
   /// The photo description 
   Photo? photo;
@@ -236,8 +228,8 @@ class MessagePhoto extends MessageContent {
   Bool? is_secret;
 
   MessagePhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.photo,
     this.caption,
     this.is_secret,
@@ -275,12 +267,10 @@ class MessagePhoto extends MessageContent {
 class MessageExpiredPhoto extends MessageContent {
   String get tdType => 'messageExpiredPhoto';
 
-  String? extra;
-  int? client_id;
 
   MessageExpiredPhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageExpiredPhoto.fromMap(Map<String, dynamic> map) {
@@ -305,15 +295,13 @@ class MessageExpiredPhoto extends MessageContent {
 class MessageSticker extends MessageContent {
   String get tdType => 'messageSticker';
 
-  String? extra;
-  int? client_id;
 
   /// The sticker description
   Sticker? sticker;
 
   MessageSticker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker,
   });
 
@@ -343,8 +331,6 @@ class MessageSticker extends MessageContent {
 class MessageVideo extends MessageContent {
   String get tdType => 'messageVideo';
 
-  String? extra;
-  int? client_id;
 
   /// The video description 
   Video? video;
@@ -356,8 +342,8 @@ class MessageVideo extends MessageContent {
   Bool? is_secret;
 
   MessageVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.video,
     this.caption,
     this.is_secret,
@@ -395,12 +381,10 @@ class MessageVideo extends MessageContent {
 class MessageExpiredVideo extends MessageContent {
   String get tdType => 'messageExpiredVideo';
 
-  String? extra;
-  int? client_id;
 
   MessageExpiredVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageExpiredVideo.fromMap(Map<String, dynamic> map) {
@@ -425,8 +409,6 @@ class MessageExpiredVideo extends MessageContent {
 class MessageVideoNote extends MessageContent {
   String get tdType => 'messageVideoNote';
 
-  String? extra;
-  int? client_id;
 
   /// The video note description 
   VideoNote? video_note;
@@ -438,8 +420,8 @@ class MessageVideoNote extends MessageContent {
   Bool? is_secret;
 
   MessageVideoNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.video_note,
     this.is_viewed,
     this.is_secret,
@@ -475,8 +457,6 @@ class MessageVideoNote extends MessageContent {
 class MessageVoiceNote extends MessageContent {
   String get tdType => 'messageVoiceNote';
 
-  String? extra;
-  int? client_id;
 
   /// The voice note description 
   VoiceNote? voice_note;
@@ -488,8 +468,8 @@ class MessageVoiceNote extends MessageContent {
   Bool? is_listened;
 
   MessageVoiceNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.voice_note,
     this.caption,
     this.is_listened,
@@ -527,8 +507,6 @@ class MessageVoiceNote extends MessageContent {
 class MessageLocation extends MessageContent {
   String get tdType => 'messageLocation';
 
-  String? extra;
-  int? client_id;
 
   /// The location description 
   Location? location;
@@ -546,8 +524,8 @@ class MessageLocation extends MessageContent {
   int32? proximity_alert_radius;
 
   MessageLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.location,
     this.live_period,
     this.expires_in,
@@ -589,15 +567,13 @@ class MessageLocation extends MessageContent {
 class MessageVenue extends MessageContent {
   String get tdType => 'messageVenue';
 
-  String? extra;
-  int? client_id;
 
   /// The venue description
   Venue? venue;
 
   MessageVenue({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.venue,
   });
 
@@ -627,15 +603,13 @@ class MessageVenue extends MessageContent {
 class MessageContact extends MessageContent {
   String get tdType => 'messageContact';
 
-  String? extra;
-  int? client_id;
 
   /// The contact description
   Contact? contact;
 
   MessageContact({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.contact,
   });
 
@@ -665,8 +639,6 @@ class MessageContact extends MessageContent {
 class MessageAnimatedEmoji extends MessageContent {
   String get tdType => 'messageAnimatedEmoji';
 
-  String? extra;
-  int? client_id;
 
   /// The animated emoji 
   AnimatedEmoji? animated_emoji;
@@ -675,8 +647,8 @@ class MessageAnimatedEmoji extends MessageContent {
   string? emoji;
 
   MessageAnimatedEmoji({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.animated_emoji,
     this.emoji,
   });
@@ -709,8 +681,6 @@ class MessageAnimatedEmoji extends MessageContent {
 class MessageDice extends MessageContent {
   String get tdType => 'messageDice';
 
-  String? extra;
-  int? client_id;
 
   /// The animated stickers with the initial dice animation; may be null if unknown. updateMessageContent will be sent when the sticker became known
   DiceStickers? initial_state;
@@ -728,8 +698,8 @@ class MessageDice extends MessageContent {
   int32? success_animation_frame_number;
 
   MessageDice({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.initial_state,
     this.final_state,
     this.emoji,
@@ -773,15 +743,13 @@ class MessageDice extends MessageContent {
 class MessageGame extends MessageContent {
   String get tdType => 'messageGame';
 
-  String? extra;
-  int? client_id;
 
   /// The game description
   Game? game;
 
   MessageGame({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.game,
   });
 
@@ -811,15 +779,13 @@ class MessageGame extends MessageContent {
 class MessagePoll extends MessageContent {
   String get tdType => 'messagePoll';
 
-  String? extra;
-  int? client_id;
 
   /// The poll description
   Poll? poll;
 
   MessagePoll({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.poll,
   });
 
@@ -849,8 +815,6 @@ class MessagePoll extends MessageContent {
 class MessageInvoice extends MessageContent {
   String get tdType => 'messageInvoice';
 
-  String? extra;
-  int? client_id;
 
   /// Product title 
   string? title;
@@ -879,8 +843,8 @@ class MessageInvoice extends MessageContent {
   int53? receipt_message_id;
 
   MessageInvoice({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.description,
     this.photo,
@@ -934,8 +898,6 @@ class MessageInvoice extends MessageContent {
 class MessageCall extends MessageContent {
   String get tdType => 'messageCall';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the call was a video call 
   Bool? is_video;
@@ -947,8 +909,8 @@ class MessageCall extends MessageContent {
   int32? duration;
 
   MessageCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_video,
     this.discard_reason,
     this.duration,
@@ -984,8 +946,6 @@ class MessageCall extends MessageContent {
 class MessageVideoChatScheduled extends MessageContent {
   String get tdType => 'messageVideoChatScheduled';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the video chat. The video chat can be received through the method getGroupCall 
   int32? group_call_id;
@@ -994,8 +954,8 @@ class MessageVideoChatScheduled extends MessageContent {
   int32? start_date;
 
   MessageVideoChatScheduled({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.start_date,
   });
@@ -1026,15 +986,13 @@ class MessageVideoChatScheduled extends MessageContent {
 class MessageVideoChatStarted extends MessageContent {
   String get tdType => 'messageVideoChatStarted';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the video chat. The video chat can be received through the method getGroupCall
   int32? group_call_id;
 
   MessageVideoChatStarted({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
   });
 
@@ -1062,15 +1020,13 @@ class MessageVideoChatStarted extends MessageContent {
 class MessageVideoChatEnded extends MessageContent {
   String get tdType => 'messageVideoChatEnded';
 
-  String? extra;
-  int? client_id;
 
   /// Call duration, in seconds
   int32? duration;
 
   MessageVideoChatEnded({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.duration,
   });
 
@@ -1098,8 +1054,6 @@ class MessageVideoChatEnded extends MessageContent {
 class MessageInviteVideoChatParticipants extends MessageContent {
   String get tdType => 'messageInviteVideoChatParticipants';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the video chat. The video chat can be received through the method getGroupCall 
   int32? group_call_id;
@@ -1108,8 +1062,8 @@ class MessageInviteVideoChatParticipants extends MessageContent {
   vector<int53>? user_ids;
 
   MessageInviteVideoChatParticipants({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.user_ids,
   });
@@ -1145,8 +1099,6 @@ class MessageInviteVideoChatParticipants extends MessageContent {
 class MessageBasicGroupChatCreate extends MessageContent {
   String get tdType => 'messageBasicGroupChatCreate';
 
-  String? extra;
-  int? client_id;
 
   /// Title of the basic group 
   string? title;
@@ -1155,8 +1107,8 @@ class MessageBasicGroupChatCreate extends MessageContent {
   vector<int53>? member_user_ids;
 
   MessageBasicGroupChatCreate({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.member_user_ids,
   });
@@ -1192,15 +1144,13 @@ class MessageBasicGroupChatCreate extends MessageContent {
 class MessageSupergroupChatCreate extends MessageContent {
   String get tdType => 'messageSupergroupChatCreate';
 
-  String? extra;
-  int? client_id;
 
   /// Title of the supergroup or channel
   string? title;
 
   MessageSupergroupChatCreate({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
   });
 
@@ -1228,15 +1178,13 @@ class MessageSupergroupChatCreate extends MessageContent {
 class MessageChatChangeTitle extends MessageContent {
   String get tdType => 'messageChatChangeTitle';
 
-  String? extra;
-  int? client_id;
 
   /// New chat title
   string? title;
 
   MessageChatChangeTitle({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
   });
 
@@ -1264,15 +1212,13 @@ class MessageChatChangeTitle extends MessageContent {
 class MessageChatChangePhoto extends MessageContent {
   String get tdType => 'messageChatChangePhoto';
 
-  String? extra;
-  int? client_id;
 
   /// New chat photo
   ChatPhoto? photo;
 
   MessageChatChangePhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.photo,
   });
 
@@ -1302,12 +1248,10 @@ class MessageChatChangePhoto extends MessageContent {
 class MessageChatDeletePhoto extends MessageContent {
   String get tdType => 'messageChatDeletePhoto';
 
-  String? extra;
-  int? client_id;
 
   MessageChatDeletePhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageChatDeletePhoto.fromMap(Map<String, dynamic> map) {
@@ -1332,15 +1276,13 @@ class MessageChatDeletePhoto extends MessageContent {
 class MessageChatAddMembers extends MessageContent {
   String get tdType => 'messageChatAddMembers';
 
-  String? extra;
-  int? client_id;
 
   /// User identifiers of the new members
   vector<int53>? member_user_ids;
 
   MessageChatAddMembers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.member_user_ids,
   });
 
@@ -1373,12 +1315,10 @@ class MessageChatAddMembers extends MessageContent {
 class MessageChatJoinByLink extends MessageContent {
   String get tdType => 'messageChatJoinByLink';
 
-  String? extra;
-  int? client_id;
 
   MessageChatJoinByLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageChatJoinByLink.fromMap(Map<String, dynamic> map) {
@@ -1403,12 +1343,10 @@ class MessageChatJoinByLink extends MessageContent {
 class MessageChatJoinByRequest extends MessageContent {
   String get tdType => 'messageChatJoinByRequest';
 
-  String? extra;
-  int? client_id;
 
   MessageChatJoinByRequest({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageChatJoinByRequest.fromMap(Map<String, dynamic> map) {
@@ -1433,15 +1371,13 @@ class MessageChatJoinByRequest extends MessageContent {
 class MessageChatDeleteMember extends MessageContent {
   String get tdType => 'messageChatDeleteMember';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier of the deleted chat member
   int53? user_id;
 
   MessageChatDeleteMember({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 
@@ -1469,15 +1405,13 @@ class MessageChatDeleteMember extends MessageContent {
 class MessageChatUpgradeTo extends MessageContent {
   String get tdType => 'messageChatUpgradeTo';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the supergroup to which the basic group was upgraded
   int53? supergroup_id;
 
   MessageChatUpgradeTo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
   });
 
@@ -1505,8 +1439,6 @@ class MessageChatUpgradeTo extends MessageContent {
 class MessageChatUpgradeFrom extends MessageContent {
   String get tdType => 'messageChatUpgradeFrom';
 
-  String? extra;
-  int? client_id;
 
   /// Title of the newly created supergroup 
   string? title;
@@ -1515,8 +1447,8 @@ class MessageChatUpgradeFrom extends MessageContent {
   int53? basic_group_id;
 
   MessageChatUpgradeFrom({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.basic_group_id,
   });
@@ -1547,15 +1479,13 @@ class MessageChatUpgradeFrom extends MessageContent {
 class MessagePinMessage extends MessageContent {
   String get tdType => 'messagePinMessage';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the pinned message, can be an identifier of a deleted message or 0
   int53? message_id;
 
   MessagePinMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message_id,
   });
 
@@ -1583,12 +1513,10 @@ class MessagePinMessage extends MessageContent {
 class MessageScreenshotTaken extends MessageContent {
   String get tdType => 'messageScreenshotTaken';
 
-  String? extra;
-  int? client_id;
 
   MessageScreenshotTaken({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageScreenshotTaken.fromMap(Map<String, dynamic> map) {
@@ -1613,15 +1541,13 @@ class MessageScreenshotTaken extends MessageContent {
 class MessageChatSetTheme extends MessageContent {
   String get tdType => 'messageChatSetTheme';
 
-  String? extra;
-  int? client_id;
 
   /// If non-empty, name of a new theme, set for the chat. Otherwise chat theme was reset to the default one
   string? theme_name;
 
   MessageChatSetTheme({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.theme_name,
   });
 
@@ -1649,15 +1575,13 @@ class MessageChatSetTheme extends MessageContent {
 class MessageChatSetTtl extends MessageContent {
   String get tdType => 'messageChatSetTtl';
 
-  String? extra;
-  int? client_id;
 
   /// New message TTL
   int32? ttl;
 
   MessageChatSetTtl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.ttl,
   });
 
@@ -1685,15 +1609,13 @@ class MessageChatSetTtl extends MessageContent {
 class MessageCustomServiceAction extends MessageContent {
   String get tdType => 'messageCustomServiceAction';
 
-  String? extra;
-  int? client_id;
 
   /// Message text to be shown in the chat
   string? text;
 
   MessageCustomServiceAction({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
   });
 
@@ -1721,8 +1643,6 @@ class MessageCustomServiceAction extends MessageContent {
 class MessageGameScore extends MessageContent {
   String get tdType => 'messageGameScore';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the message with the game, can be an identifier of a deleted message 
   int53? game_message_id;
@@ -1734,8 +1654,8 @@ class MessageGameScore extends MessageContent {
   int32? score;
 
   MessageGameScore({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.game_message_id,
     this.game_id,
     this.score,
@@ -1769,8 +1689,6 @@ class MessageGameScore extends MessageContent {
 class MessagePaymentSuccessful extends MessageContent {
   String get tdType => 'messagePaymentSuccessful';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat, containing the corresponding invoice message; 0 if unknown 
   int53? invoice_chat_id;
@@ -1785,8 +1703,8 @@ class MessagePaymentSuccessful extends MessageContent {
   int53? total_amount;
 
   MessagePaymentSuccessful({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.invoice_chat_id,
     this.invoice_message_id,
     this.currency,
@@ -1823,8 +1741,6 @@ class MessagePaymentSuccessful extends MessageContent {
 class MessagePaymentSuccessfulBot extends MessageContent {
   String get tdType => 'messagePaymentSuccessfulBot';
 
-  String? extra;
-  int? client_id;
 
   /// Currency for price of the product
   string? currency;
@@ -1848,8 +1764,8 @@ class MessagePaymentSuccessfulBot extends MessageContent {
   string? provider_payment_charge_id;
 
   MessagePaymentSuccessfulBot({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.currency,
     this.total_amount,
     this.invoice_payload,
@@ -1897,12 +1813,10 @@ class MessagePaymentSuccessfulBot extends MessageContent {
 class MessageContactRegistered extends MessageContent {
   String get tdType => 'messageContactRegistered';
 
-  String? extra;
-  int? client_id;
 
   MessageContactRegistered({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageContactRegistered.fromMap(Map<String, dynamic> map) {
@@ -1927,15 +1841,13 @@ class MessageContactRegistered extends MessageContent {
 class MessageWebsiteConnected extends MessageContent {
   String get tdType => 'messageWebsiteConnected';
 
-  String? extra;
-  int? client_id;
 
   /// Domain name of the connected website
   string? domain_name;
 
   MessageWebsiteConnected({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.domain_name,
   });
 
@@ -1963,15 +1875,13 @@ class MessageWebsiteConnected extends MessageContent {
 class MessagePassportDataSent extends MessageContent {
   String get tdType => 'messagePassportDataSent';
 
-  String? extra;
-  int? client_id;
 
   /// List of Telegram Passport element types sent
   vector<PassportElementType>? types;
 
   MessagePassportDataSent({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.types,
   });
 
@@ -2006,8 +1916,6 @@ class MessagePassportDataSent extends MessageContent {
 class MessagePassportDataReceived extends MessageContent {
   String get tdType => 'messagePassportDataReceived';
 
-  String? extra;
-  int? client_id;
 
   /// List of received Telegram Passport elements 
   vector<EncryptedPassportElement>? elements;
@@ -2016,8 +1924,8 @@ class MessagePassportDataReceived extends MessageContent {
   EncryptedCredentials? credentials;
 
   MessagePassportDataReceived({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.elements,
     this.credentials,
   });
@@ -2057,8 +1965,6 @@ class MessagePassportDataReceived extends MessageContent {
 class MessageProximityAlertTriggered extends MessageContent {
   String get tdType => 'messageProximityAlertTriggered';
 
-  String? extra;
-  int? client_id;
 
   /// The identifier of a user or chat that triggered the proximity alert 
   MessageSender? traveler_id;
@@ -2070,8 +1976,8 @@ class MessageProximityAlertTriggered extends MessageContent {
   int32? distance;
 
   MessageProximityAlertTriggered({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.traveler_id,
     this.watcher_id,
     this.distance,
@@ -2109,12 +2015,10 @@ class MessageProximityAlertTriggered extends MessageContent {
 class MessageUnsupported extends MessageContent {
   String get tdType => 'messageUnsupported';
 
-  String? extra;
-  int? client_id;
 
   MessageUnsupported({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageUnsupported.fromMap(Map<String, dynamic> map) {

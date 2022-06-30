@@ -6,12 +6,10 @@ class GetSavedOrderInfo extends TdFunction {
   String get tdType => 'getSavedOrderInfo';
   String get tdReturnType => 'OrderInfo';
 
-  String? extra;
-  int? client_id;
 
   GetSavedOrderInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetSavedOrderInfo.fromMap(Map<String, dynamic> map) {

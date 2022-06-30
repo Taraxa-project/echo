@@ -6,15 +6,13 @@ class PingProxy extends TdFunction {
   String get tdType => 'pingProxy';
   String get tdReturnType => 'Seconds';
 
-  String? extra;
-  int? client_id;
 
   /// Proxy identifier. Use 0 to ping a Telegram server without a proxy
   int32? proxy_id;
 
   PingProxy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.proxy_id,
   });
 

@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes a stream to which TDLib internal log is written
-abstract class LogStream extends TdObject {}
+abstract class LogStream extends TdObject {
+  LogStream({super.extra, super.client_id});
+}
 
 
 /// The log is written to stderr or an OS specific log
 class LogStreamDefault extends LogStream {
   String get tdType => 'logStreamDefault';
 
-  String? extra;
-  int? client_id;
 
   LogStreamDefault({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   LogStreamDefault.fromMap(Map<String, dynamic> map) {
@@ -38,8 +38,6 @@ class LogStreamDefault extends LogStream {
 class LogStreamFile extends LogStream {
   String get tdType => 'logStreamFile';
 
-  String? extra;
-  int? client_id;
 
   /// Path to the file to where the internal TDLib log will be written
   string? path;
@@ -51,8 +49,8 @@ class LogStreamFile extends LogStream {
   Bool? redirect_stderr;
 
   LogStreamFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.path,
     this.max_file_size,
     this.redirect_stderr,
@@ -86,12 +84,10 @@ class LogStreamFile extends LogStream {
 class LogStreamEmpty extends LogStream {
   String get tdType => 'logStreamEmpty';
 
-  String? extra;
-  int? client_id;
 
   LogStreamEmpty({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   LogStreamEmpty.fromMap(Map<String, dynamic> map) {

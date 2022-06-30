@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the type of an inline keyboard button
-abstract class InlineKeyboardButtonType extends TdObject {}
+abstract class InlineKeyboardButtonType extends TdObject {
+  InlineKeyboardButtonType({super.extra, super.client_id});
+}
 
 
 /// A button that opens a specified URL 
 class InlineKeyboardButtonTypeUrl extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeUrl';
 
-  String? extra;
-  int? client_id;
 
   /// HTTP or tg:// URL to open
   string? url;
 
   InlineKeyboardButtonTypeUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
   });
 
@@ -44,8 +44,6 @@ class InlineKeyboardButtonTypeUrl extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeLoginUrl extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeLoginUrl';
 
-  String? extra;
-  int? client_id;
 
   /// An HTTP URL to open 
   string? url;
@@ -57,8 +55,8 @@ class InlineKeyboardButtonTypeLoginUrl extends InlineKeyboardButtonType {
   string? forward_text;
 
   InlineKeyboardButtonTypeLoginUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
     this.id,
     this.forward_text,
@@ -92,15 +90,13 @@ class InlineKeyboardButtonTypeLoginUrl extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeCallback extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeCallback';
 
-  String? extra;
-  int? client_id;
 
   /// Data to be sent to the bot via a callback query
   bytes? data;
 
   InlineKeyboardButtonTypeCallback({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.data,
   });
 
@@ -128,15 +124,13 @@ class InlineKeyboardButtonTypeCallback extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeCallbackWithPassword extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeCallbackWithPassword';
 
-  String? extra;
-  int? client_id;
 
   /// Data to be sent to the bot via a callback query
   bytes? data;
 
   InlineKeyboardButtonTypeCallbackWithPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.data,
   });
 
@@ -164,12 +158,10 @@ class InlineKeyboardButtonTypeCallbackWithPassword extends InlineKeyboardButtonT
 class InlineKeyboardButtonTypeCallbackGame extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeCallbackGame';
 
-  String? extra;
-  int? client_id;
 
   InlineKeyboardButtonTypeCallbackGame({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   InlineKeyboardButtonTypeCallbackGame.fromMap(Map<String, dynamic> map) {
@@ -194,8 +186,6 @@ class InlineKeyboardButtonTypeCallbackGame extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeSwitchInline extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeSwitchInline';
 
-  String? extra;
-  int? client_id;
 
   /// Inline query to be sent to the bot 
   string? query;
@@ -204,8 +194,8 @@ class InlineKeyboardButtonTypeSwitchInline extends InlineKeyboardButtonType {
   Bool? in_current_chat;
 
   InlineKeyboardButtonTypeSwitchInline({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
     this.in_current_chat,
   });
@@ -236,12 +226,10 @@ class InlineKeyboardButtonTypeSwitchInline extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeBuy extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeBuy';
 
-  String? extra;
-  int? client_id;
 
   InlineKeyboardButtonTypeBuy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   InlineKeyboardButtonTypeBuy.fromMap(Map<String, dynamic> map) {
@@ -266,15 +254,13 @@ class InlineKeyboardButtonTypeBuy extends InlineKeyboardButtonType {
 class InlineKeyboardButtonTypeUser extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeUser';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier
   int53? user_id;
 
   InlineKeyboardButtonTypeUser({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 

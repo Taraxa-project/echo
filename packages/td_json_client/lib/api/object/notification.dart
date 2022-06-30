@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/notification_type.dart';
 class Notification extends TdObject {
   String get tdType => 'notification';
 
-  String? extra;
-  int? client_id;
 
   /// Unique persistent identifier of this notification 
   int32? id;
@@ -23,8 +21,8 @@ class Notification extends TdObject {
   NotificationType? type;
 
   Notification({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.date,
     this.is_silent,

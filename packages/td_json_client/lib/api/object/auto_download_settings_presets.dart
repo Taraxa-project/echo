@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/auto_download_settings.dart';
 class AutoDownloadSettingsPresets extends TdObject {
   String get tdType => 'autoDownloadSettingsPresets';
 
-  String? extra;
-  int? client_id;
 
   /// Preset with lowest settings; supposed to be used by default when roaming
   AutoDownloadSettings? low;
@@ -20,8 +18,8 @@ class AutoDownloadSettingsPresets extends TdObject {
   AutoDownloadSettings? high;
 
   AutoDownloadSettingsPresets({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.low,
     this.medium,
     this.high,

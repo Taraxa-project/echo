@@ -9,8 +9,6 @@ import 'package:td_json_client/api/object/animation.dart';
 class Game extends TdObject {
   String get tdType => 'game';
 
-  String? extra;
-  int? client_id;
 
   /// Game ID 
   int64? id;
@@ -33,8 +31,8 @@ class Game extends TdObject {
   Animation? animation;
 
   Game({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.short_name,
     this.title,

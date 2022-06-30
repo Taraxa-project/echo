@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/passport_element.dart';
 class PassportElements extends TdObject {
   String get tdType => 'passportElements';
 
-  String? extra;
-  int? client_id;
 
   /// Telegram Passport elements
   vector<PassportElement>? elements;
 
   PassportElements({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.elements,
   });
 

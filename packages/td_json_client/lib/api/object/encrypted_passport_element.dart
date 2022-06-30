@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/dated_file.dart';
 class EncryptedPassportElement extends TdObject {
   String get tdType => 'encryptedPassportElement';
 
-  String? extra;
-  int? client_id;
 
   /// Type of Telegram Passport element 
   PassportElementType? type;
@@ -39,8 +37,8 @@ class EncryptedPassportElement extends TdObject {
   string? hash;
 
   EncryptedPassportElement({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.type,
     this.data,
     this.front_side,

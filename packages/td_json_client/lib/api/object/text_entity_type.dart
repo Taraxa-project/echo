@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents a part of the text which must be formatted differently
-abstract class TextEntityType extends TdObject {}
+abstract class TextEntityType extends TdObject {
+  TextEntityType({super.extra, super.client_id});
+}
 
 
 /// A mention of a user by their username
 class TextEntityTypeMention extends TextEntityType {
   String get tdType => 'textEntityTypeMention';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeMention({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeMention.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class TextEntityTypeMention extends TextEntityType {
 class TextEntityTypeHashtag extends TextEntityType {
   String get tdType => 'textEntityTypeHashtag';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeHashtag({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeHashtag.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class TextEntityTypeHashtag extends TextEntityType {
 class TextEntityTypeCashtag extends TextEntityType {
   String get tdType => 'textEntityTypeCashtag';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeCashtag({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeCashtag.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class TextEntityTypeCashtag extends TextEntityType {
 class TextEntityTypeBotCommand extends TextEntityType {
   String get tdType => 'textEntityTypeBotCommand';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeBotCommand({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeBotCommand.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class TextEntityTypeBotCommand extends TextEntityType {
 class TextEntityTypeUrl extends TextEntityType {
   String get tdType => 'textEntityTypeUrl';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeUrl.fromMap(Map<String, dynamic> map) {
@@ -158,12 +150,10 @@ class TextEntityTypeUrl extends TextEntityType {
 class TextEntityTypeEmailAddress extends TextEntityType {
   String get tdType => 'textEntityTypeEmailAddress';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeEmailAddress({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeEmailAddress.fromMap(Map<String, dynamic> map) {
@@ -188,12 +178,10 @@ class TextEntityTypeEmailAddress extends TextEntityType {
 class TextEntityTypePhoneNumber extends TextEntityType {
   String get tdType => 'textEntityTypePhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypePhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypePhoneNumber.fromMap(Map<String, dynamic> map) {
@@ -218,12 +206,10 @@ class TextEntityTypePhoneNumber extends TextEntityType {
 class TextEntityTypeBankCardNumber extends TextEntityType {
   String get tdType => 'textEntityTypeBankCardNumber';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeBankCardNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeBankCardNumber.fromMap(Map<String, dynamic> map) {
@@ -248,12 +234,10 @@ class TextEntityTypeBankCardNumber extends TextEntityType {
 class TextEntityTypeBold extends TextEntityType {
   String get tdType => 'textEntityTypeBold';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeBold({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeBold.fromMap(Map<String, dynamic> map) {
@@ -278,12 +262,10 @@ class TextEntityTypeBold extends TextEntityType {
 class TextEntityTypeItalic extends TextEntityType {
   String get tdType => 'textEntityTypeItalic';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeItalic({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeItalic.fromMap(Map<String, dynamic> map) {
@@ -308,12 +290,10 @@ class TextEntityTypeItalic extends TextEntityType {
 class TextEntityTypeUnderline extends TextEntityType {
   String get tdType => 'textEntityTypeUnderline';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeUnderline({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeUnderline.fromMap(Map<String, dynamic> map) {
@@ -338,12 +318,10 @@ class TextEntityTypeUnderline extends TextEntityType {
 class TextEntityTypeStrikethrough extends TextEntityType {
   String get tdType => 'textEntityTypeStrikethrough';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeStrikethrough({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeStrikethrough.fromMap(Map<String, dynamic> map) {
@@ -368,12 +346,10 @@ class TextEntityTypeStrikethrough extends TextEntityType {
 class TextEntityTypeCode extends TextEntityType {
   String get tdType => 'textEntityTypeCode';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypeCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypeCode.fromMap(Map<String, dynamic> map) {
@@ -398,12 +374,10 @@ class TextEntityTypeCode extends TextEntityType {
 class TextEntityTypePre extends TextEntityType {
   String get tdType => 'textEntityTypePre';
 
-  String? extra;
-  int? client_id;
 
   TextEntityTypePre({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TextEntityTypePre.fromMap(Map<String, dynamic> map) {
@@ -428,15 +402,13 @@ class TextEntityTypePre extends TextEntityType {
 class TextEntityTypePreCode extends TextEntityType {
   String get tdType => 'textEntityTypePreCode';
 
-  String? extra;
-  int? client_id;
 
   /// Programming language of the code; as defined by the sender
   string? language;
 
   TextEntityTypePreCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language,
   });
 
@@ -464,15 +436,13 @@ class TextEntityTypePreCode extends TextEntityType {
 class TextEntityTypeTextUrl extends TextEntityType {
   String get tdType => 'textEntityTypeTextUrl';
 
-  String? extra;
-  int? client_id;
 
   /// HTTP or tg:// URL to be opened when the link is clicked
   string? url;
 
   TextEntityTypeTextUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
   });
 
@@ -500,15 +470,13 @@ class TextEntityTypeTextUrl extends TextEntityType {
 class TextEntityTypeMentionName extends TextEntityType {
   String get tdType => 'textEntityTypeMentionName';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the mentioned user
   int53? user_id;
 
   TextEntityTypeMentionName({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 
@@ -536,15 +504,13 @@ class TextEntityTypeMentionName extends TextEntityType {
 class TextEntityTypeMediaTimestamp extends TextEntityType {
   String get tdType => 'textEntityTypeMediaTimestamp';
 
-  String? extra;
-  int? client_id;
 
   /// Timestamp from which a video/audio/video note/voice note playing must start, in seconds. The media can be in the content or the web page preview of the current message, or in the same places in the replied message
   int32? media_timestamp;
 
   TextEntityTypeMediaTimestamp({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.media_timestamp,
   });
 

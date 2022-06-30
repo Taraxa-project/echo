@@ -4,19 +4,19 @@ import 'package:td_json_client/api/object/formatted_text.dart';
 import 'package:td_json_client/api/object/proxy_type.dart';
 
 /// Describes an internal https://t.me or tg: link, which must be processed by the app in a special way
-abstract class InternalLinkType extends TdObject {}
+abstract class InternalLinkType extends TdObject {
+  InternalLinkType({super.extra, super.client_id});
+}
 
 
 /// The link is a link to the active sessions section of the app. Use getActiveSessions to handle the link
 class InternalLinkTypeActiveSessions extends InternalLinkType {
   String get tdType => 'internalLinkTypeActiveSessions';
 
-  String? extra;
-  int? client_id;
 
   InternalLinkTypeActiveSessions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   InternalLinkTypeActiveSessions.fromMap(Map<String, dynamic> map) {
@@ -41,15 +41,13 @@ class InternalLinkTypeActiveSessions extends InternalLinkType {
 class InternalLinkTypeAuthenticationCode extends InternalLinkType {
   String get tdType => 'internalLinkTypeAuthenticationCode';
 
-  String? extra;
-  int? client_id;
 
   /// The authentication code
   string? code;
 
   InternalLinkTypeAuthenticationCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.code,
   });
 
@@ -77,15 +75,13 @@ class InternalLinkTypeAuthenticationCode extends InternalLinkType {
 class InternalLinkTypeBackground extends InternalLinkType {
   String get tdType => 'internalLinkTypeBackground';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the background
   string? background_name;
 
   InternalLinkTypeBackground({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.background_name,
   });
 
@@ -114,8 +110,6 @@ class InternalLinkTypeBackground extends InternalLinkType {
 class InternalLinkTypeBotStart extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStart';
 
-  String? extra;
-  int? client_id;
 
   /// Username of the bot 
   string? bot_username;
@@ -124,8 +118,8 @@ class InternalLinkTypeBotStart extends InternalLinkType {
   string? start_parameter;
 
   InternalLinkTypeBotStart({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_username,
     this.start_parameter,
   });
@@ -157,8 +151,6 @@ class InternalLinkTypeBotStart extends InternalLinkType {
 class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStartInGroup';
 
-  String? extra;
-  int? client_id;
 
   /// Username of the bot 
   string? bot_username;
@@ -167,8 +159,8 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   string? start_parameter;
 
   InternalLinkTypeBotStartInGroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_username,
     this.start_parameter,
   });
@@ -199,12 +191,10 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
 class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
   String get tdType => 'internalLinkTypeChangePhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   InternalLinkTypeChangePhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   InternalLinkTypeChangePhoneNumber.fromMap(Map<String, dynamic> map) {
@@ -229,15 +219,13 @@ class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
 class InternalLinkTypeChatInvite extends InternalLinkType {
   String get tdType => 'internalLinkTypeChatInvite';
 
-  String? extra;
-  int? client_id;
 
   /// Internal representation of the invite link
   string? invite_link;
 
   InternalLinkTypeChatInvite({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.invite_link,
   });
 
@@ -265,12 +253,10 @@ class InternalLinkTypeChatInvite extends InternalLinkType {
 class InternalLinkTypeFilterSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeFilterSettings';
 
-  String? extra;
-  int? client_id;
 
   InternalLinkTypeFilterSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   InternalLinkTypeFilterSettings.fromMap(Map<String, dynamic> map) {
@@ -295,8 +281,6 @@ class InternalLinkTypeFilterSettings extends InternalLinkType {
 class InternalLinkTypeGame extends InternalLinkType {
   String get tdType => 'internalLinkTypeGame';
 
-  String? extra;
-  int? client_id;
 
   /// Username of the bot that owns the game 
   string? bot_username;
@@ -305,8 +289,8 @@ class InternalLinkTypeGame extends InternalLinkType {
   string? game_short_name;
 
   InternalLinkTypeGame({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_username,
     this.game_short_name,
   });
@@ -337,15 +321,13 @@ class InternalLinkTypeGame extends InternalLinkType {
 class InternalLinkTypeLanguagePack extends InternalLinkType {
   String get tdType => 'internalLinkTypeLanguagePack';
 
-  String? extra;
-  int? client_id;
 
   /// Language pack identifier
   string? language_pack_id;
 
   InternalLinkTypeLanguagePack({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language_pack_id,
   });
 
@@ -373,15 +355,13 @@ class InternalLinkTypeLanguagePack extends InternalLinkType {
 class InternalLinkTypeMessage extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessage';
 
-  String? extra;
-  int? client_id;
 
   /// URL to be passed to getMessageLinkInfo
   string? url;
 
   InternalLinkTypeMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
   });
 
@@ -409,8 +389,6 @@ class InternalLinkTypeMessage extends InternalLinkType {
 class InternalLinkTypeMessageDraft extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessageDraft';
 
-  String? extra;
-  int? client_id;
 
   /// Message draft text 
   FormattedText? text;
@@ -419,8 +397,8 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
   Bool? contains_link;
 
   InternalLinkTypeMessageDraft({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.contains_link,
   });
@@ -453,8 +431,6 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
 class InternalLinkTypePassportDataRequest extends InternalLinkType {
   String get tdType => 'internalLinkTypePassportDataRequest';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier of the service's bot 
   int53? bot_user_id;
@@ -472,8 +448,8 @@ class InternalLinkTypePassportDataRequest extends InternalLinkType {
   string? callback_url;
 
   InternalLinkTypePassportDataRequest({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_user_id,
     this.scope,
     this.public_key,
@@ -513,8 +489,6 @@ class InternalLinkTypePassportDataRequest extends InternalLinkType {
 class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
   String get tdType => 'internalLinkTypePhoneNumberConfirmation';
 
-  String? extra;
-  int? client_id;
 
   /// Hash value from the link 
   string? hash;
@@ -523,8 +497,8 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
   string? phone_number;
 
   InternalLinkTypePhoneNumberConfirmation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.hash,
     this.phone_number,
   });
@@ -555,8 +529,6 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
 class InternalLinkTypeProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeProxy';
 
-  String? extra;
-  int? client_id;
 
   /// Proxy server IP address 
   string? server;
@@ -568,8 +540,8 @@ class InternalLinkTypeProxy extends InternalLinkType {
   ProxyType? type;
 
   InternalLinkTypeProxy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.server,
     this.port,
     this.type,
@@ -605,15 +577,13 @@ class InternalLinkTypeProxy extends InternalLinkType {
 class InternalLinkTypePublicChat extends InternalLinkType {
   String get tdType => 'internalLinkTypePublicChat';
 
-  String? extra;
-  int? client_id;
 
   /// Username of the chat
   string? chat_username;
 
   InternalLinkTypePublicChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_username,
   });
 
@@ -642,12 +612,10 @@ class InternalLinkTypePublicChat extends InternalLinkType {
 class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
   String get tdType => 'internalLinkTypeQrCodeAuthentication';
 
-  String? extra;
-  int? client_id;
 
   InternalLinkTypeQrCodeAuthentication({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   InternalLinkTypeQrCodeAuthentication.fromMap(Map<String, dynamic> map) {
@@ -672,12 +640,10 @@ class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
 class InternalLinkTypeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeSettings';
 
-  String? extra;
-  int? client_id;
 
   InternalLinkTypeSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   InternalLinkTypeSettings.fromMap(Map<String, dynamic> map) {
@@ -702,15 +668,13 @@ class InternalLinkTypeSettings extends InternalLinkType {
 class InternalLinkTypeStickerSet extends InternalLinkType {
   String get tdType => 'internalLinkTypeStickerSet';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the sticker set
   string? sticker_set_name;
 
   InternalLinkTypeStickerSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker_set_name,
   });
 
@@ -738,15 +702,13 @@ class InternalLinkTypeStickerSet extends InternalLinkType {
 class InternalLinkTypeTheme extends InternalLinkType {
   String get tdType => 'internalLinkTypeTheme';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the theme
   string? theme_name;
 
   InternalLinkTypeTheme({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.theme_name,
   });
 
@@ -774,12 +736,10 @@ class InternalLinkTypeTheme extends InternalLinkType {
 class InternalLinkTypeThemeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeThemeSettings';
 
-  String? extra;
-  int? client_id;
 
   InternalLinkTypeThemeSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   InternalLinkTypeThemeSettings.fromMap(Map<String, dynamic> map) {
@@ -804,15 +764,13 @@ class InternalLinkTypeThemeSettings extends InternalLinkType {
 class InternalLinkTypeUnknownDeepLink extends InternalLinkType {
   String get tdType => 'internalLinkTypeUnknownDeepLink';
 
-  String? extra;
-  int? client_id;
 
   /// Link to be passed to getDeepLinkInfo
   string? link;
 
   InternalLinkTypeUnknownDeepLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.link,
   });
 
@@ -840,12 +798,10 @@ class InternalLinkTypeUnknownDeepLink extends InternalLinkType {
 class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeUnsupportedProxy';
 
-  String? extra;
-  int? client_id;
 
   InternalLinkTypeUnsupportedProxy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   InternalLinkTypeUnsupportedProxy.fromMap(Map<String, dynamic> map) {
@@ -870,8 +826,6 @@ class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
 class InternalLinkTypeVideoChat extends InternalLinkType {
   String get tdType => 'internalLinkTypeVideoChat';
 
-  String? extra;
-  int? client_id;
 
   /// Username of the chat with the video chat 
   string? chat_username;
@@ -883,8 +837,8 @@ class InternalLinkTypeVideoChat extends InternalLinkType {
   Bool? is_live_stream;
 
   InternalLinkTypeVideoChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_username,
     this.invite_hash,
     this.is_live_stream,

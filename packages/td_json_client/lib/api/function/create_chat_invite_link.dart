@@ -6,8 +6,6 @@ class CreateChatInviteLink extends TdFunction {
   String get tdType => 'createChatInviteLink';
   String get tdReturnType => 'ChatInviteLink';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
@@ -25,8 +23,8 @@ class CreateChatInviteLink extends TdFunction {
   Bool? creates_join_request;
 
   CreateChatInviteLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.name,
     this.expiration_date,

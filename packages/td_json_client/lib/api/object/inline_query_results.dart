@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/inline_query_result.dart';
 class InlineQueryResults extends TdObject {
   String get tdType => 'inlineQueryResults';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the inline query 
   int64? inline_query_id;
@@ -26,8 +24,8 @@ class InlineQueryResults extends TdObject {
   string? switch_pm_parameter;
 
   InlineQueryResults({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.inline_query_id,
     this.next_offset,
     this.results,

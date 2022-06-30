@@ -8,15 +8,13 @@ class AddSavedAnimation extends TdFunction {
   String get tdType => 'addSavedAnimation';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The animation file to be added. Only animations known to the server (i.e., successfully sent via a message) can be added to the list
   InputFile? animation;
 
   AddSavedAnimation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.animation,
   });
 

@@ -8,8 +8,6 @@ class TestProxy extends TdFunction {
   String get tdType => 'testProxy';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Proxy server IP address 
   string? server;
@@ -27,8 +25,8 @@ class TestProxy extends TdFunction {
   double? timeout;
 
   TestProxy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.server,
     this.port,
     this.type,

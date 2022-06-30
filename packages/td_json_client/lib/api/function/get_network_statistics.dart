@@ -6,15 +6,13 @@ class GetNetworkStatistics extends TdFunction {
   String get tdType => 'getNetworkStatistics';
   String get tdReturnType => 'NetworkStatistics';
 
-  String? extra;
-  int? client_id;
 
   /// If true, returns only data for the current library launch
   Bool? only_current;
 
   GetNetworkStatistics({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.only_current,
   });
 

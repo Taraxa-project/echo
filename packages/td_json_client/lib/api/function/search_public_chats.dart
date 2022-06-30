@@ -7,15 +7,13 @@ class SearchPublicChats extends TdFunction {
   String get tdType => 'searchPublicChats';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for
   string? query;
 
   SearchPublicChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
   });
 

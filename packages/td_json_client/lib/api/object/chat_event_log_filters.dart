@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatEventLogFilters extends TdObject {
   String get tdType => 'chatEventLogFilters';
 
-  String? extra;
-  int? client_id;
 
   /// True, if message edits need to be returned
   Bool? message_edits;
@@ -45,8 +43,8 @@ class ChatEventLogFilters extends TdObject {
   Bool? video_chat_changes;
 
   ChatEventLogFilters({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message_edits,
     this.message_deletions,
     this.message_pins,

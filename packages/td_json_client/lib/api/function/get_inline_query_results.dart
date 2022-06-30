@@ -8,8 +8,6 @@ class GetInlineQueryResults extends TdFunction {
   String get tdType => 'getInlineQueryResults';
   String get tdReturnType => 'InlineQueryResults';
 
-  String? extra;
-  int? client_id;
 
   /// The identifier of the target bot
   int53? bot_user_id;
@@ -27,8 +25,8 @@ class GetInlineQueryResults extends TdFunction {
   string? offset;
 
   GetInlineQueryResults({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_user_id,
     this.chat_id,
     this.user_location,

@@ -6,15 +6,13 @@ class CheckAuthenticationPassword extends TdFunction {
   String get tdType => 'checkAuthenticationPassword';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The password to check
   string? password;
 
   CheckAuthenticationPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.password,
   });
 

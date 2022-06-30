@@ -6,15 +6,13 @@ class SharePhoneNumber extends TdFunction {
   String get tdType => 'sharePhoneNumber';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the user with whom to share the phone number. The user must be a mutual contact
   int53? user_id;
 
   SharePhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 

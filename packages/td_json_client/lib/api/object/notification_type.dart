@@ -5,22 +5,22 @@ import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/push_message_content.dart';
 
 /// Contains detailed information about a notification
-abstract class NotificationType extends TdObject {}
+abstract class NotificationType extends TdObject {
+  NotificationType({super.extra, super.client_id});
+}
 
 
 /// New message was received 
 class NotificationTypeNewMessage extends NotificationType {
   String get tdType => 'notificationTypeNewMessage';
 
-  String? extra;
-  int? client_id;
 
   /// The message
   Message? message;
 
   NotificationTypeNewMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message,
   });
 
@@ -50,12 +50,10 @@ class NotificationTypeNewMessage extends NotificationType {
 class NotificationTypeNewSecretChat extends NotificationType {
   String get tdType => 'notificationTypeNewSecretChat';
 
-  String? extra;
-  int? client_id;
 
   NotificationTypeNewSecretChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NotificationTypeNewSecretChat.fromMap(Map<String, dynamic> map) {
@@ -80,15 +78,13 @@ class NotificationTypeNewSecretChat extends NotificationType {
 class NotificationTypeNewCall extends NotificationType {
   String get tdType => 'notificationTypeNewCall';
 
-  String? extra;
-  int? client_id;
 
   /// Call identifier
   int32? call_id;
 
   NotificationTypeNewCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.call_id,
   });
 
@@ -116,8 +112,6 @@ class NotificationTypeNewCall extends NotificationType {
 class NotificationTypeNewPushMessage extends NotificationType {
   String get tdType => 'notificationTypeNewPushMessage';
 
-  String? extra;
-  int? client_id;
 
   /// The message identifier. The message will not be available in the chat history, but the ID can be used in viewMessages, or as reply_to_message_id
   int53? message_id;
@@ -135,8 +129,8 @@ class NotificationTypeNewPushMessage extends NotificationType {
   PushMessageContent? content;
 
   NotificationTypeNewPushMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message_id,
     this.sender_id,
     this.sender_name,

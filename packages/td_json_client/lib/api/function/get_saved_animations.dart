@@ -6,12 +6,10 @@ class GetSavedAnimations extends TdFunction {
   String get tdType => 'getSavedAnimations';
   String get tdReturnType => 'Animations';
 
-  String? extra;
-  int? client_id;
 
   GetSavedAnimations({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetSavedAnimations.fromMap(Map<String, dynamic> map) {

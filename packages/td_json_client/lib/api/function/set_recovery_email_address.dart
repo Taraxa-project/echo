@@ -7,8 +7,6 @@ class SetRecoveryEmailAddress extends TdFunction {
   String get tdType => 'setRecoveryEmailAddress';
   String get tdReturnType => 'PasswordState';
 
-  String? extra;
-  int? client_id;
 
   /// Password of the current user 
   string? password;
@@ -17,8 +15,8 @@ class SetRecoveryEmailAddress extends TdFunction {
   string? new_recovery_email_address;
 
   SetRecoveryEmailAddress({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.password,
     this.new_recovery_email_address,
   });

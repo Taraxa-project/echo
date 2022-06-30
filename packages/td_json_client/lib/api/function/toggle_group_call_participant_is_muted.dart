@@ -8,8 +8,6 @@ class ToggleGroupCallParticipantIsMuted extends TdFunction {
   String get tdType => 'toggleGroupCallParticipantIsMuted';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier 
   int32? group_call_id;
@@ -21,8 +19,8 @@ class ToggleGroupCallParticipantIsMuted extends TdFunction {
   Bool? is_muted;
 
   ToggleGroupCallParticipantIsMuted({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.participant_id,
     this.is_muted,

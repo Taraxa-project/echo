@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the last time the user was online
-abstract class UserStatus extends TdObject {}
+abstract class UserStatus extends TdObject {
+  UserStatus({super.extra, super.client_id});
+}
 
 
 /// The user status was never changed
 class UserStatusEmpty extends UserStatus {
   String get tdType => 'userStatusEmpty';
 
-  String? extra;
-  int? client_id;
 
   UserStatusEmpty({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserStatusEmpty.fromMap(Map<String, dynamic> map) {
@@ -38,15 +38,13 @@ class UserStatusEmpty extends UserStatus {
 class UserStatusOnline extends UserStatus {
   String get tdType => 'userStatusOnline';
 
-  String? extra;
-  int? client_id;
 
   /// Point in time (Unix timestamp) when the user's online status will expire
   int32? expires;
 
   UserStatusOnline({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.expires,
   });
 
@@ -74,15 +72,13 @@ class UserStatusOnline extends UserStatus {
 class UserStatusOffline extends UserStatus {
   String get tdType => 'userStatusOffline';
 
-  String? extra;
-  int? client_id;
 
   /// Point in time (Unix timestamp) when the user was last online
   int32? was_online;
 
   UserStatusOffline({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.was_online,
   });
 
@@ -110,12 +106,10 @@ class UserStatusOffline extends UserStatus {
 class UserStatusRecently extends UserStatus {
   String get tdType => 'userStatusRecently';
 
-  String? extra;
-  int? client_id;
 
   UserStatusRecently({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserStatusRecently.fromMap(Map<String, dynamic> map) {
@@ -140,12 +134,10 @@ class UserStatusRecently extends UserStatus {
 class UserStatusLastWeek extends UserStatus {
   String get tdType => 'userStatusLastWeek';
 
-  String? extra;
-  int? client_id;
 
   UserStatusLastWeek({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserStatusLastWeek.fromMap(Map<String, dynamic> map) {
@@ -170,12 +162,10 @@ class UserStatusLastWeek extends UserStatus {
 class UserStatusLastMonth extends UserStatus {
   String get tdType => 'userStatusLastMonth';
 
-  String? extra;
-  int? client_id;
 
   UserStatusLastMonth({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserStatusLastMonth.fromMap(Map<String, dynamic> map) {

@@ -9,15 +9,15 @@ import 'package:td_json_client/api/object/chat_statistics_inviter_info.dart';
 import 'package:td_json_client/api/object/chat_statistics_message_interaction_info.dart';
 
 /// Contains a detailed statistics about a chat
-abstract class ChatStatistics extends TdObject {}
+abstract class ChatStatistics extends TdObject {
+  ChatStatistics({super.extra, super.client_id});
+}
 
 
 /// A detailed statistics about a supergroup chat
 class ChatStatisticsSupergroup extends ChatStatistics {
   String get tdType => 'chatStatisticsSupergroup';
 
-  String? extra;
-  int? client_id;
 
   /// A period to which the statistics applies
   DateRange? period;
@@ -68,8 +68,8 @@ class ChatStatisticsSupergroup extends ChatStatistics {
   vector<ChatStatisticsInviterInfo>? top_inviters;
 
   ChatStatisticsSupergroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.period,
     this.member_count,
     this.message_count,
@@ -189,8 +189,6 @@ class ChatStatisticsSupergroup extends ChatStatistics {
 class ChatStatisticsChannel extends ChatStatistics {
   String get tdType => 'chatStatisticsChannel';
 
-  String? extra;
-  int? client_id;
 
   /// A period to which the statistics applies
   DateRange? period;
@@ -238,8 +236,8 @@ class ChatStatisticsChannel extends ChatStatistics {
   vector<ChatStatisticsMessageInteractionInfo>? recent_message_interactions;
 
   ChatStatisticsChannel({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.period,
     this.member_count,
     this.mean_view_count,

@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/internal_link_type.dart';
 class WebPageInstantView extends TdObject {
   String get tdType => 'webPageInstantView';
 
-  String? extra;
-  int? client_id;
 
   /// Content of the web page
   vector<PageBlock>? page_blocks;
@@ -30,8 +28,8 @@ class WebPageInstantView extends TdObject {
   InternalLinkType? feedback_link;
 
   WebPageInstantView({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.page_blocks,
     this.view_count,
     this.version,

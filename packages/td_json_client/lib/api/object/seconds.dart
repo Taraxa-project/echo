@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class Seconds extends TdObject {
   String get tdType => 'seconds';
 
-  String? extra;
-  int? client_id;
 
   /// Number of seconds
   double? seconds;
 
   Seconds({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.seconds,
   });
 

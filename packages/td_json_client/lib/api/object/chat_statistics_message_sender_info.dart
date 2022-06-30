@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatStatisticsMessageSenderInfo extends TdObject {
   String get tdType => 'chatStatisticsMessageSenderInfo';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier
   int53? user_id;
@@ -18,8 +16,8 @@ class ChatStatisticsMessageSenderInfo extends TdObject {
   int32? average_character_count;
 
   ChatStatisticsMessageSenderInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.sent_message_count,
     this.average_character_count,

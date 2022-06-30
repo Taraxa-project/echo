@@ -8,8 +8,6 @@ class GetChats extends TdFunction {
   String get tdType => 'getChats';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   /// The chat list in which to return chats; pass null to get chats from the main chat list 
   ChatList? chat_list;
@@ -18,8 +16,8 @@ class GetChats extends TdFunction {
   int32? limit;
 
   GetChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_list,
     this.limit,
   });

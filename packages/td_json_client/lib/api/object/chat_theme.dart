@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/theme_settings.dart';
 class ChatTheme extends TdObject {
   String get tdType => 'chatTheme';
 
-  String? extra;
-  int? client_id;
 
   /// Theme name
   string? name;
@@ -20,8 +18,8 @@ class ChatTheme extends TdObject {
   ThemeSettings? dark_settings;
 
   ChatTheme({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.name,
     this.light_settings,
     this.dark_settings,

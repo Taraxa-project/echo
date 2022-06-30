@@ -6,15 +6,13 @@ class CheckRecoveryEmailAddressCode extends TdFunction {
   String get tdType => 'checkRecoveryEmailAddressCode';
   String get tdReturnType => 'PasswordState';
 
-  String? extra;
-  int? client_id;
 
   /// Verification code to check
   string? code;
 
   CheckRecoveryEmailAddressCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.code,
   });
 

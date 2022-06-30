@@ -6,15 +6,13 @@ class TestSquareInt extends TdFunction {
   String get tdType => 'testSquareInt';
   String get tdReturnType => 'TestInt';
 
-  String? extra;
-  int? client_id;
 
   /// Number to square
   int32? x;
 
   TestSquareInt({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.x,
   });
 

@@ -6,15 +6,13 @@ class DeleteProfilePhoto extends TdFunction {
   String get tdType => 'deleteProfilePhoto';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the profile photo to delete
   int64? profile_photo_id;
 
   DeleteProfilePhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.profile_photo_id,
   });
 

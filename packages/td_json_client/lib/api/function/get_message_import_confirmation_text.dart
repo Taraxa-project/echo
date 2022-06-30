@@ -6,15 +6,13 @@ class GetMessageImportConfirmationText extends TdFunction {
   String get tdType => 'getMessageImportConfirmationText';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of a chat to which the messages will be imported. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can_change_info administrator right
   int53? chat_id;
 
   GetMessageImportConfirmationText({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

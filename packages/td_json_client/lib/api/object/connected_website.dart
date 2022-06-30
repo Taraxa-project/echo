@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ConnectedWebsite extends TdObject {
   String get tdType => 'connectedWebsite';
 
-  String? extra;
-  int? client_id;
 
   /// Website identifier
   int64? id;
@@ -36,8 +34,8 @@ class ConnectedWebsite extends TdObject {
   string? location;
 
   ConnectedWebsite({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.domain_name,
     this.bot_user_id,

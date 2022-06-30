@@ -6,15 +6,13 @@ class GetOption extends TdFunction {
   String get tdType => 'getOption';
   String get tdReturnType => 'OptionValue';
 
-  String? extra;
-  int? client_id;
 
   /// The name of the option
   string? name;
 
   GetOption({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.name,
   });
 

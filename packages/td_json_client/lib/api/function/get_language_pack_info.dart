@@ -6,15 +6,13 @@ class GetLanguagePackInfo extends TdFunction {
   String get tdType => 'getLanguagePackInfo';
   String get tdReturnType => 'LanguagePackInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Language pack identifier
   string? language_pack_id;
 
   GetLanguagePackInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language_pack_id,
   });
 

@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class MessagePosition extends TdObject {
   String get tdType => 'messagePosition';
 
-  String? extra;
-  int? client_id;
 
   /// 0-based message position in the full list of suitable messages 
   int32? position;
@@ -18,8 +16,8 @@ class MessagePosition extends TdObject {
   int32? date;
 
   MessagePosition({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.position,
     this.message_id,
     this.date,

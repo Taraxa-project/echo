@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/labeled_price_part.dart';
 class ShippingOption extends TdObject {
   String get tdType => 'shippingOption';
 
-  String? extra;
-  int? client_id;
 
   /// Shipping option identifier 
   string? id;
@@ -20,8 +18,8 @@ class ShippingOption extends TdObject {
   vector<LabeledPricePart>? price_parts;
 
   ShippingOption({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.price_parts,

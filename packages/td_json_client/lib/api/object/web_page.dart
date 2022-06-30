@@ -15,8 +15,6 @@ import 'package:td_json_client/api/object/voice_note.dart';
 class WebPage extends TdObject {
   String get tdType => 'webPage';
 
-  String? extra;
-  int? client_id;
 
   /// Original URL of the link
   string? url;
@@ -81,8 +79,8 @@ class WebPage extends TdObject {
   int32? instant_view_version;
 
   WebPage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
     this.display_url,
     this.type,

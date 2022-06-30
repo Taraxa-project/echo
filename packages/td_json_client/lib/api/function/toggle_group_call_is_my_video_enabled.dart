@@ -6,8 +6,6 @@ class ToggleGroupCallIsMyVideoEnabled extends TdFunction {
   String get tdType => 'toggleGroupCallIsMyVideoEnabled';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier 
   int32? group_call_id;
@@ -16,8 +14,8 @@ class ToggleGroupCallIsMyVideoEnabled extends TdFunction {
   Bool? is_my_video_enabled;
 
   ToggleGroupCallIsMyVideoEnabled({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.is_my_video_enabled,
   });

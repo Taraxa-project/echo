@@ -6,15 +6,13 @@ class GetBasicGroupFullInfo extends TdFunction {
   String get tdType => 'getBasicGroupFullInfo';
   String get tdReturnType => 'BasicGroupFullInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Basic group identifier
   int53? basic_group_id;
 
   GetBasicGroupFullInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.basic_group_id,
   });
 

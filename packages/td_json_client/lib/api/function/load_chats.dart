@@ -8,8 +8,6 @@ class LoadChats extends TdFunction {
   String get tdType => 'loadChats';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The chat list in which to load chats; pass null to load chats from the main chat list
   ChatList? chat_list;
@@ -18,8 +16,8 @@ class LoadChats extends TdFunction {
   int32? limit;
 
   LoadChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_list,
     this.limit,
   });

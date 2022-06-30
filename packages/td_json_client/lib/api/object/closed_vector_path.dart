@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/vector_path_command.dart';
 class ClosedVectorPath extends TdObject {
   String get tdType => 'closedVectorPath';
 
-  String? extra;
-  int? client_id;
 
   /// List of vector path commands
   vector<VectorPathCommand>? commands;
 
   ClosedVectorPath({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.commands,
   });
 

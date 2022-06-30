@@ -6,8 +6,6 @@ class GetStatisticalGraph extends TdFunction {
   String get tdType => 'getStatisticalGraph';
   String get tdReturnType => 'StatisticalGraph';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -19,8 +17,8 @@ class GetStatisticalGraph extends TdFunction {
   int53? x;
 
   GetStatisticalGraph({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.token,
     this.x,

@@ -6,15 +6,13 @@ class ConfirmQrCodeAuthentication extends TdFunction {
   String get tdType => 'confirmQrCodeAuthentication';
   String get tdReturnType => 'Session';
 
-  String? extra;
-  int? client_id;
 
   /// A link from a QR code. The link must be scanned by the in-app camera
   string? link;
 
   ConfirmQrCodeAuthentication({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.link,
   });
 

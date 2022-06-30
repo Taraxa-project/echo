@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message.dart';
 class Messages extends TdObject {
   String get tdType => 'messages';
 
-  String? extra;
-  int? client_id;
 
   /// Approximate total count of messages found 
   int32? total_count;
@@ -17,8 +15,8 @@ class Messages extends TdObject {
   vector<Message>? messages;
 
   Messages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.total_count,
     this.messages,
   });

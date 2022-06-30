@@ -8,15 +8,13 @@ class SetLogStream extends TdFunction {
   String get tdType => 'setLogStream';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// New log stream
   LogStream? log_stream;
 
   SetLogStream({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.log_stream,
   });
 

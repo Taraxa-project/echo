@@ -6,12 +6,10 @@ class ResendAuthenticationCode extends TdFunction {
   String get tdType => 'resendAuthenticationCode';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   ResendAuthenticationCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ResendAuthenticationCode.fromMap(Map<String, dynamic> map) {

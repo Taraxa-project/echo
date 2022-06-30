@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/group_call_participant_video_info.dart
 class GroupCallParticipant extends TdObject {
   String get tdType => 'groupCallParticipant';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the group call participant
   MessageSender? participant_id;
@@ -66,8 +64,8 @@ class GroupCallParticipant extends TdObject {
   string? order;
 
   GroupCallParticipant({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.participant_id,
     this.audio_source_id,
     this.screen_sharing_audio_source_id,

@@ -8,8 +8,6 @@ class SetChatLocation extends TdFunction {
   String get tdType => 'setChatLocation';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -18,8 +16,8 @@ class SetChatLocation extends TdFunction {
   ChatLocation? location;
 
   SetChatLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.location,
   });

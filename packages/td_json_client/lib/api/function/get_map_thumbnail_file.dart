@@ -8,8 +8,6 @@ class GetMapThumbnailFile extends TdFunction {
   String get tdType => 'getMapThumbnailFile';
   String get tdReturnType => 'File';
 
-  String? extra;
-  int? client_id;
 
   /// Location of the map center 
   Location? location;
@@ -30,8 +28,8 @@ class GetMapThumbnailFile extends TdFunction {
   int53? chat_id;
 
   GetMapThumbnailFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.location,
     this.zoom,
     this.width,

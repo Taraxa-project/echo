@@ -6,8 +6,6 @@ class GetMessages extends TdFunction {
   String get tdType => 'getMessages';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat the messages belong to 
   int53? chat_id;
@@ -16,8 +14,8 @@ class GetMessages extends TdFunction {
   vector<int53>? message_ids;
 
   GetMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_ids,
   });

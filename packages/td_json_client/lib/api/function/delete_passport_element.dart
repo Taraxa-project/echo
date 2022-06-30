@@ -8,15 +8,13 @@ class DeletePassportElement extends TdFunction {
   String get tdType => 'deletePassportElement';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Element type
   PassportElementType? type;
 
   DeletePassportElement({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.type,
   });
 

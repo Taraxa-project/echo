@@ -6,12 +6,10 @@ class ResendEmailAddressVerificationCode extends TdFunction {
   String get tdType => 'resendEmailAddressVerificationCode';
   String get tdReturnType => 'EmailAddressAuthenticationCodeInfo';
 
-  String? extra;
-  int? client_id;
 
   ResendEmailAddressVerificationCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ResendEmailAddressVerificationCode.fromMap(Map<String, dynamic> map) {

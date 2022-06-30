@@ -8,8 +8,6 @@ class CreateCall extends TdFunction {
   String get tdType => 'createCall';
   String get tdReturnType => 'CallId';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the user to be called 
   int53? user_id;
@@ -21,8 +19,8 @@ class CreateCall extends TdFunction {
   Bool? is_video;
 
   CreateCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.protocol,
     this.is_video,

@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/user_privacy_setting_rule.dart';
 class UserPrivacySettingRules extends TdObject {
   String get tdType => 'userPrivacySettingRules';
 
-  String? extra;
-  int? client_id;
 
   /// A list of rules
   vector<UserPrivacySettingRule>? rules;
 
   UserPrivacySettingRules({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.rules,
   });
 

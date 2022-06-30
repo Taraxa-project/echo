@@ -4,19 +4,19 @@ import 'package:td_json_client/api/object/authentication_code_info.dart';
 import 'package:td_json_client/api/object/terms_of_service.dart';
 
 /// Represents the current authorization state of the TDLib client
-abstract class AuthorizationState extends TdObject {}
+abstract class AuthorizationState extends TdObject {
+  AuthorizationState({super.extra, super.client_id});
+}
 
 
 /// TDLib needs TdlibParameters for initialization
 class AuthorizationStateWaitTdlibParameters extends AuthorizationState {
   String get tdType => 'authorizationStateWaitTdlibParameters';
 
-  String? extra;
-  int? client_id;
 
   AuthorizationStateWaitTdlibParameters({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   AuthorizationStateWaitTdlibParameters.fromMap(Map<String, dynamic> map) {
@@ -41,15 +41,13 @@ class AuthorizationStateWaitTdlibParameters extends AuthorizationState {
 class AuthorizationStateWaitEncryptionKey extends AuthorizationState {
   String get tdType => 'authorizationStateWaitEncryptionKey';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the database is currently encrypted
   Bool? is_encrypted;
 
   AuthorizationStateWaitEncryptionKey({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_encrypted,
   });
 
@@ -77,12 +75,10 @@ class AuthorizationStateWaitEncryptionKey extends AuthorizationState {
 class AuthorizationStateWaitPhoneNumber extends AuthorizationState {
   String get tdType => 'authorizationStateWaitPhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   AuthorizationStateWaitPhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   AuthorizationStateWaitPhoneNumber.fromMap(Map<String, dynamic> map) {
@@ -107,15 +103,13 @@ class AuthorizationStateWaitPhoneNumber extends AuthorizationState {
 class AuthorizationStateWaitCode extends AuthorizationState {
   String get tdType => 'authorizationStateWaitCode';
 
-  String? extra;
-  int? client_id;
 
   /// Information about the authorization code that was sent
   AuthenticationCodeInfo? code_info;
 
   AuthorizationStateWaitCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.code_info,
   });
 
@@ -145,15 +139,13 @@ class AuthorizationStateWaitCode extends AuthorizationState {
 class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
   String get tdType => 'authorizationStateWaitOtherDeviceConfirmation';
 
-  String? extra;
-  int? client_id;
 
   /// A tg:// URL for the QR code. The link will be updated frequently
   string? link;
 
   AuthorizationStateWaitOtherDeviceConfirmation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.link,
   });
 
@@ -181,15 +173,13 @@ class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
 class AuthorizationStateWaitRegistration extends AuthorizationState {
   String get tdType => 'authorizationStateWaitRegistration';
 
-  String? extra;
-  int? client_id;
 
   /// Telegram terms of service
   TermsOfService? terms_of_service;
 
   AuthorizationStateWaitRegistration({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.terms_of_service,
   });
 
@@ -219,8 +209,6 @@ class AuthorizationStateWaitRegistration extends AuthorizationState {
 class AuthorizationStateWaitPassword extends AuthorizationState {
   String get tdType => 'authorizationStateWaitPassword';
 
-  String? extra;
-  int? client_id;
 
   /// Hint for the password; may be empty 
   string? password_hint;
@@ -232,8 +220,8 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
   string? recovery_email_address_pattern;
 
   AuthorizationStateWaitPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.password_hint,
     this.has_recovery_email_address,
     this.recovery_email_address_pattern,
@@ -267,12 +255,10 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
 class AuthorizationStateReady extends AuthorizationState {
   String get tdType => 'authorizationStateReady';
 
-  String? extra;
-  int? client_id;
 
   AuthorizationStateReady({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   AuthorizationStateReady.fromMap(Map<String, dynamic> map) {
@@ -297,12 +283,10 @@ class AuthorizationStateReady extends AuthorizationState {
 class AuthorizationStateLoggingOut extends AuthorizationState {
   String get tdType => 'authorizationStateLoggingOut';
 
-  String? extra;
-  int? client_id;
 
   AuthorizationStateLoggingOut({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   AuthorizationStateLoggingOut.fromMap(Map<String, dynamic> map) {
@@ -327,12 +311,10 @@ class AuthorizationStateLoggingOut extends AuthorizationState {
 class AuthorizationStateClosing extends AuthorizationState {
   String get tdType => 'authorizationStateClosing';
 
-  String? extra;
-  int? client_id;
 
   AuthorizationStateClosing({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   AuthorizationStateClosing.fromMap(Map<String, dynamic> map) {
@@ -358,12 +340,10 @@ class AuthorizationStateClosing extends AuthorizationState {
 class AuthorizationStateClosed extends AuthorizationState {
   String get tdType => 'authorizationStateClosed';
 
-  String? extra;
-  int? client_id;
 
   AuthorizationStateClosed({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   AuthorizationStateClosed.fromMap(Map<String, dynamic> map) {

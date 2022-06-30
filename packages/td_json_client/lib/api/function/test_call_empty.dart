@@ -6,12 +6,10 @@ class TestCallEmpty extends TdFunction {
   String get tdType => 'testCallEmpty';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   TestCallEmpty({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TestCallEmpty.fromMap(Map<String, dynamic> map) {

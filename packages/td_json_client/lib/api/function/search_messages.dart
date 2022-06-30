@@ -10,8 +10,6 @@ class SearchMessages extends TdFunction {
   String get tdType => 'searchMessages';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   /// Chat list in which to search messages; pass null to search in all chats regardless of their chat list. Only Main and Archive chat lists are supported
   ChatList? chat_list;
@@ -41,8 +39,8 @@ class SearchMessages extends TdFunction {
   int32? max_date;
 
   SearchMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_list,
     this.query,
     this.offset_date,

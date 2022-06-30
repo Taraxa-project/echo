@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/language_pack_string.dart';
 class LanguagePackStrings extends TdObject {
   String get tdType => 'languagePackStrings';
 
-  String? extra;
-  int? client_id;
 
   /// A list of language pack strings
   vector<LanguagePackString>? strings;
 
   LanguagePackStrings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.strings,
   });
 

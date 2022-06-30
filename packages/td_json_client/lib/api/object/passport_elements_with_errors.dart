@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/passport_element_error.dart';
 class PassportElementsWithErrors extends TdObject {
   String get tdType => 'passportElementsWithErrors';
 
-  String? extra;
-  int? client_id;
 
   /// Telegram Passport elements 
   vector<PassportElement>? elements;
@@ -18,8 +16,8 @@ class PassportElementsWithErrors extends TdObject {
   vector<PassportElementError>? errors;
 
   PassportElementsWithErrors({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.elements,
     this.errors,
   });

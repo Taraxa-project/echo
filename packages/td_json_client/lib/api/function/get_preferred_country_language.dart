@@ -6,15 +6,13 @@ class GetPreferredCountryLanguage extends TdFunction {
   String get tdType => 'getPreferredCountryLanguage';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// A two-letter ISO 3166-1 alpha-2 country code
   string? country_code;
 
   GetPreferredCountryLanguage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.country_code,
   });
 

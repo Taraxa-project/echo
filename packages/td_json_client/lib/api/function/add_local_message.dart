@@ -9,8 +9,6 @@ class AddLocalMessage extends TdFunction {
   String get tdType => 'addLocalMessage';
   String get tdReturnType => 'Message';
 
-  String? extra;
-  int? client_id;
 
   /// Target chat
   int53? chat_id;
@@ -28,8 +26,8 @@ class AddLocalMessage extends TdFunction {
   InputMessageContent? input_message_content;
 
   AddLocalMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.sender_id,
     this.reply_to_message_id,

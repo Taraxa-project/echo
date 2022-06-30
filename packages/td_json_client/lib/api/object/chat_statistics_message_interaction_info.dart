@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatStatisticsMessageInteractionInfo extends TdObject {
   String get tdType => 'chatStatisticsMessageInteractionInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Message identifier
   int53? message_id;
@@ -18,8 +16,8 @@ class ChatStatisticsMessageInteractionInfo extends TdObject {
   int32? forward_count;
 
   ChatStatisticsMessageInteractionInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message_id,
     this.view_count,
     this.forward_count,

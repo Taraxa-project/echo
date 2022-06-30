@@ -6,15 +6,13 @@ class GetFileMimeType extends TdFunction {
   String get tdType => 'getFileMimeType';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// The name of the file or path to the file
   string? file_name;
 
   GetFileMimeType({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_name,
   });
 

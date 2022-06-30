@@ -6,15 +6,13 @@ class GetStickerSet extends TdFunction {
   String get tdType => 'getStickerSet';
   String get tdReturnType => 'StickerSet';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the sticker set
   int64? set_id;
 
   GetStickerSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.set_id,
   });
 

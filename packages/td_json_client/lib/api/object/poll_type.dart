@@ -3,22 +3,22 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 
 /// Describes the type of a poll
-abstract class PollType extends TdObject {}
+abstract class PollType extends TdObject {
+  PollType({super.extra, super.client_id});
+}
 
 
 /// A regular poll 
 class PollTypeRegular extends PollType {
   String get tdType => 'pollTypeRegular';
 
-  String? extra;
-  int? client_id;
 
   /// True, if multiple answer options can be chosen simultaneously
   Bool? allow_multiple_answers;
 
   PollTypeRegular({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.allow_multiple_answers,
   });
 
@@ -46,8 +46,6 @@ class PollTypeRegular extends PollType {
 class PollTypeQuiz extends PollType {
   String get tdType => 'pollTypeQuiz';
 
-  String? extra;
-  int? client_id;
 
   /// 0-based identifier of the correct answer option; -1 for a yet unanswered poll
   int32? correct_option_id;
@@ -56,8 +54,8 @@ class PollTypeQuiz extends PollType {
   FormattedText? explanation;
 
   PollTypeQuiz({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.correct_option_id,
     this.explanation,
   });

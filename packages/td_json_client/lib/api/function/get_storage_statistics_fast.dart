@@ -6,12 +6,10 @@ class GetStorageStatisticsFast extends TdFunction {
   String get tdType => 'getStorageStatisticsFast';
   String get tdReturnType => 'StorageStatisticsFast';
 
-  String? extra;
-  int? client_id;
 
   GetStorageStatisticsFast({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetStorageStatisticsFast.fromMap(Map<String, dynamic> map) {

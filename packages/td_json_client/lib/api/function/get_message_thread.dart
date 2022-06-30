@@ -6,8 +6,6 @@ class GetMessageThread extends TdFunction {
   String get tdType => 'getMessageThread';
   String get tdReturnType => 'MessageThreadInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -16,8 +14,8 @@ class GetMessageThread extends TdFunction {
   int53? message_id;
 
   GetMessageThread({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
   });

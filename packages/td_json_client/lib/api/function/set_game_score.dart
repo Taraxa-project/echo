@@ -6,8 +6,6 @@ class SetGameScore extends TdFunction {
   String get tdType => 'setGameScore';
   String get tdReturnType => 'Message';
 
-  String? extra;
-  int? client_id;
 
   /// The chat to which the message with the game belongs 
   int53? chat_id;
@@ -28,8 +26,8 @@ class SetGameScore extends TdFunction {
   Bool? force;
 
   SetGameScore({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.edit_message,

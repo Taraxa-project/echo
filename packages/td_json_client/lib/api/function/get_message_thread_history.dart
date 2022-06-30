@@ -7,8 +7,6 @@ class GetMessageThreadHistory extends TdFunction {
   String get tdType => 'getMessageThreadHistory';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
@@ -26,8 +24,8 @@ class GetMessageThreadHistory extends TdFunction {
   int32? limit;
 
   GetMessageThreadHistory({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.from_message_id,

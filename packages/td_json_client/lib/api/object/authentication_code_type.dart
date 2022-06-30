@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Provides information about the method by which an authentication code is delivered to the user
-abstract class AuthenticationCodeType extends TdObject {}
+abstract class AuthenticationCodeType extends TdObject {
+  AuthenticationCodeType({super.extra, super.client_id});
+}
 
 
 /// An authentication code is delivered via a private Telegram message, which can be viewed from another active session 
 class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeTelegramMessage';
 
-  String? extra;
-  int? client_id;
 
   /// Length of the code
   int32? length;
 
   AuthenticationCodeTypeTelegramMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.length,
   });
 
@@ -44,15 +44,13 @@ class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
 class AuthenticationCodeTypeSms extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeSms';
 
-  String? extra;
-  int? client_id;
 
   /// Length of the code
   int32? length;
 
   AuthenticationCodeTypeSms({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.length,
   });
 
@@ -80,15 +78,13 @@ class AuthenticationCodeTypeSms extends AuthenticationCodeType {
 class AuthenticationCodeTypeCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeCall';
 
-  String? extra;
-  int? client_id;
 
   /// Length of the code
   int32? length;
 
   AuthenticationCodeTypeCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.length,
   });
 
@@ -116,15 +112,13 @@ class AuthenticationCodeTypeCall extends AuthenticationCodeType {
 class AuthenticationCodeTypeFlashCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeFlashCall';
 
-  String? extra;
-  int? client_id;
 
   /// Pattern of the phone number from which the call will be made
   string? pattern;
 
   AuthenticationCodeTypeFlashCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.pattern,
   });
 
@@ -152,8 +146,6 @@ class AuthenticationCodeTypeFlashCall extends AuthenticationCodeType {
 class AuthenticationCodeTypeMissedCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeMissedCall';
 
-  String? extra;
-  int? client_id;
 
   /// Prefix of the phone number from which the call will be made 
   string? phone_number_prefix;
@@ -162,8 +154,8 @@ class AuthenticationCodeTypeMissedCall extends AuthenticationCodeType {
   int32? length;
 
   AuthenticationCodeTypeMissedCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.phone_number_prefix,
     this.length,
   });

@@ -8,8 +8,6 @@ class GetSupergroupMembers extends TdFunction {
   String get tdType => 'getSupergroupMembers';
   String get tdReturnType => 'ChatMembers';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the supergroup or channel
   int53? supergroup_id;
@@ -24,8 +22,8 @@ class GetSupergroupMembers extends TdFunction {
   int32? limit;
 
   GetSupergroupMembers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
     this.filter,
     this.offset,

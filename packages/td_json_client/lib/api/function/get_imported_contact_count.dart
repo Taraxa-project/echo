@@ -6,12 +6,10 @@ class GetImportedContactCount extends TdFunction {
   String get tdType => 'getImportedContactCount';
   String get tdReturnType => 'Count';
 
-  String? extra;
-  int? client_id;
 
   GetImportedContactCount({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetImportedContactCount.fromMap(Map<String, dynamic> map) {

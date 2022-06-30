@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents a payload of a callback query
-abstract class CallbackQueryPayload extends TdObject {}
+abstract class CallbackQueryPayload extends TdObject {
+  CallbackQueryPayload({super.extra, super.client_id});
+}
 
 
 /// The payload for a general callback button 
 class CallbackQueryPayloadData extends CallbackQueryPayload {
   String get tdType => 'callbackQueryPayloadData';
 
-  String? extra;
-  int? client_id;
 
   /// Data that was attached to the callback button
   bytes? data;
 
   CallbackQueryPayloadData({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.data,
   });
 
@@ -44,8 +44,6 @@ class CallbackQueryPayloadData extends CallbackQueryPayload {
 class CallbackQueryPayloadDataWithPassword extends CallbackQueryPayload {
   String get tdType => 'callbackQueryPayloadDataWithPassword';
 
-  String? extra;
-  int? client_id;
 
   /// The password for the current user 
   string? password;
@@ -54,8 +52,8 @@ class CallbackQueryPayloadDataWithPassword extends CallbackQueryPayload {
   bytes? data;
 
   CallbackQueryPayloadDataWithPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.password,
     this.data,
   });
@@ -86,15 +84,13 @@ class CallbackQueryPayloadDataWithPassword extends CallbackQueryPayload {
 class CallbackQueryPayloadGame extends CallbackQueryPayload {
   String get tdType => 'callbackQueryPayloadGame';
 
-  String? extra;
-  int? client_id;
 
   /// A short name of the game that was attached to the callback button
   string? game_short_name;
 
   CallbackQueryPayloadGame({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.game_short_name,
   });
 

@@ -6,15 +6,13 @@ class GetFileExtension extends TdFunction {
   String get tdType => 'getFileExtension';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// The MIME type of the file
   string? mime_type;
 
   GetFileExtension({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.mime_type,
   });
 

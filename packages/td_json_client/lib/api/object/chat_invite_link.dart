@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatInviteLink extends TdObject {
   String get tdType => 'chatInviteLink';
 
-  String? extra;
-  int? client_id;
 
   /// Chat invite link
   string? invite_link;
@@ -45,8 +43,8 @@ class ChatInviteLink extends TdObject {
   Bool? is_revoked;
 
   ChatInviteLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.invite_link,
     this.name,
     this.creator_user_id,

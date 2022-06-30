@@ -6,12 +6,10 @@ class GetRecommendedChatFilters extends TdFunction {
   String get tdType => 'getRecommendedChatFilters';
   String get tdReturnType => 'RecommendedChatFilters';
 
-  String? extra;
-  int? client_id;
 
   GetRecommendedChatFilters({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetRecommendedChatFilters.fromMap(Map<String, dynamic> map) {

@@ -6,15 +6,13 @@ class GetChatInviteLinkCounts extends TdFunction {
   String get tdType => 'getChatInviteLinkCounts';
   String get tdReturnType => 'ChatInviteLinkCounts';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
 
   GetChatInviteLinkCounts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

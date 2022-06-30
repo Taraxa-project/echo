@@ -6,12 +6,10 @@ class DeleteSavedOrderInfo extends TdFunction {
   String get tdType => 'deleteSavedOrderInfo';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   DeleteSavedOrderInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   DeleteSavedOrderInfo.fromMap(Map<String, dynamic> map) {

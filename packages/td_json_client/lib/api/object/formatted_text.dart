@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/text_entity.dart';
 class FormattedText extends TdObject {
   String get tdType => 'formattedText';
 
-  String? extra;
-  int? client_id;
 
   /// The text 
   string? text;
@@ -18,8 +16,8 @@ class FormattedText extends TdObject {
   vector<TextEntity>? entities;
 
   FormattedText({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.entities,
   });

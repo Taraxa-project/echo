@@ -10,8 +10,6 @@ class SearchChatMessages extends TdFunction {
   String get tdType => 'searchChatMessages';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat in which to search messages
   int53? chat_id;
@@ -38,8 +36,8 @@ class SearchChatMessages extends TdFunction {
   int53? message_thread_id;
 
   SearchChatMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.query,
     this.sender_id,

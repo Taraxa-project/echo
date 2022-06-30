@@ -8,15 +8,13 @@ class RemoveFavoriteSticker extends TdFunction {
   String get tdType => 'removeFavoriteSticker';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Sticker file to delete from the list
   InputFile? sticker;
 
   RemoveFavoriteSticker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker,
   });
 

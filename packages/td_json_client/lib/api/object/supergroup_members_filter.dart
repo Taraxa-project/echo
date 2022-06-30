@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Specifies the kind of chat members to return in getSupergroupMembers
-abstract class SupergroupMembersFilter extends TdObject {}
+abstract class SupergroupMembersFilter extends TdObject {
+  SupergroupMembersFilter({super.extra, super.client_id});
+}
 
 
 /// Returns recently active users in reverse chronological order
 class SupergroupMembersFilterRecent extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterRecent';
 
-  String? extra;
-  int? client_id;
 
   SupergroupMembersFilterRecent({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SupergroupMembersFilterRecent.fromMap(Map<String, dynamic> map) {
@@ -38,15 +38,13 @@ class SupergroupMembersFilterRecent extends SupergroupMembersFilter {
 class SupergroupMembersFilterContacts extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterContacts';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for
   string? query;
 
   SupergroupMembersFilterContacts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
   });
 
@@ -74,12 +72,10 @@ class SupergroupMembersFilterContacts extends SupergroupMembersFilter {
 class SupergroupMembersFilterAdministrators extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterAdministrators';
 
-  String? extra;
-  int? client_id;
 
   SupergroupMembersFilterAdministrators({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SupergroupMembersFilterAdministrators.fromMap(Map<String, dynamic> map) {
@@ -104,15 +100,13 @@ class SupergroupMembersFilterAdministrators extends SupergroupMembersFilter {
 class SupergroupMembersFilterSearch extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterSearch';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for
   string? query;
 
   SupergroupMembersFilterSearch({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
   });
 
@@ -140,15 +134,13 @@ class SupergroupMembersFilterSearch extends SupergroupMembersFilter {
 class SupergroupMembersFilterRestricted extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterRestricted';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for
   string? query;
 
   SupergroupMembersFilterRestricted({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
   });
 
@@ -176,15 +168,13 @@ class SupergroupMembersFilterRestricted extends SupergroupMembersFilter {
 class SupergroupMembersFilterBanned extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterBanned';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for
   string? query;
 
   SupergroupMembersFilterBanned({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
   });
 
@@ -212,8 +202,6 @@ class SupergroupMembersFilterBanned extends SupergroupMembersFilter {
 class SupergroupMembersFilterMention extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterMention';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for 
   string? query;
@@ -222,8 +210,8 @@ class SupergroupMembersFilterMention extends SupergroupMembersFilter {
   int53? message_thread_id;
 
   SupergroupMembersFilterMention({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
     this.message_thread_id,
   });
@@ -254,12 +242,10 @@ class SupergroupMembersFilterMention extends SupergroupMembersFilter {
 class SupergroupMembersFilterBots extends SupergroupMembersFilter {
   String get tdType => 'supergroupMembersFilterBots';
 
-  String? extra;
-  int? client_id;
 
   SupergroupMembersFilterBots({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SupergroupMembersFilterBots.fromMap(Map<String, dynamic> map) {

@@ -8,8 +8,6 @@ class SetChatPhoto extends TdFunction {
   String get tdType => 'setChatPhoto';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -18,8 +16,8 @@ class SetChatPhoto extends TdFunction {
   InputChatPhoto? photo;
 
   SetChatPhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.photo,
   });

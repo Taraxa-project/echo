@@ -6,12 +6,10 @@ class LogOut extends TdFunction {
   String get tdType => 'logOut';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   LogOut({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   LogOut.fromMap(Map<String, dynamic> map) {

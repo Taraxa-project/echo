@@ -9,15 +9,13 @@ class ChangeImportedContacts extends TdFunction {
   String get tdType => 'changeImportedContacts';
   String get tdReturnType => 'ImportedContacts';
 
-  String? extra;
-  int? client_id;
 
   /// The new list of contacts, contact's vCard are ignored and are not imported
   vector<Contact>? contacts;
 
   ChangeImportedContacts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.contacts,
   });
 

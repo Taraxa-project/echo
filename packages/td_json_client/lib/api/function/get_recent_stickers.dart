@@ -6,15 +6,13 @@ class GetRecentStickers extends TdFunction {
   String get tdType => 'getRecentStickers';
   String get tdReturnType => 'Stickers';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to return stickers and masks that were recently attached to photos or video files; pass false to return recently sent stickers
   Bool? is_attached;
 
   GetRecentStickers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_attached,
   });
 

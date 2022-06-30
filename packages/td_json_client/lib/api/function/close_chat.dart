@@ -6,15 +6,13 @@ class CloseChat extends TdFunction {
   String get tdType => 'closeChat';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
 
   CloseChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

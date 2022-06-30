@@ -6,12 +6,10 @@ class GetActiveSessions extends TdFunction {
   String get tdType => 'getActiveSessions';
   String get tdReturnType => 'Sessions';
 
-  String? extra;
-  int? client_id;
 
   GetActiveSessions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetActiveSessions.fromMap(Map<String, dynamic> map) {

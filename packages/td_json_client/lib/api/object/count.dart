@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class Count extends TdObject {
   String get tdType => 'count';
 
-  String? extra;
-  int? client_id;
 
   /// Count
   int32? count;
 
   Count({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.count,
   });
 

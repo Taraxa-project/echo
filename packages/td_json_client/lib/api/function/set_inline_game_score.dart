@@ -6,8 +6,6 @@ class SetInlineGameScore extends TdFunction {
   String get tdType => 'setInlineGameScore';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Inline message identifier 
   string? inline_message_id;
@@ -25,8 +23,8 @@ class SetInlineGameScore extends TdFunction {
   Bool? force;
 
   SetInlineGameScore({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.inline_message_id,
     this.edit_message,
     this.user_id,

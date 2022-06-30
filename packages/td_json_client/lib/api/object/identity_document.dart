@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/dated_file.dart';
 class IdentityDocument extends TdObject {
   String get tdType => 'identityDocument';
 
-  String? extra;
-  int? client_id;
 
   /// Document number; 1-24 characters 
   string? number;
@@ -30,8 +28,8 @@ class IdentityDocument extends TdObject {
   vector<DatedFile>? translation;
 
   IdentityDocument({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.number,
     this.expiry_date,
     this.front_side,

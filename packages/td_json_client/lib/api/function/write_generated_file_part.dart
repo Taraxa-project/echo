@@ -6,8 +6,6 @@ class WriteGeneratedFilePart extends TdFunction {
   String get tdType => 'writeGeneratedFilePart';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The identifier of the generation process 
   int64? generation_id;
@@ -19,8 +17,8 @@ class WriteGeneratedFilePart extends TdFunction {
   bytes? data;
 
   WriteGeneratedFilePart({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.generation_id,
     this.offset,
     this.data,

@@ -8,15 +8,13 @@ class SetTdlibParameters extends TdFunction {
   String get tdType => 'setTdlibParameters';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Parameters for TDLib initialization
   TdlibParameters? parameters;
 
   SetTdlibParameters({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.parameters,
   });
 

@@ -6,15 +6,13 @@ class CheckChatInviteLink extends TdFunction {
   String get tdType => 'checkChatInviteLink';
   String get tdReturnType => 'ChatInviteLinkInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Invite link to be checked
   string? invite_link;
 
   CheckChatInviteLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.invite_link,
   });
 

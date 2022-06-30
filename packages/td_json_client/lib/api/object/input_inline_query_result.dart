@@ -7,15 +7,15 @@ import 'package:td_json_client/api/object/location.dart';
 import 'package:td_json_client/api/object/venue.dart';
 
 /// Represents a single result of an inline query; for bots only
-abstract class InputInlineQueryResult extends TdObject {}
+abstract class InputInlineQueryResult extends TdObject {
+  InputInlineQueryResult({super.extra, super.client_id});
+}
 
 
 /// Represents a link to an animated GIF or an animated (i.e., without sound) H.264/MPEG-4 AVC video
 class InputInlineQueryResultAnimation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAnimation';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -51,8 +51,8 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultAnimation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.thumbnail_url,
@@ -114,8 +114,6 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
 class InputInlineQueryResultArticle extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultArticle';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -147,8 +145,8 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultArticle({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.url,
     this.hide_url,
@@ -207,8 +205,6 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
 class InputInlineQueryResultAudio extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAudio';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -232,8 +228,8 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultAudio({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.performer,
@@ -283,8 +279,6 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
 class InputInlineQueryResultContact extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultContact';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -308,8 +302,8 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultContact({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.contact,
     this.thumbnail_url,
@@ -361,8 +355,6 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
 class InputInlineQueryResultDocument extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultDocument';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -394,8 +386,8 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultDocument({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.description,
@@ -454,8 +446,6 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
 class InputInlineQueryResultGame extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultGame';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -467,8 +457,8 @@ class InputInlineQueryResultGame extends InputInlineQueryResult {
   ReplyMarkup? reply_markup;
 
   InputInlineQueryResultGame({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.game_short_name,
     this.reply_markup,
@@ -504,8 +494,6 @@ class InputInlineQueryResultGame extends InputInlineQueryResult {
 class InputInlineQueryResultLocation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultLocation';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -535,8 +523,8 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.location,
     this.live_period,
@@ -594,8 +582,6 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
 class InputInlineQueryResultPhoto extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultPhoto';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -624,8 +610,8 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultPhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.description,
@@ -681,8 +667,6 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
 class InputInlineQueryResultSticker extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultSticker';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -706,8 +690,8 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultSticker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.thumbnail_url,
     this.sticker_url,
@@ -757,8 +741,6 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
 class InputInlineQueryResultVenue extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVenue';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -782,8 +764,8 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultVenue({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.venue,
     this.thumbnail_url,
@@ -835,8 +817,6 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
 class InputInlineQueryResultVideo extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVideo';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -871,8 +851,8 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.description,
@@ -934,8 +914,6 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
 class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVoiceNote';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -956,8 +934,8 @@ class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
   InputMessageContent? input_message_content;
 
   InputInlineQueryResultVoiceNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.voice_note_url,

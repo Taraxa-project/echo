@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class CallbackQueryAnswer extends TdObject {
   String get tdType => 'callbackQueryAnswer';
 
-  String? extra;
-  int? client_id;
 
   /// Text of the answer 
   string? text;
@@ -18,8 +16,8 @@ class CallbackQueryAnswer extends TdObject {
   string? url;
 
   CallbackQueryAnswer({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.show_alert,
     this.url,

@@ -1,15 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Contains information about an inline button of type inlineKeyboardButtonTypeLoginUrl
-abstract class LoginUrlInfo extends TdObject {}
+abstract class LoginUrlInfo extends TdObject {
+  LoginUrlInfo({super.extra, super.client_id});
+}
 
 
 /// An HTTP url needs to be open 
 class LoginUrlInfoOpen extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoOpen';
 
-  String? extra;
-  int? client_id;
 
   /// The URL to open 
   string? url;
@@ -18,8 +18,8 @@ class LoginUrlInfoOpen extends LoginUrlInfo {
   Bool? skip_confirm;
 
   LoginUrlInfoOpen({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
     this.skip_confirm,
   });
@@ -50,8 +50,6 @@ class LoginUrlInfoOpen extends LoginUrlInfo {
 class LoginUrlInfoRequestConfirmation extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoRequestConfirmation';
 
-  String? extra;
-  int? client_id;
 
   /// An HTTP URL to be opened 
   string? url;
@@ -66,8 +64,8 @@ class LoginUrlInfoRequestConfirmation extends LoginUrlInfo {
   Bool? request_write_access;
 
   LoginUrlInfoRequestConfirmation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
     this.domain,
     this.bot_user_id,

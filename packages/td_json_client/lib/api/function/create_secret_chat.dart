@@ -6,15 +6,13 @@ class CreateSecretChat extends TdFunction {
   String get tdType => 'createSecretChat';
   String get tdReturnType => 'Chat';
 
-  String? extra;
-  int? client_id;
 
   /// Secret chat identifier
   int32? secret_chat_id;
 
   CreateSecretChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.secret_chat_id,
   });
 

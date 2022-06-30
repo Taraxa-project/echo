@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents the type of a network
-abstract class NetworkType extends TdObject {}
+abstract class NetworkType extends TdObject {
+  NetworkType({super.extra, super.client_id});
+}
 
 
 /// The network is not available
 class NetworkTypeNone extends NetworkType {
   String get tdType => 'networkTypeNone';
 
-  String? extra;
-  int? client_id;
 
   NetworkTypeNone({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NetworkTypeNone.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class NetworkTypeNone extends NetworkType {
 class NetworkTypeMobile extends NetworkType {
   String get tdType => 'networkTypeMobile';
 
-  String? extra;
-  int? client_id;
 
   NetworkTypeMobile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NetworkTypeMobile.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class NetworkTypeMobile extends NetworkType {
 class NetworkTypeMobileRoaming extends NetworkType {
   String get tdType => 'networkTypeMobileRoaming';
 
-  String? extra;
-  int? client_id;
 
   NetworkTypeMobileRoaming({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NetworkTypeMobileRoaming.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class NetworkTypeMobileRoaming extends NetworkType {
 class NetworkTypeWiFi extends NetworkType {
   String get tdType => 'networkTypeWiFi';
 
-  String? extra;
-  int? client_id;
 
   NetworkTypeWiFi({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NetworkTypeWiFi.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class NetworkTypeWiFi extends NetworkType {
 class NetworkTypeOther extends NetworkType {
   String get tdType => 'networkTypeOther';
 
-  String? extra;
-  int? client_id;
 
   NetworkTypeOther({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NetworkTypeOther.fromMap(Map<String, dynamic> map) {

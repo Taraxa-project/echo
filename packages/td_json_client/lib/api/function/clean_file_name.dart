@@ -6,15 +6,13 @@ class CleanFileName extends TdFunction {
   String get tdType => 'cleanFileName';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// File name or path to the file
   string? file_name;
 
   CleanFileName({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_name,
   });
 

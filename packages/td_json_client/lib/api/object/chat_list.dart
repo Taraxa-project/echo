@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes a list of chats
-abstract class ChatList extends TdObject {}
+abstract class ChatList extends TdObject {
+  ChatList({super.extra, super.client_id});
+}
 
 
 /// A main list of chats
 class ChatListMain extends ChatList {
   String get tdType => 'chatListMain';
 
-  String? extra;
-  int? client_id;
 
   ChatListMain({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatListMain.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class ChatListMain extends ChatList {
 class ChatListArchive extends ChatList {
   String get tdType => 'chatListArchive';
 
-  String? extra;
-  int? client_id;
 
   ChatListArchive({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatListArchive.fromMap(Map<String, dynamic> map) {
@@ -68,15 +66,13 @@ class ChatListArchive extends ChatList {
 class ChatListFilter extends ChatList {
   String get tdType => 'chatListFilter';
 
-  String? extra;
-  int? client_id;
 
   /// Chat filter identifier
   int32? chat_filter_id;
 
   ChatListFilter({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_filter_id,
   });
 

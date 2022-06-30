@@ -6,8 +6,6 @@ class GetLanguagePackStrings extends TdFunction {
   String get tdType => 'getLanguagePackStrings';
   String get tdReturnType => 'LanguagePackStrings';
 
-  String? extra;
-  int? client_id;
 
   /// Language pack identifier of the strings to be returned 
   string? language_pack_id;
@@ -16,8 +14,8 @@ class GetLanguagePackStrings extends TdFunction {
   vector<string>? keys;
 
   GetLanguagePackStrings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language_pack_id,
     this.keys,
   });

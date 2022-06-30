@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message_position.dart';
 class MessagePositions extends TdObject {
   String get tdType => 'messagePositions';
 
-  String? extra;
-  int? client_id;
 
   /// Total count of messages found 
   int32? total_count;
@@ -17,8 +15,8 @@ class MessagePositions extends TdObject {
   vector<MessagePosition>? positions;
 
   MessagePositions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.total_count,
     this.positions,
   });

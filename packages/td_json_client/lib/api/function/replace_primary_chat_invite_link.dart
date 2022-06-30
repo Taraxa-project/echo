@@ -6,15 +6,13 @@ class ReplacePrimaryChatInviteLink extends TdFunction {
   String get tdType => 'replacePrimaryChatInviteLink';
   String get tdReturnType => 'ChatInviteLink';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
 
   ReplacePrimaryChatInviteLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

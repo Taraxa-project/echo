@@ -6,15 +6,13 @@ class SetInactiveSessionTtl extends TdFunction {
   String get tdType => 'setInactiveSessionTtl';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// New number of days of inactivity before sessions will be automatically terminated; 1-366 days
   int32? inactive_session_ttl_days;
 
   SetInactiveSessionTtl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.inactive_session_ttl_days,
   });
 

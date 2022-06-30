@@ -6,15 +6,13 @@ class GetRecentlyOpenedChats extends TdFunction {
   String get tdType => 'getRecentlyOpenedChats';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   /// The maximum number of chats to be returned
   int32? limit;
 
   GetRecentlyOpenedChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.limit,
   });
 

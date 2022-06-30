@@ -6,15 +6,13 @@ class TestCallString extends TdFunction {
   String get tdType => 'testCallString';
   String get tdReturnType => 'TestString';
 
-  String? extra;
-  int? client_id;
 
   /// String to return
   string? x;
 
   TestCallString({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.x,
   });
 

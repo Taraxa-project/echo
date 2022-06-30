@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatNotificationSettings extends TdObject {
   String get tdType => 'chatNotificationSettings';
 
-  String? extra;
-  int? client_id;
 
   /// If true, mute_for is ignored and the value for the relevant type of chat is used instead 
   Bool? use_default_mute_for;
@@ -39,8 +37,8 @@ class ChatNotificationSettings extends TdObject {
   Bool? disable_mention_notifications;
 
   ChatNotificationSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.use_default_mute_for,
     this.mute_for,
     this.use_default_sound,

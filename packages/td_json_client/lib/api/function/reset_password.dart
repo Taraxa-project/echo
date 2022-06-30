@@ -6,12 +6,10 @@ class ResetPassword extends TdFunction {
   String get tdType => 'resetPassword';
   String get tdReturnType => 'ResetPasswordResult';
 
-  String? extra;
-  int? client_id;
 
   ResetPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ResetPassword.fromMap(Map<String, dynamic> map) {

@@ -6,12 +6,10 @@ class RequestPasswordRecovery extends TdFunction {
   String get tdType => 'requestPasswordRecovery';
   String get tdReturnType => 'EmailAddressAuthenticationCodeInfo';
 
-  String? extra;
-  int? client_id;
 
   RequestPasswordRecovery({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   RequestPasswordRecovery.fromMap(Map<String, dynamic> map) {

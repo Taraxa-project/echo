@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class LanguagePackInfo extends TdObject {
   String get tdType => 'languagePackInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Unique language pack identifier
   string? id;
@@ -48,8 +46,8 @@ class LanguagePackInfo extends TdObject {
   string? translation_url;
 
   LanguagePackInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.base_language_pack_id,
     this.name,

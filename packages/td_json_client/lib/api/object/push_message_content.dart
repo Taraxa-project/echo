@@ -10,22 +10,22 @@ import 'package:td_json_client/api/object/video_note.dart';
 import 'package:td_json_client/api/object/voice_note.dart';
 
 /// Contains content of a push message notification
-abstract class PushMessageContent extends TdObject {}
+abstract class PushMessageContent extends TdObject {
+  PushMessageContent({super.extra, super.client_id});
+}
 
 
 /// A general message with hidden content 
 class PushMessageContentHidden extends PushMessageContent {
   String get tdType => 'pushMessageContentHidden';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
 
   PushMessageContentHidden({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_pinned,
   });
 
@@ -53,8 +53,6 @@ class PushMessageContentHidden extends PushMessageContent {
 class PushMessageContentAnimation extends PushMessageContent {
   String get tdType => 'pushMessageContentAnimation';
 
-  String? extra;
-  int? client_id;
 
   /// Message content; may be null 
   Animation? animation;
@@ -66,8 +64,8 @@ class PushMessageContentAnimation extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentAnimation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.animation,
     this.caption,
     this.is_pinned,
@@ -103,8 +101,6 @@ class PushMessageContentAnimation extends PushMessageContent {
 class PushMessageContentAudio extends PushMessageContent {
   String get tdType => 'pushMessageContentAudio';
 
-  String? extra;
-  int? client_id;
 
   /// Message content; may be null 
   Audio? audio;
@@ -113,8 +109,8 @@ class PushMessageContentAudio extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentAudio({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.audio,
     this.is_pinned,
   });
@@ -147,8 +143,6 @@ class PushMessageContentAudio extends PushMessageContent {
 class PushMessageContentContact extends PushMessageContent {
   String get tdType => 'pushMessageContentContact';
 
-  String? extra;
-  int? client_id;
 
   /// Contact's name 
   string? name;
@@ -157,8 +151,8 @@ class PushMessageContentContact extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentContact({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.name,
     this.is_pinned,
   });
@@ -189,12 +183,10 @@ class PushMessageContentContact extends PushMessageContent {
 class PushMessageContentContactRegistered extends PushMessageContent {
   String get tdType => 'pushMessageContentContactRegistered';
 
-  String? extra;
-  int? client_id;
 
   PushMessageContentContactRegistered({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PushMessageContentContactRegistered.fromMap(Map<String, dynamic> map) {
@@ -219,8 +211,6 @@ class PushMessageContentContactRegistered extends PushMessageContent {
 class PushMessageContentDocument extends PushMessageContent {
   String get tdType => 'pushMessageContentDocument';
 
-  String? extra;
-  int? client_id;
 
   /// Message content; may be null 
   Document? document;
@@ -229,8 +219,8 @@ class PushMessageContentDocument extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentDocument({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.document,
     this.is_pinned,
   });
@@ -263,8 +253,6 @@ class PushMessageContentDocument extends PushMessageContent {
 class PushMessageContentGame extends PushMessageContent {
   String get tdType => 'pushMessageContentGame';
 
-  String? extra;
-  int? client_id;
 
   /// Game title, empty for pinned game message 
   string? title;
@@ -273,8 +261,8 @@ class PushMessageContentGame extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentGame({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.is_pinned,
   });
@@ -305,8 +293,6 @@ class PushMessageContentGame extends PushMessageContent {
 class PushMessageContentGameScore extends PushMessageContent {
   String get tdType => 'pushMessageContentGameScore';
 
-  String? extra;
-  int? client_id;
 
   /// Game title, empty for pinned message 
   string? title;
@@ -318,8 +304,8 @@ class PushMessageContentGameScore extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentGameScore({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.score,
     this.is_pinned,
@@ -353,8 +339,6 @@ class PushMessageContentGameScore extends PushMessageContent {
 class PushMessageContentInvoice extends PushMessageContent {
   String get tdType => 'pushMessageContentInvoice';
 
-  String? extra;
-  int? client_id;
 
   /// Product price 
   string? price;
@@ -363,8 +347,8 @@ class PushMessageContentInvoice extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentInvoice({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.price,
     this.is_pinned,
   });
@@ -395,8 +379,6 @@ class PushMessageContentInvoice extends PushMessageContent {
 class PushMessageContentLocation extends PushMessageContent {
   String get tdType => 'pushMessageContentLocation';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the location is live 
   Bool? is_live;
@@ -405,8 +387,8 @@ class PushMessageContentLocation extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_live,
     this.is_pinned,
   });
@@ -437,8 +419,6 @@ class PushMessageContentLocation extends PushMessageContent {
 class PushMessageContentPhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentPhoto';
 
-  String? extra;
-  int? client_id;
 
   /// Message content; may be null 
   Photo? photo;
@@ -453,8 +433,8 @@ class PushMessageContentPhoto extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentPhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.photo,
     this.caption,
     this.is_secret,
@@ -493,8 +473,6 @@ class PushMessageContentPhoto extends PushMessageContent {
 class PushMessageContentPoll extends PushMessageContent {
   String get tdType => 'pushMessageContentPoll';
 
-  String? extra;
-  int? client_id;
 
   /// Poll question 
   string? question;
@@ -506,8 +484,8 @@ class PushMessageContentPoll extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentPoll({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.question,
     this.is_regular,
     this.is_pinned,
@@ -541,12 +519,10 @@ class PushMessageContentPoll extends PushMessageContent {
 class PushMessageContentScreenshotTaken extends PushMessageContent {
   String get tdType => 'pushMessageContentScreenshotTaken';
 
-  String? extra;
-  int? client_id;
 
   PushMessageContentScreenshotTaken({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PushMessageContentScreenshotTaken.fromMap(Map<String, dynamic> map) {
@@ -571,8 +547,6 @@ class PushMessageContentScreenshotTaken extends PushMessageContent {
 class PushMessageContentSticker extends PushMessageContent {
   String get tdType => 'pushMessageContentSticker';
 
-  String? extra;
-  int? client_id;
 
   /// Message content; may be null 
   Sticker? sticker;
@@ -584,8 +558,8 @@ class PushMessageContentSticker extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentSticker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker,
     this.emoji,
     this.is_pinned,
@@ -621,8 +595,6 @@ class PushMessageContentSticker extends PushMessageContent {
 class PushMessageContentText extends PushMessageContent {
   String get tdType => 'pushMessageContentText';
 
-  String? extra;
-  int? client_id;
 
   /// Message text 
   string? text;
@@ -631,8 +603,8 @@ class PushMessageContentText extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentText({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.is_pinned,
   });
@@ -663,8 +635,6 @@ class PushMessageContentText extends PushMessageContent {
 class PushMessageContentVideo extends PushMessageContent {
   String get tdType => 'pushMessageContentVideo';
 
-  String? extra;
-  int? client_id;
 
   /// Message content; may be null 
   Video? video;
@@ -679,8 +649,8 @@ class PushMessageContentVideo extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.video,
     this.caption,
     this.is_secret,
@@ -719,8 +689,6 @@ class PushMessageContentVideo extends PushMessageContent {
 class PushMessageContentVideoNote extends PushMessageContent {
   String get tdType => 'pushMessageContentVideoNote';
 
-  String? extra;
-  int? client_id;
 
   /// Message content; may be null 
   VideoNote? video_note;
@@ -729,8 +697,8 @@ class PushMessageContentVideoNote extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentVideoNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.video_note,
     this.is_pinned,
   });
@@ -763,8 +731,6 @@ class PushMessageContentVideoNote extends PushMessageContent {
 class PushMessageContentVoiceNote extends PushMessageContent {
   String get tdType => 'pushMessageContentVoiceNote';
 
-  String? extra;
-  int? client_id;
 
   /// Message content; may be null 
   VoiceNote? voice_note;
@@ -773,8 +739,8 @@ class PushMessageContentVoiceNote extends PushMessageContent {
   Bool? is_pinned;
 
   PushMessageContentVoiceNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.voice_note,
     this.is_pinned,
   });
@@ -807,12 +773,10 @@ class PushMessageContentVoiceNote extends PushMessageContent {
 class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
   String get tdType => 'pushMessageContentBasicGroupChatCreate';
 
-  String? extra;
-  int? client_id;
 
   PushMessageContentBasicGroupChatCreate({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PushMessageContentBasicGroupChatCreate.fromMap(Map<String, dynamic> map) {
@@ -837,8 +801,6 @@ class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
 class PushMessageContentChatAddMembers extends PushMessageContent {
   String get tdType => 'pushMessageContentChatAddMembers';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the added member 
   string? member_name;
@@ -850,8 +812,8 @@ class PushMessageContentChatAddMembers extends PushMessageContent {
   Bool? is_returned;
 
   PushMessageContentChatAddMembers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.member_name,
     this.is_current_user,
     this.is_returned,
@@ -885,12 +847,10 @@ class PushMessageContentChatAddMembers extends PushMessageContent {
 class PushMessageContentChatChangePhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentChatChangePhoto';
 
-  String? extra;
-  int? client_id;
 
   PushMessageContentChatChangePhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PushMessageContentChatChangePhoto.fromMap(Map<String, dynamic> map) {
@@ -915,15 +875,13 @@ class PushMessageContentChatChangePhoto extends PushMessageContent {
 class PushMessageContentChatChangeTitle extends PushMessageContent {
   String get tdType => 'pushMessageContentChatChangeTitle';
 
-  String? extra;
-  int? client_id;
 
   /// New chat title
   string? title;
 
   PushMessageContentChatChangeTitle({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
   });
 
@@ -951,15 +909,13 @@ class PushMessageContentChatChangeTitle extends PushMessageContent {
 class PushMessageContentChatSetTheme extends PushMessageContent {
   String get tdType => 'pushMessageContentChatSetTheme';
 
-  String? extra;
-  int? client_id;
 
   /// If non-empty, name of a new theme, set for the chat. Otherwise chat theme was reset to the default one
   string? theme_name;
 
   PushMessageContentChatSetTheme({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.theme_name,
   });
 
@@ -987,8 +943,6 @@ class PushMessageContentChatSetTheme extends PushMessageContent {
 class PushMessageContentChatDeleteMember extends PushMessageContent {
   String get tdType => 'pushMessageContentChatDeleteMember';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the deleted member 
   string? member_name;
@@ -1000,8 +954,8 @@ class PushMessageContentChatDeleteMember extends PushMessageContent {
   Bool? is_left;
 
   PushMessageContentChatDeleteMember({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.member_name,
     this.is_current_user,
     this.is_left,
@@ -1035,12 +989,10 @@ class PushMessageContentChatDeleteMember extends PushMessageContent {
 class PushMessageContentChatJoinByLink extends PushMessageContent {
   String get tdType => 'pushMessageContentChatJoinByLink';
 
-  String? extra;
-  int? client_id;
 
   PushMessageContentChatJoinByLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PushMessageContentChatJoinByLink.fromMap(Map<String, dynamic> map) {
@@ -1065,12 +1017,10 @@ class PushMessageContentChatJoinByLink extends PushMessageContent {
 class PushMessageContentChatJoinByRequest extends PushMessageContent {
   String get tdType => 'pushMessageContentChatJoinByRequest';
 
-  String? extra;
-  int? client_id;
 
   PushMessageContentChatJoinByRequest({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PushMessageContentChatJoinByRequest.fromMap(Map<String, dynamic> map) {
@@ -1095,15 +1045,13 @@ class PushMessageContentChatJoinByRequest extends PushMessageContent {
 class PushMessageContentMessageForwards extends PushMessageContent {
   String get tdType => 'pushMessageContentMessageForwards';
 
-  String? extra;
-  int? client_id;
 
   /// Number of forwarded messages
   int32? total_count;
 
   PushMessageContentMessageForwards({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.total_count,
   });
 
@@ -1131,8 +1079,6 @@ class PushMessageContentMessageForwards extends PushMessageContent {
 class PushMessageContentMediaAlbum extends PushMessageContent {
   String get tdType => 'pushMessageContentMediaAlbum';
 
-  String? extra;
-  int? client_id;
 
   /// Number of messages in the album 
   int32? total_count;
@@ -1150,8 +1096,8 @@ class PushMessageContentMediaAlbum extends PushMessageContent {
   Bool? has_documents;
 
   PushMessageContentMediaAlbum({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.total_count,
     this.has_photos,
     this.has_videos,

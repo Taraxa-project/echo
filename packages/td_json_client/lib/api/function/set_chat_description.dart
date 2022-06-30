@@ -6,8 +6,6 @@ class SetChatDescription extends TdFunction {
   String get tdType => 'setChatDescription';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat 
   int53? chat_id;
@@ -15,8 +13,8 @@ class SetChatDescription extends TdFunction {
   string? description;
 
   SetChatDescription({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.description,
   });

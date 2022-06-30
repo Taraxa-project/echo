@@ -6,12 +6,10 @@ class GetInactiveSupergroupChats extends TdFunction {
   String get tdType => 'getInactiveSupergroupChats';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   GetInactiveSupergroupChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetInactiveSupergroupChats.fromMap(Map<String, dynamic> map) {

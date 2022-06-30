@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the type of notifications in a notification group
-abstract class NotificationGroupType extends TdObject {}
+abstract class NotificationGroupType extends TdObject {
+  NotificationGroupType({super.extra, super.client_id});
+}
 
 
 /// A group containing notifications of type notificationTypeNewMessage and notificationTypeNewPushMessage with ordinary unread messages
 class NotificationGroupTypeMessages extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeMessages';
 
-  String? extra;
-  int? client_id;
 
   NotificationGroupTypeMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NotificationGroupTypeMessages.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class NotificationGroupTypeMessages extends NotificationGroupType {
 class NotificationGroupTypeMentions extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeMentions';
 
-  String? extra;
-  int? client_id;
 
   NotificationGroupTypeMentions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NotificationGroupTypeMentions.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class NotificationGroupTypeMentions extends NotificationGroupType {
 class NotificationGroupTypeSecretChat extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeSecretChat';
 
-  String? extra;
-  int? client_id;
 
   NotificationGroupTypeSecretChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NotificationGroupTypeSecretChat.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class NotificationGroupTypeSecretChat extends NotificationGroupType {
 class NotificationGroupTypeCalls extends NotificationGroupType {
   String get tdType => 'notificationGroupTypeCalls';
 
-  String? extra;
-  int? client_id;
 
   NotificationGroupTypeCalls({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NotificationGroupTypeCalls.fromMap(Map<String, dynamic> map) {

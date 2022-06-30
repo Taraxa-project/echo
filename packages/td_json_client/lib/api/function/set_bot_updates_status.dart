@@ -6,8 +6,6 @@ class SetBotUpdatesStatus extends TdFunction {
   String get tdType => 'setBotUpdatesStatus';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The number of pending updates 
   int32? pending_update_count;
@@ -16,8 +14,8 @@ class SetBotUpdatesStatus extends TdFunction {
   string? error_message;
 
   SetBotUpdatesStatus({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.pending_update_count,
     this.error_message,
   });

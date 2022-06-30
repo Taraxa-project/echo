@@ -6,8 +6,6 @@ class ReorderInstalledStickerSets extends TdFunction {
   String get tdType => 'reorderInstalledStickerSets';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to change the order of mask sticker sets; pass false to change the order of ordinary sticker sets 
   Bool? is_masks;
@@ -16,8 +14,8 @@ class ReorderInstalledStickerSets extends TdFunction {
   vector<int64>? sticker_set_ids;
 
   ReorderInstalledStickerSets({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_masks,
     this.sticker_set_ids,
   });

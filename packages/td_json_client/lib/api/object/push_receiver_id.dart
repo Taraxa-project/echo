@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class PushReceiverId extends TdObject {
   String get tdType => 'pushReceiverId';
 
-  String? extra;
-  int? client_id;
 
   /// The globally unique identifier of push notification subscription
   int64? id;
 
   PushReceiverId({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
   });
 

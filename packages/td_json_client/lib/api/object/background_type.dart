@@ -3,15 +3,15 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/background_fill.dart';
 
 /// Describes the type of a background
-abstract class BackgroundType extends TdObject {}
+abstract class BackgroundType extends TdObject {
+  BackgroundType({super.extra, super.client_id});
+}
 
 
 /// A wallpaper in JPEG format
 class BackgroundTypeWallpaper extends BackgroundType {
   String get tdType => 'backgroundTypeWallpaper';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the wallpaper must be downscaled to fit in 450x450 square and then box-blurred with radius 12
   Bool? is_blurred;
@@ -20,8 +20,8 @@ class BackgroundTypeWallpaper extends BackgroundType {
   Bool? is_moving;
 
   BackgroundTypeWallpaper({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_blurred,
     this.is_moving,
   });
@@ -52,8 +52,6 @@ class BackgroundTypeWallpaper extends BackgroundType {
 class BackgroundTypePattern extends BackgroundType {
   String get tdType => 'backgroundTypePattern';
 
-  String? extra;
-  int? client_id;
 
   /// Fill of the background
   BackgroundFill? fill;
@@ -68,8 +66,8 @@ class BackgroundTypePattern extends BackgroundType {
   Bool? is_moving;
 
   BackgroundTypePattern({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.fill,
     this.intensity,
     this.is_inverted,
@@ -108,15 +106,13 @@ class BackgroundTypePattern extends BackgroundType {
 class BackgroundTypeFill extends BackgroundType {
   String get tdType => 'backgroundTypeFill';
 
-  String? extra;
-  int? client_id;
 
   /// The background fill
   BackgroundFill? fill;
 
   BackgroundTypeFill({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.fill,
   });
 

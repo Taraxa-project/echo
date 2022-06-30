@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/page_block.dart';
 class PageBlockListItem extends TdObject {
   String get tdType => 'pageBlockListItem';
 
-  String? extra;
-  int? client_id;
 
   /// Item label 
   string? label;
@@ -17,8 +15,8 @@ class PageBlockListItem extends TdObject {
   vector<PageBlock>? page_blocks;
 
   PageBlockListItem({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.label,
     this.page_blocks,
   });

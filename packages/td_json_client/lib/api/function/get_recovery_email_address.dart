@@ -6,15 +6,13 @@ class GetRecoveryEmailAddress extends TdFunction {
   String get tdType => 'getRecoveryEmailAddress';
   String get tdReturnType => 'RecoveryEmailAddress';
 
-  String? extra;
-  int? client_id;
 
   /// The password for the current user
   string? password;
 
   GetRecoveryEmailAddress({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.password,
   });
 

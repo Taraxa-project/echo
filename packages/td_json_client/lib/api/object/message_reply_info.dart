@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message_sender.dart';
 class MessageReplyInfo extends TdObject {
   String get tdType => 'messageReplyInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Number of times the message was directly or indirectly replied
   int32? reply_count;
@@ -26,8 +24,8 @@ class MessageReplyInfo extends TdObject {
   int53? last_message_id;
 
   MessageReplyInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.reply_count,
     this.recent_replier_ids,
     this.last_read_inbox_message_id,

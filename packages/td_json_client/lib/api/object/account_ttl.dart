@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class AccountTtl extends TdObject {
   String get tdType => 'accountTtl';
 
-  String? extra;
-  int? client_id;
 
   /// Number of days of inactivity before the account will be flagged for deletion; 30-366 days
   int32? days;
 
   AccountTtl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.days,
   });
 

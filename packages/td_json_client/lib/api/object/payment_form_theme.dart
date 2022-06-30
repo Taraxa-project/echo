@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class PaymentFormTheme extends TdObject {
   String get tdType => 'paymentFormTheme';
 
-  String? extra;
-  int? client_id;
 
   /// A color of the payment form background in the RGB24 format 
   int32? background_color;
@@ -27,8 +25,8 @@ class PaymentFormTheme extends TdObject {
   int32? button_text_color;
 
   PaymentFormTheme({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.background_color,
     this.text_color,
     this.hint_color,

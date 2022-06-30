@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes format of the thumbnail
-abstract class ThumbnailFormat extends TdObject {}
+abstract class ThumbnailFormat extends TdObject {
+  ThumbnailFormat({super.extra, super.client_id});
+}
 
 
 /// The thumbnail is in JPEG format
 class ThumbnailFormatJpeg extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatJpeg';
 
-  String? extra;
-  int? client_id;
 
   ThumbnailFormatJpeg({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ThumbnailFormatJpeg.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class ThumbnailFormatJpeg extends ThumbnailFormat {
 class ThumbnailFormatPng extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatPng';
 
-  String? extra;
-  int? client_id;
 
   ThumbnailFormatPng({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ThumbnailFormatPng.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class ThumbnailFormatPng extends ThumbnailFormat {
 class ThumbnailFormatWebp extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatWebp';
 
-  String? extra;
-  int? client_id;
 
   ThumbnailFormatWebp({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ThumbnailFormatWebp.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class ThumbnailFormatWebp extends ThumbnailFormat {
 class ThumbnailFormatGif extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatGif';
 
-  String? extra;
-  int? client_id;
 
   ThumbnailFormatGif({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ThumbnailFormatGif.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class ThumbnailFormatGif extends ThumbnailFormat {
 class ThumbnailFormatTgs extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatTgs';
 
-  String? extra;
-  int? client_id;
 
   ThumbnailFormatTgs({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ThumbnailFormatTgs.fromMap(Map<String, dynamic> map) {
@@ -158,12 +150,10 @@ class ThumbnailFormatTgs extends ThumbnailFormat {
 class ThumbnailFormatMpeg4 extends ThumbnailFormat {
   String get tdType => 'thumbnailFormatMpeg4';
 
-  String? extra;
-  int? client_id;
 
   ThumbnailFormatMpeg4({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ThumbnailFormatMpeg4.fromMap(Map<String, dynamic> map) {

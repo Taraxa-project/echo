@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents the type of a user. The following types are possible: regular users, deleted users and bots
-abstract class UserType extends TdObject {}
+abstract class UserType extends TdObject {
+  UserType({super.extra, super.client_id});
+}
 
 
 /// A regular user
 class UserTypeRegular extends UserType {
   String get tdType => 'userTypeRegular';
 
-  String? extra;
-  int? client_id;
 
   UserTypeRegular({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserTypeRegular.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class UserTypeRegular extends UserType {
 class UserTypeDeleted extends UserType {
   String get tdType => 'userTypeDeleted';
 
-  String? extra;
-  int? client_id;
 
   UserTypeDeleted({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserTypeDeleted.fromMap(Map<String, dynamic> map) {
@@ -68,8 +66,6 @@ class UserTypeDeleted extends UserType {
 class UserTypeBot extends UserType {
   String get tdType => 'userTypeBot';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the bot can be invited to basic group and supergroup chats
   Bool? can_join_groups;
@@ -87,8 +83,8 @@ class UserTypeBot extends UserType {
   Bool? need_location;
 
   UserTypeBot({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.can_join_groups,
     this.can_read_all_group_messages,
     this.is_inline,
@@ -128,12 +124,10 @@ class UserTypeBot extends UserType {
 class UserTypeUnknown extends UserType {
   String get tdType => 'userTypeUnknown';
 
-  String? extra;
-  int? client_id;
 
   UserTypeUnknown({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserTypeUnknown.fromMap(Map<String, dynamic> map) {

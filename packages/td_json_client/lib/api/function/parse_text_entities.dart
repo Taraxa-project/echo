@@ -8,8 +8,6 @@ class ParseTextEntities extends TdFunction {
   String get tdType => 'parseTextEntities';
   String get tdReturnType => 'FormattedText';
 
-  String? extra;
-  int? client_id;
 
   /// The text to parse 
   string? text;
@@ -18,8 +16,8 @@ class ParseTextEntities extends TdFunction {
   TextParseMode? parse_mode;
 
   ParseTextEntities({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.parse_mode,
   });

@@ -8,8 +8,6 @@ class SetStickerPositionInSet extends TdFunction {
   String get tdType => 'setStickerPositionInSet';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Sticker 
   InputFile? sticker;
@@ -18,8 +16,8 @@ class SetStickerPositionInSet extends TdFunction {
   int32? position;
 
   SetStickerPositionInSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker,
     this.position,
   });

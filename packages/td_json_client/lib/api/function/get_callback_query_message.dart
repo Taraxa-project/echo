@@ -6,8 +6,6 @@ class GetCallbackQueryMessage extends TdFunction {
   String get tdType => 'getCallbackQueryMessage';
   String get tdReturnType => 'Message';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat the message belongs to 
   int53? chat_id;
@@ -19,8 +17,8 @@ class GetCallbackQueryMessage extends TdFunction {
   int64? callback_query_id;
 
   GetCallbackQueryMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.callback_query_id,

@@ -6,15 +6,13 @@ class DeleteAccount extends TdFunction {
   String get tdType => 'deleteAccount';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The reason why the account was deleted; optional
   string? reason;
 
   DeleteAccount({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.reason,
   });
 

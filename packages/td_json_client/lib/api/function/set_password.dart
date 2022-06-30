@@ -6,8 +6,6 @@ class SetPassword extends TdFunction {
   String get tdType => 'setPassword';
   String get tdReturnType => 'PasswordState';
 
-  String? extra;
-  int? client_id;
 
   /// Previous password of the user 
   string? old_password;
@@ -25,8 +23,8 @@ class SetPassword extends TdFunction {
   string? new_recovery_email_address;
 
   SetPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.old_password,
     this.new_password,
     this.new_hint,

@@ -6,8 +6,6 @@ class GetLanguagePackString extends TdFunction {
   String get tdType => 'getLanguagePackString';
   String get tdReturnType => 'LanguagePackStringValue';
 
-  String? extra;
-  int? client_id;
 
   /// Path to the language pack database in which strings are stored 
   string? language_pack_database_path;
@@ -22,8 +20,8 @@ class GetLanguagePackString extends TdFunction {
   string? key;
 
   GetLanguagePackString({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language_pack_database_path,
     this.localization_target,
     this.language_pack_id,

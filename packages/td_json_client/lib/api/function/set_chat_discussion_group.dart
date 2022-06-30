@@ -6,8 +6,6 @@ class SetChatDiscussionGroup extends TdFunction {
   String get tdType => 'setChatDiscussionGroup';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the channel chat. Pass 0 to remove a link from the supergroup passed in the second argument to a linked channel chat (requires can_pin_messages rights in the supergroup) 
   int53? chat_id;
@@ -17,8 +15,8 @@ class SetChatDiscussionGroup extends TdFunction {
   int53? discussion_chat_id;
 
   SetChatDiscussionGroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.discussion_chat_id,
   });

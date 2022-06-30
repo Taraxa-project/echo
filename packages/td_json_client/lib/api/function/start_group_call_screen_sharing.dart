@@ -6,8 +6,6 @@ class StartGroupCallScreenSharing extends TdFunction {
   String get tdType => 'startGroupCallScreenSharing';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier
   int32? group_call_id;
@@ -19,8 +17,8 @@ class StartGroupCallScreenSharing extends TdFunction {
   string? payload;
 
   StartGroupCallScreenSharing({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.audio_source_id,
     this.payload,

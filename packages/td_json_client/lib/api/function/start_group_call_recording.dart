@@ -6,8 +6,6 @@ class StartGroupCallRecording extends TdFunction {
   String get tdType => 'startGroupCallRecording';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier 
   int32? group_call_id;
@@ -22,8 +20,8 @@ class StartGroupCallRecording extends TdFunction {
   Bool? use_portrait_orientation;
 
   StartGroupCallRecording({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.title,
     this.record_video,

@@ -6,15 +6,13 @@ class AcceptTermsOfService extends TdFunction {
   String get tdType => 'acceptTermsOfService';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Terms of service identifier
   string? terms_of_service_id;
 
   AcceptTermsOfService({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.terms_of_service_id,
   });
 

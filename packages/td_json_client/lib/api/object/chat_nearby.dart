@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatNearby extends TdObject {
   String get tdType => 'chatNearby';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -15,8 +13,8 @@ class ChatNearby extends TdObject {
   int32? distance;
 
   ChatNearby({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.distance,
   });

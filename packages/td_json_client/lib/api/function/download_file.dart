@@ -6,8 +6,6 @@ class DownloadFile extends TdFunction {
   String get tdType => 'downloadFile';
   String get tdReturnType => 'File';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the file to download
   int32? file_id;
@@ -26,8 +24,8 @@ class DownloadFile extends TdFunction {
   Bool? synchronous;
 
   DownloadFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
     this.priority,
     this.offset,

@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/shipping_option.dart';
 class ValidatedOrderInfo extends TdObject {
   String get tdType => 'validatedOrderInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Temporary identifier of the order information 
   string? order_info_id;
@@ -17,8 +15,8 @@ class ValidatedOrderInfo extends TdObject {
   vector<ShippingOption>? shipping_options;
 
   ValidatedOrderInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.order_info_id,
     this.shipping_options,
   });

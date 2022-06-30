@@ -9,8 +9,6 @@ class UploadFile extends TdFunction {
   String get tdType => 'uploadFile';
   String get tdReturnType => 'File';
 
-  String? extra;
-  int? client_id;
 
   /// File to upload
   InputFile? file;
@@ -22,8 +20,8 @@ class UploadFile extends TdFunction {
   int32? priority;
 
   UploadFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file,
     this.file_type,
     this.priority,

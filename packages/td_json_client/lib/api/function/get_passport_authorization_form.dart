@@ -6,8 +6,6 @@ class GetPassportAuthorizationForm extends TdFunction {
   String get tdType => 'getPassportAuthorizationForm';
   String get tdReturnType => 'PassportAuthorizationForm';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier of the service's bot 
   int53? bot_user_id;
@@ -22,8 +20,8 @@ class GetPassportAuthorizationForm extends TdFunction {
   string? nonce;
 
   GetPassportAuthorizationForm({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_user_id,
     this.scope,
     this.public_key,

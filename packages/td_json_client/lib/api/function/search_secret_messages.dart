@@ -8,8 +8,6 @@ class SearchSecretMessages extends TdFunction {
   String get tdType => 'searchSecretMessages';
   String get tdReturnType => 'FoundMessages';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat in which to search. Specify 0 to search in all secret chats
   int53? chat_id;
@@ -27,8 +25,8 @@ class SearchSecretMessages extends TdFunction {
   SearchMessagesFilter? filter;
 
   SearchSecretMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.query,
     this.offset,

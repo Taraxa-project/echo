@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class PaymentResult extends TdObject {
   String get tdType => 'paymentResult';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the payment request was successful; otherwise the verification_url will be non-empty 
   Bool? success;
@@ -15,8 +13,8 @@ class PaymentResult extends TdObject {
   string? verification_url;
 
   PaymentResult({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.success,
     this.verification_url,
   });

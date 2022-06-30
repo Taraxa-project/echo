@@ -9,8 +9,6 @@ import 'package:td_json_client/api/object/user_type.dart';
 class User extends TdObject {
   String get tdType => 'user';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier
   int53? id;
@@ -64,8 +62,8 @@ class User extends TdObject {
   string? language_code;
 
   User({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.first_name,
     this.last_name,

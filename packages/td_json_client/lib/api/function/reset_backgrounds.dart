@@ -6,12 +6,10 @@ class ResetBackgrounds extends TdFunction {
   String get tdType => 'resetBackgrounds';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   ResetBackgrounds({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ResetBackgrounds.fromMap(Map<String, dynamic> map) {

@@ -9,8 +9,6 @@ class SetUserPrivacySettingRules extends TdFunction {
   String get tdType => 'setUserPrivacySettingRules';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The privacy setting 
   UserPrivacySetting? setting;
@@ -19,8 +17,8 @@ class SetUserPrivacySettingRules extends TdFunction {
   UserPrivacySettingRules? rules;
 
   SetUserPrivacySettingRules({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.setting,
     this.rules,
   });

@@ -9,8 +9,6 @@ class EditMessageLiveLocation extends TdFunction {
   String get tdType => 'editMessageLiveLocation';
   String get tdReturnType => 'Message';
 
-  String? extra;
-  int? client_id;
 
   /// The chat the message belongs to
   int53? chat_id;
@@ -31,8 +29,8 @@ class EditMessageLiveLocation extends TdFunction {
   int32? proximity_alert_radius;
 
   EditMessageLiveLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.reply_markup,

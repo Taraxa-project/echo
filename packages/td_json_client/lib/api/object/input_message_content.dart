@@ -11,15 +11,15 @@ import 'package:td_json_client/api/object/poll_type.dart';
 import 'package:td_json_client/api/object/message_copy_options.dart';
 
 /// The content of a message to send
-abstract class InputMessageContent extends TdObject {}
+abstract class InputMessageContent extends TdObject {
+  InputMessageContent({super.extra, super.client_id});
+}
 
 
 /// A text message 
 class InputMessageText extends InputMessageContent {
   String get tdType => 'inputMessageText';
 
-  String? extra;
-  int? client_id;
 
   /// Formatted text to be sent; 1-GetOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
   FormattedText? text;
@@ -31,8 +31,8 @@ class InputMessageText extends InputMessageContent {
   Bool? clear_draft;
 
   InputMessageText({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.disable_web_page_preview,
     this.clear_draft,
@@ -68,8 +68,6 @@ class InputMessageText extends InputMessageContent {
 class InputMessageAnimation extends InputMessageContent {
   String get tdType => 'inputMessageAnimation';
 
-  String? extra;
-  int? client_id;
 
   /// Animation file to be sent 
   InputFile? animation;
@@ -93,8 +91,8 @@ class InputMessageAnimation extends InputMessageContent {
   FormattedText? caption;
 
   InputMessageAnimation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.animation,
     this.thumbnail,
     this.added_sticker_file_ids,
@@ -151,8 +149,6 @@ class InputMessageAnimation extends InputMessageContent {
 class InputMessageAudio extends InputMessageContent {
   String get tdType => 'inputMessageAudio';
 
-  String? extra;
-  int? client_id;
 
   /// Audio file to be sent 
   InputFile? audio;
@@ -173,8 +169,8 @@ class InputMessageAudio extends InputMessageContent {
   FormattedText? caption;
 
   InputMessageAudio({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.audio,
     this.album_cover_thumbnail,
     this.duration,
@@ -223,8 +219,6 @@ class InputMessageAudio extends InputMessageContent {
 class InputMessageDocument extends InputMessageContent {
   String get tdType => 'inputMessageDocument';
 
-  String? extra;
-  int? client_id;
 
   /// Document to be sent 
   InputFile? document;
@@ -239,8 +233,8 @@ class InputMessageDocument extends InputMessageContent {
   FormattedText? caption;
 
   InputMessageDocument({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.document,
     this.thumbnail,
     this.disable_content_type_detection,
@@ -283,8 +277,6 @@ class InputMessageDocument extends InputMessageContent {
 class InputMessagePhoto extends InputMessageContent {
   String get tdType => 'inputMessagePhoto';
 
-  String? extra;
-  int? client_id;
 
   /// Photo to send 
   InputFile? photo;
@@ -308,8 +300,8 @@ class InputMessagePhoto extends InputMessageContent {
   int32? ttl;
 
   InputMessagePhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.photo,
     this.thumbnail,
     this.added_sticker_file_ids,
@@ -366,8 +358,6 @@ class InputMessagePhoto extends InputMessageContent {
 class InputMessageSticker extends InputMessageContent {
   String get tdType => 'inputMessageSticker';
 
-  String? extra;
-  int? client_id;
 
   /// Sticker to be sent 
   InputFile? sticker;
@@ -385,8 +375,8 @@ class InputMessageSticker extends InputMessageContent {
   string? emoji;
 
   InputMessageSticker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker,
     this.thumbnail,
     this.width,
@@ -430,8 +420,6 @@ class InputMessageSticker extends InputMessageContent {
 class InputMessageVideo extends InputMessageContent {
   String get tdType => 'inputMessageVideo';
 
-  String? extra;
-  int? client_id;
 
   /// Video to be sent 
   InputFile? video;
@@ -461,8 +449,8 @@ class InputMessageVideo extends InputMessageContent {
   int32? ttl;
 
   InputMessageVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.video,
     this.thumbnail,
     this.added_sticker_file_ids,
@@ -525,8 +513,6 @@ class InputMessageVideo extends InputMessageContent {
 class InputMessageVideoNote extends InputMessageContent {
   String get tdType => 'inputMessageVideoNote';
 
-  String? extra;
-  int? client_id;
 
   /// Video note to be sent 
   InputFile? video_note;
@@ -541,8 +527,8 @@ class InputMessageVideoNote extends InputMessageContent {
   int32? length;
 
   InputMessageVideoNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.video_note,
     this.thumbnail,
     this.duration,
@@ -583,8 +569,6 @@ class InputMessageVideoNote extends InputMessageContent {
 class InputMessageVoiceNote extends InputMessageContent {
   String get tdType => 'inputMessageVoiceNote';
 
-  String? extra;
-  int? client_id;
 
   /// Voice note to be sent 
   InputFile? voice_note;
@@ -599,8 +583,8 @@ class InputMessageVoiceNote extends InputMessageContent {
   FormattedText? caption;
 
   InputMessageVoiceNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.voice_note,
     this.duration,
     this.waveform,
@@ -641,8 +625,6 @@ class InputMessageVoiceNote extends InputMessageContent {
 class InputMessageLocation extends InputMessageContent {
   String get tdType => 'inputMessageLocation';
 
-  String? extra;
-  int? client_id;
 
   /// Location to be sent 
   Location? location;
@@ -657,8 +639,8 @@ class InputMessageLocation extends InputMessageContent {
   int32? proximity_alert_radius;
 
   InputMessageLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.location,
     this.live_period,
     this.heading,
@@ -697,15 +679,13 @@ class InputMessageLocation extends InputMessageContent {
 class InputMessageVenue extends InputMessageContent {
   String get tdType => 'inputMessageVenue';
 
-  String? extra;
-  int? client_id;
 
   /// Venue to send
   Venue? venue;
 
   InputMessageVenue({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.venue,
   });
 
@@ -735,15 +715,13 @@ class InputMessageVenue extends InputMessageContent {
 class InputMessageContact extends InputMessageContent {
   String get tdType => 'inputMessageContact';
 
-  String? extra;
-  int? client_id;
 
   /// Contact to send
   Contact? contact;
 
   InputMessageContact({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.contact,
   });
 
@@ -773,8 +751,6 @@ class InputMessageContact extends InputMessageContent {
 class InputMessageDice extends InputMessageContent {
   String get tdType => 'inputMessageDice';
 
-  String? extra;
-  int? client_id;
 
   /// Emoji on which the dice throw animation is based 
   string? emoji;
@@ -783,8 +759,8 @@ class InputMessageDice extends InputMessageContent {
   Bool? clear_draft;
 
   InputMessageDice({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.emoji,
     this.clear_draft,
   });
@@ -815,8 +791,6 @@ class InputMessageDice extends InputMessageContent {
 class InputMessageGame extends InputMessageContent {
   String get tdType => 'inputMessageGame';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier of the bot that owns the game 
   int53? bot_user_id;
@@ -825,8 +799,8 @@ class InputMessageGame extends InputMessageContent {
   string? game_short_name;
 
   InputMessageGame({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_user_id,
     this.game_short_name,
   });
@@ -857,8 +831,6 @@ class InputMessageGame extends InputMessageContent {
 class InputMessageInvoice extends InputMessageContent {
   String get tdType => 'inputMessageInvoice';
 
-  String? extra;
-  int? client_id;
 
   /// Invoice 
   Invoice? invoice;
@@ -893,8 +865,8 @@ class InputMessageInvoice extends InputMessageContent {
   string? start_parameter;
 
   InputMessageInvoice({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.invoice,
     this.title,
     this.description,
@@ -954,8 +926,6 @@ class InputMessageInvoice extends InputMessageContent {
 class InputMessagePoll extends InputMessageContent {
   String get tdType => 'inputMessagePoll';
 
-  String? extra;
-  int? client_id;
 
   /// Poll question; 1-255 characters (up to 300 characters for bots) 
   string? question;
@@ -979,8 +949,8 @@ class InputMessagePoll extends InputMessageContent {
   Bool? is_closed;
 
   InputMessagePoll({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.question,
     this.options,
     this.is_anonymous,
@@ -1033,8 +1003,6 @@ class InputMessagePoll extends InputMessageContent {
 class InputMessageForwarded extends InputMessageContent {
   String get tdType => 'inputMessageForwarded';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier for the chat this forwarded message came from 
   int53? from_chat_id;
@@ -1049,8 +1017,8 @@ class InputMessageForwarded extends InputMessageContent {
   MessageCopyOptions? copy_options;
 
   InputMessageForwarded({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.from_chat_id,
     this.message_id,
     this.in_game_share,

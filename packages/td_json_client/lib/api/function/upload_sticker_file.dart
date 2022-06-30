@@ -8,8 +8,6 @@ class UploadStickerFile extends TdFunction {
   String get tdType => 'uploadStickerFile';
   String get tdReturnType => 'File';
 
-  String? extra;
-  int? client_id;
 
   /// Sticker file owner; ignored for regular users 
   int53? user_id;
@@ -18,8 +16,8 @@ class UploadStickerFile extends TdFunction {
   InputSticker? sticker;
 
   UploadStickerFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.sticker,
   });

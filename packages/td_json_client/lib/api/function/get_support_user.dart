@@ -6,12 +6,10 @@ class GetSupportUser extends TdFunction {
   String get tdType => 'getSupportUser';
   String get tdReturnType => 'User';
 
-  String? extra;
-  int? client_id;
 
   GetSupportUser({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetSupportUser.fromMap(Map<String, dynamic> map) {

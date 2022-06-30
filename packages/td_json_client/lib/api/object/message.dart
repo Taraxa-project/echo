@@ -13,8 +13,6 @@ import 'package:td_json_client/api/object/reply_markup.dart';
 class Message extends TdObject {
   String get tdType => 'message';
 
-  String? extra;
-  int? client_id;
 
   /// Message identifier; unique for the chat to which the message belongs
   int53? id;
@@ -119,8 +117,8 @@ class Message extends TdObject {
   ReplyMarkup? reply_markup;
 
   Message({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.sender_id,
     this.chat_id,

@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the types of chats to which notification settings are relevant
-abstract class NotificationSettingsScope extends TdObject {}
+abstract class NotificationSettingsScope extends TdObject {
+  NotificationSettingsScope({super.extra, super.client_id});
+}
 
 
 /// Notification settings applied to all private and secret chats when the corresponding chat setting has a default value
 class NotificationSettingsScopePrivateChats extends NotificationSettingsScope {
   String get tdType => 'notificationSettingsScopePrivateChats';
 
-  String? extra;
-  int? client_id;
 
   NotificationSettingsScopePrivateChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NotificationSettingsScopePrivateChats.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class NotificationSettingsScopePrivateChats extends NotificationSettingsScope {
 class NotificationSettingsScopeGroupChats extends NotificationSettingsScope {
   String get tdType => 'notificationSettingsScopeGroupChats';
 
-  String? extra;
-  int? client_id;
 
   NotificationSettingsScopeGroupChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NotificationSettingsScopeGroupChats.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class NotificationSettingsScopeGroupChats extends NotificationSettingsScope {
 class NotificationSettingsScopeChannelChats extends NotificationSettingsScope {
   String get tdType => 'notificationSettingsScopeChannelChats';
 
-  String? extra;
-  int? client_id;
 
   NotificationSettingsScopeChannelChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   NotificationSettingsScopeChannelChats.fromMap(Map<String, dynamic> map) {

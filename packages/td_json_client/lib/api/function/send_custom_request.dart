@@ -6,8 +6,6 @@ class SendCustomRequest extends TdFunction {
   String get tdType => 'sendCustomRequest';
   String get tdReturnType => 'CustomRequestResult';
 
-  String? extra;
-  int? client_id;
 
   /// The method name 
   string? method;
@@ -16,8 +14,8 @@ class SendCustomRequest extends TdFunction {
   string? parameters;
 
   SendCustomRequest({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.method,
     this.parameters,
   });

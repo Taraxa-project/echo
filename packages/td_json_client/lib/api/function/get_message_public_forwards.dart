@@ -6,8 +6,6 @@ class GetMessagePublicForwards extends TdFunction {
   String get tdType => 'getMessagePublicForwards';
   String get tdReturnType => 'FoundMessages';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier of the message
   int53? chat_id;
@@ -22,8 +20,8 @@ class GetMessagePublicForwards extends TdFunction {
   int32? limit;
 
   GetMessagePublicForwards({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.offset,

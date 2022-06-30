@@ -8,8 +8,6 @@ class RemoveRecentSticker extends TdFunction {
   String get tdType => 'removeRecentSticker';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to remove the sticker from the list of stickers recently attached to photo or video files; pass false to remove the sticker from the list of recently sent stickers 
   Bool? is_attached;
@@ -18,8 +16,8 @@ class RemoveRecentSticker extends TdFunction {
   InputFile? sticker;
 
   RemoveRecentSticker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_attached,
     this.sticker,
   });

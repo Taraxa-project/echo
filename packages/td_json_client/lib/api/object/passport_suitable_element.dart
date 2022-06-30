@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/passport_element_type.dart';
 class PassportSuitableElement extends TdObject {
   String get tdType => 'passportSuitableElement';
 
-  String? extra;
-  int? client_id;
 
   /// Type of the element 
   PassportElementType? type;
@@ -23,8 +21,8 @@ class PassportSuitableElement extends TdObject {
   Bool? is_native_name_required;
 
   PassportSuitableElement({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.type,
     this.is_selfie_required,
     this.is_translation_required,

@@ -8,8 +8,6 @@ class EditProxy extends TdFunction {
   String get tdType => 'editProxy';
   String get tdReturnType => 'Proxy';
 
-  String? extra;
-  int? client_id;
 
   /// Proxy identifier 
   int32? proxy_id;
@@ -27,8 +25,8 @@ class EditProxy extends TdFunction {
   ProxyType? type;
 
   EditProxy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.proxy_id,
     this.server,
     this.port,

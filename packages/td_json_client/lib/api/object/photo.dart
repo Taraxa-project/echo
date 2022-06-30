@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/photo_size.dart';
 class Photo extends TdObject {
   String get tdType => 'photo';
 
-  String? extra;
-  int? client_id;
 
   /// True, if stickers were added to the photo. The list of corresponding sticker sets can be received using getAttachedStickerSets
   Bool? has_stickers;
@@ -21,8 +19,8 @@ class Photo extends TdObject {
   vector<PhotoSize>? sizes;
 
   Photo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.has_stickers,
     this.minithumbnail,
     this.sizes,

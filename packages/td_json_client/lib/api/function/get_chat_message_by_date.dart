@@ -6,8 +6,6 @@ class GetChatMessageByDate extends TdFunction {
   String get tdType => 'getChatMessageByDate';
   String get tdReturnType => 'Message';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -16,8 +14,8 @@ class GetChatMessageByDate extends TdFunction {
   int32? date;
 
   GetChatMessageByDate({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.date,
   });

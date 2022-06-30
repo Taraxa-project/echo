@@ -56,6 +56,8 @@ class TdJsonClient with TdJsonClientLoggy {
   }
 
   Future<void> send(int clientId, TdFunction request) async {
+    request.client_id = clientId;
+
     String requestJson = request.toJson();
     loggy.info('Sending $requestJson from client id $clientId...');
     _libTdJson.td_send(clientId, requestJson.toNativeUtf8().cast<ffi.Char>());

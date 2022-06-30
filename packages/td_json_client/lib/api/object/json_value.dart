@@ -3,19 +3,19 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/json_object_member.dart';
 
 /// Represents a JSON value
-abstract class JsonValue extends TdObject {}
+abstract class JsonValue extends TdObject {
+  JsonValue({super.extra, super.client_id});
+}
 
 
 /// Represents a null JSON value
 class JsonValueNull extends JsonValue {
   String get tdType => 'jsonValueNull';
 
-  String? extra;
-  int? client_id;
 
   JsonValueNull({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   JsonValueNull.fromMap(Map<String, dynamic> map) {
@@ -40,15 +40,13 @@ class JsonValueNull extends JsonValue {
 class JsonValueBoolean extends JsonValue {
   String get tdType => 'jsonValueBoolean';
 
-  String? extra;
-  int? client_id;
 
   /// The value
   Bool? value;
 
   JsonValueBoolean({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.value,
   });
 
@@ -76,15 +74,13 @@ class JsonValueBoolean extends JsonValue {
 class JsonValueNumber extends JsonValue {
   String get tdType => 'jsonValueNumber';
 
-  String? extra;
-  int? client_id;
 
   /// The value
   double? value;
 
   JsonValueNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.value,
   });
 
@@ -112,15 +108,13 @@ class JsonValueNumber extends JsonValue {
 class JsonValueString extends JsonValue {
   String get tdType => 'jsonValueString';
 
-  String? extra;
-  int? client_id;
 
   /// The value
   string? value;
 
   JsonValueString({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.value,
   });
 
@@ -148,15 +142,13 @@ class JsonValueString extends JsonValue {
 class JsonValueArray extends JsonValue {
   String get tdType => 'jsonValueArray';
 
-  String? extra;
-  int? client_id;
 
   /// The list of array elements
   vector<JsonValue>? values;
 
   JsonValueArray({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.values,
   });
 
@@ -189,15 +181,13 @@ class JsonValueArray extends JsonValue {
 class JsonValueObject extends JsonValue {
   String get tdType => 'jsonValueObject';
 
-  String? extra;
-  int? client_id;
 
   /// The list of object members
   vector<JsonObjectMember>? members;
 
   JsonValueObject({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.members,
   });
 

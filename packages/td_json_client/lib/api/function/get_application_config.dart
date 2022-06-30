@@ -6,12 +6,10 @@ class GetApplicationConfig extends TdFunction {
   String get tdType => 'getApplicationConfig';
   String get tdReturnType => 'JsonValue';
 
-  String? extra;
-  int? client_id;
 
   GetApplicationConfig({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetApplicationConfig.fromMap(Map<String, dynamic> map) {

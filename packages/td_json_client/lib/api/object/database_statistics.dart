@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class DatabaseStatistics extends TdObject {
   String get tdType => 'databaseStatistics';
 
-  String? extra;
-  int? client_id;
 
   /// Database statistics in an unspecified human-readable format
   string? statistics;
 
   DatabaseStatistics({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.statistics,
   });
 

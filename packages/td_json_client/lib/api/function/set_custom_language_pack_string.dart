@@ -8,8 +8,6 @@ class SetCustomLanguagePackString extends TdFunction {
   String get tdType => 'setCustomLanguagePackString';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of a previously added custom local language pack in the current localization target 
   string? language_pack_id;
@@ -18,8 +16,8 @@ class SetCustomLanguagePackString extends TdFunction {
   LanguagePackString? new_string;
 
   SetCustomLanguagePackString({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language_pack_id,
     this.new_string,
   });

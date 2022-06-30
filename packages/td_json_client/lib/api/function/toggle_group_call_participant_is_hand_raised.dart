@@ -8,8 +8,6 @@ class ToggleGroupCallParticipantIsHandRaised extends TdFunction {
   String get tdType => 'toggleGroupCallParticipantIsHandRaised';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier 
   int32? group_call_id;
@@ -21,8 +19,8 @@ class ToggleGroupCallParticipantIsHandRaised extends TdFunction {
   Bool? is_hand_raised;
 
   ToggleGroupCallParticipantIsHandRaised({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.participant_id,
     this.is_hand_raised,

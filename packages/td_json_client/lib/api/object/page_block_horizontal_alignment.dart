@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes a horizontal alignment of a table cell content
-abstract class PageBlockHorizontalAlignment extends TdObject {}
+abstract class PageBlockHorizontalAlignment extends TdObject {
+  PageBlockHorizontalAlignment({super.extra, super.client_id});
+}
 
 
 /// The content must be left-aligned
 class PageBlockHorizontalAlignmentLeft extends PageBlockHorizontalAlignment {
   String get tdType => 'pageBlockHorizontalAlignmentLeft';
 
-  String? extra;
-  int? client_id;
 
   PageBlockHorizontalAlignmentLeft({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PageBlockHorizontalAlignmentLeft.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class PageBlockHorizontalAlignmentLeft extends PageBlockHorizontalAlignment {
 class PageBlockHorizontalAlignmentCenter extends PageBlockHorizontalAlignment {
   String get tdType => 'pageBlockHorizontalAlignmentCenter';
 
-  String? extra;
-  int? client_id;
 
   PageBlockHorizontalAlignmentCenter({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PageBlockHorizontalAlignmentCenter.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class PageBlockHorizontalAlignmentCenter extends PageBlockHorizontalAlignment {
 class PageBlockHorizontalAlignmentRight extends PageBlockHorizontalAlignment {
   String get tdType => 'pageBlockHorizontalAlignmentRight';
 
-  String? extra;
-  int? client_id;
 
   PageBlockHorizontalAlignmentRight({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PageBlockHorizontalAlignmentRight.fromMap(Map<String, dynamic> map) {

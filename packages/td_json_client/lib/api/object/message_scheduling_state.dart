@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Contains information about the time when a scheduled message will be sent
-abstract class MessageSchedulingState extends TdObject {}
+abstract class MessageSchedulingState extends TdObject {
+  MessageSchedulingState({super.extra, super.client_id});
+}
 
 
 /// The message will be sent at the specified date 
 class MessageSchedulingStateSendAtDate extends MessageSchedulingState {
   String get tdType => 'messageSchedulingStateSendAtDate';
 
-  String? extra;
-  int? client_id;
 
   /// Date the message will be sent. The date must be within 367 days in the future
   int32? send_date;
 
   MessageSchedulingStateSendAtDate({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.send_date,
   });
 
@@ -44,12 +44,10 @@ class MessageSchedulingStateSendAtDate extends MessageSchedulingState {
 class MessageSchedulingStateSendWhenOnline extends MessageSchedulingState {
   String get tdType => 'messageSchedulingStateSendWhenOnline';
 
-  String? extra;
-  int? client_id;
 
   MessageSchedulingStateSendWhenOnline({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageSchedulingStateSendWhenOnline.fromMap(Map<String, dynamic> map) {

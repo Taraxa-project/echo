@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Contains information about the sending state of the message
-abstract class MessageSendingState extends TdObject {}
+abstract class MessageSendingState extends TdObject {
+  MessageSendingState({super.extra, super.client_id});
+}
 
 
 /// The message is being sent now, but has not yet been delivered to the server
 class MessageSendingStatePending extends MessageSendingState {
   String get tdType => 'messageSendingStatePending';
 
-  String? extra;
-  int? client_id;
 
   MessageSendingStatePending({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MessageSendingStatePending.fromMap(Map<String, dynamic> map) {
@@ -38,8 +38,6 @@ class MessageSendingStatePending extends MessageSendingState {
 class MessageSendingStateFailed extends MessageSendingState {
   String get tdType => 'messageSendingStateFailed';
 
-  String? extra;
-  int? client_id;
 
   /// An error code; 0 if unknown 
   int32? error_code;
@@ -57,8 +55,8 @@ class MessageSendingStateFailed extends MessageSendingState {
   double? retry_after;
 
   MessageSendingStateFailed({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.error_code,
     this.error_message,
     this.can_retry,

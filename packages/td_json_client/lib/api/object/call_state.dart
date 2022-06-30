@@ -6,15 +6,15 @@ import 'package:td_json_client/api/object/call_discard_reason.dart';
 import 'package:td_json_client/api/object/error.dart';
 
 /// Describes the current call state
-abstract class CallState extends TdObject {}
+abstract class CallState extends TdObject {
+  CallState({super.extra, super.client_id});
+}
 
 
 /// The call is pending, waiting to be accepted by a user 
 class CallStatePending extends CallState {
   String get tdType => 'callStatePending';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the call has already been created by the server 
   Bool? is_created;
@@ -23,8 +23,8 @@ class CallStatePending extends CallState {
   Bool? is_received;
 
   CallStatePending({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_created,
     this.is_received,
   });
@@ -55,12 +55,10 @@ class CallStatePending extends CallState {
 class CallStateExchangingKeys extends CallState {
   String get tdType => 'callStateExchangingKeys';
 
-  String? extra;
-  int? client_id;
 
   CallStateExchangingKeys({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallStateExchangingKeys.fromMap(Map<String, dynamic> map) {
@@ -85,8 +83,6 @@ class CallStateExchangingKeys extends CallState {
 class CallStateReady extends CallState {
   String get tdType => 'callStateReady';
 
-  String? extra;
-  int? client_id;
 
   /// Call protocols supported by the peer 
   CallProtocol? protocol;
@@ -107,8 +103,8 @@ class CallStateReady extends CallState {
   Bool? allow_p2p;
 
   CallStateReady({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.protocol,
     this.servers,
     this.config,
@@ -165,12 +161,10 @@ class CallStateReady extends CallState {
 class CallStateHangingUp extends CallState {
   String get tdType => 'callStateHangingUp';
 
-  String? extra;
-  int? client_id;
 
   CallStateHangingUp({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallStateHangingUp.fromMap(Map<String, dynamic> map) {
@@ -195,8 +189,6 @@ class CallStateHangingUp extends CallState {
 class CallStateDiscarded extends CallState {
   String get tdType => 'callStateDiscarded';
 
-  String? extra;
-  int? client_id;
 
   /// The reason, why the call has ended 
   CallDiscardReason? reason;
@@ -208,8 +200,8 @@ class CallStateDiscarded extends CallState {
   Bool? need_debug_information;
 
   CallStateDiscarded({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.reason,
     this.need_rating,
     this.need_debug_information,
@@ -245,15 +237,13 @@ class CallStateDiscarded extends CallState {
 class CallStateError extends CallState {
   String get tdType => 'callStateError';
 
-  String? extra;
-  int? client_id;
 
   /// Error. An error with the code 4005000 will be returned if an outgoing call is missed because of an expired timeout
   Error? error;
 
   CallStateError({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.error,
   });
 

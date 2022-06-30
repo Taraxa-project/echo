@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Contains information about the origin of a forwarded message
-abstract class MessageForwardOrigin extends TdObject {}
+abstract class MessageForwardOrigin extends TdObject {
+  MessageForwardOrigin({super.extra, super.client_id});
+}
 
 
 /// The message was originally sent by a known user 
 class MessageForwardOriginUser extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginUser';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the user that originally sent the message
   int53? sender_user_id;
 
   MessageForwardOriginUser({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sender_user_id,
   });
 
@@ -44,8 +44,6 @@ class MessageForwardOriginUser extends MessageForwardOrigin {
 class MessageForwardOriginChat extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginChat';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat that originally sent the message
   int53? sender_chat_id;
@@ -54,8 +52,8 @@ class MessageForwardOriginChat extends MessageForwardOrigin {
   string? author_signature;
 
   MessageForwardOriginChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sender_chat_id,
     this.author_signature,
   });
@@ -86,15 +84,13 @@ class MessageForwardOriginChat extends MessageForwardOrigin {
 class MessageForwardOriginHiddenUser extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginHiddenUser';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the sender
   string? sender_name;
 
   MessageForwardOriginHiddenUser({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sender_name,
   });
 
@@ -122,8 +118,6 @@ class MessageForwardOriginHiddenUser extends MessageForwardOrigin {
 class MessageForwardOriginChannel extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginChannel';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat from which the message was originally forwarded
   int53? chat_id;
@@ -135,8 +129,8 @@ class MessageForwardOriginChannel extends MessageForwardOrigin {
   string? author_signature;
 
   MessageForwardOriginChannel({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.author_signature,
@@ -170,15 +164,13 @@ class MessageForwardOriginChannel extends MessageForwardOrigin {
 class MessageForwardOriginMessageImport extends MessageForwardOrigin {
   String get tdType => 'messageForwardOriginMessageImport';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the sender
   string? sender_name;
 
   MessageForwardOriginMessageImport({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sender_name,
   });
 

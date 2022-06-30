@@ -6,12 +6,10 @@ class TerminateAllOtherSessions extends TdFunction {
   String get tdType => 'terminateAllOtherSessions';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   TerminateAllOtherSessions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TerminateAllOtherSessions.fromMap(Map<String, dynamic> map) {

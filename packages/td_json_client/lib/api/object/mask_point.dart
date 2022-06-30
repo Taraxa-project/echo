@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Part of the face, relative to which a mask is placed
-abstract class MaskPoint extends TdObject {}
+abstract class MaskPoint extends TdObject {
+  MaskPoint({super.extra, super.client_id});
+}
 
 
 /// The mask is placed relatively to the forehead
 class MaskPointForehead extends MaskPoint {
   String get tdType => 'maskPointForehead';
 
-  String? extra;
-  int? client_id;
 
   MaskPointForehead({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MaskPointForehead.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class MaskPointForehead extends MaskPoint {
 class MaskPointEyes extends MaskPoint {
   String get tdType => 'maskPointEyes';
 
-  String? extra;
-  int? client_id;
 
   MaskPointEyes({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MaskPointEyes.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class MaskPointEyes extends MaskPoint {
 class MaskPointMouth extends MaskPoint {
   String get tdType => 'maskPointMouth';
 
-  String? extra;
-  int? client_id;
 
   MaskPointMouth({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MaskPointMouth.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class MaskPointMouth extends MaskPoint {
 class MaskPointChin extends MaskPoint {
   String get tdType => 'maskPointChin';
 
-  String? extra;
-  int? client_id;
 
   MaskPointChin({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   MaskPointChin.fromMap(Map<String, dynamic> map) {

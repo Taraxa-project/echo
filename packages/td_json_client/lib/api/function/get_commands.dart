@@ -8,8 +8,6 @@ class GetCommands extends TdFunction {
   String get tdType => 'getCommands';
   String get tdReturnType => 'BotCommands';
 
-  String? extra;
-  int? client_id;
 
   /// The scope to which the commands are relevant; pass null to get commands in the default bot command scope
   BotCommandScope? scope;
@@ -18,8 +16,8 @@ class GetCommands extends TdFunction {
   string? language_code;
 
   GetCommands({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.scope,
     this.language_code,
   });

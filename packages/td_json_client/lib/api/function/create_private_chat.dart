@@ -6,8 +6,6 @@ class CreatePrivateChat extends TdFunction {
   String get tdType => 'createPrivateChat';
   String get tdReturnType => 'Chat';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier 
   int53? user_id;
@@ -16,8 +14,8 @@ class CreatePrivateChat extends TdFunction {
   Bool? force;
 
   CreatePrivateChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.force,
   });

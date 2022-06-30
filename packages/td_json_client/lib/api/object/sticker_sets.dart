@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/sticker_set_info.dart';
 class StickerSets extends TdObject {
   String get tdType => 'stickerSets';
 
-  String? extra;
-  int? client_id;
 
   /// Approximate total number of sticker sets found 
   int32? total_count;
@@ -17,8 +15,8 @@ class StickerSets extends TdObject {
   vector<StickerSetInfo>? sets;
 
   StickerSets({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.total_count,
     this.sets,
   });

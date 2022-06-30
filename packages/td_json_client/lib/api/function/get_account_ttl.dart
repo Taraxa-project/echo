@@ -6,12 +6,10 @@ class GetAccountTtl extends TdFunction {
   String get tdType => 'getAccountTtl';
   String get tdReturnType => 'AccountTtl';
 
-  String? extra;
-  int? client_id;
 
   GetAccountTtl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetAccountTtl.fromMap(Map<String, dynamic> map) {

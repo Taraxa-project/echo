@@ -8,15 +8,13 @@ class SetLocation extends TdFunction {
   String get tdType => 'setLocation';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The new location of the user
   Location? location;
 
   SetLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.location,
   });
 

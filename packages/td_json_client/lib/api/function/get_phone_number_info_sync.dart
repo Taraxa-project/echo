@@ -6,8 +6,6 @@ class GetPhoneNumberInfoSync extends TdFunction {
   String get tdType => 'getPhoneNumberInfoSync';
   String get tdReturnType => 'PhoneNumberInfo';
 
-  String? extra;
-  int? client_id;
 
   /// A two-letter ISO 639-1 country code for country information localization 
   string? language_code;
@@ -16,8 +14,8 @@ class GetPhoneNumberInfoSync extends TdFunction {
   string? phone_number_prefix;
 
   GetPhoneNumberInfoSync({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language_code,
     this.phone_number_prefix,
   });

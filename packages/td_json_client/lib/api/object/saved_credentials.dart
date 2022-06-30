@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class SavedCredentials extends TdObject {
   String get tdType => 'savedCredentials';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the saved credentials 
   string? id;
@@ -15,8 +13,8 @@ class SavedCredentials extends TdObject {
   string? title;
 
   SavedCredentials({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
   });

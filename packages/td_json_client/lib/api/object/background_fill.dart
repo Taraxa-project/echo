@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes a fill of a background
-abstract class BackgroundFill extends TdObject {}
+abstract class BackgroundFill extends TdObject {
+  BackgroundFill({super.extra, super.client_id});
+}
 
 
 /// Describes a solid fill of a background 
 class BackgroundFillSolid extends BackgroundFill {
   String get tdType => 'backgroundFillSolid';
 
-  String? extra;
-  int? client_id;
 
   /// A color of the background in the RGB24 format
   int32? color;
 
   BackgroundFillSolid({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.color,
   });
 
@@ -44,8 +44,6 @@ class BackgroundFillSolid extends BackgroundFill {
 class BackgroundFillGradient extends BackgroundFill {
   String get tdType => 'backgroundFillGradient';
 
-  String? extra;
-  int? client_id;
 
   /// A top color of the background in the RGB24 format 
   int32? top_color;
@@ -57,8 +55,8 @@ class BackgroundFillGradient extends BackgroundFill {
   int32? rotation_angle;
 
   BackgroundFillGradient({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.top_color,
     this.bottom_color,
     this.rotation_angle,
@@ -92,15 +90,13 @@ class BackgroundFillGradient extends BackgroundFill {
 class BackgroundFillFreeformGradient extends BackgroundFill {
   String get tdType => 'backgroundFillFreeformGradient';
 
-  String? extra;
-  int? client_id;
 
   /// A list of 3 or 4 colors of the freeform gradients in the RGB24 format
   vector<int32>? colors;
 
   BackgroundFillFreeformGradient({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.colors,
   });
 

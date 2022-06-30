@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class Address extends TdObject {
   String get tdType => 'address';
 
-  String? extra;
-  int? client_id;
 
   /// A two-letter ISO 3166-1 alpha-2 country code 
   string? country_code;
@@ -27,8 +25,8 @@ class Address extends TdObject {
   string? postal_code;
 
   Address({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.country_code,
     this.state,
     this.city,

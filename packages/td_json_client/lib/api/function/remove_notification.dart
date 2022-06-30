@@ -6,8 +6,6 @@ class RemoveNotification extends TdFunction {
   String get tdType => 'removeNotification';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of notification group to which the notification belongs 
   int32? notification_group_id;
@@ -16,8 +14,8 @@ class RemoveNotification extends TdFunction {
   int32? notification_id;
 
   RemoveNotification({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.notification_group_id,
     this.notification_id,
   });

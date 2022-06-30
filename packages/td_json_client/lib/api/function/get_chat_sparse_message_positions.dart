@@ -9,8 +9,6 @@ class GetChatSparseMessagePositions extends TdFunction {
   String get tdType => 'getChatSparseMessagePositions';
   String get tdReturnType => 'MessagePositions';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat in which to return information about message positions
   int53? chat_id;
@@ -25,8 +23,8 @@ class GetChatSparseMessagePositions extends TdFunction {
   int32? limit;
 
   GetChatSparseMessagePositions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.filter,
     this.from_message_id,

@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/authentication_code_type.dart';
 class AuthenticationCodeInfo extends TdObject {
   String get tdType => 'authenticationCodeInfo';
 
-  String? extra;
-  int? client_id;
 
   /// A phone number that is being authenticated 
   string? phone_number;
@@ -23,8 +21,8 @@ class AuthenticationCodeInfo extends TdObject {
   int32? timeout;
 
   AuthenticationCodeInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.phone_number,
     this.type,
     this.next_type,

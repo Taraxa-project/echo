@@ -8,8 +8,6 @@ class SendPaymentForm extends TdFunction {
   String get tdType => 'sendPaymentForm';
   String get tdReturnType => 'PaymentResult';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier of the Invoice message 
   int53? chat_id;
@@ -33,8 +31,8 @@ class SendPaymentForm extends TdFunction {
   int53? tip_amount;
 
   SendPaymentForm({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.payment_form_id,

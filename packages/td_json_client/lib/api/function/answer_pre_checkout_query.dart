@@ -6,8 +6,6 @@ class AnswerPreCheckoutQuery extends TdFunction {
   String get tdType => 'answerPreCheckoutQuery';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the pre-checkout query 
   int64? pre_checkout_query_id;
@@ -16,8 +14,8 @@ class AnswerPreCheckoutQuery extends TdFunction {
   string? error_message;
 
   AnswerPreCheckoutQuery({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.pre_checkout_query_id,
     this.error_message,
   });

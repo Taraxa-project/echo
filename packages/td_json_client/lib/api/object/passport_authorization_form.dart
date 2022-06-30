@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/passport_required_element.dart';
 class PassportAuthorizationForm extends TdObject {
   String get tdType => 'passportAuthorizationForm';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the authorization form
   int32? id;
@@ -20,8 +18,8 @@ class PassportAuthorizationForm extends TdObject {
   string? privacy_policy_url;
 
   PassportAuthorizationForm({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.required_elements,
     this.privacy_policy_url,

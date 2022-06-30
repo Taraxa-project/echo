@@ -6,8 +6,6 @@ class SetPollAnswer extends TdFunction {
   String get tdType => 'setPollAnswer';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat to which the poll belongs 
   int53? chat_id;
@@ -19,8 +17,8 @@ class SetPollAnswer extends TdFunction {
   vector<int32>? option_ids;
 
   SetPollAnswer({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.option_ids,

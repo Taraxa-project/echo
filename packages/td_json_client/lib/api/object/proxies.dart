@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/proxy.dart';
 class Proxies extends TdObject {
   String get tdType => 'proxies';
 
-  String? extra;
-  int? client_id;
 
   /// List of proxy servers
   vector<Proxy>? proxies;
 
   Proxies({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.proxies,
   });
 

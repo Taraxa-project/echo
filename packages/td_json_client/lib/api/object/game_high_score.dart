@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class GameHighScore extends TdObject {
   String get tdType => 'gameHighScore';
 
-  String? extra;
-  int? client_id;
 
   /// Position in the high score table 
   int32? position;
@@ -18,8 +16,8 @@ class GameHighScore extends TdObject {
   int32? score;
 
   GameHighScore({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.position,
     this.user_id,
     this.score,

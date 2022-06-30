@@ -6,8 +6,6 @@ class CreateTemporaryPassword extends TdFunction {
   String get tdType => 'createTemporaryPassword';
   String get tdReturnType => 'TemporaryPasswordState';
 
-  String? extra;
-  int? client_id;
 
   /// Persistent user password 
   string? password;
@@ -16,8 +14,8 @@ class CreateTemporaryPassword extends TdFunction {
   int32? valid_for;
 
   CreateTemporaryPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.password,
     this.valid_for,
   });

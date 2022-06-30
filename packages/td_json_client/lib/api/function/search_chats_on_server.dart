@@ -6,8 +6,6 @@ class SearchChatsOnServer extends TdFunction {
   String get tdType => 'searchChatsOnServer';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for 
   string? query;
@@ -16,8 +14,8 @@ class SearchChatsOnServer extends TdFunction {
   int32? limit;
 
   SearchChatsOnServer({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
     this.limit,
   });

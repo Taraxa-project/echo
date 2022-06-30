@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents a single rule for managing privacy settings
-abstract class UserPrivacySettingRule extends TdObject {}
+abstract class UserPrivacySettingRule extends TdObject {
+  UserPrivacySettingRule({super.extra, super.client_id});
+}
 
 
 /// A rule to allow all users to do something
 class UserPrivacySettingRuleAllowAll extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowAll';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingRuleAllowAll({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingRuleAllowAll.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class UserPrivacySettingRuleAllowAll extends UserPrivacySettingRule {
 class UserPrivacySettingRuleAllowContacts extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowContacts';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingRuleAllowContacts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingRuleAllowContacts.fromMap(Map<String, dynamic> map) {
@@ -68,15 +66,13 @@ class UserPrivacySettingRuleAllowContacts extends UserPrivacySettingRule {
 class UserPrivacySettingRuleAllowUsers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowUsers';
 
-  String? extra;
-  int? client_id;
 
   /// The user identifiers, total number of users in all rules must not exceed 1000
   vector<int53>? user_ids;
 
   UserPrivacySettingRuleAllowUsers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_ids,
   });
 
@@ -109,15 +105,13 @@ class UserPrivacySettingRuleAllowUsers extends UserPrivacySettingRule {
 class UserPrivacySettingRuleAllowChatMembers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowChatMembers';
 
-  String? extra;
-  int? client_id;
 
   /// The chat identifiers, total number of chats in all rules must not exceed 20
   vector<int53>? chat_ids;
 
   UserPrivacySettingRuleAllowChatMembers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_ids,
   });
 
@@ -150,12 +144,10 @@ class UserPrivacySettingRuleAllowChatMembers extends UserPrivacySettingRule {
 class UserPrivacySettingRuleRestrictAll extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictAll';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingRuleRestrictAll({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingRuleRestrictAll.fromMap(Map<String, dynamic> map) {
@@ -180,12 +172,10 @@ class UserPrivacySettingRuleRestrictAll extends UserPrivacySettingRule {
 class UserPrivacySettingRuleRestrictContacts extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictContacts';
 
-  String? extra;
-  int? client_id;
 
   UserPrivacySettingRuleRestrictContacts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   UserPrivacySettingRuleRestrictContacts.fromMap(Map<String, dynamic> map) {
@@ -210,15 +200,13 @@ class UserPrivacySettingRuleRestrictContacts extends UserPrivacySettingRule {
 class UserPrivacySettingRuleRestrictUsers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictUsers';
 
-  String? extra;
-  int? client_id;
 
   /// The user identifiers, total number of users in all rules must not exceed 1000
   vector<int53>? user_ids;
 
   UserPrivacySettingRuleRestrictUsers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_ids,
   });
 
@@ -251,15 +239,13 @@ class UserPrivacySettingRuleRestrictUsers extends UserPrivacySettingRule {
 class UserPrivacySettingRuleRestrictChatMembers extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictChatMembers';
 
-  String? extra;
-  int? client_id;
 
   /// The chat identifiers, total number of chats in all rules must not exceed 20
   vector<int53>? chat_ids;
 
   UserPrivacySettingRuleRestrictChatMembers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_ids,
   });
 

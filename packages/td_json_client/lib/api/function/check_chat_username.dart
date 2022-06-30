@@ -6,8 +6,6 @@ class CheckChatUsername extends TdFunction {
   String get tdType => 'checkChatUsername';
   String get tdReturnType => 'CheckChatUsernameResult';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier; must be identifier of a supergroup chat, or a channel chat, or a private chat with self, or zero if the chat is being created 
   int53? chat_id;
@@ -16,8 +14,8 @@ class CheckChatUsername extends TdFunction {
   string? username;
 
   CheckChatUsername({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.username,
   });

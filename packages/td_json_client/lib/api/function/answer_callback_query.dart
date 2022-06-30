@@ -6,8 +6,6 @@ class AnswerCallbackQuery extends TdFunction {
   String get tdType => 'answerCallbackQuery';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the callback query 
   int64? callback_query_id;
@@ -25,8 +23,8 @@ class AnswerCallbackQuery extends TdFunction {
   int32? cache_time;
 
   AnswerCallbackQuery({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.callback_query_id,
     this.text,
     this.show_alert,

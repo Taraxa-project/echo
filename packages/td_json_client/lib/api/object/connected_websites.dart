@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/connected_website.dart';
 class ConnectedWebsites extends TdObject {
   String get tdType => 'connectedWebsites';
 
-  String? extra;
-  int? client_id;
 
   /// List of connected websites
   vector<ConnectedWebsite>? websites;
 
   ConnectedWebsites({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.websites,
   });
 

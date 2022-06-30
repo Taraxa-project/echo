@@ -6,15 +6,13 @@ class SearchPublicChat extends TdFunction {
   String get tdType => 'searchPublicChat';
   String get tdReturnType => 'Chat';
 
-  String? extra;
-  int? client_id;
 
   /// Username to be resolved
   string? username;
 
   SearchPublicChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.username,
   });
 

@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class Point extends TdObject {
   String get tdType => 'point';
 
-  String? extra;
-  int? client_id;
 
   /// The point's first coordinate 
   double? x;
@@ -15,8 +13,8 @@ class Point extends TdObject {
   double? y;
 
   Point({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.x,
     this.y,
   });
