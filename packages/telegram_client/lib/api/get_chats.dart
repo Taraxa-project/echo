@@ -20,7 +20,13 @@ class GetChatsRequest extends Request {
     return GetChatsResponse(
         chats: tdJsonClient
             .receive(waitTimeout: waitTimeout)
-            .where((event) => true));
+            .where((event) =>
+                event is UpdateSupergroupFullInfo ||
+                event is UpdateBasicGroupFullInfo ||
+                event is UpdateUserFullInfo ||
+                event is Error)
+            .takeWhile(
+                (element) => !(element is Error && element.code == 404)));
   }
 }
 
