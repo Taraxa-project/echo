@@ -8,15 +8,13 @@ class AddNetworkStatistics extends TdFunction {
   String get tdType => 'addNetworkStatistics';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The network statistics entry with the data to be added to statistics
   NetworkStatisticsEntry? entry;
 
   AddNetworkStatistics({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.entry,
   });
 

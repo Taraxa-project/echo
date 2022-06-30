@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Contains the description of an error in a Telegram Passport element; for bots only
-abstract class InputPassportElementErrorSource extends TdObject {}
+abstract class InputPassportElementErrorSource extends TdObject {
+  InputPassportElementErrorSource({super.extra, super.client_id});
+}
 
 
 /// The element contains an error in an unspecified place. The error will be considered resolved when new data is added 
 class InputPassportElementErrorSourceUnspecified extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceUnspecified';
 
-  String? extra;
-  int? client_id;
 
   /// Current hash of the entire element
   bytes? element_hash;
 
   InputPassportElementErrorSourceUnspecified({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.element_hash,
   });
 
@@ -44,8 +44,6 @@ class InputPassportElementErrorSourceUnspecified extends InputPassportElementErr
 class InputPassportElementErrorSourceDataField extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceDataField';
 
-  String? extra;
-  int? client_id;
 
   /// Field name 
   string? field_name;
@@ -54,8 +52,8 @@ class InputPassportElementErrorSourceDataField extends InputPassportElementError
   bytes? data_hash;
 
   InputPassportElementErrorSourceDataField({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.field_name,
     this.data_hash,
   });
@@ -86,15 +84,13 @@ class InputPassportElementErrorSourceDataField extends InputPassportElementError
 class InputPassportElementErrorSourceFrontSide extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceFrontSide';
 
-  String? extra;
-  int? client_id;
 
   /// Current hash of the file containing the front side
   bytes? file_hash;
 
   InputPassportElementErrorSourceFrontSide({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_hash,
   });
 
@@ -122,15 +118,13 @@ class InputPassportElementErrorSourceFrontSide extends InputPassportElementError
 class InputPassportElementErrorSourceReverseSide extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceReverseSide';
 
-  String? extra;
-  int? client_id;
 
   /// Current hash of the file containing the reverse side
   bytes? file_hash;
 
   InputPassportElementErrorSourceReverseSide({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_hash,
   });
 
@@ -158,15 +152,13 @@ class InputPassportElementErrorSourceReverseSide extends InputPassportElementErr
 class InputPassportElementErrorSourceSelfie extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceSelfie';
 
-  String? extra;
-  int? client_id;
 
   /// Current hash of the file containing the selfie
   bytes? file_hash;
 
   InputPassportElementErrorSourceSelfie({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_hash,
   });
 
@@ -194,15 +186,13 @@ class InputPassportElementErrorSourceSelfie extends InputPassportElementErrorSou
 class InputPassportElementErrorSourceTranslationFile extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceTranslationFile';
 
-  String? extra;
-  int? client_id;
 
   /// Current hash of the file containing the translation
   bytes? file_hash;
 
   InputPassportElementErrorSourceTranslationFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_hash,
   });
 
@@ -230,15 +220,13 @@ class InputPassportElementErrorSourceTranslationFile extends InputPassportElemen
 class InputPassportElementErrorSourceTranslationFiles extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceTranslationFiles';
 
-  String? extra;
-  int? client_id;
 
   /// Current hashes of all files with the translation
   vector<bytes>? file_hashes;
 
   InputPassportElementErrorSourceTranslationFiles({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_hashes,
   });
 
@@ -271,15 +259,13 @@ class InputPassportElementErrorSourceTranslationFiles extends InputPassportEleme
 class InputPassportElementErrorSourceFile extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceFile';
 
-  String? extra;
-  int? client_id;
 
   /// Current hash of the file which has the error
   bytes? file_hash;
 
   InputPassportElementErrorSourceFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_hash,
   });
 
@@ -307,15 +293,13 @@ class InputPassportElementErrorSourceFile extends InputPassportElementErrorSourc
 class InputPassportElementErrorSourceFiles extends InputPassportElementErrorSource {
   String get tdType => 'inputPassportElementErrorSourceFiles';
 
-  String? extra;
-  int? client_id;
 
   /// Current hashes of all attached files
   vector<bytes>? file_hashes;
 
   InputPassportElementErrorSourceFiles({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_hashes,
   });
 

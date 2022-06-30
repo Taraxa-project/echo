@@ -8,8 +8,6 @@ class RemoveTopChat extends TdFunction {
   String get tdType => 'removeTopChat';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Category of frequently used chats 
   TopChatCategory? category;
@@ -18,8 +16,8 @@ class RemoveTopChat extends TdFunction {
   int53? chat_id;
 
   RemoveTopChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.category,
     this.chat_id,
   });

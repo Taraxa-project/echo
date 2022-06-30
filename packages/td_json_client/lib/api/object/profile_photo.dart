@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 class ProfilePhoto extends TdObject {
   String get tdType => 'profilePhoto';
 
-  String? extra;
-  int? client_id;
 
   /// Photo identifier; 0 for an empty photo. Can be used to find a photo in a list of user profile photos
   int64? id;
@@ -27,8 +25,8 @@ class ProfilePhoto extends TdObject {
   Bool? has_animation;
 
   ProfilePhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.small,
     this.big,

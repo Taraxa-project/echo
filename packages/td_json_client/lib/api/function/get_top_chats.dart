@@ -8,8 +8,6 @@ class GetTopChats extends TdFunction {
   String get tdType => 'getTopChats';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   /// Category of chats to be returned 
   TopChatCategory? category;
@@ -18,8 +16,8 @@ class GetTopChats extends TdFunction {
   int32? limit;
 
   GetTopChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.category,
     this.limit,
   });

@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/update.dart';
 class Updates extends TdObject {
   String get tdType => 'updates';
 
-  String? extra;
-  int? client_id;
 
   /// List of updates
   vector<Update>? updates;
 
   Updates({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.updates,
   });
 

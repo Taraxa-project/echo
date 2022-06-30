@@ -8,8 +8,6 @@ class AddContact extends TdFunction {
   String get tdType => 'addContact';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The contact to add or edit; phone number can be empty and needs to be specified only if known, vCard is ignored
   Contact? contact;
@@ -18,8 +16,8 @@ class AddContact extends TdFunction {
   Bool? share_phone_number;
 
   AddContact({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.contact,
     this.share_phone_number,
   });

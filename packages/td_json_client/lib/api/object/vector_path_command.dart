@@ -3,22 +3,22 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/point.dart';
 
 /// Represents a vector path command
-abstract class VectorPathCommand extends TdObject {}
+abstract class VectorPathCommand extends TdObject {
+  VectorPathCommand({super.extra, super.client_id});
+}
 
 
 /// A straight line to a given point 
 class VectorPathCommandLine extends VectorPathCommand {
   String get tdType => 'vectorPathCommandLine';
 
-  String? extra;
-  int? client_id;
 
   /// The end point of the straight line
   Point? end_point;
 
   VectorPathCommandLine({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.end_point,
   });
 
@@ -48,8 +48,6 @@ class VectorPathCommandLine extends VectorPathCommand {
 class VectorPathCommandCubicBezierCurve extends VectorPathCommand {
   String get tdType => 'vectorPathCommandCubicBezierCurve';
 
-  String? extra;
-  int? client_id;
 
   /// The start control point of the curve 
   Point? start_control_point;
@@ -61,8 +59,8 @@ class VectorPathCommandCubicBezierCurve extends VectorPathCommand {
   Point? end_point;
 
   VectorPathCommandCubicBezierCurve({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.start_control_point,
     this.end_control_point,
     this.end_point,

@@ -6,15 +6,13 @@ class RemoveContacts extends TdFunction {
   String get tdType => 'removeContacts';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifiers of users to be deleted
   vector<int53>? user_ids;
 
   RemoveContacts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_ids,
   });
 

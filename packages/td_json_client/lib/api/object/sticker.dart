@@ -10,8 +10,6 @@ import 'package:td_json_client/api/object/file.dart';
 class Sticker extends TdObject {
   String get tdType => 'sticker';
 
-  String? extra;
-  int? client_id;
 
   /// The identifier of the sticker set to which the sticker belongs; 0 if none 
   int64? set_id;
@@ -44,8 +42,8 @@ class Sticker extends TdObject {
   File? sticker;
 
   Sticker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.set_id,
     this.width,
     this.height,

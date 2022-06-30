@@ -6,8 +6,6 @@ class ToggleSessionCanAcceptSecretChats extends TdFunction {
   String get tdType => 'toggleSessionCanAcceptSecretChats';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Session identifier 
   int64? session_id;
@@ -16,8 +14,8 @@ class ToggleSessionCanAcceptSecretChats extends TdFunction {
   Bool? can_accept_secret_chats;
 
   ToggleSessionCanAcceptSecretChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.session_id,
     this.can_accept_secret_chats,
   });

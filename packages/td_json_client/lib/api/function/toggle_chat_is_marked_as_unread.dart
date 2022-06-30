@@ -6,8 +6,6 @@ class ToggleChatIsMarkedAsUnread extends TdFunction {
   String get tdType => 'toggleChatIsMarkedAsUnread';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -16,8 +14,8 @@ class ToggleChatIsMarkedAsUnread extends TdFunction {
   Bool? is_marked_as_unread;
 
   ToggleChatIsMarkedAsUnread({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.is_marked_as_unread,
   });

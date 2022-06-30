@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents the value of a string in a language pack
-abstract class LanguagePackStringValue extends TdObject {}
+abstract class LanguagePackStringValue extends TdObject {
+  LanguagePackStringValue({super.extra, super.client_id});
+}
 
 
 /// An ordinary language pack string 
 class LanguagePackStringValueOrdinary extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValueOrdinary';
 
-  String? extra;
-  int? client_id;
 
   /// String value
   string? value;
 
   LanguagePackStringValueOrdinary({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.value,
   });
 
@@ -44,8 +44,6 @@ class LanguagePackStringValueOrdinary extends LanguagePackStringValue {
 class LanguagePackStringValuePluralized extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValuePluralized';
 
-  String? extra;
-  int? client_id;
 
   /// Value for zero objects 
   string? zero_value;
@@ -66,8 +64,8 @@ class LanguagePackStringValuePluralized extends LanguagePackStringValue {
   string? other_value;
 
   LanguagePackStringValuePluralized({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.zero_value,
     this.one_value,
     this.two_value,
@@ -110,12 +108,10 @@ class LanguagePackStringValuePluralized extends LanguagePackStringValue {
 class LanguagePackStringValueDeleted extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValueDeleted';
 
-  String? extra;
-  int? client_id;
 
   LanguagePackStringValueDeleted({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   LanguagePackStringValueDeleted.fromMap(Map<String, dynamic> map) {

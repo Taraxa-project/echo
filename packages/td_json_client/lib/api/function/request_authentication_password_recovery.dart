@@ -6,12 +6,10 @@ class RequestAuthenticationPasswordRecovery extends TdFunction {
   String get tdType => 'requestAuthenticationPasswordRecovery';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   RequestAuthenticationPasswordRecovery({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   RequestAuthenticationPasswordRecovery.fromMap(Map<String, dynamic> map) {

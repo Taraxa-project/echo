@@ -1,7 +1,9 @@
 import 'package:echo_cli/src/tg/command/base.dart';
-import 'package:echo_cli/src/tg/command/runner.dart';
 
 import 'package:telegram_client/client.dart';
+import 'package:telegram_client/request/login.dart';
+import 'package:td_json_client/td_json_client.dart';
+import 'package:echo_cli/src/tg/input/cli.dart';
 
 class TelegramCommandLogin extends TelegramCommand {
   final name = 'login';
@@ -12,26 +14,31 @@ class TelegramCommandLogin extends TelegramCommand {
 
     final telegramClient = TelegramClient(
       libtdjsonPath: globalResults!['libtdjson-path'],
-      apiId: int.parse(globalResults!['api-id']),
-      apiHash: globalResults!['api-hash'],
-      phoneNumber: globalResults!['phone-number'],
       libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']),
-      databasePath: globalResults!['database-path'],
       loglevel: globalResults!['loglevel'],
     );
 
-    var clientId = telegramClient.createClientId();
-
-    await telegramClient.login(
-        clientId: clientId,
-        readTelegramCode:
-            (this.runner as TelegramCommandRunner).readTelegramCode);
-
-    if (telegramClient.isAuthorized) {
-      print('Signed up successfully.');
-    }
-    if (telegramClient.isClosed) {
-      print('Server closed connection.');
-    }
+    await telegramClient.send(LoginRequest(
+      setTdlibParameters: SetTdlibParameters(
+        parameters: TdlibParameters(
+          api_id: int.parse(globalResults!['api-id']),
+          api_hash: globalResults!['api-hash'],
+          database_directory: globalResults!['database-path'],
+          use_message_database: false,
+          device_model: 'Desktop',
+          application_version: '1.0',
+          system_language_code: 'en',
+        ),
+      ),
+      checkDatabaseEncryptionKey: CheckDatabaseEncryptionKey(
+        encryption_key: '',
+      ),
+      setAuthenticationPhoneNumber: SetAuthenticationPhoneNumber(
+        phone_number: globalResults!['phone-number'],
+      ),
+      checkAuthenticationCode: CheckAuthenticationCodeCallback(
+        readTelegramCode: readTelegramCode,
+      ),
+    ));
   }
 }

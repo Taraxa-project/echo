@@ -8,8 +8,6 @@ class AddRecentSticker extends TdFunction {
   String get tdType => 'addRecentSticker';
   String get tdReturnType => 'Stickers';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to add the sticker to the list of stickers recently attached to photo or video files; pass false to add the sticker to the list of recently sent stickers 
   Bool? is_attached;
@@ -18,8 +16,8 @@ class AddRecentSticker extends TdFunction {
   InputFile? sticker;
 
   AddRecentSticker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_attached,
     this.sticker,
   });

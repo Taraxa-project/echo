@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/sticker.dart';
 class Stickers extends TdObject {
   String get tdType => 'stickers';
 
-  String? extra;
-  int? client_id;
 
   /// List of stickers
   vector<Sticker>? stickers;
 
   Stickers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.stickers,
   });
 

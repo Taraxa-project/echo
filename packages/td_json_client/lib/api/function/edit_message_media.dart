@@ -10,8 +10,6 @@ class EditMessageMedia extends TdFunction {
   String get tdType => 'editMessageMedia';
   String get tdReturnType => 'Message';
 
-  String? extra;
-  int? client_id;
 
   /// The chat the message belongs to
   int53? chat_id;
@@ -26,8 +24,8 @@ class EditMessageMedia extends TdFunction {
   InputMessageContent? input_message_content;
 
   EditMessageMedia({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.reply_markup,

@@ -6,8 +6,6 @@ class GetBlockedMessageSenders extends TdFunction {
   String get tdType => 'getBlockedMessageSenders';
   String get tdReturnType => 'MessageSenders';
 
-  String? extra;
-  int? client_id;
 
   /// Number of users and chats to skip in the result; must be non-negative 
   int32? offset;
@@ -16,8 +14,8 @@ class GetBlockedMessageSenders extends TdFunction {
   int32? limit;
 
   GetBlockedMessageSenders({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.offset,
     this.limit,
   });

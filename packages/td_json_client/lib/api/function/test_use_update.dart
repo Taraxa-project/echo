@@ -6,12 +6,10 @@ class TestUseUpdate extends TdFunction {
   String get tdType => 'testUseUpdate';
   String get tdReturnType => 'Update';
 
-  String? extra;
-  int? client_id;
 
   TestUseUpdate({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TestUseUpdate.fromMap(Map<String, dynamic> map) {

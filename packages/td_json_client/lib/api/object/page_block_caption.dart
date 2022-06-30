@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/rich_text.dart';
 class PageBlockCaption extends TdObject {
   String get tdType => 'pageBlockCaption';
 
-  String? extra;
-  int? client_id;
 
   /// Content of the caption 
   RichText? text;
@@ -17,8 +15,8 @@ class PageBlockCaption extends TdObject {
   RichText? credit;
 
   PageBlockCaption({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.credit,
   });

@@ -6,12 +6,10 @@ class GetCountries extends TdFunction {
   String get tdType => 'getCountries';
   String get tdReturnType => 'Countries';
 
-  String? extra;
-  int? client_id;
 
   GetCountries({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetCountries.fromMap(Map<String, dynamic> map) {

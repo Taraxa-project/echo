@@ -6,12 +6,10 @@ class Destroy extends TdFunction {
   String get tdType => 'destroy';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   Destroy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   Destroy.fromMap(Map<String, dynamic> map) {

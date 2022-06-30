@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/email_address_authentication_code_info
 class PasswordState extends TdObject {
   String get tdType => 'passwordState';
 
-  String? extra;
-  int? client_id;
 
   /// True, if a 2-step verification password is set 
   Bool? has_password;
@@ -29,8 +27,8 @@ class PasswordState extends TdObject {
   int32? pending_reset_date;
 
   PasswordState({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.has_password,
     this.password_hint,
     this.has_recovery_email_address,

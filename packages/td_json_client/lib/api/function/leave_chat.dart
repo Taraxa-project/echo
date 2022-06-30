@@ -6,15 +6,13 @@ class LeaveChat extends TdFunction {
   String get tdType => 'leaveChat';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
 
   LeaveChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

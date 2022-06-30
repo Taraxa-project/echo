@@ -8,8 +8,6 @@ class FinishFileGeneration extends TdFunction {
   String get tdType => 'finishFileGeneration';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The identifier of the generation process
   int64? generation_id;
@@ -18,8 +16,8 @@ class FinishFileGeneration extends TdFunction {
   Error? error;
 
   FinishFileGeneration({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.generation_id,
     this.error,
   });

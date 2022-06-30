@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/location.dart';
 class ChatLocation extends TdObject {
   String get tdType => 'chatLocation';
 
-  String? extra;
-  int? client_id;
 
   /// The location 
   Location? location;
@@ -17,8 +15,8 @@ class ChatLocation extends TdObject {
   string? address;
 
   ChatLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.location,
     this.address,
   });

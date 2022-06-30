@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class Session extends TdObject {
   String get tdType => 'session';
 
-  String? extra;
-  int? client_id;
 
   /// Session identifier 
   int64? id;
@@ -60,8 +58,8 @@ class Session extends TdObject {
   string? region;
 
   Session({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.is_current,
     this.is_password_pending,

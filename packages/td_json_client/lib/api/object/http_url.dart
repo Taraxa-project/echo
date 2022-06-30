@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class HttpUrl extends TdObject {
   String get tdType => 'httpUrl';
 
-  String? extra;
-  int? client_id;
 
   /// The URL
   string? url;
 
   HttpUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
   });
 

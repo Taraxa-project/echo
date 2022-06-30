@@ -8,15 +8,13 @@ class RemoveStickerFromSet extends TdFunction {
   String get tdType => 'removeStickerFromSet';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Sticker
   InputFile? sticker;
 
   RemoveStickerFromSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker,
   });
 

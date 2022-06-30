@@ -6,12 +6,10 @@ class ClearRecentlyFoundChats extends TdFunction {
   String get tdType => 'clearRecentlyFoundChats';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   ClearRecentlyFoundChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ClearRecentlyFoundChats.fromMap(Map<String, dynamic> map) {

@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents result of checking whether the current session can be used to transfer a chat ownership to another user
-abstract class CanTransferOwnershipResult extends TdObject {}
+abstract class CanTransferOwnershipResult extends TdObject {
+  CanTransferOwnershipResult({super.extra, super.client_id});
+}
 
 
 /// The session can be used
 class CanTransferOwnershipResultOk extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultOk';
 
-  String? extra;
-  int? client_id;
 
   CanTransferOwnershipResultOk({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CanTransferOwnershipResultOk.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class CanTransferOwnershipResultOk extends CanTransferOwnershipResult {
 class CanTransferOwnershipResultPasswordNeeded extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultPasswordNeeded';
 
-  String? extra;
-  int? client_id;
 
   CanTransferOwnershipResultPasswordNeeded({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CanTransferOwnershipResultPasswordNeeded.fromMap(Map<String, dynamic> map) {
@@ -68,15 +66,13 @@ class CanTransferOwnershipResultPasswordNeeded extends CanTransferOwnershipResul
 class CanTransferOwnershipResultPasswordTooFresh extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultPasswordTooFresh';
 
-  String? extra;
-  int? client_id;
 
   /// Time left before the session can be used to transfer ownership of a chat, in seconds
   int32? retry_after;
 
   CanTransferOwnershipResultPasswordTooFresh({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.retry_after,
   });
 
@@ -104,15 +100,13 @@ class CanTransferOwnershipResultPasswordTooFresh extends CanTransferOwnershipRes
 class CanTransferOwnershipResultSessionTooFresh extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultSessionTooFresh';
 
-  String? extra;
-  int? client_id;
 
   /// Time left before the session can be used to transfer ownership of a chat, in seconds
   int32? retry_after;
 
   CanTransferOwnershipResultSessionTooFresh({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.retry_after,
   });
 

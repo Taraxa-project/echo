@@ -6,12 +6,10 @@ class GetConnectedWebsites extends TdFunction {
   String get tdType => 'getConnectedWebsites';
   String get tdReturnType => 'ConnectedWebsites';
 
-  String? extra;
-  int? client_id;
 
   GetConnectedWebsites({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetConnectedWebsites.fromMap(Map<String, dynamic> map) {

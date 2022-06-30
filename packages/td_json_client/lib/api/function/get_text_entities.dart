@@ -6,15 +6,13 @@ class GetTextEntities extends TdFunction {
   String get tdType => 'getTextEntities';
   String get tdReturnType => 'TextEntities';
 
-  String? extra;
-  int? client_id;
 
   /// The text in which to look for entites
   string? text;
 
   GetTextEntities({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
   });
 

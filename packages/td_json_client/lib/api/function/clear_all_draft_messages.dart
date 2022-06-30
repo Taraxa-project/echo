@@ -6,15 +6,13 @@ class ClearAllDraftMessages extends TdFunction {
   String get tdType => 'clearAllDraftMessages';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// If true, local draft messages in secret chats will not be cleared
   Bool? exclude_secret_chats;
 
   ClearAllDraftMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.exclude_secret_chats,
   });
 

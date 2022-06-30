@@ -6,12 +6,10 @@ class GetLogVerbosityLevel extends TdFunction {
   String get tdType => 'getLogVerbosityLevel';
   String get tdReturnType => 'LogVerbosityLevel';
 
-  String? extra;
-  int? client_id;
 
   GetLogVerbosityLevel({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetLogVerbosityLevel.fromMap(Map<String, dynamic> map) {

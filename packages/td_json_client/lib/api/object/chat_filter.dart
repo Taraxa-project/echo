@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatFilter extends TdObject {
   String get tdType => 'chatFilter';
 
-  String? extra;
-  int? client_id;
 
   /// The title of the filter; 1-12 characters without line feeds
   string? title;
@@ -49,8 +47,8 @@ class ChatFilter extends TdObject {
   Bool? include_channels;
 
   ChatFilter({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.icon_name,
     this.pinned_chat_ids,

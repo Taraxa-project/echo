@@ -6,8 +6,6 @@ class SearchEmojis extends TdFunction {
   String get tdType => 'searchEmojis';
   String get tdReturnType => 'Emojis';
 
-  String? extra;
-  int? client_id;
 
   /// Text to search for 
   string? text;
@@ -19,8 +17,8 @@ class SearchEmojis extends TdFunction {
   vector<string>? input_language_codes;
 
   SearchEmojis({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.exact_match,
     this.input_language_codes,

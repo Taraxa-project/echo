@@ -17,8 +17,6 @@ import 'package:td_json_client/api/object/draft_message.dart';
 class Chat extends TdObject {
   String get tdType => 'chat';
 
-  String? extra;
-  int? client_id;
 
   /// Chat unique identifier
   int53? id;
@@ -108,8 +106,8 @@ class Chat extends TdObject {
   string? client_data;
 
   Chat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.type,
     this.title,

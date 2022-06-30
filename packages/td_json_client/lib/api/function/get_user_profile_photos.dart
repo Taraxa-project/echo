@@ -6,8 +6,6 @@ class GetUserProfilePhotos extends TdFunction {
   String get tdType => 'getUserProfilePhotos';
   String get tdReturnType => 'ChatPhotos';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier 
   int53? user_id;
@@ -19,8 +17,8 @@ class GetUserProfilePhotos extends TdFunction {
   int32? limit;
 
   GetUserProfilePhotos({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.offset,
     this.limit,

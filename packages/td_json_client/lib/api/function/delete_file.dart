@@ -6,15 +6,13 @@ class DeleteFile extends TdFunction {
   String get tdType => 'deleteFile';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the file to delete
   int32? file_id;
 
   DeleteFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
   });
 

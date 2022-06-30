@@ -8,8 +8,6 @@ class SetPassportElementErrors extends TdFunction {
   String get tdType => 'setPassportElementErrors';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier 
   int53? user_id;
@@ -18,8 +16,8 @@ class SetPassportElementErrors extends TdFunction {
   vector<InputPassportElementError>? errors;
 
   SetPassportElementErrors({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.errors,
   });

@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/t_me_url.dart';
 class TMeUrls extends TdObject {
   String get tdType => 'tMeUrls';
 
-  String? extra;
-  int? client_id;
 
   /// List of URLs
   vector<TMeUrl>? urls;
 
   TMeUrls({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.urls,
   });
 

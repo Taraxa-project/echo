@@ -6,12 +6,10 @@ class GetCurrentState extends TdFunction {
   String get tdType => 'getCurrentState';
   String get tdReturnType => 'Updates';
 
-  String? extra;
-  int? client_id;
 
   GetCurrentState({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetCurrentState.fromMap(Map<String, dynamic> map) {

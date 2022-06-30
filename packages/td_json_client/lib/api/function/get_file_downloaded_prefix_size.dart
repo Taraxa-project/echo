@@ -6,8 +6,6 @@ class GetFileDownloadedPrefixSize extends TdFunction {
   String get tdType => 'getFileDownloadedPrefixSize';
   String get tdReturnType => 'Count';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the file 
   int32? file_id;
@@ -16,8 +14,8 @@ class GetFileDownloadedPrefixSize extends TdFunction {
   int32? offset;
 
   GetFileDownloadedPrefixSize({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
     this.offset,
   });

@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatJoinRequest extends TdObject {
   String get tdType => 'chatJoinRequest';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier 
   int53? user_id;
@@ -18,8 +16,8 @@ class ChatJoinRequest extends TdObject {
   string? bio;
 
   ChatJoinRequest({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.date,
     this.bio,

@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatStatisticsAdministratorActionsInfo extends TdObject {
   String get tdType => 'chatStatisticsAdministratorActionsInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Administrator user identifier
   int53? user_id;
@@ -21,8 +19,8 @@ class ChatStatisticsAdministratorActionsInfo extends TdObject {
   int32? restricted_user_count;
 
   ChatStatisticsAdministratorActionsInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.deleted_message_count,
     this.banned_user_count,

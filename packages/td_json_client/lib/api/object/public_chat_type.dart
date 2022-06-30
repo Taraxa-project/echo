@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes a type of public chats
-abstract class PublicChatType extends TdObject {}
+abstract class PublicChatType extends TdObject {
+  PublicChatType({super.extra, super.client_id});
+}
 
 
 /// The chat is public, because it has username
 class PublicChatTypeHasUsername extends PublicChatType {
   String get tdType => 'publicChatTypeHasUsername';
 
-  String? extra;
-  int? client_id;
 
   PublicChatTypeHasUsername({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PublicChatTypeHasUsername.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class PublicChatTypeHasUsername extends PublicChatType {
 class PublicChatTypeIsLocationBased extends PublicChatType {
   String get tdType => 'publicChatTypeIsLocationBased';
 
-  String? extra;
-  int? client_id;
 
   PublicChatTypeIsLocationBased({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PublicChatTypeIsLocationBased.fromMap(Map<String, dynamic> map) {

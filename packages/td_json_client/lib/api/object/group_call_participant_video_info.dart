@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/group_call_video_source_group.dart';
 class GroupCallParticipantVideoInfo extends TdObject {
   String get tdType => 'groupCallParticipantVideoInfo';
 
-  String? extra;
-  int? client_id;
 
   /// List of synchronization source groups of the video 
   vector<GroupCallVideoSourceGroup>? source_groups;
@@ -20,8 +18,8 @@ class GroupCallParticipantVideoInfo extends TdObject {
   Bool? is_paused;
 
   GroupCallParticipantVideoInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.source_groups,
     this.endpoint_id,
     this.is_paused,

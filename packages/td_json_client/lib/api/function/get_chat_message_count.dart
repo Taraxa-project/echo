@@ -8,8 +8,6 @@ class GetChatMessageCount extends TdFunction {
   String get tdType => 'getChatMessageCount';
   String get tdReturnType => 'Count';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat in which to count messages 
   int53? chat_id;
@@ -21,8 +19,8 @@ class GetChatMessageCount extends TdFunction {
   Bool? return_local;
 
   GetChatMessageCount({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.filter,
     this.return_local,

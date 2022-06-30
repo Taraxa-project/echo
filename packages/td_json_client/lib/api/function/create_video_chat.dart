@@ -6,8 +6,6 @@ class CreateVideoChat extends TdFunction {
   String get tdType => 'createVideoChat';
   String get tdReturnType => 'GroupCallId';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier, in which the video chat will be created
   int53? chat_id;
@@ -19,8 +17,8 @@ class CreateVideoChat extends TdFunction {
   int32? start_date;
 
   CreateVideoChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.title,
     this.start_date,

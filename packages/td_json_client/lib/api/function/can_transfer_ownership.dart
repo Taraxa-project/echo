@@ -6,12 +6,10 @@ class CanTransferOwnership extends TdFunction {
   String get tdType => 'canTransferOwnership';
   String get tdReturnType => 'CanTransferOwnershipResult';
 
-  String? extra;
-  int? client_id;
 
   CanTransferOwnership({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CanTransferOwnership.fromMap(Map<String, dynamic> map) {

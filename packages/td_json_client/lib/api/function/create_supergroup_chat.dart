@@ -6,8 +6,6 @@ class CreateSupergroupChat extends TdFunction {
   String get tdType => 'createSupergroupChat';
   String get tdReturnType => 'Chat';
 
-  String? extra;
-  int? client_id;
 
   /// Supergroup or channel identifier 
   int53? supergroup_id;
@@ -16,8 +14,8 @@ class CreateSupergroupChat extends TdFunction {
   Bool? force;
 
   CreateSupergroupChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
     this.force,
   });

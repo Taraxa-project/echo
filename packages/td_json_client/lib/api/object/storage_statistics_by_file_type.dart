@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/file_type.dart';
 class StorageStatisticsByFileType extends TdObject {
   String get tdType => 'storageStatisticsByFileType';
 
-  String? extra;
-  int? client_id;
 
   /// File type 
   FileType? file_type;
@@ -20,8 +18,8 @@ class StorageStatisticsByFileType extends TdObject {
   int32? count;
 
   StorageStatisticsByFileType({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_type,
     this.size,
     this.count,

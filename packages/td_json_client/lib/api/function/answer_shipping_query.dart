@@ -8,8 +8,6 @@ class AnswerShippingQuery extends TdFunction {
   String get tdType => 'answerShippingQuery';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the shipping query 
   int64? shipping_query_id;
@@ -21,8 +19,8 @@ class AnswerShippingQuery extends TdFunction {
   string? error_message;
 
   AnswerShippingQuery({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.shipping_query_id,
     this.shipping_options,
     this.error_message,

@@ -6,15 +6,13 @@ class DisconnectWebsite extends TdFunction {
   String get tdType => 'disconnectWebsite';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Website identifier
   int64? website_id;
 
   DisconnectWebsite({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.website_id,
   });
 

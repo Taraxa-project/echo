@@ -6,15 +6,13 @@ class TestCallVectorInt extends TdFunction {
   String get tdType => 'testCallVectorInt';
   String get tdReturnType => 'TestVectorInt';
 
-  String? extra;
-  int? client_id;
 
   /// Vector of numbers to return
   vector<int32>? x;
 
   TestCallVectorInt({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.x,
   });
 

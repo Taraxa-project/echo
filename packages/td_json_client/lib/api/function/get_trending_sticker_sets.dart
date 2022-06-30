@@ -6,8 +6,6 @@ class GetTrendingStickerSets extends TdFunction {
   String get tdType => 'getTrendingStickerSets';
   String get tdReturnType => 'StickerSets';
 
-  String? extra;
-  int? client_id;
 
   /// The offset from which to return the sticker sets; must be non-negative
   int32? offset;
@@ -16,8 +14,8 @@ class GetTrendingStickerSets extends TdFunction {
   int32? limit;
 
   GetTrendingStickerSets({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.offset,
     this.limit,
   });

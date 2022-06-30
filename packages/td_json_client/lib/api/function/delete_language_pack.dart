@@ -6,15 +6,13 @@ class DeleteLanguagePack extends TdFunction {
   String get tdType => 'deleteLanguagePack';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the language pack to delete
   string? language_pack_id;
 
   DeleteLanguagePack({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language_pack_id,
   });
 

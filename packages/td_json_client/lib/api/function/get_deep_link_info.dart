@@ -6,15 +6,13 @@ class GetDeepLinkInfo extends TdFunction {
   String get tdType => 'getDeepLinkInfo';
   String get tdReturnType => 'DeepLinkInfo';
 
-  String? extra;
-  int? client_id;
 
   /// The link
   string? link;
 
   GetDeepLinkInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.link,
   });
 

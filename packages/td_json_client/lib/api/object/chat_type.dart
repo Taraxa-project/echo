@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the type of a chat
-abstract class ChatType extends TdObject {}
+abstract class ChatType extends TdObject {
+  ChatType({super.extra, super.client_id});
+}
 
 
 /// An ordinary chat with a user 
 class ChatTypePrivate extends ChatType {
   String get tdType => 'chatTypePrivate';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier
   int53? user_id;
 
   ChatTypePrivate({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 
@@ -44,15 +44,13 @@ class ChatTypePrivate extends ChatType {
 class ChatTypeBasicGroup extends ChatType {
   String get tdType => 'chatTypeBasicGroup';
 
-  String? extra;
-  int? client_id;
 
   /// Basic group identifier
   int53? basic_group_id;
 
   ChatTypeBasicGroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.basic_group_id,
   });
 
@@ -80,8 +78,6 @@ class ChatTypeBasicGroup extends ChatType {
 class ChatTypeSupergroup extends ChatType {
   String get tdType => 'chatTypeSupergroup';
 
-  String? extra;
-  int? client_id;
 
   /// Supergroup or channel identifier 
   int53? supergroup_id;
@@ -90,8 +86,8 @@ class ChatTypeSupergroup extends ChatType {
   Bool? is_channel;
 
   ChatTypeSupergroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
     this.is_channel,
   });
@@ -122,8 +118,6 @@ class ChatTypeSupergroup extends ChatType {
 class ChatTypeSecret extends ChatType {
   String get tdType => 'chatTypeSecret';
 
-  String? extra;
-  int? client_id;
 
   /// Secret chat identifier 
   int32? secret_chat_id;
@@ -132,8 +126,8 @@ class ChatTypeSecret extends ChatType {
   int53? user_id;
 
   ChatTypeSecret({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.secret_chat_id,
     this.user_id,
   });

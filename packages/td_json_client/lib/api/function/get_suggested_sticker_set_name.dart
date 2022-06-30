@@ -6,15 +6,13 @@ class GetSuggestedStickerSetName extends TdFunction {
   String get tdType => 'getSuggestedStickerSetName';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// Sticker set title; 1-64 characters
   string? title;
 
   GetSuggestedStickerSetName({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
   });
 

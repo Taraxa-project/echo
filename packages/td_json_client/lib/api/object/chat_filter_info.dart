@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatFilterInfo extends TdObject {
   String get tdType => 'chatFilterInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Unique chat filter identifier
   int32? id;
@@ -18,8 +16,8 @@ class ChatFilterInfo extends TdObject {
   string? icon_name;
 
   ChatFilterInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.icon_name,

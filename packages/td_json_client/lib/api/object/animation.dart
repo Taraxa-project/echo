@@ -9,8 +9,6 @@ import 'package:td_json_client/api/object/file.dart';
 class Animation extends TdObject {
   String get tdType => 'animation';
 
-  String? extra;
-  int? client_id;
 
   /// Duration of the animation, in seconds; as defined by the sender 
   int32? duration;
@@ -40,8 +38,8 @@ class Animation extends TdObject {
   File? animation;
 
   Animation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.duration,
     this.width,
     this.height,

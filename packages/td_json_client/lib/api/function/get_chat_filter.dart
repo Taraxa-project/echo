@@ -6,15 +6,13 @@ class GetChatFilter extends TdFunction {
   String get tdType => 'getChatFilter';
   String get tdReturnType => 'ChatFilter';
 
-  String? extra;
-  int? client_id;
 
   /// Chat filter identifier
   int32? chat_filter_id;
 
   GetChatFilter({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_filter_id,
   });
 

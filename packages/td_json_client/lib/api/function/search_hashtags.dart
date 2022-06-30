@@ -6,8 +6,6 @@ class SearchHashtags extends TdFunction {
   String get tdType => 'searchHashtags';
   String get tdReturnType => 'Hashtags';
 
-  String? extra;
-  int? client_id;
 
   /// Hashtag prefix to search for 
   string? prefix;
@@ -16,8 +14,8 @@ class SearchHashtags extends TdFunction {
   int32? limit;
 
   SearchHashtags({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.prefix,
     this.limit,
   });

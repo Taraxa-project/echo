@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Contains information about the sender of a message
-abstract class MessageSender extends TdObject {}
+abstract class MessageSender extends TdObject {
+  MessageSender({super.extra, super.client_id});
+}
 
 
 /// The message was sent by a known user 
 class MessageSenderUser extends MessageSender {
   String get tdType => 'messageSenderUser';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the user that sent the message
   int53? user_id;
 
   MessageSenderUser({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 
@@ -44,15 +44,13 @@ class MessageSenderUser extends MessageSender {
 class MessageSenderChat extends MessageSender {
   String get tdType => 'messageSenderChat';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat that sent the message
   int53? chat_id;
 
   MessageSenderChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

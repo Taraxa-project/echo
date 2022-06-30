@@ -8,8 +8,6 @@ class SendInlineQueryResultMessage extends TdFunction {
   String get tdType => 'sendInlineQueryResultMessage';
   String get tdReturnType => 'Message';
 
-  String? extra;
-  int? client_id;
 
   /// Target chat
   int53? chat_id;
@@ -33,8 +31,8 @@ class SendInlineQueryResultMessage extends TdFunction {
   Bool? hide_via_bot;
 
   SendInlineQueryResultMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_thread_id,
     this.reply_to_message_id,

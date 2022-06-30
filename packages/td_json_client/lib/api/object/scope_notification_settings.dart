@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ScopeNotificationSettings extends TdObject {
   String get tdType => 'scopeNotificationSettings';
 
-  String? extra;
-  int? client_id;
 
   /// Time left before notifications will be unmuted, in seconds
   int32? mute_for;
@@ -24,8 +22,8 @@ class ScopeNotificationSettings extends TdObject {
   Bool? disable_mention_notifications;
 
   ScopeNotificationSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.mute_for,
     this.sound,
     this.show_preview,

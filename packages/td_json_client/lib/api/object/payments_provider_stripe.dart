@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class PaymentsProviderStripe extends TdObject {
   String get tdType => 'paymentsProviderStripe';
 
-  String? extra;
-  int? client_id;
 
   /// Stripe API publishable key 
   string? publishable_key;
@@ -21,8 +19,8 @@ class PaymentsProviderStripe extends TdObject {
   Bool? need_cardholder_name;
 
   PaymentsProviderStripe({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.publishable_key,
     this.need_country,
     this.need_postal_code,

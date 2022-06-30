@@ -6,12 +6,10 @@ class DeleteSavedCredentials extends TdFunction {
   String get tdType => 'deleteSavedCredentials';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   DeleteSavedCredentials({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   DeleteSavedCredentials.fromMap(Map<String, dynamic> map) {

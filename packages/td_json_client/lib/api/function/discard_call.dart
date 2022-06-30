@@ -6,8 +6,6 @@ class DiscardCall extends TdFunction {
   String get tdType => 'discardCall';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Call identifier 
   int32? call_id;
@@ -25,8 +23,8 @@ class DiscardCall extends TdFunction {
   int64? connection_id;
 
   DiscardCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.call_id,
     this.is_disconnected,
     this.duration,

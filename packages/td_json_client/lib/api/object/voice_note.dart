@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/file.dart';
 class VoiceNote extends TdObject {
   String get tdType => 'voiceNote';
 
-  String? extra;
-  int? client_id;
 
   /// Duration of the voice note, in seconds; as defined by the sender
   int32? duration;
@@ -23,8 +21,8 @@ class VoiceNote extends TdObject {
   File? voice;
 
   VoiceNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.duration,
     this.waveform,
     this.mime_type,

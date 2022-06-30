@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class PollOption extends TdObject {
   String get tdType => 'pollOption';
 
-  String? extra;
-  int? client_id;
 
   /// Option text; 1-100 characters 
   string? text;
@@ -24,8 +22,8 @@ class PollOption extends TdObject {
   Bool? is_being_chosen;
 
   PollOption({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.voter_count,
     this.vote_percentage,

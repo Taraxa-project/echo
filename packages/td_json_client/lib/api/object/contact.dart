@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class Contact extends TdObject {
   String get tdType => 'contact';
 
-  String? extra;
-  int? client_id;
 
   /// Phone number of the user 
   string? phone_number;
@@ -24,8 +22,8 @@ class Contact extends TdObject {
   int53? user_id;
 
   Contact({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.phone_number,
     this.first_name,
     this.last_name,

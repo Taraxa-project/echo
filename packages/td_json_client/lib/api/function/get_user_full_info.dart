@@ -6,15 +6,13 @@ class GetUserFullInfo extends TdFunction {
   String get tdType => 'getUserFullInfo';
   String get tdReturnType => 'UserFullInfo';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier
   int53? user_id;
 
   GetUserFullInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 

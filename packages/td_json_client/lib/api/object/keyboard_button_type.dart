@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes a keyboard button type
-abstract class KeyboardButtonType extends TdObject {}
+abstract class KeyboardButtonType extends TdObject {
+  KeyboardButtonType({super.extra, super.client_id});
+}
 
 
 /// A simple button, with text that must be sent when the button is pressed
 class KeyboardButtonTypeText extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeText';
 
-  String? extra;
-  int? client_id;
 
   KeyboardButtonTypeText({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   KeyboardButtonTypeText.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class KeyboardButtonTypeText extends KeyboardButtonType {
 class KeyboardButtonTypeRequestPhoneNumber extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeRequestPhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   KeyboardButtonTypeRequestPhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   KeyboardButtonTypeRequestPhoneNumber.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class KeyboardButtonTypeRequestPhoneNumber extends KeyboardButtonType {
 class KeyboardButtonTypeRequestLocation extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeRequestLocation';
 
-  String? extra;
-  int? client_id;
 
   KeyboardButtonTypeRequestLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   KeyboardButtonTypeRequestLocation.fromMap(Map<String, dynamic> map) {
@@ -98,8 +94,6 @@ class KeyboardButtonTypeRequestLocation extends KeyboardButtonType {
 class KeyboardButtonTypeRequestPoll extends KeyboardButtonType {
   String get tdType => 'keyboardButtonTypeRequestPoll';
 
-  String? extra;
-  int? client_id;
 
   /// If true, only regular polls must be allowed to create 
   Bool? force_regular;
@@ -108,8 +102,8 @@ class KeyboardButtonTypeRequestPoll extends KeyboardButtonType {
   Bool? force_quiz;
 
   KeyboardButtonTypeRequestPoll({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.force_regular,
     this.force_quiz,
   });

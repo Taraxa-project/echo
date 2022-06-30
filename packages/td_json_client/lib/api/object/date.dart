@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class Date extends TdObject {
   String get tdType => 'date';
 
-  String? extra;
-  int? client_id;
 
   /// Day of the month; 1-31 
   int32? day;
@@ -18,8 +16,8 @@ class Date extends TdObject {
   int32? year;
 
   Date({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.day,
     this.month,
     this.year,

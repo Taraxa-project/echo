@@ -10,8 +10,6 @@ import 'package:td_json_client/api/object/emojis.dart';
 class StickerSet extends TdObject {
   String get tdType => 'stickerSet';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the sticker set 
   int64? id;
@@ -53,8 +51,8 @@ class StickerSet extends TdObject {
   vector<Emojis>? emojis;
 
   StickerSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.name,

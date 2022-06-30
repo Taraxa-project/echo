@@ -6,8 +6,6 @@ class SendCallSignalingData extends TdFunction {
   String get tdType => 'sendCallSignalingData';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Call identifier 
   int32? call_id;
@@ -16,8 +14,8 @@ class SendCallSignalingData extends TdFunction {
   bytes? data;
 
   SendCallSignalingData({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.call_id,
     this.data,
   });

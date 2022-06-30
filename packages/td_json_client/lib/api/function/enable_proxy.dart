@@ -6,15 +6,13 @@ class EnableProxy extends TdFunction {
   String get tdType => 'enableProxy';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Proxy identifier
   int32? proxy_id;
 
   EnableProxy({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.proxy_id,
   });
 

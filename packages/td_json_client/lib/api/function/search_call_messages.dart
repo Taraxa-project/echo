@@ -6,8 +6,6 @@ class SearchCallMessages extends TdFunction {
   String get tdType => 'searchCallMessages';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the message from which to search; use 0 to get results from the last message
   int53? from_message_id;
@@ -19,8 +17,8 @@ class SearchCallMessages extends TdFunction {
   Bool? only_missed;
 
   SearchCallMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.from_message_id,
     this.limit,
     this.only_missed,

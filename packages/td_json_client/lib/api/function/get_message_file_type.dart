@@ -6,15 +6,13 @@ class GetMessageFileType extends TdFunction {
   String get tdType => 'getMessageFileType';
   String get tdReturnType => 'MessageFileType';
 
-  String? extra;
-  int? client_id;
 
   /// Beginning of the message file; up to 100 first lines
   string? message_file_head;
 
   GetMessageFileType({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message_file_head,
   });
 

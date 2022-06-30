@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class Location extends TdObject {
   String get tdType => 'location';
 
-  String? extra;
-  int? client_id;
 
   /// Latitude of the location in degrees; as defined by the sender 
   double? latitude;
@@ -18,8 +16,8 @@ class Location extends TdObject {
   double? horizontal_accuracy;
 
   Location({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.latitude,
     this.longitude,
     this.horizontal_accuracy,

@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class StatisticalValue extends TdObject {
   String get tdType => 'statisticalValue';
 
-  String? extra;
-  int? client_id;
 
   /// The current value 
   double? value;
@@ -18,8 +16,8 @@ class StatisticalValue extends TdObject {
   double? growth_rate_percentage;
 
   StatisticalValue({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.value,
     this.previous_value,
     this.growth_rate_percentage,

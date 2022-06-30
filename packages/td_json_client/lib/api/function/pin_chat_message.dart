@@ -6,8 +6,6 @@ class PinChatMessage extends TdFunction {
   String get tdType => 'pinChatMessage';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat
   int53? chat_id;
@@ -22,8 +20,8 @@ class PinChatMessage extends TdFunction {
   Bool? only_for_self;
 
   PinChatMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.disable_notification,

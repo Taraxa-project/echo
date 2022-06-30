@@ -3,22 +3,22 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
 /// Describes a photo to be set as a user profile or chat photo
-abstract class InputChatPhoto extends TdObject {}
+abstract class InputChatPhoto extends TdObject {
+  InputChatPhoto({super.extra, super.client_id});
+}
 
 
 /// A previously used profile photo of the current user 
 class InputChatPhotoPrevious extends InputChatPhoto {
   String get tdType => 'inputChatPhotoPrevious';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the current user's profile photo to reuse
   int64? chat_photo_id;
 
   InputChatPhotoPrevious({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_photo_id,
   });
 
@@ -46,15 +46,13 @@ class InputChatPhotoPrevious extends InputChatPhoto {
 class InputChatPhotoStatic extends InputChatPhoto {
   String get tdType => 'inputChatPhotoStatic';
 
-  String? extra;
-  int? client_id;
 
   /// Photo to be set as profile photo. Only inputFileLocal and inputFileGenerated are allowed
   InputFile? photo;
 
   InputChatPhotoStatic({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.photo,
   });
 
@@ -84,8 +82,6 @@ class InputChatPhotoStatic extends InputChatPhoto {
 class InputChatPhotoAnimation extends InputChatPhoto {
   String get tdType => 'inputChatPhotoAnimation';
 
-  String? extra;
-  int? client_id;
 
   /// Animation to be set as profile photo. Only inputFileLocal and inputFileGenerated are allowed
   InputFile? animation;
@@ -94,8 +90,8 @@ class InputChatPhotoAnimation extends InputChatPhoto {
   double? main_frame_timestamp;
 
   InputChatPhotoAnimation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.animation,
     this.main_frame_timestamp,
   });

@@ -6,8 +6,6 @@ class RecoverPassword extends TdFunction {
   String get tdType => 'recoverPassword';
   String get tdReturnType => 'PasswordState';
 
-  String? extra;
-  int? client_id;
 
   /// Recovery code to check 
   string? recovery_code;
@@ -19,8 +17,8 @@ class RecoverPassword extends TdFunction {
   string? new_hint;
 
   RecoverPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.recovery_code,
     this.new_password,
     this.new_hint,

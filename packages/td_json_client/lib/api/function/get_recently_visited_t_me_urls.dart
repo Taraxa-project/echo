@@ -6,15 +6,13 @@ class GetRecentlyVisitedTMeUrls extends TdFunction {
   String get tdType => 'getRecentlyVisitedTMeUrls';
   String get tdReturnType => 'TMeUrls';
 
-  String? extra;
-  int? client_id;
 
   /// Google Play referrer to identify the user
   string? referrer;
 
   GetRecentlyVisitedTMeUrls({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.referrer,
   });
 

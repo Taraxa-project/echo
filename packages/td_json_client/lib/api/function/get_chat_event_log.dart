@@ -8,8 +8,6 @@ class GetChatEventLog extends TdFunction {
   String get tdType => 'getChatEventLog';
   String get tdReturnType => 'ChatEvents';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -30,8 +28,8 @@ class GetChatEventLog extends TdFunction {
   vector<int53>? user_ids;
 
   GetChatEventLog({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.query,
     this.from_event_id,

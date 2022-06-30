@@ -6,12 +6,10 @@ class GetProxies extends TdFunction {
   String get tdType => 'getProxies';
   String get tdReturnType => 'Proxies';
 
-  String? extra;
-  int? client_id;
 
   GetProxies({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetProxies.fromMap(Map<String, dynamic> map) {

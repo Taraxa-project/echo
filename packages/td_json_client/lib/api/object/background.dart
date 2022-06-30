@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/background_type.dart';
 class Background extends TdObject {
   String get tdType => 'background';
 
-  String? extra;
-  int? client_id;
 
   /// Unique background identifier
   int64? id;
@@ -30,8 +28,8 @@ class Background extends TdObject {
   BackgroundType? type;
 
   Background({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.is_default,
     this.is_dark,

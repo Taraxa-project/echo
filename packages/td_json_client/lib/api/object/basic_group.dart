@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/chat_member_status.dart';
 class BasicGroup extends TdObject {
   String get tdType => 'basicGroup';
 
-  String? extra;
-  int? client_id;
 
   /// Group identifier
   int53? id;
@@ -26,8 +24,8 @@ class BasicGroup extends TdObject {
   int53? upgraded_to_supergroup_id;
 
   BasicGroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.member_count,
     this.status,

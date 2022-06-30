@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/input_passport_element_error_source.da
 class InputPassportElementError extends TdObject {
   String get tdType => 'inputPassportElementError';
 
-  String? extra;
-  int? client_id;
 
   /// Type of Telegram Passport element that has the error 
   PassportElementType? type;
@@ -21,8 +19,8 @@ class InputPassportElementError extends TdObject {
   InputPassportElementErrorSource? source;
 
   InputPassportElementError({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.type,
     this.message,
     this.source,

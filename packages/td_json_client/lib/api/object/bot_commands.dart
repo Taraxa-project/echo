@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/bot_command.dart';
 class BotCommands extends TdObject {
   String get tdType => 'botCommands';
 
-  String? extra;
-  int? client_id;
 
   /// Bot's user identifier 
   int53? bot_user_id;
@@ -17,8 +15,8 @@ class BotCommands extends TdObject {
   vector<BotCommand>? commands;
 
   BotCommands({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_user_id,
     this.commands,
   });

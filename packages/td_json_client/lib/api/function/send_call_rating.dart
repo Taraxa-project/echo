@@ -8,8 +8,6 @@ class SendCallRating extends TdFunction {
   String get tdType => 'sendCallRating';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Call identifier 
   int32? call_id;
@@ -24,8 +22,8 @@ class SendCallRating extends TdFunction {
   vector<CallProblem>? problems;
 
   SendCallRating({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.call_id,
     this.rating,
     this.comment,

@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/text_entity_type.dart';
 class TextEntity extends TdObject {
   String get tdType => 'textEntity';
 
-  String? extra;
-  int? client_id;
 
   /// Offset of the entity, in UTF-16 code units 
   int32? offset;
@@ -20,8 +18,8 @@ class TextEntity extends TdObject {
   TextEntityType? type;
 
   TextEntity({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.offset,
     this.length,
     this.type,

@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the exact type of a problem with a call
-abstract class CallProblem extends TdObject {}
+abstract class CallProblem extends TdObject {
+  CallProblem({super.extra, super.client_id});
+}
 
 
 /// The user heard their own voice
 class CallProblemEcho extends CallProblem {
   String get tdType => 'callProblemEcho';
 
-  String? extra;
-  int? client_id;
 
   CallProblemEcho({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallProblemEcho.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class CallProblemEcho extends CallProblem {
 class CallProblemNoise extends CallProblem {
   String get tdType => 'callProblemNoise';
 
-  String? extra;
-  int? client_id;
 
   CallProblemNoise({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallProblemNoise.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class CallProblemNoise extends CallProblem {
 class CallProblemInterruptions extends CallProblem {
   String get tdType => 'callProblemInterruptions';
 
-  String? extra;
-  int? client_id;
 
   CallProblemInterruptions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallProblemInterruptions.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class CallProblemInterruptions extends CallProblem {
 class CallProblemDistortedSpeech extends CallProblem {
   String get tdType => 'callProblemDistortedSpeech';
 
-  String? extra;
-  int? client_id;
 
   CallProblemDistortedSpeech({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallProblemDistortedSpeech.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class CallProblemDistortedSpeech extends CallProblem {
 class CallProblemSilentLocal extends CallProblem {
   String get tdType => 'callProblemSilentLocal';
 
-  String? extra;
-  int? client_id;
 
   CallProblemSilentLocal({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallProblemSilentLocal.fromMap(Map<String, dynamic> map) {
@@ -158,12 +150,10 @@ class CallProblemSilentLocal extends CallProblem {
 class CallProblemSilentRemote extends CallProblem {
   String get tdType => 'callProblemSilentRemote';
 
-  String? extra;
-  int? client_id;
 
   CallProblemSilentRemote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallProblemSilentRemote.fromMap(Map<String, dynamic> map) {
@@ -188,12 +178,10 @@ class CallProblemSilentRemote extends CallProblem {
 class CallProblemDropped extends CallProblem {
   String get tdType => 'callProblemDropped';
 
-  String? extra;
-  int? client_id;
 
   CallProblemDropped({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallProblemDropped.fromMap(Map<String, dynamic> map) {
@@ -218,12 +206,10 @@ class CallProblemDropped extends CallProblem {
 class CallProblemDistortedVideo extends CallProblem {
   String get tdType => 'callProblemDistortedVideo';
 
-  String? extra;
-  int? client_id;
 
   CallProblemDistortedVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallProblemDistortedVideo.fromMap(Map<String, dynamic> map) {
@@ -248,12 +234,10 @@ class CallProblemDistortedVideo extends CallProblem {
 class CallProblemPixelatedVideo extends CallProblem {
   String get tdType => 'callProblemPixelatedVideo';
 
-  String? extra;
-  int? client_id;
 
   CallProblemPixelatedVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallProblemPixelatedVideo.fromMap(Map<String, dynamic> map) {

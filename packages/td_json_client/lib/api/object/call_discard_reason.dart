@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the reason why a call was discarded
-abstract class CallDiscardReason extends TdObject {}
+abstract class CallDiscardReason extends TdObject {
+  CallDiscardReason({super.extra, super.client_id});
+}
 
 
 /// The call wasn't discarded, or the reason is unknown
 class CallDiscardReasonEmpty extends CallDiscardReason {
   String get tdType => 'callDiscardReasonEmpty';
 
-  String? extra;
-  int? client_id;
 
   CallDiscardReasonEmpty({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallDiscardReasonEmpty.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class CallDiscardReasonEmpty extends CallDiscardReason {
 class CallDiscardReasonMissed extends CallDiscardReason {
   String get tdType => 'callDiscardReasonMissed';
 
-  String? extra;
-  int? client_id;
 
   CallDiscardReasonMissed({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallDiscardReasonMissed.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class CallDiscardReasonMissed extends CallDiscardReason {
 class CallDiscardReasonDeclined extends CallDiscardReason {
   String get tdType => 'callDiscardReasonDeclined';
 
-  String? extra;
-  int? client_id;
 
   CallDiscardReasonDeclined({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallDiscardReasonDeclined.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class CallDiscardReasonDeclined extends CallDiscardReason {
 class CallDiscardReasonDisconnected extends CallDiscardReason {
   String get tdType => 'callDiscardReasonDisconnected';
 
-  String? extra;
-  int? client_id;
 
   CallDiscardReasonDisconnected({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallDiscardReasonDisconnected.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class CallDiscardReasonDisconnected extends CallDiscardReason {
 class CallDiscardReasonHungUp extends CallDiscardReason {
   String get tdType => 'callDiscardReasonHungUp';
 
-  String? extra;
-  int? client_id;
 
   CallDiscardReasonHungUp({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CallDiscardReasonHungUp.fromMap(Map<String, dynamic> map) {

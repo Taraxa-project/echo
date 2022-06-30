@@ -6,8 +6,6 @@ class ToggleChatHasProtectedContent extends TdFunction {
   String get tdType => 'toggleChatHasProtectedContent';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -16,8 +14,8 @@ class ToggleChatHasProtectedContent extends TdFunction {
   Bool? has_protected_content;
 
   ToggleChatHasProtectedContent({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.has_protected_content,
   });

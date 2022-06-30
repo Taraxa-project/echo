@@ -3,22 +3,22 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_invite_link_info.dart';
 
 /// Describes the type of a URL linking to an internal Telegram entity
-abstract class TMeUrlType extends TdObject {}
+abstract class TMeUrlType extends TdObject {
+  TMeUrlType({super.extra, super.client_id});
+}
 
 
 /// A URL linking to a user 
 class TMeUrlTypeUser extends TMeUrlType {
   String get tdType => 'tMeUrlTypeUser';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the user
   int53? user_id;
 
   TMeUrlTypeUser({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 
@@ -46,15 +46,13 @@ class TMeUrlTypeUser extends TMeUrlType {
 class TMeUrlTypeSupergroup extends TMeUrlType {
   String get tdType => 'tMeUrlTypeSupergroup';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the supergroup or channel
   int53? supergroup_id;
 
   TMeUrlTypeSupergroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
   });
 
@@ -82,15 +80,13 @@ class TMeUrlTypeSupergroup extends TMeUrlType {
 class TMeUrlTypeChatInvite extends TMeUrlType {
   String get tdType => 'tMeUrlTypeChatInvite';
 
-  String? extra;
-  int? client_id;
 
   /// Chat invite link info
   ChatInviteLinkInfo? info;
 
   TMeUrlTypeChatInvite({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.info,
   });
 
@@ -120,15 +116,13 @@ class TMeUrlTypeChatInvite extends TMeUrlType {
 class TMeUrlTypeStickerSet extends TMeUrlType {
   String get tdType => 'tMeUrlTypeStickerSet';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the sticker set
   int64? sticker_set_id;
 
   TMeUrlTypeStickerSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker_set_id,
   });
 

@@ -8,8 +8,6 @@ class GetChatNotificationSettingsExceptions extends TdFunction {
   String get tdType => 'getChatNotificationSettingsExceptions';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   /// If specified, only chats from the scope will be returned; pass null to return chats from all scopes
   NotificationSettingsScope? scope;
@@ -18,8 +16,8 @@ class GetChatNotificationSettingsExceptions extends TdFunction {
   Bool? compare_sound;
 
   GetChatNotificationSettingsExceptions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.scope,
     this.compare_sound,
   });

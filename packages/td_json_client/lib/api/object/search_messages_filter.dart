@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents a filter for message search results
-abstract class SearchMessagesFilter extends TdObject {}
+abstract class SearchMessagesFilter extends TdObject {
+  SearchMessagesFilter({super.extra, super.client_id});
+}
 
 
 /// Returns all found messages, no filter is applied
 class SearchMessagesFilterEmpty extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterEmpty';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterEmpty({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterEmpty.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class SearchMessagesFilterEmpty extends SearchMessagesFilter {
 class SearchMessagesFilterAnimation extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterAnimation';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterAnimation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterAnimation.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class SearchMessagesFilterAnimation extends SearchMessagesFilter {
 class SearchMessagesFilterAudio extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterAudio';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterAudio({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterAudio.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class SearchMessagesFilterAudio extends SearchMessagesFilter {
 class SearchMessagesFilterDocument extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterDocument';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterDocument({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterDocument.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class SearchMessagesFilterDocument extends SearchMessagesFilter {
 class SearchMessagesFilterPhoto extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterPhoto';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterPhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterPhoto.fromMap(Map<String, dynamic> map) {
@@ -158,12 +150,10 @@ class SearchMessagesFilterPhoto extends SearchMessagesFilter {
 class SearchMessagesFilterVideo extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVideo';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterVideo.fromMap(Map<String, dynamic> map) {
@@ -188,12 +178,10 @@ class SearchMessagesFilterVideo extends SearchMessagesFilter {
 class SearchMessagesFilterVoiceNote extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVoiceNote';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterVoiceNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterVoiceNote.fromMap(Map<String, dynamic> map) {
@@ -218,12 +206,10 @@ class SearchMessagesFilterVoiceNote extends SearchMessagesFilter {
 class SearchMessagesFilterPhotoAndVideo extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterPhotoAndVideo';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterPhotoAndVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterPhotoAndVideo.fromMap(Map<String, dynamic> map) {
@@ -248,12 +234,10 @@ class SearchMessagesFilterPhotoAndVideo extends SearchMessagesFilter {
 class SearchMessagesFilterUrl extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterUrl';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterUrl.fromMap(Map<String, dynamic> map) {
@@ -278,12 +262,10 @@ class SearchMessagesFilterUrl extends SearchMessagesFilter {
 class SearchMessagesFilterChatPhoto extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterChatPhoto';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterChatPhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterChatPhoto.fromMap(Map<String, dynamic> map) {
@@ -308,12 +290,10 @@ class SearchMessagesFilterChatPhoto extends SearchMessagesFilter {
 class SearchMessagesFilterVideoNote extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVideoNote';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterVideoNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterVideoNote.fromMap(Map<String, dynamic> map) {
@@ -338,12 +318,10 @@ class SearchMessagesFilterVideoNote extends SearchMessagesFilter {
 class SearchMessagesFilterVoiceAndVideoNote extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterVoiceAndVideoNote';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterVoiceAndVideoNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterVoiceAndVideoNote.fromMap(Map<String, dynamic> map) {
@@ -368,12 +346,10 @@ class SearchMessagesFilterVoiceAndVideoNote extends SearchMessagesFilter {
 class SearchMessagesFilterMention extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterMention';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterMention({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterMention.fromMap(Map<String, dynamic> map) {
@@ -398,12 +374,10 @@ class SearchMessagesFilterMention extends SearchMessagesFilter {
 class SearchMessagesFilterUnreadMention extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterUnreadMention';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterUnreadMention({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterUnreadMention.fromMap(Map<String, dynamic> map) {
@@ -428,12 +402,10 @@ class SearchMessagesFilterUnreadMention extends SearchMessagesFilter {
 class SearchMessagesFilterFailedToSend extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterFailedToSend';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterFailedToSend({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterFailedToSend.fromMap(Map<String, dynamic> map) {
@@ -458,12 +430,10 @@ class SearchMessagesFilterFailedToSend extends SearchMessagesFilter {
 class SearchMessagesFilterPinned extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterPinned';
 
-  String? extra;
-  int? client_id;
 
   SearchMessagesFilterPinned({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SearchMessagesFilterPinned.fromMap(Map<String, dynamic> map) {

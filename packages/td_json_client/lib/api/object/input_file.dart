@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Points to a file
-abstract class InputFile extends TdObject {}
+abstract class InputFile extends TdObject {
+  InputFile({super.extra, super.client_id});
+}
 
 
 /// A file defined by its unique ID 
 class InputFileId extends InputFile {
   String get tdType => 'inputFileId';
 
-  String? extra;
-  int? client_id;
 
   /// Unique file identifier
   int32? id;
 
   InputFileId({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
   });
 
@@ -45,15 +45,13 @@ class InputFileId extends InputFile {
 class InputFileRemote extends InputFile {
   String get tdType => 'inputFileRemote';
 
-  String? extra;
-  int? client_id;
 
   /// Remote file identifier
   string? id;
 
   InputFileRemote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
   });
 
@@ -81,15 +79,13 @@ class InputFileRemote extends InputFile {
 class InputFileLocal extends InputFile {
   String get tdType => 'inputFileLocal';
 
-  String? extra;
-  int? client_id;
 
   /// Local path to the file
   string? path;
 
   InputFileLocal({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.path,
   });
 
@@ -117,8 +113,6 @@ class InputFileLocal extends InputFile {
 class InputFileGenerated extends InputFile {
   String get tdType => 'inputFileGenerated';
 
-  String? extra;
-  int? client_id;
 
   /// Local path to a file from which the file is generated; may be empty if there is no such file
   string? original_path;
@@ -130,8 +124,8 @@ class InputFileGenerated extends InputFile {
   int32? expected_size;
 
   InputFileGenerated({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.original_path,
     this.conversion,
     this.expected_size,

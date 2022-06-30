@@ -6,15 +6,13 @@ class GetBankCardInfo extends TdFunction {
   String get tdType => 'getBankCardInfo';
   String get tdReturnType => 'BankCardInfo';
 
-  String? extra;
-  int? client_id;
 
   /// The bank card number
   string? bank_card_number;
 
   GetBankCardInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bank_card_number,
   });
 

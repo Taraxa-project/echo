@@ -6,15 +6,13 @@ class GetJsonValue extends TdFunction {
   String get tdType => 'getJsonValue';
   String get tdReturnType => 'JsonValue';
 
-  String? extra;
-  int? client_id;
 
   /// The JSON-serialized string
   string? json;
 
   GetJsonValue({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.json,
   });
 

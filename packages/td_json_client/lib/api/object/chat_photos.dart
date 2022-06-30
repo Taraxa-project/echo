@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/chat_photo.dart';
 class ChatPhotos extends TdObject {
   String get tdType => 'chatPhotos';
 
-  String? extra;
-  int? client_id;
 
   /// Total number of photos 
   int32? total_count;
@@ -17,8 +15,8 @@ class ChatPhotos extends TdObject {
   vector<ChatPhoto>? photos;
 
   ChatPhotos({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.total_count,
     this.photos,
   });

@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents result of 2-step verification password reset
-abstract class ResetPasswordResult extends TdObject {}
+abstract class ResetPasswordResult extends TdObject {
+  ResetPasswordResult({super.extra, super.client_id});
+}
 
 
 /// The password was reset
 class ResetPasswordResultOk extends ResetPasswordResult {
   String get tdType => 'resetPasswordResultOk';
 
-  String? extra;
-  int? client_id;
 
   ResetPasswordResultOk({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ResetPasswordResultOk.fromMap(Map<String, dynamic> map) {
@@ -38,15 +38,13 @@ class ResetPasswordResultOk extends ResetPasswordResult {
 class ResetPasswordResultPending extends ResetPasswordResult {
   String get tdType => 'resetPasswordResultPending';
 
-  String? extra;
-  int? client_id;
 
   /// Point in time (Unix timestamp) after which the password can be reset immediately using resetPassword
   int32? pending_reset_date;
 
   ResetPasswordResultPending({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.pending_reset_date,
   });
 
@@ -74,15 +72,13 @@ class ResetPasswordResultPending extends ResetPasswordResult {
 class ResetPasswordResultDeclined extends ResetPasswordResult {
   String get tdType => 'resetPasswordResultDeclined';
 
-  String? extra;
-  int? client_id;
 
   /// Point in time (Unix timestamp) when the password reset can be retried
   int32? retry_date;
 
   ResetPasswordResultDeclined({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.retry_date,
   });
 

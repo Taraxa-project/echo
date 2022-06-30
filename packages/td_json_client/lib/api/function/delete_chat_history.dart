@@ -6,8 +6,6 @@ class DeleteChatHistory extends TdFunction {
   String get tdType => 'deleteChatHistory';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -19,8 +17,8 @@ class DeleteChatHistory extends TdFunction {
   Bool? revoke;
 
   DeleteChatHistory({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.remove_from_chat_list,
     this.revoke,

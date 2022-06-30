@@ -6,8 +6,6 @@ class GetGroupCallInviteLink extends TdFunction {
   String get tdType => 'getGroupCallInviteLink';
   String get tdReturnType => 'HttpUrl';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier
   int32? group_call_id;
@@ -16,8 +14,8 @@ class GetGroupCallInviteLink extends TdFunction {
   Bool? can_self_unmute;
 
   GetGroupCallInviteLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.can_self_unmute,
   });

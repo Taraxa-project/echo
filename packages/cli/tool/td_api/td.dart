@@ -247,9 +247,16 @@ extension ListMap on List {
 }
 
 abstract class Td {
+  // JSON object type; maps to the field @type
   String get tdType;
 
-  Td();
+  // Matches requests with responses; maps to the field @extra
+  String? extra;
+
+  // tdlib client id; maps to the field @client_id
+  int? client_id;
+
+  Td({this.extra, this.client_id});
   Td.fromMap(Map<String, dynamic> map);
 
   Map<String, dynamic> toMap({skipNulls: true});
@@ -263,10 +270,13 @@ abstract class Td {
   }
 }
 
-abstract class TdObject extends Td {}
+abstract class TdObject extends Td {
+  TdObject({super.extra, super.client_id});
+}
 
 abstract class TdFunction extends Td {
   String get tdReturnType;
+  TdFunction({super.extra, super.client_id});
 }
 ''';
 
@@ -284,7 +294,9 @@ import 'package:{{# package }}{{ value }}{{/ package }}/api/map.dart';
 {{# comments}}
 /// {{ text }}
 {{/ comments}}
-abstract class {{ className }} extends {{ extendsClassName }} {}
+abstract class {{ className }} extends {{ extendsClassName }} {
+  {{ className }}({super.extra, super.client_id});
+}
 {{/ isAbstract }}
 
 {{^ isAbstract}}
@@ -299,8 +311,6 @@ class {{ className }} extends {{ extendsClassName }} {
   {{/ isFunction }}
 
   {{! class members }}
-  String? extra;
-  int? client_id;
   {{# members }}
 
   {{# comments }}
@@ -311,8 +321,8 @@ class {{ className }} extends {{ extendsClassName }} {
 
   {{! default constructor }}
   {{ className }}({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     {{# members }}
     this.{{ name }},
     {{/ members }}

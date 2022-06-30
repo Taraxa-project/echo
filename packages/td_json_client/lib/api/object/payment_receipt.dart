@@ -10,8 +10,6 @@ import 'package:td_json_client/api/object/shipping_option.dart';
 class PaymentReceipt extends TdObject {
   String get tdType => 'paymentReceipt';
 
-  String? extra;
-  int? client_id;
 
   /// Product title
   string? title;
@@ -46,8 +44,8 @@ class PaymentReceipt extends TdObject {
   int53? tip_amount;
 
   PaymentReceipt({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.description,
     this.photo,

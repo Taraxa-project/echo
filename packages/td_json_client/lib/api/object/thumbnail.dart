@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/file.dart';
 class Thumbnail extends TdObject {
   String get tdType => 'thumbnail';
 
-  String? extra;
-  int? client_id;
 
   /// Thumbnail format 
   ThumbnailFormat? format;
@@ -24,8 +22,8 @@ class Thumbnail extends TdObject {
   File? file;
 
   Thumbnail({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.format,
     this.width,
     this.height,

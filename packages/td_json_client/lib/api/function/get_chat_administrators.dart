@@ -6,15 +6,13 @@ class GetChatAdministrators extends TdFunction {
   String get tdType => 'getChatAdministrators';
   String get tdReturnType => 'ChatAdministrators';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
 
   GetChatAdministrators({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

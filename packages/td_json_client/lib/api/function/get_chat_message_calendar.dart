@@ -8,8 +8,6 @@ class GetChatMessageCalendar extends TdFunction {
   String get tdType => 'getChatMessageCalendar';
   String get tdReturnType => 'MessageCalendar';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat in which to return information about messages
   int53? chat_id;
@@ -21,8 +19,8 @@ class GetChatMessageCalendar extends TdFunction {
   int53? from_message_id;
 
   GetChatMessageCalendar({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.filter,
     this.from_message_id,

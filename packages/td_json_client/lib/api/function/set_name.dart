@@ -6,8 +6,6 @@ class SetName extends TdFunction {
   String get tdType => 'setName';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The new value of the first name for the current user; 1-64 characters 
   string? first_name;
@@ -16,8 +14,8 @@ class SetName extends TdFunction {
   string? last_name;
 
   SetName({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.first_name,
     this.last_name,
   });

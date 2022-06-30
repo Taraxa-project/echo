@@ -8,8 +8,6 @@ class GetChatMember extends TdFunction {
   String get tdType => 'getChatMember';
   String get tdReturnType => 'ChatMember';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -18,8 +16,8 @@ class GetChatMember extends TdFunction {
   MessageSender? member_id;
 
   GetChatMember({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.member_id,
   });

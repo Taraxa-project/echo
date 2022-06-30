@@ -8,8 +8,6 @@ class SendPhoneNumberConfirmationCode extends TdFunction {
   String get tdType => 'sendPhoneNumberConfirmationCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Hash value from the link 
   string? hash;
@@ -21,8 +19,8 @@ class SendPhoneNumberConfirmationCode extends TdFunction {
   PhoneNumberAuthenticationSettings? settings;
 
   SendPhoneNumberConfirmationCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.hash,
     this.phone_number,
     this.settings,

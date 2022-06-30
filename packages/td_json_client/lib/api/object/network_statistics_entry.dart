@@ -4,15 +4,15 @@ import 'package:td_json_client/api/object/file_type.dart';
 import 'package:td_json_client/api/object/network_type.dart';
 
 /// Contains statistics about network usage
-abstract class NetworkStatisticsEntry extends TdObject {}
+abstract class NetworkStatisticsEntry extends TdObject {
+  NetworkStatisticsEntry({super.extra, super.client_id});
+}
 
 
 /// Contains information about the total amount of data that was used to send and receive files
 class NetworkStatisticsEntryFile extends NetworkStatisticsEntry {
   String get tdType => 'networkStatisticsEntryFile';
 
-  String? extra;
-  int? client_id;
 
   /// Type of the file the data is part of; pass null if the data isn't related to files
   FileType? file_type;
@@ -27,8 +27,8 @@ class NetworkStatisticsEntryFile extends NetworkStatisticsEntry {
   int53? received_bytes;
 
   NetworkStatisticsEntryFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_type,
     this.network_type,
     this.sent_bytes,
@@ -69,8 +69,6 @@ class NetworkStatisticsEntryFile extends NetworkStatisticsEntry {
 class NetworkStatisticsEntryCall extends NetworkStatisticsEntry {
   String get tdType => 'networkStatisticsEntryCall';
 
-  String? extra;
-  int? client_id;
 
   /// Type of the network the data was sent through. Call setNetworkType to maintain the actual network type
   NetworkType? network_type;
@@ -85,8 +83,8 @@ class NetworkStatisticsEntryCall extends NetworkStatisticsEntry {
   double? duration;
 
   NetworkStatisticsEntryCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.network_type,
     this.sent_bytes,
     this.received_bytes,

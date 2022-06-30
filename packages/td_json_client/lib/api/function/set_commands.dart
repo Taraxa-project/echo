@@ -9,8 +9,6 @@ class SetCommands extends TdFunction {
   String get tdType => 'setCommands';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The scope to which the commands are relevant; pass null to change commands in the default bot command scope
   BotCommandScope? scope;
@@ -22,8 +20,8 @@ class SetCommands extends TdFunction {
   vector<BotCommand>? commands;
 
   SetCommands({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.scope,
     this.language_code,
     this.commands,

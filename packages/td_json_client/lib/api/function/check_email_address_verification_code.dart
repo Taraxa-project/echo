@@ -6,15 +6,13 @@ class CheckEmailAddressVerificationCode extends TdFunction {
   String get tdType => 'checkEmailAddressVerificationCode';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Verification code to check
   string? code;
 
   CheckEmailAddressVerificationCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.code,
   });
 

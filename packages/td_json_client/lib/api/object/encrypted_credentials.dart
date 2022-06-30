@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class EncryptedCredentials extends TdObject {
   String get tdType => 'encryptedCredentials';
 
-  String? extra;
-  int? client_id;
 
   /// The encrypted credentials 
   bytes? data;
@@ -18,8 +16,8 @@ class EncryptedCredentials extends TdObject {
   bytes? secret;
 
   EncryptedCredentials({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.data,
     this.hash,
     this.secret,

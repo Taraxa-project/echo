@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message_scheduling_state.dart';
 class MessageSendOptions extends TdObject {
   String get tdType => 'messageSendOptions';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to disable notification for the message
   Bool? disable_notification;
@@ -20,8 +18,8 @@ class MessageSendOptions extends TdObject {
   MessageSchedulingState? scheduling_state;
 
   MessageSendOptions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.disable_notification,
     this.from_background,
     this.scheduling_state,

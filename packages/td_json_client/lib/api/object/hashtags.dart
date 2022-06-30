@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class Hashtags extends TdObject {
   String get tdType => 'hashtags';
 
-  String? extra;
-  int? client_id;
 
   /// A list of hashtags
   vector<string>? hashtags;
 
   Hashtags({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.hashtags,
   });
 

@@ -6,15 +6,13 @@ class CheckStickerSetName extends TdFunction {
   String get tdType => 'checkStickerSetName';
   String get tdReturnType => 'CheckStickerSetNameResult';
 
-  String? extra;
-  int? client_id;
 
   /// Name to be checked
   string? name;
 
   CheckStickerSetName({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.name,
   });
 

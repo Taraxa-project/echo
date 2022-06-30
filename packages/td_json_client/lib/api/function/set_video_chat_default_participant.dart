@@ -8,8 +8,6 @@ class SetVideoChatDefaultParticipant extends TdFunction {
   String get tdType => 'setVideoChatDefaultParticipant';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -18,8 +16,8 @@ class SetVideoChatDefaultParticipant extends TdFunction {
   MessageSender? default_participant_id;
 
   SetVideoChatDefaultParticipant({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.default_participant_id,
   });

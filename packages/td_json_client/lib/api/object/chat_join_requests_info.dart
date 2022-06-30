@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatJoinRequestsInfo extends TdObject {
   String get tdType => 'chatJoinRequestsInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Total number of pending join requests 
   int32? total_count;
@@ -15,8 +13,8 @@ class ChatJoinRequestsInfo extends TdObject {
   vector<int53>? user_ids;
 
   ChatJoinRequestsInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.total_count,
     this.user_ids,
   });

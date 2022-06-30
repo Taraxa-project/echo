@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents the categories of chats for which a list of frequently used chats can be retrieved
-abstract class TopChatCategory extends TdObject {}
+abstract class TopChatCategory extends TdObject {
+  TopChatCategory({super.extra, super.client_id});
+}
 
 
 /// A category containing frequently used private chats with non-bot users
 class TopChatCategoryUsers extends TopChatCategory {
   String get tdType => 'topChatCategoryUsers';
 
-  String? extra;
-  int? client_id;
 
   TopChatCategoryUsers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TopChatCategoryUsers.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class TopChatCategoryUsers extends TopChatCategory {
 class TopChatCategoryBots extends TopChatCategory {
   String get tdType => 'topChatCategoryBots';
 
-  String? extra;
-  int? client_id;
 
   TopChatCategoryBots({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TopChatCategoryBots.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class TopChatCategoryBots extends TopChatCategory {
 class TopChatCategoryGroups extends TopChatCategory {
   String get tdType => 'topChatCategoryGroups';
 
-  String? extra;
-  int? client_id;
 
   TopChatCategoryGroups({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TopChatCategoryGroups.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class TopChatCategoryGroups extends TopChatCategory {
 class TopChatCategoryChannels extends TopChatCategory {
   String get tdType => 'topChatCategoryChannels';
 
-  String? extra;
-  int? client_id;
 
   TopChatCategoryChannels({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TopChatCategoryChannels.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class TopChatCategoryChannels extends TopChatCategory {
 class TopChatCategoryInlineBots extends TopChatCategory {
   String get tdType => 'topChatCategoryInlineBots';
 
-  String? extra;
-  int? client_id;
 
   TopChatCategoryInlineBots({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TopChatCategoryInlineBots.fromMap(Map<String, dynamic> map) {
@@ -158,12 +150,10 @@ class TopChatCategoryInlineBots extends TopChatCategory {
 class TopChatCategoryCalls extends TopChatCategory {
   String get tdType => 'topChatCategoryCalls';
 
-  String? extra;
-  int? client_id;
 
   TopChatCategoryCalls({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TopChatCategoryCalls.fromMap(Map<String, dynamic> map) {
@@ -188,12 +178,10 @@ class TopChatCategoryCalls extends TopChatCategory {
 class TopChatCategoryForwardChats extends TopChatCategory {
   String get tdType => 'topChatCategoryForwardChats';
 
-  String? extra;
-  int? client_id;
 
   TopChatCategoryForwardChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   TopChatCategoryForwardChats.fromMap(Map<String, dynamic> map) {

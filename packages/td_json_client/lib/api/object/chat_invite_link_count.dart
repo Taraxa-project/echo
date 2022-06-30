@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatInviteLinkCount extends TdObject {
   String get tdType => 'chatInviteLinkCount';
 
-  String? extra;
-  int? client_id;
 
   /// Administrator's user identifier
   int53? user_id;
@@ -18,8 +16,8 @@ class ChatInviteLinkCount extends TdObject {
   int32? revoked_invite_link_count;
 
   ChatInviteLinkCount({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.invite_link_count,
     this.revoked_invite_link_count,

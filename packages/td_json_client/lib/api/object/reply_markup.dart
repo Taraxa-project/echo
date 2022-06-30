@@ -4,22 +4,22 @@ import 'package:td_json_client/api/object/keyboard_button.dart';
 import 'package:td_json_client/api/object/inline_keyboard_button.dart';
 
 /// Contains a description of a custom keyboard and actions that can be done with it to quickly reply to bots
-abstract class ReplyMarkup extends TdObject {}
+abstract class ReplyMarkup extends TdObject {
+  ReplyMarkup({super.extra, super.client_id});
+}
 
 
 /// Instructs application to remove the keyboard once this message has been received. This kind of keyboard can't be received in an incoming message; instead, UpdateChatReplyMarkup with message_id == 0 will be sent
 class ReplyMarkupRemoveKeyboard extends ReplyMarkup {
   String get tdType => 'replyMarkupRemoveKeyboard';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the keyboard is removed only for the mentioned users or the target user of a reply
   Bool? is_personal;
 
   ReplyMarkupRemoveKeyboard({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_personal,
   });
 
@@ -47,8 +47,6 @@ class ReplyMarkupRemoveKeyboard extends ReplyMarkup {
 class ReplyMarkupForceReply extends ReplyMarkup {
   String get tdType => 'replyMarkupForceReply';
 
-  String? extra;
-  int? client_id;
 
   /// True, if a forced reply must automatically be shown to the current user. For outgoing messages, specify true to show the forced reply only for the mentioned users and for the target user of a reply
   Bool? is_personal;
@@ -57,8 +55,8 @@ class ReplyMarkupForceReply extends ReplyMarkup {
   string? input_field_placeholder;
 
   ReplyMarkupForceReply({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_personal,
     this.input_field_placeholder,
   });
@@ -89,8 +87,6 @@ class ReplyMarkupForceReply extends ReplyMarkup {
 class ReplyMarkupShowKeyboard extends ReplyMarkup {
   String get tdType => 'replyMarkupShowKeyboard';
 
-  String? extra;
-  int? client_id;
 
   /// A list of rows of bot keyboard buttons
   vector<vector<KeyboardButton>>? rows;
@@ -108,8 +104,8 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
   string? input_field_placeholder;
 
   ReplyMarkupShowKeyboard({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.rows,
     this.resize_keyboard,
     this.one_time,
@@ -160,15 +156,13 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
 class ReplyMarkupInlineKeyboard extends ReplyMarkup {
   String get tdType => 'replyMarkupInlineKeyboard';
 
-  String? extra;
-  int? client_id;
 
   /// A list of rows of inline keyboard buttons
   vector<vector<InlineKeyboardButton>>? rows;
 
   ReplyMarkupInlineKeyboard({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.rows,
   });
 

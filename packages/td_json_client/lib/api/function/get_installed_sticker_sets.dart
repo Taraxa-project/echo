@@ -6,15 +6,13 @@ class GetInstalledStickerSets extends TdFunction {
   String get tdType => 'getInstalledStickerSets';
   String get tdReturnType => 'StickerSets';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to return mask sticker sets; pass false to return ordinary sticker sets
   Bool? is_masks;
 
   GetInstalledStickerSets({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_masks,
   });
 

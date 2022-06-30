@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes a Vertical alignment of a table cell content
-abstract class PageBlockVerticalAlignment extends TdObject {}
+abstract class PageBlockVerticalAlignment extends TdObject {
+  PageBlockVerticalAlignment({super.extra, super.client_id});
+}
 
 
 /// The content must be top-aligned
 class PageBlockVerticalAlignmentTop extends PageBlockVerticalAlignment {
   String get tdType => 'pageBlockVerticalAlignmentTop';
 
-  String? extra;
-  int? client_id;
 
   PageBlockVerticalAlignmentTop({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PageBlockVerticalAlignmentTop.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class PageBlockVerticalAlignmentTop extends PageBlockVerticalAlignment {
 class PageBlockVerticalAlignmentMiddle extends PageBlockVerticalAlignment {
   String get tdType => 'pageBlockVerticalAlignmentMiddle';
 
-  String? extra;
-  int? client_id;
 
   PageBlockVerticalAlignmentMiddle({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PageBlockVerticalAlignmentMiddle.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class PageBlockVerticalAlignmentMiddle extends PageBlockVerticalAlignment {
 class PageBlockVerticalAlignmentBottom extends PageBlockVerticalAlignment {
   String get tdType => 'pageBlockVerticalAlignmentBottom';
 
-  String? extra;
-  int? client_id;
 
   PageBlockVerticalAlignmentBottom({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   PageBlockVerticalAlignmentBottom.fromMap(Map<String, dynamic> map) {

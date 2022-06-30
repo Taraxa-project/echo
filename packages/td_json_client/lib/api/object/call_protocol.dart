@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class CallProtocol extends TdObject {
   String get tdType => 'callProtocol';
 
-  String? extra;
-  int? client_id;
 
   /// True, if UDP peer-to-peer connections are supported
   Bool? udp_p2p;
@@ -24,8 +22,8 @@ class CallProtocol extends TdObject {
   vector<string>? library_versions;
 
   CallProtocol({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.udp_p2p,
     this.udp_reflector,
     this.min_layer,

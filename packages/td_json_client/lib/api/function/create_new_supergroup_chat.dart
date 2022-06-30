@@ -8,8 +8,6 @@ class CreateNewSupergroupChat extends TdFunction {
   String get tdType => 'createNewSupergroupChat';
   String get tdReturnType => 'Chat';
 
-  String? extra;
-  int? client_id;
 
   /// Title of the new chat; 1-128 characters
   string? title;
@@ -26,8 +24,8 @@ class CreateNewSupergroupChat extends TdFunction {
   Bool? for_import;
 
   CreateNewSupergroupChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.is_channel,
     this.description,

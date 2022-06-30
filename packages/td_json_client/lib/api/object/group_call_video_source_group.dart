@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class GroupCallVideoSourceGroup extends TdObject {
   String get tdType => 'groupCallVideoSourceGroup';
 
-  String? extra;
-  int? client_id;
 
   /// The semantics of sources, one of "SIM" or "FID" 
   string? semantics;
@@ -15,8 +13,8 @@ class GroupCallVideoSourceGroup extends TdObject {
   vector<int32>? source_ids;
 
   GroupCallVideoSourceGroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.semantics,
     this.source_ids,
   });

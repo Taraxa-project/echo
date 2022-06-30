@@ -9,8 +9,6 @@ import 'package:td_json_client/api/object/file.dart';
 class Audio extends TdObject {
   String get tdType => 'audio';
 
-  String? extra;
-  int? client_id;
 
   /// Duration of the audio, in seconds; as defined by the sender 
   int32? duration;
@@ -37,8 +35,8 @@ class Audio extends TdObject {
   File? audio;
 
   Audio({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.duration,
     this.title,
     this.performer,

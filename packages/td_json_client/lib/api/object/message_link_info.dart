@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message.dart';
 class MessageLinkInfo extends TdObject {
   String get tdType => 'messageLinkInfo';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the link is a public link for a message in a chat
   Bool? is_public;
@@ -29,8 +27,8 @@ class MessageLinkInfo extends TdObject {
   Bool? for_comment;
 
   MessageLinkInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_public,
     this.chat_id,
     this.message,

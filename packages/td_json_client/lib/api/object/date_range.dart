@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class DateRange extends TdObject {
   String get tdType => 'dateRange';
 
-  String? extra;
-  int? client_id;
 
   /// Point in time (Unix timestamp) at which the date range begins 
   int32? start_date;
@@ -15,8 +13,8 @@ class DateRange extends TdObject {
   int32? end_date;
 
   DateRange({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.start_date,
     this.end_date,
   });

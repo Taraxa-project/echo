@@ -8,8 +8,6 @@ class SaveApplicationLogEvent extends TdFunction {
   String get tdType => 'saveApplicationLogEvent';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Event type 
   string? type;
@@ -21,8 +19,8 @@ class SaveApplicationLogEvent extends TdFunction {
   JsonValue? data;
 
   SaveApplicationLogEvent({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.type,
     this.chat_id,
     this.data,

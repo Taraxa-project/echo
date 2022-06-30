@@ -6,12 +6,10 @@ class Close extends TdFunction {
   String get tdType => 'close';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   Close({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   Close.fromMap(Map<String, dynamic> map) {

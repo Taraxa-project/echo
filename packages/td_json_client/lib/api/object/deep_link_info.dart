@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/formatted_text.dart';
 class DeepLinkInfo extends TdObject {
   String get tdType => 'deepLinkInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Text to be shown to the user 
   FormattedText? text;
@@ -17,8 +15,8 @@ class DeepLinkInfo extends TdObject {
   Bool? need_update_application;
 
   DeepLinkInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.need_update_application,
   });

@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Contains information about the payment method chosen by the user
-abstract class InputCredentials extends TdObject {}
+abstract class InputCredentials extends TdObject {
+  InputCredentials({super.extra, super.client_id});
+}
 
 
 /// Applies if a user chooses some previously saved payment credentials. To use their previously saved credentials, the user must have a valid temporary password 
 class InputCredentialsSaved extends InputCredentials {
   String get tdType => 'inputCredentialsSaved';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the saved credentials
   string? saved_credentials_id;
 
   InputCredentialsSaved({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.saved_credentials_id,
   });
 
@@ -44,8 +44,6 @@ class InputCredentialsSaved extends InputCredentials {
 class InputCredentialsNew extends InputCredentials {
   String get tdType => 'inputCredentialsNew';
 
-  String? extra;
-  int? client_id;
 
   /// JSON-encoded data with the credential identifier from the payment provider 
   string? data;
@@ -54,8 +52,8 @@ class InputCredentialsNew extends InputCredentials {
   Bool? allow_save;
 
   InputCredentialsNew({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.data,
     this.allow_save,
   });
@@ -86,15 +84,13 @@ class InputCredentialsNew extends InputCredentials {
 class InputCredentialsApplePay extends InputCredentials {
   String get tdType => 'inputCredentialsApplePay';
 
-  String? extra;
-  int? client_id;
 
   /// JSON-encoded data with the credential identifier
   string? data;
 
   InputCredentialsApplePay({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.data,
   });
 
@@ -122,15 +118,13 @@ class InputCredentialsApplePay extends InputCredentials {
 class InputCredentialsGooglePay extends InputCredentials {
   String get tdType => 'inputCredentialsGooglePay';
 
-  String? extra;
-  int? client_id;
 
   /// JSON-encoded data with the credential identifier
   string? data;
 
   InputCredentialsGooglePay({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.data,
   });
 

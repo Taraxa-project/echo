@@ -6,15 +6,13 @@ class GetProxyLink extends TdFunction {
   String get tdType => 'getProxyLink';
   String get tdReturnType => 'HttpUrl';
 
-  String? extra;
-  int? client_id;
 
   /// Proxy identifier
   int32? proxy_id;
 
   GetProxyLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.proxy_id,
   });
 

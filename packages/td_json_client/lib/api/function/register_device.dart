@@ -8,8 +8,6 @@ class RegisterDevice extends TdFunction {
   String get tdType => 'registerDevice';
   String get tdReturnType => 'PushReceiverId';
 
-  String? extra;
-  int? client_id;
 
   /// Device token 
   DeviceToken? device_token;
@@ -18,8 +16,8 @@ class RegisterDevice extends TdFunction {
   vector<int53>? other_user_ids;
 
   RegisterDevice({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.device_token,
     this.other_user_ids,
   });

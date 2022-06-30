@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/country_info.dart';
 class Countries extends TdObject {
   String get tdType => 'countries';
 
-  String? extra;
-  int? client_id;
 
   /// The list of countries
   vector<CountryInfo>? countries;
 
   Countries({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.countries,
   });
 

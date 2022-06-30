@@ -6,8 +6,6 @@ class GetPaymentReceipt extends TdFunction {
   String get tdType => 'getPaymentReceipt';
   String get tdReturnType => 'PaymentReceipt';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier of the PaymentSuccessful message 
   int53? chat_id;
@@ -16,8 +14,8 @@ class GetPaymentReceipt extends TdFunction {
   int53? message_id;
 
   GetPaymentReceipt({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
   });

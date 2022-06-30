@@ -6,8 +6,6 @@ class SearchContacts extends TdFunction {
   String get tdType => 'searchContacts';
   String get tdReturnType => 'Users';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for; may be empty to return all contacts 
   string? query;
@@ -16,8 +14,8 @@ class SearchContacts extends TdFunction {
   int32? limit;
 
   SearchContacts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
     this.limit,
   });

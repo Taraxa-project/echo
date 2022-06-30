@@ -6,12 +6,10 @@ class GetPasswordState extends TdFunction {
   String get tdType => 'getPasswordState';
   String get tdReturnType => 'PasswordState';
 
-  String? extra;
-  int? client_id;
 
   GetPasswordState({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetPasswordState.fromMap(Map<String, dynamic> map) {

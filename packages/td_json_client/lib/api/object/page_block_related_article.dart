@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/photo.dart';
 class PageBlockRelatedArticle extends TdObject {
   String get tdType => 'pageBlockRelatedArticle';
 
-  String? extra;
-  int? client_id;
 
   /// Related article URL 
   string? url;
@@ -28,8 +26,8 @@ class PageBlockRelatedArticle extends TdObject {
   int32? publish_date;
 
   PageBlockRelatedArticle({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.url,
     this.title,
     this.description,

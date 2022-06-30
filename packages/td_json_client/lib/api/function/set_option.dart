@@ -8,8 +8,6 @@ class SetOption extends TdFunction {
   String get tdType => 'setOption';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The name of the option 
   string? name;
@@ -18,8 +16,8 @@ class SetOption extends TdFunction {
   OptionValue? value;
 
   SetOption({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.name,
     this.value,
   });

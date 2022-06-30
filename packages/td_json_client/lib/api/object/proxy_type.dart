@@ -1,15 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the type of a proxy server
-abstract class ProxyType extends TdObject {}
+abstract class ProxyType extends TdObject {
+  ProxyType({super.extra, super.client_id});
+}
 
 
 /// A SOCKS5 proxy server 
 class ProxyTypeSocks5 extends ProxyType {
   String get tdType => 'proxyTypeSocks5';
 
-  String? extra;
-  int? client_id;
 
   /// Username for logging in; may be empty 
   string? username;
@@ -18,8 +18,8 @@ class ProxyTypeSocks5 extends ProxyType {
   string? password;
 
   ProxyTypeSocks5({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.username,
     this.password,
   });
@@ -50,8 +50,6 @@ class ProxyTypeSocks5 extends ProxyType {
 class ProxyTypeHttp extends ProxyType {
   String get tdType => 'proxyTypeHttp';
 
-  String? extra;
-  int? client_id;
 
   /// Username for logging in; may be empty 
   string? username;
@@ -63,8 +61,8 @@ class ProxyTypeHttp extends ProxyType {
   Bool? http_only;
 
   ProxyTypeHttp({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.username,
     this.password,
     this.http_only,
@@ -98,15 +96,13 @@ class ProxyTypeHttp extends ProxyType {
 class ProxyTypeMtproto extends ProxyType {
   String get tdType => 'proxyTypeMtproto';
 
-  String? extra;
-  int? client_id;
 
   /// The proxy's secret in hexadecimal encoding
   string? secret;
 
   ProxyTypeMtproto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.secret,
   });
 

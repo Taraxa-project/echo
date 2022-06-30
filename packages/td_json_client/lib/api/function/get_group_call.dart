@@ -6,15 +6,13 @@ class GetGroupCall extends TdFunction {
   String get tdType => 'getGroupCall';
   String get tdReturnType => 'GroupCall';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier
   int32? group_call_id;
 
   GetGroupCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
   });
 

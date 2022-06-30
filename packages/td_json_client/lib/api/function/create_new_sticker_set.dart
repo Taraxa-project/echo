@@ -8,8 +8,6 @@ class CreateNewStickerSet extends TdFunction {
   String get tdType => 'createNewStickerSet';
   String get tdReturnType => 'StickerSet';
 
-  String? extra;
-  int? client_id;
 
   /// Sticker set owner; ignored for regular users
   int53? user_id;
@@ -30,8 +28,8 @@ class CreateNewStickerSet extends TdFunction {
   string? source;
 
   CreateNewStickerSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.title,
     this.name,

@@ -6,15 +6,13 @@ class SetUsername extends TdFunction {
   String get tdType => 'setUsername';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The new value of the username. Use an empty string to remove the username
   string? username;
 
   SetUsername({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.username,
   });
 

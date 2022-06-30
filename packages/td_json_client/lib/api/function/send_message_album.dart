@@ -9,8 +9,6 @@ class SendMessageAlbum extends TdFunction {
   String get tdType => 'sendMessageAlbum';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   /// Target chat
   int53? chat_id;
@@ -28,8 +26,8 @@ class SendMessageAlbum extends TdFunction {
   vector<InputMessageContent>? input_message_contents;
 
   SendMessageAlbum({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_thread_id,
     this.reply_to_message_id,

@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/storage_statistics_by_chat.dart';
 class StorageStatistics extends TdObject {
   String get tdType => 'storageStatistics';
 
-  String? extra;
-  int? client_id;
 
   /// Total size of files, in bytes 
   int53? size;
@@ -20,8 +18,8 @@ class StorageStatistics extends TdObject {
   vector<StorageStatisticsByChat>? by_chat;
 
   StorageStatistics({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.size,
     this.count,
     this.by_chat,

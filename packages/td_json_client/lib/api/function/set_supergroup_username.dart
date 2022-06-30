@@ -6,8 +6,6 @@ class SetSupergroupUsername extends TdFunction {
   String get tdType => 'setSupergroupUsername';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the supergroup or channel 
   int53? supergroup_id;
@@ -16,8 +14,8 @@ class SetSupergroupUsername extends TdFunction {
   string? username;
 
   SetSupergroupUsername({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
     this.username,
   });

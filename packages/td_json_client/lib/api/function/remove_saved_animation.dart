@@ -8,15 +8,13 @@ class RemoveSavedAnimation extends TdFunction {
   String get tdType => 'removeSavedAnimation';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Animation file to be removed
   InputFile? animation;
 
   RemoveSavedAnimation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.animation,
   });
 

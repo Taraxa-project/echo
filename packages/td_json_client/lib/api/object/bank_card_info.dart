@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/bank_card_action_open_url.dart';
 class BankCardInfo extends TdObject {
   String get tdType => 'bankCardInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Title of the bank card description 
   string? title;
@@ -17,8 +15,8 @@ class BankCardInfo extends TdObject {
   vector<BankCardActionOpenUrl>? actions;
 
   BankCardInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.actions,
   });

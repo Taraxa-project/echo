@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message_reply_info.dart';
 class MessageInteractionInfo extends TdObject {
   String get tdType => 'messageInteractionInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Number of times the message was viewed
   int32? view_count;
@@ -20,8 +18,8 @@ class MessageInteractionInfo extends TdObject {
   MessageReplyInfo? reply_info;
 
   MessageInteractionInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.view_count,
     this.forward_count,
     this.reply_info,

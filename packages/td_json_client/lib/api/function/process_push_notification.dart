@@ -6,15 +6,13 @@ class ProcessPushNotification extends TdFunction {
   String get tdType => 'processPushNotification';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// JSON-encoded push notification payload with all fields sent by the server, and "google.sent_time" and "google.notification.sound" fields added
   string? payload;
 
   ProcessPushNotification({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.payload,
   });
 

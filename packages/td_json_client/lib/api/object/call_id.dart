@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class CallId extends TdObject {
   String get tdType => 'callId';
 
-  String? extra;
-  int? client_id;
 
   /// Call identifier
   int32? id;
 
   CallId({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
   });
 

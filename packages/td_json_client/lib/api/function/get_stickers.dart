@@ -6,8 +6,6 @@ class GetStickers extends TdFunction {
   String get tdType => 'getStickers';
   String get tdReturnType => 'Stickers';
 
-  String? extra;
-  int? client_id;
 
   /// String representation of emoji. If empty, returns all known installed stickers 
   string? emoji;
@@ -16,8 +14,8 @@ class GetStickers extends TdFunction {
   int32? limit;
 
   GetStickers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.emoji,
     this.limit,
   });

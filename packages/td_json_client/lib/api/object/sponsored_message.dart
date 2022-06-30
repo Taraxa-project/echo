@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/message_content.dart';
 class SponsoredMessage extends TdObject {
   String get tdType => 'sponsoredMessage';
 
-  String? extra;
-  int? client_id;
 
   /// Message identifier; unique for the chat to which the sponsored message belongs among both ordinary and sponsored messages
   int53? message_id;
@@ -24,8 +22,8 @@ class SponsoredMessage extends TdObject {
   MessageContent? content;
 
   SponsoredMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message_id,
     this.sponsor_chat_id,
     this.link,

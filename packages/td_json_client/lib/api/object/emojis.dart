@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class Emojis extends TdObject {
   String get tdType => 'emojis';
 
-  String? extra;
-  int? client_id;
 
   /// List of emojis
   vector<string>? emojis;
 
   Emojis({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.emojis,
   });
 

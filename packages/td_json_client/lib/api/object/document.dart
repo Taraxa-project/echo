@@ -9,8 +9,6 @@ import 'package:td_json_client/api/object/file.dart';
 class Document extends TdObject {
   String get tdType => 'document';
 
-  String? extra;
-  int? client_id;
 
   /// Original name of the file; as defined by the sender 
   string? file_name;
@@ -28,8 +26,8 @@ class Document extends TdObject {
   File? document;
 
   Document({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_name,
     this.mime_type,
     this.minithumbnail,

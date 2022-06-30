@@ -6,8 +6,6 @@ class DeleteChatMessagesByDate extends TdFunction {
   String get tdType => 'deleteChatMessagesByDate';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -22,8 +20,8 @@ class DeleteChatMessagesByDate extends TdFunction {
   Bool? revoke;
 
   DeleteChatMessagesByDate({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.min_date,
     this.max_date,

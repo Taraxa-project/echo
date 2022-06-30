@@ -8,8 +8,6 @@ class GetPassportElement extends TdFunction {
   String get tdType => 'getPassportElement';
   String get tdReturnType => 'PassportElement';
 
-  String? extra;
-  int? client_id;
 
   /// Telegram Passport element type 
   PassportElementType? type;
@@ -18,8 +16,8 @@ class GetPassportElement extends TdFunction {
   string? password;
 
   GetPassportElement({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.type,
     this.password,
   });

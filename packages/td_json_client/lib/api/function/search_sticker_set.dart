@@ -6,15 +6,13 @@ class SearchStickerSet extends TdFunction {
   String get tdType => 'searchStickerSet';
   String get tdReturnType => 'StickerSet';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the sticker set
   string? name;
 
   SearchStickerSet({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.name,
   });
 

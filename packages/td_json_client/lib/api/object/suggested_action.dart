@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes an action suggested to the current user
-abstract class SuggestedAction extends TdObject {}
+abstract class SuggestedAction extends TdObject {
+  SuggestedAction({super.extra, super.client_id});
+}
 
 
 /// Suggests the user to enable "archive_and_mute_new_chats_from_unknown_users" option
 class SuggestedActionEnableArchiveAndMuteNewChats extends SuggestedAction {
   String get tdType => 'suggestedActionEnableArchiveAndMuteNewChats';
 
-  String? extra;
-  int? client_id;
 
   SuggestedActionEnableArchiveAndMuteNewChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SuggestedActionEnableArchiveAndMuteNewChats.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class SuggestedActionEnableArchiveAndMuteNewChats extends SuggestedAction {
 class SuggestedActionCheckPassword extends SuggestedAction {
   String get tdType => 'suggestedActionCheckPassword';
 
-  String? extra;
-  int? client_id;
 
   SuggestedActionCheckPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SuggestedActionCheckPassword.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class SuggestedActionCheckPassword extends SuggestedAction {
 class SuggestedActionCheckPhoneNumber extends SuggestedAction {
   String get tdType => 'suggestedActionCheckPhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   SuggestedActionCheckPhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SuggestedActionCheckPhoneNumber.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class SuggestedActionCheckPhoneNumber extends SuggestedAction {
 class SuggestedActionViewChecksHint extends SuggestedAction {
   String get tdType => 'suggestedActionViewChecksHint';
 
-  String? extra;
-  int? client_id;
 
   SuggestedActionViewChecksHint({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   SuggestedActionViewChecksHint.fromMap(Map<String, dynamic> map) {
@@ -128,15 +122,13 @@ class SuggestedActionViewChecksHint extends SuggestedAction {
 class SuggestedActionConvertToBroadcastGroup extends SuggestedAction {
   String get tdType => 'suggestedActionConvertToBroadcastGroup';
 
-  String? extra;
-  int? client_id;
 
   /// Supergroup identifier
   int53? supergroup_id;
 
   SuggestedActionConvertToBroadcastGroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
   });
 
@@ -164,15 +156,13 @@ class SuggestedActionConvertToBroadcastGroup extends SuggestedAction {
 class SuggestedActionSetPassword extends SuggestedAction {
   String get tdType => 'suggestedActionSetPassword';
 
-  String? extra;
-  int? client_id;
 
   /// The number of days to pass between consecutive authorizations if the user declines to set password
   int32? authorization_delay;
 
   SuggestedActionSetPassword({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.authorization_delay,
   });
 

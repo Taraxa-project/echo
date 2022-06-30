@@ -6,12 +6,10 @@ class ResendChangePhoneNumberCode extends TdFunction {
   String get tdType => 'resendChangePhoneNumberCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
-  String? extra;
-  int? client_id;
 
   ResendChangePhoneNumberCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ResendChangePhoneNumberCode.fromMap(Map<String, dynamic> map) {

@@ -6,15 +6,13 @@ class TerminateSession extends TdFunction {
   String get tdType => 'terminateSession';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Session identifier
   int64? session_id;
 
   TerminateSession({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.session_id,
   });
 

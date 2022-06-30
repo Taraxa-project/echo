@@ -9,8 +9,6 @@ class SetCustomLanguagePack extends TdFunction {
   String get tdType => 'setCustomLanguagePack';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Information about the language pack. Language pack ID must start with 'X', consist only of English letters, digits and hyphens, and must not exceed 64 characters. Can be called before authorization 
   LanguagePackInfo? info;
@@ -19,8 +17,8 @@ class SetCustomLanguagePack extends TdFunction {
   vector<LanguagePackString>? strings;
 
   SetCustomLanguagePack({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.info,
     this.strings,
   });

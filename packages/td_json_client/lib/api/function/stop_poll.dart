@@ -8,8 +8,6 @@ class StopPoll extends TdFunction {
   String get tdType => 'stopPoll';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat to which the poll belongs
   int53? chat_id;
@@ -21,8 +19,8 @@ class StopPoll extends TdFunction {
   ReplyMarkup? reply_markup;
 
   StopPoll({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.reply_markup,

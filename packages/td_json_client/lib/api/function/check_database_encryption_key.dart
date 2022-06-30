@@ -6,15 +6,13 @@ class CheckDatabaseEncryptionKey extends TdFunction {
   String get tdType => 'checkDatabaseEncryptionKey';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Encryption key to check or set up
   bytes? encryption_key;
 
   CheckDatabaseEncryptionKey({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.encryption_key,
   });
 

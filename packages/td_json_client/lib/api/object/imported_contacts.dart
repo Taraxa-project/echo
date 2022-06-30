@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ImportedContacts extends TdObject {
   String get tdType => 'importedContacts';
 
-  String? extra;
-  int? client_id;
 
   /// User identifiers of the imported contacts in the same order as they were specified in the request; 0 if the contact is not yet a registered user
   vector<int53>? user_ids;
@@ -15,8 +13,8 @@ class ImportedContacts extends TdObject {
   vector<int32>? importer_count;
 
   ImportedContacts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_ids,
     this.importer_count,
   });

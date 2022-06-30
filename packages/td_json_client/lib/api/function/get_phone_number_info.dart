@@ -6,15 +6,13 @@ class GetPhoneNumberInfo extends TdFunction {
   String get tdType => 'getPhoneNumberInfo';
   String get tdReturnType => 'PhoneNumberInfo';
 
-  String? extra;
-  int? client_id;
 
   /// The phone number prefix
   string? phone_number_prefix;
 
   GetPhoneNumberInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.phone_number_prefix,
   });
 

@@ -8,8 +8,6 @@ class OptimizeStorage extends TdFunction {
   String get tdType => 'optimizeStorage';
   String get tdReturnType => 'StorageStatistics';
 
-  String? extra;
-  int? client_id;
 
   /// Limit on the total size of files after deletion, in bytes. Pass -1 to use the default limit
   int53? size;
@@ -39,8 +37,8 @@ class OptimizeStorage extends TdFunction {
   int32? chat_limit;
 
   OptimizeStorage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.size,
     this.ttl,
     this.count,

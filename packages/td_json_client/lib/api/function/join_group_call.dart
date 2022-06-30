@@ -8,8 +8,6 @@ class JoinGroupCall extends TdFunction {
   String get tdType => 'joinGroupCall';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier
   int32? group_call_id;
@@ -33,8 +31,8 @@ class JoinGroupCall extends TdFunction {
   string? invite_hash;
 
   JoinGroupCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.participant_id,
     this.audio_source_id,

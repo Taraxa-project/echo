@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/chat_member_status.dart';
 class Supergroup extends TdObject {
   String get tdType => 'supergroup';
 
-  String? extra;
-  int? client_id;
 
   /// Supergroup or channel identifier
   int53? id;
@@ -56,8 +54,8 @@ class Supergroup extends TdObject {
   Bool? is_fake;
 
   Supergroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.username,
     this.date,

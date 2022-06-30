@@ -9,15 +9,13 @@ class SetNetworkType extends TdFunction {
   String get tdType => 'setNetworkType';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The new network type; pass null to set network type to networkTypeOther
   NetworkType? type;
 
   SetNetworkType({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.type,
   });
 

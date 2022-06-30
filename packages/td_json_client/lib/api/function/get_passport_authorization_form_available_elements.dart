@@ -6,8 +6,6 @@ class GetPassportAuthorizationFormAvailableElements extends TdFunction {
   String get tdType => 'getPassportAuthorizationFormAvailableElements';
   String get tdReturnType => 'PassportElementsWithErrors';
 
-  String? extra;
-  int? client_id;
 
   /// Authorization form identifier 
   int32? autorization_form_id;
@@ -16,8 +14,8 @@ class GetPassportAuthorizationFormAvailableElements extends TdFunction {
   string? password;
 
   GetPassportAuthorizationFormAvailableElements({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.autorization_form_id,
     this.password,
   });

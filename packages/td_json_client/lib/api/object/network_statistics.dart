@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/network_statistics_entry.dart';
 class NetworkStatistics extends TdObject {
   String get tdType => 'networkStatistics';
 
-  String? extra;
-  int? client_id;
 
   /// Point in time (Unix timestamp) from which the statistics are collected 
   int32? since_date;
@@ -17,8 +15,8 @@ class NetworkStatistics extends TdObject {
   vector<NetworkStatisticsEntry>? entries;
 
   NetworkStatistics({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.since_date,
     this.entries,
   });

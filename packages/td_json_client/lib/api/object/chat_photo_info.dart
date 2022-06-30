@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 class ChatPhotoInfo extends TdObject {
   String get tdType => 'chatPhotoInfo';
 
-  String? extra;
-  int? client_id;
 
   /// A small (160x160) chat photo variant in JPEG format. The file can be downloaded only before the photo is changed
   File? small;
@@ -24,8 +22,8 @@ class ChatPhotoInfo extends TdObject {
   Bool? has_animation;
 
   ChatPhotoInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.small,
     this.big,
     this.minithumbnail,

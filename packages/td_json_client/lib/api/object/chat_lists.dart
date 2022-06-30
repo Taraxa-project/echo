@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/chat_list.dart';
 class ChatLists extends TdObject {
   String get tdType => 'chatLists';
 
-  String? extra;
-  int? client_id;
 
   /// List of chat lists
   vector<ChatList>? chat_lists;
 
   ChatLists({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_lists,
   });
 

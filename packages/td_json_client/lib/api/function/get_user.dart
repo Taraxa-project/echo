@@ -6,15 +6,13 @@ class GetUser extends TdFunction {
   String get tdType => 'getUser';
   String get tdReturnType => 'User';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier
   int53? user_id;
 
   GetUser({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 

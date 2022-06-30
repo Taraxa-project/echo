@@ -8,8 +8,6 @@ class AcceptCall extends TdFunction {
   String get tdType => 'acceptCall';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Call identifier 
   int32? call_id;
@@ -18,8 +16,8 @@ class AcceptCall extends TdFunction {
   CallProtocol? protocol;
 
   AcceptCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.call_id,
     this.protocol,
   });

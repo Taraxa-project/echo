@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/background_fill.dart';
 class ThemeSettings extends TdObject {
   String get tdType => 'themeSettings';
 
-  String? extra;
-  int? client_id;
 
   /// Theme accent color in ARGB format
   int32? accent_color;
@@ -27,8 +25,8 @@ class ThemeSettings extends TdObject {
   int32? outgoing_message_accent_color;
 
   ThemeSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.accent_color,
     this.background,
     this.outgoing_message_fill,

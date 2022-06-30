@@ -6,15 +6,13 @@ class GetChatAvailableMessageSenders extends TdFunction {
   String get tdType => 'getChatAvailableMessageSenders';
   String get tdReturnType => 'MessageSenders';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
 
   GetChatAvailableMessageSenders({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

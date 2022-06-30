@@ -6,15 +6,13 @@ class GetPushReceiverId extends TdFunction {
   String get tdType => 'getPushReceiverId';
   String get tdReturnType => 'PushReceiverId';
 
-  String? extra;
-  int? client_id;
 
   /// JSON-encoded push notification payload
   string? payload;
 
   GetPushReceiverId({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.payload,
   });
 

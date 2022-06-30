@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class GroupCallId extends TdObject {
   String get tdType => 'groupCallId';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier
   int32? id;
 
   GroupCallId({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
   });
 

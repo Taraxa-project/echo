@@ -9,8 +9,6 @@ class SetBackground extends TdFunction {
   String get tdType => 'setBackground';
   String get tdReturnType => 'Background';
 
-  String? extra;
-  int? client_id;
 
   /// The input background to use; pass null to create a new filled backgrounds or to remove the current background
   InputBackground? background;
@@ -22,8 +20,8 @@ class SetBackground extends TdFunction {
   Bool? for_dark_theme;
 
   SetBackground({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.background,
     this.type,
     this.for_dark_theme,

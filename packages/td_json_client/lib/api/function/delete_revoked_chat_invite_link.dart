@@ -6,8 +6,6 @@ class DeleteRevokedChatInviteLink extends TdFunction {
   String get tdType => 'deleteRevokedChatInviteLink';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -16,8 +14,8 @@ class DeleteRevokedChatInviteLink extends TdFunction {
   string? invite_link;
 
   DeleteRevokedChatInviteLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.invite_link,
   });

@@ -8,8 +8,6 @@ class AnswerInlineQuery extends TdFunction {
   String get tdType => 'answerInlineQuery';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the inline query
   int64? inline_query_id;
@@ -33,8 +31,8 @@ class AnswerInlineQuery extends TdFunction {
   string? switch_pm_parameter;
 
   AnswerInlineQuery({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.inline_query_id,
     this.is_personal,
     this.results,

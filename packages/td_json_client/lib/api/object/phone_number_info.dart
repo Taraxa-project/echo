@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/country_info.dart';
 class PhoneNumberInfo extends TdObject {
   String get tdType => 'phoneNumberInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Information about the country to which the phone number belongs; may be null
   CountryInfo? country;
@@ -20,8 +18,8 @@ class PhoneNumberInfo extends TdObject {
   string? formatted_phone_number;
 
   PhoneNumberInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.country,
     this.country_calling_code,
     this.formatted_phone_number,

@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/address.dart';
 class OrderInfo extends TdObject {
   String get tdType => 'orderInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Name of the user 
   string? name;
@@ -23,8 +21,8 @@ class OrderInfo extends TdObject {
   Address? shipping_address;
 
   OrderInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.name,
     this.phone_number,
     this.email_address,

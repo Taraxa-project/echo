@@ -4,15 +4,15 @@ import 'package:td_json_client/api/object/input_file.dart';
 import 'package:td_json_client/api/object/mask_position.dart';
 
 /// Describes a sticker that needs to be added to a sticker set
-abstract class InputSticker extends TdObject {}
+abstract class InputSticker extends TdObject {
+  InputSticker({super.extra, super.client_id});
+}
 
 
 /// A static sticker in PNG format, which will be converted to WEBP server-side
 class InputStickerStatic extends InputSticker {
   String get tdType => 'inputStickerStatic';
 
-  String? extra;
-  int? client_id;
 
   /// PNG image with the sticker; must be up to 512 KB in size and fit in a 512x512 square
   InputFile? sticker;
@@ -24,8 +24,8 @@ class InputStickerStatic extends InputSticker {
   MaskPosition? mask_position;
 
   InputStickerStatic({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker,
     this.emojis,
     this.mask_position,
@@ -63,8 +63,6 @@ class InputStickerStatic extends InputSticker {
 class InputStickerAnimated extends InputSticker {
   String get tdType => 'inputStickerAnimated';
 
-  String? extra;
-  int? client_id;
 
   /// File with the animated sticker. Only local or uploaded within a week files are supported. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
   InputFile? sticker;
@@ -73,8 +71,8 @@ class InputStickerAnimated extends InputSticker {
   string? emojis;
 
   InputStickerAnimated({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sticker,
     this.emojis,
   });

@@ -6,15 +6,13 @@ class GetInternalLinkType extends TdFunction {
   String get tdType => 'getInternalLinkType';
   String get tdReturnType => 'InternalLinkType';
 
-  String? extra;
-  int? client_id;
 
   /// The link
   string? link;
 
   GetInternalLinkType({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.link,
   });
 

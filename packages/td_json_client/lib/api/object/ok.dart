@@ -5,12 +5,10 @@ import 'package:td_json_client/api/base.dart';
 class Ok extends TdObject {
   String get tdType => 'ok';
 
-  String? extra;
-  int? client_id;
 
   Ok({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   Ok.fromMap(Map<String, dynamic> map) {

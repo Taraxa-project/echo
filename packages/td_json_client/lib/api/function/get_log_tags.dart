@@ -6,12 +6,10 @@ class GetLogTags extends TdFunction {
   String get tdType => 'getLogTags';
   String get tdReturnType => 'LogTags';
 
-  String? extra;
-  int? client_id;
 
   GetLogTags({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetLogTags.fromMap(Map<String, dynamic> map) {

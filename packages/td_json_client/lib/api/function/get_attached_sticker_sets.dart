@@ -6,15 +6,13 @@ class GetAttachedStickerSets extends TdFunction {
   String get tdType => 'getAttachedStickerSets';
   String get tdReturnType => 'StickerSets';
 
-  String? extra;
-  int? client_id;
 
   /// File identifier
   int32? file_id;
 
   GetAttachedStickerSets({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
   });
 

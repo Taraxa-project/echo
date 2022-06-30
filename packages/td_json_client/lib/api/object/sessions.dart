@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/session.dart';
 class Sessions extends TdObject {
   String get tdType => 'sessions';
 
-  String? extra;
-  int? client_id;
 
   /// List of sessions 
   vector<Session>? sessions;
@@ -17,8 +15,8 @@ class Sessions extends TdObject {
   int32? inactive_session_ttl_days;
 
   Sessions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sessions,
     this.inactive_session_ttl_days,
   });

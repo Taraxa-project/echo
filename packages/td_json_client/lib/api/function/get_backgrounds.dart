@@ -6,15 +6,13 @@ class GetBackgrounds extends TdFunction {
   String get tdType => 'getBackgrounds';
   String get tdReturnType => 'Backgrounds';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the backgrounds must be ordered for dark theme
   Bool? for_dark_theme;
 
   GetBackgrounds({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.for_dark_theme,
   });
 

@@ -6,15 +6,13 @@ class GetStorageStatistics extends TdFunction {
   String get tdType => 'getStorageStatistics';
   String get tdReturnType => 'StorageStatistics';
 
-  String? extra;
-  int? client_id;
 
   /// The maximum number of chats with the largest storage usage for which separate statistics need to be returned. All other chats will be grouped in entries with chat_id == 0. If the chat info database is not used, the chat_limit is ignored and is always set to 0
   int32? chat_limit;
 
   GetStorageStatistics({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_limit,
   });
 

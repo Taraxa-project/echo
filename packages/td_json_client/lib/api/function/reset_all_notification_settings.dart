@@ -6,12 +6,10 @@ class ResetAllNotificationSettings extends TdFunction {
   String get tdType => 'resetAllNotificationSettings';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   ResetAllNotificationSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ResetAllNotificationSettings.fromMap(Map<String, dynamic> map) {

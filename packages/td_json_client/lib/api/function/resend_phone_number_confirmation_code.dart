@@ -6,12 +6,10 @@ class ResendPhoneNumberConfirmationCode extends TdFunction {
   String get tdType => 'resendPhoneNumberConfirmationCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
-  String? extra;
-  int? client_id;
 
   ResendPhoneNumberConfirmationCode({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ResendPhoneNumberConfirmationCode.fromMap(Map<String, dynamic> map) {

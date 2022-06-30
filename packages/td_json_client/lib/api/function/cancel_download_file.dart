@@ -6,8 +6,6 @@ class CancelDownloadFile extends TdFunction {
   String get tdType => 'cancelDownloadFile';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of a file to stop downloading 
   int32? file_id;
@@ -16,8 +14,8 @@ class CancelDownloadFile extends TdFunction {
   Bool? only_if_pending;
 
   CancelDownloadFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
     this.only_if_pending,
   });

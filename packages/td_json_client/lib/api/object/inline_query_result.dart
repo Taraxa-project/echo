@@ -14,15 +14,15 @@ import 'package:td_json_client/api/object/video.dart';
 import 'package:td_json_client/api/object/voice_note.dart';
 
 /// Represents a single result of an inline query
-abstract class InlineQueryResult extends TdObject {}
+abstract class InlineQueryResult extends TdObject {
+  InlineQueryResult({super.extra, super.client_id});
+}
 
 
 /// Represents a link to an article or web page 
 class InlineQueryResultArticle extends InlineQueryResult {
   String get tdType => 'inlineQueryResultArticle';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -42,8 +42,8 @@ class InlineQueryResultArticle extends InlineQueryResult {
   Thumbnail? thumbnail;
 
   InlineQueryResultArticle({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.url,
     this.hide_url,
@@ -88,8 +88,6 @@ class InlineQueryResultArticle extends InlineQueryResult {
 class InlineQueryResultContact extends InlineQueryResult {
   String get tdType => 'inlineQueryResultContact';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -101,8 +99,8 @@ class InlineQueryResultContact extends InlineQueryResult {
   Thumbnail? thumbnail;
 
   InlineQueryResultContact({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.contact,
     this.thumbnail,
@@ -140,8 +138,6 @@ class InlineQueryResultContact extends InlineQueryResult {
 class InlineQueryResultLocation extends InlineQueryResult {
   String get tdType => 'inlineQueryResultLocation';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -156,8 +152,8 @@ class InlineQueryResultLocation extends InlineQueryResult {
   Thumbnail? thumbnail;
 
   InlineQueryResultLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.location,
     this.title,
@@ -198,8 +194,6 @@ class InlineQueryResultLocation extends InlineQueryResult {
 class InlineQueryResultVenue extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVenue';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -211,8 +205,8 @@ class InlineQueryResultVenue extends InlineQueryResult {
   Thumbnail? thumbnail;
 
   InlineQueryResultVenue({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.venue,
     this.thumbnail,
@@ -250,8 +244,6 @@ class InlineQueryResultVenue extends InlineQueryResult {
 class InlineQueryResultGame extends InlineQueryResult {
   String get tdType => 'inlineQueryResultGame';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -260,8 +252,8 @@ class InlineQueryResultGame extends InlineQueryResult {
   Game? game;
 
   InlineQueryResultGame({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.game,
   });
@@ -294,8 +286,6 @@ class InlineQueryResultGame extends InlineQueryResult {
 class InlineQueryResultAnimation extends InlineQueryResult {
   String get tdType => 'inlineQueryResultAnimation';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -307,8 +297,8 @@ class InlineQueryResultAnimation extends InlineQueryResult {
   string? title;
 
   InlineQueryResultAnimation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.animation,
     this.title,
@@ -344,8 +334,6 @@ class InlineQueryResultAnimation extends InlineQueryResult {
 class InlineQueryResultAudio extends InlineQueryResult {
   String get tdType => 'inlineQueryResultAudio';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -354,8 +342,8 @@ class InlineQueryResultAudio extends InlineQueryResult {
   Audio? audio;
 
   InlineQueryResultAudio({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.audio,
   });
@@ -388,8 +376,6 @@ class InlineQueryResultAudio extends InlineQueryResult {
 class InlineQueryResultDocument extends InlineQueryResult {
   String get tdType => 'inlineQueryResultDocument';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -403,8 +389,8 @@ class InlineQueryResultDocument extends InlineQueryResult {
   string? description;
 
   InlineQueryResultDocument({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.document,
     this.title,
@@ -443,8 +429,6 @@ class InlineQueryResultDocument extends InlineQueryResult {
 class InlineQueryResultPhoto extends InlineQueryResult {
   String get tdType => 'inlineQueryResultPhoto';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -458,8 +442,8 @@ class InlineQueryResultPhoto extends InlineQueryResult {
   string? description;
 
   InlineQueryResultPhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.photo,
     this.title,
@@ -498,8 +482,6 @@ class InlineQueryResultPhoto extends InlineQueryResult {
 class InlineQueryResultSticker extends InlineQueryResult {
   String get tdType => 'inlineQueryResultSticker';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -508,8 +490,8 @@ class InlineQueryResultSticker extends InlineQueryResult {
   Sticker? sticker;
 
   InlineQueryResultSticker({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.sticker,
   });
@@ -542,8 +524,6 @@ class InlineQueryResultSticker extends InlineQueryResult {
 class InlineQueryResultVideo extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVideo';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -557,8 +537,8 @@ class InlineQueryResultVideo extends InlineQueryResult {
   string? description;
 
   InlineQueryResultVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.video,
     this.title,
@@ -597,8 +577,6 @@ class InlineQueryResultVideo extends InlineQueryResult {
 class InlineQueryResultVoiceNote extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVoiceNote';
 
-  String? extra;
-  int? client_id;
 
   /// Unique identifier of the query result 
   string? id;
@@ -610,8 +588,8 @@ class InlineQueryResultVoiceNote extends InlineQueryResult {
   string? title;
 
   InlineQueryResultVoiceNote({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.voice_note,
     this.title,

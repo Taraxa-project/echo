@@ -6,12 +6,10 @@ class GetAuthorizationState extends TdFunction {
   String get tdType => 'getAuthorizationState';
   String get tdReturnType => 'AuthorizationState';
 
-  String? extra;
-  int? client_id;
 
   GetAuthorizationState({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetAuthorizationState.fromMap(Map<String, dynamic> map) {

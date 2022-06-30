@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class TestString extends TdObject {
   String get tdType => 'testString';
 
-  String? extra;
-  int? client_id;
 
   /// String
   string? value;
 
   TestString({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.value,
   });
 

@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class FilePart extends TdObject {
   String get tdType => 'filePart';
 
-  String? extra;
-  int? client_id;
 
   /// File bytes
   bytes? data;
 
   FilePart({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.data,
   });
 

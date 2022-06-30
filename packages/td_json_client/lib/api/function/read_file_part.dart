@@ -6,8 +6,6 @@ class ReadFilePart extends TdFunction {
   String get tdType => 'readFilePart';
   String get tdReturnType => 'FilePart';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the file. The file must be located in the TDLib file cache
   int32? file_id;
@@ -19,8 +17,8 @@ class ReadFilePart extends TdFunction {
   int32? count;
 
   ReadFilePart({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
     this.offset,
     this.count,

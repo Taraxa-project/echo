@@ -7,8 +7,6 @@ class GetLoginUrl extends TdFunction {
   String get tdType => 'getLoginUrl';
   String get tdReturnType => 'HttpUrl';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier of the message with the button 
   int53? chat_id;
@@ -23,8 +21,8 @@ class GetLoginUrl extends TdFunction {
   Bool? allow_write_access;
 
   GetLoginUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.button_id,

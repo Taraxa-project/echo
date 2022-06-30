@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents result of checking whether a username can be set for a chat
-abstract class CheckChatUsernameResult extends TdObject {}
+abstract class CheckChatUsernameResult extends TdObject {
+  CheckChatUsernameResult({super.extra, super.client_id});
+}
 
 
 /// The username can be set
 class CheckChatUsernameResultOk extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultOk';
 
-  String? extra;
-  int? client_id;
 
   CheckChatUsernameResultOk({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CheckChatUsernameResultOk.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class CheckChatUsernameResultOk extends CheckChatUsernameResult {
 class CheckChatUsernameResultUsernameInvalid extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernameInvalid';
 
-  String? extra;
-  int? client_id;
 
   CheckChatUsernameResultUsernameInvalid({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CheckChatUsernameResultUsernameInvalid.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class CheckChatUsernameResultUsernameInvalid extends CheckChatUsernameResult {
 class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernameOccupied';
 
-  String? extra;
-  int? client_id;
 
   CheckChatUsernameResultUsernameOccupied({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CheckChatUsernameResultUsernameOccupied.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
 class CheckChatUsernameResultPublicChatsTooMuch extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicChatsTooMuch';
 
-  String? extra;
-  int? client_id;
 
   CheckChatUsernameResultPublicChatsTooMuch({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CheckChatUsernameResultPublicChatsTooMuch.fromMap(Map<String, dynamic> map) {
@@ -128,12 +122,10 @@ class CheckChatUsernameResultPublicChatsTooMuch extends CheckChatUsernameResult 
 class CheckChatUsernameResultPublicGroupsUnavailable extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicGroupsUnavailable';
 
-  String? extra;
-  int? client_id;
 
   CheckChatUsernameResultPublicGroupsUnavailable({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   CheckChatUsernameResultPublicGroupsUnavailable.fromMap(Map<String, dynamic> map) {

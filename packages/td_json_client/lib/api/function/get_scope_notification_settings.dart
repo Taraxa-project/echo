@@ -8,15 +8,13 @@ class GetScopeNotificationSettings extends TdFunction {
   String get tdType => 'getScopeNotificationSettings';
   String get tdReturnType => 'ScopeNotificationSettings';
 
-  String? extra;
-  int? client_id;
 
   /// Types of chats for which to return the notification settings information
   NotificationSettingsScope? scope;
 
   GetScopeNotificationSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.scope,
   });
 

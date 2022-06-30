@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/language_pack_info.dart';
 class LocalizationTargetInfo extends TdObject {
   String get tdType => 'localizationTargetInfo';
 
-  String? extra;
-  int? client_id;
 
   /// List of available language packs for this application
   vector<LanguagePackInfo>? language_packs;
 
   LocalizationTargetInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.language_packs,
   });
 

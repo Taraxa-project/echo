@@ -6,8 +6,6 @@ class SearchStickers extends TdFunction {
   String get tdType => 'searchStickers';
   String get tdReturnType => 'Stickers';
 
-  String? extra;
-  int? client_id;
 
   /// String representation of emoji; must be non-empty 
   string? emoji;
@@ -16,8 +14,8 @@ class SearchStickers extends TdFunction {
   int32? limit;
 
   SearchStickers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.emoji,
     this.limit,
   });

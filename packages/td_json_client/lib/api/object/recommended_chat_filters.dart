@@ -7,15 +7,13 @@ import 'package:td_json_client/api/object/recommended_chat_filter.dart';
 class RecommendedChatFilters extends TdObject {
   String get tdType => 'recommendedChatFilters';
 
-  String? extra;
-  int? client_id;
 
   /// List of recommended chat filters
   vector<RecommendedChatFilter>? chat_filters;
 
   RecommendedChatFilters({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_filters,
   });
 

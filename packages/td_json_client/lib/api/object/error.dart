@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class Error extends TdObject {
   String get tdType => 'error';
 
-  String? extra;
-  int? client_id;
 
   /// Error code; subject to future changes. If the error code is 406, the error message must not be processed in any way and must not be displayed to the user
   int32? code;
@@ -15,8 +13,8 @@ class Error extends TdObject {
   string? message;
 
   Error({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.code,
     this.message,
   });

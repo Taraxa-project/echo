@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message_sender.dart';
 class VideoChat extends TdObject {
   String get tdType => 'videoChat';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier of an active video chat; 0 if none. Full information about the video chat can be received through the method getGroupCall
   int32? group_call_id;
@@ -20,8 +18,8 @@ class VideoChat extends TdObject {
   MessageSender? default_participant_id;
 
   VideoChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.has_participants,
     this.default_participant_id,

@@ -6,8 +6,6 @@ class SetFileGenerationProgress extends TdFunction {
   String get tdType => 'setFileGenerationProgress';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The identifier of the generation process
   int64? generation_id;
@@ -19,8 +17,8 @@ class SetFileGenerationProgress extends TdFunction {
   int32? local_prefix_size;
 
   SetFileGenerationProgress({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.generation_id,
     this.expected_size,
     this.local_prefix_size,

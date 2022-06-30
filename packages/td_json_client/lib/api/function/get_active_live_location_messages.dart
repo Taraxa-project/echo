@@ -6,12 +6,10 @@ class GetActiveLiveLocationMessages extends TdFunction {
   String get tdType => 'getActiveLiveLocationMessages';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   GetActiveLiveLocationMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetActiveLiveLocationMessages.fromMap(Map<String, dynamic> map) {

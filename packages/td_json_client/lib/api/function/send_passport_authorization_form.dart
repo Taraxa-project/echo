@@ -8,8 +8,6 @@ class SendPassportAuthorizationForm extends TdFunction {
   String get tdType => 'sendPassportAuthorizationForm';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Authorization form identifier 
   int32? autorization_form_id;
@@ -18,8 +16,8 @@ class SendPassportAuthorizationForm extends TdFunction {
   vector<PassportElementType>? types;
 
   SendPassportAuthorizationForm({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.autorization_form_id,
     this.types,
   });

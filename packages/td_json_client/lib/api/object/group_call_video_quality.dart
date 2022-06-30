@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes the quality of a group call video
-abstract class GroupCallVideoQuality extends TdObject {}
+abstract class GroupCallVideoQuality extends TdObject {
+  GroupCallVideoQuality({super.extra, super.client_id});
+}
 
 
 /// The worst available video quality
 class GroupCallVideoQualityThumbnail extends GroupCallVideoQuality {
   String get tdType => 'groupCallVideoQualityThumbnail';
 
-  String? extra;
-  int? client_id;
 
   GroupCallVideoQualityThumbnail({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GroupCallVideoQualityThumbnail.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class GroupCallVideoQualityThumbnail extends GroupCallVideoQuality {
 class GroupCallVideoQualityMedium extends GroupCallVideoQuality {
   String get tdType => 'groupCallVideoQualityMedium';
 
-  String? extra;
-  int? client_id;
 
   GroupCallVideoQualityMedium({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GroupCallVideoQualityMedium.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class GroupCallVideoQualityMedium extends GroupCallVideoQuality {
 class GroupCallVideoQualityFull extends GroupCallVideoQuality {
   String get tdType => 'groupCallVideoQualityFull';
 
-  String? extra;
-  int? client_id;
 
   GroupCallVideoQualityFull({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GroupCallVideoQualityFull.fromMap(Map<String, dynamic> map) {

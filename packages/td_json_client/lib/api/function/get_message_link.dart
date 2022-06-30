@@ -6,8 +6,6 @@ class GetMessageLink extends TdFunction {
   String get tdType => 'getMessageLink';
   String get tdReturnType => 'MessageLink';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat to which the message belongs
   int53? chat_id;
@@ -25,8 +23,8 @@ class GetMessageLink extends TdFunction {
   Bool? for_comment;
 
   GetMessageLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.media_timestamp,

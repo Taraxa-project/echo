@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message_forward_origin.dart';
 class MessageForwardInfo extends TdObject {
   String get tdType => 'messageForwardInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Origin of a forwarded message
   MessageForwardOrigin? origin;
@@ -26,8 +24,8 @@ class MessageForwardInfo extends TdObject {
   int53? from_message_id;
 
   MessageForwardInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.origin,
     this.date,
     this.public_service_announcement_type,

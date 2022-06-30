@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/file.dart';
 class AnimatedChatPhoto extends TdObject {
   String get tdType => 'animatedChatPhoto';
 
-  String? extra;
-  int? client_id;
 
   /// Animation width and height
   int32? length;
@@ -20,8 +18,8 @@ class AnimatedChatPhoto extends TdObject {
   double? main_frame_timestamp;
 
   AnimatedChatPhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.length,
     this.file,
     this.main_frame_timestamp,

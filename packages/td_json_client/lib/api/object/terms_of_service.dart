@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/formatted_text.dart';
 class TermsOfService extends TdObject {
   String get tdType => 'termsOfService';
 
-  String? extra;
-  int? client_id;
 
   /// Text of the terms of service 
   FormattedText? text;
@@ -20,8 +18,8 @@ class TermsOfService extends TdObject {
   Bool? show_popup;
 
   TermsOfService({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.min_user_age,
     this.show_popup,

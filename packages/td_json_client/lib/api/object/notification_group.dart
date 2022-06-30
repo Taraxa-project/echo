@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/notification.dart';
 class NotificationGroup extends TdObject {
   String get tdType => 'notificationGroup';
 
-  String? extra;
-  int? client_id;
 
   /// Unique persistent auto-incremented from 1 identifier of the notification group 
   int32? id;
@@ -27,8 +25,8 @@ class NotificationGroup extends TdObject {
   vector<Notification>? notifications;
 
   NotificationGroup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.type,
     this.chat_id,

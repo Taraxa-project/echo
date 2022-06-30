@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Describes actions which must be possible to do through a chat action bar
-abstract class ChatActionBar extends TdObject {}
+abstract class ChatActionBar extends TdObject {
+  ChatActionBar({super.extra, super.client_id});
+}
 
 
 /// The chat can be reported as spam using the method reportChat with the reason chatReportReasonSpam
 class ChatActionBarReportSpam extends ChatActionBar {
   String get tdType => 'chatActionBarReportSpam';
 
-  String? extra;
-  int? client_id;
 
   /// If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings
   Bool? can_unarchive;
 
   ChatActionBarReportSpam({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.can_unarchive,
   });
 
@@ -44,12 +44,10 @@ class ChatActionBarReportSpam extends ChatActionBar {
 class ChatActionBarReportUnrelatedLocation extends ChatActionBar {
   String get tdType => 'chatActionBarReportUnrelatedLocation';
 
-  String? extra;
-  int? client_id;
 
   ChatActionBarReportUnrelatedLocation({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatActionBarReportUnrelatedLocation.fromMap(Map<String, dynamic> map) {
@@ -74,12 +72,10 @@ class ChatActionBarReportUnrelatedLocation extends ChatActionBar {
 class ChatActionBarInviteMembers extends ChatActionBar {
   String get tdType => 'chatActionBarInviteMembers';
 
-  String? extra;
-  int? client_id;
 
   ChatActionBarInviteMembers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatActionBarInviteMembers.fromMap(Map<String, dynamic> map) {
@@ -104,8 +100,6 @@ class ChatActionBarInviteMembers extends ChatActionBar {
 class ChatActionBarReportAddBlock extends ChatActionBar {
   String get tdType => 'chatActionBarReportAddBlock';
 
-  String? extra;
-  int? client_id;
 
   /// If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings
   Bool? can_unarchive;
@@ -114,8 +108,8 @@ class ChatActionBarReportAddBlock extends ChatActionBar {
   int32? distance;
 
   ChatActionBarReportAddBlock({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.can_unarchive,
     this.distance,
   });
@@ -146,12 +140,10 @@ class ChatActionBarReportAddBlock extends ChatActionBar {
 class ChatActionBarAddContact extends ChatActionBar {
   String get tdType => 'chatActionBarAddContact';
 
-  String? extra;
-  int? client_id;
 
   ChatActionBarAddContact({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatActionBarAddContact.fromMap(Map<String, dynamic> map) {
@@ -176,12 +168,10 @@ class ChatActionBarAddContact extends ChatActionBar {
 class ChatActionBarSharePhoneNumber extends ChatActionBar {
   String get tdType => 'chatActionBarSharePhoneNumber';
 
-  String? extra;
-  int? client_id;
 
   ChatActionBarSharePhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatActionBarSharePhoneNumber.fromMap(Map<String, dynamic> map) {
@@ -206,8 +196,6 @@ class ChatActionBarSharePhoneNumber extends ChatActionBar {
 class ChatActionBarJoinRequest extends ChatActionBar {
   String get tdType => 'chatActionBarJoinRequest';
 
-  String? extra;
-  int? client_id;
 
   /// Title of the chat to which the join request was sent
   string? title;
@@ -219,8 +207,8 @@ class ChatActionBarJoinRequest extends ChatActionBar {
   int32? request_date;
 
   ChatActionBarJoinRequest({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.title,
     this.is_channel,
     this.request_date,

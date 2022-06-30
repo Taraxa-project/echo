@@ -6,15 +6,13 @@ class GetAnimatedEmoji extends TdFunction {
   String get tdType => 'getAnimatedEmoji';
   String get tdReturnType => 'AnimatedEmoji';
 
-  String? extra;
-  int? client_id;
 
   /// The emoji
   string? emoji;
 
   GetAnimatedEmoji({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.emoji,
   });
 

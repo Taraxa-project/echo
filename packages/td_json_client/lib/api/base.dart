@@ -29,9 +29,16 @@ extension ListMap on List {
 }
 
 abstract class Td {
+  // JSON object type; maps to the field @type
   String get tdType;
 
-  Td();
+  // Matches requests with responses; maps to the field @extra
+  String? extra;
+
+  // tdlib client id; maps to the field @client_id
+  int? client_id;
+
+  Td({this.extra, this.client_id});
   Td.fromMap(Map<String, dynamic> map);
 
   Map<String, dynamic> toMap({skipNulls: true});
@@ -45,8 +52,11 @@ abstract class Td {
   }
 }
 
-abstract class TdObject extends Td {}
+abstract class TdObject extends Td {
+  TdObject({super.extra, super.client_id});
+}
 
 abstract class TdFunction extends Td {
   String get tdReturnType;
+  TdFunction({super.extra, super.client_id});
 }

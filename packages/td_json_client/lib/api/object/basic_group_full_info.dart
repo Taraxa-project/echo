@@ -10,8 +10,6 @@ import 'package:td_json_client/api/object/bot_commands.dart';
 class BasicGroupFullInfo extends TdObject {
   String get tdType => 'basicGroupFullInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Chat photo; may be null
   ChatPhoto? photo;
@@ -31,8 +29,8 @@ class BasicGroupFullInfo extends TdObject {
   vector<BotCommands>? bot_commands;
 
   BasicGroupFullInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.photo,
     this.description,
     this.creator_user_id,

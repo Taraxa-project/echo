@@ -9,8 +9,6 @@ class GetRemoteFile extends TdFunction {
   String get tdType => 'getRemoteFile';
   String get tdReturnType => 'File';
 
-  String? extra;
-  int? client_id;
 
   /// Remote identifier of the file to get 
   string? remote_file_id;
@@ -19,8 +17,8 @@ class GetRemoteFile extends TdFunction {
   FileType? file_type;
 
   GetRemoteFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.remote_file_id,
     this.file_type,
   });

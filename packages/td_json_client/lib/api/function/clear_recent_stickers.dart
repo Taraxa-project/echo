@@ -6,15 +6,13 @@ class ClearRecentStickers extends TdFunction {
   String get tdType => 'clearRecentStickers';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to clear the list of stickers recently attached to photo or video files; pass false to clear the list of recently sent stickers
   Bool? is_attached;
 
   ClearRecentStickers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_attached,
   });
 

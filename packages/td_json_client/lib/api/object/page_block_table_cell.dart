@@ -9,8 +9,6 @@ import 'package:td_json_client/api/object/page_block_vertical_alignment.dart';
 class PageBlockTableCell extends TdObject {
   String get tdType => 'pageBlockTableCell';
 
-  String? extra;
-  int? client_id;
 
   /// Cell text; may be null. If the text is null, then the cell must be invisible 
   RichText? text;
@@ -31,8 +29,8 @@ class PageBlockTableCell extends TdObject {
   PageBlockVerticalAlignment? valign;
 
   PageBlockTableCell({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.is_header,
     this.colspan,

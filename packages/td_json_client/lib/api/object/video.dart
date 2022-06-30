@@ -9,8 +9,6 @@ import 'package:td_json_client/api/object/file.dart';
 class Video extends TdObject {
   String get tdType => 'video';
 
-  String? extra;
-  int? client_id;
 
   /// Duration of the video, in seconds; as defined by the sender 
   int32? duration;
@@ -43,8 +41,8 @@ class Video extends TdObject {
   File? video;
 
   Video({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.duration,
     this.width,
     this.height,

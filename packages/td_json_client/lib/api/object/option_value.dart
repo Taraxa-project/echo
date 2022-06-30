@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents the value of an option
-abstract class OptionValue extends TdObject {}
+abstract class OptionValue extends TdObject {
+  OptionValue({super.extra, super.client_id});
+}
 
 
 /// Represents a boolean option 
 class OptionValueBoolean extends OptionValue {
   String get tdType => 'optionValueBoolean';
 
-  String? extra;
-  int? client_id;
 
   /// The value of the option
   Bool? value;
 
   OptionValueBoolean({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.value,
   });
 
@@ -44,12 +44,10 @@ class OptionValueBoolean extends OptionValue {
 class OptionValueEmpty extends OptionValue {
   String get tdType => 'optionValueEmpty';
 
-  String? extra;
-  int? client_id;
 
   OptionValueEmpty({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   OptionValueEmpty.fromMap(Map<String, dynamic> map) {
@@ -74,15 +72,13 @@ class OptionValueEmpty extends OptionValue {
 class OptionValueInteger extends OptionValue {
   String get tdType => 'optionValueInteger';
 
-  String? extra;
-  int? client_id;
 
   /// The value of the option
   int64? value;
 
   OptionValueInteger({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.value,
   });
 
@@ -110,15 +106,13 @@ class OptionValueInteger extends OptionValue {
 class OptionValueString extends OptionValue {
   String get tdType => 'optionValueString';
 
-  String? extra;
-  int? client_id;
 
   /// The value of the option
   string? value;
 
   OptionValueString({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.value,
   });
 

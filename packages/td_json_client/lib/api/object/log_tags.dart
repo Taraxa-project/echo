@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class LogTags extends TdObject {
   String get tdType => 'logTags';
 
-  String? extra;
-  int? client_id;
 
   /// List of log tags
   vector<string>? tags;
 
   LogTags({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.tags,
   });
 

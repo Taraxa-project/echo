@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/group_call_recent_speaker.dart';
 class GroupCall extends TdObject {
   String get tdType => 'groupCall';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier
   int32? id;
@@ -68,8 +66,8 @@ class GroupCall extends TdObject {
   int32? duration;
 
   GroupCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.title,
     this.scheduled_start_date,

@@ -6,12 +6,10 @@ class ClearImportedContacts extends TdFunction {
   String get tdType => 'clearImportedContacts';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   ClearImportedContacts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ClearImportedContacts.fromMap(Map<String, dynamic> map) {

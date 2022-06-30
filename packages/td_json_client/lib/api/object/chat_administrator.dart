@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatAdministrator extends TdObject {
   String get tdType => 'chatAdministrator';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier of the administrator 
   int53? user_id;
@@ -18,8 +16,8 @@ class ChatAdministrator extends TdObject {
   Bool? is_owner;
 
   ChatAdministrator({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.custom_title,
     this.is_owner,

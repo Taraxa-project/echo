@@ -6,15 +6,13 @@ class DeleteChatFilter extends TdFunction {
   String get tdType => 'deleteChatFilter';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat filter identifier
   int32? chat_filter_id;
 
   DeleteChatFilter({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_filter_id,
   });
 

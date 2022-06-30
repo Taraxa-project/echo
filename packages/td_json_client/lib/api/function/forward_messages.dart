@@ -8,8 +8,6 @@ class ForwardMessages extends TdFunction {
   String get tdType => 'forwardMessages';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat to which to forward messages
   int53? chat_id;
@@ -33,8 +31,8 @@ class ForwardMessages extends TdFunction {
   Bool? only_preview;
 
   ForwardMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.from_chat_id,
     this.message_ids,

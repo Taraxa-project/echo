@@ -6,8 +6,6 @@ class ToggleSupergroupIsAllHistoryAvailable extends TdFunction {
   String get tdType => 'toggleSupergroupIsAllHistoryAvailable';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The identifier of the supergroup 
   int53? supergroup_id;
@@ -16,8 +14,8 @@ class ToggleSupergroupIsAllHistoryAvailable extends TdFunction {
   Bool? is_all_history_available;
 
   ToggleSupergroupIsAllHistoryAvailable({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
     this.is_all_history_available,
   });

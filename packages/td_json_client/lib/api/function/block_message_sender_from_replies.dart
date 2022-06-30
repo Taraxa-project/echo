@@ -6,8 +6,6 @@ class BlockMessageSenderFromReplies extends TdFunction {
   String get tdType => 'blockMessageSenderFromReplies';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The identifier of an incoming message in the Replies chat
   int53? message_id;
@@ -22,8 +20,8 @@ class BlockMessageSenderFromReplies extends TdFunction {
   Bool? report_spam;
 
   BlockMessageSenderFromReplies({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.message_id,
     this.delete_message,
     this.delete_all_messages,

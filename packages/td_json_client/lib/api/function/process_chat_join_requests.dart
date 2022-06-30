@@ -6,8 +6,6 @@ class ProcessChatJoinRequests extends TdFunction {
   String get tdType => 'processChatJoinRequests';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
@@ -19,8 +17,8 @@ class ProcessChatJoinRequests extends TdFunction {
   Bool? approve;
 
   ProcessChatJoinRequests({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.invite_link,
     this.approve,

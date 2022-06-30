@@ -6,12 +6,10 @@ class GetDatabaseStatistics extends TdFunction {
   String get tdType => 'getDatabaseStatistics';
   String get tdReturnType => 'DatabaseStatistics';
 
-  String? extra;
-  int? client_id;
 
   GetDatabaseStatistics({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetDatabaseStatistics.fromMap(Map<String, dynamic> map) {

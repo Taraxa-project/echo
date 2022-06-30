@@ -8,8 +8,6 @@ class SetPinnedChats extends TdFunction {
   String get tdType => 'setPinnedChats';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Chat list in which to change the order of pinned chats 
   ChatList? chat_list;
@@ -18,8 +16,8 @@ class SetPinnedChats extends TdFunction {
   vector<int53>? chat_ids;
 
   SetPinnedChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_list,
     this.chat_ids,
   });

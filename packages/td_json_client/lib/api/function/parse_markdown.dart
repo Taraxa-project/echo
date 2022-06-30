@@ -8,15 +8,13 @@ class ParseMarkdown extends TdFunction {
   String get tdType => 'parseMarkdown';
   String get tdReturnType => 'FormattedText';
 
-  String? extra;
-  int? client_id;
 
   /// The text to parse. For example, "__italic__ ~~strikethrough~~ **bold** `code` ```pre``` __[italic__ text_url](telegram.org) __italic**bold italic__bold**"
   FormattedText? text;
 
   ParseMarkdown({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
   });
 

@@ -6,12 +6,10 @@ class GetAutoDownloadSettingsPresets extends TdFunction {
   String get tdType => 'getAutoDownloadSettingsPresets';
   String get tdReturnType => 'AutoDownloadSettingsPresets';
 
-  String? extra;
-  int? client_id;
 
   GetAutoDownloadSettingsPresets({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetAutoDownloadSettingsPresets.fromMap(Map<String, dynamic> map) {

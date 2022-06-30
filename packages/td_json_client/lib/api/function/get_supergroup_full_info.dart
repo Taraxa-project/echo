@@ -6,15 +6,13 @@ class GetSupergroupFullInfo extends TdFunction {
   String get tdType => 'getSupergroupFullInfo';
   String get tdReturnType => 'SupergroupFullInfo';
 
-  String? extra;
-  int? client_id;
 
   /// Supergroup or channel identifier
   int53? supergroup_id;
 
   GetSupergroupFullInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.supergroup_id,
   });
 

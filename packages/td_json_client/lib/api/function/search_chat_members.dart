@@ -8,8 +8,6 @@ class SearchChatMembers extends TdFunction {
   String get tdType => 'searchChatMembers';
   String get tdReturnType => 'ChatMembers';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
@@ -24,8 +22,8 @@ class SearchChatMembers extends TdFunction {
   ChatMembersFilter? filter;
 
   SearchChatMembers({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.query,
     this.limit,

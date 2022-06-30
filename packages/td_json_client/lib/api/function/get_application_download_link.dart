@@ -6,12 +6,10 @@ class GetApplicationDownloadLink extends TdFunction {
   String get tdType => 'getApplicationDownloadLink';
   String get tdReturnType => 'HttpUrl';
 
-  String? extra;
-  int? client_id;
 
   GetApplicationDownloadLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetApplicationDownloadLink.fromMap(Map<String, dynamic> map) {

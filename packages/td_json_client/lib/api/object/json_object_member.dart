@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/json_value.dart';
 class JsonObjectMember extends TdObject {
   String get tdType => 'jsonObjectMember';
 
-  String? extra;
-  int? client_id;
 
   /// Member's key 
   string? key;
@@ -17,8 +15,8 @@ class JsonObjectMember extends TdObject {
   JsonValue? value;
 
   JsonObjectMember({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.key,
     this.value,
   });

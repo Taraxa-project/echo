@@ -8,15 +8,13 @@ class SetProfilePhoto extends TdFunction {
   String get tdType => 'setProfilePhoto';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Profile photo to set
   InputChatPhoto? photo;
 
   SetProfilePhoto({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.photo,
   });
 

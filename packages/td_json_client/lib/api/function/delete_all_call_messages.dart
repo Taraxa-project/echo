@@ -6,15 +6,13 @@ class DeleteAllCallMessages extends TdFunction {
   String get tdType => 'deleteAllCallMessages';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to delete the messages for all users
   Bool? revoke;
 
   DeleteAllCallMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.revoke,
   });
 

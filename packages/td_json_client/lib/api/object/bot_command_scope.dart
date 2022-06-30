@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
 
 /// Represents the scope to which bot commands are relevant
-abstract class BotCommandScope extends TdObject {}
+abstract class BotCommandScope extends TdObject {
+  BotCommandScope({super.extra, super.client_id});
+}
 
 
 /// A scope covering all users
 class BotCommandScopeDefault extends BotCommandScope {
   String get tdType => 'botCommandScopeDefault';
 
-  String? extra;
-  int? client_id;
 
   BotCommandScopeDefault({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   BotCommandScopeDefault.fromMap(Map<String, dynamic> map) {
@@ -38,12 +38,10 @@ class BotCommandScopeDefault extends BotCommandScope {
 class BotCommandScopeAllPrivateChats extends BotCommandScope {
   String get tdType => 'botCommandScopeAllPrivateChats';
 
-  String? extra;
-  int? client_id;
 
   BotCommandScopeAllPrivateChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   BotCommandScopeAllPrivateChats.fromMap(Map<String, dynamic> map) {
@@ -68,12 +66,10 @@ class BotCommandScopeAllPrivateChats extends BotCommandScope {
 class BotCommandScopeAllGroupChats extends BotCommandScope {
   String get tdType => 'botCommandScopeAllGroupChats';
 
-  String? extra;
-  int? client_id;
 
   BotCommandScopeAllGroupChats({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   BotCommandScopeAllGroupChats.fromMap(Map<String, dynamic> map) {
@@ -98,12 +94,10 @@ class BotCommandScopeAllGroupChats extends BotCommandScope {
 class BotCommandScopeAllChatAdministrators extends BotCommandScope {
   String get tdType => 'botCommandScopeAllChatAdministrators';
 
-  String? extra;
-  int? client_id;
 
   BotCommandScopeAllChatAdministrators({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   BotCommandScopeAllChatAdministrators.fromMap(Map<String, dynamic> map) {
@@ -128,15 +122,13 @@ class BotCommandScopeAllChatAdministrators extends BotCommandScope {
 class BotCommandScopeChat extends BotCommandScope {
   String get tdType => 'botCommandScopeChat';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
 
   BotCommandScopeChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 
@@ -164,15 +156,13 @@ class BotCommandScopeChat extends BotCommandScope {
 class BotCommandScopeChatAdministrators extends BotCommandScope {
   String get tdType => 'botCommandScopeChatAdministrators';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
 
   BotCommandScopeChatAdministrators({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 
@@ -200,8 +190,6 @@ class BotCommandScopeChatAdministrators extends BotCommandScope {
 class BotCommandScopeChatMember extends BotCommandScope {
   String get tdType => 'botCommandScopeChatMember';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -210,8 +198,8 @@ class BotCommandScopeChatMember extends BotCommandScope {
   int53? user_id;
 
   BotCommandScopeChatMember({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.user_id,
   });

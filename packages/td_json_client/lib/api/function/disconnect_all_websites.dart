@@ -6,12 +6,10 @@ class DisconnectAllWebsites extends TdFunction {
   String get tdType => 'disconnectAllWebsites';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   DisconnectAllWebsites({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   DisconnectAllWebsites.fromMap(Map<String, dynamic> map) {

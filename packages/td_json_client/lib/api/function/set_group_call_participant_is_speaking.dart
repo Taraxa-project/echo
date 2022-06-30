@@ -6,8 +6,6 @@ class SetGroupCallParticipantIsSpeaking extends TdFunction {
   String get tdType => 'setGroupCallParticipantIsSpeaking';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier
   int32? group_call_id;
@@ -19,8 +17,8 @@ class SetGroupCallParticipantIsSpeaking extends TdFunction {
   Bool? is_speaking;
 
   SetGroupCallParticipantIsSpeaking({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.audio_source,
     this.is_speaking,

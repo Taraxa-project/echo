@@ -6,15 +6,13 @@ class StartScheduledGroupCall extends TdFunction {
   String get tdType => 'startScheduledGroupCall';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier
   int32? group_call_id;
 
   StartScheduledGroupCall({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
   });
 

@@ -8,8 +8,6 @@ class SetStickerSetThumbnail extends TdFunction {
   String get tdType => 'setStickerSetThumbnail';
   String get tdReturnType => 'StickerSet';
 
-  String? extra;
-  int? client_id;
 
   /// Sticker set owner 
   int53? user_id;
@@ -21,8 +19,8 @@ class SetStickerSetThumbnail extends TdFunction {
   InputFile? thumbnail;
 
   SetStickerSetThumbnail({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.name,
     this.thumbnail,

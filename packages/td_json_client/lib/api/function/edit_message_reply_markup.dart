@@ -8,8 +8,6 @@ class EditMessageReplyMarkup extends TdFunction {
   String get tdType => 'editMessageReplyMarkup';
   String get tdReturnType => 'Message';
 
-  String? extra;
-  int? client_id;
 
   /// The chat the message belongs to
   int53? chat_id;
@@ -21,8 +19,8 @@ class EditMessageReplyMarkup extends TdFunction {
   ReplyMarkup? reply_markup;
 
   EditMessageReplyMarkup({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.reply_markup,

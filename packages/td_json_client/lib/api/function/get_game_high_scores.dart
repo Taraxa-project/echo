@@ -6,8 +6,6 @@ class GetGameHighScores extends TdFunction {
   String get tdType => 'getGameHighScores';
   String get tdReturnType => 'GameHighScores';
 
-  String? extra;
-  int? client_id;
 
   /// The chat that contains the message with the game 
   int53? chat_id;
@@ -19,8 +17,8 @@ class GetGameHighScores extends TdFunction {
   int53? user_id;
 
   GetGameHighScores({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.user_id,

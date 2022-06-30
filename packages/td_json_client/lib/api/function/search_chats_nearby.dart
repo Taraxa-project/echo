@@ -8,15 +8,13 @@ class SearchChatsNearby extends TdFunction {
   String get tdType => 'searchChatsNearby';
   String get tdReturnType => 'ChatsNearby';
 
-  String? extra;
-  int? client_id;
 
   /// Current user location
   Location? location;
 
   SearchChatsNearby({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.location,
   });
 

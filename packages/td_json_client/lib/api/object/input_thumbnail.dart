@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/input_file.dart';
 class InputThumbnail extends TdObject {
   String get tdType => 'inputThumbnail';
 
-  String? extra;
-  int? client_id;
 
   /// Thumbnail file to send. Sending thumbnails by file_id is currently not supported
   InputFile? thumbnail;
@@ -20,8 +18,8 @@ class InputThumbnail extends TdObject {
   int32? height;
 
   InputThumbnail({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.thumbnail,
     this.width,
     this.height,

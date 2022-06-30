@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/keyboard_button_type.dart';
 class KeyboardButton extends TdObject {
   String get tdType => 'keyboardButton';
 
-  String? extra;
-  int? client_id;
 
   /// Text of the button 
   string? text;
@@ -17,8 +15,8 @@ class KeyboardButton extends TdObject {
   KeyboardButtonType? type;
 
   KeyboardButton({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.type,
   });

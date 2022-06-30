@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/call_server_type.dart';
 class CallServer extends TdObject {
   String get tdType => 'callServer';
 
-  String? extra;
-  int? client_id;
 
   /// Server identifier 
   int64? id;
@@ -26,8 +24,8 @@ class CallServer extends TdObject {
   CallServerType? type;
 
   CallServer({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.ip_address,
     this.ipv6_address,

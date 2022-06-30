@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/mask_point.dart';
 class MaskPosition extends TdObject {
   String get tdType => 'maskPosition';
 
-  String? extra;
-  int? client_id;
 
   /// Part of the face, relative to which the mask is placed
   MaskPoint? point;
@@ -23,8 +21,8 @@ class MaskPosition extends TdObject {
   double? scale;
 
   MaskPosition({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.point,
     this.x_shift,
     this.y_shift,

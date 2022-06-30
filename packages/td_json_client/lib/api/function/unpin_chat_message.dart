@@ -6,8 +6,6 @@ class UnpinChatMessage extends TdFunction {
   String get tdType => 'unpinChatMessage';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat 
   int53? chat_id;
@@ -16,8 +14,8 @@ class UnpinChatMessage extends TdFunction {
   int53? message_id;
 
   UnpinChatMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
   });

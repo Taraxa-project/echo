@@ -6,8 +6,6 @@ class AddLogMessage extends TdFunction {
   String get tdType => 'addLogMessage';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The minimum verbosity level needed for the message to be logged; 0-1023 
   int32? verbosity_level;
@@ -16,8 +14,8 @@ class AddLogMessage extends TdFunction {
   string? text;
 
   AddLogMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.verbosity_level,
     this.text,
   });

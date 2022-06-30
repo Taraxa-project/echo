@@ -6,8 +6,6 @@ class GetRepliedMessage extends TdFunction {
   String get tdType => 'getRepliedMessage';
   String get tdReturnType => 'Message';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat the message belongs to 
   int53? chat_id;
@@ -16,8 +14,8 @@ class GetRepliedMessage extends TdFunction {
   int53? message_id;
 
   GetRepliedMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
   });

@@ -6,8 +6,6 @@ class SearchChatRecentLocationMessages extends TdFunction {
   String get tdType => 'searchChatRecentLocationMessages';
   String get tdReturnType => 'Messages';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -16,8 +14,8 @@ class SearchChatRecentLocationMessages extends TdFunction {
   int32? limit;
 
   SearchChatRecentLocationMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.limit,
   });

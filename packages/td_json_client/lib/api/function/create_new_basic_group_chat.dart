@@ -6,8 +6,6 @@ class CreateNewBasicGroupChat extends TdFunction {
   String get tdType => 'createNewBasicGroupChat';
   String get tdReturnType => 'Chat';
 
-  String? extra;
-  int? client_id;
 
   /// Identifiers of users to be added to the basic group 
   vector<int53>? user_ids;
@@ -16,8 +14,8 @@ class CreateNewBasicGroupChat extends TdFunction {
   string? title;
 
   CreateNewBasicGroupChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_ids,
     this.title,
   });

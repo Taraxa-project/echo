@@ -6,8 +6,6 @@ class LoadGroupCallParticipants extends TdFunction {
   String get tdType => 'loadGroupCallParticipants';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Group call identifier. The group call must be previously received through getGroupCall and must be joined or being joined
   int32? group_call_id;
@@ -16,8 +14,8 @@ class LoadGroupCallParticipants extends TdFunction {
   int32? limit;
 
   LoadGroupCallParticipants({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.group_call_id,
     this.limit,
   });

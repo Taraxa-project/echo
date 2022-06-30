@@ -3,15 +3,15 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_permissions.dart';
 
 /// Provides information about the status of a member in a chat
-abstract class ChatMemberStatus extends TdObject {}
+abstract class ChatMemberStatus extends TdObject {
+  ChatMemberStatus({super.extra, super.client_id});
+}
 
 
 /// The user is the owner of the chat and has all the administrator privileges
 class ChatMemberStatusCreator extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusCreator';
 
-  String? extra;
-  int? client_id;
 
   /// A custom title of the owner; 0-16 characters without emojis; applicable to supergroups only
   string? custom_title;
@@ -23,8 +23,8 @@ class ChatMemberStatusCreator extends ChatMemberStatus {
   Bool? is_member;
 
   ChatMemberStatusCreator({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.custom_title,
     this.is_anonymous,
     this.is_member,
@@ -58,8 +58,6 @@ class ChatMemberStatusCreator extends ChatMemberStatus {
 class ChatMemberStatusAdministrator extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusAdministrator';
 
-  String? extra;
-  int? client_id;
 
   /// A custom title of the administrator; 0-16 characters without emojis; applicable to supergroups only
   string? custom_title;
@@ -101,8 +99,8 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
   Bool? is_anonymous;
 
   ChatMemberStatusAdministrator({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.custom_title,
     this.can_be_edited,
     this.can_manage_chat,
@@ -166,12 +164,10 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
 class ChatMemberStatusMember extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusMember';
 
-  String? extra;
-  int? client_id;
 
   ChatMemberStatusMember({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatMemberStatusMember.fromMap(Map<String, dynamic> map) {
@@ -196,8 +192,6 @@ class ChatMemberStatusMember extends ChatMemberStatus {
 class ChatMemberStatusRestricted extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusRestricted';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the user is a member of the chat
   Bool? is_member;
@@ -209,8 +203,8 @@ class ChatMemberStatusRestricted extends ChatMemberStatus {
   ChatPermissions? permissions;
 
   ChatMemberStatusRestricted({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.is_member,
     this.restricted_until_date,
     this.permissions,
@@ -246,12 +240,10 @@ class ChatMemberStatusRestricted extends ChatMemberStatus {
 class ChatMemberStatusLeft extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusLeft';
 
-  String? extra;
-  int? client_id;
 
   ChatMemberStatusLeft({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   ChatMemberStatusLeft.fromMap(Map<String, dynamic> map) {
@@ -276,15 +268,13 @@ class ChatMemberStatusLeft extends ChatMemberStatus {
 class ChatMemberStatusBanned extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusBanned';
 
-  String? extra;
-  int? client_id;
 
   /// Point in time (Unix timestamp) when the user will be unbanned; 0 if never. If the user is banned for more than 366 days or for less than 30 seconds from the current time, the user is considered to be banned forever. Always 0 in basic groups
   int32? banned_until_date;
 
   ChatMemberStatusBanned({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.banned_until_date,
   });
 

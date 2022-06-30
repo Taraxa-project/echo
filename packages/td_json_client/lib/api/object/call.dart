@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/call_state.dart';
 class Call extends TdObject {
   String get tdType => 'call';
 
-  String? extra;
-  int? client_id;
 
   /// Call identifier, not persistent 
   int32? id;
@@ -26,8 +24,8 @@ class Call extends TdObject {
   CallState? state;
 
   Call({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.user_id,
     this.is_outgoing,

@@ -6,8 +6,6 @@ class GetGroupsInCommon extends TdFunction {
   String get tdType => 'getGroupsInCommon';
   String get tdReturnType => 'Chats';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier 
   int53? user_id;
@@ -19,8 +17,8 @@ class GetGroupsInCommon extends TdFunction {
   int32? limit;
 
   GetGroupsInCommon({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.offset_chat_id,
     this.limit,

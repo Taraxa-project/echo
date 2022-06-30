@@ -9,8 +9,6 @@ class SetScopeNotificationSettings extends TdFunction {
   String get tdType => 'setScopeNotificationSettings';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Types of chats for which to change the notification settings 
   NotificationSettingsScope? scope;
@@ -19,8 +17,8 @@ class SetScopeNotificationSettings extends TdFunction {
   ScopeNotificationSettings? notification_settings;
 
   SetScopeNotificationSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.scope,
     this.notification_settings,
   });

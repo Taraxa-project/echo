@@ -6,8 +6,6 @@ class GetExternalLink extends TdFunction {
   String get tdType => 'getExternalLink';
   String get tdReturnType => 'HttpUrl';
 
-  String? extra;
-  int? client_id;
 
   /// The HTTP link 
   string? link;
@@ -16,8 +14,8 @@ class GetExternalLink extends TdFunction {
   Bool? allow_write_access;
 
   GetExternalLink({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.link,
     this.allow_write_access,
   });

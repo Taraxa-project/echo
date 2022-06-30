@@ -6,15 +6,13 @@ class UpgradeBasicGroupChatToSupergroupChat extends TdFunction {
   String get tdType => 'upgradeBasicGroupChatToSupergroupChat';
   String get tdReturnType => 'Chat';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat to upgrade
   int53? chat_id;
 
   UpgradeBasicGroupChatToSupergroupChat({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

@@ -6,8 +6,6 @@ class GetChatStatistics extends TdFunction {
   String get tdType => 'getChatStatistics';
   String get tdReturnType => 'ChatStatistics';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier 
   int53? chat_id;
@@ -16,8 +14,8 @@ class GetChatStatistics extends TdFunction {
   Bool? is_dark;
 
   GetChatStatistics({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.is_dark,
   });

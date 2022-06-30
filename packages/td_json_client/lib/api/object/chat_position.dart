@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/chat_source.dart';
 class ChatPosition extends TdObject {
   String get tdType => 'chatPosition';
 
-  String? extra;
-  int? client_id;
 
   /// The chat list
   ChatList? list;
@@ -24,8 +22,8 @@ class ChatPosition extends TdObject {
   ChatSource? source;
 
   ChatPosition({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.list,
     this.order,
     this.is_pinned,

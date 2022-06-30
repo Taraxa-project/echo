@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class PhoneNumberAuthenticationSettings extends TdObject {
   String get tdType => 'phoneNumberAuthenticationSettings';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true if the authentication code may be sent via a flash call to the specified phone number
   Bool? allow_flash_call;
@@ -24,8 +22,8 @@ class PhoneNumberAuthenticationSettings extends TdObject {
   vector<string>? authentication_tokens;
 
   PhoneNumberAuthenticationSettings({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.allow_flash_call,
     this.allow_missed_call,
     this.is_current_phone_number,

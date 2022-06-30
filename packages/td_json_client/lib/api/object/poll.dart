@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/poll_type.dart';
 class Poll extends TdObject {
   String get tdType => 'poll';
 
-  String? extra;
-  int? client_id;
 
   /// Unique poll identifier 
   int64? id;
@@ -42,8 +40,8 @@ class Poll extends TdObject {
   Bool? is_closed;
 
   Poll({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.id,
     this.question,
     this.options,

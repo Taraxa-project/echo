@@ -6,15 +6,13 @@ class CancelUploadFile extends TdFunction {
   String get tdType => 'cancelUploadFile';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the file to stop uploading
   int32? file_id;
 
   CancelUploadFile({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
   });
 

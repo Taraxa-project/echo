@@ -8,8 +8,6 @@ class ChangePhoneNumber extends TdFunction {
   String get tdType => 'changePhoneNumber';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
-  String? extra;
-  int? client_id;
 
   /// The new phone number of the user in international format 
   string? phone_number;
@@ -18,8 +16,8 @@ class ChangePhoneNumber extends TdFunction {
   PhoneNumberAuthenticationSettings? settings;
 
   ChangePhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.phone_number,
     this.settings,
   });

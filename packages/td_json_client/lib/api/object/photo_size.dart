@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/file.dart';
 class PhotoSize extends TdObject {
   String get tdType => 'photoSize';
 
-  String? extra;
-  int? client_id;
 
   /// Image type (see https://core.telegram.org/constructor/photoSize)
   string? type;
@@ -26,8 +24,8 @@ class PhotoSize extends TdObject {
   vector<int32>? progressive_sizes;
 
   PhotoSize({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.type,
     this.photo,
     this.width,

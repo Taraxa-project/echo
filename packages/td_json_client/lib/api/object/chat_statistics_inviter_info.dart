@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatStatisticsInviterInfo extends TdObject {
   String get tdType => 'chatStatisticsInviterInfo';
 
-  String? extra;
-  int? client_id;
 
   /// User identifier
   int53? user_id;
@@ -15,8 +13,8 @@ class ChatStatisticsInviterInfo extends TdObject {
   int32? added_member_count;
 
   ChatStatisticsInviterInfo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.added_member_count,
   });

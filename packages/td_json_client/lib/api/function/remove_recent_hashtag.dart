@@ -6,15 +6,13 @@ class RemoveRecentHashtag extends TdFunction {
   String get tdType => 'removeRecentHashtag';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Hashtag to delete
   string? hashtag;
 
   RemoveRecentHashtag({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.hashtag,
   });
 

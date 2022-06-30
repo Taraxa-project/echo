@@ -6,15 +6,13 @@ class CheckAuthenticationBotToken extends TdFunction {
   String get tdType => 'checkAuthenticationBotToken';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// The bot token
   string? token;
 
   CheckAuthenticationBotToken({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.token,
   });
 
