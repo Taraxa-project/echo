@@ -1,6 +1,8 @@
 import 'package:td_json_client/td_json_client.dart';
 import 'package:telegram_client/request/request.dart';
 
+import '../exception.dart';
+
 class LoginRequest extends Request {
   final SetTdlibParameters setTdlibParameters;
   final CheckDatabaseEncryptionKey checkDatabaseEncryptionKey;
@@ -41,7 +43,11 @@ class LoginRequest extends Request {
             (event) => event is UpdateAuthorizationState || event is Error)) {
       if (response is Error) {
         loggy.error(response);
-        break;
+        var error = response as Error;
+        throw LoginMessageException(
+          code: error.code,
+          message: error.message,
+        );
       }
 
       var updateAuthorizationState = response as UpdateAuthorizationState;
@@ -153,4 +159,8 @@ class CheckAuthenticationPasswordWithCallback
   CheckAuthenticationPasswordWithCallback({
     required this.readUserPassword,
   });
+}
+
+class LoginMessageException extends MessageException {
+  LoginMessageException({super.code, super.message});
 }
