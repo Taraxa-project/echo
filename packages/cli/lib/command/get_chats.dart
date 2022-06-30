@@ -1,13 +1,16 @@
-import 'package:echo_cli/src/tg/command/base.dart';
+import 'package:td_json_client/td_json_client.dart';
 
 import 'package:telegram_client/client.dart';
 import 'package:telegram_client/request/login.dart';
-import 'package:td_json_client/td_json_client.dart';
-import 'package:echo_cli/src/tg/input/cli.dart';
+import 'package:telegram_client/request/get_chats.dart';
 
-class TelegramCommandLogin extends TelegramCommand {
-  final name = 'login';
-  final description = 'Login a Telegram account.';
+import 'base.dart';
+
+import '../input/cli.dart';
+
+class TelegramCommandsGetChats extends TelegramCommand {
+  final name = 'get-chats';
+  final description = 'List the chats for a Telegram account.';
 
   void run() async {
     setLogLevel(globalResults!['loglevel']);
@@ -38,6 +41,12 @@ class TelegramCommandLogin extends TelegramCommand {
       ),
       checkAuthenticationCode: CheckAuthenticationCodeCallback(
         readTelegramCode: readTelegramCode,
+      ),
+    ));
+
+    await telegramClient.send(GetChatsRequest(
+      getChats: GetChats(
+        limit: 100,
       ),
     ));
   }

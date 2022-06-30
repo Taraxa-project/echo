@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'package:args/command_runner.dart';
 
+import 'package:args/command_runner.dart';
 import 'package:loggy/loggy.dart';
-import 'package:echo_cli/src/tg/command/login.dart';
-import 'package:echo_cli/src/tg/command/get_chats.dart';
+
+import 'package:echo_cli/command/login.dart';
+import 'package:echo_cli/command/get_chats.dart';
 
 void main(List<String> arguments) {
   Loggy.initLoggy(
