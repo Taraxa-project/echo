@@ -149,7 +149,7 @@ packages:
     source: hosted
     version: "1.1.1"
   td_json_client:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       path: "../td_json_client"
       relative: true

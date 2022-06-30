@@ -1,11 +1,10 @@
 import 'dart:io';
-import 'package:args/command_runner.dart';
 
+import 'package:args/command_runner.dart';
 import 'package:loggy/loggy.dart';
-import 'package:echo_cli/src/tg/tg_input.dart';
-import 'package:echo_cli/src/tg/command/runner.dart';
-import 'package:echo_cli/src/tg/command/login.dart';
-import 'package:echo_cli/src/tg/command/chats.dart';
+
+import 'package:echo_cli/command/login.dart';
+import 'package:echo_cli/command/get_chats.dart';
 
 void main(List<String> arguments) {
   Loggy.initLoggy(
@@ -13,8 +12,8 @@ void main(List<String> arguments) {
       logOptions: defaultLevel,
       hierarchicalLogging: true);
 
-  final TelegramCommandRunner commandRunner = TelegramCommandRunner(
-      "echo", "A dart implementation of Telegram scrapper.");
+  final commandRunner =
+      CommandRunner("echo", "A dart implementation of Telegram scrapper.");
 
   commandRunner.argParser
     ..addOption('api-id',
@@ -32,9 +31,8 @@ void main(List<String> arguments) {
     ..addOption('loglevel', help: 'Log level', defaultsTo: 'Error');
 
   commandRunner
-    ..readTelegramCode = readTelegramCode
     ..addCommand(TelegramCommandLogin())
-    ..addCommand(TelegramCommandsChats())
+    ..addCommand(TelegramCommandsGetChats())
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
       print(error);
