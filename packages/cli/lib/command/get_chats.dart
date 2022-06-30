@@ -6,7 +6,7 @@ import 'package:telegram_client/request/get_chats.dart';
 
 import 'base.dart';
 
-import '../input/cli.dart';
+import '../callback/cli.dart';
 
 class TelegramCommandsGetChats extends TelegramCommand {
   final name = 'get-chats';
@@ -39,9 +39,20 @@ class TelegramCommandsGetChats extends TelegramCommand {
       setAuthenticationPhoneNumber: SetAuthenticationPhoneNumber(
         phone_number: globalResults!['phone-number'],
       ),
-      checkAuthenticationCode: CheckAuthenticationCodeCallback(
+      checkAuthenticationCodeWithCallback: CheckAuthenticationCodeWithCallback(
         readTelegramCode: readTelegramCode,
       ),
+      authorizationStateWaitOtherDeviceConfirmationWithCallback:
+          AuthorizationStateWaitOtherDeviceConfirmationWithCallback(
+        writeQrCodeLink: writeQrCodeLink,
+      ),
+      registerUserWithCallback: RegisterUserWithCallback(
+        readUserFirstName: readUserFirstName,
+        readUserLastName: readUserLastName,
+      ),
+      checkAuthenticationPasswordWithCallback:
+          CheckAuthenticationPasswordWithCallback(
+              readUserPassword: readUserPassword),
     ));
 
     await telegramClient.send(GetChatsRequest(

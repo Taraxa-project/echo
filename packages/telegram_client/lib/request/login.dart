@@ -5,7 +5,12 @@ class LoginRequest extends Request {
   final SetTdlibParameters setTdlibParameters;
   final CheckDatabaseEncryptionKey checkDatabaseEncryptionKey;
   final SetAuthenticationPhoneNumber setAuthenticationPhoneNumber;
-  final CheckAuthenticationCodeCallback checkAuthenticationCode;
+  final CheckAuthenticationCodeWithCallback checkAuthenticationCodeWithCallback;
+  final AuthorizationStateWaitOtherDeviceConfirmationWithCallback
+      authorizationStateWaitOtherDeviceConfirmationWithCallback;
+  final RegisterUserWithCallback registerUserWithCallback;
+  final CheckAuthenticationPasswordWithCallback
+      checkAuthenticationPasswordWithCallback;
 
   bool _isAuthorized = false;
   bool get isAuthorized => _isAuthorized;
@@ -16,7 +21,10 @@ class LoginRequest extends Request {
     required this.setTdlibParameters,
     required this.checkDatabaseEncryptionKey,
     required this.setAuthenticationPhoneNumber,
-    required this.checkAuthenticationCode,
+    required this.checkAuthenticationCodeWithCallback,
+    required this.authorizationStateWaitOtherDeviceConfirmationWithCallback,
+    required this.registerUserWithCallback,
+    required this.checkAuthenticationPasswordWithCallback,
   });
 
   @override
@@ -29,19 +37,15 @@ class LoginRequest extends Request {
 
     await for (var response in tdJsonClient
         .receive(waitTimeout: waitTimeout)
-        .where((event) => event is UpdateAuthorizationState)) {
+        .where(
+            (event) => event is UpdateAuthorizationState || event is Error)) {
+      if (response is Error) {
+        loggy.error(response);
+        break;
+      }
+
       var updateAuthorizationState = response as UpdateAuthorizationState;
       switch (updateAuthorizationState.authorization_state.runtimeType) {
-        case AuthorizationStateClosed:
-          loggy.warning('Authorization state closed.');
-          _isClosed = true;
-          break;
-
-        case AuthorizationStateReady:
-          _isAuthorized = true;
-          loggy.info('Logged in successfuly.');
-          break;
-
         case AuthorizationStateWaitTdlibParameters:
           tdJsonClient.send(
             clientId,
@@ -67,8 +71,48 @@ class LoginRequest extends Request {
           tdJsonClient.send(
             clientId,
             CheckAuthenticationCode(
-                code: checkAuthenticationCode.readTelegramCode()),
+                code: checkAuthenticationCodeWithCallback.readTelegramCode()),
           );
+          break;
+
+        case AuthorizationStateWaitOtherDeviceConfirmation:
+          var authorizationStateWaitOtherDeviceConfirmation =
+              updateAuthorizationState
+                  as AuthorizationStateWaitOtherDeviceConfirmation;
+          authorizationStateWaitOtherDeviceConfirmationWithCallback
+              .writeQrCodeLink(
+                  authorizationStateWaitOtherDeviceConfirmation.link);
+          break;
+
+        case AuthorizationStateWaitRegistration:
+          tdJsonClient.send(
+              clientId,
+              RegisterUser(
+                  first_name: registerUserWithCallback.readUserFirstName(),
+                  last_name: registerUserWithCallback.readUserLastName()));
+          break;
+
+        case AuthorizationStateWaitPassword:
+          tdJsonClient.send(
+              clientId,
+              CheckAuthenticationPassword(
+                  password: checkAuthenticationPasswordWithCallback
+                      .readUserPassword()));
+          break;
+
+        case AuthorizationStateReady:
+          _isAuthorized = true;
+          loggy.info('Logged in successfuly.');
+          break;
+        case AuthorizationStateLoggingOut:
+          loggy.info('Logging out.');
+          break;
+        case AuthorizationStateClosing:
+          loggy.info('Tdlib is closing.');
+          break;
+        case AuthorizationStateClosed:
+          _isClosed = true;
+          loggy.info('Tdlib is closed.');
           break;
       }
 
@@ -79,9 +123,34 @@ class LoginRequest extends Request {
   }
 }
 
-class CheckAuthenticationCodeCallback extends CheckAuthenticationCode {
+class CheckAuthenticationCodeWithCallback extends CheckAuthenticationCode {
   final String Function() readTelegramCode;
-  CheckAuthenticationCodeCallback({
+  CheckAuthenticationCodeWithCallback({
     required this.readTelegramCode,
+  });
+}
+
+class AuthorizationStateWaitOtherDeviceConfirmationWithCallback
+    extends AuthorizationStateWaitOtherDeviceConfirmation {
+  final void Function(String? link) writeQrCodeLink;
+  AuthorizationStateWaitOtherDeviceConfirmationWithCallback({
+    required this.writeQrCodeLink,
+  });
+}
+
+class RegisterUserWithCallback extends RegisterUser {
+  final String Function() readUserFirstName;
+  final String Function() readUserLastName;
+  RegisterUserWithCallback({
+    required this.readUserFirstName,
+    required this.readUserLastName,
+  });
+}
+
+class CheckAuthenticationPasswordWithCallback
+    extends CheckAuthenticationPassword {
+  final String Function() readUserPassword;
+  CheckAuthenticationPasswordWithCallback({
+    required this.readUserPassword,
   });
 }
