@@ -1,41 +1,75 @@
-import 'package:loggy/loggy.dart';
+import 'dart:async';
 
 import 'package:td_json_client/td_json_client.dart';
-import 'package:telegram_client/api/base.dart';
 
-mixin TelegramClientLoggy implements LoggyType {
-  @override
-  Loggy<TelegramClientLoggy> get loggy =>
-      Loggy<TelegramClientLoggy>('$runtimeType');
+import 'isolated.dart';
 
-  void setLogLevel(String logLevelName) {
-    loggy.level = LogOptions(LogLevel.values.firstWhere(
-        (element) => element.name == logLevelName,
-        orElse: () => LogLevel.all));
-  }
-}
-
-class TelegramClient with TelegramClientLoggy {
+class TelegramClient extends IsolatedPublisher {
+  final String libtdjsonPath;
   late final TdJsonClient _tdJsonClient;
-  TdJsonClient get tdJsonClient => _tdJsonClient;
-  late final int _clientId;
+  late final int _tdJsonClientId;
 
-  static const double waitTimeout = 10.0;
-
-  TelegramClient({
+  static Future<TelegramClient> create({
     required String libtdjsonPath,
-    int libtdjsonLoglevel = 1,
-    loglevel = 'Error',
-  }) {
-    _tdJsonClient = TdJsonClient(
-        libtdjsonPath: libtdjsonPath,
-        libtdjsonLoglevel: libtdjsonLoglevel,
-        loglevel: loglevel);
-    _clientId = _tdJsonClient.create_client_id();
-    setLogLevel(loglevel);
+  }) async {
+    final TelegramClient telegramClient = TelegramClient._create(
+      libtdjsonPath: libtdjsonPath,
+    );
+    await telegramClient.spawn();
+    return telegramClient;
   }
 
-  Future<Response> send(Request request) async {
-    return await request.execute(_tdJsonClient, _clientId);
+  TelegramClient._create({
+    required String this.libtdjsonPath,
+  });
+
+  @override
+  void init() {
+    _tdJsonClient = TdJsonClient(libtdjsonPath: libtdjsonPath);
+    _tdJsonClientId = _tdJsonClient.create_client_id();
+
+    _receive().listen((event) {
+      _onTdJsonClientMessage(event as TdObject);
+    });
+
+    isolateReceivePortBroadcast
+        .where((event) => event is TdFunctionMessage)
+        .listen((message) {
+      _onTdFunction(message.td);
+    });
+  }
+
+  void _onTdFunction(TdFunction tdFunction) {
+    _tdJsonClient.send(_tdJsonClientId, tdFunction);
+  }
+
+  void _onTdJsonClientMessage(TdObject td) {
+    final tdObjectMessage = TdObjectMessage(td: td);
+
+    // TODO do or do not send to parent?!
+    isolateSendPort.send(tdObjectMessage);
+
+    subscribersSendPorts.forEach((sendPort) {
+      sendPort.send(tdObjectMessage);
+    });
+  }
+
+  bool _isReceiving = false;
+
+  Stream<Td> _receive({double waitTimeout = 0.005}) {
+    var streamController = StreamController<Td>();
+
+    Timer.periodic(Duration(microseconds: 10), (timer) {
+      if (!_isReceiving) {
+        _isReceiving = true;
+
+        var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
+        if (event != null) streamController.add(event);
+
+        _isReceiving = false;
+      }
+    });
+
+    return streamController.stream;
   }
 }

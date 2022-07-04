@@ -4,7 +4,7 @@ import 'package:args/command_runner.dart';
 import 'package:loggy/loggy.dart';
 
 import 'package:echo_cli/command/login.dart';
-import 'package:echo_cli/command/get_chats.dart';
+import 'package:echo_cli/command/example.dart';
 
 void main(List<String> arguments) {
   Loggy.initLoggy(
@@ -32,7 +32,7 @@ void main(List<String> arguments) {
 
   commandRunner
     ..addCommand(TelegramCommandLogin())
-    ..addCommand(TelegramCommandsGetChats())
+    ..addCommand(TelegramCommandExample())
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
       print(error);

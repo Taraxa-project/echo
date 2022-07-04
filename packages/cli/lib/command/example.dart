@@ -1,29 +1,23 @@
-import 'dart:io';
+import 'base.dart';
 
 import 'package:td_json_client/td_json_client.dart';
-
 import 'package:telegram_client/client.dart';
-import 'package:telegram_client/api/login.dart';
-import 'package:telegram_client/api/get_chats.dart';
-
-import 'base.dart';
+import 'package:telegram_client/login.dart';
+import 'package:telegram_client/get_chats.dart';
+import 'package:telegram_client/new_messages.dart';
 
 import '../callback/cli.dart';
 
-class TelegramCommandsGetChats extends TelegramCommand {
-  final name = 'get-chats';
-  final description = 'List the chats for a Telegram account.';
+class TelegramCommandExample extends TelegramCommand {
+  final name = 'example';
+  final description = 'Multiple isolates example.';
 
   void run() async {
-    setLogLevel(globalResults!['loglevel']);
-
-    final telegramClient = TelegramClient(
+    var telegramClient = await TelegramClient.create(
       libtdjsonPath: globalResults!['libtdjson-path'],
-      libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']),
-      loglevel: globalResults!['loglevel'],
     );
 
-    var loginResponse = await telegramClient.send(LoginRequest(
+    var login = await Login.create(
       setTdlibParameters: SetTdlibParameters(
         parameters: TdlibParameters(
           api_id: int.parse(globalResults!['api-id']),
@@ -55,20 +49,14 @@ class TelegramCommandsGetChats extends TelegramCommand {
       checkAuthenticationPasswordWithCallback:
           CheckAuthenticationPasswordWithCallback(
               readUserPassword: readUserPassword),
-    )) as LoginResponse;
+    );
 
-    if (loginResponse.isClosed) {
-      print('Tdlib closed.');
-      exit(1);
-    }
+    login.subscribe(isolatedPublisher: telegramClient);
 
-    var getChatsResponse = await telegramClient.send(GetChatsRequest(
-        getChats: GetChats(
-      limit: 100,
-    ))) as GetChatsResponse;
+    var getChats = await GetChatList.create();
+    getChats.subscribe(isolatedPublisher: telegramClient);
 
-    await for (var chat in getChatsResponse.chats) {
-      print(chat);
-    }
+    var newMessages = await NewMessages.create();
+    newMessages.subscribe(isolatedPublisher: telegramClient);
   }
 }
