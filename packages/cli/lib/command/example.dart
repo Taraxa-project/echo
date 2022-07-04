@@ -50,7 +50,6 @@ class TelegramCommandExample extends TelegramCommand {
           CheckAuthenticationPasswordWithCallback(
               readUserPassword: readUserPassword),
     );
-
     login.subscribe(isolatedPublisher: telegramClient);
 
     var getChats = await GetChatList.create();

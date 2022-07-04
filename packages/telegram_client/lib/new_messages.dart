@@ -25,10 +25,6 @@ class NewMessages extends IsolatedSubscriber {
         .listen((event) {
       onError(event.td);
     });
-
-    publisherSendPort.send(TdFunctionMessage(
-      td: GetAuthorizationState(),
-    ));
   }
 
   void onUpdateNewMessage(UpdateNewMessage updateNewMessage) {

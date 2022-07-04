@@ -43,7 +43,7 @@ class GetChatList extends IsolatedSubscriber {
     });
 
     publisherSendPort.send(TdFunctionMessage(
-      td: GetAuthorizationState(),
+      td: GetChats(limit: 100),
     ));
   }
 

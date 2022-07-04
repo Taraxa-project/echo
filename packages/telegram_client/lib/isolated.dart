@@ -94,6 +94,8 @@ abstract class Isolated {
 
   void onSubscribeToMessage(SubscribeToMessage isolateMessage);
   void onSubscribeMessage(SubscribeMessage isolateMessage);
+
+  // Override this if you need to do some work after subscribed
   void onSubscribedMessage(SubscribedMessage isolateMessage);
 }
 
