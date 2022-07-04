@@ -92,11 +92,13 @@ abstract class Isolated {
   // Override this if you need to handle every message
   void onIsolateMessage(IsolateMessage isolateMessage) {}
 
-  void onSubscribeToMessage(SubscribeToMessage isolateMessage);
-  void onSubscribeMessage(SubscribeMessage isolateMessage);
-
   // Override this if you need to do some work after subscribed
-  void onSubscribedMessage(SubscribedMessage isolateMessage);
+  void onSubscribedMessage(SubscribedMessage isolateMessage) {}
+
+  // Empty implementations for the pub/sub subscribe part
+  // This are overriden in [IsolatedPublisher] and [IsolatedSubscriber]
+  void onSubscribeToMessage(SubscribeToMessage isolateMessage) {}
+  void onSubscribeMessage(SubscribeMessage isolateMessage) {}
 }
 
 abstract class IsolatedPublisher extends Isolated {
@@ -107,12 +109,6 @@ abstract class IsolatedPublisher extends Isolated {
     subscribersSendPorts.add(isolateMessage.subscriberSendPort);
     isolateMessage.subscriberSendPort.send(SubscribedMessage());
   }
-
-  @override
-  void onSubscribeToMessage(SubscribeToMessage isolateMessage) {}
-
-  @override
-  void onSubscribedMessage(SubscribedMessage isolateMessage) {}
 }
 
 abstract class IsolatedSubscriber extends Isolated {
@@ -127,9 +123,6 @@ abstract class IsolatedSubscriber extends Isolated {
       publisherSendPort: isolatedPublisher.sendPort,
     ));
   }
-
-  @override
-  void onSubscribeMessage(SubscribeMessage isolateMessage) {}
 
   @override
   void onSubscribeToMessage(SubscribeToMessage isolateMessage) {
@@ -151,9 +144,6 @@ abstract class IsolatedSubscriber extends Isolated {
       subscriberSendPort: publisherReceivePort.sendPort,
     ));
   }
-
-  @override
-  void onSubscribedMessage(SubscribedMessage isolateMessage) {}
 }
 
 abstract class IsolateMessage {}
