@@ -13,29 +13,58 @@ class TelegramCommandLogin extends TelegramCommand {
   final description = 'Login a Telegram account.';
 
   void run() async {
-    var tg = PortMessenger(
-        portMessageHandler: TelegramClientMessageHandler(
-      libtdjsonPath: globalResults!['libtdjson-path'],
-    ));
-    // var tg = await PortMessenger.isolate(
+    // var telegramClient = TelegramClient(
+    //   libtdjsonPath: globalResults!['libtdjson-path'],
+    // );
+
+    // var sub = telegramClient.telegramEvents.listen((event) {
+    //   print('${Isolate.current.debugName} $runtimeType.run $event');
+    // });
+    // telegramClient.send(tdFunction: GetAuthorizationState());
+
+    // await Future.delayed(const Duration(seconds: 5));
+    // sub.cancel();
+    // await Future.delayed(const Duration(seconds: 5));
+
+    // ----------------------------
+
+    // var telegramClient = PortMessenger(
     //     portMessageHandler: TelegramClientMessageHandler(
     //   libtdjsonPath: globalResults!['libtdjson-path'],
     // ));
-    tg.sendPort.send(TdFunctionMessage(tdFunction: GetAuthorizationState()));
 
-    var sub = tg.events.listen((event) {
+    // var sub = telegramClient.events.listen((event) {
+    //   print('${Isolate.current.debugName} $runtimeType.run $event');
+    // });
+
+    // telegramClient.sendPort.send(TdFunctionMessage(
+    //   tdFunction: GetAuthorizationState(),
+    // ));
+
+    // await Future.delayed(const Duration(seconds: 5));
+    // sub.cancel();
+    // telegramClient.exit();
+    // await Future.delayed(const Duration(seconds: 5));
+
+    // ----------------------------
+
+    var telegramClient = await PortMessenger.isolate(
+        portMessageHandler: TelegramClientMessageHandler(
+      libtdjsonPath: globalResults!['libtdjson-path'],
+    ));
+
+    var sub = telegramClient.events.listen((event) {
       print('${Isolate.current.debugName} $runtimeType.run $event');
     });
 
-    await Future.delayed(const Duration(seconds: 5));
-    sub.cancel();
-    tg.exit();
+    telegramClient.sendPort.send(TdFunctionMessage(
+      tdFunction: GetAuthorizationState(),
+    ));
 
     await Future.delayed(const Duration(seconds: 5));
-    // var telegramClient = await TelegramClient.isolate(
-    //   libtdjsonPath: globalResults!['libtdjson-path'],
-    // );
-    // telegramClient.init();
+    sub.cancel();
+    telegramClient.exit();
+    await Future.delayed(const Duration(seconds: 5));
 
     // var login = await Login.isolate(
     //   setTdlibParameters: SetTdlibParameters(
