@@ -5,7 +5,7 @@ abstract class PortMessage {}
 
 abstract class PortMessageHandler {
   void handle(PortMessage portMessage);
-  Stream<dynamic> get events;
+  Stream<dynamic>? get events => null;
 }
 
 class PortMessenger {
@@ -16,7 +16,7 @@ class PortMessenger {
   Stream<dynamic> get events => _streamController.stream;
 
   final PortMessageHandler portMessageHandler;
-  late final StreamSubscription _portMessageHandlerSubscription;
+  late final StreamSubscription? _portMessageHandlerSubscription;
 
   PortMessenger({
     required this.portMessageHandler,
@@ -26,13 +26,14 @@ class PortMessenger {
     });
 
     _streamController = StreamController.broadcast();
-    _portMessageHandlerSubscription = portMessageHandler.events.listen((event) {
+    _portMessageHandlerSubscription =
+        portMessageHandler.events?.listen((event) {
       _streamController.add(event);
     });
   }
 
   void exit() {
-    _portMessageHandlerSubscription.cancel();
+    _portMessageHandlerSubscription?.cancel();
     _receivePort.close();
   }
 
@@ -92,17 +93,25 @@ class PortMessengerIsolated {
     var receivePort = ReceivePort();
     parentSendPort.send(receivePort.sendPort);
 
-    receivePort.listen((message) {
-      portMessageHandler.handle(message);
-    });
-    portMessageHandler.events.listen((message) {
+    var portMessageHandlerSubscription =
+        portMessageHandler.events?.listen((message) {
       parentSendPort.send(message);
+    });
+    receivePort.listen((message) {
+      if (message is PortMessageHandlerCancelSubscription) {
+        portMessageHandlerSubscription?.cancel();
+      } else {
+        portMessageHandler.handle(message);
+      }
     });
   }
 
   void exit() {
+    _isolateSendPort.send(PortMessageHandlerCancelSubscription());
     _isolateSubscription.cancel();
     _isolateReceivePort.close();
     _receivePort.close();
   }
 }
+
+class PortMessageHandlerCancelSubscription extends PortMessage {}
