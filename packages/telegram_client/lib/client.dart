@@ -1,129 +1,97 @@
-import 'package:loggy/loggy.dart';
+import 'dart:isolate';
+import 'dart:async';
 
 import 'package:td_json_client/td_json_client.dart';
+import 'package:telegram_client/port.dart';
 
-mixin TelegramClientLoggy implements LoggyType {
-  @override
-  Loggy<TelegramClientLoggy> get loggy =>
-      Loggy<TelegramClientLoggy>('$runtimeType');
+class TelegramClient {
+  final String libtdjsonPath;
 
-  void setLogLevel(String logLevelName) {
-    loggy.level = LogOptions(LogLevel.values.firstWhere(
-        (element) => element.name == logLevelName,
-        orElse: () => LogLevel.all));
+  late final StreamController _tdStreamController;
+  Stream<dynamic> get telegramEvents => _tdStreamController.stream;
+
+  TelegramClient({
+    required this.libtdjsonPath,
+  }) {
+    _tdStreamController = StreamController.broadcast(
+      onListen: _tdStart,
+      onCancel: _tdStop,
+    );
+  }
+
+  bool _isInitialized = false;
+  late final TdJsonClient _tdJsonClient;
+  late final int _tdJsonClientId;
+  void init() {
+    if (!_isInitialized) {
+      _tdJsonClient = TdJsonClient(libtdjsonPath: libtdjsonPath);
+      _tdJsonClientId = _tdJsonClient.create_client_id();
+      _isInitialized = true;
+    }
+  }
+
+  void send({
+    required TdFunction tdFunction,
+  }) {
+    init();
+    _tdJsonClient.send(_tdJsonClientId, tdFunction);
+    print('${Isolate.current.debugName} $runtimeType.send $tdFunction');
+  }
+
+  Duration readEventsFrequency = Duration(milliseconds: 10);
+  Timer? timer;
+  void _tdStart() {
+    init();
+    print('${Isolate.current.debugName} $runtimeType._tdStart');
+    timer = Timer.periodic(readEventsFrequency, _tdReceive);
+  }
+
+  void _tdStop() {
+    init();
+    print('${Isolate.current.debugName} $runtimeType._tdStop');
+    timer?.cancel();
+    timer = null;
+  }
+
+  double waitTimeout = 0.005;
+  bool _isTdReceiving = false;
+  void _tdReceive(Timer timer) {
+    init();
+
+    if (!_isTdReceiving) {
+      _isTdReceiving = true;
+
+      var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
+      if (event != null) {
+        print('${Isolate.current.debugName} $runtimeType._tdReceive $event');
+        _tdStreamController.add(event);
+      }
+
+      _isTdReceiving = false;
+    }
   }
 }
 
-class TelegramClient with TelegramClientLoggy {
-  final TdJsonClient _tdJsonClient;
+class TelegramClientMessageHandler extends TelegramClient
+    implements PortMessageHandler {
+  TelegramClientMessageHandler({
+    required super.libtdjsonPath,
+  });
 
-  final int apiId;
-  final String apiHash;
-  final String phoneNumber;
-  final String databasePath;
-
-  bool _isAuthorized = false;
-  bool get isAuthorized => _isAuthorized;
-  bool _isClosed = false;
-  bool get isClosed => _isClosed;
-
-  static const double waitTimeout = 10.0;
-
-  TelegramClient(
-      {required String libtdjsonPath,
-      required int this.apiId,
-      required String this.apiHash,
-      required String this.phoneNumber,
-      required String this.databasePath,
-      int libtdjsonLoglevel = 1,
-      loglevel = 'Error'})
-      : _tdJsonClient = TdJsonClient(
-            libtdjsonPath: libtdjsonPath,
-            libtdjsonLoglevel: libtdjsonLoglevel,
-            loglevel: loglevel) {
-    setLogLevel(loglevel);
-  }
-
-  int createClientId() {
-    return _tdJsonClient.create_client_id();
-  }
-
-  Future<void> login(
-      {required int clientId,
-      required String Function() readTelegramCode,
-      double waitTimeout = waitTimeout}) async {
-    await _tdJsonClient.send(clientId, GetAuthorizationState());
-
-    await for (var response in _tdJsonClient
-        .receive(waitTimeout: waitTimeout)
-        .where((event) => event is UpdateAuthorizationState)) {
-      var updateAuthorizationState = response as UpdateAuthorizationState;
-      switch (updateAuthorizationState.authorization_state.runtimeType) {
-        case AuthorizationStateClosed:
-          loggy.warning('Authorization state closed.');
-          _isClosed = true;
-          break;
-
-        case AuthorizationStateReady:
-          _isAuthorized = true;
-          loggy.info('Logged in successfuly');
-          break;
-
-        case AuthorizationStateWaitTdlibParameters:
-          _tdJsonClient.send(
-              clientId,
-              SetTdlibParameters(
-                  parameters: TdlibParameters(
-                api_id: apiId,
-                api_hash: apiHash,
-                system_language_code: 'en',
-                database_directory: databasePath,
-                use_message_database: false,
-                device_model: 'Desktop',
-                application_version: '1.0',
-              )));
-          break;
-
-        case AuthorizationStateWaitEncryptionKey:
-          _tdJsonClient.send(
-              clientId, CheckDatabaseEncryptionKey(encryption_key: ''));
-          break;
-
-        case AuthorizationStateWaitPhoneNumber:
-          _tdJsonClient.send(clientId,
-              SetAuthenticationPhoneNumber(phone_number: phoneNumber));
-          break;
-
-        case AuthorizationStateWaitCode:
-          _tdJsonClient.send(
-              clientId, CheckAuthenticationCode(code: readTelegramCode()));
-
-          break;
-      }
-
-      if (_isClosed || _isAuthorized) {
-        break;
-      }
+  @override
+  void handle(PortMessage portMessage) {
+    if (portMessage is TdFunctionMessage) {
+      send(tdFunction: portMessage.tdFunction);
     }
   }
 
-  Stream<dynamic> getChats(
-      {required int clientId,
-      int limit = 100,
-      double waitTimeout = waitTimeout}) async* {
-    _tdJsonClient.send(clientId, GetChats(limit: 1000));
+  @override
+  Stream get events => telegramEvents;
+}
 
-    await for (var response in _tdJsonClient
-        .receive(waitTimeout: waitTimeout)
-        .where((event) =>
-            event is UpdateSupergroupFullInfo ||
-            event is UpdateBasicGroupFullInfo ||
-            event is UpdateUserFullInfo)) {
-      yield response;
-    }
-  }
-
-  void execute(dynamic request) {
-    _tdJsonClient.execute(request);
-  }
+class TdFunctionMessage extends PortMessage {
+  final TdFunction tdFunction;
+  TdFunctionMessage({
+    required this.tdFunction,
+  });
 }
