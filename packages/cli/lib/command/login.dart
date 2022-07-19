@@ -84,6 +84,35 @@ class TelegramCommandLogin extends TelegramCommand {
     //     tdFunction: GetAuthorizationState(),
     //   ));
 
+    //   await Future.delayed(const Duration(seconds: 5));
+
+    //   // sub.cancel();
+    // }, [telegramClient.sendPort, telegramClient.events]);
+
+    // await Future.delayed(const Duration(seconds: 5));
+    // telegramClient.exit();
+    // await Future.delayed(const Duration(seconds: 5));
+
+    // ----------------------------
+
+    // var telegramClient = await PortMessenger.isolate(
+    //     portMessageHandler: TelegramClientMessageHandler(
+    //   libtdjsonPath: globalResults!['libtdjson-path'],
+    // ));
+
+    // await Isolate.spawn((List<dynamic> msg) async {
+    //   var sendPort = msg[0];
+    //   var events = msg[1];
+    //   // var sub = events.listen((event) {
+    //   //   print('${Isolate.current.debugName} $runtimeType.run $event');
+    //   // });
+
+    //   sendPort.send(TdFunctionMessage(
+    //     tdFunction: GetAuthorizationState(),
+    //   ));
+
+    //   await Future.delayed(const Duration(seconds: 5));
+
     //   // sub.cancel();
     // }, [telegramClient.sendPort, telegramClient.events]);
 
