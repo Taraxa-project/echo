@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:telegram_client/port.dart';
 
-class TelegramClient {
+class TelegramClient with WithPorts {
   final String libtdjsonPath;
 
   late final StreamController _tdStreamController;
@@ -34,6 +34,7 @@ class TelegramClient {
     required TdFunction tdFunction,
   }) {
     init();
+
     _tdJsonClient.send(_tdJsonClientId, tdFunction);
     print('${Isolate.current.debugName} $runtimeType.send $tdFunction');
   }
@@ -42,12 +43,14 @@ class TelegramClient {
   Timer? timer;
   void _tdStart() {
     init();
+
     print('${Isolate.current.debugName} $runtimeType._tdStart');
     timer = Timer.periodic(readEventsFrequency, _tdReceive);
   }
 
   void _tdStop() {
     init();
+
     print('${Isolate.current.debugName} $runtimeType._tdStop');
     timer?.cancel();
     timer = null;
@@ -70,28 +73,38 @@ class TelegramClient {
       _isTdReceiving = false;
     }
   }
-}
 
-class TelegramClientMessageHandler extends TelegramClient
-    implements PortMessageHandler {
-  TelegramClientMessageHandler({
-    required super.libtdjsonPath,
-  });
+  Map<int, StreamSubscription> _subscribers = {};
 
   @override
-  void handle(PortMessage portMessage) {
-    if (portMessage is TdFunctionMessage) {
-      send(tdFunction: portMessage.tdFunction);
+  void handlePortMessage(dynamic portMessage) {
+    if (portMessage is TdFunction) {
+      send(tdFunction: portMessage);
+    } else if (portMessage is SubscribeTelegramEvents) {
+      print(
+          '${Isolate.current.debugName} subscribed $runtimeType $portMessage');
+      _subscribers[portMessage.sendPort.hashCode] =
+          telegramEvents.listen((event) {
+        portMessage.sendPort?.send(event);
+      });
+    } else if (portMessage is UnsubscribeTelegramEvents) {
+      print(
+          '${Isolate.current.debugName} unsubscribed $runtimeType $portMessage');
+      _subscribers.remove(portMessage.sendPort?.hashCode)?.cancel();
     }
   }
-
-  @override
-  Stream get events => telegramEvents;
 }
 
-class TdFunctionMessage extends PortMessage {
-  final TdFunction tdFunction;
-  TdFunctionMessage({
-    required this.tdFunction,
+class SubscribeTelegramEvents {
+  final SendPort? sendPort;
+  SubscribeTelegramEvents({
+    this.sendPort,
+  });
+}
+
+class UnsubscribeTelegramEvents {
+  final SendPort? sendPort;
+  UnsubscribeTelegramEvents({
+    this.sendPort,
   });
 }

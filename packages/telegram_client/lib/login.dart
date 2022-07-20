@@ -1,285 +1,207 @@
-// import 'dart:async';
-// import 'dart:isolate';
+import 'dart:async';
+import 'dart:isolate';
 
-// import 'package:telegram_client/client.dart';
-// import 'package:td_json_client/td_json_client.dart';
+import 'package:td_json_client/td_json_client.dart';
+import 'package:telegram_client/client.dart';
+import 'package:telegram_client/port.dart';
 
-// class Login {
-//   final SetTdlibParameters setTdlibParameters;
-//   final CheckDatabaseEncryptionKey checkDatabaseEncryptionKey;
-//   final SetAuthenticationPhoneNumber setAuthenticationPhoneNumber;
-//   final CheckAuthenticationCodeWithCallback checkAuthenticationCodeWithCallback;
-//   final AuthorizationStateWaitOtherDeviceConfirmationWithCallback
-//       authorizationStateWaitOtherDeviceConfirmationWithCallback;
-//   final RegisterUserWithCallback registerUserWithCallback;
-//   final CheckAuthenticationPasswordWithCallback
-//       checkAuthenticationPasswordWithCallback;
+import 'port.dart';
 
-//   Login({
-//     required this.setTdlibParameters,
-//     required this.checkDatabaseEncryptionKey,
-//     required this.setAuthenticationPhoneNumber,
-//     required this.checkAuthenticationCodeWithCallback,
-//     required this.authorizationStateWaitOtherDeviceConfirmationWithCallback,
-//     required this.registerUserWithCallback,
-//     required this.checkAuthenticationPasswordWithCallback,
-//   }) {}
+class Login with WithPorts {
+  final SetTdlibParameters setTdlibParameters;
+  final CheckDatabaseEncryptionKey checkDatabaseEncryptionKey;
+  final SetAuthenticationPhoneNumber setAuthenticationPhoneNumber;
+  final CheckAuthenticationCodeWithCallback checkAuthenticationCodeWithCallback;
+  final AuthorizationStateWaitOtherDeviceConfirmationWithCallback
+      authorizationStateWaitOtherDeviceConfirmationWithCallback;
+  final RegisterUserWithCallback registerUserWithCallback;
+  final CheckAuthenticationPasswordWithCallback
+      checkAuthenticationPasswordWithCallback;
 
-//   bool _isAuthorized = false;
-//   bool get isAuthorized => _isAuthorized;
+  Login({
+    required this.setTdlibParameters,
+    required this.checkDatabaseEncryptionKey,
+    required this.setAuthenticationPhoneNumber,
+    required this.checkAuthenticationCodeWithCallback,
+    required this.authorizationStateWaitOtherDeviceConfirmationWithCallback,
+    required this.registerUserWithCallback,
+    required this.checkAuthenticationPasswordWithCallback,
+  }) {}
 
-//   bool _isClosed = false;
-//   bool get isclosed => _isClosed;
+  bool _isAuthorized = false;
+  bool get isAuthorized => _isAuthorized;
 
-//   void _onUpdateAuthorizationState({
-//     required SendPort telegramClientSendPort,
-//     required Stream<dynamic> telegramClientEvents,
-//     required UpdateAuthorizationState updateAuthorizationState,
-//   }) {
-//     switch (updateAuthorizationState.authorization_state.runtimeType) {
-//       case AuthorizationStateWaitTdlibParameters:
-//         telegramClientSendPort.send(setTdlibParameters);
-//         break;
+  bool _isClosed = false;
+  bool get isclosed => _isClosed;
 
-//       case AuthorizationStateWaitEncryptionKey:
-//         telegramClientSendPort.send(checkDatabaseEncryptionKey);
-//         break;
+  void _onUpdateAuthorizationState({
+    required SendPort? telegramClientSendPort,
+    required UpdateAuthorizationState updateAuthorizationState,
+  }) {
+    switch (updateAuthorizationState.authorization_state.runtimeType) {
+      case AuthorizationStateWaitTdlibParameters:
+        telegramClientSendPort?.send(setTdlibParameters);
+        break;
 
-//       case AuthorizationStateWaitPhoneNumber:
-//         telegramClientSendPort.send(setAuthenticationPhoneNumber);
-//         break;
+      case AuthorizationStateWaitEncryptionKey:
+        telegramClientSendPort?.send(checkDatabaseEncryptionKey);
+        break;
 
-//       case AuthorizationStateWaitCode:
-//         telegramClientSendPort.send(CheckAuthenticationCode(
-//             code: checkAuthenticationCodeWithCallback.readTelegramCode()));
-//         break;
+      case AuthorizationStateWaitPhoneNumber:
+        telegramClientSendPort?.send(setAuthenticationPhoneNumber);
+        break;
 
-//       case AuthorizationStateWaitOtherDeviceConfirmation:
-//         var authorizationStateWaitOtherDeviceConfirmation =
-//             updateAuthorizationState
-//                 as AuthorizationStateWaitOtherDeviceConfirmation;
-//         authorizationStateWaitOtherDeviceConfirmationWithCallback
-//             .writeQrCodeLink(
-//                 authorizationStateWaitOtherDeviceConfirmation.link);
-//         break;
+      case AuthorizationStateWaitCode:
+        telegramClientSendPort?.send(CheckAuthenticationCode(
+            code: checkAuthenticationCodeWithCallback.readTelegramCode()));
+        break;
 
-//       case AuthorizationStateWaitRegistration:
-//         telegramClientSendPort.send(RegisterUser(
-//             first_name: registerUserWithCallback.readUserFirstName(),
-//             last_name: registerUserWithCallback.readUserLastName()));
-//         break;
+      case AuthorizationStateWaitOtherDeviceConfirmation:
+        var authorizationStateWaitOtherDeviceConfirmation =
+            updateAuthorizationState
+                as AuthorizationStateWaitOtherDeviceConfirmation;
+        authorizationStateWaitOtherDeviceConfirmationWithCallback
+            .writeQrCodeLink(
+                authorizationStateWaitOtherDeviceConfirmation.link);
+        break;
 
-//       case AuthorizationStateWaitPassword:
-//         telegramClientSendPort.send(CheckAuthenticationPassword(
-//             password:
-//                 checkAuthenticationPasswordWithCallback.readUserPassword()));
-//         break;
+      case AuthorizationStateWaitRegistration:
+        telegramClientSendPort?.send(RegisterUser(
+            first_name: registerUserWithCallback.readUserFirstName(),
+            last_name: registerUserWithCallback.readUserLastName()));
+        break;
 
-//       case AuthorizationStateReady:
-//         _isAuthorized = true;
-//         _unsubscribe(telegramClientSendPort);
-//         break;
-//       case AuthorizationStateLoggingOut:
-//         _isClosed = true;
-//         _unsubscribe(telegramClientSendPort);
-//         break;
-//       case AuthorizationStateClosing:
-//         _isClosed = true;
-//         _unsubscribe(telegramClientSendPort);
-//         break;
-//       case AuthorizationStateClosed:
-//         _isClosed = true;
-//         _unsubscribe(telegramClientSendPort);
-//         break;
-//     }
-//   }
+      case AuthorizationStateWaitPassword:
+        telegramClientSendPort?.send(CheckAuthenticationPassword(
+            password:
+                checkAuthenticationPasswordWithCallback.readUserPassword()));
+        break;
 
-//   void _onError({
-//     required SendPort telegramClientSendPort,
-//     required Error error,
-//   }) {}
+      case AuthorizationStateReady:
+        _isAuthorized = true;
+        _unsubscribe(telegramClientSendPort);
+        break;
+      case AuthorizationStateLoggingOut:
+        _isClosed = true;
+        _unsubscribe(telegramClientSendPort);
+        break;
+      case AuthorizationStateClosing:
+        _isClosed = true;
+        _unsubscribe(telegramClientSendPort);
+        break;
+      case AuthorizationStateClosed:
+        _isClosed = true;
+        _unsubscribe(telegramClientSendPort);
+        break;
+    }
+  }
 
-//   late final ReceivePort telegramClientReceivePort;
+  void _onError({
+    required SendPort? telegramClientSendPort,
+    required Error error,
+  }) {}
 
-//   late final StreamSubscription _authSubscription;
-//   late final StreamSubscription _errorSuscription;
+  ReceivePort? _telegramClientReceivePort;
 
-//   void auth({
-//     required SendPort telegramClientSendPort,
-//   }) {
-//     telegramClientReceivePort = ReceivePort();
-//     telegramClientReceivePort.sendPort;
-//     var telegramClientEvents = telegramClientReceivePort.asBroadcastStream();
+  StreamSubscription? _authSubscription;
+  StreamSubscription? _errorSuscription;
 
-//     telegramClientSendPort.send(TelegramClientSubscribeEvents(
-//       sendPort: telegramClientReceivePort.sendPort,
-//     ));
+  void auth({
+    required SendPort? telegramClientSendPort,
+  }) {
+    _telegramClientReceivePort = ReceivePort();
 
-//     _authSubscription = telegramClientEvents
-//         .where((event) => event is UpdateAuthorizationState)
-//         .listen((message) {
-//       print('${Isolate.current.debugName} received $runtimeType $message');
-//       _onUpdateAuthorizationState(
-//         telegramClientSendPort: telegramClientSendPort,
-//         telegramClientEvents: telegramClientEvents,
-//         updateAuthorizationState: message,
-//       );
-//     });
-//     _errorSuscription =
-//         telegramClientEvents.where((event) => event is Error).listen((message) {
-//       print('${Isolate.current.debugName} received $runtimeType $message');
-//       _onError(
-//         telegramClientSendPort: telegramClientSendPort,
-//         error: message,
-//       );
-//     });
-//     telegramClientSendPort.send(GetAuthorizationState());
-//   }
+    telegramClientSendPort?.send(SubscribeTelegramEvents(
+      sendPort: _telegramClientReceivePort!.sendPort,
+    ));
 
-//   void _unsubscribe(
-//     SendPort telegramClientSendPort,
-//   ) {
-//     telegramClientSendPort.send(TelegramClientUnsubscribeEvents(
-//       sendPort: telegramClientReceivePort.sendPort,
-//     ));
-//     _authSubscription.cancel();
-//     _errorSuscription.cancel();
-//   }
+    var telegramClientEvents = _telegramClientReceivePort!.asBroadcastStream();
+    _authSubscription = telegramClientEvents
+        .where((event) => event is UpdateAuthorizationState)
+        .listen((message) {
+      print('${Isolate.current.debugName} received $runtimeType $message');
 
-//   static Future<LoginIsolated> isolate({
-//     required setTdlibParameters,
-//     required checkDatabaseEncryptionKey,
-//     required setAuthenticationPhoneNumber,
-//     required checkAuthenticationCodeWithCallback,
-//     required authorizationStateWaitOtherDeviceConfirmationWithCallback,
-//     required registerUserWithCallback,
-//     required checkAuthenticationPasswordWithCallback,
-//   }) async {
-//     var loginIsolated = LoginIsolated(
-//       setTdlibParameters: setTdlibParameters,
-//       checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
-//       setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
-//       checkAuthenticationCodeWithCallback: checkAuthenticationCodeWithCallback,
-//       authorizationStateWaitOtherDeviceConfirmationWithCallback:
-//           authorizationStateWaitOtherDeviceConfirmationWithCallback,
-//       registerUserWithCallback: registerUserWithCallback,
-//       checkAuthenticationPasswordWithCallback:
-//           checkAuthenticationPasswordWithCallback,
-//     );
+      _onUpdateAuthorizationState(
+        telegramClientSendPort: telegramClientSendPort,
+        updateAuthorizationState: message,
+      );
+    });
 
-//     await loginIsolated.spawn();
-//     return loginIsolated;
-//   }
+    _errorSuscription =
+        telegramClientEvents.where((event) => event is Error).listen((message) {
+      print('${Isolate.current.debugName} received $runtimeType $message');
+      _onError(
+        telegramClientSendPort: telegramClientSendPort,
+        error: message,
+      );
+    });
 
-//   void exit() {}
-// }
+    telegramClientSendPort?.send(GetAuthorizationState());
+  }
 
-// class LoginIsolated extends Login {
-//   LoginIsolated({
-//     required super.setTdlibParameters,
-//     required super.checkDatabaseEncryptionKey,
-//     required super.setAuthenticationPhoneNumber,
-//     required super.checkAuthenticationCodeWithCallback,
-//     required super.authorizationStateWaitOtherDeviceConfirmationWithCallback,
-//     required super.registerUserWithCallback,
-//     required super.checkAuthenticationPasswordWithCallback,
-//   }) {}
+  void _unsubscribe(
+    SendPort? telegramClientSendPort,
+  ) {
+    telegramClientSendPort?.send(UnsubscribeTelegramEvents(
+      sendPort: _telegramClientReceivePort!.sendPort,
+    ));
+    _cancelStreamSubscriptions();
+  }
 
-//   late final ReceivePort _receivePort;
-//   late final SendPort _sendPort;
-//   late final Stream<dynamic> _receivePortBroadcast;
+  void _cancelStreamSubscriptions() {
+    _authSubscription?.cancel();
+    _errorSuscription?.cancel();
+  }
 
-//   Future<void> spawn() async {
-//     _receivePort = ReceivePort();
-//     _receivePortBroadcast = _receivePort.asBroadcastStream();
+  @override
+  void handlePortMessage(dynamic portMessage) {
+    if (portMessage is AuthenticateAccount) {
+      auth(
+        telegramClientSendPort: portMessage.telegramClientSendPort,
+      );
+    }
+  }
 
-//     var isolated = Login(
-//       setTdlibParameters: setTdlibParameters,
-//       checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
-//       setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
-//       checkAuthenticationCodeWithCallback: checkAuthenticationCodeWithCallback,
-//       authorizationStateWaitOtherDeviceConfirmationWithCallback:
-//           authorizationStateWaitOtherDeviceConfirmationWithCallback,
-//       registerUserWithCallback: registerUserWithCallback,
-//       checkAuthenticationPasswordWithCallback:
-//           checkAuthenticationPasswordWithCallback,
-//     );
+  // void exit() {
+  //   _cancelStreamSubscriptions();
+  // }
+}
 
-//     await Isolate.spawn(
-//       LoginIsolated.entryPoint,
-//       [isolated, _receivePort.sendPort],
-//       debugName: runtimeType.toString(),
-//     );
+class AuthenticateAccount {
+  final SendPort? telegramClientSendPort;
+  AuthenticateAccount({
+    this.telegramClientSendPort,
+  });
+}
 
-//     _sendPort = await _receivePortBroadcast.first as SendPort;
-//   }
+class CheckAuthenticationCodeWithCallback extends CheckAuthenticationCode {
+  final String Function() readTelegramCode;
+  CheckAuthenticationCodeWithCallback({
+    required this.readTelegramCode,
+  });
+}
 
-//   static Future<void> entryPoint(List<dynamic> spawnMessage) async {
-//     Login isolated = spawnMessage[0];
-//     SendPort sendPort = spawnMessage[1];
+class AuthorizationStateWaitOtherDeviceConfirmationWithCallback
+    extends AuthorizationStateWaitOtherDeviceConfirmation {
+  final void Function(String? link) writeQrCodeLink;
+  AuthorizationStateWaitOtherDeviceConfirmationWithCallback({
+    required this.writeQrCodeLink,
+  });
+}
 
-//     var receivePort = ReceivePort();
-//     sendPort.send(receivePort.sendPort);
+class RegisterUserWithCallback extends RegisterUser {
+  final String Function() readUserFirstName;
+  final String Function() readUserLastName;
+  RegisterUserWithCallback({
+    required this.readUserFirstName,
+    required this.readUserLastName,
+  });
+}
 
-//     receivePort.listen((message) {
-//       if (message is LoginAuthMessage) {
-//         isolated.auth(
-//           telegramClientSendPort: message.telegramClientSendPort,
-//         );
-//       }
-//     });
-//   }
-
-//   @override
-//   void auth({
-//     required SendPort telegramClientSendPort,
-//   }) {
-//     _sendPort.send(LoginAuthMessage(
-//       telegramClientSendPort: telegramClientSendPort,
-//     ));
-//   }
-
-//   @override
-//   void exit() {
-//     _receivePort.close();
-//   }
-// }
-
-// class LoginAuthMessage {
-//   final SendPort telegramClientSendPort;
-//   LoginAuthMessage({
-//     required this.telegramClientSendPort,
-//   });
-// }
-
-// class CheckAuthenticationCodeWithCallback extends CheckAuthenticationCode {
-//   final String Function() readTelegramCode;
-//   CheckAuthenticationCodeWithCallback({
-//     required this.readTelegramCode,
-//   });
-// }
-
-// class AuthorizationStateWaitOtherDeviceConfirmationWithCallback
-//     extends AuthorizationStateWaitOtherDeviceConfirmation {
-//   final void Function(String? link) writeQrCodeLink;
-//   AuthorizationStateWaitOtherDeviceConfirmationWithCallback({
-//     required this.writeQrCodeLink,
-//   });
-// }
-
-// class RegisterUserWithCallback extends RegisterUser {
-//   final String Function() readUserFirstName;
-//   final String Function() readUserLastName;
-//   RegisterUserWithCallback({
-//     required this.readUserFirstName,
-//     required this.readUserLastName,
-//   });
-// }
-
-// class CheckAuthenticationPasswordWithCallback
-//     extends CheckAuthenticationPassword {
-//   final String Function() readUserPassword;
-//   CheckAuthenticationPasswordWithCallback({
-//     required this.readUserPassword,
-//   });
-// }
+class CheckAuthenticationPasswordWithCallback
+    extends CheckAuthenticationPassword {
+  final String Function() readUserPassword;
+  CheckAuthenticationPasswordWithCallback({
+    required this.readUserPassword,
+  });
+}

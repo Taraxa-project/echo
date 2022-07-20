@@ -1,19 +1,16 @@
 import 'dart:isolate';
 
-// The example class
-class Foo {
-  void printMessage(String message) {
-    print('${Isolate.current.debugName} A:printMessage $message');
-  }
-}
-
 // Interface with the call method
 abstract class Callable {
   void call(dynamic message);
 }
 
-// Implement Callable to dispatch messages
-class FooCallable extends Foo implements Callable {
+// The example class
+class Foo extends Callable {
+  void printMessage(String message) {
+    print('${Isolate.current.debugName} A:printMessage $message');
+  }
+
   // Dispatch message to the appropiate method
   void call(dynamic message) {
     if (message is FooPrintMessage) {
@@ -103,7 +100,7 @@ class CallableWithPortsIsolated {
 }
 
 void main() async {
-  var foo = FooCallable();
+  var foo = Foo();
 
   // Call main Foo.printMessage from main isolate
   var callableWithPorts = CallableWithPorts(
@@ -148,7 +145,7 @@ class SpawnMessage {
   });
 }
 
-void _callFoo(FooCallable foo) async {
+void _callFoo(Foo foo) async {
   // Call main Foo.printMessage from main isolate
   var callableWithPorts = CallableWithPorts(
     callable: foo,

@@ -1,117 +1,62 @@
-import 'dart:async';
 import 'dart:isolate';
 
-abstract class PortMessage {}
+mixin WithPorts {
+  ReceivePort? _receivePort;
+  SendPort? get sendPort => _receivePort?.sendPort;
 
-abstract class PortMessageHandler {
-  void handle(PortMessage portMessage);
-  Stream<dynamic>? get events => null;
-}
+  void handlePortMessage(dynamic portMessage);
 
-class PortMessenger {
-  late final ReceivePort _receivePort = ReceivePort();
-  SendPort get sendPort => _receivePort.sendPort;
+  initPorts() {
+    _closePorts();
 
-  late final StreamController _streamController;
-  Stream<dynamic> get events => _streamController.stream;
-
-  final PortMessageHandler portMessageHandler;
-  late final StreamSubscription? _portMessageHandlerSubscription;
-
-  PortMessenger({
-    required this.portMessageHandler,
-  }) {
-    _receivePort.listen((message) {
-      portMessageHandler.handle(message);
+    _receivePort = ReceivePort();
+    _receivePort?.listen((message) {
+      handlePortMessage(message);
     });
+  }
 
-    _streamController = StreamController.broadcast();
-    _portMessageHandlerSubscription =
-        portMessageHandler.events?.listen((event) {
-      _streamController.add(event);
+  ReceivePort? _isolateReceivePort;
+  SendPort? _isolateSendPort;
+
+  initPortsIsolate() async {
+    _closePorts();
+
+    var isolateReceivePort = ReceivePort();
+    await Isolate.spawn(
+      WithPorts._entryPoint,
+      [this, isolateReceivePort.sendPort],
+      debugName: runtimeType.toString(),
+    );
+    _isolateReceivePort = isolateReceivePort;
+    _isolateSendPort = await _isolateReceivePort?.first;
+
+    _receivePort = ReceivePort();
+    _receivePort?.listen((message) {
+      _isolateSendPort?.send(message);
     });
   }
 
   void exit() {
-    _portMessageHandlerSubscription?.cancel();
-    _receivePort.close();
+    _closePorts();
   }
 
-  static Future<PortMessengerIsolated> isolate({
-    required PortMessageHandler portMessageHandler,
-  }) async {
-    var portMessengerIsolated =
-        PortMessengerIsolated(portMessageHandler: portMessageHandler);
-    await portMessengerIsolated.spawn();
-    return portMessengerIsolated;
-  }
-}
+  void _closePorts() {
+    _isolateReceivePort?.close();
+    _isolateReceivePort = null;
 
-class PortMessengerIsolated {
-  late final ReceivePort _receivePort = ReceivePort();
-  SendPort get sendPort => _receivePort.sendPort;
-
-  final PortMessageHandler portMessageHandler;
-
-  @override
-  PortMessengerIsolated({
-    required this.portMessageHandler,
-  }) {
-    _receivePort.listen((message) {
-      _isolateSendPort.send(message);
-    });
-
-    _streamController = StreamController.broadcast();
-  }
-
-  final ReceivePort _isolateReceivePort = ReceivePort();
-  late final Stream<dynamic> _isolateReceivePortBroacast;
-  late final SendPort _isolateSendPort;
-  late final StreamSubscription _isolateSubscription;
-
-  late final StreamController _streamController;
-  Stream<dynamic> get events => _streamController.stream;
-
-  Future<void> spawn() async {
-    await Isolate.spawn(
-      PortMessengerIsolated._entryPoint,
-      [portMessageHandler, _isolateReceivePort.sendPort],
-      debugName: portMessageHandler.runtimeType.toString(),
-    );
-    _isolateReceivePortBroacast = _isolateReceivePort.asBroadcastStream();
-    _isolateSendPort = await _isolateReceivePortBroacast.first;
-
-    _isolateSubscription = _isolateReceivePortBroacast.listen((event) {
-      _streamController.add(event);
-    });
+    _receivePort?.close();
+    _receivePort = null;
   }
 
   static void _entryPoint(List<dynamic> initialSpawnMessage) {
-    var portMessageHandler = initialSpawnMessage[0];
-    var parentSendPort = initialSpawnMessage[1];
+    WithPorts self = initialSpawnMessage[0];
+    SendPort parentSendPort = initialSpawnMessage[1];
 
     var receivePort = ReceivePort();
     parentSendPort.send(receivePort.sendPort);
 
-    var portMessageHandlerSubscription =
-        portMessageHandler.events?.listen((message) {
-      parentSendPort.send(message);
-    });
     receivePort.listen((message) {
-      if (message is PortMessageHandlerCancelSubscription) {
-        portMessageHandlerSubscription?.cancel();
-      } else {
-        portMessageHandler.handle(message);
-      }
+      self.handlePortMessage(message);
     });
-  }
-
-  void exit() {
-    _isolateSendPort.send(PortMessageHandlerCancelSubscription());
-    _isolateSubscription.cancel();
-    _isolateReceivePort.close();
-    _receivePort.close();
   }
 }
-
-class PortMessageHandlerCancelSubscription extends PortMessage {}
