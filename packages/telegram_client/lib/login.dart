@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:td_json_client/td_json_client.dart';
-import 'package:telegram_client/client.dart';
-import 'package:telegram_client/port.dart';
 
+import 'client.dart';
 import 'port.dart';
 
 class Login with WithPorts {
@@ -34,10 +33,10 @@ class Login with WithPorts {
   bool _isClosed = false;
   bool get isclosed => _isClosed;
 
-  void _onUpdateAuthorizationState({
+  Future<void> _onUpdateAuthorizationState({
     required SendPort? telegramClientSendPort,
     required UpdateAuthorizationState updateAuthorizationState,
-  }) {
+  }) async {
     switch (updateAuthorizationState.authorization_state.runtimeType) {
       case AuthorizationStateWaitTdlibParameters:
         telegramClientSendPort?.send(setTdlibParameters);
@@ -79,32 +78,32 @@ class Login with WithPorts {
 
       case AuthorizationStateReady:
         _isAuthorized = true;
-        _unsubscribe(telegramClientSendPort);
+        await _unsubscribe(telegramClientSendPort);
         break;
       case AuthorizationStateLoggingOut:
         _isClosed = true;
-        _unsubscribe(telegramClientSendPort);
+        await _unsubscribe(telegramClientSendPort);
         break;
       case AuthorizationStateClosing:
         _isClosed = true;
-        _unsubscribe(telegramClientSendPort);
+        await _unsubscribe(telegramClientSendPort);
         break;
       case AuthorizationStateClosed:
         _isClosed = true;
-        _unsubscribe(telegramClientSendPort);
+        await _unsubscribe(telegramClientSendPort);
         break;
     }
   }
 
-  void _onError({
+  Future<void> _onError({
     required SendPort? telegramClientSendPort,
     required Error error,
-  }) {}
+  }) async {}
 
   ReceivePort? _telegramClientReceivePort;
 
   StreamSubscription? _authSubscription;
-  StreamSubscription? _errorSuscription;
+  StreamSubscription? _errorSubscription;
 
   void auth({
     required SendPort? telegramClientSendPort,
@@ -118,19 +117,20 @@ class Login with WithPorts {
     var telegramClientEvents = _telegramClientReceivePort!.asBroadcastStream();
     _authSubscription = telegramClientEvents
         .where((event) => event is UpdateAuthorizationState)
-        .listen((message) {
+        .listen((message) async {
       print('${Isolate.current.debugName} received $runtimeType $message');
 
-      _onUpdateAuthorizationState(
+      await _onUpdateAuthorizationState(
         telegramClientSendPort: telegramClientSendPort,
         updateAuthorizationState: message,
       );
     });
 
-    _errorSuscription =
-        telegramClientEvents.where((event) => event is Error).listen((message) {
+    _errorSubscription = telegramClientEvents
+        .where((event) => event is Error)
+        .listen((message) async {
       print('${Isolate.current.debugName} received $runtimeType $message');
-      _onError(
+      await _onError(
         telegramClientSendPort: telegramClientSendPort,
         error: message,
       );
@@ -139,18 +139,25 @@ class Login with WithPorts {
     telegramClientSendPort?.send(GetAuthorizationState());
   }
 
-  void _unsubscribe(
+  Future<void> _unsubscribe(
     SendPort? telegramClientSendPort,
-  ) {
+  ) async {
     telegramClientSendPort?.send(UnsubscribeTelegramEvents(
       sendPort: _telegramClientReceivePort!.sendPort,
     ));
-    _cancelStreamSubscriptions();
+    _telegramClientReceivePort?.close();
+    await _cancelStreamSubscriptions();
   }
 
-  void _cancelStreamSubscriptions() {
-    _authSubscription?.cancel();
-    _errorSuscription?.cancel();
+  Future<void> _cancelStreamSubscriptions() async {
+    await _authSubscription?.cancel();
+    await _errorSubscription?.cancel();
+  }
+
+  Future<void> exit() async {
+    closePorts();
+    await _cancelStreamSubscriptions();
+    _telegramClientReceivePort?.close();
   }
 
   @override
@@ -161,10 +168,6 @@ class Login with WithPorts {
       );
     }
   }
-
-  // void exit() {
-  //   _cancelStreamSubscriptions();
-  // }
 }
 
 class AuthenticateAccount {

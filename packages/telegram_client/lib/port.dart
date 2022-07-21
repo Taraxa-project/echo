@@ -7,7 +7,7 @@ mixin WithPorts {
   void handlePortMessage(dynamic portMessage);
 
   initPorts() {
-    _closePorts();
+    closePorts();
 
     _receivePort = ReceivePort();
     _receivePort?.listen((message) {
@@ -19,7 +19,7 @@ mixin WithPorts {
   SendPort? _isolateSendPort;
 
   initPortsIsolate() async {
-    _closePorts();
+    closePorts();
 
     var isolateReceivePort = ReceivePort();
     await Isolate.spawn(
@@ -36,16 +36,14 @@ mixin WithPorts {
     });
   }
 
-  void exit() {
-    _closePorts();
-  }
-
-  void _closePorts() {
-    _isolateReceivePort?.close();
-    _isolateReceivePort = null;
+  void closePorts() {
+    _isolateSendPort?.send(IsolateExit());
 
     _receivePort?.close();
     _receivePort = null;
+
+    _isolateReceivePort?.close();
+    _isolateReceivePort = null;
   }
 
   static void _entryPoint(List<dynamic> initialSpawnMessage) {
@@ -56,7 +54,13 @@ mixin WithPorts {
     parentSendPort.send(receivePort.sendPort);
 
     receivePort.listen((message) {
-      self.handlePortMessage(message);
+      if (message is IsolateExit) {
+        Isolate.exit();
+      } else {
+        self.handlePortMessage(message);
+      }
     });
   }
 }
+
+class IsolateExit {}

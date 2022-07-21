@@ -1,67 +1,91 @@
-// import 'package:td_json_client/td_json_client.dart';
+import 'dart:async';
+import 'dart:isolate';
 
-// import 'isolated.dart';
+import 'package:td_json_client/td_json_client.dart';
 
-// class GetChatList extends IsolatedSubscriber {
-//   static Future<GetChatList> create() async {
-//     final getChats = GetChatList._create();
-//     await getChats.spawn();
-//     return getChats;
-//   }
+import 'port.dart';
+import 'client.dart';
 
-//   GetChatList._create() {}
+class GetChatList with WithPorts {
+  ReceivePort? _telegramClientReceivePort;
 
-//   @override
-//   void onSubscribedMessage(SubscribedMessage isolateMessage) {
-//     publisherReceivePortBroadcast
-//         ?.where((message) =>
-//             message is TdObjectMessage &&
-//             message.td is UpdateSupergroupFullInfo)
-//         .listen((event) {
-//       onUpdateSupergroupFullInfo(event.td);
-//     });
+  StreamSubscription? _updateInfoSubscription;
+  StreamSubscription? _errorSubscription;
 
-//     publisherReceivePortBroadcast
-//         ?.where((message) =>
-//             message is TdObjectMessage &&
-//             message.td is UpdateBasicGroupFullInfo)
-//         .listen((event) {
-//       onUpdateBasicGroupFullInfo(event.td);
-//     });
+  void listChats({
+    required SendPort? telegramClientSendPort,
+    required int limit,
+  }) {
+    _telegramClientReceivePort = ReceivePort();
 
-//     publisherReceivePortBroadcast
-//         ?.where((message) =>
-//             message is TdObjectMessage && message.td is UpdateUserFullInfo)
-//         .listen((event) {
-//       onUpdateUserFullInfo(event.td);
-//     });
+    telegramClientSendPort?.send(SubscribeTelegramEvents(
+      sendPort: _telegramClientReceivePort!.sendPort,
+    ));
 
-//     publisherReceivePortBroadcast
-//         ?.where((message) => message is TdObjectMessage && message.td is Error)
-//         .listen((event) {
-//       onError(event.td);
-//     });
+    var telegramClientEvents = _telegramClientReceivePort!.asBroadcastStream();
 
-//     publisherSendPort.send(TdFunctionMessage(
-//       td: GetChats(limit: 100),
-//     ));
-//   }
+    _updateInfoSubscription = telegramClientEvents
+        .where((message) =>
+            message is UpdateSupergroupFullInfo ||
+            message is UpdateBasicGroupFullInfo ||
+            message is UpdateUserFullInfo)
+        .listen((event) {
+      _onUpdateInfo(event);
+    });
 
-//   void onUpdateSupergroupFullInfo(
-//       UpdateSupergroupFullInfo updateSupergroupFullInfo) {
-//     print(updateSupergroupFullInfo);
-//   }
+    _errorSubscription = telegramClientEvents
+        .where((message) => message is Error)
+        .listen((event) {
+      _onError(event);
+    });
 
-//   void onUpdateBasicGroupFullInfo(
-//       UpdateBasicGroupFullInfo updateBasicGroupFullInfo) {
-//     print(updateBasicGroupFullInfo);
-//   }
+    telegramClientSendPort?.send(
+      GetChats(limit: limit),
+    );
+  }
 
-//   void onUpdateUserFullInfo(UpdateUserFullInfo updateUserFullInfo) {
-//     print(updateUserFullInfo);
-//   }
+  void _onUpdateInfo(TdObject tdObject) {
+    // if (tdObject is UpdateSupergroupFullInfo) {
+    //   print(tdObject.supergroup_full_info?.description);
+    // } else if (tdObject is UpdateBasicGroupFullInfo) {
+    //   print(tdObject.basic_group_full_info?.description);
+    // } else if (tdObject is UpdateUserFullInfo) {
+    //   print(tdObject.user_full_info?.description);
+    // }
+    print(tdObject);
+  }
 
-//   void onError(Error error) {
-//     print(error);
-//   }
-// }
+  void _onError(Error error) {
+    print(error);
+  }
+
+  @override
+  void handlePortMessage(dynamic portMessage) {
+    if (portMessage is ListChats) {
+      listChats(
+        telegramClientSendPort: portMessage.telegramClientSendPort,
+        limit: portMessage.limit,
+      );
+    }
+  }
+
+  Future<void> _cancelStreamSubscriptions() async {
+    await _updateInfoSubscription?.cancel();
+    await _errorSubscription?.cancel();
+  }
+
+  Future<void> exit() async {
+    closePorts();
+    await _cancelStreamSubscriptions();
+    _telegramClientReceivePort?.close();
+  }
+}
+
+class ListChats {
+  final SendPort? telegramClientSendPort;
+  int limit;
+  ListChats({
+    this.telegramClientSendPort,
+    required this.limit,
+  });
+}

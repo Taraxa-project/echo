@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:td_json_client/td_json_client.dart';
 import 'package:telegram_client/port.dart';
+// import 'package:telegram_client/port_0.dart';
 
 class TelegramClient with WithPorts {
   final String libtdjsonPath;
@@ -66,7 +67,7 @@ class TelegramClient with WithPorts {
 
       var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
       if (event != null) {
-        print('${Isolate.current.debugName} $runtimeType._tdReceive $event');
+        // print('${Isolate.current.debugName} $runtimeType._tdReceive $event');
         _tdStreamController.add(event);
       }
 
@@ -81,15 +82,15 @@ class TelegramClient with WithPorts {
     if (portMessage is TdFunction) {
       send(tdFunction: portMessage);
     } else if (portMessage is SubscribeTelegramEvents) {
-      print(
-          '${Isolate.current.debugName} subscribed $runtimeType $portMessage');
+      // print(
+      //     '${Isolate.current.debugName} subscribed $runtimeType $portMessage');
       _subscribers[portMessage.sendPort.hashCode] =
           telegramEvents.listen((event) {
         portMessage.sendPort?.send(event);
       });
     } else if (portMessage is UnsubscribeTelegramEvents) {
-      print(
-          '${Isolate.current.debugName} unsubscribed $runtimeType $portMessage');
+      // print(
+      // '${Isolate.current.debugName} unsubscribed $runtimeType $portMessage');
       _subscribers.remove(portMessage.sendPort?.hashCode)?.cancel();
     }
   }
