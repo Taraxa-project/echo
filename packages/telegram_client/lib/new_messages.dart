@@ -40,7 +40,7 @@ class NewMessages with WithPorts {
     var content = updateNewMessage.message?.content;
     if (content is MessageText && content.text is FormattedText) {
       print(
-          '${Isolate.current.debugName} Received new message ${content.text?.text}');
+          '[${Isolate.current.debugName}._onUpdateNewMessage] ${content.text?.text}');
     }
   }
 

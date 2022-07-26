@@ -9,6 +9,8 @@ class TelegramCommandExample extends TelegramCommand {
   final description = 'Login a Telegram account.';
 
   void run() async {
+    // ---------------
+
     var telegramClient = TelegramClient(
       libtdjsonPath: globalResults!['libtdjson-path'],
     );
@@ -52,5 +54,7 @@ class TelegramCommandExample extends TelegramCommand {
     await Future.delayed(const Duration(seconds: 5));
     print('Ending...');
     telegramClient.closePorts();
+
+    // ---------------
   }
 }
