@@ -64,7 +64,7 @@ class TelegramCommandDartpad extends TelegramCommand {
     var newMessages = NewMesssages();
     telegramClient.addeventListener(newMessages);
     var newMessagesIsolated = await NewMesssages.isolate();
-    telegramClient.addeventListener(newMessagesIsolated);
+    // telegramClient.addeventListener(newMessagesIsolated);
 
     await Future.delayed(const Duration(seconds: 20));
     telegramClient.removeEventListener(newMessages);
@@ -577,8 +577,6 @@ class NewMesssages extends TelegramEventListener {
 
   @override
   void update(event) {
-    // print('[${Isolate.current.debugName}._onUpdateNewMessage] ${event}');
-
     if (event is UpdateNewMessage) {
       _onUpdateNewMessage(event);
     } else if (event is Error) {
