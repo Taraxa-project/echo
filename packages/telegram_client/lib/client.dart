@@ -2,8 +2,8 @@ import 'dart:isolate';
 import 'dart:async';
 
 import 'package:td_json_client/td_json_client.dart';
-import 'package:telegram_client/port.dart';
-// import 'package:telegram_client/port_0.dart';
+
+import 'port.dart';
 
 class TelegramClient with WithPorts {
   final String libtdjsonPath;
@@ -67,7 +67,6 @@ class TelegramClient with WithPorts {
 
       var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
       if (event != null) {
-        // print('${Isolate.current.debugName} $runtimeType._tdReceive $event');
         _tdStreamController.add(event);
       }
 
@@ -75,37 +74,20 @@ class TelegramClient with WithPorts {
     }
   }
 
-  Map<int, StreamSubscription> _subscribers = {};
+  Map<String?, StreamSubscription> _subscribers = {};
 
   @override
   void handlePortMessage(dynamic portMessage) {
     if (portMessage is TdFunction) {
       send(tdFunction: portMessage);
-    } else if (portMessage is SubscribeTelegramEvents) {
-      // print(
-      //     '${Isolate.current.debugName} subscribed $runtimeType $portMessage');
-      _subscribers[portMessage.sendPort.hashCode] =
-          telegramEvents.listen((event) {
+    } else if (portMessage is SubscribeEvents) {
+      print('subscribed');
+      _subscribers[portMessage.uniqueKey] = telegramEvents.listen((event) {
         portMessage.sendPort?.send(event);
       });
-    } else if (portMessage is UnsubscribeTelegramEvents) {
-      // print(
-      // '${Isolate.current.debugName} unsubscribed $runtimeType $portMessage');
-      _subscribers.remove(portMessage.sendPort?.hashCode)?.cancel();
+    } else if (portMessage is UnsubscribeEvents) {
+      print('unsubscribed');
+      _subscribers.remove(portMessage.uniqueKey)?.cancel();
     }
   }
-}
-
-class SubscribeTelegramEvents {
-  final SendPort? sendPort;
-  SubscribeTelegramEvents({
-    this.sendPort,
-  });
-}
-
-class UnsubscribeTelegramEvents {
-  final SendPort? sendPort;
-  UnsubscribeTelegramEvents({
-    this.sendPort,
-  });
 }

@@ -4,6 +4,7 @@ import 'package:args/command_runner.dart';
 import 'package:loggy/loggy.dart';
 
 import 'package:telegram_client/login.dart';
+import 'package:telegram_client/port.dart';
 
 import '../callback/cli.dart';
 import 'package:td_json_client/td_json_client.dart';
@@ -64,11 +65,12 @@ abstract class TelegramCommand extends Command with TelegramCommandLoggy {
   ) async {
     buildLogin(globalResults);
 
-    await login.initPortsIsolate();
-    login.sendPort?.send(AuthenticateAccount(
-      telegramClientSendPort: telegramSendPort,
-    ));
+    await login.initPorts(isolated: true);
+    login.sendMessage(Subscribe(telegramSendPort));
+    login.sendMessage(AuthenticateAccount());
     await Future.delayed(const Duration(seconds: 5));
+    login.sendMessage(Unsubscribe());
+    await Future.delayed(const Duration(seconds: 2));
     await login.exit();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:telegram_client/client.dart';
 import 'package:telegram_client/get_chats.dart';
 import 'package:telegram_client/new_messages.dart';
+import 'package:telegram_client/port.dart';
 
 import 'base.dart';
 
@@ -14,7 +15,7 @@ class TelegramCommandExample extends TelegramCommand {
     var telegramClient = TelegramClient(
       libtdjsonPath: globalResults!['libtdjson-path'],
     );
-    await telegramClient.initPortsIsolate();
+    await telegramClient.initPorts(isolated: true);
 
     // ---------------
 
@@ -23,30 +24,33 @@ class TelegramCommandExample extends TelegramCommand {
     // ---------------
 
     var getChatList = GetChatList();
-    await getChatList.initPortsIsolate();
-    getChatList.sendPort?.send(ListChats(
-      telegramClientSendPort: telegramClient.sendPort,
-      limit: 100,
-    ));
+    await getChatList.initPorts(isolated: true);
+    getChatList.sendMessage(Subscribe(telegramClient.sendPort));
+    getChatList.sendMessage(ListChats(limit: 100));
+
     await Future.delayed(const Duration(seconds: 5));
+    getChatList.sendMessage(Unsubscribe());
+    await Future.delayed(const Duration(seconds: 2));
     await getChatList.exit();
 
     // ---------------
 
     var newMessages = NewMessages();
     await newMessages.initPorts();
-    newMessages.sendPort?.send(ReadNewMessages(
-      telegramClientSendPort: telegramClient.sendPort,
-    ));
+    newMessages.sendMessage(Subscribe(telegramClient.sendPort));
+    newMessages.sendMessage(ReadNewMessages());
 
     var newMessagesIsolated = NewMessages();
-    await newMessagesIsolated.initPortsIsolate();
-    newMessagesIsolated.sendPort?.send(ReadNewMessages(
-      telegramClientSendPort: telegramClient.sendPort,
-    ));
+    await newMessagesIsolated.initPorts(isolated: true);
+    newMessagesIsolated.sendMessage(Subscribe(telegramClient.sendPort));
+    newMessagesIsolated.sendMessage(ReadNewMessages());
 
-    await Future.delayed(const Duration(seconds: 60));
+    await Future.delayed(const Duration(seconds: 30));
+    newMessages.sendMessage(Unsubscribe());
+    await Future.delayed(const Duration(seconds: 2));
     await newMessages.exit();
+    newMessagesIsolated.sendMessage(Unsubscribe());
+    await Future.delayed(const Duration(seconds: 2));
     await newMessagesIsolated.exit();
 
     // ---------------

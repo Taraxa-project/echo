@@ -3,35 +3,21 @@ import 'dart:isolate';
 
 import 'package:td_json_client/td_json_client.dart';
 
-import 'client.dart';
 import 'port.dart';
 
 class NewMessages with WithPorts {
-  ReceivePort? _telegramClientReceivePort;
-
   StreamSubscription? _updateNewMessage;
   StreamSubscription? _errorSubscription;
 
-  void readNewMessages({
-    required SendPort? telegramClientSendPort,
-  }) {
-    _telegramClientReceivePort = ReceivePort();
-
-    telegramClientSendPort?.send(SubscribeTelegramEvents(
-      sendPort: _telegramClientReceivePort!.sendPort,
-    ));
-
-    var telegramClientEvents = _telegramClientReceivePort!.asBroadcastStream();
-
-    _updateNewMessage = telegramClientEvents
-        .where((message) => message is UpdateNewMessage)
+  void readNewMessages() {
+    _updateNewMessage = subscribedEvents
+        ?.where((message) => message is UpdateNewMessage)
         .listen((event) {
       _onUpdateNewMessage(event);
     });
 
-    _errorSubscription = telegramClientEvents
-        .where((message) => message is Error)
-        .listen((event) {
+    _errorSubscription =
+        subscribedEvents?.where((message) => message is Error).listen((event) {
       _onError(event);
     });
   }
@@ -51,9 +37,7 @@ class NewMessages with WithPorts {
   @override
   void handlePortMessage(dynamic portMessage) {
     if (portMessage is ReadNewMessages) {
-      readNewMessages(
-        telegramClientSendPort: portMessage.telegramClientSendPort,
-      );
+      readNewMessages();
     }
   }
 
@@ -63,15 +47,9 @@ class NewMessages with WithPorts {
   }
 
   Future<void> exit() async {
-    closePorts();
     await _cancelStreamSubscriptions();
-    _telegramClientReceivePort?.close();
+    closePorts();
   }
 }
 
-class ReadNewMessages {
-  final SendPort? telegramClientSendPort;
-  ReadNewMessages({
-    this.telegramClientSendPort,
-  });
-}
+class ReadNewMessages {}

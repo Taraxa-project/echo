@@ -1,31 +1,18 @@
 import 'dart:async';
-import 'dart:isolate';
 
 import 'package:td_json_client/td_json_client.dart';
 
 import 'port.dart';
-import 'client.dart';
 
 class GetChatList with WithPorts {
-  ReceivePort? _telegramClientReceivePort;
-
   StreamSubscription? _updateInfoSubscription;
   StreamSubscription? _errorSubscription;
 
   void listChats({
-    required SendPort? telegramClientSendPort,
     required int limit,
   }) {
-    _telegramClientReceivePort = ReceivePort();
-
-    telegramClientSendPort?.send(SubscribeTelegramEvents(
-      sendPort: _telegramClientReceivePort!.sendPort,
-    ));
-
-    var telegramClientEvents = _telegramClientReceivePort!.asBroadcastStream();
-
-    _updateInfoSubscription = telegramClientEvents
-        .where((message) =>
+    _updateInfoSubscription = subscribedEvents
+        ?.where((message) =>
             message is UpdateSupergroupFullInfo ||
             message is UpdateBasicGroupFullInfo ||
             message is UpdateUserFullInfo)
@@ -33,25 +20,17 @@ class GetChatList with WithPorts {
       _onUpdateInfo(event);
     });
 
-    _errorSubscription = telegramClientEvents
-        .where((message) => message is Error)
-        .listen((event) {
+    _errorSubscription =
+        subscribedEvents?.where((message) => message is Error).listen((event) {
       _onError(event);
     });
 
-    telegramClientSendPort?.send(
+    subscribedSendPort?.send(
       GetChats(limit: limit),
     );
   }
 
   void _onUpdateInfo(TdObject tdObject) {
-    // if (tdObject is UpdateSupergroupFullInfo) {
-    //   print(tdObject.supergroup_full_info?.description);
-    // } else if (tdObject is UpdateBasicGroupFullInfo) {
-    //   print(tdObject.basic_group_full_info?.description);
-    // } else if (tdObject is UpdateUserFullInfo) {
-    //   print(tdObject.user_full_info?.description);
-    // }
     print(tdObject);
   }
 
@@ -62,10 +41,7 @@ class GetChatList with WithPorts {
   @override
   void handlePortMessage(dynamic portMessage) {
     if (portMessage is ListChats) {
-      listChats(
-        telegramClientSendPort: portMessage.telegramClientSendPort,
-        limit: portMessage.limit,
-      );
+      listChats(limit: portMessage.limit);
     }
   }
 
@@ -75,17 +51,14 @@ class GetChatList with WithPorts {
   }
 
   Future<void> exit() async {
-    closePorts();
     await _cancelStreamSubscriptions();
-    _telegramClientReceivePort?.close();
+    closePorts();
   }
 }
 
 class ListChats {
-  final SendPort? telegramClientSendPort;
   int limit;
   ListChats({
-    this.telegramClientSendPort,
     required this.limit,
   });
 }
