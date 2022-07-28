@@ -64,11 +64,11 @@ abstract class TelegramCommand extends Command with TelegramCommandLoggy {
   ) async {
     buildLogin(globalResults);
 
-    await login.initPortsIsolate();
-    login.sendPort?.send(AuthenticateAccount(
-      telegramClientSendPort: telegramSendPort,
-    ));
-    await Future.delayed(const Duration(seconds: 5));
-    await login.exit();
+    // await login.initPortsIsolate();
+    // login.sendPort?.send(AuthenticateAccount(
+    //   telegramClientSendPort: telegramSendPort,
+    // ));
+    // await Future.delayed(const Duration(seconds: 5));
+    // await login.exit();
   }
 }

@@ -1,6 +1,9 @@
+import 'package:td_json_client/td_json_client.dart';
+
 import 'package:telegram_client/client.dart';
-import 'package:telegram_client/get_chats.dart';
+import 'package:telegram_client/login.dart';
 import 'package:telegram_client/new_messages.dart';
+import 'package:echo_cli/callback/cli.dart';
 
 import 'base.dart';
 
@@ -9,52 +12,67 @@ class TelegramCommandExample extends TelegramCommand {
   final description = 'Login a Telegram account.';
 
   void run() async {
-    // ---------------
-
-    var telegramClient = TelegramClient(
+    // var telegramClient = TelegramClient(
+    //   libtdjsonPath: globalResults!['libtdjson-path'],
+    // );
+    var telegramClient = await TelegramClient.isolate(
       libtdjsonPath: globalResults!['libtdjson-path'],
     );
-    await telegramClient.initPortsIsolate();
+    var login = await Login.isolate(
+      setTdlibParameters: SetTdlibParameters(
+        parameters: TdlibParameters(
+          api_id: int.parse(globalResults!['api-id']),
+          api_hash: globalResults!['api-hash'],
+          database_directory: globalResults!['database-path'],
+          use_message_database: false,
+          device_model: 'Desktop',
+          application_version: '1.0',
+          system_language_code: 'en',
+        ),
+      ),
+      checkDatabaseEncryptionKey: CheckDatabaseEncryptionKey(
+        encryption_key: '',
+      ),
+      setAuthenticationPhoneNumber: SetAuthenticationPhoneNumber(
+        phone_number: globalResults!['phone-number'],
+      ),
+      checkAuthenticationCodeWithCallback: CheckAuthenticationCodeWithCallback(
+        readTelegramCode: readTelegramCode,
+      ),
+      authorizationStateWaitOtherDeviceConfirmationWithCallback:
+          AuthorizationStateWaitOtherDeviceConfirmationWithCallback(
+        writeQrCodeLink: writeQrCodeLink,
+      ),
+      registerUserWithCallback: RegisterUserWithCallback(
+        readUserFirstName: readUserFirstName,
+        readUserLastName: readUserLastName,
+      ),
+      checkAuthenticationPasswordWithCallback:
+          CheckAuthenticationPasswordWithCallback(
+              readUserPassword: readUserPassword),
+    );
 
-    // ---------------
+    telegramClient.addeventListener(login);
 
-    await doLogin(globalResults, telegramClient.sendPort);
+    login.setTelegramClient(telegramClient);
+    login.auth();
 
-    // ---------------
-
-    var getChatList = GetChatList();
-    await getChatList.initPortsIsolate();
-    getChatList.sendPort?.send(ListChats(
-      telegramClientSendPort: telegramClient.sendPort,
-      limit: 100,
-    ));
     await Future.delayed(const Duration(seconds: 5));
-    await getChatList.exit();
+    telegramClient.removeEventListener(login);
+    login.exit();
 
-    // ---------------
+    var newMessages = NewMesssages();
+    telegramClient.addeventListener(newMessages);
+    var newMessagesIsolated = await NewMesssages.isolate();
+    // telegramClient.addeventListener(newMessagesIsolated);
 
-    var newMessages = NewMessages();
-    await newMessages.initPorts();
-    newMessages.sendPort?.send(ReadNewMessages(
-      telegramClientSendPort: telegramClient.sendPort,
-    ));
-
-    var newMessagesIsolated = NewMessages();
-    await newMessagesIsolated.initPortsIsolate();
-    newMessagesIsolated.sendPort?.send(ReadNewMessages(
-      telegramClientSendPort: telegramClient.sendPort,
-    ));
-
-    await Future.delayed(const Duration(seconds: 60));
-    await newMessages.exit();
-    await newMessagesIsolated.exit();
-
-    // ---------------
+    await Future.delayed(const Duration(seconds: 20));
+    telegramClient.removeEventListener(newMessages);
+    telegramClient.removeEventListener(newMessagesIsolated);
+    newMessages.exit();
+    newMessagesIsolated.exit();
 
     await Future.delayed(const Duration(seconds: 5));
-    print('Ending...');
-    telegramClient.closePorts();
-
-    // ---------------
+    telegramClient.exit();
   }
 }

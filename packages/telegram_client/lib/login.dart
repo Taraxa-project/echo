@@ -1,12 +1,11 @@
-import 'dart:async';
 import 'dart:isolate';
 
+import 'package:uuid/uuid.dart';
 import 'package:td_json_client/td_json_client.dart';
 
-import 'client.dart';
-import 'port.dart';
+import 'base.dart';
 
-class Login with WithPorts {
+class Login extends TelegramEventListener {
   final SetTdlibParameters setTdlibParameters;
   final CheckDatabaseEncryptionKey checkDatabaseEncryptionKey;
   final SetAuthenticationPhoneNumber setAuthenticationPhoneNumber;
@@ -17,15 +16,39 @@ class Login with WithPorts {
   final CheckAuthenticationPasswordWithCallback
       checkAuthenticationPasswordWithCallback;
 
-  Login({
-    required this.setTdlibParameters,
-    required this.checkDatabaseEncryptionKey,
-    required this.setAuthenticationPhoneNumber,
-    required this.checkAuthenticationCodeWithCallback,
-    required this.authorizationStateWaitOtherDeviceConfirmationWithCallback,
-    required this.registerUserWithCallback,
-    required this.checkAuthenticationPasswordWithCallback,
-  }) {}
+  Login(
+      {required this.setTdlibParameters,
+      required this.checkDatabaseEncryptionKey,
+      required this.setAuthenticationPhoneNumber,
+      required this.checkAuthenticationCodeWithCallback,
+      required this.authorizationStateWaitOtherDeviceConfirmationWithCallback,
+      required this.registerUserWithCallback,
+      required this.checkAuthenticationPasswordWithCallback}) {
+    uniqueKey = Uuid().v1();
+  }
+
+  void auth() {
+    send(GetAuthorizationState());
+  }
+
+  void send(TdFunction tdFunction) {
+    _telegramClient?.send(tdFunction);
+  }
+
+  @override
+  void update(event) {
+    if (event is UpdateAuthorizationState) {
+      _onUpdateAuthorizationState(event);
+    } else if (event is Error) {
+      _onError(event);
+    }
+  }
+
+  TelegramSend? _telegramClient;
+
+  void setTelegramClient(TelegramSend telegramClient) {
+    _telegramClient = telegramClient;
+  }
 
   bool _isAuthorized = false;
   bool get isAuthorized => _isAuthorized;
@@ -33,25 +56,26 @@ class Login with WithPorts {
   bool _isClosed = false;
   bool get isclosed => _isClosed;
 
-  Future<void> _onUpdateAuthorizationState({
-    required SendPort? telegramClientSendPort,
-    required UpdateAuthorizationState updateAuthorizationState,
-  }) async {
+  Future<void> _onUpdateAuthorizationState(
+    UpdateAuthorizationState updateAuthorizationState,
+  ) async {
+    print(
+        '${Isolate.current.debugName} $runtimeType._onUpdateAuthorizationState $updateAuthorizationState');
     switch (updateAuthorizationState.authorization_state.runtimeType) {
       case AuthorizationStateWaitTdlibParameters:
-        telegramClientSendPort?.send(setTdlibParameters);
+        send(setTdlibParameters);
         break;
 
       case AuthorizationStateWaitEncryptionKey:
-        telegramClientSendPort?.send(checkDatabaseEncryptionKey);
+        send(checkDatabaseEncryptionKey);
         break;
 
       case AuthorizationStateWaitPhoneNumber:
-        telegramClientSendPort?.send(setAuthenticationPhoneNumber);
+        send(setAuthenticationPhoneNumber);
         break;
 
       case AuthorizationStateWaitCode:
-        telegramClientSendPort?.send(CheckAuthenticationCode(
+        send(CheckAuthenticationCode(
             code: checkAuthenticationCodeWithCallback.readTelegramCode()));
         break;
 
@@ -65,116 +89,142 @@ class Login with WithPorts {
         break;
 
       case AuthorizationStateWaitRegistration:
-        telegramClientSendPort?.send(RegisterUser(
+        send(RegisterUser(
             first_name: registerUserWithCallback.readUserFirstName(),
             last_name: registerUserWithCallback.readUserLastName()));
         break;
 
       case AuthorizationStateWaitPassword:
-        telegramClientSendPort?.send(CheckAuthenticationPassword(
+        send(CheckAuthenticationPassword(
             password:
                 checkAuthenticationPasswordWithCallback.readUserPassword()));
         break;
 
       case AuthorizationStateReady:
         _isAuthorized = true;
-        await _unsubscribe(telegramClientSendPort);
         break;
       case AuthorizationStateLoggingOut:
         _isClosed = true;
-        await _unsubscribe(telegramClientSendPort);
         break;
       case AuthorizationStateClosing:
         _isClosed = true;
-        await _unsubscribe(telegramClientSendPort);
         break;
       case AuthorizationStateClosed:
         _isClosed = true;
-        await _unsubscribe(telegramClientSendPort);
         break;
     }
   }
 
-  Future<void> _onError({
-    required SendPort? telegramClientSendPort,
-    required Error error,
-  }) async {}
-
-  ReceivePort? _telegramClientReceivePort;
-
-  StreamSubscription? _authSubscription;
-  StreamSubscription? _errorSubscription;
-
-  void auth({
-    required SendPort? telegramClientSendPort,
-  }) {
-    _telegramClientReceivePort = ReceivePort();
-
-    telegramClientSendPort?.send(SubscribeTelegramEvents(
-      sendPort: _telegramClientReceivePort!.sendPort,
-    ));
-
-    var telegramClientEvents = _telegramClientReceivePort!.asBroadcastStream();
-    _authSubscription = telegramClientEvents
-        .where((event) => event is UpdateAuthorizationState)
-        .listen((message) async {
-      print('${Isolate.current.debugName} received $runtimeType $message');
-
-      await _onUpdateAuthorizationState(
-        telegramClientSendPort: telegramClientSendPort,
-        updateAuthorizationState: message,
-      );
-    });
-
-    _errorSubscription = telegramClientEvents
-        .where((event) => event is Error)
-        .listen((message) async {
-      print('${Isolate.current.debugName} received $runtimeType $message');
-      await _onError(
-        telegramClientSendPort: telegramClientSendPort,
-        error: message,
-      );
-    });
-
-    telegramClientSendPort?.send(GetAuthorizationState());
-  }
-
-  Future<void> _unsubscribe(
-    SendPort? telegramClientSendPort,
+  Future<void> _onError(
+    Error error,
   ) async {
-    telegramClientSendPort?.send(UnsubscribeTelegramEvents(
-      sendPort: _telegramClientReceivePort!.sendPort,
-    ));
-    _telegramClientReceivePort?.close();
-    await _cancelStreamSubscriptions();
+    print('${Isolate.current.debugName} $runtimeType._onError $error');
   }
 
-  Future<void> _cancelStreamSubscriptions() async {
-    await _authSubscription?.cancel();
-    await _errorSubscription?.cancel();
-  }
+  void exit() {}
 
-  Future<void> exit() async {
-    closePorts();
-    await _cancelStreamSubscriptions();
-    _telegramClientReceivePort?.close();
-  }
-
-  @override
-  void handlePortMessage(dynamic portMessage) {
-    if (portMessage is AuthenticateAccount) {
-      auth(
-        telegramClientSendPort: portMessage.telegramClientSendPort,
-      );
-    }
+  static Future<LoginIsolated> isolate(
+      {required setTdlibParameters,
+      required checkDatabaseEncryptionKey,
+      required setAuthenticationPhoneNumber,
+      required checkAuthenticationCodeWithCallback,
+      required authorizationStateWaitOtherDeviceConfirmationWithCallback,
+      required registerUserWithCallback,
+      required checkAuthenticationPasswordWithCallback}) async {
+    LoginIsolated loginIsolated = LoginIsolated(
+      setTdlibParameters: setTdlibParameters,
+      checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
+      setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
+      checkAuthenticationCodeWithCallback: checkAuthenticationCodeWithCallback,
+      authorizationStateWaitOtherDeviceConfirmationWithCallback:
+          authorizationStateWaitOtherDeviceConfirmationWithCallback,
+      registerUserWithCallback: registerUserWithCallback,
+      checkAuthenticationPasswordWithCallback:
+          checkAuthenticationPasswordWithCallback,
+    );
+    await loginIsolated.spawn();
+    return loginIsolated;
   }
 }
 
-class AuthenticateAccount {
-  final SendPort? telegramClientSendPort;
-  AuthenticateAccount({
-    this.telegramClientSendPort,
-  });
+class LoginIsolated extends Login {
+  late final ReceivePort _isolateReceivePort;
+  late final Stream<dynamic> _isolateReceivePortBroadcast;
+  SendPort? _isolateSendPort;
+
+  LoginIsolated(
+      {required super.setTdlibParameters,
+      required super.checkDatabaseEncryptionKey,
+      required super.setAuthenticationPhoneNumber,
+      required super.checkAuthenticationCodeWithCallback,
+      required super.authorizationStateWaitOtherDeviceConfirmationWithCallback,
+      required super.registerUserWithCallback,
+      required super.checkAuthenticationPasswordWithCallback}) {
+    _isolateReceivePort = ReceivePort();
+    _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
+    uniqueKey = Uuid().v1();
+  }
+
+  @override
+  void update(event) {
+    _isolateSendPort?.send(UpdateEvent(event));
+  }
+
+  @override
+  void auth() {
+    _isolateSendPort?.send(Auth());
+  }
+
+  Future<void> spawn() async {
+    await Isolate.spawn(
+      LoginIsolated._entryPoint,
+      [
+        Login(
+          setTdlibParameters: setTdlibParameters,
+          checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
+          setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
+          checkAuthenticationCodeWithCallback:
+              checkAuthenticationCodeWithCallback,
+          authorizationStateWaitOtherDeviceConfirmationWithCallback:
+              authorizationStateWaitOtherDeviceConfirmationWithCallback,
+          registerUserWithCallback: registerUserWithCallback,
+          checkAuthenticationPasswordWithCallback:
+              checkAuthenticationPasswordWithCallback,
+        ),
+        _isolateReceivePort.sendPort
+      ],
+      debugName: runtimeType.toString(),
+    );
+    _isolateSendPort = await _isolateReceivePortBroadcast.first;
+    _isolateReceivePortBroadcast.listen((event) {
+      if (event is TdFunction) {
+        _telegramClient?.send(event);
+      }
+    });
+  }
+
+  static void _entryPoint(List<dynamic> initialSpawnMessage) {
+    Login login = initialSpawnMessage[0];
+    SendPort parentSendPort = initialSpawnMessage[1];
+
+    var receivePort = ReceivePort();
+    parentSendPort.send(receivePort.sendPort);
+
+    login.setTelegramClient(SetTelegramSend(parentSendPort));
+
+    receivePort.listen((message) {
+      if (message is Auth) {
+        login.auth();
+      } else if (message is UpdateEvent) {
+        login.update(message.event);
+      }
+    });
+  }
+
+  @override
+  void exit() {
+    _isolateReceivePort.close();
+  }
 }
 
 class CheckAuthenticationCodeWithCallback extends CheckAuthenticationCode {
@@ -208,3 +258,5 @@ class CheckAuthenticationPasswordWithCallback
     required this.readUserPassword,
   });
 }
+
+class Auth {}

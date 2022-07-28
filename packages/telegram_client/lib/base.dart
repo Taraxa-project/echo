@@ -1,32 +1,66 @@
-import 'dart:async';
+import 'dart:isolate';
 
-// import 'package:td_json_client/td_json_client.dart';
-// import 'package:telegram_client/client.dart';
+import 'package:td_json_client/td_json_client.dart';
 
-abstract class Telegram {
-  Stream<dynamic> get events;
-  void send(TdFunction);
+abstract class TelegramEventGenerator {
+  void addeventListener(TelegramEventListener telegramEventListener);
+  void removeEventListener(TelegramEventListener telegramEventListener);
 
-  Map<String, StreamSubscription> _subscriptions = {};
+  void exit() {}
+}
 
-  void addConsumer(TelegramEventsConsumer telegramEventsConsumer) {
-    _subscriptions[telegramEventsConsumer.key] = events.listen((event) {
-      telegramEventsConsumer.update(event);
-    });
+abstract class TelegramEventListener {
+  late String uniqueKey;
+  void update(event);
+
+  void exit() {}
+}
+
+abstract class TelegramSend {
+  void send(TdFunction tdFunction);
+}
+
+class AddEventListener {
+  TelegramEventListener eventListener;
+  AddEventListener(
+    this.eventListener,
+  );
+}
+
+class RemoveEventListener {
+  TelegramEventListener eventListener;
+  RemoveEventListener(
+    this.eventListener,
+  );
+}
+
+class SendPortEventListener extends TelegramEventListener {
+  SendPort sendPort;
+  SendPortEventListener(
+    String uniqueKey,
+    this.sendPort,
+  ) {
+    this.uniqueKey = uniqueKey;
   }
 
-  void removeConsumer(TelegramEventsConsumer telegramEventsConsumer) {
-    _subscriptions.remove(telegramEventsConsumer.key)?.cancel();
+  @override
+  void update(event) {
+    sendPort.send(event);
   }
 }
 
-abstract class TelegramEventsConsumer {
-  String get key;
-
-  void update(dynamic event);
+class UpdateEvent {
+  dynamic event;
+  UpdateEvent(
+    this.event,
+  );
 }
 
-// tg = Tg();
-// c = C();
-// c.subscribe(tg);
-// c.unsubscribe(tg);
+class SetTelegramSend extends TelegramSend {
+  SendPort sendPort;
+  SetTelegramSend(this.sendPort);
+  @override
+  void send(TdFunction tdFunction) {
+    sendPort.send(tdFunction);
+  }
+}
