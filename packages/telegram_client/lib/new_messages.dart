@@ -1,17 +1,12 @@
 import 'dart:isolate';
 
-import 'package:uuid/uuid.dart';
 import 'package:td_json_client/td_json_client.dart';
 
 import 'base.dart';
 
 class NewMesssages extends TelegramEventListener {
-  NewMesssages() {
-    uniqueKey = Uuid().v1();
-  }
-
   @override
-  void update(event) {
+  void update(dynamic event) {
     if (event is UpdateNewMessage) {
       _onUpdateNewMessage(event);
     } else if (event is Error) {
@@ -31,57 +26,15 @@ class NewMesssages extends TelegramEventListener {
     print(error);
   }
 
-  void exit() {}
-
   static Future<NewMesssagesIsolated> isolate() async {
-    NewMesssagesIsolated newMesssagesIsolated = NewMesssagesIsolated();
-    await newMesssagesIsolated.spawn();
-    return newMesssagesIsolated;
+    NewMesssagesIsolated instance = NewMesssagesIsolated();
+    await instance.spawn();
+    return instance;
   }
 }
 
-class NewMesssagesIsolated extends NewMesssages {
-  late final ReceivePort _isolateReceivePort;
-  late final Stream<dynamic> _isolateReceivePortBroadcast;
-  SendPort? _isolateSendPort;
-
+class NewMesssagesIsolated extends NewMesssages with Isolated {
   NewMesssagesIsolated() {
-    _isolateReceivePort = ReceivePort();
-    _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
-    uniqueKey = Uuid().v1();
-  }
-
-  @override
-  void update(event) {
-    _isolateSendPort?.send(UpdateEvent(event));
-  }
-
-  Future<void> spawn() async {
-    await Isolate.spawn(
-      NewMesssagesIsolated._entryPoint,
-      [NewMesssages(), _isolateReceivePort.sendPort],
-      debugName: runtimeType.toString(),
-    );
-
-    _isolateSendPort = await _isolateReceivePortBroadcast.first;
-  }
-
-  static void _entryPoint(List<dynamic> initialSpawnMessage) {
-    NewMesssages newMesssages = initialSpawnMessage[0];
-    SendPort parentSendPort = initialSpawnMessage[1];
-
-    var receivePort = ReceivePort();
-    parentSendPort.send(receivePort.sendPort);
-
-    receivePort.listen((message) {
-      if (message is UpdateEvent) {
-        newMesssages.update(message.event);
-      }
-    });
-  }
-
-  @override
-  void exit() {
-    _isolateReceivePort.close();
+    init(instance: NewMesssages());
   }
 }

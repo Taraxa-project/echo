@@ -1,91 +1,65 @@
-// import 'dart:async';
-// import 'dart:isolate';
+import 'dart:isolate';
 
-// import 'package:td_json_client/td_json_client.dart';
+import 'package:td_json_client/td_json_client.dart';
 
-// import 'port.dart';
-// import 'client.dart';
+import 'base.dart';
 
-// class GetChatList with WithPorts {
-//   ReceivePort? _telegramClientReceivePort;
+class GetChatList extends TelegramEventListener {
+  @override
+  void update(dynamic event) {
+    if (event is UpdateSupergroupFullInfo ||
+        event is UpdateBasicGroupFullInfo ||
+        event is UpdateUserFullInfo) {
+      _onUpdateInfo(event);
+    } else if (event is Error) {
+      _onError(event);
+    }
+  }
 
-//   StreamSubscription? _updateInfoSubscription;
-//   StreamSubscription? _errorSubscription;
+  void _onUpdateInfo(dynamic info) {
+    print(info);
+  }
 
-//   void listChats({
-//     required SendPort? telegramClientSendPort,
-//     required int limit,
-//   }) {
-//     _telegramClientReceivePort = ReceivePort();
+  void _onError(Error error) {
+    print(error);
+  }
 
-//     telegramClientSendPort?.send(SubscribeTelegramEvents(
-//       sendPort: _telegramClientReceivePort!.sendPort,
-//     ));
+  void listChats({required int limit}) {
+    send(GetChats(limit: limit));
+  }
 
-//     var telegramClientEvents = _telegramClientReceivePort!.asBroadcastStream();
+  static Future<GetChatListIsolated> isolate() async {
+    GetChatListIsolated instance = GetChatListIsolated();
+    await instance.spawn();
+    return instance;
+  }
+}
 
-//     _updateInfoSubscription = telegramClientEvents
-//         .where((message) =>
-//             message is UpdateSupergroupFullInfo ||
-//             message is UpdateBasicGroupFullInfo ||
-//             message is UpdateUserFullInfo)
-//         .listen((event) {
-//       _onUpdateInfo(event);
-//     });
+class GetChatListIsolated extends GetChatList with Isolated {
+  GetChatListIsolated() {
+    init(
+      instance: GetChatList(),
+      messageHandler: GetChatListIsolated.handleMessage,
+    );
+  }
 
-//     _errorSubscription = telegramClientEvents
-//         .where((message) => message is Error)
-//         .listen((event) {
-//       _onError(event);
-//     });
+  @override
+  void listChats({required int limit}) {
+    isolateSendPort?.send(ListChats(limit: limit));
+  }
 
-//     telegramClientSendPort?.send(
-//       GetChats(limit: limit),
-//     );
-//   }
+  static void handleMessage(dynamic message, TelegramEventListener instance) {
+    if (message is ListChats) {
+      (instance as GetChatList).listChats(limit: message.limit);
+    } else {
+      Isolated.handleMessage(message, instance);
+    }
+  }
+}
 
-//   void _onUpdateInfo(TdObject tdObject) {
-//     // if (tdObject is UpdateSupergroupFullInfo) {
-//     //   print(tdObject.supergroup_full_info?.description);
-//     // } else if (tdObject is UpdateBasicGroupFullInfo) {
-//     //   print(tdObject.basic_group_full_info?.description);
-//     // } else if (tdObject is UpdateUserFullInfo) {
-//     //   print(tdObject.user_full_info?.description);
-//     // }
-//     print(tdObject);
-//   }
-
-//   void _onError(Error error) {
-//     print(error);
-//   }
-
-//   @override
-//   void handlePortMessage(dynamic portMessage) {
-//     if (portMessage is ListChats) {
-//       listChats(
-//         telegramClientSendPort: portMessage.telegramClientSendPort,
-//         limit: portMessage.limit,
-//       );
-//     }
-//   }
-
-//   Future<void> _cancelStreamSubscriptions() async {
-//     await _updateInfoSubscription?.cancel();
-//     await _errorSubscription?.cancel();
-//   }
-
-//   Future<void> exit() async {
-//     closePorts();
-//     await _cancelStreamSubscriptions();
-//     _telegramClientReceivePort?.close();
-//   }
-// }
-
-// class ListChats {
-//   final SendPort? telegramClientSendPort;
-//   int limit;
-//   ListChats({
-//     this.telegramClientSendPort,
-//     required this.limit,
-//   });
-// }
+class ListChats {
+  int limit;
+  ListChats({
+    required this.limit,
+  });
+}

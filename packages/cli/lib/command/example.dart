@@ -2,6 +2,7 @@ import 'package:td_json_client/td_json_client.dart';
 
 import 'package:telegram_client/client.dart';
 import 'package:telegram_client/login.dart';
+import 'package:telegram_client/get_chats.dart';
 import 'package:telegram_client/new_messages.dart';
 import 'package:echo_cli/callback/cli.dart';
 
@@ -52,25 +53,43 @@ class TelegramCommandExample extends TelegramCommand {
               readUserPassword: readUserPassword),
     );
 
-    telegramClient.addeventListener(login);
+    telegramClient.addEventListener(login);
 
     login.setTelegramClient(telegramClient);
     login.auth();
 
     await Future.delayed(const Duration(seconds: 5));
     telegramClient.removeEventListener(login);
+    await Future.delayed(const Duration(seconds: 3));
     login.exit();
 
-    var newMessages = NewMesssages();
-    telegramClient.addeventListener(newMessages);
-    var newMessagesIsolated = await NewMesssages.isolate();
-    // telegramClient.addeventListener(newMessagesIsolated);
+    // -------------------
 
-    await Future.delayed(const Duration(seconds: 20));
+    var getChats = await GetChatList.isolate();
+    getChats.setTelegramClient(telegramClient);
+
+    telegramClient.addEventListener(getChats);
+    getChats.listChats(limit: 100);
+
+    await Future.delayed(const Duration(seconds: 10));
+    telegramClient.removeEventListener(getChats);
+    await Future.delayed(const Duration(seconds: 3));
+    getChats.exit();
+
+    // -------------------
+
+    var newMessages = NewMesssages();
+    telegramClient.addEventListener(newMessages);
+    var newMessagesIsolated = await NewMesssages.isolate();
+    telegramClient.addEventListener(newMessagesIsolated);
+
+    await Future.delayed(const Duration(seconds: 120));
     telegramClient.removeEventListener(newMessages);
     telegramClient.removeEventListener(newMessagesIsolated);
     newMessages.exit();
     newMessagesIsolated.exit();
+
+    // -------------------
 
     await Future.delayed(const Duration(seconds: 5));
     telegramClient.exit();

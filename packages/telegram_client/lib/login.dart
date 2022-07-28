@@ -1,6 +1,5 @@
 import 'dart:isolate';
 
-import 'package:uuid/uuid.dart';
 import 'package:td_json_client/td_json_client.dart';
 
 import 'base.dart';
@@ -23,16 +22,10 @@ class Login extends TelegramEventListener {
       required this.checkAuthenticationCodeWithCallback,
       required this.authorizationStateWaitOtherDeviceConfirmationWithCallback,
       required this.registerUserWithCallback,
-      required this.checkAuthenticationPasswordWithCallback}) {
-    uniqueKey = Uuid().v1();
-  }
+      required this.checkAuthenticationPasswordWithCallback});
 
   void auth() {
     send(GetAuthorizationState());
-  }
-
-  void send(TdFunction tdFunction) {
-    _telegramClient?.send(tdFunction);
   }
 
   @override
@@ -42,12 +35,6 @@ class Login extends TelegramEventListener {
     } else if (event is Error) {
       _onError(event);
     }
-  }
-
-  TelegramSend? _telegramClient;
-
-  void setTelegramClient(TelegramSend telegramClient) {
-    _telegramClient = telegramClient;
   }
 
   bool _isAuthorized = false;
@@ -131,7 +118,7 @@ class Login extends TelegramEventListener {
       required authorizationStateWaitOtherDeviceConfirmationWithCallback,
       required registerUserWithCallback,
       required checkAuthenticationPasswordWithCallback}) async {
-    LoginIsolated loginIsolated = LoginIsolated(
+    LoginIsolated instance = LoginIsolated(
       setTdlibParameters: setTdlibParameters,
       checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
       setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
@@ -142,16 +129,12 @@ class Login extends TelegramEventListener {
       checkAuthenticationPasswordWithCallback:
           checkAuthenticationPasswordWithCallback,
     );
-    await loginIsolated.spawn();
-    return loginIsolated;
+    await instance.spawn();
+    return instance;
   }
 }
 
-class LoginIsolated extends Login {
-  late final ReceivePort _isolateReceivePort;
-  late final Stream<dynamic> _isolateReceivePortBroadcast;
-  SendPort? _isolateSendPort;
-
+class LoginIsolated extends Login with Isolated {
   LoginIsolated(
       {required super.setTdlibParameters,
       required super.checkDatabaseEncryptionKey,
@@ -160,70 +143,34 @@ class LoginIsolated extends Login {
       required super.authorizationStateWaitOtherDeviceConfirmationWithCallback,
       required super.registerUserWithCallback,
       required super.checkAuthenticationPasswordWithCallback}) {
-    _isolateReceivePort = ReceivePort();
-    _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
-    uniqueKey = Uuid().v1();
-  }
-
-  @override
-  void update(event) {
-    _isolateSendPort?.send(UpdateEvent(event));
+    init(
+      instance: Login(
+        setTdlibParameters: setTdlibParameters,
+        checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
+        setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
+        checkAuthenticationCodeWithCallback:
+            checkAuthenticationCodeWithCallback,
+        authorizationStateWaitOtherDeviceConfirmationWithCallback:
+            authorizationStateWaitOtherDeviceConfirmationWithCallback,
+        registerUserWithCallback: registerUserWithCallback,
+        checkAuthenticationPasswordWithCallback:
+            checkAuthenticationPasswordWithCallback,
+      ),
+      messageHandler: LoginIsolated.handleMessage,
+    );
   }
 
   @override
   void auth() {
-    _isolateSendPort?.send(Auth());
+    isolateSendPort?.send(Auth());
   }
 
-  Future<void> spawn() async {
-    await Isolate.spawn(
-      LoginIsolated._entryPoint,
-      [
-        Login(
-          setTdlibParameters: setTdlibParameters,
-          checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
-          setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
-          checkAuthenticationCodeWithCallback:
-              checkAuthenticationCodeWithCallback,
-          authorizationStateWaitOtherDeviceConfirmationWithCallback:
-              authorizationStateWaitOtherDeviceConfirmationWithCallback,
-          registerUserWithCallback: registerUserWithCallback,
-          checkAuthenticationPasswordWithCallback:
-              checkAuthenticationPasswordWithCallback,
-        ),
-        _isolateReceivePort.sendPort
-      ],
-      debugName: runtimeType.toString(),
-    );
-    _isolateSendPort = await _isolateReceivePortBroadcast.first;
-    _isolateReceivePortBroadcast.listen((event) {
-      if (event is TdFunction) {
-        _telegramClient?.send(event);
-      }
-    });
-  }
-
-  static void _entryPoint(List<dynamic> initialSpawnMessage) {
-    Login login = initialSpawnMessage[0];
-    SendPort parentSendPort = initialSpawnMessage[1];
-
-    var receivePort = ReceivePort();
-    parentSendPort.send(receivePort.sendPort);
-
-    login.setTelegramClient(SetTelegramSend(parentSendPort));
-
-    receivePort.listen((message) {
-      if (message is Auth) {
-        login.auth();
-      } else if (message is UpdateEvent) {
-        login.update(message.event);
-      }
-    });
-  }
-
-  @override
-  void exit() {
-    _isolateReceivePort.close();
+  static void handleMessage(dynamic message, TelegramEventListener instance) {
+    if (message is Auth) {
+      (instance as Login).auth();
+    } else {
+      Isolated.handleMessage(message, instance);
+    }
   }
 }
 

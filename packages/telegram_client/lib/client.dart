@@ -79,7 +79,7 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSend {
   Map<String, StreamSubscription> _eventListeners = {};
 
   @override
-  void addeventListener(TelegramEventListener telegramEventListener) {
+  void addEventListener(TelegramEventListener telegramEventListener) {
     _eventListeners[telegramEventListener.uniqueKey] =
         telegramEvents.listen((event) {
       telegramEventListener.update(event);
@@ -107,11 +107,14 @@ class TelegramClientIsolated extends TelegramClient {
   late final Stream<dynamic> _isolateReceivePortBroadcast;
   SendPort? _isolateSendPort;
 
+  late final SendPortEventListener _sendPortEventListener;
   TelegramClientIsolated({
     required super.libtdjsonPath,
   }) {
     _isolateReceivePort = ReceivePort();
     _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
+    _sendPortEventListener =
+        SendPortEventListener(sendPort: _isolateReceivePort.sendPort);
   }
 
   @override
@@ -122,25 +125,21 @@ class TelegramClientIsolated extends TelegramClient {
   }
 
   @override
-  void addeventListener(TelegramEventListener telegramEventListener) {
+  void addEventListener(TelegramEventListener telegramEventListener) {
     _eventListeners[telegramEventListener.uniqueKey] =
         _isolateReceivePortBroadcast.listen((event) {
       telegramEventListener.update(event);
     });
-
-    _isolateSendPort?.send(AddEventListener(SendPortEventListener(
-      telegramEventListener.uniqueKey,
-      _isolateReceivePort.sendPort,
-    )));
+    if (_eventListeners.keys.length == 1) {
+      _isolateSendPort?.send(AddEventListener(_sendPortEventListener));
+    }
   }
 
   @override
   void removeEventListener(TelegramEventListener telegramEventListener) {
-    _isolateSendPort?.send(RemoveEventListener(SendPortEventListener(
-      telegramEventListener.uniqueKey,
-      _isolateReceivePort.sendPort,
-    )));
-
+    if (_eventListeners.keys.length == 1) {
+      _isolateSendPort?.send(RemoveEventListener(_sendPortEventListener));
+    }
     super.removeEventListener(telegramEventListener);
   }
 
@@ -167,7 +166,7 @@ class TelegramClientIsolated extends TelegramClient {
       if (message is TdFunction) {
         telegramClient.send(message);
       } else if (message is AddEventListener) {
-        telegramClient.addeventListener(message.eventListener);
+        telegramClient.addEventListener(message.eventListener);
       } else if (message is RemoveEventListener) {
         telegramClient.removeEventListener(message.eventListener);
       }
