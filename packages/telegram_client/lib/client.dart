@@ -5,7 +5,7 @@ import 'package:td_json_client/td_json_client.dart';
 
 import 'base.dart';
 
-class TelegramClient extends TelegramEventGenerator implements TelegramSend {
+class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   final String libtdjsonPath;
 
   late final StreamController _tdStreamController;
@@ -82,7 +82,7 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSend {
   void addEventListener(TelegramEventListener telegramEventListener) {
     _eventListeners[telegramEventListener.uniqueKey] =
         telegramEvents.listen((event) {
-      telegramEventListener.update(event);
+      telegramEventListener.onEvent(event);
     });
   }
 
@@ -128,7 +128,7 @@ class TelegramClientIsolated extends TelegramClient {
   void addEventListener(TelegramEventListener telegramEventListener) {
     _eventListeners[telegramEventListener.uniqueKey] =
         _isolateReceivePortBroadcast.listen((event) {
-      telegramEventListener.update(event);
+      telegramEventListener.onEvent(event);
     });
     if (_eventListeners.keys.length == 1) {
       _isolateSendPort?.send(AddEventListener(_sendPortEventListener));

@@ -6,13 +6,17 @@ import 'base.dart';
 
 class NewMesssages extends TelegramEventListener {
   @override
-  void update(dynamic event) {
+  void onEvent(dynamic event) {
     if (event is UpdateNewMessage) {
       _onUpdateNewMessage(event);
     } else if (event is Error) {
       _onError(event);
     }
   }
+
+  NewMesssages({
+    TelegramSender? super.telegramSender,
+  });
 
   void _onUpdateNewMessage(UpdateNewMessage updateNewMessage) {
     var content = updateNewMessage.message?.content;
@@ -26,15 +30,19 @@ class NewMesssages extends TelegramEventListener {
     print(error);
   }
 
-  static Future<NewMesssagesIsolated> isolate() async {
-    NewMesssagesIsolated instance = NewMesssagesIsolated();
+  static Future<NewMesssagesIsolated> isolate({
+    TelegramSender? telegramSender,
+  }) async {
+    NewMesssagesIsolated instance = NewMesssagesIsolated(
+      telegramSender: telegramSender,
+    );
     await instance.spawn();
     return instance;
   }
 }
 
 class NewMesssagesIsolated extends NewMesssages with Isolated {
-  NewMesssagesIsolated() {
+  NewMesssagesIsolated({TelegramSender? super.telegramSender}) {
     init(instance: NewMesssages());
   }
 }

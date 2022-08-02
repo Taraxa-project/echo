@@ -11,26 +11,27 @@ abstract class TelegramEventGenerator {
 }
 
 abstract class TelegramEventListener {
-  late final String uniqueKey;
-  TelegramEventListener() {
-    uniqueKey = Uuid().v1();
-  }
-  void update(dynamic event);
+  void onEvent(dynamic event);
 
   void exit() {}
 
-  TelegramSend? telegramClient;
+  late final String uniqueKey;
+  TelegramSender? telegramSender;
 
-  void setTelegramClient(TelegramSend telegramClient) {
-    this.telegramClient = telegramClient;
+  TelegramEventListener({TelegramSender? this.telegramSender}) {
+    uniqueKey = Uuid().v1();
+  }
+
+  void setTelegramSender({TelegramSender? telegramSender}) {
+    this.telegramSender = telegramSender;
   }
 
   void send(TdFunction tdFunction) {
-    telegramClient?.send(tdFunction);
+    telegramSender?.send(tdFunction);
   }
 }
 
-abstract class TelegramSend {
+abstract class TelegramSender {
   void send(TdFunction tdFunction);
 }
 
@@ -55,7 +56,7 @@ class SendPortEventListener extends TelegramEventListener {
   });
 
   @override
-  void update(dynamic event) {
+  void onEvent(dynamic event) {
     sendPort.send(event);
   }
 }
@@ -67,9 +68,12 @@ class UpdateEvent {
   );
 }
 
-class SetTelegramSend extends TelegramSend {
+class SendPortTelegramSender extends TelegramSender {
   SendPort sendPort;
-  SetTelegramSend(this.sendPort);
+  SendPortTelegramSender({
+    required this.sendPort,
+  });
+
   @override
   void send(TdFunction tdFunction) {
     sendPort.send(tdFunction);
@@ -93,14 +97,13 @@ mixin Isolated on TelegramEventListener {
           Isolated.handleMessage}) {
     _isolateReceivePort = ReceivePort();
     _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
-    // uniqueKey = Uuid().v1();
 
     this.instance = instance;
     this.messageHandler = messageHandler;
   }
 
   @override
-  void update(dynamic event) {
+  void onEvent(dynamic event) {
     isolateSendPort?.send(UpdateEvent(event));
   }
 
@@ -115,7 +118,7 @@ mixin Isolated on TelegramEventListener {
 
     _isolateReceivePortBroadcast.listen((event) {
       if (event is TdFunction) {
-        telegramClient?.send(event);
+        telegramSender?.send(event);
       }
     });
   }
@@ -129,7 +132,11 @@ mixin Isolated on TelegramEventListener {
     var receivePort = ReceivePort();
     parentSendPort.send(receivePort.sendPort);
 
-    instance.setTelegramClient(SetTelegramSend(parentSendPort));
+    instance.setTelegramSender(
+      telegramSender: SendPortTelegramSender(
+        sendPort: parentSendPort,
+      ),
+    );
 
     receivePort.listen((message) {
       messageHandler(message, instance);
@@ -138,7 +145,7 @@ mixin Isolated on TelegramEventListener {
 
   static void handleMessage(dynamic message, TelegramEventListener instance) {
     if (message is UpdateEvent) {
-      instance.update(message.event);
+      instance.onEvent(message.event);
     } else if (message is IsolateExit) {
       Isolate.exit();
     }

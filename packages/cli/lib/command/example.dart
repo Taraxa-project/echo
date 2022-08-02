@@ -51,11 +51,10 @@ class TelegramCommandExample extends TelegramCommand {
       checkAuthenticationPasswordWithCallback:
           CheckAuthenticationPasswordWithCallback(
               readUserPassword: readUserPassword),
+      telegramSender: telegramClient,
     );
 
     telegramClient.addEventListener(login);
-
-    login.setTelegramClient(telegramClient);
     login.auth();
 
     await Future.delayed(const Duration(seconds: 5));
@@ -65,8 +64,7 @@ class TelegramCommandExample extends TelegramCommand {
 
     // -------------------
 
-    var getChats = await GetChatList.isolate();
-    getChats.setTelegramClient(telegramClient);
+    var getChats = await GetChatList.isolate(telegramSender: telegramClient);
 
     telegramClient.addEventListener(getChats);
     getChats.listChats(limit: 100);
