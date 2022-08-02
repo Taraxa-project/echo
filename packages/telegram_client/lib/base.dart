@@ -4,10 +4,15 @@ import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class TelegramEventGenerator {
-  void addEventListener(TelegramEventListener telegramEventListener);
+  void addEventListener(
+    TelegramEventListener telegramEventListener, {
+    bool Function(dynamic event) filter = TelegramEventGenerator.allEvents,
+  });
   void removeEventListener(TelegramEventListener telegramEventListener);
 
   void exit() {}
+
+  static bool allEvents(dynamic event) => true;
 }
 
 abstract class TelegramEventListener {

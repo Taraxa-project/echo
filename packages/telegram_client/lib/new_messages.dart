@@ -30,6 +30,10 @@ class NewMesssages extends TelegramEventListener {
     print(error);
   }
 
+  static bool isUpdateNewMessageEvent(dynamic event) {
+    return event is UpdateNewMessage || event is Error;
+  }
+
   static Future<NewMesssagesIsolated> isolate({
     TelegramSender? telegramSender,
   }) async {

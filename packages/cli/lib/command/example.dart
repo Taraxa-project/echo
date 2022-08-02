@@ -2,7 +2,7 @@ import 'package:td_json_client/td_json_client.dart';
 
 import 'package:telegram_client/client.dart';
 import 'package:telegram_client/login.dart';
-import 'package:telegram_client/get_chats.dart';
+import 'package:telegram_client/get_chats_info.dart';
 import 'package:telegram_client/new_messages.dart';
 import 'package:echo_cli/callback/cli.dart';
 
@@ -54,7 +54,7 @@ class TelegramCommandExample extends TelegramCommand {
       telegramSender: telegramClient,
     );
 
-    telegramClient.addEventListener(login);
+    telegramClient.addEventListener(login, filter: Login.isLoginEvent);
     login.auth();
 
     await Future.delayed(const Duration(seconds: 5));
@@ -64,9 +64,12 @@ class TelegramCommandExample extends TelegramCommand {
 
     // -------------------
 
-    var getChats = await GetChatList.isolate(telegramSender: telegramClient);
+    var getChats = await GetChatsInfo.isolate(telegramSender: telegramClient);
 
-    telegramClient.addEventListener(getChats);
+    telegramClient.addEventListener(
+      getChats,
+      filter: GetChatsInfo.isChatInfoEvent,
+    );
     getChats.listChats(limit: 100);
 
     await Future.delayed(const Duration(seconds: 10));
@@ -77,9 +80,15 @@ class TelegramCommandExample extends TelegramCommand {
     // -------------------
 
     var newMessages = NewMesssages();
-    telegramClient.addEventListener(newMessages);
+    telegramClient.addEventListener(
+      newMessages,
+      filter: NewMesssages.isUpdateNewMessageEvent,
+    );
     var newMessagesIsolated = await NewMesssages.isolate();
-    telegramClient.addEventListener(newMessagesIsolated);
+    telegramClient.addEventListener(
+      newMessagesIsolated,
+      filter: NewMesssages.isUpdateNewMessageEvent,
+    );
 
     await Future.delayed(const Duration(seconds: 120));
     telegramClient.removeEventListener(newMessages);

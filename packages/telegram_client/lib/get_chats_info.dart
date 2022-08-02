@@ -2,7 +2,7 @@ import 'package:td_json_client/td_json_client.dart';
 
 import 'base.dart';
 
-class GetChatList extends TelegramEventListener {
+class GetChatsInfo extends TelegramEventListener {
   @override
   void onEvent(dynamic event) {
     if (event is UpdateSupergroupFullInfo ||
@@ -14,7 +14,7 @@ class GetChatList extends TelegramEventListener {
     }
   }
 
-  GetChatList({
+  GetChatsInfo({
     TelegramSender? super.telegramSender,
   });
 
@@ -30,6 +30,13 @@ class GetChatList extends TelegramEventListener {
     send(GetChats(limit: limit));
   }
 
+  static bool isChatInfoEvent(dynamic event) {
+    return event is UpdateSupergroupFullInfo ||
+        event is UpdateBasicGroupFullInfo ||
+        event is UpdateUserFullInfo ||
+        event is Error;
+  }
+
   static Future<GetChatListIsolated> isolate({
     TelegramSender? telegramSender,
   }) async {
@@ -40,10 +47,10 @@ class GetChatList extends TelegramEventListener {
   }
 }
 
-class GetChatListIsolated extends GetChatList with Isolated {
+class GetChatListIsolated extends GetChatsInfo with Isolated {
   GetChatListIsolated({TelegramSender? super.telegramSender}) {
     init(
-      instance: GetChatList(),
+      instance: GetChatsInfo(),
       messageHandler: GetChatListIsolated.handleMessage,
     );
   }
@@ -55,7 +62,7 @@ class GetChatListIsolated extends GetChatList with Isolated {
 
   static void handleMessage(dynamic message, TelegramEventListener instance) {
     if (message is ListChats) {
-      (instance as GetChatList).listChats(limit: message.limit);
+      (instance as GetChatsInfo).listChats(limit: message.limit);
     } else {
       Isolated.handleMessage(message, instance);
     }

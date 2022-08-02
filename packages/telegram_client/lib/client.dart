@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:isolate';
+import 'dart:math';
 
 import 'package:td_json_client/td_json_client.dart';
 
@@ -79,9 +80,12 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   Map<String, StreamSubscription> _eventListeners = {};
 
   @override
-  void addEventListener(TelegramEventListener telegramEventListener) {
+  void addEventListener(
+    TelegramEventListener telegramEventListener, {
+    bool Function(dynamic event) filter = TelegramEventGenerator.allEvents,
+  }) {
     _eventListeners[telegramEventListener.uniqueKey] =
-        telegramEvents.listen((event) {
+        telegramEvents.where((ev) => filter(ev)).listen((event) {
       telegramEventListener.onEvent(event);
     });
   }
@@ -125,9 +129,12 @@ class TelegramClientIsolated extends TelegramClient {
   }
 
   @override
-  void addEventListener(TelegramEventListener telegramEventListener) {
+  void addEventListener(
+    TelegramEventListener telegramEventListener, {
+    bool Function(dynamic event) filter = TelegramEventGenerator.allEvents,
+  }) {
     _eventListeners[telegramEventListener.uniqueKey] =
-        _isolateReceivePortBroadcast.listen((event) {
+        _isolateReceivePortBroadcast.where((ev) => filter(ev)).listen((event) {
       telegramEventListener.onEvent(event);
     });
     if (_eventListeners.keys.length == 1) {

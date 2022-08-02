@@ -104,6 +104,10 @@ class Login extends TelegramEventListener {
     }
   }
 
+  static bool isLoginEvent(dynamic event) {
+    return event is UpdateAuthorizationState || event is Error;
+  }
+
   Future<void> _onError(
     Error error,
   ) async {
