@@ -7,7 +7,7 @@ class GetLocalizationTargetInfo extends TdFunction {
   String get tdReturnType => 'LocalizationTargetInfo';
 
 
-  /// If true, returns only locally available information without sending network requests
+  /// Pass true to get only locally available information without sending network requests
   Bool? only_local;
 
   GetLocalizationTargetInfo({

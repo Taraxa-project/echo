@@ -1,4 +1,6 @@
 import 'package:td_json_client/api/base.dart';
+import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/session_type.dart';
 
 
 /// Contains information about one session in a Telegram application used by the current user. Sessions must be shown to the user in the returned order
@@ -20,6 +22,9 @@ class Session extends TdObject {
 
   /// True, if incoming calls can be accepted by the session
   Bool? can_accept_calls;
+
+  /// Session type based on the system and application version, which can be used to display a corresponding icon
+  SessionType? type;
 
   /// Telegram API identifier, as provided by the application 
   int32? api_id;
@@ -65,6 +70,7 @@ class Session extends TdObject {
     this.is_password_pending,
     this.can_accept_secret_chats,
     this.can_accept_calls,
+    this.type,
     this.api_id,
     this.application_name,
     this.application_version,
@@ -87,6 +93,9 @@ class Session extends TdObject {
     is_password_pending = map['is_password_pending'];
     can_accept_secret_chats = map['can_accept_secret_chats'];
     can_accept_calls = map['can_accept_calls'];
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as SessionType;
+    }
     api_id = map['api_id'];
     application_name = map['application_name'];
     application_version = map['application_version'];
@@ -111,6 +120,7 @@ class Session extends TdObject {
       'is_password_pending': is_password_pending?.toMap(skipNulls: skipNulls),
       'can_accept_secret_chats': can_accept_secret_chats?.toMap(skipNulls: skipNulls),
       'can_accept_calls': can_accept_calls?.toMap(skipNulls: skipNulls),
+      'type': type?.toMap(skipNulls: skipNulls),
       'api_id': api_id?.toMap(skipNulls: skipNulls),
       'application_name': application_name?.toMap(skipNulls: skipNulls),
       'application_version': application_version?.toMap(skipNulls: skipNulls),

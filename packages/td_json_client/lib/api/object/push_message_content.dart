@@ -1041,6 +1041,40 @@ class PushMessageContentChatJoinByRequest extends PushMessageContent {
   }
 }
 
+/// A new recurrent payment was made by the current user 
+class PushMessageContentRecurringPayment extends PushMessageContent {
+  String get tdType => 'pushMessageContentRecurringPayment';
+
+
+  /// The paid amount
+  string? amount;
+
+  PushMessageContentRecurringPayment({
+    super.extra,
+    super.client_id,
+    this.amount,
+  });
+
+  PushMessageContentRecurringPayment.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    amount = map['amount'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'amount': amount?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A forwarded messages 
 class PushMessageContentMessageForwards extends PushMessageContent {
   String get tdType => 'pushMessageContentMessageForwards';

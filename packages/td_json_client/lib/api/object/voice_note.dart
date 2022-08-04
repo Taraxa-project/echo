@@ -3,19 +3,25 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file.dart';
 
 
-/// Describes a voice note. The voice note must be encoded with the Opus codec, and stored inside an OGG container. Voice notes can have only a single audio channel 
+/// Describes a voice note. The voice note must be encoded with the Opus codec, and stored inside an OGG container. Voice notes can have only a single audio channel
 class VoiceNote extends TdObject {
   String get tdType => 'voiceNote';
 
 
-  /// Duration of the voice note, in seconds; as defined by the sender
+  /// Duration of the voice note, in seconds; as defined by the sender 
   int32? duration;
 
-  /// A waveform representation of the voice note in 5-bit format 
+  /// A waveform representation of the voice note in 5-bit format
   bytes? waveform;
 
   /// MIME type of the file; as defined by the sender 
   string? mime_type;
+
+  /// True, if speech recognition is completed; Premium users only
+  Bool? is_recognized;
+
+  /// Recognized text of the voice note; Premium users only. Call recognizeSpeech to get recognized text of the voice note 
+  string? recognized_text;
 
   /// File containing the voice note
   File? voice;
@@ -26,6 +32,8 @@ class VoiceNote extends TdObject {
     this.duration,
     this.waveform,
     this.mime_type,
+    this.is_recognized,
+    this.recognized_text,
     this.voice,
   });
 
@@ -35,6 +43,8 @@ class VoiceNote extends TdObject {
     duration = map['duration'];
     waveform = map['waveform'];
     mime_type = map['mime_type'];
+    is_recognized = map['is_recognized'];
+    recognized_text = map['recognized_text'];
     if (map['voice'] != null) {
       voice = TdApiMap.fromMap(map['voice']) as File;
     }
@@ -48,6 +58,8 @@ class VoiceNote extends TdObject {
       'duration': duration?.toMap(skipNulls: skipNulls),
       'waveform': waveform?.toMap(skipNulls: skipNulls),
       'mime_type': mime_type?.toMap(skipNulls: skipNulls),
+      'is_recognized': is_recognized?.toMap(skipNulls: skipNulls),
+      'recognized_text': recognized_text?.toMap(skipNulls: skipNulls),
       'voice': voice?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

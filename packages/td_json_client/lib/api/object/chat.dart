@@ -78,8 +78,14 @@ class Chat extends TdObject {
   /// Number of unread messages with a mention/reply in the chat
   int32? unread_mention_count;
 
-  /// Notification settings for this chat
+  /// Number of messages with unread reactions in the chat
+  int32? unread_reaction_count;
+
+  /// Notification settings for the chat
   ChatNotificationSettings? notification_settings;
+
+  /// List of reactions, available in the chat
+  vector<string>? available_reactions;
 
   /// Current message Time To Live setting (self-destruct timer) for the chat; 0 if not defined. TTL is counted from the time message or its content is viewed in secret chats and from the send date in other chats
   int32? message_ttl;
@@ -128,7 +134,9 @@ class Chat extends TdObject {
     this.last_read_inbox_message_id,
     this.last_read_outbox_message_id,
     this.unread_mention_count,
+    this.unread_reaction_count,
     this.notification_settings,
+    this.available_reactions,
     this.message_ttl,
     this.theme_name,
     this.action_bar,
@@ -179,8 +187,15 @@ class Chat extends TdObject {
     last_read_inbox_message_id = map['last_read_inbox_message_id'];
     last_read_outbox_message_id = map['last_read_outbox_message_id'];
     unread_mention_count = map['unread_mention_count'];
+    unread_reaction_count = map['unread_reaction_count'];
     if (map['notification_settings'] != null) {
       notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
+    }
+    if (map['available_reactions'] != null) {
+      available_reactions = [];
+      for (var someValue in map['available_reactions']) {
+        available_reactions?.add(someValue);
+      }
     }
     message_ttl = map['message_ttl'];
     theme_name = map['theme_name'];
@@ -225,7 +240,9 @@ class Chat extends TdObject {
       'last_read_inbox_message_id': last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
       'last_read_outbox_message_id': last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
       'unread_mention_count': unread_mention_count?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
       'notification_settings': notification_settings?.toMap(skipNulls: skipNulls),
+      'available_reactions': available_reactions?.toMap(skipNulls: skipNulls),
       'message_ttl': message_ttl?.toMap(skipNulls: skipNulls),
       'theme_name': theme_name?.toMap(skipNulls: skipNulls),
       'action_bar': action_bar?.toMap(skipNulls: skipNulls),

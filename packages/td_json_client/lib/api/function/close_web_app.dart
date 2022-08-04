@@ -1,20 +1,18 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Informs TDLib that a previously opened web app was closed 
+/// Informs TDLib that a previously opened Web App was closed 
 class CloseWebApp extends TdFunction {
   String get tdType => 'closeWebApp';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
-  /// Identifier of web app launch, received from openWebApp
+  /// Identifier of Web App launch, received from openWebApp
   int64? web_app_launch_id;
 
   CloseWebApp({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.web_app_launch_id,
   });
 

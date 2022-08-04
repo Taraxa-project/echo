@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/sticker.dart';
 class Reaction extends TdObject {
   String get tdType => 'reaction';
 
-  String? extra;
-  int? client_id;
 
   /// Text representation of the reaction
   string? reaction;
@@ -18,6 +16,9 @@ class Reaction extends TdObject {
 
   /// True, if the reaction can be added to new messages and enabled in chats
   Bool? is_active;
+
+  /// True, if the reaction is available only for Premium users
+  Bool? is_premium;
 
   /// Static icon for the reaction
   Sticker? static_icon;
@@ -41,11 +42,12 @@ class Reaction extends TdObject {
   Sticker? center_animation;
 
   Reaction({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.reaction,
     this.title,
     this.is_active,
+    this.is_premium,
     this.static_icon,
     this.appear_animation,
     this.select_animation,
@@ -61,6 +63,7 @@ class Reaction extends TdObject {
     reaction = map['reaction'];
     title = map['title'];
     is_active = map['is_active'];
+    is_premium = map['is_premium'];
     if (map['static_icon'] != null) {
       static_icon = TdApiMap.fromMap(map['static_icon']) as Sticker;
     }
@@ -92,6 +95,7 @@ class Reaction extends TdObject {
       'reaction': reaction?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
       'is_active': is_active?.toMap(skipNulls: skipNulls),
+      'is_premium': is_premium?.toMap(skipNulls: skipNulls),
       'static_icon': static_icon?.toMap(skipNulls: skipNulls),
       'appear_animation': appear_animation?.toMap(skipNulls: skipNulls),
       'select_animation': select_animation?.toMap(skipNulls: skipNulls),

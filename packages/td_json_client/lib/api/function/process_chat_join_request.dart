@@ -13,7 +13,7 @@ class ProcessChatJoinRequest extends TdFunction {
   /// Identifier of the user that sent the request 
   int53? user_id;
 
-  /// True, if the request is approved. Otherwise the request is declived
+  /// Pass true to approve the request; pass false to decline it
   Bool? approve;
 
   ProcessChatJoinRequest({

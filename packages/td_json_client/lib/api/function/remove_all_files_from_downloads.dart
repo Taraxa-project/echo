@@ -6,8 +6,6 @@ class RemoveAllFilesFromDownloads extends TdFunction {
   String get tdType => 'removeAllFilesFromDownloads';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Pass true to remove only active downloads, including paused
   Bool? only_active;
@@ -19,8 +17,8 @@ class RemoveAllFilesFromDownloads extends TdFunction {
   Bool? delete_from_cache;
 
   RemoveAllFilesFromDownloads({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.only_active,
     this.only_completed,
     this.delete_from_cache,

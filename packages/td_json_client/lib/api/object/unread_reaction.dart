@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message_sender.dart';
 class UnreadReaction extends TdObject {
   String get tdType => 'unreadReaction';
 
-  String? extra;
-  int? client_id;
 
   /// Text representation of the reaction
   string? reaction;
@@ -20,8 +18,8 @@ class UnreadReaction extends TdObject {
   Bool? is_big;
 
   UnreadReaction({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.reaction,
     this.sender_id,
     this.is_big,

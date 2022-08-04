@@ -1,5 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/input_invoice.dart';
 import 'package:td_json_client/api/object/order_info.dart';
 
 
@@ -9,23 +10,19 @@ class ValidateOrderInfo extends TdFunction {
   String get tdReturnType => 'ValidatedOrderInfo';
 
 
-  /// Chat identifier of the Invoice message
-  int53? chat_id;
-
-  /// Message identifier
-  int53? message_id;
+  /// The invoice
+  InputInvoice? input_invoice;
 
   /// The order information, provided by the user; pass null if empty
   OrderInfo? order_info;
 
-  /// True, if the order information can be saved
+  /// Pass true to save the order information
   Bool? allow_save;
 
   ValidateOrderInfo({
     super.extra,
     super.client_id,
-    this.chat_id,
-    this.message_id,
+    this.input_invoice,
     this.order_info,
     this.allow_save,
   });
@@ -33,8 +30,9 @@ class ValidateOrderInfo extends TdFunction {
   ValidateOrderInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    chat_id = map['chat_id'];
-    message_id = map['message_id'];
+    if (map['input_invoice'] != null) {
+      input_invoice = TdApiMap.fromMap(map['input_invoice']) as InputInvoice;
+    }
     if (map['order_info'] != null) {
       order_info = TdApiMap.fromMap(map['order_info']) as OrderInfo;
     }
@@ -46,8 +44,7 @@ class ValidateOrderInfo extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'message_id': message_id?.toMap(skipNulls: skipNulls),
+      'input_invoice': input_invoice?.toMap(skipNulls: skipNulls),
       'order_info': order_info?.toMap(skipNulls: skipNulls),
       'allow_save': allow_save?.toMap(skipNulls: skipNulls),
     };

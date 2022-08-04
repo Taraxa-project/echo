@@ -7,7 +7,7 @@ class GetPhoneNumberInfoSync extends TdFunction {
   String get tdReturnType => 'PhoneNumberInfo';
 
 
-  /// A two-letter ISO 639-1 country code for country information localization 
+  /// A two-letter ISO 639-1 language code for country information localization 
   string? language_code;
 
   /// The phone number prefix

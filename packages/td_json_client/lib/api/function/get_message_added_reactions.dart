@@ -6,8 +6,6 @@ class GetMessageAddedReactions extends TdFunction {
   String get tdType => 'getMessageAddedReactions';
   String get tdReturnType => 'AddedReactions';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat to which the message belongs
   int53? chat_id;
@@ -25,8 +23,8 @@ class GetMessageAddedReactions extends TdFunction {
   int32? limit;
 
   GetMessageAddedReactions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.message_id,
     this.reaction,

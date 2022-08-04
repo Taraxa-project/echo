@@ -8,8 +8,6 @@ class SetMenuButton extends TdFunction {
   String get tdType => 'setMenuButton';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the user or 0 to set menu button for all users
   int53? user_id;
@@ -18,8 +16,8 @@ class SetMenuButton extends TdFunction {
   BotMenuButton? menu_button;
 
   SetMenuButton({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
     this.menu_button,
   });

@@ -6,8 +6,6 @@ class SetChatAvailableReactions extends TdFunction {
   String get tdType => 'setChatAvailableReactions';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the chat 
   int53? chat_id;
@@ -16,8 +14,8 @@ class SetChatAvailableReactions extends TdFunction {
   vector<string>? available_reactions;
 
   SetChatAvailableReactions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.available_reactions,
   });

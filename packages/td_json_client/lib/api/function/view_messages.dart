@@ -16,7 +16,7 @@ class ViewMessages extends TdFunction {
   /// The identifiers of the messages being viewed
   vector<int53>? message_ids;
 
-  /// True, if messages in closed chats must be marked as read by the request
+  /// Pass true to mark as read the specified messages even the chat is closed
   Bool? force_read;
 
   ViewMessages({

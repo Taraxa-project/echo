@@ -8,15 +8,13 @@ class SetDefaultGroupAdministratorRights extends TdFunction {
   String get tdType => 'setDefaultGroupAdministratorRights';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Default administrator rights for adding the bot to basic group and supergroup chats; may be null
   ChatAdministratorRights? default_group_administrator_rights;
 
   SetDefaultGroupAdministratorRights({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.default_group_administrator_rights,
   });
 

@@ -13,7 +13,7 @@ class SetCommands extends TdFunction {
   /// The scope to which the commands are relevant; pass null to change commands in the default bot command scope
   BotCommandScope? scope;
 
-  /// A two-letter ISO 639-1 country code. If empty, the commands will be applied to all users from the given scope, for which language there are no dedicated commands
+  /// A two-letter ISO 639-1 language code. If empty, the commands will be applied to all users from the given scope, for which language there are no dedicated commands
   string? language_code;
 
   /// List of the bot's commands

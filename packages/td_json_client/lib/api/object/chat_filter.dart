@@ -9,17 +9,17 @@ class ChatFilter extends TdObject {
   /// The title of the filter; 1-12 characters without line feeds
   string? title;
 
-  /// The chosen icon name for short filter representation. If non-empty, must be one of "All", "Unread", "Unmuted", "Bots", "Channels", "Groups", "Private", "Custom", "Setup", "Cat", "Crown", "Favorite", "Flower", "Game", "Home", "Love", "Mask", "Party", "Sport", "Study", "Trade", "Travel", "Work".
+  /// The chosen icon name for short filter representation. If non-empty, must be one of "All", "Unread", "Unmuted", "Bots", "Channels", "Groups", "Private", "Custom", "Setup", "Cat", "Crown", "Favorite", "Flower", "Game", "Home", "Love", "Mask", "Party", "Sport", "Study", "Trade", "Travel", "Work", "Airplane", "Book", "Light", "Like", "Money", "Note", "Palette".
   /// If empty, use getChatFilterDefaultIconName to get default icon name for the filter
   string? icon_name;
 
-  /// The chat identifiers of pinned chats in the filtered chat list
+  /// The chat identifiers of pinned chats in the filtered chat list. There can be up to GetOption("chat_filter_chosen_chat_count_max") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium
   vector<int53>? pinned_chat_ids;
 
-  /// The chat identifiers of always included chats in the filtered chat list
+  /// The chat identifiers of always included chats in the filtered chat list. There can be up to GetOption("chat_filter_chosen_chat_count_max") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium
   vector<int53>? included_chat_ids;
 
-  /// The chat identifiers of always excluded chats in the filtered chat list
+  /// The chat identifiers of always excluded chats in the filtered chat list. There can be up to GetOption("chat_filter_chosen_chat_count_max") always excluded non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium
   vector<int53>? excluded_chat_ids;
 
   /// True, if muted chats need to be excluded

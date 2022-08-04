@@ -6,7 +6,7 @@ class Users extends TdObject {
   String get tdType => 'users';
 
 
-  /// Approximate total count of users found 
+  /// Approximate total number of users found 
   int32? total_count;
 
   /// A list of user identifiers

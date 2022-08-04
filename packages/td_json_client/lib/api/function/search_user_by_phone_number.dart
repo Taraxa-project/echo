@@ -6,15 +6,13 @@ class SearchUserByPhoneNumber extends TdFunction {
   String get tdType => 'searchUserByPhoneNumber';
   String get tdReturnType => 'User';
 
-  String? extra;
-  int? client_id;
 
   /// Phone number to search for
   string? phone_number;
 
   SearchUserByPhoneNumber({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.phone_number,
   });
 

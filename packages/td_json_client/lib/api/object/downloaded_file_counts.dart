@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class DownloadedFileCounts extends TdObject {
   String get tdType => 'downloadedFileCounts';
 
-  String? extra;
-  int? client_id;
 
   /// Number of active file downloads found, including paused
   int32? active_count;
@@ -18,8 +16,8 @@ class DownloadedFileCounts extends TdObject {
   int32? completed_count;
 
   DownloadedFileCounts({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.active_count,
     this.paused_count,
     this.completed_count,

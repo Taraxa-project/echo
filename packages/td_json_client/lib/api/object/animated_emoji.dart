@@ -15,7 +15,7 @@ class AnimatedEmoji extends TdObject {
   /// Emoji modifier fitzpatrick type; 0-6; 0 if none
   int32? fitzpatrick_type;
 
-  /// File containing the sound to be played when the animated emoji is clicked if any; may be null. The sound is encoded with the Opus codec, and stored inside an OGG container
+  /// File containing the sound to be played when the animated emoji is clicked; may be null. The sound is encoded with the Opus codec, and stored inside an OGG container
   File? sound;
 
   AnimatedEmoji({

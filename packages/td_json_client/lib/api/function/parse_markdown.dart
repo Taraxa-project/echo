@@ -9,7 +9,7 @@ class ParseMarkdown extends TdFunction {
   String get tdReturnType => 'FormattedText';
 
 
-  /// The text to parse. For example, "__italic__ ~~strikethrough~~ **bold** `code` ```pre``` __[italic__ text_url](telegram.org) __italic**bold italic__bold**"
+  /// The text to parse. For example, "__italic__ ~~strikethrough~~ ||spoiler|| **bold** `code` ```pre``` __[italic__ text_url](telegram.org) __italic**bold italic__bold**"
   FormattedText? text;
 
   ParseMarkdown({

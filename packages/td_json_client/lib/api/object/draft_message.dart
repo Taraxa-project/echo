@@ -8,7 +8,7 @@ class DraftMessage extends TdObject {
   String get tdType => 'draftMessage';
 
 
-  /// Identifier of the message to reply to; 0 if none
+  /// Identifier of the replied message; 0 if none
   int53? reply_to_message_id;
 
   /// Point in time (Unix timestamp) when the draft was created

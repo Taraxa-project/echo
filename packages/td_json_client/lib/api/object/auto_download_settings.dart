@@ -13,10 +13,10 @@ class AutoDownloadSettings extends TdObject {
   int32? max_photo_file_size;
 
   /// The maximum size of a video file to be auto-downloaded, in bytes
-  int32? max_video_file_size;
+  int53? max_video_file_size;
 
   /// The maximum size of other file types to be auto-downloaded, in bytes
-  int32? max_other_file_size;
+  int53? max_other_file_size;
 
   /// The maximum suggested bitrate for uploaded videos, in kbit/s
   int32? video_upload_bitrate;

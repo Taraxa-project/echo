@@ -10,7 +10,7 @@ class DeleteChatHistory extends TdFunction {
   /// Chat identifier 
   int53? chat_id;
 
-  /// Pass true if the chat needs to be removed from the chat list 
+  /// Pass true to remove the chat from all chat lists 
   Bool? remove_from_chat_list;
 
   /// Pass true to delete chat history for all users

@@ -12,7 +12,7 @@ class CreateNewSupergroupChat extends TdFunction {
   /// Title of the new chat; 1-128 characters
   string? title;
 
-  /// True, if a channel chat needs to be created
+  /// Pass true to create a channel chat
   Bool? is_channel;
 
   string? description;
@@ -20,7 +20,7 @@ class CreateNewSupergroupChat extends TdFunction {
   /// Chat location if a location-based supergroup is being created; pass null to create an ordinary supergroup chat
   ChatLocation? location;
 
-  /// True, if the supergroup is created for importing messages using importMessage
+  /// Pass true to create a supergroup for importing messages using importMessage
   Bool? for_import;
 
   CreateNewSupergroupChat({

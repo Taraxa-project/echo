@@ -13,7 +13,7 @@ class SetGroupCallParticipantIsSpeaking extends TdFunction {
   /// Group call participant's synchronization audio source identifier, or 0 for the current user 
   int32? audio_source;
 
-  /// True, if the user is speaking
+  /// Pass true if the user is speaking
   Bool? is_speaking;
 
   SetGroupCallParticipantIsSpeaking({

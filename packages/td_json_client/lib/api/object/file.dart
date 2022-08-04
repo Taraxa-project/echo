@@ -13,10 +13,10 @@ class File extends TdObject {
   int32? id;
 
   /// File size, in bytes; 0 if unknown
-  int32? size;
+  int53? size;
 
   /// Approximate file size in bytes in case the exact file size is unknown. Can be used to show download/upload progress
-  int32? expected_size;
+  int53? expected_size;
 
   /// Information about the local copy of the file
   LocalFile? local;

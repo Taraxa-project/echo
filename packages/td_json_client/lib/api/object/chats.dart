@@ -6,7 +6,7 @@ class Chats extends TdObject {
   String get tdType => 'chats';
 
 
-  /// Approximate total count of chats found 
+  /// Approximate total number of chats found 
   int32? total_count;
 
   /// List of chat identifiers

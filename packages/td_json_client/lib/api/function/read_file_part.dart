@@ -11,10 +11,10 @@ class ReadFilePart extends TdFunction {
   int32? file_id;
 
   /// The offset from which to read the file
-  int32? offset;
+  int53? offset;
 
   /// Number of bytes to read. An error will be returned if there are not enough bytes available in the file from the specified position. Pass 0 to read all available data from the specified position
-  int32? count;
+  int53? count;
 
   ReadFilePart({
     super.extra,

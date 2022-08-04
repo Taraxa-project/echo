@@ -6,15 +6,13 @@ class ReplaceVideoChatRtmpUrl extends TdFunction {
   String get tdType => 'replaceVideoChatRtmpUrl';
   String get tdReturnType => 'RtmpUrl';
 
-  String? extra;
-  int? client_id;
 
   /// Chat identifier
   int53? chat_id;
 
   ReplaceVideoChatRtmpUrl({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
   });
 

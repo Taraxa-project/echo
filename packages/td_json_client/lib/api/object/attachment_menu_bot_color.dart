@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class AttachmentMenuBotColor extends TdObject {
   String get tdType => 'attachmentMenuBotColor';
 
-  String? extra;
-  int? client_id;
 
   /// Color in the RGB24 format for light themes 
   int32? light_color;
@@ -15,8 +13,8 @@ class AttachmentMenuBotColor extends TdObject {
   int32? dark_color;
 
   AttachmentMenuBotColor({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.light_color,
     this.dark_color,
   });

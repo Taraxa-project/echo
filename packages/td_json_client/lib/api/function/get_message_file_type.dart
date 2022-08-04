@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Returns information about a file with messages exported from another app 
+/// Returns information about a file with messages exported from another application 
 class GetMessageFileType extends TdFunction {
   String get tdType => 'getMessageFileType';
   String get tdReturnType => 'MessageFileType';

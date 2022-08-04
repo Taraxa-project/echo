@@ -22,13 +22,13 @@ class LocalFile extends TdObject {
   Bool? is_downloading_completed;
 
   /// Download will be started from this offset. downloaded_prefix_size is calculated from this offset
-  int32? download_offset;
+  int53? download_offset;
 
   /// If is_downloading_completed is false, then only some prefix of the file starting from download_offset is ready to be read. downloaded_prefix_size is the size of that prefix in bytes
-  int32? downloaded_prefix_size;
+  int53? downloaded_prefix_size;
 
   /// Total downloaded file size, in bytes. Can be used only for calculating download progress. The actual file size may be bigger, and some parts of it may contain garbage
-  int32? downloaded_size;
+  int53? downloaded_size;
 
   LocalFile({
     super.extra,

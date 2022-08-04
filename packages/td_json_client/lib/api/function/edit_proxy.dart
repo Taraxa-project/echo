@@ -18,7 +18,7 @@ class EditProxy extends TdFunction {
   /// Proxy server port 
   int32? port;
 
-  /// True, if the proxy needs to be enabled 
+  /// Pass true to immediately enable the proxy 
   Bool? enable;
 
   /// Proxy type

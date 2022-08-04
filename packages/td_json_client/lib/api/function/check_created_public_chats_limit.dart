@@ -3,7 +3,7 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/public_chat_type.dart';
 
 
-/// Checks whether the maximum number of owned public chats has been reached. Returns corresponding error if the limit was reached 
+/// Checks whether the maximum number of owned public chats has been reached. Returns corresponding error if the limit was reached. The limit can be increased with Telegram Premium 
 class CheckCreatedPublicChatsLimit extends TdFunction {
   String get tdType => 'checkCreatedPublicChatsLimit';
   String get tdReturnType => 'Ok';

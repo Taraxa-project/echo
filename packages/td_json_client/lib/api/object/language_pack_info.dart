@@ -18,7 +18,7 @@ class LanguagePackInfo extends TdObject {
   /// Name of the language in that language
   string? native_name;
 
-  /// A language code to be used to apply plural forms. See https://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html for more info
+  /// A language code to be used to apply plural forms. See https://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html for more information
   string? plural_code;
 
   /// True, if the language pack is official 

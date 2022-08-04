@@ -7,7 +7,7 @@ class GetPollVoters extends TdFunction {
   String get tdReturnType => 'Users';
 
 
-  /// Identifier of the chat to which the poll belongs 
+  /// Identifier of the chat to which the poll belongs
   int53? chat_id;
 
   /// Identifier of the message containing the poll

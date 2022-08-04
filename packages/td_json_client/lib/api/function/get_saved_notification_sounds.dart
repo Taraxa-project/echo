@@ -6,12 +6,10 @@ class GetSavedNotificationSounds extends TdFunction {
   String get tdType => 'getSavedNotificationSounds';
   String get tdReturnType => 'NotificationSounds';
 
-  String? extra;
-  int? client_id;
 
   GetSavedNotificationSounds({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   GetSavedNotificationSounds.fromMap(Map<String, dynamic> map) {

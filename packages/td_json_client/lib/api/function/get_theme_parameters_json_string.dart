@@ -8,15 +8,13 @@ class GetThemeParametersJsonString extends TdFunction {
   String get tdType => 'getThemeParametersJsonString';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// Theme parameters to convert to JSON
   ThemeParameters? theme;
 
   GetThemeParametersJsonString({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.theme,
   });
 

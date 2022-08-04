@@ -3,7 +3,7 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/labeled_price_part.dart';
 
 
-/// Product invoice 
+/// Product invoice
 class Invoice extends TdObject {
   String get tdType => 'invoice';
 
@@ -19,6 +19,9 @@ class Invoice extends TdObject {
 
   /// Suggested amounts of tip in the smallest units of the currency
   vector<int53>? suggested_tip_amounts;
+
+  /// An HTTP URL with terms of service for recurring payments. If non-empty, the invoice payment will result in recurring payments and the user must accept the terms of service before allowed to pay
+  string? recurring_payment_terms_of_service_url;
 
   /// True, if the payment is a test payment
   Bool? is_test;
@@ -51,6 +54,7 @@ class Invoice extends TdObject {
     this.price_parts,
     this.max_tip_amount,
     this.suggested_tip_amounts,
+    this.recurring_payment_terms_of_service_url,
     this.is_test,
     this.need_name,
     this.need_phone_number,
@@ -80,6 +84,7 @@ class Invoice extends TdObject {
         suggested_tip_amounts?.add(someValue);
       }
     }
+    recurring_payment_terms_of_service_url = map['recurring_payment_terms_of_service_url'];
     is_test = map['is_test'];
     need_name = map['need_name'];
     need_phone_number = map['need_phone_number'];
@@ -99,6 +104,7 @@ class Invoice extends TdObject {
       'price_parts': price_parts?.toMap(skipNulls: skipNulls),
       'max_tip_amount': max_tip_amount?.toMap(skipNulls: skipNulls),
       'suggested_tip_amounts': suggested_tip_amounts?.toMap(skipNulls: skipNulls),
+      'recurring_payment_terms_of_service_url': recurring_payment_terms_of_service_url?.toMap(skipNulls: skipNulls),
       'is_test': is_test?.toMap(skipNulls: skipNulls),
       'need_name': need_name?.toMap(skipNulls: skipNulls),
       'need_phone_number': need_phone_number?.toMap(skipNulls: skipNulls),

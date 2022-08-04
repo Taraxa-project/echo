@@ -15,7 +15,7 @@ class ToggleGroupCallParticipantIsMuted extends TdFunction {
   /// Participant identifier 
   MessageSender? participant_id;
 
-  /// Pass true if the user must be muted and false otherwise
+  /// Pass true to mute the user; pass false to unmute the them
   Bool? is_muted;
 
   ToggleGroupCallParticipantIsMuted({

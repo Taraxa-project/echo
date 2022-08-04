@@ -296,13 +296,17 @@ class MessageSticker extends MessageContent {
   String get tdType => 'messageSticker';
 
 
-  /// The sticker description
+  /// The sticker description 
   Sticker? sticker;
+
+  /// True, if premium animation of the sticker must be played
+  Bool? is_premium;
 
   MessageSticker({
     super.extra,
     super.client_id,
     this.sticker,
+    this.is_premium,
   });
 
   MessageSticker.fromMap(Map<String, dynamic> map) {
@@ -311,6 +315,7 @@ class MessageSticker extends MessageContent {
     if (map['sticker'] != null) {
       sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
     }
+    is_premium = map['is_premium'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -319,6 +324,7 @@ class MessageSticker extends MessageContent {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'sticker': sticker?.toMap(skipNulls: skipNulls),
+      'is_premium': is_premium?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -819,7 +825,7 @@ class MessageInvoice extends MessageContent {
   /// Product title 
   string? title;
 
-  string? description;
+  FormattedText? description;
 
   /// Product photo; may be null 
   Photo? photo;
@@ -860,7 +866,9 @@ class MessageInvoice extends MessageContent {
     extra = map['@extra'];
     client_id = map['@client_id'];
     title = map['title'];
-    description = map['description'];
+    if (map['description'] != null) {
+      description = TdApiMap.fromMap(map['description']) as FormattedText;
+    }
     if (map['photo'] != null) {
       photo = TdApiMap.fromMap(map['photo']) as Photo;
     }
@@ -1693,7 +1701,7 @@ class MessagePaymentSuccessful extends MessageContent {
   /// Identifier of the chat, containing the corresponding invoice message; 0 if unknown 
   int53? invoice_chat_id;
 
-  /// Identifier of the message with the corresponding invoice; can be an identifier of a deleted message 
+  /// Identifier of the message with the corresponding invoice; can be 0 or an identifier of a deleted message
   int53? invoice_message_id;
 
   /// Currency for the price of the product 
@@ -1702,6 +1710,15 @@ class MessagePaymentSuccessful extends MessageContent {
   /// Total price for the product, in the smallest units of the currency
   int53? total_amount;
 
+  /// True, if this is a recurring payment 
+  Bool? is_recurring;
+
+  /// True, if this is the first recurring payment 
+  Bool? is_first_recurring;
+
+  /// Name of the invoice; may be empty if unknown
+  string? invoice_name;
+
   MessagePaymentSuccessful({
     super.extra,
     super.client_id,
@@ -1709,6 +1726,9 @@ class MessagePaymentSuccessful extends MessageContent {
     this.invoice_message_id,
     this.currency,
     this.total_amount,
+    this.is_recurring,
+    this.is_first_recurring,
+    this.invoice_name,
   });
 
   MessagePaymentSuccessful.fromMap(Map<String, dynamic> map) {
@@ -1718,6 +1738,9 @@ class MessagePaymentSuccessful extends MessageContent {
     invoice_message_id = map['invoice_message_id'];
     currency = map['currency'];
     total_amount = map['total_amount'];
+    is_recurring = map['is_recurring'];
+    is_first_recurring = map['is_first_recurring'];
+    invoice_name = map['invoice_name'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1729,6 +1752,9 @@ class MessagePaymentSuccessful extends MessageContent {
       'invoice_message_id': invoice_message_id?.toMap(skipNulls: skipNulls),
       'currency': currency?.toMap(skipNulls: skipNulls),
       'total_amount': total_amount?.toMap(skipNulls: skipNulls),
+      'is_recurring': is_recurring?.toMap(skipNulls: skipNulls),
+      'is_first_recurring': is_first_recurring?.toMap(skipNulls: skipNulls),
+      'invoice_name': invoice_name?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1742,11 +1768,17 @@ class MessagePaymentSuccessfulBot extends MessageContent {
   String get tdType => 'messagePaymentSuccessfulBot';
 
 
-  /// Currency for price of the product
+  /// Currency for price of the product 
   string? currency;
 
-  /// Total price for the product, in the smallest units of the currency 
+  /// Total price for the product, in the smallest units of the currency
   int53? total_amount;
+
+  /// True, if this is a recurring payment 
+  Bool? is_recurring;
+
+  /// True, if this is the first recurring payment
+  Bool? is_first_recurring;
 
   /// Invoice payload 
   bytes? invoice_payload;
@@ -1768,6 +1800,8 @@ class MessagePaymentSuccessfulBot extends MessageContent {
     super.client_id,
     this.currency,
     this.total_amount,
+    this.is_recurring,
+    this.is_first_recurring,
     this.invoice_payload,
     this.shipping_option_id,
     this.order_info,
@@ -1780,6 +1814,8 @@ class MessagePaymentSuccessfulBot extends MessageContent {
     client_id = map['@client_id'];
     currency = map['currency'];
     total_amount = map['total_amount'];
+    is_recurring = map['is_recurring'];
+    is_first_recurring = map['is_first_recurring'];
     invoice_payload = map['invoice_payload'];
     shipping_option_id = map['shipping_option_id'];
     if (map['order_info'] != null) {
@@ -1796,6 +1832,8 @@ class MessagePaymentSuccessfulBot extends MessageContent {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'currency': currency?.toMap(skipNulls: skipNulls),
       'total_amount': total_amount?.toMap(skipNulls: skipNulls),
+      'is_recurring': is_recurring?.toMap(skipNulls: skipNulls),
+      'is_first_recurring': is_first_recurring?.toMap(skipNulls: skipNulls),
       'invoice_payload': invoice_payload?.toMap(skipNulls: skipNulls),
       'shipping_option_id': shipping_option_id?.toMap(skipNulls: skipNulls),
       'order_info': order_info?.toMap(skipNulls: skipNulls),
@@ -1871,7 +1909,81 @@ class MessageWebsiteConnected extends MessageContent {
   }
 }
 
-/// Telegram Passport data has been sent 
+/// Data from a Web App has been sent to a bot 
+class MessageWebAppDataSent extends MessageContent {
+  String get tdType => 'messageWebAppDataSent';
+
+
+  /// Text of the keyboardButtonTypeWebApp button, which opened the Web App
+  string? button_text;
+
+  MessageWebAppDataSent({
+    super.extra,
+    super.client_id,
+    this.button_text,
+  });
+
+  MessageWebAppDataSent.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    button_text = map['button_text'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'button_text': button_text?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Data from a Web App has been received; for bots only 
+class MessageWebAppDataReceived extends MessageContent {
+  String get tdType => 'messageWebAppDataReceived';
+
+
+  /// Text of the keyboardButtonTypeWebApp button, which opened the Web App 
+  string? button_text;
+
+  /// Received data
+  string? data;
+
+  MessageWebAppDataReceived({
+    super.extra,
+    super.client_id,
+    this.button_text,
+    this.data,
+  });
+
+  MessageWebAppDataReceived.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    button_text = map['button_text'];
+    data = map['data'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'button_text': button_text?.toMap(skipNulls: skipNulls),
+      'data': data?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Telegram Passport data has been sent to a bot 
 class MessagePassportDataSent extends MessageContent {
   String get tdType => 'messagePassportDataSent';
 

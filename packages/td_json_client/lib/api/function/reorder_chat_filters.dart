@@ -7,13 +7,17 @@ class ReorderChatFilters extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Identifiers of chat filters in the new correct order
+  /// Identifiers of chat filters in the new correct order 
   vector<int32>? chat_filter_ids;
+
+  /// Position of the main chat list among chat filters, 0-based. Can be non-zero only for Premium users
+  int32? main_chat_list_position;
 
   ReorderChatFilters({
     super.extra,
     super.client_id,
     this.chat_filter_ids,
+    this.main_chat_list_position,
   });
 
   ReorderChatFilters.fromMap(Map<String, dynamic> map) {
@@ -25,6 +29,7 @@ class ReorderChatFilters extends TdFunction {
         chat_filter_ids?.add(someValue);
       }
     }
+    main_chat_list_position = map['main_chat_list_position'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -33,6 +38,7 @@ class ReorderChatFilters extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_filter_ids': chat_filter_ids?.toMap(skipNulls: skipNulls),
+      'main_chat_list_position': main_chat_list_position?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

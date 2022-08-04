@@ -7,8 +7,6 @@ class AddFileToDownloads extends TdFunction {
   String get tdType => 'addFileToDownloads';
   String get tdReturnType => 'File';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the file to download
   int32? file_id;
@@ -23,8 +21,8 @@ class AddFileToDownloads extends TdFunction {
   int32? priority;
 
   AddFileToDownloads({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
     this.chat_id,
     this.message_id,

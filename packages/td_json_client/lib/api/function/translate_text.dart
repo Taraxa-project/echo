@@ -6,8 +6,6 @@ class TranslateText extends TdFunction {
   String get tdType => 'translateText';
   String get tdReturnType => 'Text';
 
-  String? extra;
-  int? client_id;
 
   /// Text to translate
   string? text;
@@ -19,8 +17,8 @@ class TranslateText extends TdFunction {
   string? to_language_code;
 
   TranslateText({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.text,
     this.from_language_code,
     this.to_language_code,

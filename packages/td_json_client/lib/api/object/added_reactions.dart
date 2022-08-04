@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/added_reaction.dart';
 class AddedReactions extends TdObject {
   String get tdType => 'addedReactions';
 
-  String? extra;
-  int? client_id;
 
   /// The total number of found reactions 
   int32? total_count;
@@ -20,8 +18,8 @@ class AddedReactions extends TdObject {
   string? next_offset;
 
   AddedReactions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.total_count,
     this.reactions,
     this.next_offset,

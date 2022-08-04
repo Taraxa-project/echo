@@ -22,8 +22,11 @@ class ChatPhoto extends TdObject {
   /// Available variants of the photo in JPEG format, in different size
   vector<PhotoSize>? sizes;
 
-  /// Animated variant of the photo in MPEG4 format; may be null
+  /// A big (640x640) animated variant of the photo in MPEG4 format; may be null
   AnimatedChatPhoto? animation;
+
+  /// A small (160x160) animated variant of the photo in MPEG4 format; may be null even the big animation is available
+  AnimatedChatPhoto? small_animation;
 
   ChatPhoto({
     super.extra,
@@ -33,6 +36,7 @@ class ChatPhoto extends TdObject {
     this.minithumbnail,
     this.sizes,
     this.animation,
+    this.small_animation,
   });
 
   ChatPhoto.fromMap(Map<String, dynamic> map) {
@@ -54,6 +58,9 @@ class ChatPhoto extends TdObject {
     if (map['animation'] != null) {
       animation = TdApiMap.fromMap(map['animation']) as AnimatedChatPhoto;
     }
+    if (map['small_animation'] != null) {
+      small_animation = TdApiMap.fromMap(map['small_animation']) as AnimatedChatPhoto;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -66,6 +73,7 @@ class ChatPhoto extends TdObject {
       'minithumbnail': minithumbnail?.toMap(skipNulls: skipNulls),
       'sizes': sizes?.toMap(skipNulls: skipNulls),
       'animation': animation?.toMap(skipNulls: skipNulls),
+      'small_animation': small_animation?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

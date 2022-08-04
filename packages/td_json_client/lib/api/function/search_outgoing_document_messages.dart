@@ -6,8 +6,6 @@ class SearchOutgoingDocumentMessages extends TdFunction {
   String get tdType => 'searchOutgoingDocumentMessages';
   String get tdReturnType => 'FoundMessages';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for in document file name and message caption
   string? query;
@@ -16,8 +14,8 @@ class SearchOutgoingDocumentMessages extends TdFunction {
   int32? limit;
 
   SearchOutgoingDocumentMessages({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
     this.limit,
   });

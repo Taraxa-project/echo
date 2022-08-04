@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Uses an invite link to add the current user to the chat if possible 
+/// Uses an invite link to add the current user to the chat if possible. May return an error with a message "INVITE_REQUEST_SENT" if only a join request was created 
 class JoinChatByInviteLink extends TdFunction {
   String get tdType => 'joinChatByInviteLink';
   String get tdReturnType => 'Chat';

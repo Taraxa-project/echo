@@ -1,45 +1,40 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
-import 'package:td_json_client/api/object/mask_position.dart';
-
-/// Describes a sticker that needs to be added to a sticker set
-abstract class InputSticker extends TdObject {
-  InputSticker({super.extra, super.client_id});
-}
+import 'package:td_json_client/api/object/sticker_type.dart';
 
 
-/// A static sticker in PNG format, which will be converted to WEBP server-side
-class InputStickerStatic extends InputSticker {
-  String get tdType => 'inputStickerStatic';
+/// A sticker to be added to a sticker set
+class InputSticker extends TdObject {
+  String get tdType => 'inputSticker';
 
 
-  /// PNG image with the sticker; must be up to 512 KB in size and fit in a 512x512 square
+  /// File with the sticker; must fit in a 512x512 square. For WEBP stickers and masks the file must be in PNG format, which will be converted to WEBP server-side. Otherwise, the file must be local or uploaded within a week. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
   InputFile? sticker;
 
   /// Emojis corresponding to the sticker
   string? emojis;
 
-  /// For masks, position where the mask is placed; pass null if unspecified
-  MaskPosition? mask_position;
+  /// Sticker type
+  StickerType? type;
 
-  InputStickerStatic({
+  InputSticker({
     super.extra,
     super.client_id,
     this.sticker,
     this.emojis,
-    this.mask_position,
+    this.type,
   });
 
-  InputStickerStatic.fromMap(Map<String, dynamic> map) {
+  InputSticker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['sticker'] != null) {
       sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
     }
     emojis = map['emojis'];
-    if (map['mask_position'] != null) {
-      mask_position = TdApiMap.fromMap(map['mask_position']) as MaskPosition;
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as StickerType;
     }
   }
 
@@ -50,49 +45,7 @@ class InputStickerStatic extends InputSticker {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'sticker': sticker?.toMap(skipNulls: skipNulls),
       'emojis': emojis?.toMap(skipNulls: skipNulls),
-      'mask_position': mask_position?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// An animated sticker in TGS format
-class InputStickerAnimated extends InputSticker {
-  String get tdType => 'inputStickerAnimated';
-
-
-  /// File with the animated sticker. Only local or uploaded within a week files are supported. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements
-  InputFile? sticker;
-
-  /// Emojis corresponding to the sticker
-  string? emojis;
-
-  InputStickerAnimated({
-    super.extra,
-    super.client_id,
-    this.sticker,
-    this.emojis,
-  });
-
-  InputStickerAnimated.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    if (map['sticker'] != null) {
-      sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
-    }
-    emojis = map['emojis'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'sticker': sticker?.toMap(skipNulls: skipNulls),
-      'emojis': emojis?.toMap(skipNulls: skipNulls),
+      'type': type?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

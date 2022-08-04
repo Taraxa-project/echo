@@ -6,8 +6,6 @@ class ToggleDownloadIsPaused extends TdFunction {
   String get tdType => 'toggleDownloadIsPaused';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the downloaded file
   int32? file_id;
@@ -16,8 +14,8 @@ class ToggleDownloadIsPaused extends TdFunction {
   Bool? is_paused;
 
   ToggleDownloadIsPaused({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.file_id,
     this.is_paused,
   });

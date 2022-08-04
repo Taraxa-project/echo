@@ -10,7 +10,7 @@ class SetInlineGameScore extends TdFunction {
   /// Inline message identifier 
   string? inline_message_id;
 
-  /// True, if the message needs to be edited 
+  /// Pass true to edit the game message to include the current scoreboard 
   Bool? edit_message;
 
   /// User identifier 
