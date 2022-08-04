@@ -16,7 +16,7 @@ class SetBackground extends TdFunction {
   /// Background type; pass null to use the default type of the remote background or to remove the current background
   BackgroundType? type;
 
-  /// True, if the background is chosen for dark theme
+  /// Pass true if the background is changed for a dark theme
   Bool? for_dark_theme;
 
   SetBackground({

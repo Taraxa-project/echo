@@ -7,7 +7,7 @@ class GetNetworkStatistics extends TdFunction {
   String get tdReturnType => 'NetworkStatistics';
 
 
-  /// If true, returns only data for the current library launch
+  /// Pass true to get statistics only for the current library launch
   Bool? only_current;
 
   GetNetworkStatistics({

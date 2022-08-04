@@ -5,6 +5,7 @@ import 'package:td_json_client/api/object/message.dart';
 import 'package:td_json_client/api/object/message_content.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/message_interaction_info.dart';
+import 'package:td_json_client/api/object/unread_reaction.dart';
 import 'package:td_json_client/api/object/chat.dart';
 import 'package:td_json_client/api/object/chat_photo_info.dart';
 import 'package:td_json_client/api/object/chat_permissions.dart';
@@ -31,6 +32,8 @@ import 'package:td_json_client/api/object/user_full_info.dart';
 import 'package:td_json_client/api/object/basic_group_full_info.dart';
 import 'package:td_json_client/api/object/supergroup_full_info.dart';
 import 'package:td_json_client/api/object/file.dart';
+import 'package:td_json_client/api/object/file_download.dart';
+import 'package:td_json_client/api/object/downloaded_file_counts.dart';
 import 'package:td_json_client/api/object/call.dart';
 import 'package:td_json_client/api/object/group_call.dart';
 import 'package:td_json_client/api/object/group_call_participant.dart';
@@ -39,13 +42,15 @@ import 'package:td_json_client/api/object/user_privacy_setting_rules.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 import 'package:td_json_client/api/object/option_value.dart';
 import 'package:td_json_client/api/object/sticker_set.dart';
-import 'package:td_json_client/api/object/sticker_sets.dart';
+import 'package:td_json_client/api/object/trending_sticker_sets.dart';
 import 'package:td_json_client/api/object/background.dart';
 import 'package:td_json_client/api/object/chat_theme.dart';
 import 'package:td_json_client/api/object/language_pack_string.dart';
 import 'package:td_json_client/api/object/connection_state.dart';
 import 'package:td_json_client/api/object/terms_of_service.dart';
 import 'package:td_json_client/api/object/chat_nearby.dart';
+import 'package:td_json_client/api/object/attachment_menu_bot.dart';
+import 'package:td_json_client/api/object/reaction.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/suggested_action.dart';
 import 'package:td_json_client/api/object/location.dart';
@@ -554,6 +559,65 @@ class UpdateMessageMentionRead extends Update {
   }
 }
 
+/// The list of unread reactions added to a message was changed 
+class UpdateMessageUnreadReactions extends Update {
+  String get tdType => 'updateMessageUnreadReactions';
+
+
+  /// Chat identifier 
+  int53? chat_id;
+
+  /// Message identifier 
+  int53? message_id;
+
+  /// The new list of unread reactions 
+  vector<UnreadReaction>? unread_reactions;
+
+  /// The new number of messages with unread reactions left in the chat
+  int32? unread_reaction_count;
+
+  UpdateMessageUnreadReactions({
+    super.extra,
+    super.client_id,
+    this.chat_id,
+    this.message_id,
+    this.unread_reactions,
+    this.unread_reaction_count,
+  });
+
+  UpdateMessageUnreadReactions.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    message_id = map['message_id'];
+    if (map['unread_reactions'] != null) {
+      unread_reactions = [];
+      for (var someValue in map['unread_reactions']) {
+        if (someValue != null) {
+          unread_reactions?.add(TdApiMap.fromMap(someValue) as UnreadReaction);
+        }
+      }
+    }
+    unread_reaction_count = map['unread_reaction_count'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'message_id': message_id?.toMap(skipNulls: skipNulls),
+      'unread_reactions': unread_reactions?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A message with a live location was viewed. When the update is received, the application is supposed to update the live location
 class UpdateMessageLiveLocationViewed extends Update {
   String get tdType => 'updateMessageLiveLocationViewed';
@@ -979,6 +1043,51 @@ class UpdateChatActionBar extends Update {
   }
 }
 
+/// The chat available reactions were changed 
+class UpdateChatAvailableReactions extends Update {
+  String get tdType => 'updateChatAvailableReactions';
+
+
+  /// Chat identifier 
+  int53? chat_id;
+
+  /// The new list of reactions, available in the chat
+  vector<string>? available_reactions;
+
+  UpdateChatAvailableReactions({
+    super.extra,
+    super.client_id,
+    this.chat_id,
+    this.available_reactions,
+  });
+
+  UpdateChatAvailableReactions.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    if (map['available_reactions'] != null) {
+      available_reactions = [];
+      for (var someValue in map['available_reactions']) {
+        available_reactions?.add(someValue);
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'available_reactions': available_reactions?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A chat draft has changed. Be aware that the update may come in the currently opened chat but with old content of the draft. If the user has changed the content of the draft, this update mustn't be applied 
 class UpdateChatDraftMessage extends Update {
   String get tdType => 'updateChatDraftMessage';
@@ -1320,6 +1429,46 @@ class UpdateChatUnreadMentionCount extends Update {
   }
 }
 
+/// The chat unread_reaction_count has changed 
+class UpdateChatUnreadReactionCount extends Update {
+  String get tdType => 'updateChatUnreadReactionCount';
+
+
+  /// Chat identifier 
+  int53? chat_id;
+
+  /// The number of messages with unread reactions left in the chat
+  int32? unread_reaction_count;
+
+  UpdateChatUnreadReactionCount({
+    super.extra,
+    super.client_id,
+    this.chat_id,
+    this.unread_reaction_count,
+  });
+
+  UpdateChatUnreadReactionCount.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    unread_reaction_count = map['unread_reaction_count'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A chat video chat state has changed 
 class UpdateChatVideoChat extends Update {
   String get tdType => 'updateChatVideoChat';
@@ -1567,13 +1716,17 @@ class UpdateChatFilters extends Update {
   String get tdType => 'updateChatFilters';
 
 
-  /// The new list of chat filters
+  /// The new list of chat filters 
   vector<ChatFilterInfo>? chat_filters;
+
+  /// Position of the main chat list among chat filters, 0-based
+  int32? main_chat_list_position;
 
   UpdateChatFilters({
     super.extra,
     super.client_id,
     this.chat_filters,
+    this.main_chat_list_position,
   });
 
   UpdateChatFilters.fromMap(Map<String, dynamic> map) {
@@ -1587,6 +1740,7 @@ class UpdateChatFilters extends Update {
         }
       }
     }
+    main_chat_list_position = map['main_chat_list_position'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1595,6 +1749,7 @@ class UpdateChatFilters extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_filters': chat_filters?.toMap(skipNulls: skipNulls),
+      'main_chat_list_position': main_chat_list_position?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1603,7 +1758,7 @@ class UpdateChatFilters extends Update {
   }
 }
 
-/// The number of online group members has changed. This update with non-zero count is sent only for currently opened chats. There is no guarantee that it will be sent just after the count has changed 
+/// The number of online group members has changed. This update with non-zero number of online group members is sent only for currently opened chats. There is no guarantee that it will be sent just after the number of online users has changed 
 class UpdateChatOnlineMemberCount extends Update {
   String get tdType => 'updateChatOnlineMemberCount';
 
@@ -1746,8 +1901,8 @@ class UpdateNotificationGroup extends Update {
   /// Chat identifier, which notification settings must be applied to the added notifications
   int53? notification_settings_chat_id;
 
-  /// True, if the notifications must be shown without sound
-  Bool? is_silent;
+  /// Identifier of the notification sound to be played; 0 if sound is disabled
+  int64? notification_sound_id;
 
   /// Total number of unread notifications in the group, can be bigger than number of active notifications
   int32? total_count;
@@ -1765,7 +1920,7 @@ class UpdateNotificationGroup extends Update {
     this.type,
     this.chat_id,
     this.notification_settings_chat_id,
-    this.is_silent,
+    this.notification_sound_id,
     this.total_count,
     this.added_notifications,
     this.removed_notification_ids,
@@ -1780,7 +1935,7 @@ class UpdateNotificationGroup extends Update {
     }
     chat_id = map['chat_id'];
     notification_settings_chat_id = map['notification_settings_chat_id'];
-    is_silent = map['is_silent'];
+    notification_sound_id = map['notification_sound_id'];
     total_count = map['total_count'];
     if (map['added_notifications'] != null) {
       added_notifications = [];
@@ -1807,7 +1962,7 @@ class UpdateNotificationGroup extends Update {
       'type': type?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'notification_settings_chat_id': notification_settings_chat_id?.toMap(skipNulls: skipNulls),
-      'is_silent': is_silent?.toMap(skipNulls: skipNulls),
+      'notification_sound_id': notification_sound_id?.toMap(skipNulls: skipNulls),
       'total_count': total_count?.toMap(skipNulls: skipNulls),
       'added_notifications': added_notifications?.toMap(skipNulls: skipNulls),
       'removed_notification_ids': removed_notification_ids?.toMap(skipNulls: skipNulls),
@@ -2489,6 +2644,192 @@ class UpdateFileGenerationStop extends Update {
   }
 }
 
+/// The state of the file download list has changed
+class UpdateFileDownloads extends Update {
+  String get tdType => 'updateFileDownloads';
+
+
+  /// Total size of files in the file download list, in bytes
+  int53? total_size;
+
+  /// Total number of files in the file download list
+  int32? total_count;
+
+  /// Total downloaded size of files in the file download list, in bytes
+  int53? downloaded_size;
+
+  UpdateFileDownloads({
+    super.extra,
+    super.client_id,
+    this.total_size,
+    this.total_count,
+    this.downloaded_size,
+  });
+
+  UpdateFileDownloads.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    total_size = map['total_size'];
+    total_count = map['total_count'];
+    downloaded_size = map['downloaded_size'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'total_size': total_size?.toMap(skipNulls: skipNulls),
+      'total_count': total_count?.toMap(skipNulls: skipNulls),
+      'downloaded_size': downloaded_size?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A file was added to the file download list. This update is sent only after file download list is loaded for the first time 
+class UpdateFileAddedToDownloads extends Update {
+  String get tdType => 'updateFileAddedToDownloads';
+
+
+  /// The added file download 
+  FileDownload? file_download;
+
+  /// New number of being downloaded and recently downloaded files found
+  DownloadedFileCounts? counts;
+
+  UpdateFileAddedToDownloads({
+    super.extra,
+    super.client_id,
+    this.file_download,
+    this.counts,
+  });
+
+  UpdateFileAddedToDownloads.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['file_download'] != null) {
+      file_download = TdApiMap.fromMap(map['file_download']) as FileDownload;
+    }
+    if (map['counts'] != null) {
+      counts = TdApiMap.fromMap(map['counts']) as DownloadedFileCounts;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'file_download': file_download?.toMap(skipNulls: skipNulls),
+      'counts': counts?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A file download was changed. This update is sent only after file download list is loaded for the first time 
+class UpdateFileDownload extends Update {
+  String get tdType => 'updateFileDownload';
+
+
+  /// File identifier
+  int32? file_id;
+
+  /// Point in time (Unix timestamp) when the file downloading was completed; 0 if the file downloading isn't completed
+  int32? complete_date;
+
+  /// True, if downloading of the file is paused
+  Bool? is_paused;
+
+  /// New number of being downloaded and recently downloaded files found
+  DownloadedFileCounts? counts;
+
+  UpdateFileDownload({
+    super.extra,
+    super.client_id,
+    this.file_id,
+    this.complete_date,
+    this.is_paused,
+    this.counts,
+  });
+
+  UpdateFileDownload.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    file_id = map['file_id'];
+    complete_date = map['complete_date'];
+    is_paused = map['is_paused'];
+    if (map['counts'] != null) {
+      counts = TdApiMap.fromMap(map['counts']) as DownloadedFileCounts;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'file_id': file_id?.toMap(skipNulls: skipNulls),
+      'complete_date': complete_date?.toMap(skipNulls: skipNulls),
+      'is_paused': is_paused?.toMap(skipNulls: skipNulls),
+      'counts': counts?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A file was removed from the file download list. This update is sent only after file download list is loaded for the first time 
+class UpdateFileRemovedFromDownloads extends Update {
+  String get tdType => 'updateFileRemovedFromDownloads';
+
+
+  /// File identifier 
+  int32? file_id;
+
+  /// New number of being downloaded and recently downloaded files found
+  DownloadedFileCounts? counts;
+
+  UpdateFileRemovedFromDownloads({
+    super.extra,
+    super.client_id,
+    this.file_id,
+    this.counts,
+  });
+
+  UpdateFileRemovedFromDownloads.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    file_id = map['file_id'];
+    if (map['counts'] != null) {
+      counts = TdApiMap.fromMap(map['counts']) as DownloadedFileCounts;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'file_id': file_id?.toMap(skipNulls: skipNulls),
+      'counts': counts?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// New call was created or information about a call was updated 
 class UpdateCall extends Update {
   String get tdType => 'updateCall';
@@ -2930,7 +3271,7 @@ class UpdateTrendingStickerSets extends Update {
 
 
   /// The prefix of the list of trending sticker sets with the newest trending sticker sets
-  StickerSets? sticker_sets;
+  TrendingStickerSets? sticker_sets;
 
   UpdateTrendingStickerSets({
     super.extra,
@@ -2942,7 +3283,7 @@ class UpdateTrendingStickerSets extends Update {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['sticker_sets'] != null) {
-      sticker_sets = TdApiMap.fromMap(map['sticker_sets']) as StickerSets;
+      sticker_sets = TdApiMap.fromMap(map['sticker_sets']) as TrendingStickerSets;
     }
   }
 
@@ -3075,6 +3416,45 @@ class UpdateSavedAnimations extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'animation_ids': animation_ids?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The list of saved notifications sounds was updated. This update may not be sent until information about a notification sound was requested for the first time 
+class UpdateSavedNotificationSounds extends Update {
+  String get tdType => 'updateSavedNotificationSounds';
+
+
+  /// The new list of identifiers of saved notification sounds
+  vector<int64>? notification_sound_ids;
+
+  UpdateSavedNotificationSounds({
+    super.extra,
+    super.client_id,
+    this.notification_sound_ids,
+  });
+
+  UpdateSavedNotificationSounds.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['notification_sound_ids'] != null) {
+      notification_sound_ids = [];
+      for (var someValue in map['notification_sound_ids']) {
+        notification_sound_ids?.add(someValue);
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'notification_sound_ids': notification_sound_ids?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -3338,6 +3718,122 @@ class UpdateUsersNearby extends Update {
   }
 }
 
+/// The list of bots added to attachment menu has changed 
+class UpdateAttachmentMenuBots extends Update {
+  String get tdType => 'updateAttachmentMenuBots';
+
+
+  /// The new list of bots added to attachment menu. The bots must not be shown on scheduled messages screen
+  vector<AttachmentMenuBot>? bots;
+
+  UpdateAttachmentMenuBots({
+    super.extra,
+    super.client_id,
+    this.bots,
+  });
+
+  UpdateAttachmentMenuBots.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['bots'] != null) {
+      bots = [];
+      for (var someValue in map['bots']) {
+        if (someValue != null) {
+          bots?.add(TdApiMap.fromMap(someValue) as AttachmentMenuBot);
+        }
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'bots': bots?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A message was sent by an opened Web App, so the Web App needs to be closed 
+class UpdateWebAppMessageSent extends Update {
+  String get tdType => 'updateWebAppMessageSent';
+
+
+  /// Identifier of Web App launch
+  int64? web_app_launch_id;
+
+  UpdateWebAppMessageSent({
+    super.extra,
+    super.client_id,
+    this.web_app_launch_id,
+  });
+
+  UpdateWebAppMessageSent.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    web_app_launch_id = map['web_app_launch_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'web_app_launch_id': web_app_launch_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The list of supported reactions has changed 
+class UpdateReactions extends Update {
+  String get tdType => 'updateReactions';
+
+
+  /// The new list of supported reactions
+  vector<Reaction>? reactions;
+
+  UpdateReactions({
+    super.extra,
+    super.client_id,
+    this.reactions,
+  });
+
+  UpdateReactions.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['reactions'] != null) {
+      reactions = [];
+      for (var someValue in map['reactions']) {
+        if (someValue != null) {
+          reactions?.add(TdApiMap.fromMap(someValue) as Reaction);
+        }
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'reactions': reactions?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// The list of supported dice emojis has changed 
 class UpdateDiceEmojis extends Update {
   String get tdType => 'updateDiceEmojis';
@@ -3538,7 +4034,7 @@ class UpdateNewInlineQuery extends Update {
   /// User location; may be null
   Location? user_location;
 
-  /// The type of the chat, from which the query originated; may be null if unknown 
+  /// The type of the chat from which the query originated; may be null if unknown 
   ChatType? chat_type;
 
   /// Text of the query 
@@ -3666,7 +4162,7 @@ class UpdateNewCallbackQuery extends Update {
   /// Identifier of the chat where the query was sent 
   int53? chat_id;
 
-  /// Identifier of the message, from which the query originated
+  /// Identifier of the message from which the query originated
   int53? message_id;
 
   /// Identifier that uniquely corresponds to the chat to which the message was sent 
@@ -3729,7 +4225,7 @@ class UpdateNewInlineCallbackQuery extends Update {
   /// Identifier of the user who sent the query 
   int53? sender_user_id;
 
-  /// Identifier of the inline message, from which the query originated
+  /// Identifier of the inline message from which the query originated
   string? inline_message_id;
 
   /// An identifier uniquely corresponding to the chat a message was sent to 

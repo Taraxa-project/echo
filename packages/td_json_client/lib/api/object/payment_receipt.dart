@@ -1,5 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/formatted_text.dart';
 import 'package:td_json_client/api/object/photo.dart';
 import 'package:td_json_client/api/object/invoice.dart';
 import 'package:td_json_client/api/object/order_info.dart';
@@ -14,7 +15,7 @@ class PaymentReceipt extends TdObject {
   /// Product title
   string? title;
 
-  string? description;
+  FormattedText? description;
 
   /// Product photo; may be null
   Photo? photo;
@@ -26,7 +27,7 @@ class PaymentReceipt extends TdObject {
   int53? seller_bot_user_id;
 
   /// User identifier of the payment provider bot
-  int53? payments_provider_user_id;
+  int53? payment_provider_user_id;
 
   /// Information about the invoice
   Invoice? invoice;
@@ -51,7 +52,7 @@ class PaymentReceipt extends TdObject {
     this.photo,
     this.date,
     this.seller_bot_user_id,
-    this.payments_provider_user_id,
+    this.payment_provider_user_id,
     this.invoice,
     this.order_info,
     this.shipping_option,
@@ -63,13 +64,15 @@ class PaymentReceipt extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     title = map['title'];
-    description = map['description'];
+    if (map['description'] != null) {
+      description = TdApiMap.fromMap(map['description']) as FormattedText;
+    }
     if (map['photo'] != null) {
       photo = TdApiMap.fromMap(map['photo']) as Photo;
     }
     date = map['date'];
     seller_bot_user_id = map['seller_bot_user_id'];
-    payments_provider_user_id = map['payments_provider_user_id'];
+    payment_provider_user_id = map['payment_provider_user_id'];
     if (map['invoice'] != null) {
       invoice = TdApiMap.fromMap(map['invoice']) as Invoice;
     }
@@ -93,7 +96,7 @@ class PaymentReceipt extends TdObject {
       'photo': photo?.toMap(skipNulls: skipNulls),
       'date': date?.toMap(skipNulls: skipNulls),
       'seller_bot_user_id': seller_bot_user_id?.toMap(skipNulls: skipNulls),
-      'payments_provider_user_id': payments_provider_user_id?.toMap(skipNulls: skipNulls),
+      'payment_provider_user_id': payment_provider_user_id?.toMap(skipNulls: skipNulls),
       'invoice': invoice?.toMap(skipNulls: skipNulls),
       'order_info': order_info?.toMap(skipNulls: skipNulls),
       'shipping_option': shipping_option?.toMap(skipNulls: skipNulls),

@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Deletes a chat along with all messages in the corresponding chat for all chat members; requires owner privileges. For group chats this will release the username and remove all members. Chats with more than 1000 members can't be deleted using this method 
+/// Deletes a chat along with all messages in the corresponding chat for all chat members. For group chats this will release the username and remove all members. Use the field chat.can_be_deleted_for_all_users to find whether the method can be applied to the chat 
 class DeleteChat extends TdFunction {
   String get tdType => 'deleteChat';
   String get tdReturnType => 'Ok';

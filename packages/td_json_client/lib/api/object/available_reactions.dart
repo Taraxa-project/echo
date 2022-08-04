@@ -1,19 +1,19 @@
 import 'package:td_json_client/api/base.dart';
+import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/available_reaction.dart';
 
 
 /// Represents a list of available reactions 
 class AvailableReactions extends TdObject {
   String get tdType => 'availableReactions';
 
-  String? extra;
-  int? client_id;
 
   /// List of reactions
-  vector<string>? reactions;
+  vector<AvailableReaction>? reactions;
 
   AvailableReactions({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.reactions,
   });
 
@@ -23,7 +23,9 @@ class AvailableReactions extends TdObject {
     if (map['reactions'] != null) {
       reactions = [];
       for (var someValue in map['reactions']) {
-        reactions?.add(someValue);
+        if (someValue != null) {
+          reactions?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
+        }
       }
     }
   }

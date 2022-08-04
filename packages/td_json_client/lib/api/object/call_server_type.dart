@@ -11,19 +11,24 @@ class CallServerTypeTelegramReflector extends CallServerType {
   String get tdType => 'callServerTypeTelegramReflector';
 
 
-  /// A peer tag to be used with the reflector
+  /// A peer tag to be used with the reflector 
   bytes? peer_tag;
+
+  /// True, if the server uses TCP instead of UDP
+  Bool? is_tcp;
 
   CallServerTypeTelegramReflector({
     super.extra,
     super.client_id,
     this.peer_tag,
+    this.is_tcp,
   });
 
   CallServerTypeTelegramReflector.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     peer_tag = map['peer_tag'];
+    is_tcp = map['is_tcp'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -32,6 +37,7 @@ class CallServerTypeTelegramReflector extends CallServerType {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'peer_tag': peer_tag?.toMap(skipNulls: skipNulls),
+      'is_tcp': is_tcp?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

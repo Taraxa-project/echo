@@ -5,15 +5,13 @@ import 'package:td_json_client/api/base.dart';
 class SentWebAppMessage extends TdObject {
   String get tdType => 'sentWebAppMessage';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the sent inline message, if known
   string? inline_message_id;
 
   SentWebAppMessage({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.inline_message_id,
   });
 

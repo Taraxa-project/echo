@@ -121,7 +121,7 @@ class InputFileGenerated extends InputFile {
   string? conversion;
 
   /// Expected size of the generated file, in bytes; 0 if unknown
-  int32? expected_size;
+  int53? expected_size;
 
   InputFileGenerated({
     super.extra,

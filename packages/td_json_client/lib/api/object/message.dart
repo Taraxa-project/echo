@@ -5,6 +5,7 @@ import 'package:td_json_client/api/object/message_sending_state.dart';
 import 'package:td_json_client/api/object/message_scheduling_state.dart';
 import 'package:td_json_client/api/object/message_forward_info.dart';
 import 'package:td_json_client/api/object/message_interaction_info.dart';
+import 'package:td_json_client/api/object/unread_reaction.dart';
 import 'package:td_json_client/api/object/message_content.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 
@@ -50,16 +51,19 @@ class Message extends TdObject {
   /// True, if the message can be deleted for all users
   Bool? can_be_deleted_for_all_users;
 
-  /// True, if the message statistics are available
+  /// True, if the list of added reactions is available through getMessageAddedReactions
+  Bool? can_get_added_reactions;
+
+  /// True, if the message statistics are available through getMessageStatistics
   Bool? can_get_statistics;
 
-  /// True, if the message thread info is available
+  /// True, if information about the message thread is available through getMessageThread
   Bool? can_get_message_thread;
 
   /// True, if chat members already viewed the message can be received through getMessageViewers
   Bool? can_get_viewers;
 
-  /// True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description
+  /// True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description through getMessageLink
   Bool? can_get_media_timestamp_links;
 
   /// True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message
@@ -82,6 +86,9 @@ class Message extends TdObject {
 
   /// Information about interactions with the message; may be null
   MessageInteractionInfo? interaction_info;
+
+  /// Information about unread reactions added to the message
+  vector<UnreadReaction>? unread_reactions;
 
   /// If non-zero, the identifier of the chat to which the replied message belongs; Currently, only messages in the Replies chat can have different reply_in_chat_id and chat_id
   int53? reply_in_chat_id;
@@ -131,6 +138,7 @@ class Message extends TdObject {
     this.can_be_saved,
     this.can_be_deleted_only_for_self,
     this.can_be_deleted_for_all_users,
+    this.can_get_added_reactions,
     this.can_get_statistics,
     this.can_get_message_thread,
     this.can_get_viewers,
@@ -142,6 +150,7 @@ class Message extends TdObject {
     this.edit_date,
     this.forward_info,
     this.interaction_info,
+    this.unread_reactions,
     this.reply_in_chat_id,
     this.reply_to_message_id,
     this.message_thread_id,
@@ -176,6 +185,7 @@ class Message extends TdObject {
     can_be_saved = map['can_be_saved'];
     can_be_deleted_only_for_self = map['can_be_deleted_only_for_self'];
     can_be_deleted_for_all_users = map['can_be_deleted_for_all_users'];
+    can_get_added_reactions = map['can_get_added_reactions'];
     can_get_statistics = map['can_get_statistics'];
     can_get_message_thread = map['can_get_message_thread'];
     can_get_viewers = map['can_get_viewers'];
@@ -190,6 +200,14 @@ class Message extends TdObject {
     }
     if (map['interaction_info'] != null) {
       interaction_info = TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
+    }
+    if (map['unread_reactions'] != null) {
+      unread_reactions = [];
+      for (var someValue in map['unread_reactions']) {
+        if (someValue != null) {
+          unread_reactions?.add(TdApiMap.fromMap(someValue) as UnreadReaction);
+        }
+      }
     }
     reply_in_chat_id = map['reply_in_chat_id'];
     reply_to_message_id = map['reply_to_message_id'];
@@ -225,6 +243,7 @@ class Message extends TdObject {
       'can_be_saved': can_be_saved?.toMap(skipNulls: skipNulls),
       'can_be_deleted_only_for_self': can_be_deleted_only_for_self?.toMap(skipNulls: skipNulls),
       'can_be_deleted_for_all_users': can_be_deleted_for_all_users?.toMap(skipNulls: skipNulls),
+      'can_get_added_reactions': can_get_added_reactions?.toMap(skipNulls: skipNulls),
       'can_get_statistics': can_get_statistics?.toMap(skipNulls: skipNulls),
       'can_get_message_thread': can_get_message_thread?.toMap(skipNulls: skipNulls),
       'can_get_viewers': can_get_viewers?.toMap(skipNulls: skipNulls),
@@ -236,6 +255,7 @@ class Message extends TdObject {
       'edit_date': edit_date?.toMap(skipNulls: skipNulls),
       'forward_info': forward_info?.toMap(skipNulls: skipNulls),
       'interaction_info': interaction_info?.toMap(skipNulls: skipNulls),
+      'unread_reactions': unread_reactions?.toMap(skipNulls: skipNulls),
       'reply_in_chat_id': reply_in_chat_id?.toMap(skipNulls: skipNulls),
       'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
       'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),

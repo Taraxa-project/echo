@@ -3,33 +3,31 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/theme_parameters.dart';
 
 
-/// Informs TDLib that a web app is being opened from attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button.
+/// Informs TDLib that a Web App is being opened from attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button.
 /// For each bot, a confirmation alert about data sent to the bot must be shown once
 class OpenWebApp extends TdFunction {
   String get tdType => 'openWebApp';
   String get tdReturnType => 'WebAppInfo';
 
-  String? extra;
-  int? client_id;
 
-  /// Identifier of the chat in which the web app is opened. Web apps can be opened only in private chats for now
+  /// Identifier of the chat in which the Web App is opened
   int53? chat_id;
 
-  /// Identifier of the bot, providing the web app
+  /// Identifier of the bot, providing the Web App
   int53? bot_user_id;
 
   /// The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, or an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
   string? url;
 
-  /// Preferred web app theme; pass null to use the default theme
+  /// Preferred Web App theme; pass null to use the default theme
   ThemeParameters? theme;
 
-  /// Identifier of the replied message for the message sent by the web app; 0 if none
+  /// Identifier of the replied message for the message sent by the Web App; 0 if none
   int53? reply_to_message_id;
 
   OpenWebApp({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.chat_id,
     this.bot_user_id,
     this.url,

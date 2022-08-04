@@ -12,7 +12,7 @@ class GetChatMessageCalendar extends TdFunction {
   /// Identifier of the chat in which to return information about messages
   int53? chat_id;
 
-  /// Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention and searchMessagesFilterUnreadMention are unsupported in this function
+  /// Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, and searchMessagesFilterUnreadReaction are unsupported in this function
   SearchMessagesFilter? filter;
 
   /// The message identifier from which to return information about messages; use 0 to get results from the last message

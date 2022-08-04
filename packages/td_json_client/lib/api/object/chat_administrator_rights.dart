@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class ChatAdministratorRights extends TdObject {
   String get tdType => 'chatAdministratorRights';
 
-  String? extra;
-  int? client_id;
 
   /// True, if the administrator can get chat event log, get chat statistics, get message statistics in channels, get channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other privilege; applicable to supergroups and channels only
   Bool? can_manage_chat;
@@ -42,8 +40,8 @@ class ChatAdministratorRights extends TdObject {
   Bool? is_anonymous;
 
   ChatAdministratorRights({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.can_manage_chat,
     this.can_change_info,
     this.can_post_messages,

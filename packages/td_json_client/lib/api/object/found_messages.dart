@@ -8,7 +8,7 @@ class FoundMessages extends TdObject {
   String get tdType => 'foundMessages';
 
 
-  /// Approximate total count of messages found; -1 if unknown 
+  /// Approximate total number of messages found; -1 if unknown 
   int32? total_count;
 
   /// List of messages 

@@ -1082,7 +1082,7 @@ class PageBlockChatLink extends PageBlock {
   /// Chat photo; may be null 
   ChatPhotoInfo? photo;
 
-  /// Chat username, by which all other information about the chat can be resolved
+  /// Chat username by which all other information about the chat can be resolved
   string? username;
 
   PageBlockChatLink({

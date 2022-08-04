@@ -6,15 +6,13 @@ class GetAttachmentMenuBot extends TdFunction {
   String get tdType => 'getAttachmentMenuBot';
   String get tdReturnType => 'AttachmentMenuBot';
 
-  String? extra;
-  int? client_id;
 
   /// Bot's user identifier
   int53? bot_user_id;
 
   GetAttachmentMenuBot({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_user_id,
   });
 

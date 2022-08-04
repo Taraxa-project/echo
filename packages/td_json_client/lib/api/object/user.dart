@@ -40,6 +40,9 @@ class User extends TdObject {
   /// True, if the user is verified
   Bool? is_verified;
 
+  /// True, if the user is a Telegram Premium user
+  Bool? is_premium;
+
   /// True, if the user is Telegram support account
   Bool? is_support;
 
@@ -52,7 +55,7 @@ class User extends TdObject {
   /// True, if many users reported this user as a fake account
   Bool? is_fake;
 
-  /// If false, the user is inaccessible, and the only information known about the user is inside this class. It can't be passed to any method except GetUser
+  /// If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method except GetUser
   Bool? have_access;
 
   /// Type of the user
@@ -60,6 +63,9 @@ class User extends TdObject {
 
   /// IETF language tag of the user's language; only available to bots
   string? language_code;
+
+  /// True, if the user added the current bot to attachment menu; only available to bots
+  Bool? added_to_attachment_menu;
 
   User({
     super.extra,
@@ -74,6 +80,7 @@ class User extends TdObject {
     this.is_contact,
     this.is_mutual_contact,
     this.is_verified,
+    this.is_premium,
     this.is_support,
     this.restriction_reason,
     this.is_scam,
@@ -81,6 +88,7 @@ class User extends TdObject {
     this.have_access,
     this.type,
     this.language_code,
+    this.added_to_attachment_menu,
   });
 
   User.fromMap(Map<String, dynamic> map) {
@@ -100,6 +108,7 @@ class User extends TdObject {
     is_contact = map['is_contact'];
     is_mutual_contact = map['is_mutual_contact'];
     is_verified = map['is_verified'];
+    is_premium = map['is_premium'];
     is_support = map['is_support'];
     restriction_reason = map['restriction_reason'];
     is_scam = map['is_scam'];
@@ -109,6 +118,7 @@ class User extends TdObject {
       type = TdApiMap.fromMap(map['type']) as UserType;
     }
     language_code = map['language_code'];
+    added_to_attachment_menu = map['added_to_attachment_menu'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -126,6 +136,7 @@ class User extends TdObject {
       'is_contact': is_contact?.toMap(skipNulls: skipNulls),
       'is_mutual_contact': is_mutual_contact?.toMap(skipNulls: skipNulls),
       'is_verified': is_verified?.toMap(skipNulls: skipNulls),
+      'is_premium': is_premium?.toMap(skipNulls: skipNulls),
       'is_support': is_support?.toMap(skipNulls: skipNulls),
       'restriction_reason': restriction_reason?.toMap(skipNulls: skipNulls),
       'is_scam': is_scam?.toMap(skipNulls: skipNulls),
@@ -133,6 +144,7 @@ class User extends TdObject {
       'have_access': have_access?.toMap(skipNulls: skipNulls),
       'type': type?.toMap(skipNulls: skipNulls),
       'language_code': language_code?.toMap(skipNulls: skipNulls),
+      'added_to_attachment_menu': added_to_attachment_menu?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

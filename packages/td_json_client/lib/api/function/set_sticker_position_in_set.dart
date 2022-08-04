@@ -12,7 +12,7 @@ class SetStickerPositionInSet extends TdFunction {
   /// Sticker 
   InputFile? sticker;
 
-  /// New position of the sticker in the set, zero-based
+  /// New position of the sticker in the set, 0-based
   int32? position;
 
   SetStickerPositionInSet({

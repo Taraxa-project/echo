@@ -15,7 +15,7 @@ class SendInlineQueryResultMessage extends TdFunction {
   /// If not 0, a message thread identifier in which the message will be sent
   int53? message_thread_id;
 
-  /// Identifier of a message to reply to or 0
+  /// Identifier of a replied message; 0 if none
   int53? reply_to_message_id;
 
   /// Options to be used to send the message; pass null to use default options
@@ -27,7 +27,7 @@ class SendInlineQueryResultMessage extends TdFunction {
   /// Identifier of the inline result
   string? result_id;
 
-  /// If true, there will be no mention of a bot, via which the message is sent. Can be used only for bots GetOption("animation_search_bot_username"), GetOption("photo_search_bot_username") and GetOption("venue_search_bot_username")
+  /// Pass true to hide the bot, via which the message is sent. Can be used only for bots GetOption("animation_search_bot_username"), GetOption("photo_search_bot_username"), and GetOption("venue_search_bot_username")
   Bool? hide_via_bot;
 
   SendInlineQueryResultMessage({

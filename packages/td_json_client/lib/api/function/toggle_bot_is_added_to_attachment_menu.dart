@@ -6,8 +6,6 @@ class ToggleBotIsAddedToAttachmentMenu extends TdFunction {
   String get tdType => 'toggleBotIsAddedToAttachmentMenu';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Bot's user identifier 
   int53? bot_user_id;
@@ -16,8 +14,8 @@ class ToggleBotIsAddedToAttachmentMenu extends TdFunction {
   Bool? is_added;
 
   ToggleBotIsAddedToAttachmentMenu({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.bot_user_id,
     this.is_added,
   });

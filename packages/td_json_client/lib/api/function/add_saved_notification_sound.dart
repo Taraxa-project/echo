@@ -8,15 +8,13 @@ class AddSavedNotificationSound extends TdFunction {
   String get tdType => 'addSavedNotificationSound';
   String get tdReturnType => 'NotificationSound';
 
-  String? extra;
-  int? client_id;
 
   /// Notification sound file to add
   InputFile? sound;
 
   AddSavedNotificationSound({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.sound,
   });
 

@@ -10,7 +10,7 @@ class ToggleChatHasProtectedContent extends TdFunction {
   /// Chat identifier 
   int53? chat_id;
 
-  /// True, if chat content can't be saved locally, forwarded, or copied
+  /// New value of has_protected_content
   Bool? has_protected_content;
 
   ToggleChatHasProtectedContent({

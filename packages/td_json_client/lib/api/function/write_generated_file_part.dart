@@ -11,7 +11,7 @@ class WriteGeneratedFilePart extends TdFunction {
   int64? generation_id;
 
   /// The offset from which to write the data to the file 
-  int32? offset;
+  int53? offset;
 
   /// The data to write
   bytes? data;

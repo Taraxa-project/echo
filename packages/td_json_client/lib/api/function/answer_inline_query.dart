@@ -12,7 +12,7 @@ class AnswerInlineQuery extends TdFunction {
   /// Identifier of the inline query
   int64? inline_query_id;
 
-  /// True, if the result of the query can be cached for the specified user
+  /// Pass true if results may be cached and returned only for the user that sent the query. By default, results may be returned to any user who sends the same query
   Bool? is_personal;
 
   /// The results of the query

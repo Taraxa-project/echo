@@ -5,8 +5,6 @@ import 'package:td_json_client/api/base.dart';
 class GroupCallStream extends TdObject {
   String get tdType => 'groupCallStream';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of an audio/video channel
   int32? channel_id;
@@ -18,8 +16,8 @@ class GroupCallStream extends TdObject {
   int53? time_offset;
 
   GroupCallStream({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.channel_id,
     this.scale,
     this.time_offset,

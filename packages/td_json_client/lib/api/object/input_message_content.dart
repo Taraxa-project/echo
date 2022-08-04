@@ -21,7 +21,7 @@ class InputMessageText extends InputMessageContent {
   String get tdType => 'inputMessageText';
 
 
-  /// Formatted text to be sent; 1-GetOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
+  /// Formatted text to be sent; 1-GetOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
   FormattedText? text;
 
   /// True, if rich web page previews for URLs in the message text must be disabled 
@@ -278,7 +278,7 @@ class InputMessagePhoto extends InputMessageContent {
   String get tdType => 'inputMessagePhoto';
 
 
-  /// Photo to send 
+  /// Photo to send. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20 
   InputFile? photo;
 
   /// Photo thumbnail to be sent; pass null to skip thumbnail uploading. The thumbnail is sent to the other party only in secret chats 

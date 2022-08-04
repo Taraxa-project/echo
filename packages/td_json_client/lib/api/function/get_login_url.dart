@@ -17,7 +17,7 @@ class GetLoginUrl extends TdFunction {
   /// Button identifier
   int53? button_id;
 
-  /// True, if the user allowed the bot to send them messages
+  /// Pass true to allow the bot to send messages to the current user
   Bool? allow_write_access;
 
   GetLoginUrl({

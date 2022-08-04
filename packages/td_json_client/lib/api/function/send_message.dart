@@ -17,7 +17,7 @@ class SendMessage extends TdFunction {
   /// If not 0, a message thread identifier in which the message will be sent
   int53? message_thread_id;
 
-  /// Identifier of the message to reply to or 0
+  /// Identifier of the replied message; 0 if none
   int53? reply_to_message_id;
 
   /// Options to be used to send the message; pass null to use default options

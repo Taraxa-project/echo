@@ -8,7 +8,7 @@ class ChatInviteLinkMembers extends TdObject {
   String get tdType => 'chatInviteLinkMembers';
 
 
-  /// Approximate total count of chat members found 
+  /// Approximate total number of chat members found 
   int32? total_count;
 
   /// List of chat members, joined a chat via an invite link

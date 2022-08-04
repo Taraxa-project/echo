@@ -10,7 +10,7 @@ class ToggleSessionCanAcceptCalls extends TdFunction {
   /// Session identifier 
   int64? session_id;
 
-  /// True, if incoming calls can be accepted by the session
+  /// Pass true to allow accepting incoming calls by the session; pass false otherwise
   Bool? can_accept_calls;
 
   ToggleSessionCanAcceptCalls({

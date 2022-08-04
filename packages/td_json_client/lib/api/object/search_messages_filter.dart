@@ -398,6 +398,34 @@ class SearchMessagesFilterUnreadMention extends SearchMessagesFilter {
   }
 }
 
+/// Returns only messages with unread reactions for the current user. When using this filter the results can't be additionally filtered by a query, a message thread or by the sending user
+class SearchMessagesFilterUnreadReaction extends SearchMessagesFilter {
+  String get tdType => 'searchMessagesFilterUnreadReaction';
+
+
+  SearchMessagesFilterUnreadReaction({
+    super.extra,
+    super.client_id,
+  });
+
+  SearchMessagesFilterUnreadReaction.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// Returns only failed to send messages. This filter can be used only if the message database is used
 class SearchMessagesFilterFailedToSend extends SearchMessagesFilter {
   String get tdType => 'searchMessagesFilterFailedToSend';

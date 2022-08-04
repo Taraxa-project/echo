@@ -16,7 +16,7 @@ class SetPassword extends TdFunction {
   /// New password hint; may be empty 
   string? new_hint;
 
-  /// Pass true if the recovery email address must be changed 
+  /// Pass true to change also the recovery email address 
   Bool? set_recovery_email_address;
 
   /// New recovery email address; may be empty

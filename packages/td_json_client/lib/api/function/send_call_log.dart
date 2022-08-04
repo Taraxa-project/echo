@@ -8,8 +8,6 @@ class SendCallLog extends TdFunction {
   String get tdType => 'sendCallLog';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Call identifier 
   int32? call_id;
@@ -18,8 +16,8 @@ class SendCallLog extends TdFunction {
   InputFile? log_file;
 
   SendCallLog({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.call_id,
     this.log_file,
   });

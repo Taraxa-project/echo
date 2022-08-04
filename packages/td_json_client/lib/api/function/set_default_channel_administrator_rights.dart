@@ -8,15 +8,13 @@ class SetDefaultChannelAdministratorRights extends TdFunction {
   String get tdType => 'setDefaultChannelAdministratorRights';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Default administrator rights for adding the bot to channels; may be null
   ChatAdministratorRights? default_channel_administrator_rights;
 
   SetDefaultChannelAdministratorRights({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.default_channel_administrator_rights,
   });
 

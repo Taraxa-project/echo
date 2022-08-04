@@ -13,7 +13,7 @@ class ProcessChatJoinRequests extends TdFunction {
   /// Invite link for which to process join requests. If empty, all join requests will be processed. Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for other links
   string? invite_link;
 
-  /// True, if the requests are approved. Otherwise the requests are declived
+  /// Pass true to approve all requests; pass false to decline them
   Bool? approve;
 
   ProcessChatJoinRequests({

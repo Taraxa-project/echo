@@ -6,8 +6,6 @@ class SearchFileDownloads extends TdFunction {
   String get tdType => 'searchFileDownloads';
   String get tdReturnType => 'FoundFileDownloads';
 
-  String? extra;
-  int? client_id;
 
   /// Query to search for; may be empty to return all downloaded files
   string? query;
@@ -25,8 +23,8 @@ class SearchFileDownloads extends TdFunction {
   int32? limit;
 
   SearchFileDownloads({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.query,
     this.only_active,
     this.only_completed,

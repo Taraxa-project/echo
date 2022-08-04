@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Deletes saved order info
+/// Deletes saved order information
 class DeleteSavedOrderInfo extends TdFunction {
   String get tdType => 'deleteSavedOrderInfo';
   String get tdReturnType => 'Ok';

@@ -8,8 +8,6 @@ import 'package:td_json_client/api/object/file_download.dart';
 class FoundFileDownloads extends TdObject {
   String get tdType => 'foundFileDownloads';
 
-  String? extra;
-  int? client_id;
 
   /// Total number of suitable files, ignoring offset
   DownloadedFileCounts? total_counts;
@@ -21,8 +19,8 @@ class FoundFileDownloads extends TdObject {
   string? next_offset;
 
   FoundFileDownloads({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.total_counts,
     this.files,
     this.next_offset,

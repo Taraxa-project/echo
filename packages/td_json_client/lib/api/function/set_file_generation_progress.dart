@@ -11,10 +11,10 @@ class SetFileGenerationProgress extends TdFunction {
   int64? generation_id;
 
   /// Expected size of the generated file, in bytes; 0 if unknown
-  int32? expected_size;
+  int53? expected_size;
 
   /// The number of bytes already generated
-  int32? local_prefix_size;
+  int53? local_prefix_size;
 
   SetFileGenerationProgress({
     super.extra,

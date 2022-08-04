@@ -6,15 +6,13 @@ class RemoveSavedNotificationSound extends TdFunction {
   String get tdType => 'removeSavedNotificationSound';
   String get tdReturnType => 'Ok';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the notification sound
   int64? notification_sound_id;
 
   RemoveSavedNotificationSound({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.notification_sound_id,
   });
 

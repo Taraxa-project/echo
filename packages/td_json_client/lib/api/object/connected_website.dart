@@ -30,7 +30,7 @@ class ConnectedWebsite extends TdObject {
   /// IP address from which the user was logged in, in human-readable format
   string? ip;
 
-  /// Human-readable description of a country and a region, from which the user was logged in, based on the IP address
+  /// Human-readable description of a country and a region from which the user was logged in, based on the IP address
   string? location;
 
   ConnectedWebsite({

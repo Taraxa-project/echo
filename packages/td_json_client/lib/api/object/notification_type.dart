@@ -15,13 +15,17 @@ class NotificationTypeNewMessage extends NotificationType {
   String get tdType => 'notificationTypeNewMessage';
 
 
-  /// The message
+  /// The message 
   Message? message;
+
+  /// True, if message content must be displayed in notifications
+  Bool? show_preview;
 
   NotificationTypeNewMessage({
     super.extra,
     super.client_id,
     this.message,
+    this.show_preview,
   });
 
   NotificationTypeNewMessage.fromMap(Map<String, dynamic> map) {
@@ -30,6 +34,7 @@ class NotificationTypeNewMessage extends NotificationType {
     if (map['message'] != null) {
       message = TdApiMap.fromMap(map['message']) as Message;
     }
+    show_preview = map['show_preview'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -38,6 +43,7 @@ class NotificationTypeNewMessage extends NotificationType {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'message': message?.toMap(skipNulls: skipNulls),
+      'show_preview': show_preview?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

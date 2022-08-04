@@ -3,19 +3,19 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/mask_position.dart';
 
 /// Describes type of a sticker
-abstract class StickerType extends TdObject {}
+abstract class StickerType extends TdObject {
+  StickerType({super.extra, super.client_id});
+}
 
 
 /// The sticker is an image in WEBP format
 class StickerTypeStatic extends StickerType {
   String get tdType => 'stickerTypeStatic';
 
-  String? extra;
-  int? client_id;
 
   StickerTypeStatic({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   StickerTypeStatic.fromMap(Map<String, dynamic> map) {
@@ -40,12 +40,10 @@ class StickerTypeStatic extends StickerType {
 class StickerTypeAnimated extends StickerType {
   String get tdType => 'stickerTypeAnimated';
 
-  String? extra;
-  int? client_id;
 
   StickerTypeAnimated({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   StickerTypeAnimated.fromMap(Map<String, dynamic> map) {
@@ -70,12 +68,10 @@ class StickerTypeAnimated extends StickerType {
 class StickerTypeVideo extends StickerType {
   String get tdType => 'stickerTypeVideo';
 
-  String? extra;
-  int? client_id;
 
   StickerTypeVideo({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
   });
 
   StickerTypeVideo.fromMap(Map<String, dynamic> map) {
@@ -100,15 +96,13 @@ class StickerTypeVideo extends StickerType {
 class StickerTypeMask extends StickerType {
   String get tdType => 'stickerTypeMask';
 
-  String? extra;
-  int? client_id;
 
   /// Position where the mask is placed; may be null
   MaskPosition? mask_position;
 
   StickerTypeMask({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.mask_position,
   });
 

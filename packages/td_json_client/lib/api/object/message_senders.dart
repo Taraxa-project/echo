@@ -8,7 +8,7 @@ class MessageSenders extends TdObject {
   String get tdType => 'messageSenders';
 
 
-  /// Approximate total count of messages senders found 
+  /// Approximate total number of messages senders found 
   int32? total_count;
 
   /// List of message senders

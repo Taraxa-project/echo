@@ -32,6 +32,12 @@ class Supergroup extends TdObject {
   /// True, if messages sent to the channel need to contain information about the sender. This field is only applicable to channels
   Bool? sign_messages;
 
+  /// True, if users need to join the supergroup before they can send messages. Always true for channels and non-discussion supergroups
+  Bool? join_to_send_messages;
+
+  /// True, if all users directly joining the supergroup need to be approved by supergroup administrators. Always false for channels and supergroups without username, location, or a linked chat
+  Bool? join_by_request;
+
   /// True, if the slow mode is enabled in the supergroup
   Bool? is_slow_mode_enabled;
 
@@ -64,6 +70,8 @@ class Supergroup extends TdObject {
     this.has_linked_chat,
     this.has_location,
     this.sign_messages,
+    this.join_to_send_messages,
+    this.join_by_request,
     this.is_slow_mode_enabled,
     this.is_channel,
     this.is_broadcast_group,
@@ -86,6 +94,8 @@ class Supergroup extends TdObject {
     has_linked_chat = map['has_linked_chat'];
     has_location = map['has_location'];
     sign_messages = map['sign_messages'];
+    join_to_send_messages = map['join_to_send_messages'];
+    join_by_request = map['join_by_request'];
     is_slow_mode_enabled = map['is_slow_mode_enabled'];
     is_channel = map['is_channel'];
     is_broadcast_group = map['is_broadcast_group'];
@@ -108,6 +118,8 @@ class Supergroup extends TdObject {
       'has_linked_chat': has_linked_chat?.toMap(skipNulls: skipNulls),
       'has_location': has_location?.toMap(skipNulls: skipNulls),
       'sign_messages': sign_messages?.toMap(skipNulls: skipNulls),
+      'join_to_send_messages': join_to_send_messages?.toMap(skipNulls: skipNulls),
+      'join_by_request': join_by_request?.toMap(skipNulls: skipNulls),
       'is_slow_mode_enabled': is_slow_mode_enabled?.toMap(skipNulls: skipNulls),
       'is_channel': is_channel?.toMap(skipNulls: skipNulls),
       'is_broadcast_group': is_broadcast_group?.toMap(skipNulls: skipNulls),

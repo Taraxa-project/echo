@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Returns information about a message, if it is available locally without sending network request. This is an offline request 
+/// Returns information about a message, if it is available without sending network request. This is an offline request 
 class GetMessageLocally extends TdFunction {
   String get tdType => 'getMessageLocally';
   String get tdReturnType => 'Message';

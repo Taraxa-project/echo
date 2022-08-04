@@ -6,15 +6,13 @@ class GetMenuButton extends TdFunction {
   String get tdType => 'getMenuButton';
   String get tdReturnType => 'BotMenuButton';
 
-  String? extra;
-  int? client_id;
 
   /// Identifier of the user or 0 to get the default menu button
   int53? user_id;
 
   GetMenuButton({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.user_id,
   });
 

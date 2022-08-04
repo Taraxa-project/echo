@@ -7,8 +7,6 @@ import 'package:td_json_client/api/object/message_sender.dart';
 class MessageReaction extends TdObject {
   String get tdType => 'messageReaction';
 
-  String? extra;
-  int? client_id;
 
   /// Text representation of the reaction
   string? reaction;
@@ -23,8 +21,8 @@ class MessageReaction extends TdObject {
   vector<MessageSender>? recent_sender_ids;
 
   MessageReaction({
-    this.extra,
-    this.client_id,
+    super.extra,
+    super.client_id,
     this.reaction,
     this.total_count,
     this.is_chosen,

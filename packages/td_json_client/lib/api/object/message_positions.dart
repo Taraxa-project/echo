@@ -8,7 +8,7 @@ class MessagePositions extends TdObject {
   String get tdType => 'messagePositions';
 
 
-  /// Total count of messages found 
+  /// Total number of messages found 
   int32? total_count;
 
   /// List of message positions
