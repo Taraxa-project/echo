@@ -1,87 +1,112 @@
-import 'dart:ffi' as ffi;
-import 'package:ffi/ffi.dart' as ffi_ext;
-import 'dart:convert' as convert;
-import 'package:loggy/loggy.dart';
+import 'dart:ffi';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:ffi/ffi.dart';
+import 'package:logging/logging.dart';
+import 'package:td_json_client/td_json_client.dart';
 
 import 'src/lib_td_json.dart';
-import 'api/base.dart';
-import 'api/map.dart';
+// import 'api/base.dart';
+// import 'api/map.dart';
 
-mixin TdJsonClientLoggy implements LoggyType {
-  @override
-  Loggy<TdJsonClientLoggy> get loggy =>
-      Loggy<TdJsonClientLoggy>('$runtimeType');
-
-  void setLogLevel(String logLevelName) {
-    loggy.level = LogOptions(LogLevel.values.firstWhere(
-        (element) => element.name == logLevelName,
-        orElse: () => LogLevel.all));
-  }
-}
-
-class TdJsonClient with TdJsonClientLoggy {
+/// Telegram client for TDLib JSON interface.
+class TdJsonClient {
+  /// The path to the libtdjson library.
   final String libtdjsonPath;
-  final int libtdjsonLoglevel;
 
+  /// The libtdjson FFI instance.
   late final LibTdJson _libTdJson;
 
-  TdJsonClient(
-      {required String this.libtdjsonPath,
-      int this.libtdjsonLoglevel = 1,
-      loglevel = 'Error'}) {
-    setLogLevel(loglevel);
+  TdJsonClient({
+    required String this.libtdjsonPath,
+    Logger? loggerTdLib,
+    Logger? logger,
+  }) {
+    _libTdJson = LibTdJson(DynamicLibrary.open(libtdjsonPath));
 
-    loggy.debug('Loading libdtjson from $libtdjsonPath...');
-    _libTdJson = LibTdJson(ffi.DynamicLibrary.open(libtdjsonPath));
-    loggy.debug('Loaded libdtjson.');
+    if (loggerTdLib != null) this.loggerTdLib = loggerTdLib;
+    if (logger != null) this.logger = logger;
 
-    loggy.debug('Setting libtdjson log level to $libtdjsonLoglevel...');
-    execute({
-      '@type': 'setLogVerbosityLevel',
-      'new_verbosity_level': libtdjsonLoglevel
-    });
+    // Do not use the default TDLib logger.
+    // execute(SetLogStream(log_stream: LogStreamEmpty()));
+
+    execute(SetLogStream(
+        log_stream: LogStreamFile(
+      path: 'a.log',
+      max_file_size: 100000,
+      redirect_stderr: false,
+    )));
+
+    // Instead redirect the logs to the provided [Logger].
+    td_log_message_callback_ptr pointer =
+        Pointer.fromFunction(td_set_log_message_callback);
+    // _libTdJson.td_set_log_message_callback(
+    //   this._loggerTdLib.level.value,
+    //   pointer,
+    // );
   }
 
   int create_client_id() {
-    loggy.debug('Creating libdtjson client id...');
     var clientId = _libTdJson.td_create_client_id();
-    loggy.debug('Created libtdjson client id $clientId.');
     return clientId;
   }
 
-  void execute(dynamic request) {
-    String requestJson = convert.jsonEncode(request);
-    loggy.info('Executing $requestJson...');
-    _libTdJson.td_execute(requestJson.toNativeUtf8().cast<ffi.Char>());
+  void execute(TdFunction request) {
+    String requestJson = request.toJson();
+    _libTdJson.td_execute(requestJson.toNativeUtf8().cast<Char>());
+    _libTdJson.td_execute('{"key": "value"}'.toNativeUtf8().cast<Char>());
   }
 
   Future<void> send(int clientId, TdFunction request) async {
     request.client_id = clientId;
 
     String requestJson = request.toJson();
-    loggy.info('Sending $requestJson from client id $clientId...');
-    _libTdJson.td_send(clientId, requestJson.toNativeUtf8().cast<ffi.Char>());
+    _libTdJson.td_send(clientId, requestJson.toNativeUtf8().cast<Char>());
   }
 
-  Stream<dynamic> receive({double waitTimeout = 5.0}) async* {
-    while (true) {
-      var tdResponse = _libTdJson.td_receive(waitTimeout);
-      if (tdResponse == ffi.nullptr) {
-        continue;
-      }
+  dynamic receive({
+    double waitTimeout = 1.0,
+  }) {
+    var tdResponse = _libTdJson.td_receive(waitTimeout);
+    if (tdResponse != nullptr) {
+      var responseJson = tdResponse.cast<Utf8>().toDartString();
 
-      var responseJson = tdResponse.cast<ffi_ext.Utf8>().toDartString();
-      loggy.info('Received $responseJson.');
-
-      var response = convert.jsonDecode(responseJson);
-      if (response != null) {
-        var td = TdApiMap.fromMap(response);
-        if (td == null) {
-          loggy.error('Could not find td mapping for: $responseJson.');
-        } else {
-          yield td;
-        }
-      }
+      var td = TdApiMap.fromMap(jsonDecode(responseJson));
+      if (td != null) return td;
     }
+  }
+
+  /// The TDLib [Logger].
+  Logger _loggerTdLib = _loggerStdout('TDLib');
+
+  /// The TDLib [Logger].
+  Logger get loggerTdLib => _loggerTdLib;
+
+  /// The TDLib [Logger].
+  void set loggerTdLib(Logger logger) {
+    if (logger.level.value != _loggerTdLib.level.value) {
+      execute(SetLogVerbosityLevel(new_verbosity_level: 5));
+    }
+    _loggerTdLib = logger;
+  }
+
+  /// The TdJsonClient [Logger].
+  Logger logger = _loggerStdout('TdJsonClient');
+
+  // Returns a simple [Logger] that prints to stdout.
+  static Logger _loggerStdout(String name) {
+    final logger = Logger(name);
+    logger.level = Level.INFO;
+    logger.onRecord.listen((event) {
+      print(event);
+    });
+    return logger;
+  }
+
+// // ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Char>)>>;
+  static void td_set_log_message_callback(
+      int verbosity_level, Pointer<Char> message) {
+    // _loggerTdLib.log(Level('a', verbosity_level), message);
   }
 }

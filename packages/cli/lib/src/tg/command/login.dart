@@ -8,8 +8,6 @@ class TelegramCommandLogin extends TelegramCommand {
   final description = 'Login a Telegram account.';
 
   void run() async {
-    setLogLevel(globalResults!['loglevel']);
-
     final telegramClient = TelegramClient(
       libtdjsonPath: globalResults!['libtdjson-path'],
       apiId: int.parse(globalResults!['api-id']),

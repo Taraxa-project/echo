@@ -856,7 +856,9 @@ import 'package:td_json_client/api/function/test_get_difference.dart';
 import 'package:td_json_client/api/function/test_use_update.dart';
 import 'package:td_json_client/api/function/test_return_error.dart';
 
+/// Telegram API map from [String]s to [Td] objects.
 class TdApiMap {
+  /// Map from TL type (the field @type) to [Td] object.
   static Map<String, dynamic Function(Map<String, dynamic>)> _tdMap = {
     'error': (map) => Error.fromMap(map),
     'ok': (map) => Ok.fromMap(map),
@@ -2433,6 +2435,7 @@ class TdApiMap {
     'testReturnError': (map) => TestReturnError.fromMap(map),
   };
 
+  /// Create a [Td] instance from a JSON [String].
   static Td? fromMap(Map<String, dynamic> map) {
     return _tdMap.containsKey(map['@type']) ? _tdMap[map['@type']]!(map) : null;
   }
