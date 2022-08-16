@@ -38,6 +38,7 @@ class TelegramClient {
 
     while (true) {
       var response = _tdJsonClient.receive(waitTimeout: waitTimeout);
+      print(response);
       if (response is UpdateAuthorizationState) {
         break;
         switch (response.authorization_state.runtimeType) {

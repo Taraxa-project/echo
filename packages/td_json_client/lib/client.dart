@@ -1,12 +1,15 @@
 import 'dart:ffi';
 import 'dart:convert';
-import 'dart:io';
+import 'dart:isolate';
+// import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 import 'package:logging/logging.dart';
+import 'package:td_json_client/src/lib_td_json.dart';
 import 'package:td_json_client/td_json_client.dart';
 
-import 'src/lib_td_json.dart';
+// import 'src/lib_td_json.dart';
+import 'src/lib_td_json_log_callback.dart';
 // import 'api/base.dart';
 // import 'api/map.dart';
 
@@ -16,31 +19,43 @@ class TdJsonClient {
   final String libtdjsonPath;
 
   /// The libtdjson FFI instance.
-  late final LibTdJson _libTdJson;
+  late final NativeLibrary _libTdJson;
 
   TdJsonClient({
     required String this.libtdjsonPath,
     Logger? loggerTdLib,
     Logger? logger,
   }) {
-    _libTdJson = LibTdJson(DynamicLibrary.open(libtdjsonPath));
+    _libTdJson = NativeLibrary(DynamicLibrary.open(libtdjsonPath));
+    if (_libTdJson.init_dart_api_dl(NativeApi.initializeApiDLData) != 0) {
+      throw "Failed to initialize Dart API";
+    }
 
     if (loggerTdLib != null) this.loggerTdLib = loggerTdLib;
     if (logger != null) this.logger = logger;
 
     // Do not use the default TDLib logger.
-    // execute(SetLogStream(log_stream: LogStreamEmpty()));
+    execute(SetLogStream(log_stream: LogStreamEmpty()));
 
-    execute(SetLogStream(
-        log_stream: LogStreamFile(
-      path: 'a.log',
-      max_file_size: 100000,
-      redirect_stderr: false,
-    )));
+    ReceivePort receivePort = ReceivePort();
+    receivePort.listen((message) {
+      print('TDLib log: $message\n');
+    });
+    _libTdJson.register_log_message_callback_sendport(
+      receivePort.sendPort.nativePort,
+      5,
+    );
+
+    // execute(SetLogStream(
+    //     log_stream: LogStreamFile(
+    //   path: 'a.log',
+    //   max_file_size: 100000,
+    //   redirect_stderr: false,
+    // )));
 
     // Instead redirect the logs to the provided [Logger].
-    td_log_message_callback_ptr pointer =
-        Pointer.fromFunction(td_set_log_message_callback);
+    // td_log_message_callback_ptr pointer =
+    //     Pointer.fromFunction(td_set_log_message_callback);
     // _libTdJson.td_set_log_message_callback(
     //   this._loggerTdLib.level.value,
     //   pointer,
@@ -48,27 +63,27 @@ class TdJsonClient {
   }
 
   int create_client_id() {
-    var clientId = _libTdJson.td_create_client_id();
+    var clientId = _libTdJson.td_create_client_id_lc();
     return clientId;
   }
 
   void execute(TdFunction request) {
     String requestJson = request.toJson();
-    _libTdJson.td_execute(requestJson.toNativeUtf8().cast<Char>());
-    _libTdJson.td_execute('{"key": "value"}'.toNativeUtf8().cast<Char>());
+    _libTdJson.td_execute_lc(requestJson.toNativeUtf8().cast<Char>());
+    // _libTdJson.td_execute_lc('{"key": "value"}'.toNativeUtf8().cast<Char>());
   }
 
   Future<void> send(int clientId, TdFunction request) async {
     request.client_id = clientId;
 
     String requestJson = request.toJson();
-    _libTdJson.td_send(clientId, requestJson.toNativeUtf8().cast<Char>());
+    _libTdJson.td_send_lc(clientId, requestJson.toNativeUtf8().cast<Char>());
   }
 
   dynamic receive({
     double waitTimeout = 1.0,
   }) {
-    var tdResponse = _libTdJson.td_receive(waitTimeout);
+    var tdResponse = _libTdJson.td_receive_lc(waitTimeout);
     if (tdResponse != nullptr) {
       var responseJson = tdResponse.cast<Utf8>().toDartString();
 
