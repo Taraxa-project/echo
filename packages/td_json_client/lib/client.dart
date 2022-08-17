@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 import 'dart:convert';
 import 'dart:isolate';
@@ -38,9 +39,18 @@ class TdJsonClient {
     execute(SetLogStream(log_stream: LogStreamEmpty()));
 
     ReceivePort receivePort = ReceivePort();
+
     receivePort.listen((message) {
-      print('TDLib log: $message\n');
+      var logMessagePointer = Pointer<log_message_t>.fromAddress(message);
+      var logMessage = logMessagePointer.ref;
+
+      print(logMessage.verbosity_level);
+      print(logMessage.message.cast<Utf8>().toDartString());
+
+      malloc.free(logMessage.message);
+      malloc.free(logMessagePointer);
     });
+
     _libTdJson.register_log_message_callback_sendport(
       receivePort.sendPort.nativePort,
       5,

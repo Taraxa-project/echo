@@ -1,13 +1,10 @@
-#ifndef _LIB_TD_JSON_LOG_CALLBACK_
-#define _LIB_TD_JSON_LOG_CALLBACK_
-
 #include <stdio.h>
-// #include <iostream>
+#include <stdlib.h>
+
+#include "lib_td_json_log_callback.h"
 
 #include "td/telegram/td_json_client.h"
 
-#include "include/dart_api.h"
-#include "include/dart_native_api.h"
 #include "include/dart_api_dl.h"
 #include "include/dart_api_dl.c"
 
@@ -33,19 +30,22 @@ const char *td_execute_lc(const char *request) {
     return td_execute(request);
 }
 
-
 void log_message_callback(int verbosity_level, const char *message) {
-    const char log_message_template[] = "%d\n%s";
-    char buffer[strlen(log_message_template) + strlen(message) + 10];
-    sprintf(buffer, log_message_template, verbosity_level, message);
+    char *message_copy = (char *) malloc(sizeof(char) * (strlen(message) + 1));
+    strcpy(message_copy, message);
+
+    log_message_t *log_message = (log_message_t *) malloc(sizeof(log_message_t));;
+    
+    log_message->verbosity_level = verbosity_level;
+    log_message->message = message_copy;
 
     Dart_CObject dart_object;
-    dart_object.type = Dart_CObject_kString;
-    dart_object.value.as_string = buffer;
+    dart_object.type = Dart_CObject_kInt64;
+    dart_object.value.as_int64 = (int64_t) log_message;
 
-    const bool result = Dart_PostCObject_DL(send_port_, &dart_object);
+    bool result = Dart_PostCObject_DL(send_port_, &dart_object);
     if (!result) {
-        // FATAL("C   :  Posting message to port failed.");
+        printf("C: Posting message to native port failed.");
     }
 }
 
@@ -53,5 +53,3 @@ void register_log_message_callback_sendport(Dart_Port send_port, int max_verbosi
   send_port_ = send_port;
   td_set_log_message_callback(max_verbosity_level, log_message_callback);
 }
-
-#endif

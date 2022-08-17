@@ -103,3 +103,10 @@ class NativeLibrary {
       _register_log_message_callback_sendportPtr
           .asFunction<void Function(int, int)>();
 }
+
+class log_message_t extends ffi.Struct {
+  @ffi.Int()
+  external int verbosity_level;
+
+  external ffi.Pointer<ffi.Char> message;
+}

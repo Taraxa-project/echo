@@ -3,6 +3,11 @@
 
 #include "include/dart_api.h"
 
+typedef struct log_message_t {
+    int verbosity_level;
+    char *message;
+} log_message_t;
+
 intptr_t init_dart_api_dl(void* data);
 int td_create_client_id_lc();
 void td_send_lc(int client_id, const char *request);
