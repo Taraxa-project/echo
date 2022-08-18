@@ -18,13 +18,18 @@ class TelegramCommandLogin extends TelegramCommand {
       databasePath: globalResults!['database-path'],
     );
 
-    final logger = Logger(name);
+    final logger = Logger("cli");
     logger.level = Level.ALL;
     logger.onRecord.listen((event) {
       print(event);
     });
+    final loggerTdLib = Logger("tdlib");
+    loggerTdLib.level = Level.ALL;
+    loggerTdLib.onRecord.listen((event) {
+      print(event);
+    });
 
-    telegramClient.setupLogs(logger, logger);
+    telegramClient.setupLogs(logger, loggerTdLib);
 
     var clientId = telegramClient.createClientId();
 
