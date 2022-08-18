@@ -1,7 +1,9 @@
-import 'package:echo_cli/src/tg/command/base.dart';
-import 'package:echo_cli/src/tg/command/runner.dart';
+import 'package:logging/logging.dart';
 
 import 'package:telegram_client/client.dart';
+
+import 'package:echo_cli/src/tg/command/base.dart';
+import 'package:echo_cli/src/tg/command/runner.dart';
 
 class TelegramCommandLogin extends TelegramCommand {
   final name = 'login';
@@ -13,10 +15,16 @@ class TelegramCommandLogin extends TelegramCommand {
       apiId: int.parse(globalResults!['api-id']),
       apiHash: globalResults!['api-hash'],
       phoneNumber: globalResults!['phone-number'],
-      libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']),
       databasePath: globalResults!['database-path'],
-      loglevel: globalResults!['loglevel'],
     );
+
+    final logger = Logger(name);
+    logger.level = Level.ALL;
+    logger.onRecord.listen((event) {
+      print(event);
+    });
+
+    telegramClient.setupLogs(logger, logger);
 
     var clientId = telegramClient.createClientId();
 

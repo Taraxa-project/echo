@@ -1,4 +1,7 @@
 import 'dart:ffi';
+
+import 'package:logging/logging.dart';
+
 import 'package:td_json_client/td_json_client.dart';
 
 class TelegramClient {
@@ -16,15 +19,24 @@ class TelegramClient {
 
   static const double waitTimeout = 10.0;
 
-  TelegramClient(
-      {required String libtdjsonPath,
-      required int this.apiId,
-      required String this.apiHash,
-      required String this.phoneNumber,
-      required String this.databasePath,
-      int libtdjsonLoglevel = 1,
-      loglevel = 'Error'})
-      : _tdJsonClient = TdJsonClient(libtdjsonPath: libtdjsonPath) {}
+  TelegramClient({
+    required String libtdjsonPath,
+    required int this.apiId,
+    required String this.apiHash,
+    required String this.phoneNumber,
+    required String this.databasePath,
+  }) : _tdJsonClient = TdJsonClient(libtdjsonlcPath: libtdjsonPath) {}
+
+  /// The TelegramClient [Logger].
+  Logger? _logger;
+
+  void setupLogs(
+    Logger? logger,
+    Logger? loggerTdLib,
+  ) {
+    _logger = logger;
+    _tdJsonClient.setupLogs(logger, loggerTdLib);
+  }
 
   int createClientId() {
     return _tdJsonClient.create_client_id();
@@ -38,7 +50,7 @@ class TelegramClient {
 
     while (true) {
       var response = _tdJsonClient.receive(waitTimeout: waitTimeout);
-      print(response);
+      // print(response);
       if (response is UpdateAuthorizationState) {
         break;
         switch (response.authorization_state.runtimeType) {

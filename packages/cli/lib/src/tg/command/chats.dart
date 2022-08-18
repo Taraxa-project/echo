@@ -13,9 +13,7 @@ class TelegramCommandsChats extends TelegramCommand {
       apiId: int.parse(globalResults!['api-id']),
       apiHash: globalResults!['api-hash'],
       phoneNumber: globalResults!['phone-number'],
-      libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']),
       databasePath: globalResults!['database-path'],
-      loglevel: globalResults!['loglevel'],
     );
 
     var clientId = telegramClient.createClientId();
