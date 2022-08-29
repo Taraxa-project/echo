@@ -1,0 +1,9 @@
+prefix=/Users/stefanizota/taraxa/projects/echo/packages/td_json_client/lib/src/blobs/darwin/arm64
+
+Name: tdclient
+Description: Telegram Library - C++ Interface
+Version: 1.8.5
+
+CFlags: -I"${prefix}/include"
+Libs: -L"${prefix}/lib" -ltdclient
+Requires.private: tdapi tdcore

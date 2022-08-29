@@ -1,0 +1,10 @@
+prefix=/Users/stefanizota/taraxa/projects/echo/packages/td_json_client/lib/src/blobs/darwin/arm64
+
+Name: tdnet
+Description: Telegram Library - Net
+Version: 1.8.5
+
+CFlags: -I"${prefix}/include"
+Libs: -L"${prefix}/lib" -ltdnet
+Requires.private: tdutils tdactor
+Libs.private: -L"/opt/homebrew/opt/openssl/lib" -l:libssl.dylib -L"/opt/homebrew/opt/openssl/lib" -l:libcrypto.dylib -L"/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/lib" -l:libz.tbd
