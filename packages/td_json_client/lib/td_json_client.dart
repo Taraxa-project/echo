@@ -1,3 +1,6 @@
+/// Dart Telegram client using TDLib
+library td_json_client;
+
 export 'client.dart';
 
 export 'api/base.dart';

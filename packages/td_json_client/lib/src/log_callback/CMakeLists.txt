@@ -30,6 +30,8 @@ set(DARTSDK_INCLUDE_DIR ${SOURCE_DIR}/runtime)
 
 add_library(tdjsonlc SHARED lib_td_json_log_callback.c)
 
+add_dependencies(tdjsonlc tdlib dartsdk)
+
 target_include_directories(
     tdjsonlc PUBLIC
     "${PROJECT_BINARY_DIR}"
