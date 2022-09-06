@@ -1,16 +1,10 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:loggy/loggy.dart';
 
 import 'package:echo_cli/command/example.dart';
 
 void main(List<String> arguments) {
-  Loggy.initLoggy(
-      logPrinter: const PrettyPrinter(),
-      logOptions: defaultLevel,
-      hierarchicalLogging: true);
-
   final commandRunner =
       CommandRunner("echo", "A dart implementation of Telegram scrapper.");
 

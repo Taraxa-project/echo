@@ -21,8 +21,7 @@ class NewMesssages extends TelegramEventListener {
   void _onUpdateNewMessage(UpdateNewMessage updateNewMessage) {
     var content = updateNewMessage.message?.content;
     if (content is MessageText && content.text is FormattedText) {
-      print(
-          '[${Isolate.current.debugName}._onUpdateNewMessage] ${content.text?.text}');
+      print('${content.text?.text}');
     }
   }
 

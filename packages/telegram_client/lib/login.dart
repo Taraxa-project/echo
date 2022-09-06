@@ -48,8 +48,6 @@ class Login extends TelegramEventListener {
   Future<void> _onUpdateAuthorizationState(
     UpdateAuthorizationState updateAuthorizationState,
   ) async {
-    print(
-        '${Isolate.current.debugName} $runtimeType._onUpdateAuthorizationState $updateAuthorizationState');
     switch (updateAuthorizationState.authorization_state.runtimeType) {
       case AuthorizationStateWaitTdlibParameters:
         send(setTdlibParameters);
@@ -110,9 +108,7 @@ class Login extends TelegramEventListener {
 
   Future<void> _onError(
     Error error,
-  ) async {
-    print('${Isolate.current.debugName} $runtimeType._onError $error');
-  }
+  ) async {}
 
   static Future<LoginIsolated> isolate({
     required SetTdlibParameters setTdlibParameters,

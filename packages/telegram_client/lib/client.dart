@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:isolate';
-import 'dart:math';
 
 import 'package:td_json_client/td_json_client.dart';
 
@@ -37,14 +36,12 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   void _tdStart() {
     init();
 
-    print('${Isolate.current.debugName} $runtimeType._tdStart');
     timer = Timer.periodic(readEventsFrequency, _tdReceive);
   }
 
   void _tdStop() {
     init();
 
-    print('${Isolate.current.debugName} $runtimeType._tdStop');
     timer?.cancel();
     timer = null;
   }
@@ -59,7 +56,6 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
 
       var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
       if (event != null) {
-        // print('${Isolate.current.debugName} $runtimeType._tdReceive $event');
         _tdStreamController.add(event);
       }
 
@@ -74,7 +70,6 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
     init();
 
     _tdJsonClient.send(_tdJsonClientId, tdFunction);
-    print('${Isolate.current.debugName} $runtimeType.send $tdFunction');
   }
 
   Map<String, StreamSubscription> _eventListeners = {};
