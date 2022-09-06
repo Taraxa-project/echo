@@ -1,11 +1,15 @@
 import 'dart:io';
 
+import 'package:logging/logging.dart';
 import 'package:args/command_runner.dart';
 
 import 'package:echo_cli/command/example.dart';
 
 void main(List<String> arguments) {
-  final commandRunner =
+  hierarchicalLoggingEnabled = true;
+  Logger.root.level = Level.ALL;
+
+  final CommandRunner commandRunner =
       CommandRunner("echo", "A dart implementation of Telegram scrapper.");
 
   commandRunner.argParser

@@ -17,7 +17,7 @@ class TelegramCommandExample extends TelegramCommand {
     //   libtdjsonPath: globalResults!['libtdjson-path'],
     // );
     var telegramClient = await TelegramClient.isolate(
-      libtdjsonPath: globalResults!['libtdjson-path'],
+      libtdjsonlcPath: globalResults!['libtdjson-path'],
     );
     var login = await Login.isolate(
       setTdlibParameters: SetTdlibParameters(

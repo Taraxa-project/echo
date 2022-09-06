@@ -6,10 +6,14 @@ publish_to: none
 dependencies:
   ffi: ^2.0.0
   path: ^1.8.0
+  logging: ^1.0.2
+  quiver: ^3.1.0
+dev_dependencies: 
   ffigen: ^6.0.1
-dev_dependencies: {lints: ^2.0.0}
+  lints: ^2.0.0
 ffigen:
-  output: 'lib/src/lib_td_json.dart'
+  name: LibTdJsonLC
+  output: 'lib/src/lib_td_json_log_callback.dart'
   headers:
     entry-points:
-      - '${HOME}/td/td/telegram/td_json_client.h'
+      - 'lib/src/log_callback/lib_td_json_log_callback.h'

@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:logging/logging.dart';
+
 import 'package:td_json_client/td_json_client.dart';
 
 import 'base.dart';
 
 class TelegramClient extends TelegramEventGenerator implements TelegramSender {
-  final String libtdjsonPath;
+  final String libtdjsonlcPath;
 
   late final StreamController _tdStreamController;
   Stream<dynamic> get telegramEvents => _tdStreamController.stream;
 
   TelegramClient({
-    required this.libtdjsonPath,
+    required this.libtdjsonlcPath,
   }) {
     _tdStreamController = StreamController.broadcast(
       onListen: _tdStart,
@@ -25,7 +27,7 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   late final int _tdJsonClientId;
   void init() {
     if (!_isInitialized) {
-      _tdJsonClient = TdJsonClient(libtdjsonPath: libtdjsonPath);
+      _tdJsonClient = TdJsonClient(libtdjsonlcPath: libtdjsonlcPath);
       _tdJsonClientId = _tdJsonClient.create_client_id();
       _isInitialized = true;
     }
@@ -92,10 +94,10 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   }
 
   static Future<TelegramClientIsolated> isolate({
-    required libtdjsonPath,
+    required libtdjsonlcPath,
   }) async {
     TelegramClientIsolated telegramClientIsolated =
-        TelegramClientIsolated(libtdjsonPath: libtdjsonPath);
+        TelegramClientIsolated(libtdjsonlcPath: libtdjsonlcPath);
     await telegramClientIsolated.spawn();
     return telegramClientIsolated;
   }
@@ -108,7 +110,7 @@ class TelegramClientIsolated extends TelegramClient {
 
   late final SendPortEventListener _sendPortEventListener;
   TelegramClientIsolated({
-    required super.libtdjsonPath,
+    required super.libtdjsonlcPath,
   }) {
     _isolateReceivePort = ReceivePort();
     _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
@@ -149,7 +151,7 @@ class TelegramClientIsolated extends TelegramClient {
     await Isolate.spawn(
       TelegramClientIsolated._entryPoint,
       [
-        TelegramClient(libtdjsonPath: libtdjsonPath),
+        TelegramClient(libtdjsonlcPath: libtdjsonlcPath),
         _isolateReceivePort.sendPort
       ],
       debugName: runtimeType.toString(),
@@ -177,5 +179,16 @@ class TelegramClientIsolated extends TelegramClient {
 
   void exit() {
     _isolateReceivePort.close();
+  }
+
+  /// The TelegramClient [Logger].
+  Logger? _logger;
+
+  void setupLogs(
+    Logger? logger,
+    Logger? loggerTdLib,
+  ) {
+    _logger = logger;
+    _tdJsonClient.setupLogs(logger, loggerTdLib);
   }
 }

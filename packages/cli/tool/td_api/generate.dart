@@ -14,7 +14,6 @@ Future<void> main(List<String> arguments) async {
       .parse(await File(options['tl-schema-path']).readAsString());
 
   if (parseResults.isFailure) {
-    print('Parse error: ${parseResults.message}');
     exit(-1);
   }
 
