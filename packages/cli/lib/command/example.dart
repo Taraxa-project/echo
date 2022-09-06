@@ -1,5 +1,6 @@
-import 'package:td_json_client/td_json_client.dart';
+import 'package:logging/logging.dart';
 
+import 'package:td_json_client/td_json_client.dart';
 import 'package:telegram_client/client.dart';
 import 'package:telegram_client/login.dart';
 import 'package:telegram_client/get_chats_info.dart';
@@ -13,12 +14,28 @@ class TelegramCommandExample extends TelegramCommand {
   final description = 'Login a Telegram account.';
 
   void run() async {
-    // var telegramClient = TelegramClient(
-    //   libtdjsonPath: globalResults!['libtdjson-path'],
-    // );
-    var telegramClient = await TelegramClient.isolate(
+    var telegramClient = TelegramClient(
       libtdjsonlcPath: globalResults!['libtdjson-path'],
     );
+    // var telegramClient = await TelegramClient.isolate(
+    //   libtdjsonlcPath: globalResults!['libtdjson-path'],
+    // );
+
+    final logger = Logger("cli-example");
+    logger.level = Level.ALL;
+    logger.onRecord.listen((event) {
+      print(event);
+    });
+    final loggerTdLib = Logger("tdlib-example");
+    loggerTdLib.level = Level.ALL;
+    loggerTdLib.onRecord.listen((event) {
+      print(event);
+    });
+    telegramClient.setupLogs(logger, loggerTdLib);
+
+    telegramClient.waitTimeout = 1.0;
+    telegramClient.readEventsFrequency = Duration(milliseconds: 2000);
+
     var login = await Login.isolate(
       setTdlibParameters: SetTdlibParameters(
         parameters: TdlibParameters(
@@ -64,37 +81,37 @@ class TelegramCommandExample extends TelegramCommand {
 
     // -------------------
 
-    var getChats = await GetChatsInfo.isolate(telegramSender: telegramClient);
+    // var getChats = await GetChatsInfo.isolate(telegramSender: telegramClient);
 
-    telegramClient.addEventListener(
-      getChats,
-      filter: GetChatsInfo.isChatInfoEvent,
-    );
-    getChats.listChats(limit: 100);
+    // telegramClient.addEventListener(
+    //   getChats,
+    //   filter: GetChatsInfo.isChatInfoEvent,
+    // );
+    // getChats.listChats(limit: 100);
 
-    await Future.delayed(const Duration(seconds: 10));
-    telegramClient.removeEventListener(getChats);
-    await Future.delayed(const Duration(seconds: 3));
-    getChats.exit();
+    // await Future.delayed(const Duration(seconds: 10));
+    // telegramClient.removeEventListener(getChats);
+    // await Future.delayed(const Duration(seconds: 3));
+    // getChats.exit();
 
-    // -------------------
+    // // -------------------
 
-    var newMessages = NewMesssages();
-    telegramClient.addEventListener(
-      newMessages,
-      filter: NewMesssages.isUpdateNewMessageEvent,
-    );
-    var newMessagesIsolated = await NewMesssages.isolate();
-    telegramClient.addEventListener(
-      newMessagesIsolated,
-      filter: NewMesssages.isUpdateNewMessageEvent,
-    );
+    // var newMessages = NewMesssages();
+    // telegramClient.addEventListener(
+    //   newMessages,
+    //   filter: NewMesssages.isUpdateNewMessageEvent,
+    // );
+    // var newMessagesIsolated = await NewMesssages.isolate();
+    // telegramClient.addEventListener(
+    //   newMessagesIsolated,
+    //   filter: NewMesssages.isUpdateNewMessageEvent,
+    // );
 
-    await Future.delayed(const Duration(seconds: 120));
-    telegramClient.removeEventListener(newMessages);
-    telegramClient.removeEventListener(newMessagesIsolated);
-    newMessages.exit();
-    newMessagesIsolated.exit();
+    // await Future.delayed(const Duration(seconds: 120));
+    // telegramClient.removeEventListener(newMessages);
+    // telegramClient.removeEventListener(newMessagesIsolated);
+    // newMessages.exit();
+    // newMessagesIsolated.exit();
 
     // -------------------
 

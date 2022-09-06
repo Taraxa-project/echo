@@ -101,6 +101,19 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
     await telegramClientIsolated.spawn();
     return telegramClientIsolated;
   }
+
+  /// The TelegramClient [Logger].
+  Logger? _logger;
+
+  void setupLogs(
+    Logger? logger,
+    Logger? loggerTdLib,
+  ) {
+    init();
+
+    _logger = logger;
+    _tdJsonClient.setupLogs(logger, loggerTdLib);
+  }
 }
 
 class TelegramClientIsolated extends TelegramClient {
@@ -179,16 +192,5 @@ class TelegramClientIsolated extends TelegramClient {
 
   void exit() {
     _isolateReceivePort.close();
-  }
-
-  /// The TelegramClient [Logger].
-  Logger? _logger;
-
-  void setupLogs(
-    Logger? logger,
-    Logger? loggerTdLib,
-  ) {
-    _logger = logger;
-    _tdJsonClient.setupLogs(logger, loggerTdLib);
   }
 }
