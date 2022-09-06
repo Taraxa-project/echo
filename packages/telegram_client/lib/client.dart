@@ -1,20 +1,10 @@
-import 'package:loggy/loggy.dart';
+import 'dart:ffi';
+
+import 'package:logging/logging.dart';
 
 import 'package:td_json_client/td_json_client.dart';
 
-mixin TelegramClientLoggy implements LoggyType {
-  @override
-  Loggy<TelegramClientLoggy> get loggy =>
-      Loggy<TelegramClientLoggy>('$runtimeType');
-
-  void setLogLevel(String logLevelName) {
-    loggy.level = LogOptions(LogLevel.values.firstWhere(
-        (element) => element.name == logLevelName,
-        orElse: () => LogLevel.all));
-  }
-}
-
-class TelegramClient with TelegramClientLoggy {
+class TelegramClient {
   final TdJsonClient _tdJsonClient;
 
   final int apiId;
@@ -29,19 +19,23 @@ class TelegramClient with TelegramClientLoggy {
 
   static const double waitTimeout = 10.0;
 
-  TelegramClient(
-      {required String libtdjsonPath,
-      required int this.apiId,
-      required String this.apiHash,
-      required String this.phoneNumber,
-      required String this.databasePath,
-      int libtdjsonLoglevel = 1,
-      loglevel = 'Error'})
-      : _tdJsonClient = TdJsonClient(
-            libtdjsonPath: libtdjsonPath,
-            libtdjsonLoglevel: libtdjsonLoglevel,
-            loglevel: loglevel) {
-    setLogLevel(loglevel);
+  TelegramClient({
+    required String libtdjsonPath,
+    required int this.apiId,
+    required String this.apiHash,
+    required String this.phoneNumber,
+    required String this.databasePath,
+  }) : _tdJsonClient = TdJsonClient(libtdjsonlcPath: libtdjsonPath) {}
+
+  /// The TelegramClient [Logger].
+  Logger? _logger;
+
+  void setupLogs(
+    Logger? logger,
+    Logger? loggerTdLib,
+  ) {
+    _logger = logger;
+    _tdJsonClient.setupLogs(logger, loggerTdLib);
   }
 
   int createClientId() {
@@ -54,55 +48,55 @@ class TelegramClient with TelegramClientLoggy {
       double waitTimeout = waitTimeout}) async {
     await _tdJsonClient.send(clientId, GetAuthorizationState());
 
-    await for (var response in _tdJsonClient
-        .receive(waitTimeout: waitTimeout)
-        .where((event) => event is UpdateAuthorizationState)) {
-      var updateAuthorizationState = response as UpdateAuthorizationState;
-      switch (updateAuthorizationState.authorization_state.runtimeType) {
-        case AuthorizationStateClosed:
-          loggy.warning('Authorization state closed.');
-          _isClosed = true;
-          break;
-
-        case AuthorizationStateReady:
-          _isAuthorized = true;
-          loggy.info('Logged in successfuly');
-          break;
-
-        case AuthorizationStateWaitTdlibParameters:
-          _tdJsonClient.send(
-              clientId,
-              SetTdlibParameters(
-                  parameters: TdlibParameters(
-                api_id: apiId,
-                api_hash: apiHash,
-                system_language_code: 'en',
-                database_directory: databasePath,
-                use_message_database: false,
-                device_model: 'Desktop',
-                application_version: '1.0',
-              )));
-          break;
-
-        case AuthorizationStateWaitEncryptionKey:
-          _tdJsonClient.send(
-              clientId, CheckDatabaseEncryptionKey(encryption_key: ''));
-          break;
-
-        case AuthorizationStateWaitPhoneNumber:
-          _tdJsonClient.send(clientId,
-              SetAuthenticationPhoneNumber(phone_number: phoneNumber));
-          break;
-
-        case AuthorizationStateWaitCode:
-          _tdJsonClient.send(
-              clientId, CheckAuthenticationCode(code: readTelegramCode()));
-
-          break;
-      }
-
-      if (_isClosed || _isAuthorized) {
+    while (true) {
+      var response = _tdJsonClient.receive(waitTimeout: waitTimeout);
+      // print(response);
+      if (response is UpdateAuthorizationState) {
         break;
+        switch (response.authorization_state.runtimeType) {
+          case AuthorizationStateClosed:
+            _isClosed = true;
+            break;
+
+          case AuthorizationStateReady:
+            _isAuthorized = true;
+            break;
+
+          case AuthorizationStateWaitTdlibParameters:
+            _tdJsonClient.send(
+                clientId,
+                SetTdlibParameters(
+                    parameters: TdlibParameters(
+                  api_id: apiId,
+                  api_hash: apiHash,
+                  system_language_code: 'en',
+                  database_directory: databasePath,
+                  use_message_database: false,
+                  device_model: 'Desktop',
+                  application_version: '1.0',
+                )));
+            break;
+
+          case AuthorizationStateWaitEncryptionKey:
+            _tdJsonClient.send(
+                clientId, CheckDatabaseEncryptionKey(encryption_key: ''));
+            break;
+
+          case AuthorizationStateWaitPhoneNumber:
+            _tdJsonClient.send(clientId,
+                SetAuthenticationPhoneNumber(phone_number: phoneNumber));
+            break;
+
+          case AuthorizationStateWaitCode:
+            _tdJsonClient.send(
+                clientId, CheckAuthenticationCode(code: readTelegramCode()));
+
+            break;
+        }
+
+        if (_isClosed || _isAuthorized) {
+          break;
+        }
       }
     }
   }
@@ -126,4 +120,8 @@ class TelegramClient with TelegramClientLoggy {
   void execute(dynamic request) {
     _tdJsonClient.execute(request);
   }
+}
+
+void td_set_log_message_callback(int verbosity_level, Pointer<Char> message) {
+  // _loggerTdLib.log(Level('a', verbosity_level), message);
 }

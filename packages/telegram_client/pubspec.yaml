@@ -5,7 +5,6 @@ environment:
 publish_to: none
 dependencies:
   path: ^1.8.0
-  loggy: ^2.0.1
   td_json_client: 
     path: ../td_json_client
     version: ^0.0.1

@@ -1,15 +1,12 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:loggy/loggy.dart';
 
 import 'grammar.dart';
 import 'tl.dart';
 import 'td.dart';
 
 Future<void> main(List<String> arguments) async {
-  initLoggy();
-
   var options = getOptions(arguments);
 
   var parseResults = TlGrammarDefinition()
@@ -17,7 +14,6 @@ Future<void> main(List<String> arguments) async {
       .parse(await File(options['tl-schema-path']).readAsString());
 
   if (parseResults.isFailure) {
-    logError('Parse error: ${parseResults.message}');
     exit(-1);
   }
 
@@ -29,13 +25,6 @@ Future<void> main(List<String> arguments) async {
   )
     ..prepareOutput()
     ..writeFiles();
-}
-
-void initLoggy() {
-  Loggy.initLoggy(
-      logPrinter: const PrettyPrinter(),
-      logOptions: defaultLevel,
-      hierarchicalLogging: true);
 }
 
 ArgResults getOptions(List<String> arguments) {

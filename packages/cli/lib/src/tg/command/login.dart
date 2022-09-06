@@ -1,24 +1,35 @@
-import 'package:echo_cli/src/tg/command/base.dart';
-import 'package:echo_cli/src/tg/command/runner.dart';
+import 'package:logging/logging.dart';
 
 import 'package:telegram_client/client.dart';
+
+import 'package:echo_cli/src/tg/command/base.dart';
+import 'package:echo_cli/src/tg/command/runner.dart';
 
 class TelegramCommandLogin extends TelegramCommand {
   final name = 'login';
   final description = 'Login a Telegram account.';
 
   void run() async {
-    setLogLevel(globalResults!['loglevel']);
-
     final telegramClient = TelegramClient(
       libtdjsonPath: globalResults!['libtdjson-path'],
       apiId: int.parse(globalResults!['api-id']),
       apiHash: globalResults!['api-hash'],
       phoneNumber: globalResults!['phone-number'],
-      libtdjsonLoglevel: int.parse(globalResults!['libtdjson-loglevel']),
       databasePath: globalResults!['database-path'],
-      loglevel: globalResults!['loglevel'],
     );
+
+    final logger = Logger("cli");
+    logger.level = Level.ALL;
+    logger.onRecord.listen((event) {
+      print(event);
+    });
+    final loggerTdLib = Logger("tdlib");
+    loggerTdLib.level = Level.ALL;
+    loggerTdLib.onRecord.listen((event) {
+      print(event);
+    });
+
+    telegramClient.setupLogs(logger, loggerTdLib);
 
     var clientId = telegramClient.createClientId();
 
