@@ -1,9 +1,0 @@
-prefix=/app/packages/td_json_client/lib/src/blobs/linux
-
-Name: tdjson
-Description: Telegram Library - JSON interface (shared)
-Version: 1.8.5
-
-CFlags: -I"${prefix}/include"
-Libs: -L"${prefix}/lib" -ltdjson
-Requires.private: tdjson_private

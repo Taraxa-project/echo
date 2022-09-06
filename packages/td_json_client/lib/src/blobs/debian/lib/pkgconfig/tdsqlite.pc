@@ -1,9 +1,0 @@
-prefix=/app/packages/td_json_client/lib/src/blobs/linux
-
-Name: tdsqlite
-Description: Telegram Library - SQLite
-Version: 1.8.5
-
-CFlags: -I"${prefix}/include"
-Libs: -L"${prefix}/lib" -ltdsqlite
-Libs.private: -L"/usr/lib/aarch64-linux-gnu" -l:libcrypto.so -ldl -L"/usr/lib/aarch64-linux-gnu" -l:libz.so

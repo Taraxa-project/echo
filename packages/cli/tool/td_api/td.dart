@@ -435,6 +435,15 @@ class TdApiMap {
 ''';
 
   static String get exportTemplate => '''
+/// Dart Telegram client using TDLib
+/// 
+/// Building TDLib and TDLibLC
+/// mkdir build
+/// cd build
+/// cmake -DCMAKE_INSTALL_PREFIX:PATH=<install path> lib/src/log_callback
+/// cmake --build . --target install
+library td_json_client;
+
 export 'client.dart';
 
 export 'api/base.dart';

@@ -1,9 +1,0 @@
-prefix=/app/packages/td_json_client/lib/src/blobs/linux
-
-Name: tdactor
-Description: Telegram Library - Actor
-Version: 1.8.5
-
-CFlags: -I"${prefix}/include"
-Libs: -L"${prefix}/lib" -ltdactor
-Requires.private: tdutils

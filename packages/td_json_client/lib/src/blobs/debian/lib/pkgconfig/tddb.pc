@@ -1,9 +1,0 @@
-prefix=/app/packages/td_json_client/lib/src/blobs/linux
-
-Name: tddb
-Description: Telegram Library - Database
-Version: 1.8.5
-
-CFlags: -I"${prefix}/include"
-Libs: -L"${prefix}/lib" -ltddb
-Requires.private: tdactor tdutils tdsqlite

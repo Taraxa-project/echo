@@ -1,9 +1,0 @@
-prefix=/Users/stefanizota/taraxa/projects/echo/packages/td_json_client/lib/src/blobs/darwin/arm64
-
-Name: tdjson_static
-Description: Telegram Library - JSON interface (static)
-Version: 1.8.5
-
-CFlags: -I"${prefix}/include"
-Libs: -L"${prefix}/lib" -ltdjson_static
-Requires.private: tdjson_private
