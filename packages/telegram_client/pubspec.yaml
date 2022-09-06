@@ -5,6 +5,7 @@ environment:
 publish_to: none
 dependencies:
   path: ^1.8.0
+  uuid: ^3.0.6
   td_json_client: 
     path: ../td_json_client
     version: ^0.0.1

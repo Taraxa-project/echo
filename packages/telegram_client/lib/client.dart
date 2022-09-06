@@ -1,31 +1,106 @@
-import 'dart:ffi';
+import 'dart:async';
+import 'dart:isolate';
 
 import 'package:logging/logging.dart';
 
 import 'package:td_json_client/td_json_client.dart';
 
-class TelegramClient {
-  final TdJsonClient _tdJsonClient;
+import 'base.dart';
 
-  final int apiId;
-  final String apiHash;
-  final String phoneNumber;
-  final String databasePath;
+class TelegramClient extends TelegramEventGenerator implements TelegramSender {
+  final String libtdjsonlcPath;
 
-  bool _isAuthorized = false;
-  bool get isAuthorized => _isAuthorized;
-  bool _isClosed = false;
-  bool get isClosed => _isClosed;
-
-  static const double waitTimeout = 10.0;
+  late final StreamController _tdStreamController;
+  Stream<dynamic> get telegramEvents => _tdStreamController.stream;
 
   TelegramClient({
-    required String libtdjsonPath,
-    required int this.apiId,
-    required String this.apiHash,
-    required String this.phoneNumber,
-    required String this.databasePath,
-  }) : _tdJsonClient = TdJsonClient(libtdjsonlcPath: libtdjsonPath) {}
+    required this.libtdjsonlcPath,
+  }) {
+    _tdStreamController = StreamController.broadcast(
+      onListen: _tdStart,
+      onCancel: _tdStop,
+    );
+  }
+
+  bool _isInitialized = false;
+  late final TdJsonClient _tdJsonClient;
+  late final int _tdJsonClientId;
+  void init() {
+    if (!_isInitialized) {
+      _tdJsonClient = TdJsonClient(libtdjsonlcPath: libtdjsonlcPath);
+      _tdJsonClientId = _tdJsonClient.create_client_id();
+      _isInitialized = true;
+    }
+  }
+
+  Duration readEventsFrequency = Duration(milliseconds: 10);
+  Timer? timer;
+  void _tdStart() {
+    init();
+
+    timer = Timer.periodic(readEventsFrequency, _tdReceive);
+  }
+
+  void _tdStop() {
+    init();
+
+    timer?.cancel();
+    timer = null;
+  }
+
+  double waitTimeout = 0.005;
+  bool _isTdReceiving = false;
+  void _tdReceive(Timer timer) {
+    init();
+
+    if (!_isTdReceiving) {
+      _isTdReceiving = true;
+
+      var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
+      if (event != null) {
+        _tdStreamController.add(event);
+      }
+
+      _isTdReceiving = false;
+    }
+  }
+
+  @override
+  void send(
+    TdFunction tdFunction,
+  ) {
+    init();
+
+    _tdJsonClient.send(_tdJsonClientId, tdFunction);
+  }
+
+  Map<String, StreamSubscription> _eventListeners = {};
+
+  @override
+  void addEventListener(
+    TelegramEventListener telegramEventListener, {
+    bool Function(dynamic event) filter = TelegramEventGenerator.allEvents,
+  }) {
+    _eventListeners[telegramEventListener.uniqueKey] =
+        telegramEvents.where((ev) => filter(ev)).listen((event) {
+      telegramEventListener.onEvent(event);
+    });
+  }
+
+  @override
+  void removeEventListener(TelegramEventListener telegramEventListener) {
+    var listener = _eventListeners.remove(telegramEventListener.uniqueKey);
+    listener?.cancel();
+  }
+
+  static Future<TelegramClientIsolated> isolate({
+    required libtdjsonlcPath,
+  }) async {
+    TelegramClientIsolated telegramClientIsolated =
+        TelegramClientIsolated(libtdjsonlcPath: libtdjsonlcPath);
+    await telegramClientIsolated.spawn();
+    return telegramClientIsolated;
+  }
 
   /// The TelegramClient [Logger].
   Logger? _logger;
@@ -34,94 +109,88 @@ class TelegramClient {
     Logger? logger,
     Logger? loggerTdLib,
   ) {
+    init();
+
     _logger = logger;
     _tdJsonClient.setupLogs(logger, loggerTdLib);
   }
-
-  int createClientId() {
-    return _tdJsonClient.create_client_id();
-  }
-
-  Future<void> login(
-      {required int clientId,
-      required String Function() readTelegramCode,
-      double waitTimeout = waitTimeout}) async {
-    await _tdJsonClient.send(clientId, GetAuthorizationState());
-
-    while (true) {
-      var response = _tdJsonClient.receive(waitTimeout: waitTimeout);
-      // print(response);
-      if (response is UpdateAuthorizationState) {
-        break;
-        switch (response.authorization_state.runtimeType) {
-          case AuthorizationStateClosed:
-            _isClosed = true;
-            break;
-
-          case AuthorizationStateReady:
-            _isAuthorized = true;
-            break;
-
-          case AuthorizationStateWaitTdlibParameters:
-            _tdJsonClient.send(
-                clientId,
-                SetTdlibParameters(
-                    parameters: TdlibParameters(
-                  api_id: apiId,
-                  api_hash: apiHash,
-                  system_language_code: 'en',
-                  database_directory: databasePath,
-                  use_message_database: false,
-                  device_model: 'Desktop',
-                  application_version: '1.0',
-                )));
-            break;
-
-          case AuthorizationStateWaitEncryptionKey:
-            _tdJsonClient.send(
-                clientId, CheckDatabaseEncryptionKey(encryption_key: ''));
-            break;
-
-          case AuthorizationStateWaitPhoneNumber:
-            _tdJsonClient.send(clientId,
-                SetAuthenticationPhoneNumber(phone_number: phoneNumber));
-            break;
-
-          case AuthorizationStateWaitCode:
-            _tdJsonClient.send(
-                clientId, CheckAuthenticationCode(code: readTelegramCode()));
-
-            break;
-        }
-
-        if (_isClosed || _isAuthorized) {
-          break;
-        }
-      }
-    }
-  }
-
-  Stream<dynamic> getChats(
-      {required int clientId,
-      int limit = 100,
-      double waitTimeout = waitTimeout}) async* {
-    _tdJsonClient.send(clientId, GetChats(limit: 1000));
-
-    await for (var response in _tdJsonClient
-        .receive(waitTimeout: waitTimeout)
-        .where((event) =>
-            event is UpdateSupergroupFullInfo ||
-            event is UpdateBasicGroupFullInfo ||
-            event is UpdateUserFullInfo)) {
-      yield response;
-    }
-  }
-
-  void execute(dynamic request) {
-    _tdJsonClient.execute(request);
-  }
 }
 
-void td_set_log_message_callback(int verbosity_level, Pointer<Char> message) {
-  // _loggerTdLib.log(Level('a', verbosity_level), message);
+class TelegramClientIsolated extends TelegramClient {
+  late final ReceivePort _isolateReceivePort;
+  late final Stream<dynamic> _isolateReceivePortBroadcast;
+  SendPort? _isolateSendPort;
+
+  late final SendPortEventListener _sendPortEventListener;
+  TelegramClientIsolated({
+    required super.libtdjsonlcPath,
+  }) {
+    _isolateReceivePort = ReceivePort();
+    _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
+    _sendPortEventListener =
+        SendPortEventListener(sendPort: _isolateReceivePort.sendPort);
+  }
+
+  @override
+  void send(
+    TdFunction tdFunction,
+  ) {
+    _isolateSendPort?.send(tdFunction);
+  }
+
+  @override
+  void addEventListener(
+    TelegramEventListener telegramEventListener, {
+    bool Function(dynamic event) filter = TelegramEventGenerator.allEvents,
+  }) {
+    _eventListeners[telegramEventListener.uniqueKey] =
+        _isolateReceivePortBroadcast.where((ev) => filter(ev)).listen((event) {
+      telegramEventListener.onEvent(event);
+    });
+    if (_eventListeners.keys.length == 1) {
+      _isolateSendPort?.send(AddEventListener(_sendPortEventListener));
+    }
+  }
+
+  @override
+  void removeEventListener(TelegramEventListener telegramEventListener) {
+    if (_eventListeners.keys.length == 1) {
+      _isolateSendPort?.send(RemoveEventListener(_sendPortEventListener));
+    }
+    super.removeEventListener(telegramEventListener);
+  }
+
+  Future<void> spawn() async {
+    await Isolate.spawn(
+      TelegramClientIsolated._entryPoint,
+      [
+        TelegramClient(libtdjsonlcPath: libtdjsonlcPath),
+        _isolateReceivePort.sendPort
+      ],
+      debugName: runtimeType.toString(),
+    );
+    _isolateSendPort = await _isolateReceivePortBroadcast.first;
+  }
+
+  static void _entryPoint(List<dynamic> initialSpawnMessage) {
+    TelegramClient telegramClient = initialSpawnMessage[0];
+    SendPort parentSendPort = initialSpawnMessage[1];
+
+    var receivePort = ReceivePort();
+    parentSendPort.send(receivePort.sendPort);
+
+    receivePort.listen((message) {
+      if (message is TdFunction) {
+        telegramClient.send(message);
+      } else if (message is AddEventListener) {
+        telegramClient.addEventListener(message.eventListener);
+      } else if (message is RemoveEventListener) {
+        telegramClient.removeEventListener(message.eventListener);
+      }
+    });
+  }
+
+  void exit() {
+    _isolateReceivePort.close();
+  }
 }
