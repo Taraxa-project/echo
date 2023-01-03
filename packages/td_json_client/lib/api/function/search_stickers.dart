@@ -10,7 +10,7 @@ class SearchStickers extends TdFunction {
   /// String representation of emoji; must be non-empty 
   string? emoji;
 
-  /// The maximum number of stickers to be returned
+  /// The maximum number of stickers to be returned; 0-100
   int32? limit;
 
   SearchStickers({

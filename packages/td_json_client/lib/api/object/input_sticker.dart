@@ -1,7 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
-import 'package:td_json_client/api/object/sticker_type.dart';
+import 'package:td_json_client/api/object/sticker_format.dart';
+import 'package:td_json_client/api/object/mask_position.dart';
 
 
 /// A sticker to be added to a sticker set
@@ -15,15 +16,19 @@ class InputSticker extends TdObject {
   /// Emojis corresponding to the sticker
   string? emojis;
 
-  /// Sticker type
-  StickerType? type;
+  /// Sticker format
+  StickerFormat? format;
+
+  /// Position where the mask is placed; pass null if not specified
+  MaskPosition? mask_position;
 
   InputSticker({
     super.extra,
     super.client_id,
     this.sticker,
     this.emojis,
-    this.type,
+    this.format,
+    this.mask_position,
   });
 
   InputSticker.fromMap(Map<String, dynamic> map) {
@@ -33,8 +38,11 @@ class InputSticker extends TdObject {
       sticker = TdApiMap.fromMap(map['sticker']) as InputFile;
     }
     emojis = map['emojis'];
-    if (map['type'] != null) {
-      type = TdApiMap.fromMap(map['type']) as StickerType;
+    if (map['format'] != null) {
+      format = TdApiMap.fromMap(map['format']) as StickerFormat;
+    }
+    if (map['mask_position'] != null) {
+      mask_position = TdApiMap.fromMap(map['mask_position']) as MaskPosition;
     }
   }
 
@@ -45,7 +53,8 @@ class InputSticker extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'sticker': sticker?.toMap(skipNulls: skipNulls),
       'emojis': emojis?.toMap(skipNulls: skipNulls),
-      'type': type?.toMap(skipNulls: skipNulls),
+      'format': format?.toMap(skipNulls: skipNulls),
+      'mask_position': mask_position?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

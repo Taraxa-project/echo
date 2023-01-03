@@ -2,6 +2,7 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/invoice.dart';
 import 'package:td_json_client/api/object/payment_provider.dart';
+import 'package:td_json_client/api/object/payment_option.dart';
 import 'package:td_json_client/api/object/order_info.dart';
 import 'package:td_json_client/api/object/saved_credentials.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
@@ -28,16 +29,19 @@ class PaymentForm extends TdObject {
   /// Information about the payment provider
   PaymentProvider? payment_provider;
 
+  /// The list of additional payment options
+  vector<PaymentOption>? additional_payment_options;
+
   /// Saved server-side order information; may be null
   OrderInfo? saved_order_info;
 
-  /// Information about saved card credentials; may be null
-  SavedCredentials? saved_credentials;
+  /// The list of saved payment credentials
+  vector<SavedCredentials>? saved_credentials;
 
   /// True, if the user can choose to save credentials
   Bool? can_save_credentials;
 
-  /// True, if the user will be able to save credentials protected by a password they set up
+  /// True, if the user will be able to save credentials, if sets up a 2-step verification password
   Bool? need_password;
 
   /// Product title
@@ -57,6 +61,7 @@ class PaymentForm extends TdObject {
     this.seller_bot_user_id,
     this.payment_provider_user_id,
     this.payment_provider,
+    this.additional_payment_options,
     this.saved_order_info,
     this.saved_credentials,
     this.can_save_credentials,
@@ -78,11 +83,24 @@ class PaymentForm extends TdObject {
     if (map['payment_provider'] != null) {
       payment_provider = TdApiMap.fromMap(map['payment_provider']) as PaymentProvider;
     }
+    if (map['additional_payment_options'] != null) {
+      additional_payment_options = [];
+      for (var someValue in map['additional_payment_options']) {
+        if (someValue != null) {
+          additional_payment_options?.add(TdApiMap.fromMap(someValue) as PaymentOption);
+        }
+      }
+    }
     if (map['saved_order_info'] != null) {
       saved_order_info = TdApiMap.fromMap(map['saved_order_info']) as OrderInfo;
     }
     if (map['saved_credentials'] != null) {
-      saved_credentials = TdApiMap.fromMap(map['saved_credentials']) as SavedCredentials;
+      saved_credentials = [];
+      for (var someValue in map['saved_credentials']) {
+        if (someValue != null) {
+          saved_credentials?.add(TdApiMap.fromMap(someValue) as SavedCredentials);
+        }
+      }
     }
     can_save_credentials = map['can_save_credentials'];
     need_password = map['need_password'];
@@ -105,6 +123,7 @@ class PaymentForm extends TdObject {
       'seller_bot_user_id': seller_bot_user_id?.toMap(skipNulls: skipNulls),
       'payment_provider_user_id': payment_provider_user_id?.toMap(skipNulls: skipNulls),
       'payment_provider': payment_provider?.toMap(skipNulls: skipNulls),
+      'additional_payment_options': additional_payment_options?.toMap(skipNulls: skipNulls),
       'saved_order_info': saved_order_info?.toMap(skipNulls: skipNulls),
       'saved_credentials': saved_credentials?.toMap(skipNulls: skipNulls),
       'can_save_credentials': can_save_credentials?.toMap(skipNulls: skipNulls),

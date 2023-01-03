@@ -8,7 +8,7 @@ class SetRecoveryEmailAddress extends TdFunction {
   String get tdReturnType => 'PasswordState';
 
 
-  /// Password of the current user 
+  /// The 2-step verification password of the current user 
   string? password;
 
   /// New recovery email address

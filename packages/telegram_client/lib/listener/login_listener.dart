@@ -2,9 +2,9 @@ import 'dart:isolate';
 
 import 'package:td_json_client/td_json_client.dart';
 
-import 'base.dart';
+import '../base.dart';
 
-class Login extends TelegramEventListener {
+class LoginListener extends TelegramEventListener {
   final SetTdlibParameters setTdlibParameters;
   final CheckDatabaseEncryptionKey checkDatabaseEncryptionKey;
   final SetAuthenticationPhoneNumber setAuthenticationPhoneNumber;
@@ -15,7 +15,7 @@ class Login extends TelegramEventListener {
   final CheckAuthenticationPasswordWithCallback
       checkAuthenticationPasswordWithCallback;
 
-  Login({
+  LoginListener({
     required this.setTdlibParameters,
     required this.checkDatabaseEncryptionKey,
     required this.setAuthenticationPhoneNumber,
@@ -140,7 +140,7 @@ class Login extends TelegramEventListener {
   }
 }
 
-class LoginIsolated extends Login with Isolated {
+class LoginIsolated extends LoginListener with Isolated {
   LoginIsolated({
     required super.setTdlibParameters,
     required super.checkDatabaseEncryptionKey,
@@ -152,7 +152,7 @@ class LoginIsolated extends Login with Isolated {
     super.telegramSender,
   }) {
     init(
-      instance: Login(
+      instance: LoginListener(
         setTdlibParameters: setTdlibParameters,
         checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
         setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
@@ -175,7 +175,7 @@ class LoginIsolated extends Login with Isolated {
 
   static void handleMessage(dynamic message, TelegramEventListener instance) {
     if (message is Auth) {
-      (instance as Login).auth();
+      (instance as LoginListener).auth();
     } else {
       Isolated.handleMessage(message, instance);
     }

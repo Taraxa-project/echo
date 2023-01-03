@@ -57,7 +57,7 @@ class Message extends TdObject {
   /// True, if the message statistics are available through getMessageStatistics
   Bool? can_get_statistics;
 
-  /// True, if information about the message thread is available through getMessageThread
+  /// True, if information about the message thread is available through getMessageThread and getMessageThreadHistory
   Bool? can_get_message_thread;
 
   /// True, if chat members already viewed the message can be received through getMessageViewers

@@ -1,5 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/speech_recognition_result.dart';
 import 'package:td_json_client/api/object/file.dart';
 
 
@@ -17,11 +18,8 @@ class VoiceNote extends TdObject {
   /// MIME type of the file; as defined by the sender 
   string? mime_type;
 
-  /// True, if speech recognition is completed; Premium users only
-  Bool? is_recognized;
-
-  /// Recognized text of the voice note; Premium users only. Call recognizeSpeech to get recognized text of the voice note 
-  string? recognized_text;
+  /// Result of speech recognition in the voice note; may be null 
+  SpeechRecognitionResult? speech_recognition_result;
 
   /// File containing the voice note
   File? voice;
@@ -32,8 +30,7 @@ class VoiceNote extends TdObject {
     this.duration,
     this.waveform,
     this.mime_type,
-    this.is_recognized,
-    this.recognized_text,
+    this.speech_recognition_result,
     this.voice,
   });
 
@@ -43,8 +40,9 @@ class VoiceNote extends TdObject {
     duration = map['duration'];
     waveform = map['waveform'];
     mime_type = map['mime_type'];
-    is_recognized = map['is_recognized'];
-    recognized_text = map['recognized_text'];
+    if (map['speech_recognition_result'] != null) {
+      speech_recognition_result = TdApiMap.fromMap(map['speech_recognition_result']) as SpeechRecognitionResult;
+    }
     if (map['voice'] != null) {
       voice = TdApiMap.fromMap(map['voice']) as File;
     }
@@ -58,8 +56,7 @@ class VoiceNote extends TdObject {
       'duration': duration?.toMap(skipNulls: skipNulls),
       'waveform': waveform?.toMap(skipNulls: skipNulls),
       'mime_type': mime_type?.toMap(skipNulls: skipNulls),
-      'is_recognized': is_recognized?.toMap(skipNulls: skipNulls),
-      'recognized_text': recognized_text?.toMap(skipNulls: skipNulls),
+      'speech_recognition_result': speech_recognition_result?.toMap(skipNulls: skipNulls),
       'voice': voice?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

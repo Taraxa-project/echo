@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:logging/logging.dart';
 import 'package:args/command_runner.dart';
 
-import 'package:echo_cli/command/example.dart';
+import 'package:echo_cli/command/messages.dart';
 
 void main(List<String> arguments) {
   hierarchicalLoggingEnabled = true;
@@ -25,10 +25,19 @@ void main(List<String> arguments) {
         help: 'libtdjson log level', defaultsTo: '1')
     ..addOption('database-path',
         help: 'tdlib database path', defaultsTo: 'tdlib')
+    ..addOption('message-database-path',
+        help: 'message database path', defaultsTo: 'message.sqlite')
     ..addOption('loglevel', help: 'Log level', defaultsTo: 'Error');
 
+  TelegramCommandMessages telegramCommandMessages = TelegramCommandMessages();
+  telegramCommandMessages.argParser.addOption(
+    'chats-names',
+    mandatory: true,
+    help: 'A list of chat names JSON encoded.',
+  );
+
   commandRunner
-    ..addCommand(TelegramCommandExample())
+    ..addCommand(telegramCommandMessages)
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
       print(error);

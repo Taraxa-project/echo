@@ -7,7 +7,7 @@ class GetAllPassportElements extends TdFunction {
   String get tdReturnType => 'PassportElements';
 
 
-  /// Password of the current user
+  /// The 2-step verification password of the current user
   string? password;
 
   GetAllPassportElements({

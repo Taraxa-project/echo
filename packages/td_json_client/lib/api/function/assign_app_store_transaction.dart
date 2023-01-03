@@ -1,7 +1,9 @@
 import 'package:td_json_client/api/base.dart';
+import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/store_payment_purpose.dart';
 
 
-/// Informs server about a Telegram Premium purchase through App Store. For official applications only 
+/// Informs server about a purchase through App Store. For official applications only 
 class AssignAppStoreTransaction extends TdFunction {
   String get tdType => 'assignAppStoreTransaction';
   String get tdReturnType => 'Ok';
@@ -10,21 +12,23 @@ class AssignAppStoreTransaction extends TdFunction {
   /// App Store receipt 
   bytes? receipt;
 
-  /// Pass true if this is a restore of a Telegram Premium purchase
-  Bool? is_restore;
+  /// Transaction purpose
+  StorePaymentPurpose? purpose;
 
   AssignAppStoreTransaction({
     super.extra,
     super.client_id,
     this.receipt,
-    this.is_restore,
+    this.purpose,
   });
 
   AssignAppStoreTransaction.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     receipt = map['receipt'];
-    is_restore = map['is_restore'];
+    if (map['purpose'] != null) {
+      purpose = TdApiMap.fromMap(map['purpose']) as StorePaymentPurpose;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -33,7 +37,7 @@ class AssignAppStoreTransaction extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'receipt': receipt?.toMap(skipNulls: skipNulls),
-      'is_restore': is_restore?.toMap(skipNulls: skipNulls),
+      'purpose': purpose?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

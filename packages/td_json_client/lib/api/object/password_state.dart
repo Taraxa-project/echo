@@ -23,7 +23,7 @@ class PasswordState extends TdObject {
   /// Information about the recovery email address to which the confirmation email was sent; may be null
   EmailAddressAuthenticationCodeInfo? recovery_email_address_code_info;
 
-  /// If not 0, point in time (Unix timestamp) after which the password can be reset immediately using resetPassword
+  /// If not 0, point in time (Unix timestamp) after which the 2-step verification password can be reset immediately using resetPassword
   int32? pending_reset_date;
 
   PasswordState({

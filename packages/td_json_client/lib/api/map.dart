@@ -24,6 +24,7 @@ import 'package:td_json_client/api/object/thumbnail_format.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/mask_point.dart';
 import 'package:td_json_client/api/object/mask_position.dart';
+import 'package:td_json_client/api/object/sticker_format.dart';
 import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/closed_vector_path.dart';
 import 'package:td_json_client/api/object/poll_option.dart';
@@ -55,6 +56,7 @@ import 'package:td_json_client/api/object/chat_photos.dart';
 import 'package:td_json_client/api/object/input_chat_photo.dart';
 import 'package:td_json_client/api/object/chat_permissions.dart';
 import 'package:td_json_client/api/object/chat_administrator_rights.dart';
+import 'package:td_json_client/api/object/premium_gift_option.dart';
 import 'package:td_json_client/api/object/user.dart';
 import 'package:td_json_client/api/object/bot_info.dart';
 import 'package:td_json_client/api/object/user_full_info.dart';
@@ -154,6 +156,7 @@ import 'package:td_json_client/api/object/shipping_option.dart';
 import 'package:td_json_client/api/object/saved_credentials.dart';
 import 'package:td_json_client/api/object/input_credentials.dart';
 import 'package:td_json_client/api/object/payment_provider.dart';
+import 'package:td_json_client/api/object/payment_option.dart';
 import 'package:td_json_client/api/object/payment_form.dart';
 import 'package:td_json_client/api/object/validated_order_info.dart';
 import 'package:td_json_client/api/object/payment_result.dart';
@@ -223,6 +226,7 @@ import 'package:td_json_client/api/object/reaction.dart';
 import 'package:td_json_client/api/object/animations.dart';
 import 'package:td_json_client/api/object/dice_stickers.dart';
 import 'package:td_json_client/api/object/imported_contacts.dart';
+import 'package:td_json_client/api/object/speech_recognition_result.dart';
 import 'package:td_json_client/api/object/attachment_menu_bot_color.dart';
 import 'package:td_json_client/api/object/attachment_menu_bot.dart';
 import 'package:td_json_client/api/object/sent_web_app_message.dart';
@@ -251,6 +255,7 @@ import 'package:td_json_client/api/object/premium_features.dart';
 import 'package:td_json_client/api/object/premium_source.dart';
 import 'package:td_json_client/api/object/premium_feature_promotion_animation.dart';
 import 'package:td_json_client/api/object/premium_state.dart';
+import 'package:td_json_client/api/object/store_payment_purpose.dart';
 import 'package:td_json_client/api/object/device_token.dart';
 import 'package:td_json_client/api/object/push_receiver_id.dart';
 import 'package:td_json_client/api/object/background_fill.dart';
@@ -335,6 +340,7 @@ import 'package:td_json_client/api/object/updates.dart';
 import 'package:td_json_client/api/object/log_stream.dart';
 import 'package:td_json_client/api/object/log_verbosity_level.dart';
 import 'package:td_json_client/api/object/log_tags.dart';
+import 'package:td_json_client/api/object/user_support_info.dart';
 import 'package:td_json_client/api/object/test_int.dart';
 import 'package:td_json_client/api/object/test_string.dart';
 import 'package:td_json_client/api/object/test_bytes.dart';
@@ -574,8 +580,8 @@ import 'package:td_json_client/api/function/download_file.dart';
 import 'package:td_json_client/api/function/get_file_downloaded_prefix_size.dart';
 import 'package:td_json_client/api/function/cancel_download_file.dart';
 import 'package:td_json_client/api/function/get_suggested_file_name.dart';
-import 'package:td_json_client/api/function/upload_file.dart';
-import 'package:td_json_client/api/function/cancel_upload_file.dart';
+import 'package:td_json_client/api/function/preliminary_upload_file.dart';
+import 'package:td_json_client/api/function/cancel_preliminary_upload_file.dart';
 import 'package:td_json_client/api/function/write_generated_file_part.dart';
 import 'package:td_json_client/api/function/set_file_generation_progress.dart';
 import 'package:td_json_client/api/function/finish_file_generation.dart';
@@ -658,6 +664,7 @@ import 'package:td_json_client/api/function/share_phone_number.dart';
 import 'package:td_json_client/api/function/get_user_profile_photos.dart';
 import 'package:td_json_client/api/function/get_stickers.dart';
 import 'package:td_json_client/api/function/search_stickers.dart';
+import 'package:td_json_client/api/function/get_premium_stickers.dart';
 import 'package:td_json_client/api/function/get_installed_sticker_sets.dart';
 import 'package:td_json_client/api/function/get_archived_sticker_sets.dart';
 import 'package:td_json_client/api/function/get_trending_sticker_sets.dart';
@@ -679,8 +686,8 @@ import 'package:td_json_client/api/function/remove_favorite_sticker.dart';
 import 'package:td_json_client/api/function/get_sticker_emojis.dart';
 import 'package:td_json_client/api/function/search_emojis.dart';
 import 'package:td_json_client/api/function/get_animated_emoji.dart';
-import 'package:td_json_client/api/function/get_all_animated_emojis.dart';
 import 'package:td_json_client/api/function/get_emoji_suggestions_url.dart';
+import 'package:td_json_client/api/function/get_custom_emoji_stickers.dart';
 import 'package:td_json_client/api/function/get_saved_animations.dart';
 import 'package:td_json_client/api/function/add_saved_animation.dart';
 import 'package:td_json_client/api/function/remove_saved_animation.dart';
@@ -807,7 +814,7 @@ import 'package:td_json_client/api/function/remove_sticker_from_set.dart';
 import 'package:td_json_client/api/function/get_map_thumbnail_file.dart';
 import 'package:td_json_client/api/function/get_premium_limit.dart';
 import 'package:td_json_client/api/function/get_premium_features.dart';
-import 'package:td_json_client/api/function/get_premium_stickers.dart';
+import 'package:td_json_client/api/function/get_premium_sticker_examples.dart';
 import 'package:td_json_client/api/function/view_premium_feature.dart';
 import 'package:td_json_client/api/function/click_premium_subscription_button.dart';
 import 'package:td_json_client/api/function/get_premium_state.dart';
@@ -842,6 +849,8 @@ import 'package:td_json_client/api/function/get_log_tags.dart';
 import 'package:td_json_client/api/function/set_log_tag_verbosity_level.dart';
 import 'package:td_json_client/api/function/get_log_tag_verbosity_level.dart';
 import 'package:td_json_client/api/function/add_log_message.dart';
+import 'package:td_json_client/api/function/get_user_support_info.dart';
+import 'package:td_json_client/api/function/set_user_support_info.dart';
 import 'package:td_json_client/api/function/test_call_empty.dart';
 import 'package:td_json_client/api/function/test_call_string.dart';
 import 'package:td_json_client/api/function/test_call_bytes.dart';
@@ -910,10 +919,12 @@ class TdApiMap {
     'maskPointMouth': (map) => MaskPointMouth.fromMap(map),
     'maskPointChin': (map) => MaskPointChin.fromMap(map),
     'maskPosition': (map) => MaskPosition.fromMap(map),
-    'stickerTypeStatic': (map) => StickerTypeStatic.fromMap(map),
-    'stickerTypeAnimated': (map) => StickerTypeAnimated.fromMap(map),
-    'stickerTypeVideo': (map) => StickerTypeVideo.fromMap(map),
+    'stickerFormatWebp': (map) => StickerFormatWebp.fromMap(map),
+    'stickerFormatTgs': (map) => StickerFormatTgs.fromMap(map),
+    'stickerFormatWebm': (map) => StickerFormatWebm.fromMap(map),
+    'stickerTypeRegular': (map) => StickerTypeRegular.fromMap(map),
     'stickerTypeMask': (map) => StickerTypeMask.fromMap(map),
+    'stickerTypeCustomEmoji': (map) => StickerTypeCustomEmoji.fromMap(map),
     'closedVectorPath': (map) => ClosedVectorPath.fromMap(map),
     'pollOption': (map) => PollOption.fromMap(map),
     'pollTypeRegular': (map) => PollTypeRegular.fromMap(map),
@@ -950,6 +961,7 @@ class TdApiMap {
     'inputChatPhotoAnimation': (map) => InputChatPhotoAnimation.fromMap(map),
     'chatPermissions': (map) => ChatPermissions.fromMap(map),
     'chatAdministratorRights': (map) => ChatAdministratorRights.fromMap(map),
+    'premiumGiftOption': (map) => PremiumGiftOption.fromMap(map),
     'user': (map) => User.fromMap(map),
     'botInfo': (map) => BotInfo.fromMap(map),
     'userFullInfo': (map) => UserFullInfo.fromMap(map),
@@ -1159,6 +1171,7 @@ class TdApiMap {
     'paymentProviderSmartGlocal': (map) => PaymentProviderSmartGlocal.fromMap(map),
     'paymentProviderStripe': (map) => PaymentProviderStripe.fromMap(map),
     'paymentProviderOther': (map) => PaymentProviderOther.fromMap(map),
+    'paymentOption': (map) => PaymentOption.fromMap(map),
     'paymentForm': (map) => PaymentForm.fromMap(map),
     'validatedOrderInfo': (map) => ValidatedOrderInfo.fromMap(map),
     'paymentResult': (map) => PaymentResult.fromMap(map),
@@ -1281,6 +1294,7 @@ class TdApiMap {
     'messageGameScore': (map) => MessageGameScore.fromMap(map),
     'messagePaymentSuccessful': (map) => MessagePaymentSuccessful.fromMap(map),
     'messagePaymentSuccessfulBot': (map) => MessagePaymentSuccessfulBot.fromMap(map),
+    'messageGiftedPremium': (map) => MessageGiftedPremium.fromMap(map),
     'messageContactRegistered': (map) => MessageContactRegistered.fromMap(map),
     'messageWebsiteConnected': (map) => MessageWebsiteConnected.fromMap(map),
     'messageWebAppDataSent': (map) => MessageWebAppDataSent.fromMap(map),
@@ -1307,6 +1321,7 @@ class TdApiMap {
     'textEntityTypePreCode': (map) => TextEntityTypePreCode.fromMap(map),
     'textEntityTypeTextUrl': (map) => TextEntityTypeTextUrl.fromMap(map),
     'textEntityTypeMentionName': (map) => TextEntityTypeMentionName.fromMap(map),
+    'textEntityTypeCustomEmoji': (map) => TextEntityTypeCustomEmoji.fromMap(map),
     'textEntityTypeMediaTimestamp': (map) => TextEntityTypeMediaTimestamp.fromMap(map),
     'inputThumbnail': (map) => InputThumbnail.fromMap(map),
     'messageSchedulingStateSendAtDate': (map) => MessageSchedulingStateSendAtDate.fromMap(map),
@@ -1422,6 +1437,9 @@ class TdApiMap {
     'diceStickersRegular': (map) => DiceStickersRegular.fromMap(map),
     'diceStickersSlotMachine': (map) => DiceStickersSlotMachine.fromMap(map),
     'importedContacts': (map) => ImportedContacts.fromMap(map),
+    'speechRecognitionResultPending': (map) => SpeechRecognitionResultPending.fromMap(map),
+    'speechRecognitionResultText': (map) => SpeechRecognitionResultText.fromMap(map),
+    'speechRecognitionResultError': (map) => SpeechRecognitionResultError.fromMap(map),
     'attachmentMenuBotColor': (map) => AttachmentMenuBotColor.fromMap(map),
     'attachmentMenuBot': (map) => AttachmentMenuBot.fromMap(map),
     'sentWebAppMessage': (map) => SentWebAppMessage.fromMap(map),
@@ -1520,6 +1538,7 @@ class TdApiMap {
     'premiumFeatureDisabledAds': (map) => PremiumFeatureDisabledAds.fromMap(map),
     'premiumFeatureUniqueReactions': (map) => PremiumFeatureUniqueReactions.fromMap(map),
     'premiumFeatureUniqueStickers': (map) => PremiumFeatureUniqueStickers.fromMap(map),
+    'premiumFeatureCustomEmoji': (map) => PremiumFeatureCustomEmoji.fromMap(map),
     'premiumFeatureAdvancedChatManagement': (map) => PremiumFeatureAdvancedChatManagement.fromMap(map),
     'premiumFeatureProfileBadge': (map) => PremiumFeatureProfileBadge.fromMap(map),
     'premiumFeatureAnimatedProfilePhoto': (map) => PremiumFeatureAnimatedProfilePhoto.fromMap(map),
@@ -1532,6 +1551,8 @@ class TdApiMap {
     'premiumSourceSettings': (map) => PremiumSourceSettings.fromMap(map),
     'premiumFeaturePromotionAnimation': (map) => PremiumFeaturePromotionAnimation.fromMap(map),
     'premiumState': (map) => PremiumState.fromMap(map),
+    'storePaymentPurposePremiumSubscription': (map) => StorePaymentPurposePremiumSubscription.fromMap(map),
+    'storePaymentPurposeGiftedPremium': (map) => StorePaymentPurposeGiftedPremium.fromMap(map),
     'deviceTokenFirebaseCloudMessaging': (map) => DeviceTokenFirebaseCloudMessaging.fromMap(map),
     'deviceTokenApplePush': (map) => DeviceTokenApplePush.fromMap(map),
     'deviceTokenApplePushVoIP': (map) => DeviceTokenApplePushVoIP.fromMap(map),
@@ -1644,6 +1665,7 @@ class TdApiMap {
     'userPrivacySettingAllowCalls': (map) => UserPrivacySettingAllowCalls.fromMap(map),
     'userPrivacySettingAllowPeerToPeerCalls': (map) => UserPrivacySettingAllowPeerToPeerCalls.fromMap(map),
     'userPrivacySettingAllowFindingByPhoneNumber': (map) => UserPrivacySettingAllowFindingByPhoneNumber.fromMap(map),
+    'userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages': (map) => UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages.fromMap(map),
     'accountTtl': (map) => AccountTtl.fromMap(map),
     'sessionTypeAndroid': (map) => SessionTypeAndroid.fromMap(map),
     'sessionTypeApple': (map) => SessionTypeApple.fromMap(map),
@@ -1702,6 +1724,7 @@ class TdApiMap {
     'internalLinkTypeProxy': (map) => InternalLinkTypeProxy.fromMap(map),
     'internalLinkTypePublicChat': (map) => InternalLinkTypePublicChat.fromMap(map),
     'internalLinkTypeQrCodeAuthentication': (map) => InternalLinkTypeQrCodeAuthentication.fromMap(map),
+    'internalLinkTypeRestorePurchases': (map) => InternalLinkTypeRestorePurchases.fromMap(map),
     'internalLinkTypeSettings': (map) => InternalLinkTypeSettings.fromMap(map),
     'internalLinkTypeStickerSet': (map) => InternalLinkTypeStickerSet.fromMap(map),
     'internalLinkTypeTheme': (map) => InternalLinkTypeTheme.fromMap(map),
@@ -1913,6 +1936,7 @@ class TdApiMap {
     'logStreamEmpty': (map) => LogStreamEmpty.fromMap(map),
     'logVerbosityLevel': (map) => LogVerbosityLevel.fromMap(map),
     'logTags': (map) => LogTags.fromMap(map),
+    'userSupportInfo': (map) => UserSupportInfo.fromMap(map),
     'testInt': (map) => TestInt.fromMap(map),
     'testString': (map) => TestString.fromMap(map),
     'testBytes': (map) => TestBytes.fromMap(map),
@@ -2152,8 +2176,8 @@ class TdApiMap {
     'getFileDownloadedPrefixSize': (map) => GetFileDownloadedPrefixSize.fromMap(map),
     'cancelDownloadFile': (map) => CancelDownloadFile.fromMap(map),
     'getSuggestedFileName': (map) => GetSuggestedFileName.fromMap(map),
-    'uploadFile': (map) => UploadFile.fromMap(map),
-    'cancelUploadFile': (map) => CancelUploadFile.fromMap(map),
+    'preliminaryUploadFile': (map) => PreliminaryUploadFile.fromMap(map),
+    'cancelPreliminaryUploadFile': (map) => CancelPreliminaryUploadFile.fromMap(map),
     'writeGeneratedFilePart': (map) => WriteGeneratedFilePart.fromMap(map),
     'setFileGenerationProgress': (map) => SetFileGenerationProgress.fromMap(map),
     'finishFileGeneration': (map) => FinishFileGeneration.fromMap(map),
@@ -2236,6 +2260,7 @@ class TdApiMap {
     'getUserProfilePhotos': (map) => GetUserProfilePhotos.fromMap(map),
     'getStickers': (map) => GetStickers.fromMap(map),
     'searchStickers': (map) => SearchStickers.fromMap(map),
+    'getPremiumStickers': (map) => GetPremiumStickers.fromMap(map),
     'getInstalledStickerSets': (map) => GetInstalledStickerSets.fromMap(map),
     'getArchivedStickerSets': (map) => GetArchivedStickerSets.fromMap(map),
     'getTrendingStickerSets': (map) => GetTrendingStickerSets.fromMap(map),
@@ -2257,8 +2282,8 @@ class TdApiMap {
     'getStickerEmojis': (map) => GetStickerEmojis.fromMap(map),
     'searchEmojis': (map) => SearchEmojis.fromMap(map),
     'getAnimatedEmoji': (map) => GetAnimatedEmoji.fromMap(map),
-    'getAllAnimatedEmojis': (map) => GetAllAnimatedEmojis.fromMap(map),
     'getEmojiSuggestionsUrl': (map) => GetEmojiSuggestionsUrl.fromMap(map),
+    'getCustomEmojiStickers': (map) => GetCustomEmojiStickers.fromMap(map),
     'getSavedAnimations': (map) => GetSavedAnimations.fromMap(map),
     'addSavedAnimation': (map) => AddSavedAnimation.fromMap(map),
     'removeSavedAnimation': (map) => RemoveSavedAnimation.fromMap(map),
@@ -2385,7 +2410,7 @@ class TdApiMap {
     'getMapThumbnailFile': (map) => GetMapThumbnailFile.fromMap(map),
     'getPremiumLimit': (map) => GetPremiumLimit.fromMap(map),
     'getPremiumFeatures': (map) => GetPremiumFeatures.fromMap(map),
-    'getPremiumStickers': (map) => GetPremiumStickers.fromMap(map),
+    'getPremiumStickerExamples': (map) => GetPremiumStickerExamples.fromMap(map),
     'viewPremiumFeature': (map) => ViewPremiumFeature.fromMap(map),
     'clickPremiumSubscriptionButton': (map) => ClickPremiumSubscriptionButton.fromMap(map),
     'getPremiumState': (map) => GetPremiumState.fromMap(map),
@@ -2420,6 +2445,8 @@ class TdApiMap {
     'setLogTagVerbosityLevel': (map) => SetLogTagVerbosityLevel.fromMap(map),
     'getLogTagVerbosityLevel': (map) => GetLogTagVerbosityLevel.fromMap(map),
     'addLogMessage': (map) => AddLogMessage.fromMap(map),
+    'getUserSupportInfo': (map) => GetUserSupportInfo.fromMap(map),
+    'setUserSupportInfo': (map) => SetUserSupportInfo.fromMap(map),
     'testCallEmpty': (map) => TestCallEmpty.fromMap(map),
     'testCallString': (map) => TestCallString.fromMap(map),
     'testCallBytes': (map) => TestCallBytes.fromMap(map),

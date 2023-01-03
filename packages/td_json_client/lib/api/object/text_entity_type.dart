@@ -342,7 +342,7 @@ class TextEntityTypeStrikethrough extends TextEntityType {
   }
 }
 
-/// A spoiler text. Not supported in secret chats
+/// A spoiler text
 class TextEntityTypeSpoiler extends TextEntityType {
   String get tdType => 'textEntityTypeSpoiler';
 
@@ -520,6 +520,40 @@ class TextEntityTypeMentionName extends TextEntityType {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'user_id': user_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A custom emoji. The text behind a custom emoji must be an emoji. Only premium users can use premium custom emoji 
+class TextEntityTypeCustomEmoji extends TextEntityType {
+  String get tdType => 'textEntityTypeCustomEmoji';
+
+
+  /// Unique identifier of the custom emoji
+  int64? custom_emoji_id;
+
+  TextEntityTypeCustomEmoji({
+    super.extra,
+    super.client_id,
+    this.custom_emoji_id,
+  });
+
+  TextEntityTypeCustomEmoji.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    custom_emoji_id = map['custom_emoji_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'custom_emoji_id': custom_emoji_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

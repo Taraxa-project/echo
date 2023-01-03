@@ -13,7 +13,7 @@ class TransferChatOwnership extends TdFunction {
   /// Identifier of the user to which transfer the ownership. The ownership can't be transferred to a bot or to a deleted user 
   int53? user_id;
 
-  /// The password of the current user
+  /// The 2-step verification password of the current user
   string? password;
 
   TransferChatOwnership({

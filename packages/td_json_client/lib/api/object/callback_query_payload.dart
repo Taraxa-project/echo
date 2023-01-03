@@ -45,7 +45,7 @@ class CallbackQueryPayloadDataWithPassword extends CallbackQueryPayload {
   String get tdType => 'callbackQueryPayloadDataWithPassword';
 
 
-  /// The password for the current user 
+  /// The 2-step verification password for the current user 
   string? password;
 
   /// Data that was attached to the callback button

@@ -1,5 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/input_sticker.dart';
 
 
@@ -18,6 +19,9 @@ class CreateNewStickerSet extends TdFunction {
   /// Sticker set name. Can contain only English letters, digits and underscores. Must end with *"_by_<bot username>"* (*<bot_username>* is case insensitive) for bots; 1-64 characters
   string? name;
 
+  /// Type of the stickers in the set
+  StickerType? sticker_type;
+
   /// List of stickers to be added to the set; must be non-empty. All stickers must have the same format. For TGS stickers, uploadStickerFile must be used before the sticker is shown
   vector<InputSticker>? stickers;
 
@@ -30,6 +34,7 @@ class CreateNewStickerSet extends TdFunction {
     this.user_id,
     this.title,
     this.name,
+    this.sticker_type,
     this.stickers,
     this.source,
   });
@@ -40,6 +45,9 @@ class CreateNewStickerSet extends TdFunction {
     user_id = map['user_id'];
     title = map['title'];
     name = map['name'];
+    if (map['sticker_type'] != null) {
+      sticker_type = TdApiMap.fromMap(map['sticker_type']) as StickerType;
+    }
     if (map['stickers'] != null) {
       stickers = [];
       for (var someValue in map['stickers']) {
@@ -59,6 +67,7 @@ class CreateNewStickerSet extends TdFunction {
       'user_id': user_id?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),
+      'sticker_type': sticker_type?.toMap(skipNulls: skipNulls),
       'stickers': stickers?.toMap(skipNulls: skipNulls),
       'source': source?.toMap(skipNulls: skipNulls),
     };

@@ -202,6 +202,34 @@ class PremiumFeatureUniqueStickers extends PremiumFeature {
   }
 }
 
+/// Allowed to use custom emoji stickers in message texts and captions
+class PremiumFeatureCustomEmoji extends PremiumFeature {
+  String get tdType => 'premiumFeatureCustomEmoji';
+
+
+  PremiumFeatureCustomEmoji({
+    super.extra,
+    super.client_id,
+  });
+
+  PremiumFeatureCustomEmoji.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// Ability to change position of the main chat list, archive and mute all new chats from non-contacts, and completely disable notifications about the user's contacts joined Telegram
 class PremiumFeatureAdvancedChatManagement extends PremiumFeature {
   String get tdType => 'premiumFeatureAdvancedChatManagement';

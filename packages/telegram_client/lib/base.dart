@@ -1,7 +1,10 @@
 import 'dart:isolate';
 
+import 'package:sqlite3/sqlite3.dart';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
+
+import 'db/db.dart';
 
 abstract class TelegramEventGenerator {
   void addEventListener(
@@ -22,8 +25,12 @@ abstract class TelegramEventListener {
 
   late final String uniqueKey;
   TelegramSender? telegramSender;
+  DB? db;
 
-  TelegramEventListener({TelegramSender? this.telegramSender}) {
+  TelegramEventListener({
+    TelegramSender? this.telegramSender,
+    DB? this.db,
+  }) {
     uniqueKey = Uuid().v1();
   }
 

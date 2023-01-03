@@ -7,7 +7,7 @@ class GetRecoveryEmailAddress extends TdFunction {
   String get tdReturnType => 'RecoveryEmailAddress';
 
 
-  /// The password for the current user
+  /// The 2-step verification password for the current user
   string? password;
 
   GetRecoveryEmailAddress({
