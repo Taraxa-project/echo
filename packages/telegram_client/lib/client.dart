@@ -107,9 +107,10 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   }
 
   @override
-  void removeEventListener(TelegramEventListener telegramEventListener) {
+  Future<void> removeEventListener(
+      TelegramEventListener telegramEventListener) async {
     var listener = _eventListeners.remove(telegramEventListener.uniqueKey);
-    listener?.cancel();
+    await listener?.cancel();
   }
 
   static Future<TelegramClientIsolated> isolate({
@@ -183,11 +184,12 @@ class TelegramClientIsolated extends TelegramClient {
   }
 
   @override
-  void removeEventListener(TelegramEventListener telegramEventListener) {
+  Future<void> removeEventListener(
+      TelegramEventListener telegramEventListener) async {
     if (_eventListeners.keys.length == 1) {
       _isolateSendPort?.send(RemoveEventListener(_sendPortEventListener));
     }
-    super.removeEventListener(telegramEventListener);
+    await super.removeEventListener(telegramEventListener);
   }
 
   Future<void> spawn() async {

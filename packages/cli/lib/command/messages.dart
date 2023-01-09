@@ -31,7 +31,7 @@ class TelegramCommandMessages extends Command {
 
     await login();
     await seachPublicChats();
-    await readChatsHistory();
+    // await readChatsHistory();
 
     await closeClient();
     closeDB();
@@ -155,13 +155,15 @@ class TelegramCommandMessages extends Command {
         }),
     );
 
-    telegramClient?.addEventListener(login, filter: LoginListener.isLoginEvent);
-    var loggedIn = await login.auth();
-    if (!loggedIn) {
+    telegramClient?.addEventListener(
+      login,
+      filter: LoginListener.isLoginEvent,
+    );
+    if (!await login.auth()) {
       exit(-1);
     }
 
-    telegramClient?.removeEventListener(login);
+    await telegramClient?.removeEventListener(login);
     login.exit();
   }
 
@@ -176,13 +178,20 @@ class TelegramCommandMessages extends Command {
       telegramSender: telegramClient,
       db: db,
       username: chatName,
+      logger: Logger('SearchPublicChat')
+        ..level = getLogLevel()
+        ..clearListeners()
+        ..onRecord.listen((event) {
+          print(event);
+        }),
     );
-    telegramClient?.addEventListener(searchPublicChat);
-    searchPublicChat.search_public_chat();
+    telegramClient?.addEventListener(
+      searchPublicChat,
+      filter: SearchPublicChatListener.isChat,
+    );
+    await searchPublicChat.search_public_chat();
 
-    await Future.delayed(const Duration(seconds: 15));
-    telegramClient?.removeEventListener(searchPublicChat);
-    await Future.delayed(const Duration(seconds: 5));
+    await telegramClient?.removeEventListener(searchPublicChat);
     searchPublicChat.exit();
   }
 
