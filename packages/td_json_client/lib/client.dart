@@ -46,7 +46,7 @@ class TdJsonClient {
   /// Executes a synchronous TDLib request
   void execute(TdFunction request) {
     String requestJson = request.toJson();
-    logger?.info({"method": "execute", "value": "$requestJson"});
+    logger?.fine({"method": "execute", "value": "$requestJson"});
     _libTdJson.td_execute_lc(requestJson.toNativeUtf8().cast<Char>());
   }
 
@@ -55,7 +55,7 @@ class TdJsonClient {
     request.client_id = clientId;
 
     String requestJson = request.toJson();
-    logger?.info({"method": "send", "value": "$requestJson"});
+    logger?.fine({"method": "send", "value": "$requestJson"});
     _libTdJson.td_send_lc(clientId, requestJson.toNativeUtf8().cast<Char>());
   }
 
@@ -67,11 +67,14 @@ class TdJsonClient {
     if (tdResponse != nullptr) {
       var responseJson = tdResponse.cast<Utf8>().toDartString();
 
-      logger?.info({"method": "receive", "value": "$responseJson"});
+      logger?.fine({"method": "receive", "value": "$responseJson"});
       var td = TdApiMap.fromMap(jsonDecode(responseJson));
       if (td != null) return td;
     }
   }
+
+  /// TDLib sends logs to this port.
+  ReceivePort? receivePort;
 
   /// The TDLib [Logger].
   Logger? _loggerTdLib;
@@ -88,9 +91,9 @@ class TdJsonClient {
     }
     _loggerTdLib = logger;
     if (_loggerTdLib != null) {
-      ReceivePort receivePort = ReceivePort();
+      receivePort = ReceivePort();
 
-      receivePort.listen((message) {
+      receivePort?.listen((message) {
         var logMessagePointer = Pointer<log_message_t>.fromAddress(message);
         var logMessage = logMessagePointer.ref;
 
@@ -107,7 +110,7 @@ class TdJsonClient {
       });
 
       _libTdJson.register_log_message_callback_sendport(
-        receivePort.sendPort.nativePort,
+        receivePort!.sendPort.nativePort,
         LogLevelMap.MAP.toTd(loggerTdLib?.level),
       );
     }
@@ -115,6 +118,11 @@ class TdJsonClient {
 
   /// The TdJsonClient [Logger].
   Logger? logger;
+
+  /// Closes the log recieve port.
+  void exit() {
+    receivePort?.close();
+  }
 }
 
 /// Map for logging log levels and TDLib log levels

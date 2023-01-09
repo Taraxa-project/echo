@@ -1,6 +1,5 @@
 import 'package:td_json_client/td_json_client.dart';
 
-import 'package:telegram_client/db/db.dart';
 import '../base.dart';
 
 class GetChatHistoryListener extends TelegramEventListener {

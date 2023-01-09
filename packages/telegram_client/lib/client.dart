@@ -27,9 +27,14 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   late final int _tdJsonClientId;
   void init() {
     if (!_isInitialized) {
+      _logger?.info('TelegramClient: initializing TdJsonClient...');
+
       _tdJsonClient = TdJsonClient(libtdjsonlcPath: libtdjsonlcPath);
       _tdJsonClientId = _tdJsonClient.create_client_id();
       _isInitialized = true;
+
+      _logger?.info('TelegramClient: created client id $_tdJsonClientId.');
+      _logger?.info('TelegramClient: initialization finished.');
     }
   }
 
@@ -38,14 +43,22 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   void _tdStart() {
     init();
 
+    _logger?.info('TelegramClient: starting timer.');
+
     timer = Timer.periodic(readEventsFrequency, _tdReceive);
+
+    _logger?.info('TelegramClient: timer started.');
   }
 
   void _tdStop() {
     init();
 
+    _logger?.info('TelegramClient: stopping timer.');
+
     timer?.cancel();
     timer = null;
+
+    _logger?.info('TelegramClient: timer stopped.');
   }
 
   double waitTimeout = 0.005;
@@ -58,6 +71,8 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
 
       var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
       if (event != null) {
+        _logger?.info('TelegramClient: received ${event.runtimeType}.');
+
         _tdStreamController.add(event);
       }
 
@@ -71,7 +86,11 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   ) {
     init();
 
+    _logger?.info('TelegramClient: sending ${tdFunction.runtimeType}.');
+
     _tdJsonClient.send(_tdJsonClientId, tdFunction);
+
+    _logger?.info('TelegramClient: sent ${tdFunction.runtimeType}.');
   }
 
   Map<String, StreamSubscription> _eventListeners = {};
@@ -109,10 +128,21 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
     Logger? logger,
     Logger? loggerTdLib,
   ) {
+    _logger = logger;
+
     init();
 
-    _logger = logger;
     _tdJsonClient.setupLogs(logger, loggerTdLib);
+  }
+
+  @override
+  Future<void> exit() async {
+    _logger?.info('TelegramClient: closing.');
+
+    _tdJsonClient.exit();
+    await _tdStreamController.close();
+
+    _logger?.info('TelegramClient: closed.');
   }
 }
 
@@ -190,7 +220,7 @@ class TelegramClientIsolated extends TelegramClient {
     });
   }
 
-  void exit() {
+  Future<void> exit() async {
     _isolateReceivePort.close();
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class WrapId {
   static int messageIdMultiplier = 1048576; // 2 ^ 20
 

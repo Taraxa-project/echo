@@ -1,23 +1,40 @@
 import 'package:sqlite3/sqlite3.dart';
+import 'package:logging/logging.dart';
 
 class DB {
   final String dbPath;
   Database? db;
+  Logger? logger;
 
-  DB({required String this.dbPath});
+  DB({
+    required String this.dbPath,
+    this.logger,
+  });
 
   void open() {
+    logger?.info('DB: opening local db...');
+
     db = sqlite3.open(this.dbPath);
+
+    logger?.info('DB: local db opened.');
   }
 
   void close() {
+    logger?.info('DB: closing local db...');
+
     db?.dispose();
+
+    logger?.info('DB: local db closed.');
   }
 
   void migrate() {
+    logger?.info('DB: running migrations...');
+
     for (final sql in sqlInit()) {
       db?.execute(sql);
     }
+
+    logger?.info('DB: running migrations... done.');
   }
 
   void addChat(String username) {

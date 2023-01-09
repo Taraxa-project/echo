@@ -1,10 +1,13 @@
 import 'dart:isolate';
 
-import 'package:sqlite3/sqlite3.dart';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
 
 import 'db/db.dart';
+
+abstract class TelegramSender {
+  void send(TdFunction tdFunction);
+}
 
 abstract class TelegramEventGenerator {
   void addEventListener(
@@ -13,7 +16,7 @@ abstract class TelegramEventGenerator {
   });
   void removeEventListener(TelegramEventListener telegramEventListener);
 
-  void exit() {}
+  Future<void> exit() async {}
 
   static bool allEvents(dynamic event) => true;
 }
@@ -41,10 +44,6 @@ abstract class TelegramEventListener {
   void send(TdFunction tdFunction) {
     telegramSender?.send(tdFunction);
   }
-}
-
-abstract class TelegramSender {
-  void send(TdFunction tdFunction);
 }
 
 class AddEventListener {

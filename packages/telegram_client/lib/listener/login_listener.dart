@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:td_json_client/td_json_client.dart';
 
 import '../base.dart';

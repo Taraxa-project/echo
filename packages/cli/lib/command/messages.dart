@@ -16,7 +16,7 @@ import 'package:echo_cli/callback/cli.dart';
 
 class TelegramCommandMessages extends Command {
   final name = 'messages';
-  final description = 'Login a Telegram account.';
+  final description = 'Read and save messages from the last two weeks.';
 
   final Logger logger = Logger('messages');
   final loggerTdLib = Logger("tdlib");
@@ -33,8 +33,8 @@ class TelegramCommandMessages extends Command {
     await login();
     await seachPublicChats();
     await readChatsHistory();
-    await closeClient();
 
+    await closeClient();
     closeDB();
   }
 
@@ -68,11 +68,11 @@ class TelegramCommandMessages extends Command {
   }
 
   void initLoggers() {
-    logger.level = Level.ALL;
+    logger.level = getLogLevel();
     logger.onRecord.listen((event) {
       print(event);
     });
-    loggerTdLib.level = Level.ALL;
+    loggerTdLib.level = getLogLevelLibtdjson();
     loggerTdLib.onRecord.listen((event) {
       print(event);
     });
@@ -82,9 +82,7 @@ class TelegramCommandMessages extends Command {
     telegramClient = TelegramClient(
       libtdjsonlcPath: globalResults!['libtdjson-path'],
     );
-    // telegramClient.setupLogs(logger, loggerTdLib);
-    telegramClient?.setupLogs(logger, null);
-    // telegramClient?.setupLogs(null, null);
+    telegramClient?.setupLogs(logger, loggerTdLib);
 
     telegramClient?.waitTimeout = 5.0;
     telegramClient?.readEventsFrequency = Duration(milliseconds: 50);
@@ -93,14 +91,14 @@ class TelegramCommandMessages extends Command {
   void initDB() {
     db = DB(
       dbPath: globalResults!['message-database-path'],
+      logger: logger,
     );
     db?.open();
     db?.migrate();
   }
 
   Future<void> closeClient() async {
-    await Future.delayed(const Duration(seconds: 5));
-    telegramClient?.exit();
+    await telegramClient?.exit();
   }
 
   void closeDB() {
@@ -284,5 +282,20 @@ class TelegramCommandMessages extends Command {
 
   DateTime computeTwoWeeksAgo() {
     return DateTime.now().subtract(const Duration(days: 14));
+  }
+
+  Level getLogLevel() {
+    return getLogLevelByName(globalResults!['loglevel']);
+  }
+
+  Level getLogLevelLibtdjson() {
+    return getLogLevelByName(globalResults!['libtdjson-loglevel']);
+  }
+
+  Level getLogLevelByName(String name) {
+    return Level.LEVELS.firstWhere(
+      (level) => level.name == name.toUpperCase(),
+      orElse: () => Level.WARNING,
+    );
   }
 }
