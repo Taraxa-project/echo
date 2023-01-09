@@ -12,29 +12,29 @@ class DB {
   });
 
   void open() {
-    logger?.info('DB: opening local db...');
+    logger?.info('opening...');
 
     db = sqlite3.open(this.dbPath);
 
-    logger?.info('DB: local db opened.');
+    logger?.info('opened.');
   }
 
   void close() {
-    logger?.info('DB: closing local db...');
+    logger?.info('closing...');
 
     db?.dispose();
 
-    logger?.info('DB: local db closed.');
+    logger?.info('closed.');
   }
 
   void migrate() {
-    logger?.info('DB: running migrations...');
+    logger?.info('running migrations...');
 
     for (final sql in sqlInit()) {
       db?.execute(sql);
     }
 
-    logger?.info('DB: running migrations... done.');
+    logger?.info('running migrations... done.');
   }
 
   void addChat(String username) {

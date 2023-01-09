@@ -27,14 +27,14 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   late final int _tdJsonClientId;
   void init() {
     if (!_isInitialized) {
-      _logger?.info('TelegramClient: initializing TdJsonClient...');
+      _logger?.info('initializing TdJsonClient...');
 
       _tdJsonClient = TdJsonClient(libtdjsonlcPath: libtdjsonlcPath);
       _tdJsonClientId = _tdJsonClient.create_client_id();
       _isInitialized = true;
 
-      _logger?.info('TelegramClient: created client id $_tdJsonClientId.');
-      _logger?.info('TelegramClient: initialization finished.');
+      _logger?.info('created client id $_tdJsonClientId.');
+      _logger?.info('initialization finished.');
     }
   }
 
@@ -43,22 +43,22 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   void _tdStart() {
     init();
 
-    _logger?.info('TelegramClient: starting timer.');
+    _logger?.info('starting timer.');
 
     timer = Timer.periodic(readEventsFrequency, _tdReceive);
 
-    _logger?.info('TelegramClient: timer started.');
+    _logger?.info('timer started.');
   }
 
   void _tdStop() {
     init();
 
-    _logger?.info('TelegramClient: stopping timer.');
+    _logger?.info('stopping timer.');
 
     timer?.cancel();
     timer = null;
 
-    _logger?.info('TelegramClient: timer stopped.');
+    _logger?.info('timer stopped.');
   }
 
   double waitTimeout = 0.005;
@@ -71,7 +71,7 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
 
       var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
       if (event != null) {
-        _logger?.info('TelegramClient: received ${event.runtimeType}.');
+        _logger?.info('received ${event.runtimeType}.');
 
         _tdStreamController.add(event);
       }
@@ -86,11 +86,11 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   ) {
     init();
 
-    _logger?.info('TelegramClient: sending ${tdFunction.runtimeType}.');
+    _logger?.info('sending ${tdFunction.runtimeType}.');
 
     _tdJsonClient.send(_tdJsonClientId, tdFunction);
 
-    _logger?.info('TelegramClient: sent ${tdFunction.runtimeType}.');
+    _logger?.info('sent ${tdFunction.runtimeType}.');
   }
 
   Map<String, StreamSubscription> _eventListeners = {};
@@ -124,10 +124,10 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
   /// The TelegramClient [Logger].
   Logger? _logger;
 
-  void setupLogs(
+  void setupLogs({
     Logger? logger,
     Logger? loggerTdLib,
-  ) {
+  }) {
     _logger = logger;
 
     init();
@@ -137,12 +137,12 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
 
   @override
   Future<void> exit() async {
-    _logger?.info('TelegramClient: closing.');
+    _logger?.info('closing.');
 
     _tdJsonClient.exit();
     await _tdStreamController.close();
 
-    _logger?.info('TelegramClient: closed.');
+    _logger?.info('closed.');
   }
 }
 

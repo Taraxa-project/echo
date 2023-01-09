@@ -18,15 +18,14 @@ class TelegramCommandMessages extends Command {
   final name = 'messages';
   final description = 'Read and save messages from the last two weeks.';
 
-  final Logger logger = Logger('messages');
-  final loggerTdLib = Logger("tdlib");
+  final Logger _logger = Logger('messages');
 
   TelegramClient? telegramClient;
 
   DB? db;
 
   void run() async {
-    initLoggers();
+    initLogging();
     initDB();
     initClient();
 
@@ -67,13 +66,9 @@ class TelegramCommandMessages extends Command {
     exit(1);
   }
 
-  void initLoggers() {
-    logger.level = getLogLevel();
-    logger.onRecord.listen((event) {
-      print(event);
-    });
-    loggerTdLib.level = getLogLevelLibtdjson();
-    loggerTdLib.onRecord.listen((event) {
+  void initLogging() {
+    _logger.level = getLogLevel();
+    _logger.onRecord.listen((event) {
       print(event);
     });
   }
@@ -81,20 +76,34 @@ class TelegramCommandMessages extends Command {
   void initClient() {
     telegramClient = TelegramClient(
       libtdjsonlcPath: globalResults!['libtdjson-path'],
-    );
-    telegramClient?.setupLogs(logger, loggerTdLib);
-
-    telegramClient?.waitTimeout = 5.0;
-    telegramClient?.readEventsFrequency = Duration(milliseconds: 50);
+    )
+      ..waitTimeout = 5.0
+      ..readEventsFrequency = Duration(milliseconds: 50)
+      ..setupLogs(
+        logger: Logger('TelegramClient')
+          ..level = getLogLevel()
+          ..onRecord.listen((event) {
+            // print(event);
+          }),
+        loggerTdLib: Logger('Libtdjson')
+          ..level = getLogLevelLibtdjson()
+          ..onRecord.listen((event) {
+            print(event);
+          }),
+      );
   }
 
   void initDB() {
     db = DB(
       dbPath: globalResults!['message-database-path'],
-      logger: logger,
-    );
-    db?.open();
-    db?.migrate();
+      logger: Logger('DB')
+        ..level = getLogLevel()
+        ..onRecord.listen((event) {
+          print(event);
+        }),
+    )
+      ..open()
+      ..migrate();
   }
 
   Future<void> closeClient() async {
@@ -106,7 +115,7 @@ class TelegramCommandMessages extends Command {
   }
 
   Future<void> login() async {
-    var login = await LoginListener(
+    var login = LoginListener(
       setTdlibParameters: SetTdlibParameters(
         parameters: TdlibParameters(
           api_id: int.parse(globalResults!['api-id']),
@@ -139,15 +148,20 @@ class TelegramCommandMessages extends Command {
           CheckAuthenticationPasswordWithCallback(
               readUserPassword: readUserPassword),
       telegramSender: telegramClient,
+      logger: Logger('Login')
+        ..level = getLogLevel()
+        ..onRecord.listen((event) {
+          print(event);
+        }),
     );
 
     telegramClient?.addEventListener(login, filter: LoginListener.isLoginEvent);
-    login.auth();
+    var loggedIn = await login.auth();
+    if (!loggedIn) {
+      exit(-1);
+    }
 
-    await Future.delayed(const Duration(seconds: 20));
     telegramClient?.removeEventListener(login);
-
-    await Future.delayed(const Duration(seconds: 5));
     login.exit();
   }
 
