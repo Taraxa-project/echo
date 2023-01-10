@@ -1847,6 +1847,60 @@ class MessagePaymentSuccessfulBot extends MessageContent {
   }
 }
 
+/// Telegram Premium was gifted to the user 
+class MessageGiftedPremium extends MessageContent {
+  String get tdType => 'messageGiftedPremium';
+
+
+  /// Currency for the paid amount 
+  string? currency;
+
+  /// The paid amount, in the smallest units of the currency 
+  int53? amount;
+
+  /// Number of month the Telegram Premium subscription will be active
+  int32? month_count;
+
+  /// A sticker to be shown in the message; may be null if unknown
+  Sticker? sticker;
+
+  MessageGiftedPremium({
+    super.extra,
+    super.client_id,
+    this.currency,
+    this.amount,
+    this.month_count,
+    this.sticker,
+  });
+
+  MessageGiftedPremium.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    currency = map['currency'];
+    amount = map['amount'];
+    month_count = map['month_count'];
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'currency': currency?.toMap(skipNulls: skipNulls),
+      'amount': amount?.toMap(skipNulls: skipNulls),
+      'month_count': month_count?.toMap(skipNulls: skipNulls),
+      'sticker': sticker?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A contact has registered with Telegram
 class MessageContactRegistered extends MessageContent {
   String get tdType => 'messageContactRegistered';

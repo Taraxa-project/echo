@@ -9,4 +9,5 @@ dependencies:
   td_json_client: 
     path: ../td_json_client
     version: ^0.0.1
+  sqlite3: ^1.9.1
 dev_dependencies: {lints: ^2.0.0}

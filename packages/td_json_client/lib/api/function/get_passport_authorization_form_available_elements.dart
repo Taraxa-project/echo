@@ -10,7 +10,7 @@ class GetPassportAuthorizationFormAvailableElements extends TdFunction {
   /// Authorization form identifier 
   int32? autorization_form_id;
 
-  /// Password of the current user
+  /// The 2-step verification password of the current user
   string? password;
 
   GetPassportAuthorizationFormAvailableElements({

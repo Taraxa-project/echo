@@ -2,6 +2,13 @@ import 'dart:isolate';
 
 import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
+import 'package:logging/logging.dart';
+
+import 'db/db.dart';
+
+abstract class TelegramSender {
+  void send(TdFunction tdFunction);
+}
 
 abstract class TelegramEventGenerator {
   void addEventListener(
@@ -10,7 +17,7 @@ abstract class TelegramEventGenerator {
   });
   void removeEventListener(TelegramEventListener telegramEventListener);
 
-  void exit() {}
+  Future<void> exit() async {}
 
   static bool allEvents(dynamic event) => true;
 }
@@ -22,8 +29,14 @@ abstract class TelegramEventListener {
 
   late final String uniqueKey;
   TelegramSender? telegramSender;
+  DB? db;
+  Logger? logger;
 
-  TelegramEventListener({TelegramSender? this.telegramSender}) {
+  TelegramEventListener({
+    TelegramSender? this.telegramSender,
+    DB? this.db,
+    Logger? this.logger,
+  }) {
     uniqueKey = Uuid().v1();
   }
 
@@ -32,12 +45,10 @@ abstract class TelegramEventListener {
   }
 
   void send(TdFunction tdFunction) {
+    logger?.info('sending ${tdFunction.runtimeType}...');
     telegramSender?.send(tdFunction);
+    logger?.info('sent ${tdFunction.runtimeType}.');
   }
-}
-
-abstract class TelegramSender {
-  void send(TdFunction tdFunction);
 }
 
 class AddEventListener {

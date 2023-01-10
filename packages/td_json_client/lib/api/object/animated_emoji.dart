@@ -4,18 +4,18 @@ import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/file.dart';
 
 
-/// Describes an animated representation of an emoji
+/// Describes an animated or custom representation of an emoji
 class AnimatedEmoji extends TdObject {
   String get tdType => 'animatedEmoji';
 
 
-  /// Animated sticker for the emoji
+  /// Sticker for the emoji; may be null if yet unknown for a custom emoji. If the sticker is a custom emoji, it can have arbitrary format different from stickerFormatTgs
   Sticker? sticker;
 
   /// Emoji modifier fitzpatrick type; 0-6; 0 if none
   int32? fitzpatrick_type;
 
-  /// File containing the sound to be played when the animated emoji is clicked; may be null. The sound is encoded with the Opus codec, and stored inside an OGG container
+  /// File containing the sound to be played when the sticker is clicked; may be null. The sound is encoded with the Opus codec, and stored inside an OGG container
   File? sound;
 
   AnimatedEmoji({

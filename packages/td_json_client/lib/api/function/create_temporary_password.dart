@@ -7,7 +7,7 @@ class CreateTemporaryPassword extends TdFunction {
   String get tdReturnType => 'TemporaryPasswordState';
 
 
-  /// Persistent user password 
+  /// The 2-step verification password of the current user 
   string? password;
 
   /// Time during which the temporary password will be valid, in seconds; must be between 60 and 86400

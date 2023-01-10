@@ -7,19 +7,24 @@ class DeleteAccount extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// The reason why the account was deleted; optional
+  /// The reason why the account was deleted; optional 
   string? reason;
+
+  /// The 2-step verification password of the current user. If not specified, account deletion can be canceled within one week
+  string? password;
 
   DeleteAccount({
     super.extra,
     super.client_id,
     this.reason,
+    this.password,
   });
 
   DeleteAccount.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     reason = map['reason'];
+    password = map['password'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -28,6 +33,7 @@ class DeleteAccount extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'reason': reason?.toMap(skipNulls: skipNulls),
+      'password': password?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

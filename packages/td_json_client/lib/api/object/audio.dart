@@ -28,8 +28,11 @@ class Audio extends TdObject {
   /// The minithumbnail of the album cover; may be null
   Minithumbnail? album_cover_minithumbnail;
 
-  /// The thumbnail of the album cover in JPEG format; as defined by the sender. The full size thumbnail is supposed to be extracted from the downloaded file; may be null 
+  /// The thumbnail of the album cover in JPEG format; as defined by the sender. The full size thumbnail is supposed to be extracted from the downloaded audio file; may be null
   Thumbnail? album_cover_thumbnail;
+
+  /// Album cover variants to use if the downloaded audio file contains no album cover. Provided thumbnail dimensions are approximate 
+  vector<Thumbnail>? external_album_covers;
 
   /// File containing the audio
   File? audio;
@@ -44,6 +47,7 @@ class Audio extends TdObject {
     this.mime_type,
     this.album_cover_minithumbnail,
     this.album_cover_thumbnail,
+    this.external_album_covers,
     this.audio,
   });
 
@@ -60,6 +64,14 @@ class Audio extends TdObject {
     }
     if (map['album_cover_thumbnail'] != null) {
       album_cover_thumbnail = TdApiMap.fromMap(map['album_cover_thumbnail']) as Thumbnail;
+    }
+    if (map['external_album_covers'] != null) {
+      external_album_covers = [];
+      for (var someValue in map['external_album_covers']) {
+        if (someValue != null) {
+          external_album_covers?.add(TdApiMap.fromMap(someValue) as Thumbnail);
+        }
+      }
     }
     if (map['audio'] != null) {
       audio = TdApiMap.fromMap(map['audio']) as File;
@@ -78,6 +90,7 @@ class Audio extends TdObject {
       'mime_type': mime_type?.toMap(skipNulls: skipNulls),
       'album_cover_minithumbnail': album_cover_minithumbnail?.toMap(skipNulls: skipNulls),
       'album_cover_thumbnail': album_cover_thumbnail?.toMap(skipNulls: skipNulls),
+      'external_album_covers': external_album_covers?.toMap(skipNulls: skipNulls),
       'audio': audio?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

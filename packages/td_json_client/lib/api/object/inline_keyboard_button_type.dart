@@ -154,7 +154,7 @@ class InlineKeyboardButtonTypeCallback extends InlineKeyboardButtonType {
   }
 }
 
-/// A button that asks for password of the current user and then sends a callback query to a bot 
+/// A button that asks for the 2-step verification password of the current user and then sends a callback query to a bot 
 class InlineKeyboardButtonTypeCallbackWithPassword extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeCallbackWithPassword';
 

@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Contains information about saved card credentials 
+/// Contains information about saved payment credentials 
 class SavedCredentials extends TdObject {
   String get tdType => 'savedCredentials';
 

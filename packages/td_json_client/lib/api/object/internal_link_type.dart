@@ -875,6 +875,34 @@ class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
   }
 }
 
+/// The link forces restore of App Store purchases when opened. For official iOS application only
+class InternalLinkTypeRestorePurchases extends InternalLinkType {
+  String get tdType => 'internalLinkTypeRestorePurchases';
+
+
+  InternalLinkTypeRestorePurchases({
+    super.extra,
+    super.client_id,
+  });
+
+  InternalLinkTypeRestorePurchases.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// The link is a link to application settings
 class InternalLinkTypeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeSettings';

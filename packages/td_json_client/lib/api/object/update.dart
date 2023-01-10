@@ -42,6 +42,7 @@ import 'package:td_json_client/api/object/user_privacy_setting_rules.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 import 'package:td_json_client/api/object/option_value.dart';
 import 'package:td_json_client/api/object/sticker_set.dart';
+import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/trending_sticker_sets.dart';
 import 'package:td_json_client/api/object/background.dart';
 import 'package:td_json_client/api/object/chat_theme.dart';
@@ -3225,8 +3226,8 @@ class UpdateInstalledStickerSets extends Update {
   String get tdType => 'updateInstalledStickerSets';
 
 
-  /// True, if the list of installed mask sticker sets was updated 
-  Bool? is_masks;
+  /// Type of the affected stickers 
+  StickerType? sticker_type;
 
   /// The new list of installed ordinary sticker sets
   vector<int64>? sticker_set_ids;
@@ -3234,14 +3235,16 @@ class UpdateInstalledStickerSets extends Update {
   UpdateInstalledStickerSets({
     super.extra,
     super.client_id,
-    this.is_masks,
+    this.sticker_type,
     this.sticker_set_ids,
   });
 
   UpdateInstalledStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    is_masks = map['is_masks'];
+    if (map['sticker_type'] != null) {
+      sticker_type = TdApiMap.fromMap(map['sticker_type']) as StickerType;
+    }
     if (map['sticker_set_ids'] != null) {
       sticker_set_ids = [];
       for (var someValue in map['sticker_set_ids']) {
@@ -3255,7 +3258,7 @@ class UpdateInstalledStickerSets extends Update {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'is_masks': is_masks?.toMap(skipNulls: skipNulls),
+      'sticker_type': sticker_type?.toMap(skipNulls: skipNulls),
       'sticker_set_ids': sticker_set_ids?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -3270,18 +3273,25 @@ class UpdateTrendingStickerSets extends Update {
   String get tdType => 'updateTrendingStickerSets';
 
 
+  /// Type of the affected stickers 
+  StickerType? sticker_type;
+
   /// The prefix of the list of trending sticker sets with the newest trending sticker sets
   TrendingStickerSets? sticker_sets;
 
   UpdateTrendingStickerSets({
     super.extra,
     super.client_id,
+    this.sticker_type,
     this.sticker_sets,
   });
 
   UpdateTrendingStickerSets.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
+    if (map['sticker_type'] != null) {
+      sticker_type = TdApiMap.fromMap(map['sticker_type']) as StickerType;
+    }
     if (map['sticker_sets'] != null) {
       sticker_sets = TdApiMap.fromMap(map['sticker_sets']) as TrendingStickerSets;
     }
@@ -3292,6 +3302,7 @@ class UpdateTrendingStickerSets extends Update {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'sticker_type': sticker_type?.toMap(skipNulls: skipNulls),
       'sticker_sets': sticker_sets?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

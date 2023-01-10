@@ -14,7 +14,7 @@ class Session extends TdObject {
   /// True, if this session is the current session
   Bool? is_current;
 
-  /// True, if a password is needed to complete authorization of the session
+  /// True, if a 2-step verification password is needed to complete authorization of the session
   Bool? is_password_pending;
 
   /// True, if incoming secret chats can be accepted by the session

@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Checks whether a password recovery code sent to an email address is valid. Works only when the current authorization state is authorizationStateWaitPassword 
+/// Checks whether a 2-step verification password recovery code sent to an email address is valid. Works only when the current authorization state is authorizationStateWaitPassword 
 class CheckAuthenticationPasswordRecoveryCode extends TdFunction {
   String get tdType => 'checkAuthenticationPasswordRecoveryCode';
   String get tdReturnType => 'Ok';

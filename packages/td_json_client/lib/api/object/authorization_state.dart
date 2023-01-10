@@ -205,7 +205,7 @@ class AuthorizationStateWaitRegistration extends AuthorizationState {
   }
 }
 
-/// The user has been authorized, but needs to enter a password to start using the application 
+/// The user has been authorized, but needs to enter a 2-step verification password to start using the application 
 class AuthorizationStateWaitPassword extends AuthorizationState {
   String get tdType => 'authorizationStateWaitPassword';
 

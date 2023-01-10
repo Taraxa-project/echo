@@ -2,6 +2,7 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/closed_vector_path.dart';
+import 'package:td_json_client/api/object/sticker_format.dart';
 import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/emojis.dart';
@@ -36,6 +37,9 @@ class StickerSet extends TdObject {
   /// True, if the sticker set is official 
   Bool? is_official;
 
+  /// Format of the stickers in the set 
+  StickerFormat? sticker_format;
+
   /// Type of the stickers in the set 
   StickerType? sticker_type;
 
@@ -59,6 +63,7 @@ class StickerSet extends TdObject {
     this.is_installed,
     this.is_archived,
     this.is_official,
+    this.sticker_format,
     this.sticker_type,
     this.is_viewed,
     this.stickers,
@@ -85,6 +90,9 @@ class StickerSet extends TdObject {
     is_installed = map['is_installed'];
     is_archived = map['is_archived'];
     is_official = map['is_official'];
+    if (map['sticker_format'] != null) {
+      sticker_format = TdApiMap.fromMap(map['sticker_format']) as StickerFormat;
+    }
     if (map['sticker_type'] != null) {
       sticker_type = TdApiMap.fromMap(map['sticker_type']) as StickerType;
     }
@@ -120,6 +128,7 @@ class StickerSet extends TdObject {
       'is_installed': is_installed?.toMap(skipNulls: skipNulls),
       'is_archived': is_archived?.toMap(skipNulls: skipNulls),
       'is_official': is_official?.toMap(skipNulls: skipNulls),
+      'sticker_format': sticker_format?.toMap(skipNulls: skipNulls),
       'sticker_type': sticker_type?.toMap(skipNulls: skipNulls),
       'is_viewed': is_viewed?.toMap(skipNulls: skipNulls),
       'stickers': stickers?.toMap(skipNulls: skipNulls),

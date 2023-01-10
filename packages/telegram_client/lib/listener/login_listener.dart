@@ -1,10 +1,8 @@
-import 'dart:isolate';
-
 import 'package:td_json_client/td_json_client.dart';
 
-import 'base.dart';
+import '../base.dart';
 
-class Login extends TelegramEventListener {
+class LoginListener extends TelegramEventListener {
   final SetTdlibParameters setTdlibParameters;
   final CheckDatabaseEncryptionKey checkDatabaseEncryptionKey;
   final SetAuthenticationPhoneNumber setAuthenticationPhoneNumber;
@@ -15,7 +13,7 @@ class Login extends TelegramEventListener {
   final CheckAuthenticationPasswordWithCallback
       checkAuthenticationPasswordWithCallback;
 
-  Login({
+  LoginListener({
     required this.setTdlibParameters,
     required this.checkDatabaseEncryptionKey,
     required this.setAuthenticationPhoneNumber,
@@ -24,10 +22,20 @@ class Login extends TelegramEventListener {
     required this.registerUserWithCallback,
     required this.checkAuthenticationPasswordWithCallback,
     super.telegramSender,
+    super.logger,
   });
 
-  void auth() {
+  Future<bool> auth() async {
     send(GetAuthorizationState());
+    while (true) {
+      if (_isAuthorized) {
+        return true;
+      }
+      if (_isClosed) {
+        return false;
+      }
+      await Future.delayed(const Duration(seconds: 1));
+    }
   }
 
   @override
@@ -48,6 +56,9 @@ class Login extends TelegramEventListener {
   Future<void> _onUpdateAuthorizationState(
     UpdateAuthorizationState updateAuthorizationState,
   ) async {
+    logger?.info('received ${updateAuthorizationState.runtimeType} '
+        'type ${updateAuthorizationState.authorization_state.runtimeType}.');
+
     switch (updateAuthorizationState.authorization_state.runtimeType) {
       case AuthorizationStateWaitTdlibParameters:
         send(setTdlibParameters);
@@ -88,6 +99,7 @@ class Login extends TelegramEventListener {
         break;
 
       case AuthorizationStateReady:
+        logger?.info('logged in succesfully.');
         _isAuthorized = true;
         break;
       case AuthorizationStateLoggingOut:
@@ -108,79 +120,81 @@ class Login extends TelegramEventListener {
 
   Future<void> _onError(
     Error error,
-  ) async {}
-
-  static Future<LoginIsolated> isolate({
-    required SetTdlibParameters setTdlibParameters,
-    required CheckDatabaseEncryptionKey checkDatabaseEncryptionKey,
-    required SetAuthenticationPhoneNumber setAuthenticationPhoneNumber,
-    required CheckAuthenticationCodeWithCallback
-        checkAuthenticationCodeWithCallback,
-    required AuthorizationStateWaitOtherDeviceConfirmationWithCallback
-        authorizationStateWaitOtherDeviceConfirmationWithCallback,
-    required RegisterUserWithCallback registerUserWithCallback,
-    required CheckAuthenticationPasswordWithCallback
-        checkAuthenticationPasswordWithCallback,
-    TelegramSender? telegramSender,
-  }) async {
-    LoginIsolated instance = LoginIsolated(
-      setTdlibParameters: setTdlibParameters,
-      checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
-      setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
-      checkAuthenticationCodeWithCallback: checkAuthenticationCodeWithCallback,
-      authorizationStateWaitOtherDeviceConfirmationWithCallback:
-          authorizationStateWaitOtherDeviceConfirmationWithCallback,
-      registerUserWithCallback: registerUserWithCallback,
-      checkAuthenticationPasswordWithCallback:
-          checkAuthenticationPasswordWithCallback,
-      telegramSender: telegramSender,
-    );
-    await instance.spawn();
-    return instance;
+  ) async {
+    logger?.info('received ${error.runtimeType}: $error.');
   }
+
+  // static Future<LoginIsolated> isolate({
+  //   required SetTdlibParameters setTdlibParameters,
+  //   required CheckDatabaseEncryptionKey checkDatabaseEncryptionKey,
+  //   required SetAuthenticationPhoneNumber setAuthenticationPhoneNumber,
+  //   required CheckAuthenticationCodeWithCallback
+  //       checkAuthenticationCodeWithCallback,
+  //   required AuthorizationStateWaitOtherDeviceConfirmationWithCallback
+  //       authorizationStateWaitOtherDeviceConfirmationWithCallback,
+  //   required RegisterUserWithCallback registerUserWithCallback,
+  //   required CheckAuthenticationPasswordWithCallback
+  //       checkAuthenticationPasswordWithCallback,
+  //   TelegramSender? telegramSender,
+  // }) async {
+  //   LoginIsolated instance = LoginIsolated(
+  //     setTdlibParameters: setTdlibParameters,
+  //     checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
+  //     setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
+  //     checkAuthenticationCodeWithCallback: checkAuthenticationCodeWithCallback,
+  //     authorizationStateWaitOtherDeviceConfirmationWithCallback:
+  //         authorizationStateWaitOtherDeviceConfirmationWithCallback,
+  //     registerUserWithCallback: registerUserWithCallback,
+  //     checkAuthenticationPasswordWithCallback:
+  //         checkAuthenticationPasswordWithCallback,
+  //     telegramSender: telegramSender,
+  //   );
+  //   await instance.spawn();
+  //   return instance;
+  // }
 }
 
-class LoginIsolated extends Login with Isolated {
-  LoginIsolated({
-    required super.setTdlibParameters,
-    required super.checkDatabaseEncryptionKey,
-    required super.setAuthenticationPhoneNumber,
-    required super.checkAuthenticationCodeWithCallback,
-    required super.authorizationStateWaitOtherDeviceConfirmationWithCallback,
-    required super.registerUserWithCallback,
-    required super.checkAuthenticationPasswordWithCallback,
-    super.telegramSender,
-  }) {
-    init(
-      instance: Login(
-        setTdlibParameters: setTdlibParameters,
-        checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
-        setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
-        checkAuthenticationCodeWithCallback:
-            checkAuthenticationCodeWithCallback,
-        authorizationStateWaitOtherDeviceConfirmationWithCallback:
-            authorizationStateWaitOtherDeviceConfirmationWithCallback,
-        registerUserWithCallback: registerUserWithCallback,
-        checkAuthenticationPasswordWithCallback:
-            checkAuthenticationPasswordWithCallback,
-      ),
-      messageHandler: LoginIsolated.handleMessage,
-    );
-  }
+// class LoginIsolated extends LoginListener with Isolated {
+//   LoginIsolated({
+//     required super.setTdlibParameters,
+//     required super.checkDatabaseEncryptionKey,
+//     required super.setAuthenticationPhoneNumber,
+//     required super.checkAuthenticationCodeWithCallback,
+//     required super.authorizationStateWaitOtherDeviceConfirmationWithCallback,
+//     required super.registerUserWithCallback,
+//     required super.checkAuthenticationPasswordWithCallback,
+//     super.telegramSender,
+//   }) {
+//     init(
+//       instance: LoginListener(
+//         setTdlibParameters: setTdlibParameters,
+//         checkDatabaseEncryptionKey: checkDatabaseEncryptionKey,
+//         setAuthenticationPhoneNumber: setAuthenticationPhoneNumber,
+//         checkAuthenticationCodeWithCallback:
+//             checkAuthenticationCodeWithCallback,
+//         authorizationStateWaitOtherDeviceConfirmationWithCallback:
+//             authorizationStateWaitOtherDeviceConfirmationWithCallback,
+//         registerUserWithCallback: registerUserWithCallback,
+//         checkAuthenticationPasswordWithCallback:
+//             checkAuthenticationPasswordWithCallback,
+//       ),
+//       messageHandler: LoginIsolated.handleMessage,
+//     );
+//   }
 
-  @override
-  void auth() {
-    isolateSendPort?.send(Auth());
-  }
+//   @override
+//   void auth() {
+//     isolateSendPort?.send(Auth());
+//   }
 
-  static void handleMessage(dynamic message, TelegramEventListener instance) {
-    if (message is Auth) {
-      (instance as Login).auth();
-    } else {
-      Isolated.handleMessage(message, instance);
-    }
-  }
-}
+//   static void handleMessage(dynamic message, TelegramEventListener instance) {
+//     if (message is Auth) {
+//       (instance as LoginListener).auth();
+//     } else {
+//       Isolated.handleMessage(message, instance);
+//     }
+//   }
+// }
 
 class CheckAuthenticationCodeWithCallback extends CheckAuthenticationCode {
   final String Function() readTelegramCode;

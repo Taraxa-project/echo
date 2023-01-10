@@ -12,7 +12,7 @@ class SetPassportElement extends TdFunction {
   /// Input Telegram Passport element 
   InputPassportElement? element;
 
-  /// Password of the current user
+  /// The 2-step verification password of the current user
   string? password;
 
   SetPassportElement({

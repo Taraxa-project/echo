@@ -1,13 +1,13 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Checks the authentication password for correctness. Works only when the current authorization state is authorizationStateWaitPassword 
+/// Checks the 2-step verification password for correctness. Works only when the current authorization state is authorizationStateWaitPassword 
 class CheckAuthenticationPassword extends TdFunction {
   String get tdType => 'checkAuthenticationPassword';
   String get tdReturnType => 'Ok';
 
 
-  /// The password to check
+  /// The 2-step verification password to check
   string? password;
 
   CheckAuthenticationPassword({
