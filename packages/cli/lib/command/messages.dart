@@ -18,7 +18,7 @@ class TelegramCommandMessages extends Command {
   final name = 'messages';
   final description = 'Read and save messages from the last two weeks.';
 
-  final Logger _logger = Logger('messages');
+  final Logger _logger = Logger('Messages');
 
   TelegramClient? telegramClient;
 
@@ -31,7 +31,7 @@ class TelegramCommandMessages extends Command {
 
     await login();
     await seachPublicChats();
-    // await readChatsHistory();
+    await readChatsHistory();
 
     await closeClient();
     closeDB();
@@ -196,32 +196,46 @@ class TelegramCommandMessages extends Command {
   }
 
   Future<void> readChatsHistory() async {
-    for (int id in db?.selectChats() ?? []) {
+    _logger.info('selecting chats locally...');
+    var chatsIds = db?.selectChats() ?? [];
+    _logger.info('found ${chatsIds.length} chats locally.');
+
+    for (int id in chatsIds) {
       await readChatHistory(id);
     }
   }
 
   Future<void> readChatHistory(int chatId) async {
     var twoWeeksAgo = computeTwoWeeksAgo();
+    _logger.info('[$chatId] reading chat history '
+        'from ${twoWeeksAgo.toIso8601String()}...');
+
+    _logger.info('[$chatId] finding last message id...');
     var messageIdLast = await getMessageIdLast(chatId, twoWeeksAgo);
+    messageIdLast += 1;
 
     while (true) {
       var getChatHistory = GetChatHistoryListener(
         telegramSender: telegramClient,
+        logger: Logger('GetChatHistoryListener')
+          ..level = getLogLevel()
+          ..clearListeners()
+          ..onRecord.listen((event) {
+            print(event);
+          }),
+        chatId: chatId,
       );
+
       telegramClient?.addEventListener(getChatHistory);
-      getChatHistory.get_chat_history(
-        chat_id: WrapId.wrapChatId(chatId),
-        from_message_id: WrapId.wrapMessageId(messageIdLast),
+
+      await getChatHistory.get_chat_history(
+        from_message_id: messageIdLast,
         offset: -99,
         limit: 99,
         only_local: false,
       );
 
-      await Future.delayed(const Duration(seconds: 25));
-      telegramClient?.removeEventListener(getChatHistory);
-
-      await Future.delayed(const Duration(seconds: 15));
+      await telegramClient?.removeEventListener(getChatHistory);
       getChatHistory.exit();
 
       if (getChatHistory.messages == null ||
@@ -230,6 +244,7 @@ class TelegramCommandMessages extends Command {
         break;
       }
 
+      int messageCount = 0;
       for (Message message in getChatHistory.messages!.messages!) {
         if (message.chat_id == null ||
             message.id == null ||
@@ -258,25 +273,37 @@ class TelegramCommandMessages extends Command {
             date: message.date!,
             userId: userId,
             text: text);
+        messageCount += 1;
 
         var messageIdLastNew = WrapId.unwrapMessageId(message.id)!;
         if (messageIdLastNew > messageIdLast) {
           messageIdLast = messageIdLastNew;
         }
       }
+      _logger.info('[$chatId] added $messageCount messages to db.');
 
       messageIdLast += 1;
     }
+    _logger.info('[$chatId] done reading chat history '
+        'from ${twoWeeksAgo.toIso8601String()}.');
   }
 
   Future<int> getMessageIdLast(int chatId, DateTime twoWeeksAgo) async {
+    _logger.info('[$chatId] reading last message id locally...');
     var messageIdLast = getMessageIdLastLocally(chatId, twoWeeksAgo);
+
     if (messageIdLast == null) {
+      _logger.info('[$chatId] did not find last message id locally.');
+      _logger.info('[$chatId] reading last message id remotely...');
       messageIdLast = await getMessageIdLastRemote(chatId, twoWeeksAgo);
     }
+
     if (messageIdLast == null) {
-      messageIdLast = 1;
+      _logger.info('[$chatId] did not find last message id remotely.');
+      messageIdLast = 0;
     }
+
+    _logger.info('[$chatId] last message id is $messageIdLast.');
     return messageIdLast;
   }
 
@@ -287,20 +314,24 @@ class TelegramCommandMessages extends Command {
   Future<int?> getMessageIdLastRemote(int chatId, DateTime olderThan) async {
     var getChatMessageByDate = GetChatMessageByDateListener(
       telegramSender: telegramClient,
+      logger: Logger('GetChatMessageByDate')
+        ..level = getLogLevel()
+        ..clearListeners()
+        ..onRecord.listen((event) {
+          print(event);
+        }),
+      chatId: chatId,
     );
+
     telegramClient?.addEventListener(getChatMessageByDate);
-    getChatMessageByDate.get_chat_message_by_date(
-      chat_id: WrapId.wrapChatId(chatId),
+    await getChatMessageByDate.get_chat_message_by_date(
       date: olderThan,
     );
 
-    await Future.delayed(const Duration(seconds: 15));
-    telegramClient?.removeEventListener(getChatMessageByDate);
-
-    await Future.delayed(const Duration(seconds: 15));
+    await telegramClient?.removeEventListener(getChatMessageByDate);
     getChatMessageByDate.exit();
 
-    return WrapId.unwrapMessageId(getChatMessageByDate.messageId);
+    return getChatMessageByDate.messageId;
   }
 
   DateTime computeTwoWeeksAgo() {

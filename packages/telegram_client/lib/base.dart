@@ -46,9 +46,7 @@ abstract class TelegramEventListener {
 
   void send(TdFunction tdFunction) {
     logger?.info('sending ${tdFunction.runtimeType}...');
-
     telegramSender?.send(tdFunction);
-
     logger?.info('sent ${tdFunction.runtimeType}.');
   }
 }

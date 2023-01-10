@@ -13,50 +13,53 @@ class DB {
 
   void open() {
     logger?.info('opening...');
-
     db = sqlite3.open(this.dbPath);
-
     logger?.info('opened.');
   }
 
   void close() {
     logger?.info('closing...');
-
     db?.dispose();
-
     logger?.info('closed.');
   }
 
   void migrate() {
     logger?.info('running migrations...');
-
     for (final sql in sqlInit()) {
       db?.execute(sql);
     }
-
     logger?.info('running migrations... done.');
   }
 
   void addChat(String username) {
     final stmt =
         db?.prepare('INSERT INTO chat (username, created_at) VALUES (?, ?)');
+
+    logger?.info('adding chat $username...');
     stmt?.execute([username, DateTime.now().toUtc().toIso8601String()]);
+    logger?.info('added chat $username.');
+
     stmt?.dispose();
   }
 
   void updateChat(String username, int id, String title) {
     final stmt = db?.prepare(
         'UPDATE chat SET id = ?, title = ?, updated_at = ? WHERE username = ?;');
+
+    logger?.info('updating chat $username, id $id...');
     stmt?.execute([
       id,
       title,
       DateTime.now().toUtc().toIso8601String(),
       username,
     ]);
+    logger?.info('updated chat $username, id $id.');
+
     stmt?.dispose();
   }
 
   List<int> selectChats() {
+    logger?.info('reading chats...');
     final ResultSet? resultSet =
         db?.select('SELECT id FROM chat ORDER BY created_at ASC;');
 
@@ -66,11 +69,13 @@ class DB {
         ids.add(row['id']);
       }
     }
-    print(ids);
+
+    logger?.info('found ${ids.length} chats.');
     return ids;
   }
 
   int? selectMaxMessageId(int chatId, DateTime newerThan) {
+    logger?.info('reading last message id for $chatId...');
     final ResultSet? resultSet = db?.select(
         'SELECT max(id) id FROM message WHERE chat_id = ? AND date >= ?;', [
       chatId,
@@ -80,7 +85,11 @@ class DB {
     int? id;
     if (resultSet != null && resultSet.isNotEmpty) {
       id = resultSet.first['id'];
+      logger?.info('found last message id $id for chat $chatId.');
+    } else {
+      logger?.info('did not find last message id for chat $chatId.');
     }
+
     return id;
   }
 

@@ -1,10 +1,20 @@
 import 'package:td_json_client/td_json_client.dart';
+import 'package:uuid/uuid.dart';
+import 'package:telegram_client/wrap_id.dart';
 
 import '../base.dart';
 
 class GetChatHistoryListener extends TelegramEventListener {
+  bool _done = false;
+  String? extra;
+  int chatId;
+
   @override
   void onEvent(dynamic event) {
+    if (event.extra == extra) {
+      _done = true;
+    }
+
     if (event is Messages) {
       _onMessages(event);
     } else if (event is Error) {
@@ -12,33 +22,49 @@ class GetChatHistoryListener extends TelegramEventListener {
     }
   }
 
-  GetChatHistoryListener({TelegramSender? super.telegramSender});
+  GetChatHistoryListener({
+    TelegramSender? super.telegramSender,
+    super.logger,
+    required this.chatId,
+  });
 
   Messages? messages;
 
   void _onMessages(Messages messages) {
+    logger?.info('[${chatId}] received ${messages.runtimeType}.');
     this.messages = messages;
   }
 
   void _onError(Error error) {
-    print(error);
+    logger?.info('received ${error.runtimeType}: $error.');
   }
 
-  void get_chat_history({
-    required int chat_id,
+  Future<void> get_chat_history({
     required int from_message_id,
     required int offset,
     required int limit,
     bool only_local = false,
-  }) {
+  }) async {
     this.messages = null;
+
+    logger?.info('[$chatId] geting chat history '
+        'from message $from_message_id in TG...');
+    extra = Uuid().v1();
     send(GetChatHistory(
-      chat_id: chat_id,
-      from_message_id: from_message_id,
+      chat_id: WrapId.wrapChatId(chatId),
+      from_message_id: WrapId.wrapMessageId(from_message_id),
       offset: offset,
       limit: limit,
       only_local: only_local,
+      extra: extra,
     ));
+
+    while (true) {
+      if (_done) {
+        return;
+      }
+      await Future.delayed(const Duration(seconds: 1));
+    }
   }
 
   // static Future<GetChatMessageByDateIsolated> isolate({

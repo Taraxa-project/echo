@@ -32,16 +32,13 @@ class SearchPublicChatListener extends TelegramEventListener {
   });
 
   void _onChat(Chat chat) {
-    logger
-        ?.info('[$username] received ${chat.runtimeType} with id ${chat.id}.');
-
+    logger?.info('[$username] received ${chat.runtimeType} '
+        'with id ${chat.id}.');
     var id = WrapId.unwrapChatId(chat.id);
-
     logger?.info('[$username] unwrapped id is $id.');
 
     if (id != null) {
       logger?.info('[$username] updating chat in db...');
-
       db?.updateChat(
         username,
         id,
@@ -57,13 +54,10 @@ class SearchPublicChatListener extends TelegramEventListener {
 
   Future<void> search_public_chat() async {
     logger?.info('[$username] adding chat to db...');
-
     db?.addChat(username);
-
     logger?.info('[$username] added chat to db.');
 
     logger?.info('[$username] searching public chat in TG...');
-
     extra = Uuid().v1();
     send(SearchPublicChat(
       username: username,

@@ -44,9 +44,7 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
     init();
 
     _logger?.info('starting timer.');
-
     timer = Timer.periodic(readEventsFrequency, _tdReceive);
-
     _logger?.info('timer started.');
   }
 
@@ -54,10 +52,8 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
     init();
 
     _logger?.info('stopping timer.');
-
     timer?.cancel();
     timer = null;
-
     _logger?.info('timer stopped.');
   }
 
@@ -72,7 +68,6 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
       var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
       if (event != null) {
         _logger?.info('received ${event.runtimeType}.');
-
         _tdStreamController.add(event);
       }
 
@@ -87,9 +82,7 @@ class TelegramClient extends TelegramEventGenerator implements TelegramSender {
     init();
 
     _logger?.info('sending ${tdFunction.runtimeType}.');
-
     _tdJsonClient.send(_tdJsonClientId, tdFunction);
-
     _logger?.info('sent ${tdFunction.runtimeType}.');
   }
 
