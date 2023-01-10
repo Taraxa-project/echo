@@ -5,5 +5,19 @@
 # Conventional directory for build output.
 build/
 
+# IDE files
 .idea/
 .vscode/
+
+# melos generated files
+*.iml
+
+# tdlib generated files
+*.binlog
+
+# Mac
+.DS_store
+
+# env
+.env*
+*.local
