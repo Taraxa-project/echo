@@ -7,10 +7,10 @@ class DeleteChatHistory extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// Pass true to remove the chat from all chat lists 
+  /// Pass true to remove the chat from all chat lists
   Bool? remove_from_chat_list;
 
   /// Pass true to delete chat history for all users

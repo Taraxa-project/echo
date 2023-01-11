@@ -1,6 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 
-/// Represents a data needed to subscribe for push notifications through registerDevice method. To use specific push notification service, the correct application platform must be specified and a valid server authentication data must be uploaded at https://my.telegram.org
+/// Represents a data needed to subscribe for push notifications through registerDevice method.
 abstract class DeviceToken extends TdObject {
   DeviceToken({super.extra, super.client_id});
 }
@@ -234,7 +234,7 @@ class DeviceTokenMicrosoftPushVoIP extends DeviceToken {
   }
 }
 
-/// A token for web Push API 
+/// A token for web Push API
 class DeviceTokenWebPush extends DeviceToken {
   String get tdType => 'deviceTokenWebPush';
 
@@ -242,7 +242,7 @@ class DeviceTokenWebPush extends DeviceToken {
   /// Absolute URL exposed by the push service where the application server can send push messages; may be empty to deregister a device
   string? endpoint;
 
-  /// Base64url-encoded P-256 elliptic curve Diffie-Hellman public key 
+  /// Base64url-encoded P-256 elliptic curve Diffie-Hellman public key
   string? p256dh_base64url;
 
   /// Base64url-encoded authentication secret

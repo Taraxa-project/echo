@@ -3,13 +3,13 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_passport_element.dart';
 
 
-/// Adds an element to the user's Telegram Passport. May return an error with a message "PHONE_VERIFICATION_NEEDED" or "EMAIL_VERIFICATION_NEEDED" if the chosen phone number or the chosen email address must be verified first 
+/// Adds an element to the user's Telegram Passport. May return an error with a message "PHONE_VERIFICATION_NEEDED" or "EMAIL_VERIFICATION_NEEDED" if the chosen phone number or the chosen email address must be verified first
 class SetPassportElement extends TdFunction {
   String get tdType => 'setPassportElement';
   String get tdReturnType => 'PassportElement';
 
 
-  /// Input Telegram Passport element 
+  /// Input Telegram Passport element
   InputPassportElement? element;
 
   /// The 2-step verification password of the current user

@@ -3,16 +3,16 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/phone_number_authentication_settings.dart';
 
 
-/// Sends phone number confirmation code to handle links of the type internalLinkTypePhoneNumberConfirmation 
+/// Sends phone number confirmation code to handle links of the type internalLinkTypePhoneNumberConfirmation
 class SendPhoneNumberConfirmationCode extends TdFunction {
   String get tdType => 'sendPhoneNumberConfirmationCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
 
 
-  /// Hash value from the link 
+  /// Hash value from the link
   string? hash;
 
-  /// Phone number value from the link 
+  /// Phone number value from the link
   string? phone_number;
 
   /// Settings for the authentication of the user's phone number; pass null to use default settings

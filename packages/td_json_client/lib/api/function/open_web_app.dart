@@ -22,6 +22,12 @@ class OpenWebApp extends TdFunction {
   /// Preferred Web App theme; pass null to use the default theme
   ThemeParameters? theme;
 
+  /// Short name of the application; 0-64 English letters, digits, and underscores
+  string? application_name;
+
+  /// If not 0, a message thread identifier in which the message will be sent
+  int53? message_thread_id;
+
   /// Identifier of the replied message for the message sent by the Web App; 0 if none
   int53? reply_to_message_id;
 
@@ -32,6 +38,8 @@ class OpenWebApp extends TdFunction {
     this.bot_user_id,
     this.url,
     this.theme,
+    this.application_name,
+    this.message_thread_id,
     this.reply_to_message_id,
   });
 
@@ -44,6 +52,8 @@ class OpenWebApp extends TdFunction {
     if (map['theme'] != null) {
       theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
     }
+    application_name = map['application_name'];
+    message_thread_id = map['message_thread_id'];
     reply_to_message_id = map['reply_to_message_id'];
   }
 
@@ -56,6 +66,8 @@ class OpenWebApp extends TdFunction {
       'bot_user_id': bot_user_id?.toMap(skipNulls: skipNulls),
       'url': url?.toMap(skipNulls: skipNulls),
       'theme': theme?.toMap(skipNulls: skipNulls),
+      'application_name': application_name?.toMap(skipNulls: skipNulls),
+      'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),
       'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

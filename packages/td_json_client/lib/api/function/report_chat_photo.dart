@@ -9,13 +9,13 @@ class ReportChatPhoto extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// Identifier of the photo to report. Only full photos from chatPhoto can be reported 
+  /// Identifier of the photo to report. Only full photos from chatPhoto can be reported
   int32? file_id;
 
-  /// The reason for reporting the chat photo 
+  /// The reason for reporting the chat photo
   ChatReportReason? reason;
 
   /// Additional report details; 0-1024 characters

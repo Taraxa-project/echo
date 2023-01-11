@@ -7,13 +7,13 @@ class GetLanguagePackString extends TdFunction {
   String get tdReturnType => 'LanguagePackStringValue';
 
 
-  /// Path to the language pack database in which strings are stored 
+  /// Path to the language pack database in which strings are stored
   string? language_pack_database_path;
 
-  /// Localization target to which the language pack belongs 
+  /// Localization target to which the language pack belongs
   string? localization_target;
 
-  /// Language pack identifier 
+  /// Language pack identifier
   string? language_pack_id;
 
   /// Language pack key of the string to be returned

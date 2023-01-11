@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Marks all reactions in a chat as read 
+/// Marks all reactions in a chat or a forum topic as read 
 class ReadAllChatReactions extends TdFunction {
   String get tdType => 'readAllChatReactions';
   String get tdReturnType => 'Ok';

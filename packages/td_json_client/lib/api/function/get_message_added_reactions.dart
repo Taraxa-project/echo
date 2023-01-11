@@ -1,4 +1,6 @@
 import 'package:td_json_client/api/base.dart';
+import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/reaction_type.dart';
 
 
 /// Returns reactions added for a message, along with their sender
@@ -13,8 +15,8 @@ class GetMessageAddedReactions extends TdFunction {
   /// Identifier of the message
   int53? message_id;
 
-  /// If non-empty, only added reactions with the specified text representation will be returned
-  string? reaction;
+  /// Type of the reactions to return; pass null to return all added reactions
+  ReactionType? reaction_type;
 
   /// Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
   string? offset;
@@ -27,7 +29,7 @@ class GetMessageAddedReactions extends TdFunction {
     super.client_id,
     this.chat_id,
     this.message_id,
-    this.reaction,
+    this.reaction_type,
     this.offset,
     this.limit,
   });
@@ -37,7 +39,9 @@ class GetMessageAddedReactions extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     message_id = map['message_id'];
-    reaction = map['reaction'];
+    if (map['reaction_type'] != null) {
+      reaction_type = TdApiMap.fromMap(map['reaction_type']) as ReactionType;
+    }
     offset = map['offset'];
     limit = map['limit'];
   }
@@ -49,7 +53,7 @@ class GetMessageAddedReactions extends TdFunction {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'message_id': message_id?.toMap(skipNulls: skipNulls),
-      'reaction': reaction?.toMap(skipNulls: skipNulls),
+      'reaction_type': reaction_type?.toMap(skipNulls: skipNulls),
       'offset': offset?.toMap(skipNulls: skipNulls),
       'limit': limit?.toMap(skipNulls: skipNulls),
     };

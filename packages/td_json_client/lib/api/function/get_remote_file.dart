@@ -10,7 +10,7 @@ class GetRemoteFile extends TdFunction {
   String get tdReturnType => 'File';
 
 
-  /// Remote identifier of the file to get 
+  /// Remote identifier of the file to get
   string? remote_file_id;
 
   /// File type; pass null if unknown

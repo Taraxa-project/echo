@@ -9,16 +9,16 @@ class VoiceNote extends TdObject {
   String get tdType => 'voiceNote';
 
 
-  /// Duration of the voice note, in seconds; as defined by the sender 
+  /// Duration of the voice note, in seconds; as defined by the sender
   int32? duration;
 
   /// A waveform representation of the voice note in 5-bit format
   bytes? waveform;
 
-  /// MIME type of the file; as defined by the sender 
+  /// MIME type of the file; as defined by the sender
   string? mime_type;
 
-  /// Result of speech recognition in the voice note; may be null 
+  /// Result of speech recognition in the voice note; may be null
   SpeechRecognitionResult? speech_recognition_result;
 
   /// File containing the voice note

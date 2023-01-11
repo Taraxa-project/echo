@@ -55,7 +55,8 @@ class ChatMemberStatusCreator extends ChatMemberStatus {
   }
 }
 
-/// The user is a member of the chat and has some additional privileges. In basic groups, administrators can edit and delete messages sent by others, add new members, ban unprivileged members, and manage video chats. In supergroups and channels, there are more detailed options for administrator privileges
+/// The user is a member of the chat and has some additional privileges. In basic groups, administrators can edit and delete messages sent by others, add new members, ban unprivileged members, and manage video chats.
+/// In supergroups and channels, there are more detailed options for administrator privileges
 class ChatMemberStatusAdministrator extends ChatMemberStatus {
   String get tdType => 'chatMemberStatusAdministrator';
 

@@ -415,18 +415,18 @@ class PushMessageContentLocation extends PushMessageContent {
   }
 }
 
-/// A photo message 
+/// A photo message
 class PushMessageContentPhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentPhoto';
 
 
-  /// Message content; may be null 
+  /// Message content; may be null
   Photo? photo;
 
-  /// Photo caption 
+  /// Photo caption
   string? caption;
 
-  /// True, if the photo is secret 
+  /// True, if the photo is secret
   Bool? is_secret;
 
   /// True, if the message is a pinned message with the specified content
@@ -469,15 +469,15 @@ class PushMessageContentPhoto extends PushMessageContent {
   }
 }
 
-/// A message with a poll 
+/// A message with a poll
 class PushMessageContentPoll extends PushMessageContent {
   String get tdType => 'pushMessageContentPoll';
 
 
-  /// Poll question 
+  /// Poll question
   string? question;
 
-  /// True, if the poll is regular and not in quiz mode 
+  /// True, if the poll is regular and not in quiz mode
   Bool? is_regular;
 
   /// True, if the message is a pinned message with the specified content
@@ -543,15 +543,15 @@ class PushMessageContentScreenshotTaken extends PushMessageContent {
   }
 }
 
-/// A message with a sticker 
+/// A message with a sticker
 class PushMessageContentSticker extends PushMessageContent {
   String get tdType => 'pushMessageContentSticker';
 
 
-  /// Message content; may be null 
+  /// Message content; may be null
   Sticker? sticker;
 
-  /// Emoji corresponding to the sticker; may be empty 
+  /// Emoji corresponding to the sticker; may be empty
   string? emoji;
 
   /// True, if the message is a pinned message with the specified content
@@ -631,18 +631,18 @@ class PushMessageContentText extends PushMessageContent {
   }
 }
 
-/// A video message 
+/// A video message
 class PushMessageContentVideo extends PushMessageContent {
   String get tdType => 'pushMessageContentVideo';
 
 
-  /// Message content; may be null 
+  /// Message content; may be null
   Video? video;
 
-  /// Video caption 
+  /// Video caption
   string? caption;
 
-  /// True, if the video is secret 
+  /// True, if the video is secret
   Bool? is_secret;
 
   /// True, if the message is a pinned message with the specified content
@@ -797,12 +797,12 @@ class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
   }
 }
 
-/// New chat members were invited to a group 
+/// New chat members were invited to a group
 class PushMessageContentChatAddMembers extends PushMessageContent {
   String get tdType => 'pushMessageContentChatAddMembers';
 
 
-  /// Name of the added member 
+  /// Name of the added member
   string? member_name;
 
   /// True, if the current user was added to the group
@@ -910,7 +910,7 @@ class PushMessageContentChatSetTheme extends PushMessageContent {
   String get tdType => 'pushMessageContentChatSetTheme';
 
 
-  /// If non-empty, name of a new theme, set for the chat. Otherwise chat theme was reset to the default one
+  /// If non-empty, name of a new theme, set for the chat. Otherwise, the chat theme was reset to the default one
   string? theme_name;
 
   PushMessageContentChatSetTheme({
@@ -939,12 +939,12 @@ class PushMessageContentChatSetTheme extends PushMessageContent {
   }
 }
 
-/// A chat member was deleted 
+/// A chat member was deleted
 class PushMessageContentChatDeleteMember extends PushMessageContent {
   String get tdType => 'pushMessageContentChatDeleteMember';
 
 
-  /// Name of the deleted member 
+  /// Name of the deleted member
   string? member_name;
 
   /// True, if the current user was deleted from the group
@@ -1075,6 +1075,34 @@ class PushMessageContentRecurringPayment extends PushMessageContent {
   }
 }
 
+/// A profile photo was suggested to the user
+class PushMessageContentSuggestProfilePhoto extends PushMessageContent {
+  String get tdType => 'pushMessageContentSuggestProfilePhoto';
+
+
+  PushMessageContentSuggestProfilePhoto({
+    super.extra,
+    super.client_id,
+  });
+
+  PushMessageContentSuggestProfilePhoto.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A forwarded messages 
 class PushMessageContentMessageForwards extends PushMessageContent {
   String get tdType => 'pushMessageContentMessageForwards';
@@ -1109,21 +1137,21 @@ class PushMessageContentMessageForwards extends PushMessageContent {
   }
 }
 
-/// A media album 
+/// A media album
 class PushMessageContentMediaAlbum extends PushMessageContent {
   String get tdType => 'pushMessageContentMediaAlbum';
 
 
-  /// Number of messages in the album 
+  /// Number of messages in the album
   int32? total_count;
 
-  /// True, if the album has at least one photo 
+  /// True, if the album has at least one photo
   Bool? has_photos;
 
-  /// True, if the album has at least one video
+  /// True, if the album has at least one video file
   Bool? has_videos;
 
-  /// True, if the album has at least one audio file 
+  /// True, if the album has at least one audio file
   Bool? has_audios;
 
   /// True, if the album has at least one document

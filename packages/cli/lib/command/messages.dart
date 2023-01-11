@@ -117,18 +117,14 @@ class TelegramCommandMessages extends Command {
   Future<void> login() async {
     var login = LoginListener(
       setTdlibParameters: SetTdlibParameters(
-        parameters: TdlibParameters(
-          api_id: int.parse(globalResults!['api-id']),
-          api_hash: globalResults!['api-hash'],
-          database_directory: globalResults!['database-path'],
-          use_message_database: false,
-          device_model: 'Desktop',
-          application_version: '1.0',
-          system_language_code: 'en',
-        ),
-      ),
-      checkDatabaseEncryptionKey: CheckDatabaseEncryptionKey(
-        encryption_key: '',
+        api_id: int.parse(globalResults!['api-id']),
+        api_hash: globalResults!['api-hash'],
+        database_directory: globalResults!['database-path'],
+        use_message_database: false,
+        device_model: 'Desktop',
+        application_version: '1.0',
+        system_language_code: 'en',
+        database_encryption_key: '',
       ),
       setAuthenticationPhoneNumber: SetAuthenticationPhoneNumber(
         phone_number: globalResults!['phone-number'],

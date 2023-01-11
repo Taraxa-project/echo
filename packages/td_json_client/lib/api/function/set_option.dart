@@ -9,7 +9,7 @@ class SetOption extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// The name of the option 
+  /// The name of the option
   string? name;
 
   /// The new value of the option; pass null to reset option value to a default value

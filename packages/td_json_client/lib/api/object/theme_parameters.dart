@@ -1,24 +1,24 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Contains parameters of the application theme 
+/// Contains parameters of the application theme
 class ThemeParameters extends TdObject {
   String get tdType => 'themeParameters';
 
 
-  /// A color of the background in the RGB24 format 
+  /// A color of the background in the RGB24 format
   int32? background_color;
 
   /// A secondary color for the background in the RGB24 format
   int32? secondary_background_color;
 
-  /// A color of text in the RGB24 format 
+  /// A color of text in the RGB24 format
   int32? text_color;
 
-  /// A color of hints in the RGB24 format 
+  /// A color of hints in the RGB24 format
   int32? hint_color;
 
-  /// A color of links in the RGB24 format 
+  /// A color of links in the RGB24 format
   int32? link_color;
 
   /// A color of the buttons in the RGB24 format

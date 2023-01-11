@@ -5,21 +5,21 @@ import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
 
-/// Describes a document of any type 
+/// Describes a document of any type
 class Document extends TdObject {
   String get tdType => 'document';
 
 
-  /// Original name of the file; as defined by the sender 
+  /// Original name of the file; as defined by the sender
   string? file_name;
 
   /// MIME type of the file; as defined by the sender
   string? mime_type;
 
-  /// Document minithumbnail; may be null 
+  /// Document minithumbnail; may be null
   Minithumbnail? minithumbnail;
 
-  /// Document thumbnail in JPEG or PNG format (PNG will be used only for background patterns); as defined by the sender; may be null 
+  /// Document thumbnail in JPEG or PNG format (PNG will be used only for background patterns); as defined by the sender; may be null
   Thumbnail? thumbnail;
 
   /// File containing the document

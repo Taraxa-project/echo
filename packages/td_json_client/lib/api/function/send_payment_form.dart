@@ -4,7 +4,7 @@ import 'package:td_json_client/api/object/input_invoice.dart';
 import 'package:td_json_client/api/object/input_credentials.dart';
 
 
-/// Sends a filled-out payment form to the bot for final verification 
+/// Sends a filled-out payment form to the bot for final verification
 class SendPaymentForm extends TdFunction {
   String get tdType => 'sendPaymentForm';
   String get tdReturnType => 'PaymentResult';
@@ -13,16 +13,16 @@ class SendPaymentForm extends TdFunction {
   /// The invoice
   InputInvoice? input_invoice;
 
-  /// Payment form identifier returned by getPaymentForm 
+  /// Payment form identifier returned by getPaymentForm
   int64? payment_form_id;
 
-  /// Identifier returned by validateOrderInfo, or an empty string 
+  /// Identifier returned by validateOrderInfo, or an empty string
   string? order_info_id;
 
   /// Identifier of a chosen shipping option, if applicable
   string? shipping_option_id;
 
-  /// The credentials chosen by user for payment 
+  /// The credentials chosen by user for payment
   InputCredentials? credentials;
 
   /// Chosen by the user amount of tip in the smallest units of the currency

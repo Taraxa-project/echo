@@ -7,7 +7,7 @@ class AddChatMembers extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// Identifiers of the users to be added to the chat. The maximum number of added users is 20 for supergroups and 100 for channels

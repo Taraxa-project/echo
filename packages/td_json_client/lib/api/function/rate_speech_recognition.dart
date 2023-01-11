@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Rates recognized speech in a voice note message 
+/// Rates recognized speech in a video note or a voice note message 
 class RateSpeechRecognition extends TdFunction {
   String get tdType => 'rateSpeechRecognition';
   String get tdReturnType => 'Ok';

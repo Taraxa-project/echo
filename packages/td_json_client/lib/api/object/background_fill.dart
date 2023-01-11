@@ -40,18 +40,18 @@ class BackgroundFillSolid extends BackgroundFill {
   }
 }
 
-/// Describes a gradient fill of a background 
+/// Describes a gradient fill of a background
 class BackgroundFillGradient extends BackgroundFill {
   String get tdType => 'backgroundFillGradient';
 
 
-  /// A top color of the background in the RGB24 format 
+  /// A top color of the background in the RGB24 format
   int32? top_color;
 
   /// A bottom color of the background in the RGB24 format
   int32? bottom_color;
 
-  /// Clockwise rotation angle of the gradient, in degrees; 0-359. Must be always divisible by 45
+  /// Clockwise rotation angle of the gradient, in degrees; 0-359. Must always be divisible by 45
   int32? rotation_angle;
 
   BackgroundFillGradient({

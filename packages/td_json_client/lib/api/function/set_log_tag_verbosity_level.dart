@@ -7,7 +7,7 @@ class SetLogTagVerbosityLevel extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Logging tag to change verbosity level 
+  /// Logging tag to change verbosity level
   string? tag;
 
   /// New verbosity level; 1-1024

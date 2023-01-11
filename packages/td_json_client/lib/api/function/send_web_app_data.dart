@@ -7,10 +7,10 @@ class SendWebAppData extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Identifier of the target bot 
+  /// Identifier of the target bot
   int53? bot_user_id;
 
-  /// Text of the keyboardButtonTypeWebApp button, which opened the Web App 
+  /// Text of the keyboardButtonTypeWebApp button, which opened the Web App
   string? button_text;
 
   /// Received data

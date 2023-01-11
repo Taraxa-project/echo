@@ -4,13 +4,13 @@ import 'package:td_json_client/api/object/phone_number_authentication_settings.d
 
 
 /// Sets the phone number of the user and sends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitPhoneNumber,
-/// or if there is no pending authentication query and the current authorization state is authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
+/// or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
 class SetAuthenticationPhoneNumber extends TdFunction {
   String get tdType => 'setAuthenticationPhoneNumber';
   String get tdReturnType => 'Ok';
 
 
-  /// The phone number of the user, in international format 
+  /// The phone number of the user, in international format
   string? phone_number;
 
   /// Settings for the authentication of the user's phone number; pass null to use default settings

@@ -9,7 +9,7 @@ class SetChatNotificationSettings extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// New notification settings for the chat. If the chat is muted for more than 366 days, it is considered to be muted forever

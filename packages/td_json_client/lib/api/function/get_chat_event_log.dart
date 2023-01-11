@@ -9,19 +9,19 @@ class GetChatEventLog extends TdFunction {
   String get tdReturnType => 'ChatEvents';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// Search query by which to filter events 
+  /// Search query by which to filter events
   string? query;
 
-  /// Identifier of an event from which to return results. Use 0 to get results from the latest events 
+  /// Identifier of an event from which to return results. Use 0 to get results from the latest events
   int64? from_event_id;
 
   /// The maximum number of events to return; up to 100
   int32? limit;
 
-  /// The types of events to return; pass null to get chat events of all types 
+  /// The types of events to return; pass null to get chat events of all types
   ChatEventLogFilters? filters;
 
   /// User identifiers by which to filter events. By default, events relating to all users will be returned

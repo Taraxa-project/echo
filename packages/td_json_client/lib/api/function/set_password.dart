@@ -7,16 +7,16 @@ class SetPassword extends TdFunction {
   String get tdReturnType => 'PasswordState';
 
 
-  /// Previous 2-step verification password of the user 
+  /// Previous 2-step verification password of the user
   string? old_password;
 
-  /// New 2-step verification password of the user; may be empty to remove the password 
+  /// New 2-step verification password of the user; may be empty to remove the password
   string? new_password;
 
-  /// New password hint; may be empty 
+  /// New password hint; may be empty
   string? new_hint;
 
-  /// Pass true to change also the recovery email address 
+  /// Pass true to change also the recovery email address
   Bool? set_recovery_email_address;
 
   /// New recovery email address; may be empty

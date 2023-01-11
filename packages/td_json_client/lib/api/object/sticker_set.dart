@@ -13,13 +13,13 @@ class StickerSet extends TdObject {
   String get tdType => 'stickerSet';
 
 
-  /// Identifier of the sticker set 
+  /// Identifier of the sticker set
   int64? id;
 
-  /// Title of the sticker set 
+  /// Title of the sticker set
   string? title;
 
-  /// Name of the sticker set 
+  /// Name of the sticker set
   string? name;
 
   /// Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null. The file can be downloaded only before the thumbnail is changed
@@ -28,25 +28,25 @@ class StickerSet extends TdObject {
   /// Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty. The coordinate system origin is in the upper-left corner
   vector<ClosedVectorPath>? thumbnail_outline;
 
-  /// True, if the sticker set has been installed by the current user 
+  /// True, if the sticker set has been installed by the current user
   Bool? is_installed;
 
   /// True, if the sticker set has been archived. A sticker set can't be installed and archived simultaneously
   Bool? is_archived;
 
-  /// True, if the sticker set is official 
+  /// True, if the sticker set is official
   Bool? is_official;
 
-  /// Format of the stickers in the set 
+  /// Format of the stickers in the set
   StickerFormat? sticker_format;
 
-  /// Type of the stickers in the set 
+  /// Type of the stickers in the set
   StickerType? sticker_type;
 
   /// True for already viewed trending sticker sets
   Bool? is_viewed;
 
-  /// List of stickers in this set 
+  /// List of stickers in this set
   vector<Sticker>? stickers;
 
   /// A list of emoji corresponding to the stickers in the same order. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object

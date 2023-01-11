@@ -9,13 +9,13 @@ class ReportChat extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// Identifiers of reported messages; may be empty to report the whole chat 
+  /// Identifiers of reported messages; may be empty to report the whole chat
   vector<int53>? message_ids;
 
-  /// The reason for reporting the chat 
+  /// The reason for reporting the chat
   ChatReportReason? reason;
 
   /// Additional report details; 0-1024 characters

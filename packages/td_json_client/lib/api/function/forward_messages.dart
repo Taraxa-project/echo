@@ -12,6 +12,9 @@ class ForwardMessages extends TdFunction {
   /// Identifier of the chat to which to forward messages
   int53? chat_id;
 
+  /// If not 0, a message thread identifier in which the message will be sent; for forum threads only
+  int53? message_thread_id;
+
   /// Identifier of the chat from which to forward messages
   int53? from_chat_id;
 
@@ -34,6 +37,7 @@ class ForwardMessages extends TdFunction {
     super.extra,
     super.client_id,
     this.chat_id,
+    this.message_thread_id,
     this.from_chat_id,
     this.message_ids,
     this.options,
@@ -46,6 +50,7 @@ class ForwardMessages extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
+    message_thread_id = map['message_thread_id'];
     from_chat_id = map['from_chat_id'];
     if (map['message_ids'] != null) {
       message_ids = [];
@@ -67,6 +72,7 @@ class ForwardMessages extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),
       'from_chat_id': from_chat_id?.toMap(skipNulls: skipNulls),
       'message_ids': message_ids?.toMap(skipNulls: skipNulls),
       'options': options?.toMap(skipNulls: skipNulls),

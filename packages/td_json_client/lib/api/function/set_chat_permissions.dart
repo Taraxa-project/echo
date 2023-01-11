@@ -9,7 +9,7 @@ class SetChatPermissions extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// New non-administrator members permissions in the chat

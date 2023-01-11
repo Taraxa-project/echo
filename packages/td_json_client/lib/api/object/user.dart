@@ -1,7 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/usernames.dart';
 import 'package:td_json_client/api/object/user_status.dart';
 import 'package:td_json_client/api/object/profile_photo.dart';
+import 'package:td_json_client/api/object/emoji_status.dart';
 import 'package:td_json_client/api/object/user_type.dart';
 
 
@@ -19,8 +21,8 @@ class User extends TdObject {
   /// Last name of the user
   string? last_name;
 
-  /// Username of the user
-  string? username;
+  /// Usernames of the user; may be null
+  Usernames? usernames;
 
   /// Phone number of the user
   string? phone_number;
@@ -30,6 +32,9 @@ class User extends TdObject {
 
   /// Profile photo of the user; may be null
   ProfilePhoto? profile_photo;
+
+  /// Emoji status to be shown instead of the default Telegram Premium badge; may be null. For Telegram Premium users only
+  EmojiStatus? emoji_status;
 
   /// The user is a contact of the current user
   Bool? is_contact;
@@ -55,7 +60,7 @@ class User extends TdObject {
   /// True, if many users reported this user as a fake account
   Bool? is_fake;
 
-  /// If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method except GetUser
+  /// If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method
   Bool? have_access;
 
   /// Type of the user
@@ -73,10 +78,11 @@ class User extends TdObject {
     this.id,
     this.first_name,
     this.last_name,
-    this.username,
+    this.usernames,
     this.phone_number,
     this.status,
     this.profile_photo,
+    this.emoji_status,
     this.is_contact,
     this.is_mutual_contact,
     this.is_verified,
@@ -97,13 +103,18 @@ class User extends TdObject {
     id = map['id'];
     first_name = map['first_name'];
     last_name = map['last_name'];
-    username = map['username'];
+    if (map['usernames'] != null) {
+      usernames = TdApiMap.fromMap(map['usernames']) as Usernames;
+    }
     phone_number = map['phone_number'];
     if (map['status'] != null) {
       status = TdApiMap.fromMap(map['status']) as UserStatus;
     }
     if (map['profile_photo'] != null) {
       profile_photo = TdApiMap.fromMap(map['profile_photo']) as ProfilePhoto;
+    }
+    if (map['emoji_status'] != null) {
+      emoji_status = TdApiMap.fromMap(map['emoji_status']) as EmojiStatus;
     }
     is_contact = map['is_contact'];
     is_mutual_contact = map['is_mutual_contact'];
@@ -129,10 +140,11 @@ class User extends TdObject {
       'id': id?.toMap(skipNulls: skipNulls),
       'first_name': first_name?.toMap(skipNulls: skipNulls),
       'last_name': last_name?.toMap(skipNulls: skipNulls),
-      'username': username?.toMap(skipNulls: skipNulls),
+      'usernames': usernames?.toMap(skipNulls: skipNulls),
       'phone_number': phone_number?.toMap(skipNulls: skipNulls),
       'status': status?.toMap(skipNulls: skipNulls),
       'profile_photo': profile_photo?.toMap(skipNulls: skipNulls),
+      'emoji_status': emoji_status?.toMap(skipNulls: skipNulls),
       'is_contact': is_contact?.toMap(skipNulls: skipNulls),
       'is_mutual_contact': is_mutual_contact?.toMap(skipNulls: skipNulls),
       'is_verified': is_verified?.toMap(skipNulls: skipNulls),

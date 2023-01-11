@@ -9,7 +9,7 @@ class SetStickerPositionInSet extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Sticker 
+  /// Sticker
   InputFile? sticker;
 
   /// New position of the sticker in the set, 0-based

@@ -17,28 +17,28 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAnimation';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
   /// Title of the query result
   string? title;
 
-  /// URL of the result thumbnail (JPEG, GIF, or MPEG4), if it exists 
+  /// URL of the result thumbnail (JPEG, GIF, or MPEG4), if it exists
   string? thumbnail_url;
 
   /// MIME type of the video thumbnail. If non-empty, must be one of "image/jpeg", "image/gif" and "video/mp4"
   string? thumbnail_mime_type;
 
-  /// The URL of the video file (file size must not exceed 1MB) 
+  /// The URL of the video file (file size must not exceed 1MB)
   string? video_url;
 
   /// MIME type of the video file. Must be one of "image/gif" and "video/mp4"
   string? video_mime_type;
 
-  /// Duration of the video, in seconds 
+  /// Duration of the video, in seconds
   int32? video_duration;
 
-  /// Width of the video 
+  /// Width of the video
   int32? video_width;
 
   /// Height of the video
@@ -110,18 +110,18 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
   }
 }
 
-/// Represents a link to an article or web page 
+/// Represents a link to an article or web page
 class InputInlineQueryResultArticle extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultArticle';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// URL of the result, if it exists 
+  /// URL of the result, if it exists
   string? url;
 
-  /// True, if the URL must be not shown 
+  /// True, if the URL must be not shown
   Bool? hide_url;
 
   /// Title of the result
@@ -129,10 +129,10 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
 
   string? description;
 
-  /// URL of the result thumbnail, if it exists 
+  /// URL of the result thumbnail, if it exists
   string? thumbnail_url;
 
-  /// Thumbnail width, if known 
+  /// Thumbnail width, if known
   int32? thumbnail_width;
 
   /// Thumbnail height, if known
@@ -201,21 +201,21 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
   }
 }
 
-/// Represents a link to an MP3 audio file 
+/// Represents a link to an MP3 audio file
 class InputInlineQueryResultAudio extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAudio';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Title of the audio file 
+  /// Title of the audio file
   string? title;
 
   /// Performer of the audio file
   string? performer;
 
-  /// The URL of the audio file 
+  /// The URL of the audio file
   string? audio_url;
 
   /// Audio file duration, in seconds
@@ -275,21 +275,21 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
   }
 }
 
-/// Represents a user contact 
+/// Represents a user contact
 class InputInlineQueryResultContact extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultContact';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// User contact 
+  /// User contact
   Contact? contact;
 
-  /// URL of the result thumbnail, if it exists 
+  /// URL of the result thumbnail, if it exists
   string? thumbnail_url;
 
-  /// Thumbnail width, if known 
+  /// Thumbnail width, if known
   int32? thumbnail_width;
 
   /// Thumbnail height, if known
@@ -351,29 +351,29 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
   }
 }
 
-/// Represents a link to a file 
+/// Represents a link to a file
 class InputInlineQueryResultDocument extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultDocument';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Title of the resulting file 
+  /// Title of the resulting file
   string? title;
 
   string? description;
 
-  /// URL of the file 
+  /// URL of the file
   string? document_url;
 
   /// MIME type of the file content; only "application/pdf" and "application/zip" are currently allowed
   string? mime_type;
 
-  /// The URL of the file thumbnail, if it exists 
+  /// The URL of the file thumbnail, if it exists
   string? thumbnail_url;
 
-  /// Width of the thumbnail 
+  /// Width of the thumbnail
   int32? thumbnail_width;
 
   /// Height of the thumbnail
@@ -442,15 +442,15 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
   }
 }
 
-/// Represents a game 
+/// Represents a game
 class InputInlineQueryResultGame extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultGame';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Short name of the game 
+  /// Short name of the game
   string? game_short_name;
 
   /// The message reply markup; pass null if none. Must be of type replyMarkupInlineKeyboard or null
@@ -490,12 +490,12 @@ class InputInlineQueryResultGame extends InputInlineQueryResult {
   }
 }
 
-/// Represents a point on the map 
+/// Represents a point on the map
 class InputInlineQueryResultLocation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultLocation';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
   /// Location result
@@ -504,13 +504,13 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
   /// Amount of time relative to the message sent time until the location can be updated, in seconds
   int32? live_period;
 
-  /// Title of the result 
+  /// Title of the result
   string? title;
 
-  /// URL of the result thumbnail, if it exists 
+  /// URL of the result thumbnail, if it exists
   string? thumbnail_url;
 
-  /// Thumbnail width, if known 
+  /// Thumbnail width, if known
   int32? thumbnail_width;
 
   /// Thumbnail height, if known
@@ -578,15 +578,15 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
   }
 }
 
-/// Represents link to a JPEG image 
+/// Represents link to a JPEG image
 class InputInlineQueryResultPhoto extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultPhoto';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Title of the result, if known 
+  /// Title of the result, if known
   string? title;
 
   string? description;
@@ -594,10 +594,10 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
   /// URL of the photo thumbnail, if it exists
   string? thumbnail_url;
 
-  /// The URL of the JPEG photo (photo size must not exceed 5MB) 
+  /// The URL of the JPEG photo (photo size must not exceed 5MB)
   string? photo_url;
 
-  /// Width of the photo 
+  /// Width of the photo
   int32? photo_width;
 
   /// Height of the photo
@@ -663,21 +663,21 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
   }
 }
 
-/// Represents a link to a WEBP, TGS, or WEBM sticker 
+/// Represents a link to a WEBP, TGS, or WEBM sticker
 class InputInlineQueryResultSticker extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultSticker';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
   /// URL of the sticker thumbnail, if it exists
   string? thumbnail_url;
 
-  /// The URL of the WEBP, TGS, or WEBM sticker (sticker file size must not exceed 5MB) 
+  /// The URL of the WEBP, TGS, or WEBM sticker (sticker file size must not exceed 5MB)
   string? sticker_url;
 
-  /// Width of the sticker 
+  /// Width of the sticker
   int32? sticker_width;
 
   /// Height of the sticker
@@ -737,21 +737,21 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
   }
 }
 
-/// Represents information about a venue 
+/// Represents information about a venue
 class InputInlineQueryResultVenue extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVenue';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Venue result 
+  /// Venue result
   Venue? venue;
 
-  /// URL of the result thumbnail, if it exists 
+  /// URL of the result thumbnail, if it exists
   string? thumbnail_url;
 
-  /// Thumbnail width, if known 
+  /// Thumbnail width, if known
   int32? thumbnail_width;
 
   /// Thumbnail height, if known
@@ -813,32 +813,32 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
   }
 }
 
-/// Represents a link to a page containing an embedded video player or a video file 
+/// Represents a link to a page containing an embedded video player or a video file
 class InputInlineQueryResultVideo extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVideo';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Title of the result 
+  /// Title of the result
   string? title;
 
   string? description;
 
-  /// The URL of the video thumbnail (JPEG), if it exists 
+  /// The URL of the video thumbnail (JPEG), if it exists
   string? thumbnail_url;
 
-  /// URL of the embedded video player or video file 
+  /// URL of the embedded video player or video file
   string? video_url;
 
   /// MIME type of the content of the video URL, only "text/html" or "video/mp4" are currently supported
   string? mime_type;
 
-  /// Width of the video 
+  /// Width of the video
   int32? video_width;
 
-  /// Height of the video 
+  /// Height of the video
   int32? video_height;
 
   /// Video duration, in seconds
@@ -910,18 +910,18 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
   }
 }
 
-/// Represents a link to an opus-encoded audio file within an OGG container, single channel audio 
+/// Represents a link to an opus-encoded audio file within an OGG container, single channel audio
 class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVoiceNote';
 
 
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
   /// Title of the voice note
   string? title;
 
-  /// The URL of the voice note file 
+  /// The URL of the voice note file
   string? voice_note_url;
 
   /// Duration of the voice note, in seconds

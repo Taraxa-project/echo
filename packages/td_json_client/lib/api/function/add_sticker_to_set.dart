@@ -9,10 +9,10 @@ class AddStickerToSet extends TdFunction {
   String get tdReturnType => 'StickerSet';
 
 
-  /// Sticker set owner 
+  /// Sticker set owner
   int53? user_id;
 
-  /// Sticker set name 
+  /// Sticker set name
   string? name;
 
   /// Sticker to add to the set

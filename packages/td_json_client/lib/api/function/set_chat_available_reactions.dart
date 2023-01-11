@@ -1,4 +1,6 @@
 import 'package:td_json_client/api/base.dart';
+import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/chat_available_reactions.dart';
 
 
 /// Changes reactions, available in a chat. Available for basic groups, supergroups, and channels. Requires can_change_info administrator right 
@@ -10,8 +12,8 @@ class SetChatAvailableReactions extends TdFunction {
   /// Identifier of the chat 
   int53? chat_id;
 
-  /// New list of reactions, available in the chat. All reactions must be active
-  vector<string>? available_reactions;
+  /// Reactions available in the chat. All emoji reactions must be active
+  ChatAvailableReactions? available_reactions;
 
   SetChatAvailableReactions({
     super.extra,
@@ -25,10 +27,7 @@ class SetChatAvailableReactions extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     if (map['available_reactions'] != null) {
-      available_reactions = [];
-      for (var someValue in map['available_reactions']) {
-        available_reactions?.add(someValue);
-      }
+      available_reactions = TdApiMap.fromMap(map['available_reactions']) as ChatAvailableReactions;
     }
   }
 

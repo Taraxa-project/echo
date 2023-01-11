@@ -40,18 +40,18 @@ class PaymentProviderSmartGlocal extends PaymentProvider {
   }
 }
 
-/// Stripe payment provider 
+/// Stripe payment provider
 class PaymentProviderStripe extends PaymentProvider {
   String get tdType => 'paymentProviderStripe';
 
 
-  /// Stripe API publishable key 
+  /// Stripe API publishable key
   string? publishable_key;
 
-  /// True, if the user country must be provided 
+  /// True, if the user country must be provided
   Bool? need_country;
 
-  /// True, if the user ZIP/postal code must be provided 
+  /// True, if the user ZIP/postal code must be provided
   Bool? need_postal_code;
 
   /// True, if the cardholder name must be provided

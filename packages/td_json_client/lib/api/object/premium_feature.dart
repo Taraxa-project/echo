@@ -286,6 +286,34 @@ class PremiumFeatureProfileBadge extends PremiumFeature {
   }
 }
 
+/// A emoji status shown along with the user's name
+class PremiumFeatureEmojiStatus extends PremiumFeature {
+  String get tdType => 'premiumFeatureEmojiStatus';
+
+
+  PremiumFeatureEmojiStatus({
+    super.extra,
+    super.client_id,
+  });
+
+  PremiumFeatureEmojiStatus.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// Profile photo animation on message and chat screens
 class PremiumFeatureAnimatedProfilePhoto extends PremiumFeature {
   String get tdType => 'premiumFeatureAnimatedProfilePhoto';
@@ -297,6 +325,34 @@ class PremiumFeatureAnimatedProfilePhoto extends PremiumFeature {
   });
 
   PremiumFeatureAnimatedProfilePhoto.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The ability to set a custom emoji as a forum topic icon
+class PremiumFeatureForumTopicIcon extends PremiumFeature {
+  String get tdType => 'premiumFeatureForumTopicIcon';
+
+
+  PremiumFeatureForumTopicIcon({
+    super.extra,
+    super.client_id,
+  });
+
+  PremiumFeatureForumTopicIcon.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

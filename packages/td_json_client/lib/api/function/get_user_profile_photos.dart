@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Returns the profile photos of a user. The result of this query may be outdated: some photos might have been deleted already 
+/// Returns the profile photos of a user. Personal and public photo aren't returned 
 class GetUserProfilePhotos extends TdFunction {
   String get tdType => 'getUserProfilePhotos';
   String get tdReturnType => 'ChatPhotos';

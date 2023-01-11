@@ -9,10 +9,10 @@ class ToggleGroupCallParticipantIsMuted extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Group call identifier 
+  /// Group call identifier
   int32? group_call_id;
 
-  /// Participant identifier 
+  /// Participant identifier
   MessageSender? participant_id;
 
   /// Pass true to mute the user; pass false to unmute the them

@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Returns a list of sticker sets attached to a file. Currently, only photos and videos can have attached sticker sets 
+/// Returns a list of sticker sets attached to a file, including regular, mask, and emoji sticker sets. Currently, only animations, photos, and videos can have attached sticker sets 
 class GetAttachedStickerSets extends TdFunction {
   String get tdType => 'getAttachedStickerSets';
   String get tdReturnType => 'StickerSets';

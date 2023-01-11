@@ -9,7 +9,7 @@ abstract class ReplyMarkup extends TdObject {
 }
 
 
-/// Instructs application to remove the keyboard once this message has been received. This kind of keyboard can't be received in an incoming message; instead, UpdateChatReplyMarkup with message_id == 0 will be sent
+/// Instructs application to remove the keyboard once this message has been received. This kind of keyboard can't be received in an incoming message; instead, updateChatReplyMarkup with message_id == 0 will be sent
 class ReplyMarkupRemoveKeyboard extends ReplyMarkup {
   String get tdType => 'replyMarkupRemoveKeyboard';
 
@@ -91,6 +91,9 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
   /// A list of rows of bot keyboard buttons
   vector<vector<KeyboardButton>>? rows;
 
+  /// True, if the keyboard is supposed to always be shown when the ordinary keyboard is hidden
+  Bool? is_persistent;
+
   /// True, if the application needs to resize the keyboard vertically
   Bool? resize_keyboard;
 
@@ -107,6 +110,7 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
     super.extra,
     super.client_id,
     this.rows,
+    this.is_persistent,
     this.resize_keyboard,
     this.one_time,
     this.is_personal,
@@ -128,6 +132,7 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
         rows?.add(objs);
       }
     }
+    is_persistent = map['is_persistent'];
     resize_keyboard = map['resize_keyboard'];
     one_time = map['one_time'];
     is_personal = map['is_personal'];
@@ -140,6 +145,7 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'rows': rows?.toMap(skipNulls: skipNulls),
+      'is_persistent': is_persistent?.toMap(skipNulls: skipNulls),
       'resize_keyboard': resize_keyboard?.toMap(skipNulls: skipNulls),
       'one_time': one_time?.toMap(skipNulls: skipNulls),
       'is_personal': is_personal?.toMap(skipNulls: skipNulls),

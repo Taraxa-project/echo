@@ -79,24 +79,24 @@ class CallStateExchangingKeys extends CallState {
   }
 }
 
-/// The call is ready to use 
+/// The call is ready to use
 class CallStateReady extends CallState {
   String get tdType => 'callStateReady';
 
 
-  /// Call protocols supported by the peer 
+  /// Call protocols supported by the peer
   CallProtocol? protocol;
 
-  /// List of available call servers 
+  /// List of available call servers
   vector<CallServer>? servers;
 
-  /// A JSON-encoded call config 
+  /// A JSON-encoded call config
   string? config;
 
-  /// Call encryption key 
+  /// Call encryption key
   bytes? encryption_key;
 
-  /// Encryption key emojis fingerprint 
+  /// Encryption key emojis fingerprint
   vector<string>? emojis;
 
   /// True, if peer-to-peer connection is allowed by users privacy settings
@@ -185,18 +185,18 @@ class CallStateHangingUp extends CallState {
   }
 }
 
-/// The call has ended successfully 
+/// The call has ended successfully
 class CallStateDiscarded extends CallState {
   String get tdType => 'callStateDiscarded';
 
 
-  /// The reason, why the call has ended 
+  /// The reason, why the call has ended
   CallDiscardReason? reason;
 
-  /// True, if the call rating must be sent to the server 
+  /// True, if the call rating must be sent to the server
   Bool? need_rating;
 
-  /// True, if the call debug information must be sent to the server 
+  /// True, if the call debug information must be sent to the server
   Bool? need_debug_information;
 
   /// True, if the call log must be sent to the server

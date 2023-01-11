@@ -1,7 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Returns a list of basic group and supergroup chats, which can be used as a discussion group for a channel. Returned basic group chats must be first upgraded to supergroups before they can be set as a discussion group. To set a returned supergroup as a discussion group, access to its old messages must be enabled using toggleSupergroupIsAllHistoryAvailable first
+/// Returns a list of basic group and supergroup chats, which can be used as a discussion group for a channel. Returned basic group chats must be first upgraded to supergroups before they can be set as a discussion group.
+/// To set a returned supergroup as a discussion group, access to its old messages must be enabled using toggleSupergroupIsAllHistoryAvailable first
 class GetSuitableDiscussionChats extends TdFunction {
   String get tdType => 'getSuitableDiscussionChats';
   String get tdReturnType => 'Chats';

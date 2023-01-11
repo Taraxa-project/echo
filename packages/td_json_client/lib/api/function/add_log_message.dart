@@ -7,7 +7,7 @@ class AddLogMessage extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// The minimum verbosity level needed for the message to be logged; 0-1023 
+  /// The minimum verbosity level needed for the message to be logged; 0-1023
   int32? verbosity_level;
 
   /// Text of a message to log

@@ -1,6 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 
-/// Describes the way the text needs to be parsed for TextEntities
+/// Describes the way the text needs to be parsed for text entities
 abstract class TextParseMode extends TdObject {
   TextParseMode({super.extra, super.client_id});
 }

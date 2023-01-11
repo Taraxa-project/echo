@@ -4,7 +4,7 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/photo_size.dart';
 
 
-/// Describes a photo 
+/// Describes a photo
 class Photo extends TdObject {
   String get tdType => 'photo';
 
@@ -12,7 +12,7 @@ class Photo extends TdObject {
   /// True, if stickers were added to the photo. The list of corresponding sticker sets can be received using getAttachedStickerSets
   Bool? has_stickers;
 
-  /// Photo minithumbnail; may be null 
+  /// Photo minithumbnail; may be null
   Minithumbnail? minithumbnail;
 
   /// Available variants of the photo, in different sizes

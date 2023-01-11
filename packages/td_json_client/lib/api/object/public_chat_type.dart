@@ -6,7 +6,7 @@ abstract class PublicChatType extends TdObject {
 }
 
 
-/// The chat is public, because it has username
+/// The chat is public, because it has an active username
 class PublicChatTypeHasUsername extends PublicChatType {
   String get tdType => 'publicChatTypeHasUsername';
 

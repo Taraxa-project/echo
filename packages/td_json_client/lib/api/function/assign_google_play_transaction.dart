@@ -3,19 +3,19 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/store_payment_purpose.dart';
 
 
-/// Informs server about a purchase through Google Play. For official applications only 
+/// Informs server about a purchase through Google Play. For official applications only
 class AssignGooglePlayTransaction extends TdFunction {
   String get tdType => 'assignGooglePlayTransaction';
   String get tdReturnType => 'Ok';
 
 
-  /// Application package name 
+  /// Application package name
   string? package_name;
 
-  /// Identifier of the purchased store product 
+  /// Identifier of the purchased store product
   string? store_product_id;
 
-  /// Google Play purchase token 
+  /// Google Play purchase token
   string? purchase_token;
 
   /// Transaction purpose

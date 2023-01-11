@@ -7,7 +7,7 @@ class InviteGroupCallParticipants extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Group call identifier 
+  /// Group call identifier
   int32? group_call_id;
 
   /// User identifiers. At most 10 users can be invited simultaneously

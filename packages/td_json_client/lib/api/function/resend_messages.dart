@@ -8,7 +8,7 @@ class ResendMessages extends TdFunction {
   String get tdReturnType => 'Messages';
 
 
-  /// Identifier of the chat to send messages 
+  /// Identifier of the chat to send messages
   int53? chat_id;
 
   /// Identifiers of the messages to resend. Message identifiers must be in a strictly increasing order

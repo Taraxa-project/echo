@@ -1,36 +1,36 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Contains information about notification settings for a chat
+/// Contains information about notification settings for a chat or a froum topic
 class ChatNotificationSettings extends TdObject {
   String get tdType => 'chatNotificationSettings';
 
 
-  /// If true, mute_for is ignored and the value for the relevant type of chat is used instead 
+  /// If true, mute_for is ignored and the value for the relevant type of chat or the forum chat is used instead
   Bool? use_default_mute_for;
 
   /// Time left before notifications will be unmuted, in seconds
   int32? mute_for;
 
-  /// If true, the value for the relevant type of chat is used instead of sound_id 
+  /// If true, the value for the relevant type of chat or the forum chat is used instead of sound_id
   Bool? use_default_sound;
 
   /// Identifier of the notification sound to be played; 0 if sound is disabled
   int64? sound_id;
 
-  /// If true, show_preview is ignored and the value for the relevant type of chat is used instead 
+  /// If true, show_preview is ignored and the value for the relevant type of chat or the forum chat is used instead
   Bool? use_default_show_preview;
 
   /// True, if message content must be displayed in notifications
   Bool? show_preview;
 
-  /// If true, disable_pinned_message_notifications is ignored and the value for the relevant type of chat is used instead 
+  /// If true, disable_pinned_message_notifications is ignored and the value for the relevant type of chat or the forum chat is used instead
   Bool? use_default_disable_pinned_message_notifications;
 
   /// If true, notifications for incoming pinned messages will be created as for an ordinary unread message
   Bool? disable_pinned_message_notifications;
 
-  /// If true, disable_mention_notifications is ignored and the value for the relevant type of chat is used instead 
+  /// If true, disable_mention_notifications is ignored and the value for the relevant type of chat or the forum chat is used instead
   Bool? use_default_disable_mention_notifications;
 
   /// If true, notifications for messages with mentions will be created as for an ordinary unread message

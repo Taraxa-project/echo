@@ -20,7 +20,7 @@ class NetworkStatisticsEntryFile extends NetworkStatisticsEntry {
   /// Type of the network the data was sent through. Call setNetworkType to maintain the actual network type
   NetworkType? network_type;
 
-  /// Total number of bytes sent 
+  /// Total number of bytes sent
   int53? sent_bytes;
 
   /// Total number of bytes received

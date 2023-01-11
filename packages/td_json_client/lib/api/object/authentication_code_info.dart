@@ -3,18 +3,18 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/authentication_code_type.dart';
 
 
-/// Information about the authentication code that was sent 
+/// Information about the authentication code that was sent
 class AuthenticationCodeInfo extends TdObject {
   String get tdType => 'authenticationCodeInfo';
 
 
-  /// A phone number that is being authenticated 
+  /// A phone number that is being authenticated
   string? phone_number;
 
-  /// The way the code was sent to the user 
+  /// The way the code was sent to the user
   AuthenticationCodeType? type;
 
-  /// The way the next code will be sent to the user; may be null 
+  /// The way the next code will be sent to the user; may be null
   AuthenticationCodeType? next_type;
 
   /// Timeout before the code can be re-sent, in seconds

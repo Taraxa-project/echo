@@ -46,18 +46,18 @@ class LoginUrlInfoOpen extends LoginUrlInfo {
   }
 }
 
-/// An authorization confirmation dialog needs to be shown to the user 
+/// An authorization confirmation dialog needs to be shown to the user
 class LoginUrlInfoRequestConfirmation extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoRequestConfirmation';
 
 
-  /// An HTTP URL to be opened 
+  /// An HTTP URL to be opened
   string? url;
 
   /// A domain of the URL
   string? domain;
 
-  /// User identifier of a bot linked with the website 
+  /// User identifier of a bot linked with the website
   int53? bot_user_id;
 
   /// True, if the user needs to be requested to give the permission to the bot to send them messages

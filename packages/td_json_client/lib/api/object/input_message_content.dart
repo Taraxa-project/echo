@@ -16,15 +16,15 @@ abstract class InputMessageContent extends TdObject {
 }
 
 
-/// A text message 
+/// A text message
 class InputMessageText extends InputMessageContent {
   String get tdType => 'inputMessageText';
 
 
-  /// Formatted text to be sent; 1-GetOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
+  /// Formatted text to be sent; 1-getOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
   FormattedText? text;
 
-  /// True, if rich web page previews for URLs in the message text must be disabled 
+  /// True, if rich web page previews for URLs in the message text must be disabled
   Bool? disable_web_page_preview;
 
   /// True, if a chat message draft must be deleted
@@ -64,31 +64,34 @@ class InputMessageText extends InputMessageContent {
   }
 }
 
-/// An animation message (GIF-style). 
+/// An animation message (GIF-style).
 class InputMessageAnimation extends InputMessageContent {
   String get tdType => 'inputMessageAnimation';
 
 
-  /// Animation file to be sent 
+  /// Animation file to be sent
   InputFile? animation;
 
-  /// Animation thumbnail; pass null to skip thumbnail uploading 
+  /// Animation thumbnail; pass null to skip thumbnail uploading
   InputThumbnail? thumbnail;
 
   /// File identifiers of the stickers added to the animation, if applicable
   vector<int32>? added_sticker_file_ids;
 
-  /// Duration of the animation, in seconds 
+  /// Duration of the animation, in seconds
   int32? duration;
 
-  /// Width of the animation; may be replaced by the server 
+  /// Width of the animation; may be replaced by the server
   int32? width;
 
-  /// Height of the animation; may be replaced by the server 
+  /// Height of the animation; may be replaced by the server
   int32? height;
 
-  /// Animation caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
+  /// Animation caption; pass null to use an empty caption; 0-getOption("message_caption_length_max") characters
   FormattedText? caption;
+
+  /// True, if the animation preview must be covered by a spoiler animation; not supported in secret chats
+  Bool? has_spoiler;
 
   InputMessageAnimation({
     super.extra,
@@ -100,6 +103,7 @@ class InputMessageAnimation extends InputMessageContent {
     this.width,
     this.height,
     this.caption,
+    this.has_spoiler,
   });
 
   InputMessageAnimation.fromMap(Map<String, dynamic> map) {
@@ -123,6 +127,7 @@ class InputMessageAnimation extends InputMessageContent {
     if (map['caption'] != null) {
       caption = TdApiMap.fromMap(map['caption']) as FormattedText;
     }
+    has_spoiler = map['has_spoiler'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -137,6 +142,7 @@ class InputMessageAnimation extends InputMessageContent {
       'width': width?.toMap(skipNulls: skipNulls),
       'height': height?.toMap(skipNulls: skipNulls),
       'caption': caption?.toMap(skipNulls: skipNulls),
+      'has_spoiler': has_spoiler?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -145,27 +151,27 @@ class InputMessageAnimation extends InputMessageContent {
   }
 }
 
-/// An audio message 
+/// An audio message
 class InputMessageAudio extends InputMessageContent {
   String get tdType => 'inputMessageAudio';
 
 
-  /// Audio file to be sent 
+  /// Audio file to be sent
   InputFile? audio;
 
-  /// Thumbnail of the cover for the album; pass null to skip thumbnail uploading 
+  /// Thumbnail of the cover for the album; pass null to skip thumbnail uploading
   InputThumbnail? album_cover_thumbnail;
 
-  /// Duration of the audio, in seconds; may be replaced by the server 
+  /// Duration of the audio, in seconds; may be replaced by the server
   int32? duration;
 
   /// Title of the audio; 0-64 characters; may be replaced by the server
   string? title;
 
-  /// Performer of the audio; 0-64 characters, may be replaced by the server 
+  /// Performer of the audio; 0-64 characters, may be replaced by the server
   string? performer;
 
-  /// Audio caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
+  /// Audio caption; pass null to use an empty caption; 0-getOption("message_caption_length_max") characters
   FormattedText? caption;
 
   InputMessageAudio({
@@ -215,21 +221,21 @@ class InputMessageAudio extends InputMessageContent {
   }
 }
 
-/// A document message (general file) 
+/// A document message (general file)
 class InputMessageDocument extends InputMessageContent {
   String get tdType => 'inputMessageDocument';
 
 
-  /// Document to be sent 
+  /// Document to be sent
   InputFile? document;
 
-  /// Document thumbnail; pass null to skip thumbnail uploading 
+  /// Document thumbnail; pass null to skip thumbnail uploading
   InputThumbnail? thumbnail;
 
-  /// If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats 
+  /// If true, automatic file type detection will be disabled and the document will always be sent as file. Always true for files sent to secret chats
   Bool? disable_content_type_detection;
 
-  /// Document caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
+  /// Document caption; pass null to use an empty caption; 0-getOption("message_caption_length_max") characters
   FormattedText? caption;
 
   InputMessageDocument({
@@ -273,31 +279,34 @@ class InputMessageDocument extends InputMessageContent {
   }
 }
 
-/// A photo message 
+/// A photo message
 class InputMessagePhoto extends InputMessageContent {
   String get tdType => 'inputMessagePhoto';
 
 
-  /// Photo to send. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20 
+  /// Photo to send. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20
   InputFile? photo;
 
-  /// Photo thumbnail to be sent; pass null to skip thumbnail uploading. The thumbnail is sent to the other party only in secret chats 
+  /// Photo thumbnail to be sent; pass null to skip thumbnail uploading. The thumbnail is sent to the other party only in secret chats
   InputThumbnail? thumbnail;
 
-  /// File identifiers of the stickers added to the photo, if applicable 
+  /// File identifiers of the stickers added to the photo, if applicable
   vector<int32>? added_sticker_file_ids;
 
-  /// Photo width 
+  /// Photo width
   int32? width;
 
-  /// Photo height 
+  /// Photo height
   int32? height;
 
-  /// Photo caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
+  /// Photo caption; pass null to use an empty caption; 0-getOption("message_caption_length_max") characters
   FormattedText? caption;
 
-  /// Photo TTL (Time To Live), in seconds (0-60). A non-zero TTL can be specified only in private chats
-  int32? ttl;
+  /// Photo self-destruct time, in seconds (0-60). A non-zero self-destruct time can be specified only in private chats
+  int32? self_destruct_time;
+
+  /// True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
+  Bool? has_spoiler;
 
   InputMessagePhoto({
     super.extra,
@@ -308,7 +317,8 @@ class InputMessagePhoto extends InputMessageContent {
     this.width,
     this.height,
     this.caption,
-    this.ttl,
+    this.self_destruct_time,
+    this.has_spoiler,
   });
 
   InputMessagePhoto.fromMap(Map<String, dynamic> map) {
@@ -331,7 +341,8 @@ class InputMessagePhoto extends InputMessageContent {
     if (map['caption'] != null) {
       caption = TdApiMap.fromMap(map['caption']) as FormattedText;
     }
-    ttl = map['ttl'];
+    self_destruct_time = map['self_destruct_time'];
+    has_spoiler = map['has_spoiler'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -345,7 +356,8 @@ class InputMessagePhoto extends InputMessageContent {
       'width': width?.toMap(skipNulls: skipNulls),
       'height': height?.toMap(skipNulls: skipNulls),
       'caption': caption?.toMap(skipNulls: skipNulls),
-      'ttl': ttl?.toMap(skipNulls: skipNulls),
+      'self_destruct_time': self_destruct_time?.toMap(skipNulls: skipNulls),
+      'has_spoiler': has_spoiler?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -354,21 +366,21 @@ class InputMessagePhoto extends InputMessageContent {
   }
 }
 
-/// A sticker message 
+/// A sticker message
 class InputMessageSticker extends InputMessageContent {
   String get tdType => 'inputMessageSticker';
 
 
-  /// Sticker to be sent 
+  /// Sticker to be sent
   InputFile? sticker;
 
-  /// Sticker thumbnail; pass null to skip thumbnail uploading 
+  /// Sticker thumbnail; pass null to skip thumbnail uploading
   InputThumbnail? thumbnail;
 
-  /// Sticker width 
+  /// Sticker width
   int32? width;
 
-  /// Sticker height 
+  /// Sticker height
   int32? height;
 
   /// Emoji used to choose the sticker
@@ -416,37 +428,40 @@ class InputMessageSticker extends InputMessageContent {
   }
 }
 
-/// A video message 
+/// A video message
 class InputMessageVideo extends InputMessageContent {
   String get tdType => 'inputMessageVideo';
 
 
-  /// Video to be sent 
+  /// Video to be sent
   InputFile? video;
 
-  /// Video thumbnail; pass null to skip thumbnail uploading 
+  /// Video thumbnail; pass null to skip thumbnail uploading
   InputThumbnail? thumbnail;
 
   /// File identifiers of the stickers added to the video, if applicable
   vector<int32>? added_sticker_file_ids;
 
-  /// Duration of the video, in seconds 
+  /// Duration of the video, in seconds
   int32? duration;
 
-  /// Video width 
+  /// Video width
   int32? width;
 
-  /// Video height 
+  /// Video height
   int32? height;
 
   /// True, if the video is supposed to be streamed
   Bool? supports_streaming;
 
-  /// Video caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters 
+  /// Video caption; pass null to use an empty caption; 0-getOption("message_caption_length_max") characters
   FormattedText? caption;
 
-  /// Video TTL (Time To Live), in seconds (0-60). A non-zero TTL can be specified only in private chats
-  int32? ttl;
+  /// Video self-destruct time, in seconds (0-60). A non-zero self-destruct time can be specified only in private chats
+  int32? self_destruct_time;
+
+  /// True, if the video preview must be covered by a spoiler animation; not supported in secret chats
+  Bool? has_spoiler;
 
   InputMessageVideo({
     super.extra,
@@ -459,7 +474,8 @@ class InputMessageVideo extends InputMessageContent {
     this.height,
     this.supports_streaming,
     this.caption,
-    this.ttl,
+    this.self_destruct_time,
+    this.has_spoiler,
   });
 
   InputMessageVideo.fromMap(Map<String, dynamic> map) {
@@ -484,7 +500,8 @@ class InputMessageVideo extends InputMessageContent {
     if (map['caption'] != null) {
       caption = TdApiMap.fromMap(map['caption']) as FormattedText;
     }
-    ttl = map['ttl'];
+    self_destruct_time = map['self_destruct_time'];
+    has_spoiler = map['has_spoiler'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -500,7 +517,8 @@ class InputMessageVideo extends InputMessageContent {
       'height': height?.toMap(skipNulls: skipNulls),
       'supports_streaming': supports_streaming?.toMap(skipNulls: skipNulls),
       'caption': caption?.toMap(skipNulls: skipNulls),
-      'ttl': ttl?.toMap(skipNulls: skipNulls),
+      'self_destruct_time': self_destruct_time?.toMap(skipNulls: skipNulls),
+      'has_spoiler': has_spoiler?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -509,18 +527,18 @@ class InputMessageVideo extends InputMessageContent {
   }
 }
 
-/// A video note message 
+/// A video note message
 class InputMessageVideoNote extends InputMessageContent {
   String get tdType => 'inputMessageVideoNote';
 
 
-  /// Video note to be sent 
+  /// Video note to be sent
   InputFile? video_note;
 
-  /// Video thumbnail; pass null to skip thumbnail uploading 
+  /// Video thumbnail; pass null to skip thumbnail uploading
   InputThumbnail? thumbnail;
 
-  /// Duration of the video, in seconds 
+  /// Duration of the video, in seconds
   int32? duration;
 
   /// Video width and height; must be positive and not greater than 640
@@ -565,21 +583,21 @@ class InputMessageVideoNote extends InputMessageContent {
   }
 }
 
-/// A voice note message 
+/// A voice note message
 class InputMessageVoiceNote extends InputMessageContent {
   String get tdType => 'inputMessageVoiceNote';
 
 
-  /// Voice note to be sent 
+  /// Voice note to be sent
   InputFile? voice_note;
 
-  /// Duration of the voice note, in seconds 
+  /// Duration of the voice note, in seconds
   int32? duration;
 
-  /// Waveform representation of the voice note, in 5-bit format 
+  /// Waveform representation of the voice note in 5-bit format
   bytes? waveform;
 
-  /// Voice note caption; pass null to use an empty caption; 0-GetOption("message_caption_length_max") characters
+  /// Voice note caption; pass null to use an empty caption; 0-getOption("message_caption_length_max") characters
   FormattedText? caption;
 
   InputMessageVoiceNote({
@@ -621,12 +639,12 @@ class InputMessageVoiceNote extends InputMessageContent {
   }
 }
 
-/// A message with a location 
+/// A message with a location
 class InputMessageLocation extends InputMessageContent {
   String get tdType => 'inputMessageLocation';
 
 
-  /// Location to be sent 
+  /// Location to be sent
   Location? location;
 
   /// Period for which the location can be updated, in seconds; must be between 60 and 86400 for a live location and 0 otherwise
@@ -827,35 +845,35 @@ class InputMessageGame extends InputMessageContent {
   }
 }
 
-/// A message with an invoice; can be used only by bots 
+/// A message with an invoice; can be used only by bots
 class InputMessageInvoice extends InputMessageContent {
   String get tdType => 'inputMessageInvoice';
 
 
-  /// Invoice 
+  /// Invoice
   Invoice? invoice;
 
-  /// Product title; 1-32 characters 
+  /// Product title; 1-32 characters
   string? title;
 
   string? description;
 
-  /// Product photo URL; optional 
+  /// Product photo URL; optional
   string? photo_url;
 
-  /// Product photo size 
+  /// Product photo size
   int32? photo_size;
 
-  /// Product photo width 
+  /// Product photo width
   int32? photo_width;
 
   /// Product photo height
   int32? photo_height;
 
-  /// The invoice payload 
+  /// The invoice payload
   bytes? payload;
 
-  /// Payment provider token 
+  /// Payment provider token
   string? provider_token;
 
   /// JSON-encoded data about the invoice, which will be shared with the payment provider
@@ -863,6 +881,9 @@ class InputMessageInvoice extends InputMessageContent {
 
   /// Unique invoice bot deep link parameter for the generation of this invoice. If empty, it would be possible to pay directly from forwards of the invoice message
   string? start_parameter;
+
+  /// The content of extended media attached to the invoice. The content of the message to be sent. Must be one of the following types: inputMessagePhoto, inputMessageVideo
+  InputMessageContent? extended_media_content;
 
   InputMessageInvoice({
     super.extra,
@@ -878,6 +899,7 @@ class InputMessageInvoice extends InputMessageContent {
     this.provider_token,
     this.provider_data,
     this.start_parameter,
+    this.extended_media_content,
   });
 
   InputMessageInvoice.fromMap(Map<String, dynamic> map) {
@@ -896,6 +918,7 @@ class InputMessageInvoice extends InputMessageContent {
     provider_token = map['provider_token'];
     provider_data = map['provider_data'];
     start_parameter = map['start_parameter'];
+    extended_media_content = map['extended_media_content'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -914,6 +937,7 @@ class InputMessageInvoice extends InputMessageContent {
       'provider_token': provider_token?.toMap(skipNulls: skipNulls),
       'provider_data': provider_data?.toMap(skipNulls: skipNulls),
       'start_parameter': start_parameter?.toMap(skipNulls: skipNulls),
+      'extended_media_content': extended_media_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -922,18 +946,18 @@ class InputMessageInvoice extends InputMessageContent {
   }
 }
 
-/// A message with a poll. Polls can't be sent to secret chats. Polls can be sent only to a private chat with a bot 
+/// A message with a poll. Polls can't be sent to secret chats. Polls can be sent only to a private chat with a bot
 class InputMessagePoll extends InputMessageContent {
   String get tdType => 'inputMessagePoll';
 
 
-  /// Poll question; 1-255 characters (up to 300 characters for bots) 
+  /// Poll question; 1-255 characters (up to 300 characters for bots)
   string? question;
 
   /// List of poll answer options, 2-10 strings 1-100 characters each
   vector<string>? options;
 
-  /// True, if the poll voters are anonymous. Non-anonymous polls can't be sent or forwarded to channels 
+  /// True, if the poll voters are anonymous. Non-anonymous polls can't be sent or forwarded to channels
   Bool? is_anonymous;
 
   /// Type of the poll
@@ -999,12 +1023,12 @@ class InputMessagePoll extends InputMessageContent {
   }
 }
 
-/// A forwarded message 
+/// A forwarded message
 class InputMessageForwarded extends InputMessageContent {
   String get tdType => 'inputMessageForwarded';
 
 
-  /// Identifier for the chat this forwarded message came from 
+  /// Identifier for the chat this forwarded message came from
   int53? from_chat_id;
 
   /// Identifier of the message to forward

@@ -9,7 +9,7 @@ class GetChats extends TdFunction {
   String get tdReturnType => 'Chats';
 
 
-  /// The chat list in which to return chats; pass null to get chats from the main chat list 
+  /// The chat list in which to return chats; pass null to get chats from the main chat list
   ChatList? chat_list;
 
   /// The maximum number of chats to be returned

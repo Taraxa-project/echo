@@ -10,10 +10,10 @@ class SetChatMemberStatus extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// Member identifier. Chats can be only banned and unbanned in supergroups and channels 
+  /// Member identifier. Chats can be only banned and unbanned in supergroups and channels
   MessageSender? member_id;
 
   /// The new status of the member in the chat

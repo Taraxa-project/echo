@@ -40,17 +40,17 @@ class InternalLinkTypeActiveSessions extends InternalLinkType {
 }
 
 /// The link is a link to an attachment menu bot to be opened in the specified or a chosen chat. Process given target_chat to open the chat.
-/// Then call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then use getAttachmentMenuBot to receive information about the bot.
+/// Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot.
 /// If the bot isn't added to attachment menu, then user needs to confirm adding the bot to attachment menu. If user confirms adding, then use toggleBotIsAddedToAttachmentMenu to add it.
 /// If the attachment menu bot can't be used in the opened chat, show an error to the user. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL
 class InternalLinkTypeAttachmentMenuBot extends InternalLinkType {
   String get tdType => 'internalLinkTypeAttachmentMenuBot';
 
 
-  /// Target chat to be opened 
+  /// Target chat to be opened
   TargetChat? target_chat;
 
-  /// Username of the bot 
+  /// Username of the bot
   string? bot_username;
 
   /// URL to be passed to openWebApp
@@ -164,7 +164,7 @@ class InternalLinkTypeBotStart extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStart';
 
 
-  /// Username of the bot 
+  /// Username of the bot
   string? bot_username;
 
   /// The parameter to be passed to sendBotStartMessage
@@ -210,15 +210,15 @@ class InternalLinkTypeBotStart extends InternalLinkType {
 /// If administrator rights are provided by the link, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator,
 /// check that the current user can edit its administrator rights, combine received rights with the requested administrator rights, show confirmation box to the user,
 /// and call setChatMemberStatus with the chosen chat and confirmed administrator rights. Before call to setChatMemberStatus it may be required to upgrade the chosen basic group chat to a supergroup chat.
-/// Then if start_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat, otherwise just send /start message with bot's username added to the chat.
+/// Then, if start_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat; otherwise, just send /start message with bot's username added to the chat.
 class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStartInGroup';
 
 
-  /// Username of the bot 
+  /// Username of the bot
   string? bot_username;
 
-  /// The parameter to be passed to sendBotStartMessage 
+  /// The parameter to be passed to sendBotStartMessage
   string? start_parameter;
 
   /// Expected administrator rights for the bot; may be null
@@ -259,13 +259,13 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
 }
 
 /// The link is a link to a Telegram bot, which is supposed to be added to a channel chat as an administrator. Call searchPublicChat with the given bot username and check that the user is a bot,
-/// ask the current user to select a channel chat to add the bot to as an administrator. Then call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator,
-/// check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights
+/// ask the current user to select a channel chat to add the bot to as an administrator. Then, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator,
+/// check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights
 class InternalLinkTypeBotAddToChannel extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotAddToChannel';
 
 
-  /// Username of the bot 
+  /// Username of the bot
   string? bot_username;
 
   /// Expected administrator rights for the bot
@@ -364,7 +364,63 @@ class InternalLinkTypeChatInvite extends InternalLinkType {
   }
 }
 
-/// The link is a link to the filter settings section of the app
+/// The link is a link to the default message auto-delete timer settings section of the app settings
+class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings extends InternalLinkType {
+  String get tdType => 'internalLinkTypeDefaultMessageAutoDeleteTimerSettings';
+
+
+  InternalLinkTypeDefaultMessageAutoDeleteTimerSettings({
+    super.extra,
+    super.client_id,
+  });
+
+  InternalLinkTypeDefaultMessageAutoDeleteTimerSettings.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The link is a link to the edit profile section of the app settings
+class InternalLinkTypeEditProfileSettings extends InternalLinkType {
+  String get tdType => 'internalLinkTypeEditProfileSettings';
+
+
+  InternalLinkTypeEditProfileSettings({
+    super.extra,
+    super.client_id,
+  });
+
+  InternalLinkTypeEditProfileSettings.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The link is a link to the filter section of the app settings
 class InternalLinkTypeFilterSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeFilterSettings';
 
@@ -397,7 +453,7 @@ class InternalLinkTypeGame extends InternalLinkType {
   String get tdType => 'internalLinkTypeGame';
 
 
-  /// Username of the bot that owns the game 
+  /// Username of the bot that owns the game
   string? bot_username;
 
   /// Short name of the game
@@ -424,6 +480,46 @@ class InternalLinkTypeGame extends InternalLinkType {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'bot_username': bot_username?.toMap(skipNulls: skipNulls),
       'game_short_name': game_short_name?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The link must be opened in an Instant View. Call getWebPageInstantView with the given URL to process the link 
+class InternalLinkTypeInstantView extends InternalLinkType {
+  String get tdType => 'internalLinkTypeInstantView';
+
+
+  /// URL to be passed to getWebPageInstantView 
+  string? url;
+
+  /// An URL to open if getWebPageInstantView fails
+  string? fallback_url;
+
+  InternalLinkTypeInstantView({
+    super.extra,
+    super.client_id,
+    this.url,
+    this.fallback_url,
+  });
+
+  InternalLinkTypeInstantView.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    url = map['url'];
+    fallback_url = map['fallback_url'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'url': url?.toMap(skipNulls: skipNulls),
+      'fallback_url': fallback_url?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -500,7 +596,7 @@ class InternalLinkTypeLanguagePack extends InternalLinkType {
   }
 }
 
-/// The link is a link to the language settings section of the app
+/// The link is a link to the language section of the app settings
 class InternalLinkTypeLanguageSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeLanguageSettings';
 
@@ -528,7 +624,7 @@ class InternalLinkTypeLanguageSettings extends InternalLinkType {
   }
 }
 
-/// The link is a link to a Telegram message. Call getMessageLinkInfo with the given URL to process the link 
+/// The link is a link to a Telegram message or a forum topic. Call getMessageLinkInfo with the given URL to process the link 
 class InternalLinkTypeMessage extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessage';
 
@@ -567,7 +663,7 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessageDraft';
 
 
-  /// Message draft text 
+  /// Message draft text
   FormattedText? text;
 
   /// True, if the first line of the text contains a link. If true, the input field needs to be focused and the text after the link must be selected
@@ -604,24 +700,25 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
   }
 }
 
-/// The link contains a request of Telegram passport data. Call getPassportAuthorizationForm with the given parameters to process the link if the link was received from outside of the application, otherwise ignore it
+/// The link contains a request of Telegram passport data. Call getPassportAuthorizationForm with the given parameters to process the link if the link was received from outside of the application; otherwise, ignore it
 class InternalLinkTypePassportDataRequest extends InternalLinkType {
   String get tdType => 'internalLinkTypePassportDataRequest';
 
 
-  /// User identifier of the service's bot 
+  /// User identifier of the service's bot
   int53? bot_user_id;
 
-  /// Telegram Passport element types requested by the service 
+  /// Telegram Passport element types requested by the service
   string? scope;
 
-  /// Service's public key 
+  /// Service's public key
   string? public_key;
 
   /// Unique request identifier provided by the service
   string? nonce;
 
-  /// An HTTP URL to open once the request is finished or canceled with the parameter tg_passport=success or tg_passport=cancel respectively. If empty, then the link tgbot{bot_user_id}://passport/success or tgbot{bot_user_id}://passport/cancel needs to be opened instead
+  /// An HTTP URL to open once the request is finished, canceled, or failed with the parameters tg_passport=success, tg_passport=cancel, or tg_passport=error&error=... respectively.
+  /// If empty, then onActivityResult method must be used to return response on Android, or the link tgbot{bot_user_id}://passport/success or tgbot{bot_user_id}://passport/cancel must be opened otherwise
   string? callback_url;
 
   InternalLinkTypePassportDataRequest({
@@ -667,7 +764,7 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
   String get tdType => 'internalLinkTypePhoneNumberConfirmation';
 
 
-  /// Hash value from the link 
+  /// Hash value from the link
   string? hash;
 
   /// Phone number value from the link
@@ -736,7 +833,7 @@ class InternalLinkTypePremiumFeatures extends InternalLinkType {
   }
 }
 
-/// The link is a link to the privacy and security settings section of the app
+/// The link is a link to the privacy and security section of the app settings
 class InternalLinkTypePrivacyAndSecuritySettings extends InternalLinkType {
   String get tdType => 'internalLinkTypePrivacyAndSecuritySettings';
 
@@ -769,10 +866,10 @@ class InternalLinkTypeProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeProxy';
 
 
-  /// Proxy server IP address 
+  /// Proxy server IP address
   string? server;
 
-  /// Proxy server port 
+  /// Proxy server port
   int32? port;
 
   /// Type of the proxy
@@ -931,7 +1028,7 @@ class InternalLinkTypeSettings extends InternalLinkType {
   }
 }
 
-/// The link is a link to a sticker set. Call searchStickerSet with the given sticker set name to process the link and show the sticker set 
+/// The link is a link to a sticker set. Call searchStickerSet with the given sticker set name to process the link and show the sticker set
 class InternalLinkTypeStickerSet extends InternalLinkType {
   String get tdType => 'internalLinkTypeStickerSet';
 
@@ -939,16 +1036,21 @@ class InternalLinkTypeStickerSet extends InternalLinkType {
   /// Name of the sticker set
   string? sticker_set_name;
 
+  /// True, if the sticker set is expected to contain custom emoji
+  Bool? expect_custom_emoji;
+
   InternalLinkTypeStickerSet({
     super.extra,
     super.client_id,
     this.sticker_set_name,
+    this.expect_custom_emoji,
   });
 
   InternalLinkTypeStickerSet.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     sticker_set_name = map['sticker_set_name'];
+    expect_custom_emoji = map['expect_custom_emoji'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -957,6 +1059,7 @@ class InternalLinkTypeStickerSet extends InternalLinkType {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'sticker_set_name': sticker_set_name?.toMap(skipNulls: skipNulls),
+      'expect_custom_emoji': expect_custom_emoji?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -999,7 +1102,7 @@ class InternalLinkTypeTheme extends InternalLinkType {
   }
 }
 
-/// The link is a link to the theme settings section of the app
+/// The link is a link to the theme section of the app settings
 class InternalLinkTypeThemeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeThemeSettings';
 
@@ -1123,12 +1226,46 @@ class InternalLinkTypeUserPhoneNumber extends InternalLinkType {
   }
 }
 
+/// The link is a link to a user by a temporary token. Call searchUserByToken with the given token to process the link 
+class InternalLinkTypeUserToken extends InternalLinkType {
+  String get tdType => 'internalLinkTypeUserToken';
+
+
+  /// The token
+  string? token;
+
+  InternalLinkTypeUserToken({
+    super.extra,
+    super.client_id,
+    this.token,
+  });
+
+  InternalLinkTypeUserToken.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    token = map['token'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'token': token?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// The link is a link to a video chat. Call searchPublicChat with the given chat username, and then joinGroupCall with the given invite hash to process the link
 class InternalLinkTypeVideoChat extends InternalLinkType {
   String get tdType => 'internalLinkTypeVideoChat';
 
 
-  /// Username of the chat with the video chat 
+  /// Username of the chat with the video chat
   string? chat_username;
 
   /// If non-empty, invite hash to be used to join the video chat without being muted by administrators

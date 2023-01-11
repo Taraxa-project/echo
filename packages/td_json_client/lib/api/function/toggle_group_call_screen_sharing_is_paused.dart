@@ -10,7 +10,7 @@ class ToggleGroupCallScreenSharingIsPaused extends TdFunction {
   /// Group call identifier 
   int32? group_call_id;
 
-  /// True if screen sharing is paused
+  /// Pass true to pause screen sharing; pass false to unpause it
   Bool? is_paused;
 
   ToggleGroupCallScreenSharingIsPaused({

@@ -3,24 +3,24 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/location.dart';
 
 
-/// Describes a venue 
+/// Describes a venue
 class Venue extends TdObject {
   String get tdType => 'venue';
 
 
-  /// Venue location; as defined by the sender 
+  /// Venue location; as defined by the sender
   Location? location;
 
-  /// Venue name; as defined by the sender 
+  /// Venue name; as defined by the sender
   string? title;
 
-  /// Venue address; as defined by the sender 
+  /// Venue address; as defined by the sender
   string? address;
 
   /// Provider of the venue database; as defined by the sender. Currently, only "foursquare" and "gplaces" (Google Places) need to be supported
   string? provider;
 
-  /// Identifier of the venue in the provider database; as defined by the sender 
+  /// Identifier of the venue in the provider database; as defined by the sender
   string? id;
 
   /// Type of the venue in the provider database; as defined by the sender

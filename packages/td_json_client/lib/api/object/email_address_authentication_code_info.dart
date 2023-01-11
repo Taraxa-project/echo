@@ -1,12 +1,12 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Information about the email address authentication code that was sent 
+/// Information about the email address authentication code that was sent
 class EmailAddressAuthenticationCodeInfo extends TdObject {
   String get tdType => 'emailAddressAuthenticationCodeInfo';
 
 
-  /// Pattern of the email address to which an authentication code was sent 
+  /// Pattern of the email address to which an authentication code was sent
   string? email_address_pattern;
 
   /// Length of the code; 0 if unknown

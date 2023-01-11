@@ -9,7 +9,7 @@ class SetChatPhoto extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// New chat photo; pass null to delete the chat photo

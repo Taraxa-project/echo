@@ -7,7 +7,7 @@ class ToggleChatHasProtectedContent extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// New value of has_protected_content

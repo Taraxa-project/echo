@@ -42,6 +42,9 @@ class ChatEventLogFilters extends TdObject {
   /// True, if video chat actions need to be returned
   Bool? video_chat_changes;
 
+  /// True, if forum-related actions need to be returned
+  Bool? forum_changes;
+
   ChatEventLogFilters({
     super.extra,
     super.client_id,
@@ -57,6 +60,7 @@ class ChatEventLogFilters extends TdObject {
     this.setting_changes,
     this.invite_link_changes,
     this.video_chat_changes,
+    this.forum_changes,
   });
 
   ChatEventLogFilters.fromMap(Map<String, dynamic> map) {
@@ -74,6 +78,7 @@ class ChatEventLogFilters extends TdObject {
     setting_changes = map['setting_changes'];
     invite_link_changes = map['invite_link_changes'];
     video_chat_changes = map['video_chat_changes'];
+    forum_changes = map['forum_changes'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -93,6 +98,7 @@ class ChatEventLogFilters extends TdObject {
       'setting_changes': setting_changes?.toMap(skipNulls: skipNulls),
       'invite_link_changes': invite_link_changes?.toMap(skipNulls: skipNulls),
       'video_chat_changes': video_chat_changes?.toMap(skipNulls: skipNulls),
+      'forum_changes': forum_changes?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

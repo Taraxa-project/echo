@@ -4,7 +4,6 @@ import '../base.dart';
 
 class LoginListener extends TelegramEventListener {
   final SetTdlibParameters setTdlibParameters;
-  final CheckDatabaseEncryptionKey checkDatabaseEncryptionKey;
   final SetAuthenticationPhoneNumber setAuthenticationPhoneNumber;
   final CheckAuthenticationCodeWithCallback checkAuthenticationCodeWithCallback;
   final AuthorizationStateWaitOtherDeviceConfirmationWithCallback
@@ -15,7 +14,6 @@ class LoginListener extends TelegramEventListener {
 
   LoginListener({
     required this.setTdlibParameters,
-    required this.checkDatabaseEncryptionKey,
     required this.setAuthenticationPhoneNumber,
     required this.checkAuthenticationCodeWithCallback,
     required this.authorizationStateWaitOtherDeviceConfirmationWithCallback,
@@ -62,10 +60,6 @@ class LoginListener extends TelegramEventListener {
     switch (updateAuthorizationState.authorization_state.runtimeType) {
       case AuthorizationStateWaitTdlibParameters:
         send(setTdlibParameters);
-        break;
-
-      case AuthorizationStateWaitEncryptionKey:
-        send(checkDatabaseEncryptionKey);
         break;
 
       case AuthorizationStateWaitPhoneNumber:

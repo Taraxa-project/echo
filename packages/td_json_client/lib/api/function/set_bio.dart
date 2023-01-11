@@ -7,7 +7,7 @@ class SetBio extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// The new value of the user bio; 0-GetOption("bio_length_max") characters without line feeds
+  /// The new value of the user bio; 0-getOption("bio_length_max") characters without line feeds
   string? bio;
 
   SetBio({

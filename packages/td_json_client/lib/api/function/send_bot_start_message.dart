@@ -7,10 +7,10 @@ class SendBotStartMessage extends TdFunction {
   String get tdReturnType => 'Message';
 
 
-  /// Identifier of the bot 
+  /// Identifier of the bot
   int53? bot_user_id;
 
-  /// Identifier of the target chat 
+  /// Identifier of the target chat
   int53? chat_id;
 
   /// A hidden parameter sent to the bot for deep linking purposes (https://core.telegram.org/bots#deep-linking)

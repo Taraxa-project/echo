@@ -7,10 +7,10 @@ class TransferChatOwnership extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// Identifier of the user to which transfer the ownership. The ownership can't be transferred to a bot or to a deleted user 
+  /// Identifier of the user to which transfer the ownership. The ownership can't be transferred to a bot or to a deleted user
   int53? user_id;
 
   /// The 2-step verification password of the current user

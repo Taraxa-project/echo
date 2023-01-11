@@ -30,6 +30,9 @@ class ChatPermissions extends TdObject {
   /// True, if the user can pin messages
   Bool? can_pin_messages;
 
+  /// True, if the user can manage topics
+  Bool? can_manage_topics;
+
   ChatPermissions({
     super.extra,
     super.client_id,
@@ -41,6 +44,7 @@ class ChatPermissions extends TdObject {
     this.can_change_info,
     this.can_invite_users,
     this.can_pin_messages,
+    this.can_manage_topics,
   });
 
   ChatPermissions.fromMap(Map<String, dynamic> map) {
@@ -54,6 +58,7 @@ class ChatPermissions extends TdObject {
     can_change_info = map['can_change_info'];
     can_invite_users = map['can_invite_users'];
     can_pin_messages = map['can_pin_messages'];
+    can_manage_topics = map['can_manage_topics'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -69,6 +74,7 @@ class ChatPermissions extends TdObject {
       'can_change_info': can_change_info?.toMap(skipNulls: skipNulls),
       'can_invite_users': can_invite_users?.toMap(skipNulls: skipNulls),
       'can_pin_messages': can_pin_messages?.toMap(skipNulls: skipNulls),
+      'can_manage_topics': can_manage_topics?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

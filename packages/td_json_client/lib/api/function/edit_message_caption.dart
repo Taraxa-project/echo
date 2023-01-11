@@ -19,7 +19,7 @@ class EditMessageCaption extends TdFunction {
   /// The new message reply markup; pass null if none; for bots only
   ReplyMarkup? reply_markup;
 
-  /// New message content caption; 0-GetOption("message_caption_length_max") characters; pass null to remove caption
+  /// New message content caption; 0-getOption("message_caption_length_max") characters; pass null to remove caption
   FormattedText? caption;
 
   EditMessageCaption({

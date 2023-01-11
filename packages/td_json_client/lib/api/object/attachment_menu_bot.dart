@@ -4,7 +4,7 @@ import 'package:td_json_client/api/object/attachment_menu_bot_color.dart';
 import 'package:td_json_client/api/object/file.dart';
 
 
-/// Represents a bot added to attachment menu
+/// Represents a bot, which can be added to attachment menu
 class AttachmentMenuBot extends TdObject {
   String get tdType => 'attachmentMenuBot';
 
@@ -29,6 +29,9 @@ class AttachmentMenuBot extends TdObject {
 
   /// True, if the bot supports "settings_button_pressed" event
   Bool? supports_settings;
+
+  /// True, if the user needs to be requested to give the permission to the bot to send them messages
+  Bool? request_write_access;
 
   /// Name for the bot in attachment menu
   string? name;
@@ -67,6 +70,7 @@ class AttachmentMenuBot extends TdObject {
     this.supports_group_chats,
     this.supports_channel_chats,
     this.supports_settings,
+    this.request_write_access,
     this.name,
     this.name_color,
     this.default_icon,
@@ -88,6 +92,7 @@ class AttachmentMenuBot extends TdObject {
     supports_group_chats = map['supports_group_chats'];
     supports_channel_chats = map['supports_channel_chats'];
     supports_settings = map['supports_settings'];
+    request_write_access = map['request_write_access'];
     name = map['name'];
     if (map['name_color'] != null) {
       name_color = TdApiMap.fromMap(map['name_color']) as AttachmentMenuBotColor;
@@ -127,6 +132,7 @@ class AttachmentMenuBot extends TdObject {
       'supports_group_chats': supports_group_chats?.toMap(skipNulls: skipNulls),
       'supports_channel_chats': supports_channel_chats?.toMap(skipNulls: skipNulls),
       'supports_settings': supports_settings?.toMap(skipNulls: skipNulls),
+      'request_write_access': request_write_access?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),
       'name_color': name_color?.toMap(skipNulls: skipNulls),
       'default_icon': default_icon?.toMap(skipNulls: skipNulls),

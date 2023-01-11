@@ -3,7 +3,7 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_filter.dart';
 
 
-/// Creates new chat filter. Returns information about the created chat filter. There can be up to GetOption("chat_filter_count_max") chat filters, but the limit can be increased with Telegram Premium 
+/// Creates new chat filter. Returns information about the created chat filter. There can be up to getOption("chat_filter_count_max") chat filters, but the limit can be increased with Telegram Premium 
 class CreateChatFilter extends TdFunction {
   String get tdType => 'createChatFilter';
   String get tdReturnType => 'ChatFilterInfo';

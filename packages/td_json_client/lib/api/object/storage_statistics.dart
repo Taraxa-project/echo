@@ -3,15 +3,15 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/storage_statistics_by_chat.dart';
 
 
-/// Contains the exact storage usage statistics split by chats and file type 
+/// Contains the exact storage usage statistics split by chats and file type
 class StorageStatistics extends TdObject {
   String get tdType => 'storageStatistics';
 
 
-  /// Total size of files, in bytes 
+  /// Total size of files, in bytes
   int53? size;
 
-  /// Total number of files 
+  /// Total number of files
   int32? count;
 
   /// Statistics split by chats

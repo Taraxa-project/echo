@@ -22,6 +22,9 @@ class SponsoredMessage extends TdObject {
   /// Information about the sponsor chat; may be null unless sponsor_chat_id == 0
   ChatInviteLinkInfo? sponsor_chat_info;
 
+  /// True, if the sponsor's chat photo must be shown
+  Bool? show_chat_photo;
+
   /// An internal link to be opened when the sponsored message is clicked; may be null if the sponsor chat needs to be opened instead
   InternalLinkType? link;
 
@@ -35,6 +38,7 @@ class SponsoredMessage extends TdObject {
     this.is_recommended,
     this.sponsor_chat_id,
     this.sponsor_chat_info,
+    this.show_chat_photo,
     this.link,
     this.content,
   });
@@ -48,6 +52,7 @@ class SponsoredMessage extends TdObject {
     if (map['sponsor_chat_info'] != null) {
       sponsor_chat_info = TdApiMap.fromMap(map['sponsor_chat_info']) as ChatInviteLinkInfo;
     }
+    show_chat_photo = map['show_chat_photo'];
     if (map['link'] != null) {
       link = TdApiMap.fromMap(map['link']) as InternalLinkType;
     }
@@ -65,6 +70,7 @@ class SponsoredMessage extends TdObject {
       'is_recommended': is_recommended?.toMap(skipNulls: skipNulls),
       'sponsor_chat_id': sponsor_chat_id?.toMap(skipNulls: skipNulls),
       'sponsor_chat_info': sponsor_chat_info?.toMap(skipNulls: skipNulls),
+      'show_chat_photo': show_chat_photo?.toMap(skipNulls: skipNulls),
       'link': link?.toMap(skipNulls: skipNulls),
       'content': content?.toMap(skipNulls: skipNulls),
     };

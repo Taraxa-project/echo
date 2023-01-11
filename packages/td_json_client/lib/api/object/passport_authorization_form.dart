@@ -3,7 +3,7 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_required_element.dart';
 
 
-/// Contains information about a Telegram Passport authorization form that was requested 
+/// Contains information about a Telegram Passport authorization form that was requested
 class PassportAuthorizationForm extends TdObject {
   String get tdType => 'passportAuthorizationForm';
 

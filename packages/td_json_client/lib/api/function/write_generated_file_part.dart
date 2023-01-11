@@ -7,10 +7,10 @@ class WriteGeneratedFilePart extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// The identifier of the generation process 
+  /// The identifier of the generation process
   int64? generation_id;
 
-  /// The offset from which to write the data to the file 
+  /// The offset from which to write the data to the file
   int53? offset;
 
   /// The data to write

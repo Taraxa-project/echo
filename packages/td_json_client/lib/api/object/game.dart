@@ -5,18 +5,18 @@ import 'package:td_json_client/api/object/photo.dart';
 import 'package:td_json_client/api/object/animation.dart';
 
 
-/// Describes a game 
+/// Describes a game
 class Game extends TdObject {
   String get tdType => 'game';
 
 
-  /// Game ID 
+  /// Unique game identifier
   int64? id;
 
-  /// Game short name. To share a game use the URL https://t.me/{bot_username}?game={game_short_name} 
+  /// Game short name. To share a game use the URL https://t.me/{bot_username}?game={game_short_name}
   string? short_name;
 
-  /// Game title 
+  /// Game title
   string? title;
 
   /// Game text, usually containing scoreboards for a game
@@ -24,7 +24,7 @@ class Game extends TdObject {
 
   string? description;
 
-  /// Game photo 
+  /// Game photo
   Photo? photo;
 
   /// Game animation; may be null

@@ -90,17 +90,45 @@ class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
   }
 }
 
-/// The user has too many chats with username, one of them must be made private first
-class CheckChatUsernameResultPublicChatsTooMuch extends CheckChatUsernameResult {
-  String get tdType => 'checkChatUsernameResultPublicChatsTooMuch';
+/// The username can be purchased at fragment.com
+class CheckChatUsernameResultUsernamePurchasable extends CheckChatUsernameResult {
+  String get tdType => 'checkChatUsernameResultUsernamePurchasable';
 
 
-  CheckChatUsernameResultPublicChatsTooMuch({
+  CheckChatUsernameResultUsernamePurchasable({
     super.extra,
     super.client_id,
   });
 
-  CheckChatUsernameResultPublicChatsTooMuch.fromMap(Map<String, dynamic> map) {
+  CheckChatUsernameResultUsernamePurchasable.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The user has too many chats with username, one of them must be made private first
+class CheckChatUsernameResultPublicChatsTooMany extends CheckChatUsernameResult {
+  String get tdType => 'checkChatUsernameResultPublicChatsTooMany';
+
+
+  CheckChatUsernameResultPublicChatsTooMany({
+    super.extra,
+    super.client_id,
+  });
+
+  CheckChatUsernameResultPublicChatsTooMany.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

@@ -1,13 +1,13 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Changes the username of the current user 
+/// Changes the editable username of the current user
 class SetUsername extends TdFunction {
   String get tdType => 'setUsername';
   String get tdReturnType => 'Ok';
 
 
-  /// The new value of the username. Use an empty string to remove the username
+  /// The new value of the username. Use an empty string to remove the username. The username can't be completely removed if there is another active or disabled username
   string? username;
 
   SetUsername({

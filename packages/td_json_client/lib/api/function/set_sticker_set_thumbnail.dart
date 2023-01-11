@@ -9,7 +9,7 @@ class SetStickerSetThumbnail extends TdFunction {
   String get tdReturnType => 'StickerSet';
 
 
-  /// Sticker set owner 
+  /// Sticker set owner
   int53? user_id;
 
   /// Sticker set name

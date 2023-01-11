@@ -7,10 +7,10 @@ class GetLoginUrlInfo extends TdFunction {
   String get tdReturnType => 'LoginUrlInfo';
 
 
-  /// Chat identifier of the message with the button 
+  /// Chat identifier of the message with the button
   int53? chat_id;
 
-  /// Message identifier of the message with the button 
+  /// Message identifier of the message with the button
   int53? message_id;
 
   /// Button identifier

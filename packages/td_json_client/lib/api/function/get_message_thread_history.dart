@@ -20,7 +20,8 @@ class GetMessageThreadHistory extends TdFunction {
   /// Specify 0 to get results from exactly the from_message_id or a negative offset up to 99 to get additionally some newer messages
   int32? offset;
 
-  /// The maximum number of messages to be returned; must be positive and can't be greater than 100. If the offset is negative, the limit must be greater than or equal to -offset. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+  /// The maximum number of messages to be returned; must be positive and can't be greater than 100. If the offset is negative, the limit must be greater than or equal to -offset.
+  /// For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
   int32? limit;
 
   GetMessageThreadHistory({

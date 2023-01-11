@@ -1,13 +1,13 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Returns strings from a language pack in the current localization target by their keys. Can be called before authorization 
+/// Returns strings from a language pack in the current localization target by their keys. Can be called before authorization
 class GetLanguagePackStrings extends TdFunction {
   String get tdType => 'getLanguagePackStrings';
   String get tdReturnType => 'LanguagePackStrings';
 
 
-  /// Language pack identifier of the strings to be returned 
+  /// Language pack identifier of the strings to be returned
   string? language_pack_id;
 
   /// Language pack keys of the strings to be returned; leave empty to request all available strings

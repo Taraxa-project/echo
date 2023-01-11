@@ -7,7 +7,7 @@ class SetChatTitle extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// New title of the chat; 1-128 characters

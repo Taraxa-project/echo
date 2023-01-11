@@ -17,8 +17,10 @@ import 'package:td_json_client/api/object/animated_emoji.dart';
 import 'package:td_json_client/api/object/dice_stickers.dart';
 import 'package:td_json_client/api/object/game.dart';
 import 'package:td_json_client/api/object/poll.dart';
+import 'package:td_json_client/api/object/message_extended_media.dart';
 import 'package:td_json_client/api/object/call_discard_reason.dart';
 import 'package:td_json_client/api/object/chat_photo.dart';
+import 'package:td_json_client/api/object/forum_topic_icon.dart';
 import 'package:td_json_client/api/object/order_info.dart';
 import 'package:td_json_client/api/object/passport_element_type.dart';
 import 'package:td_json_client/api/object/encrypted_passport_element.dart';
@@ -75,16 +77,19 @@ class MessageText extends MessageContent {
   }
 }
 
-/// An animation message (GIF-style). 
+/// An animation message (GIF-style).
 class MessageAnimation extends MessageContent {
   String get tdType => 'messageAnimation';
 
 
-  /// The animation description 
+  /// The animation description
   Animation? animation;
 
-  /// Animation caption 
+  /// Animation caption
   FormattedText? caption;
+
+  /// True, if the animation preview must be covered by a spoiler animation
+  Bool? has_spoiler;
 
   /// True, if the animation thumbnail must be blurred and the animation must be shown only while tapped
   Bool? is_secret;
@@ -94,6 +99,7 @@ class MessageAnimation extends MessageContent {
     super.client_id,
     this.animation,
     this.caption,
+    this.has_spoiler,
     this.is_secret,
   });
 
@@ -106,6 +112,7 @@ class MessageAnimation extends MessageContent {
     if (map['caption'] != null) {
       caption = TdApiMap.fromMap(map['caption']) as FormattedText;
     }
+    has_spoiler = map['has_spoiler'];
     is_secret = map['is_secret'];
   }
 
@@ -116,6 +123,7 @@ class MessageAnimation extends MessageContent {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'animation': animation?.toMap(skipNulls: skipNulls),
       'caption': caption?.toMap(skipNulls: skipNulls),
+      'has_spoiler': has_spoiler?.toMap(skipNulls: skipNulls),
       'is_secret': is_secret?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -213,16 +221,19 @@ class MessageDocument extends MessageContent {
   }
 }
 
-/// A photo message 
+/// A photo message
 class MessagePhoto extends MessageContent {
   String get tdType => 'messagePhoto';
 
 
-  /// The photo description 
+  /// The photo
   Photo? photo;
 
-  /// Photo caption 
+  /// Photo caption
   FormattedText? caption;
+
+  /// True, if the photo preview must be covered by a spoiler animation
+  Bool? has_spoiler;
 
   /// True, if the photo must be blurred and must be shown only while tapped
   Bool? is_secret;
@@ -232,6 +243,7 @@ class MessagePhoto extends MessageContent {
     super.client_id,
     this.photo,
     this.caption,
+    this.has_spoiler,
     this.is_secret,
   });
 
@@ -244,6 +256,7 @@ class MessagePhoto extends MessageContent {
     if (map['caption'] != null) {
       caption = TdApiMap.fromMap(map['caption']) as FormattedText;
     }
+    has_spoiler = map['has_spoiler'];
     is_secret = map['is_secret'];
   }
 
@@ -254,6 +267,7 @@ class MessagePhoto extends MessageContent {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'photo': photo?.toMap(skipNulls: skipNulls),
       'caption': caption?.toMap(skipNulls: skipNulls),
+      'has_spoiler': has_spoiler?.toMap(skipNulls: skipNulls),
       'is_secret': is_secret?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -263,7 +277,7 @@ class MessagePhoto extends MessageContent {
   }
 }
 
-/// An expired photo message (self-destructed after TTL has elapsed)
+/// A self-destructed photo message
 class MessageExpiredPhoto extends MessageContent {
   String get tdType => 'messageExpiredPhoto';
 
@@ -333,16 +347,19 @@ class MessageSticker extends MessageContent {
   }
 }
 
-/// A video message 
+/// A video message
 class MessageVideo extends MessageContent {
   String get tdType => 'messageVideo';
 
 
-  /// The video description 
+  /// The video description
   Video? video;
 
-  /// Video caption 
+  /// Video caption
   FormattedText? caption;
+
+  /// True, if the video preview must be covered by a spoiler animation
+  Bool? has_spoiler;
 
   /// True, if the video thumbnail must be blurred and the video must be shown only while tapped
   Bool? is_secret;
@@ -352,6 +369,7 @@ class MessageVideo extends MessageContent {
     super.client_id,
     this.video,
     this.caption,
+    this.has_spoiler,
     this.is_secret,
   });
 
@@ -364,6 +382,7 @@ class MessageVideo extends MessageContent {
     if (map['caption'] != null) {
       caption = TdApiMap.fromMap(map['caption']) as FormattedText;
     }
+    has_spoiler = map['has_spoiler'];
     is_secret = map['is_secret'];
   }
 
@@ -374,6 +393,7 @@ class MessageVideo extends MessageContent {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'video': video?.toMap(skipNulls: skipNulls),
       'caption': caption?.toMap(skipNulls: skipNulls),
+      'has_spoiler': has_spoiler?.toMap(skipNulls: skipNulls),
       'is_secret': is_secret?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -383,7 +403,7 @@ class MessageVideo extends MessageContent {
   }
 }
 
-/// An expired video message (self-destructed after TTL has elapsed)
+/// A self-destructed video message
 class MessageExpiredVideo extends MessageContent {
   String get tdType => 'messageExpiredVideo';
 
@@ -509,12 +529,12 @@ class MessageVoiceNote extends MessageContent {
   }
 }
 
-/// A message with a location 
+/// A message with a location
 class MessageLocation extends MessageContent {
   String get tdType => 'messageLocation';
 
 
-  /// The location description 
+  /// The location description
   Location? location;
 
   /// Time relative to the message send date, for which the location can be updated, in seconds
@@ -526,7 +546,7 @@ class MessageLocation extends MessageContent {
   /// For live locations, a direction in which the location moves, in degrees; 1-360. If 0 the direction is unknown
   int32? heading;
 
-  /// For live locations, a maximum distance to another chat member for proximity alerts, in meters (0-100000). 0 if the notification is disabled. Available only for the message sender
+  /// For live locations, a maximum distance to another chat member for proximity alerts, in meters (0-100000). 0 if the notification is disabled. Available only to the message sender
   int32? proximity_alert_radius;
 
   MessageLocation({
@@ -817,36 +837,39 @@ class MessagePoll extends MessageContent {
   }
 }
 
-/// A message with an invoice from a bot 
+/// A message with an invoice from a bot
 class MessageInvoice extends MessageContent {
   String get tdType => 'messageInvoice';
 
 
-  /// Product title 
+  /// Product title
   string? title;
 
   FormattedText? description;
 
-  /// Product photo; may be null 
+  /// Product photo; may be null
   Photo? photo;
 
-  /// Currency for the product price 
+  /// Currency for the product price
   string? currency;
 
   /// Product total price in the smallest units of the currency
   int53? total_amount;
 
-  /// Unique invoice bot start_parameter. To share an invoice use the URL https://t.me/{bot_username}?start={start_parameter} 
+  /// Unique invoice bot start_parameter. To share an invoice use the URL https://t.me/{bot_username}?start={start_parameter}
   string? start_parameter;
 
   /// True, if the invoice is a test invoice
   Bool? is_test;
 
-  /// True, if the shipping address must be specified 
+  /// True, if the shipping address must be specified
   Bool? need_shipping_address;
 
   /// The identifier of the message with the receipt, after the product has been purchased
   int53? receipt_message_id;
+
+  /// Extended media attached to the invoice; may be null
+  MessageExtendedMedia? extended_media;
 
   MessageInvoice({
     super.extra,
@@ -860,6 +883,7 @@ class MessageInvoice extends MessageContent {
     this.is_test,
     this.need_shipping_address,
     this.receipt_message_id,
+    this.extended_media,
   });
 
   MessageInvoice.fromMap(Map<String, dynamic> map) {
@@ -878,6 +902,9 @@ class MessageInvoice extends MessageContent {
     is_test = map['is_test'];
     need_shipping_address = map['need_shipping_address'];
     receipt_message_id = map['receipt_message_id'];
+    if (map['extended_media'] != null) {
+      extended_media = TdApiMap.fromMap(map['extended_media']) as MessageExtendedMedia;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -894,6 +921,7 @@ class MessageInvoice extends MessageContent {
       'is_test': is_test?.toMap(skipNulls: skipNulls),
       'need_shipping_address': need_shipping_address?.toMap(skipNulls: skipNulls),
       'receipt_message_id': receipt_message_id?.toMap(skipNulls: skipNulls),
+      'extended_media': extended_media?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1550,7 +1578,7 @@ class MessageChatSetTheme extends MessageContent {
   String get tdType => 'messageChatSetTheme';
 
 
-  /// If non-empty, name of a new theme, set for the chat. Otherwise chat theme was reset to the default one
+  /// If non-empty, name of a new theme, set for the chat. Otherwise, chat theme was reset to the default one
   string? theme_name;
 
   MessageChatSetTheme({
@@ -1579,24 +1607,29 @@ class MessageChatSetTheme extends MessageContent {
   }
 }
 
-/// The TTL (Time To Live) setting for messages in the chat has been changed 
-class MessageChatSetTtl extends MessageContent {
-  String get tdType => 'messageChatSetTtl';
+/// The auto-delete or self-destruct timer for messages in the chat has been changed 
+class MessageChatSetMessageAutoDeleteTime extends MessageContent {
+  String get tdType => 'messageChatSetMessageAutoDeleteTime';
 
 
-  /// New message TTL
-  int32? ttl;
+  /// New value auto-delete or self-destruct time, in seconds; 0 if disabled 
+  int32? message_auto_delete_time;
 
-  MessageChatSetTtl({
+  /// If not 0, a user identifier, which default setting was automatically applied
+  int53? from_user_id;
+
+  MessageChatSetMessageAutoDeleteTime({
     super.extra,
     super.client_id,
-    this.ttl,
+    this.message_auto_delete_time,
+    this.from_user_id,
   });
 
-  MessageChatSetTtl.fromMap(Map<String, dynamic> map) {
+  MessageChatSetMessageAutoDeleteTime.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    ttl = map['ttl'];
+    message_auto_delete_time = map['message_auto_delete_time'];
+    from_user_id = map['from_user_id'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1604,7 +1637,200 @@ class MessageChatSetTtl extends MessageContent {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'ttl': ttl?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'from_user_id': from_user_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A forum topic has been created 
+class MessageForumTopicCreated extends MessageContent {
+  String get tdType => 'messageForumTopicCreated';
+
+
+  /// Name of the topic 
+  string? name;
+
+  /// Icon of the topic
+  ForumTopicIcon? icon;
+
+  MessageForumTopicCreated({
+    super.extra,
+    super.client_id,
+    this.name,
+    this.icon,
+  });
+
+  MessageForumTopicCreated.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    name = map['name'];
+    if (map['icon'] != null) {
+      icon = TdApiMap.fromMap(map['icon']) as ForumTopicIcon;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'name': name?.toMap(skipNulls: skipNulls),
+      'icon': icon?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A forum topic has been edited
+class MessageForumTopicEdited extends MessageContent {
+  String get tdType => 'messageForumTopicEdited';
+
+
+  /// If non-empty, the new name of the topic
+  string? name;
+
+  /// True, if icon's custom_emoji_id is changed
+  Bool? edit_icon_custom_emoji_id;
+
+  /// New unique identifier of the custom emoji shown on the topic icon; 0 if none. Must be ignored if edit_icon_custom_emoji_id is false
+  int64? icon_custom_emoji_id;
+
+  MessageForumTopicEdited({
+    super.extra,
+    super.client_id,
+    this.name,
+    this.edit_icon_custom_emoji_id,
+    this.icon_custom_emoji_id,
+  });
+
+  MessageForumTopicEdited.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    name = map['name'];
+    edit_icon_custom_emoji_id = map['edit_icon_custom_emoji_id'];
+    icon_custom_emoji_id = map['icon_custom_emoji_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'name': name?.toMap(skipNulls: skipNulls),
+      'edit_icon_custom_emoji_id': edit_icon_custom_emoji_id?.toMap(skipNulls: skipNulls),
+      'icon_custom_emoji_id': icon_custom_emoji_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A forum topic has been closed or opened 
+class MessageForumTopicIsClosedToggled extends MessageContent {
+  String get tdType => 'messageForumTopicIsClosedToggled';
+
+
+  /// True, if the topic was closed; otherwise, the topic was reopened
+  Bool? is_closed;
+
+  MessageForumTopicIsClosedToggled({
+    super.extra,
+    super.client_id,
+    this.is_closed,
+  });
+
+  MessageForumTopicIsClosedToggled.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    is_closed = map['is_closed'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'is_closed': is_closed?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A General forum topic has been hidden or unhidden 
+class MessageForumTopicIsHiddenToggled extends MessageContent {
+  String get tdType => 'messageForumTopicIsHiddenToggled';
+
+
+  /// True, if the topic was hidden; otherwise, the topic was unhidden
+  Bool? is_hidden;
+
+  MessageForumTopicIsHiddenToggled({
+    super.extra,
+    super.client_id,
+    this.is_hidden,
+  });
+
+  MessageForumTopicIsHiddenToggled.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    is_hidden = map['is_hidden'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'is_hidden': is_hidden?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A profile photo was suggested to a user in a private chat 
+class MessageSuggestProfilePhoto extends MessageContent {
+  String get tdType => 'messageSuggestProfilePhoto';
+
+
+  /// The suggested chat photo. Use the method setProfilePhoto with inputChatPhotoPrevious to apply the photo
+  ChatPhoto? photo;
+
+  MessageSuggestProfilePhoto({
+    super.extra,
+    super.client_id,
+    this.photo,
+  });
+
+  MessageSuggestProfilePhoto.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['photo'] != null) {
+      photo = TdApiMap.fromMap(map['photo']) as ChatPhoto;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'photo': photo?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1693,27 +1919,27 @@ class MessageGameScore extends MessageContent {
   }
 }
 
-/// A payment has been completed 
+/// A payment has been completed
 class MessagePaymentSuccessful extends MessageContent {
   String get tdType => 'messagePaymentSuccessful';
 
 
-  /// Identifier of the chat, containing the corresponding invoice message; 0 if unknown 
+  /// Identifier of the chat, containing the corresponding invoice message
   int53? invoice_chat_id;
 
   /// Identifier of the message with the corresponding invoice; can be 0 or an identifier of a deleted message
   int53? invoice_message_id;
 
-  /// Currency for the price of the product 
+  /// Currency for the price of the product
   string? currency;
 
   /// Total price for the product, in the smallest units of the currency
   int53? total_amount;
 
-  /// True, if this is a recurring payment 
+  /// True, if this is a recurring payment
   Bool? is_recurring;
 
-  /// True, if this is the first recurring payment 
+  /// True, if this is the first recurring payment
   Bool? is_first_recurring;
 
   /// Name of the invoice; may be empty if unknown
@@ -1763,33 +1989,33 @@ class MessagePaymentSuccessful extends MessageContent {
   }
 }
 
-/// A payment has been completed; for bots only 
+/// A payment has been completed; for bots only
 class MessagePaymentSuccessfulBot extends MessageContent {
   String get tdType => 'messagePaymentSuccessfulBot';
 
 
-  /// Currency for price of the product 
+  /// Currency for price of the product
   string? currency;
 
   /// Total price for the product, in the smallest units of the currency
   int53? total_amount;
 
-  /// True, if this is a recurring payment 
+  /// True, if this is a recurring payment
   Bool? is_recurring;
 
   /// True, if this is the first recurring payment
   Bool? is_first_recurring;
 
-  /// Invoice payload 
+  /// Invoice payload
   bytes? invoice_payload;
 
-  /// Identifier of the shipping option chosen by the user; may be empty if not applicable 
+  /// Identifier of the shipping option chosen by the user; may be empty if not applicable
   string? shipping_option_id;
 
   /// Information about the order; may be null
   OrderInfo? order_info;
 
-  /// Telegram payment identifier 
+  /// Telegram payment identifier
   string? telegram_payment_charge_id;
 
   /// Provider payment identifier
@@ -1847,15 +2073,15 @@ class MessagePaymentSuccessfulBot extends MessageContent {
   }
 }
 
-/// Telegram Premium was gifted to the user 
+/// Telegram Premium was gifted to the user
 class MessageGiftedPremium extends MessageContent {
   String get tdType => 'messageGiftedPremium';
 
 
-  /// Currency for the paid amount 
+  /// Currency for the paid amount
   string? currency;
 
-  /// The paid amount, in the smallest units of the currency 
+  /// The paid amount, in the smallest units of the currency
   int53? amount;
 
   /// Number of month the Telegram Premium subscription will be active
@@ -1955,6 +2181,34 @@ class MessageWebsiteConnected extends MessageContent {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'domain_name': domain_name?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The user allowed the bot to send messages
+class MessageBotWriteAccessAllowed extends MessageContent {
+  String get tdType => 'messageBotWriteAccessAllowed';
+
+
+  MessageBotWriteAccessAllowed({
+    super.extra,
+    super.client_id,
+  });
+
+  MessageBotWriteAccessAllowed.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

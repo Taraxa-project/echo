@@ -6,7 +6,7 @@ abstract class TextEntityType extends TdObject {
 }
 
 
-/// A mention of a user by their username
+/// A mention of a user, a supergroup, or a channel by their username
 class TextEntityTypeMention extends TextEntityType {
   String get tdType => 'textEntityTypeMention';
 

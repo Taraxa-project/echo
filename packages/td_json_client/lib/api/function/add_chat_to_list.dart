@@ -9,7 +9,7 @@ class AddChatToList extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// The chat list. Use getChatListsToAddChat to get suitable chat lists

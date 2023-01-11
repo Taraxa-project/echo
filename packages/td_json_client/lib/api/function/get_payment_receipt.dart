@@ -7,7 +7,7 @@ class GetPaymentReceipt extends TdFunction {
   String get tdReturnType => 'PaymentReceipt';
 
 
-  /// Chat identifier of the PaymentSuccessful message 
+  /// Chat identifier of the messagePaymentSuccessful message 
   int53? chat_id;
 
   /// Message identifier

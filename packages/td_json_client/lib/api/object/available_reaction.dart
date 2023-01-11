@@ -1,4 +1,6 @@
 import 'package:td_json_client/api/base.dart';
+import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/reaction_type.dart';
 
 
 /// Represents an available reaction 
@@ -6,8 +8,8 @@ class AvailableReaction extends TdObject {
   String get tdType => 'availableReaction';
 
 
-  /// Text representation of the reaction 
-  string? reaction;
+  /// Type of the reaction 
+  ReactionType? type;
 
   /// True, if Telegram Premium is needed to send the reaction
   Bool? needs_premium;
@@ -15,14 +17,16 @@ class AvailableReaction extends TdObject {
   AvailableReaction({
     super.extra,
     super.client_id,
-    this.reaction,
+    this.type,
     this.needs_premium,
   });
 
   AvailableReaction.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    reaction = map['reaction'];
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ReactionType;
+    }
     needs_premium = map['needs_premium'];
   }
 
@@ -31,7 +35,7 @@ class AvailableReaction extends TdObject {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'reaction': reaction?.toMap(skipNulls: skipNulls),
+      'type': type?.toMap(skipNulls: skipNulls),
       'needs_premium': needs_premium?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

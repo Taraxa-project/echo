@@ -75,7 +75,7 @@ class WebPage extends TdObject {
   /// Preview of the content as a voice note, if available; may be null
   VoiceNote? voice_note;
 
-  /// Version of instant view, available for the web page (currently, can be 1 or 2), 0 if none
+  /// Version of web page instant view (currently, can be 1 or 2); 0 if none
   int32? instant_view_version;
 
   WebPage({

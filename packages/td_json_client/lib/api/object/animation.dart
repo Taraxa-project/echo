@@ -5,21 +5,21 @@ import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
 
-/// Describes an animation file. The animation must be encoded in GIF or MPEG4 format 
+/// Describes an animation file. The animation must be encoded in GIF or MPEG4 format
 class Animation extends TdObject {
   String get tdType => 'animation';
 
 
-  /// Duration of the animation, in seconds; as defined by the sender 
+  /// Duration of the animation, in seconds; as defined by the sender
   int32? duration;
 
-  /// Width of the animation 
+  /// Width of the animation
   int32? width;
 
   /// Height of the animation
   int32? height;
 
-  /// Original name of the file; as defined by the sender 
+  /// Original name of the file; as defined by the sender
   string? file_name;
 
   /// MIME type of the file, usually "image/gif" or "video/mp4"
@@ -28,10 +28,10 @@ class Animation extends TdObject {
   /// True, if stickers were added to the animation. The list of corresponding sticker set can be received using getAttachedStickerSets
   Bool? has_stickers;
 
-  /// Animation minithumbnail; may be null 
+  /// Animation minithumbnail; may be null
   Minithumbnail? minithumbnail;
 
-  /// Animation thumbnail in JPEG or MPEG4 format; may be null 
+  /// Animation thumbnail in JPEG or MPEG4 format; may be null
   Thumbnail? thumbnail;
 
   /// File containing the animation

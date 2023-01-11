@@ -16,7 +16,7 @@ class MessageThreadInfo extends TdObject {
   /// Message thread identifier, unique within the chat
   int53? message_thread_id;
 
-  /// Information about the message thread
+  /// Information about the message thread; may be null for forum topic threads
   MessageReplyInfo? reply_info;
 
   /// Approximate number of unread messages in the message thread

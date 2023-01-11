@@ -1,6 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 
-/// Describe an invoice to process
+/// Describes an invoice to process
 abstract class InputInvoice extends TdObject {
   InputInvoice({super.extra, super.client_id});
 }

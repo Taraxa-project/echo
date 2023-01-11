@@ -7,7 +7,7 @@ class GetExternalLink extends TdFunction {
   String get tdReturnType => 'HttpUrl';
 
 
-  /// The HTTP link 
+  /// The HTTP link
   string? link;
 
   /// Pass true if the current user allowed the bot, returned in getExternalLinkInfo, to send them messages

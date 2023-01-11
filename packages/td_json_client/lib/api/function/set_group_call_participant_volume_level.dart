@@ -9,10 +9,10 @@ class SetGroupCallParticipantVolumeLevel extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Group call identifier 
+  /// Group call identifier
   int32? group_call_id;
 
-  /// Participant identifier 
+  /// Participant identifier
   MessageSender? participant_id;
 
   /// New participant's volume level; 1-20000 in hundreds of percents

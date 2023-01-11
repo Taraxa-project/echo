@@ -45,19 +45,19 @@ class LanguagePackStringValuePluralized extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValuePluralized';
 
 
-  /// Value for zero objects 
+  /// Value for zero objects
   string? zero_value;
 
-  /// Value for one object 
+  /// Value for one object
   string? one_value;
 
   /// Value for two objects
   string? two_value;
 
-  /// Value for few objects 
+  /// Value for few objects
   string? few_value;
 
-  /// Value for many objects 
+  /// Value for many objects
   string? many_value;
 
   /// Default value

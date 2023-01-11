@@ -7,13 +7,13 @@ class DeleteChatMessagesByDate extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// The minimum date of the messages to delete 
+  /// The minimum date of the messages to delete
   int32? min_date;
 
-  /// The maximum date of the messages to delete 
+  /// The maximum date of the messages to delete
   int32? max_date;
 
   /// Pass true to delete chat messages for all users; private chats only

@@ -46,18 +46,18 @@ class CallServerTypeTelegramReflector extends CallServerType {
   }
 }
 
-/// A WebRTC server 
+/// A WebRTC server
 class CallServerTypeWebrtc extends CallServerType {
   String get tdType => 'callServerTypeWebrtc';
 
 
-  /// Username to be used for authentication 
+  /// Username to be used for authentication
   string? username;
 
-  /// Authentication password 
+  /// Authentication password
   string? password;
 
-  /// True, if the server supports TURN 
+  /// True, if the server supports TURN
   Bool? supports_turn;
 
   /// True, if the server supports STUN

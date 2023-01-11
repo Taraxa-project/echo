@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Represents the result of an ImportContacts request 
+/// Represents the result of an importContacts request
 class ImportedContacts extends TdObject {
   String get tdType => 'importedContacts';
 

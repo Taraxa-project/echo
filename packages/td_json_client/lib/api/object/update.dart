@@ -11,12 +11,14 @@ import 'package:td_json_client/api/object/chat_photo_info.dart';
 import 'package:td_json_client/api/object/chat_permissions.dart';
 import 'package:td_json_client/api/object/chat_position.dart';
 import 'package:td_json_client/api/object/chat_action_bar.dart';
+import 'package:td_json_client/api/object/chat_available_reactions.dart';
 import 'package:td_json_client/api/object/draft_message.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/chat_notification_settings.dart';
 import 'package:td_json_client/api/object/chat_join_requests_info.dart';
 import 'package:td_json_client/api/object/video_chat.dart';
 import 'package:td_json_client/api/object/chat_filter_info.dart';
+import 'package:td_json_client/api/object/forum_topic_info.dart';
 import 'package:td_json_client/api/object/notification_settings_scope.dart';
 import 'package:td_json_client/api/object/scope_notification_settings.dart';
 import 'package:td_json_client/api/object/notification.dart';
@@ -51,7 +53,7 @@ import 'package:td_json_client/api/object/connection_state.dart';
 import 'package:td_json_client/api/object/terms_of_service.dart';
 import 'package:td_json_client/api/object/chat_nearby.dart';
 import 'package:td_json_client/api/object/attachment_menu_bot.dart';
-import 'package:td_json_client/api/object/reaction.dart';
+import 'package:td_json_client/api/object/reaction_type.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/suggested_action.dart';
 import 'package:td_json_client/api/object/location.dart';
@@ -142,12 +144,13 @@ class UpdateNewMessage extends Update {
   }
 }
 
-/// A request to send a message has reached the Telegram server. This doesn't mean that the message will be sent successfully or even that the send message request will be processed. This update will be sent only if the option "use_quick_ack" is set to true. This update may be sent multiple times for the same message
+/// A request to send a message has reached the Telegram server. This doesn't mean that the message will be sent successfully or even that the send message request will be processed.
+/// This update will be sent only if the option "use_quick_ack" is set to true. This update may be sent multiple times for the same message
 class UpdateMessageSendAcknowledged extends Update {
   String get tdType => 'updateMessageSendAcknowledged';
 
 
-  /// The chat identifier of the sent message 
+  /// The chat identifier of the sent message
   int53? chat_id;
 
   /// A temporary message identifier
@@ -229,13 +232,13 @@ class UpdateMessageSendFailed extends Update {
   String get tdType => 'updateMessageSendFailed';
 
 
-  /// The failed to send message 
+  /// The failed to send message
   Message? message;
 
-  /// The previous temporary message identifier 
+  /// The previous temporary message identifier
   int53? old_message_id;
 
-  /// An error code 
+  /// An error code
   int32? error_code;
 
   /// Error message
@@ -326,18 +329,18 @@ class UpdateMessageContent extends Update {
   }
 }
 
-/// A message was edited. Changes in the message content will come in a separate updateMessageContent 
+/// A message was edited. Changes in the message content will come in a separate updateMessageContent
 class UpdateMessageEdited extends Update {
   String get tdType => 'updateMessageEdited';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// Message identifier 
+  /// Message identifier
   int53? message_id;
 
-  /// Point in time (Unix timestamp) when the message was edited 
+  /// Point in time (Unix timestamp) when the message was edited
   int32? edit_date;
 
   /// New message reply markup; may be null
@@ -474,7 +477,7 @@ class UpdateMessageInteractionInfo extends Update {
   }
 }
 
-/// The message content was opened. Updates voice note messages to "listened", video note messages to "viewed" and starts the TTL timer for self-destructing messages 
+/// The message content was opened. Updates voice note messages to "listened", video note messages to "viewed" and starts the self-destruct timer 
 class UpdateMessageContentOpened extends Update {
   String get tdType => 'updateMessageContentOpened';
 
@@ -560,18 +563,18 @@ class UpdateMessageMentionRead extends Update {
   }
 }
 
-/// The list of unread reactions added to a message was changed 
+/// The list of unread reactions added to a message was changed
 class UpdateMessageUnreadReactions extends Update {
   String get tdType => 'updateMessageUnreadReactions';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// Message identifier 
+  /// Message identifier
   int53? message_id;
 
-  /// The new list of unread reactions 
+  /// The new list of unread reactions
   vector<UnreadReaction>? unread_reactions;
 
   /// The new number of messages with unread reactions left in the chat
@@ -624,7 +627,7 @@ class UpdateMessageLiveLocationViewed extends Update {
   String get tdType => 'updateMessageLiveLocationViewed';
 
 
-  /// Identifier of the chat with the live location message 
+  /// Identifier of the chat with the live location message
   int53? chat_id;
 
   /// Identifier of the message with live location
@@ -819,15 +822,15 @@ class UpdateChatPermissions extends Update {
   }
 }
 
-/// The last message of a chat was changed. If last_message is null, then the last message in the chat became unknown. Some new unknown messages might be added to the chat in this case 
+/// The last message of a chat was changed. If last_message is null, then the last message in the chat became unknown. Some new unknown messages might be added to the chat in this case
 class UpdateChatLastMessage extends Update {
   String get tdType => 'updateChatLastMessage';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// The new last message in the chat; may be null 
+  /// The new last message in the chat; may be null
   Message? last_message;
 
   /// The new chat positions in the chat lists
@@ -874,12 +877,12 @@ class UpdateChatLastMessage extends Update {
   }
 }
 
-/// The position of a chat in a chat list has changed. Instead of this update updateChatLastMessage or updateChatDraftMessage might be sent 
+/// The position of a chat in a chat list has changed. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update
 class UpdateChatPosition extends Update {
   String get tdType => 'updateChatPosition';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// New chat position. If new order is 0, then the chat needs to be removed from the list
@@ -1052,8 +1055,8 @@ class UpdateChatAvailableReactions extends Update {
   /// Chat identifier 
   int53? chat_id;
 
-  /// The new list of reactions, available in the chat
-  vector<string>? available_reactions;
+  /// The new reactions, available in the chat
+  ChatAvailableReactions? available_reactions;
 
   UpdateChatAvailableReactions({
     super.extra,
@@ -1067,10 +1070,7 @@ class UpdateChatAvailableReactions extends Update {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     if (map['available_reactions'] != null) {
-      available_reactions = [];
-      for (var someValue in map['available_reactions']) {
-        available_reactions?.add(someValue);
-      }
+      available_reactions = TdApiMap.fromMap(map['available_reactions']) as ChatAvailableReactions;
     }
   }
 
@@ -1089,15 +1089,15 @@ class UpdateChatAvailableReactions extends Update {
   }
 }
 
-/// A chat draft has changed. Be aware that the update may come in the currently opened chat but with old content of the draft. If the user has changed the content of the draft, this update mustn't be applied 
+/// A chat draft has changed. Be aware that the update may come in the currently opened chat but with old content of the draft. If the user has changed the content of the draft, this update mustn't be applied
 class UpdateChatDraftMessage extends Update {
   String get tdType => 'updateChatDraftMessage';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// The new draft message; may be null 
+  /// The new draft message; may be null
   DraftMessage? draft_message;
 
   /// The new chat positions in the chat lists
@@ -1186,29 +1186,29 @@ class UpdateChatMessageSender extends Update {
   }
 }
 
-/// The message Time To Live setting for a chat was changed 
-class UpdateChatMessageTtl extends Update {
-  String get tdType => 'updateChatMessageTtl';
+/// The message auto-delete or self-destruct timer setting for a chat was changed 
+class UpdateChatMessageAutoDeleteTime extends Update {
+  String get tdType => 'updateChatMessageAutoDeleteTime';
 
 
   /// Chat identifier 
   int53? chat_id;
 
-  /// New value of message_ttl
-  int32? message_ttl;
+  /// New value of message_auto_delete_time
+  int32? message_auto_delete_time;
 
-  UpdateChatMessageTtl({
+  UpdateChatMessageAutoDeleteTime({
     super.extra,
     super.client_id,
     this.chat_id,
-    this.message_ttl,
+    this.message_auto_delete_time,
   });
 
-  UpdateChatMessageTtl.fromMap(Map<String, dynamic> map) {
+  UpdateChatMessageAutoDeleteTime.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    message_ttl = map['message_ttl'];
+    message_auto_delete_time = map['message_auto_delete_time'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1217,7 +1217,7 @@ class UpdateChatMessageTtl extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'message_ttl': message_ttl?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1315,7 +1315,7 @@ class UpdateChatReplyMarkup extends Update {
   String get tdType => 'updateChatReplyMarkup';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// Identifier of the message from which reply markup needs to be used; 0 if there is no default custom reply markup in the chat
@@ -1759,12 +1759,13 @@ class UpdateChatFilters extends Update {
   }
 }
 
-/// The number of online group members has changed. This update with non-zero number of online group members is sent only for currently opened chats. There is no guarantee that it will be sent just after the number of online users has changed 
+/// The number of online group members has changed. This update with non-zero number of online group members is sent only for currently opened chats.
+/// There is no guarantee that it will be sent just after the number of online users has changed
 class UpdateChatOnlineMemberCount extends Update {
   String get tdType => 'updateChatOnlineMemberCount';
 
 
-  /// Identifier of the chat 
+  /// Identifier of the chat
   int53? chat_id;
 
   /// New number of online members in the chat, or 0 if unknown
@@ -1791,6 +1792,48 @@ class UpdateChatOnlineMemberCount extends Update {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'online_member_count': online_member_count?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Basic information about a topic in a forum chat was changed 
+class UpdateForumTopicInfo extends Update {
+  String get tdType => 'updateForumTopicInfo';
+
+
+  /// Chat identifier 
+  int53? chat_id;
+
+  /// New information about the topic
+  ForumTopicInfo? info;
+
+  UpdateForumTopicInfo({
+    super.extra,
+    super.client_id,
+    this.chat_id,
+    this.info,
+  });
+
+  UpdateForumTopicInfo.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    if (map['info'] != null) {
+      info = TdApiMap.fromMap(map['info']) as ForumTopicInfo;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'info': info?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1908,7 +1951,7 @@ class UpdateNotificationGroup extends Update {
   /// Total number of unread notifications in the group, can be bigger than number of active notifications
   int32? total_count;
 
-  /// List of added group notifications, sorted by notification ID 
+  /// List of added group notifications, sorted by notification ID
   vector<Notification>? added_notifications;
 
   /// Identifiers of removed group notifications, sorted by notification ID
@@ -2056,12 +2099,12 @@ class UpdateHavePendingNotifications extends Update {
   }
 }
 
-/// Some messages were deleted 
+/// Some messages were deleted
 class UpdateDeleteMessages extends Update {
   String get tdType => 'updateDeleteMessages';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// Identifiers of the deleted messages
@@ -2113,18 +2156,18 @@ class UpdateDeleteMessages extends Update {
   }
 }
 
-/// A message sender activity in the chat has changed 
+/// A message sender activity in the chat has changed
 class UpdateChatAction extends Update {
   String get tdType => 'updateChatAction';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// If not 0, a message thread identifier in which the action was performed 
+  /// If not 0, a message thread identifier in which the action was performed
   int53? message_thread_id;
 
-  /// Identifier of a message sender performing the action 
+  /// Identifier of a message sender performing the action
   MessageSender? sender_id;
 
   /// The action
@@ -2735,7 +2778,7 @@ class UpdateFileAddedToDownloads extends Update {
   }
 }
 
-/// A file download was changed. This update is sent only after file download list is loaded for the first time 
+/// A file download was changed. This update is sent only after file download list is loaded for the first time
 class UpdateFileDownload extends Update {
   String get tdType => 'updateFileDownload';
 
@@ -2908,7 +2951,7 @@ class UpdateGroupCallParticipant extends Update {
   String get tdType => 'updateGroupCallParticipant';
 
 
-  /// Identifier of group call 
+  /// Identifier of group call
   int32? group_call_id;
 
   /// New data about a participant
@@ -3029,7 +3072,7 @@ class UpdateUserPrivacySettingRules extends Update {
   }
 }
 
-/// Number of unread messages in a chat list has changed. This update is sent only if the message database is used 
+/// Number of unread messages in a chat list has changed. This update is sent only if the message database is used
 class UpdateUnreadMessageCount extends Update {
   String get tdType => 'updateUnreadMessageCount';
 
@@ -3037,7 +3080,7 @@ class UpdateUnreadMessageCount extends Update {
   /// The chat list with changed number of unread messages
   ChatList? chat_list;
 
-  /// Total number of unread messages 
+  /// Total number of unread messages
   int32? unread_count;
 
   /// Total number of unread messages in unmuted chats
@@ -3088,13 +3131,13 @@ class UpdateUnreadChatCount extends Update {
   /// Approximate total number of chats in the chat list
   int32? total_count;
 
-  /// Total number of unread chats 
+  /// Total number of unread chats
   int32? unread_count;
 
   /// Total number of unread unmuted chats
   int32? unread_unmuted_count;
 
-  /// Total number of chats marked as unread 
+  /// Total number of chats marked as unread
   int32? marked_as_unread_count;
 
   /// Total number of unmuted chats marked as unread
@@ -3317,7 +3360,7 @@ class UpdateRecentStickers extends Update {
   String get tdType => 'updateRecentStickers';
 
 
-  /// True, if the list of stickers attached to photo or video files was updated, otherwise the list of sent stickers is updated 
+  /// True, if the list of stickers attached to photo or video files was updated; otherwise, the list of sent stickers is updated 
   Bool? is_attached;
 
   /// The new list of file identifiers of recently used stickers
@@ -3804,29 +3847,27 @@ class UpdateWebAppMessageSent extends Update {
   }
 }
 
-/// The list of supported reactions has changed 
-class UpdateReactions extends Update {
-  String get tdType => 'updateReactions';
+/// The list of active emoji reactions has changed 
+class UpdateActiveEmojiReactions extends Update {
+  String get tdType => 'updateActiveEmojiReactions';
 
 
-  /// The new list of supported reactions
-  vector<Reaction>? reactions;
+  /// The new list of active emoji reactions
+  vector<string>? emojis;
 
-  UpdateReactions({
+  UpdateActiveEmojiReactions({
     super.extra,
     super.client_id,
-    this.reactions,
+    this.emojis,
   });
 
-  UpdateReactions.fromMap(Map<String, dynamic> map) {
+  UpdateActiveEmojiReactions.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['reactions'] != null) {
-      reactions = [];
-      for (var someValue in map['reactions']) {
-        if (someValue != null) {
-          reactions?.add(TdApiMap.fromMap(someValue) as Reaction);
-        }
+    if (map['emojis'] != null) {
+      emojis = [];
+      for (var someValue in map['emojis']) {
+        emojis?.add(someValue);
       }
     }
   }
@@ -3836,7 +3877,43 @@ class UpdateReactions extends Update {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'reactions': reactions?.toMap(skipNulls: skipNulls),
+      'emojis': emojis?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The type of default reaction has changed 
+class UpdateDefaultReactionType extends Update {
+  String get tdType => 'updateDefaultReactionType';
+
+
+  /// The new type of the default reaction
+  ReactionType? reaction_type;
+
+  UpdateDefaultReactionType({
+    super.extra,
+    super.client_id,
+    this.reaction_type,
+  });
+
+  UpdateDefaultReactionType.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['reaction_type'] != null) {
+      reaction_type = TdApiMap.fromMap(map['reaction_type']) as ReactionType;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'reaction_type': reaction_type?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -3889,10 +3966,10 @@ class UpdateAnimatedEmojiMessageClicked extends Update {
   String get tdType => 'updateAnimatedEmojiMessageClicked';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
-  /// Message identifier 
+  /// Message identifier
   int53? message_id;
 
   /// The animated sticker to be played
@@ -3932,7 +4009,7 @@ class UpdateAnimatedEmojiMessageClicked extends Update {
   }
 }
 
-/// The parameters of animation search through GetOption("animation_search_bot_username") bot has changed 
+/// The parameters of animation search through getOption("animation_search_bot_username") bot has changed 
 class UpdateAnimationSearchParameters extends Update {
   String get tdType => 'updateAnimationSearchParameters';
 
@@ -4031,24 +4108,24 @@ class UpdateSuggestedActions extends Update {
   }
 }
 
-/// A new incoming inline query; for bots only 
+/// A new incoming inline query; for bots only
 class UpdateNewInlineQuery extends Update {
   String get tdType => 'updateNewInlineQuery';
 
 
-  /// Unique query identifier 
+  /// Unique query identifier
   int64? id;
 
-  /// Identifier of the user who sent the query 
+  /// Identifier of the user who sent the query
   int53? sender_user_id;
 
   /// User location; may be null
   Location? user_location;
 
-  /// The type of the chat from which the query originated; may be null if unknown 
+  /// The type of the chat from which the query originated; may be null if unknown
   ChatType? chat_type;
 
-  /// Text of the query 
+  /// Text of the query
   string? query;
 
   /// Offset of the first entry to return
@@ -4099,21 +4176,21 @@ class UpdateNewInlineQuery extends Update {
   }
 }
 
-/// The user has chosen a result of an inline query; for bots only 
+/// The user has chosen a result of an inline query; for bots only
 class UpdateNewChosenInlineResult extends Update {
   String get tdType => 'updateNewChosenInlineResult';
 
 
-  /// Identifier of the user who sent the query 
+  /// Identifier of the user who sent the query
   int53? sender_user_id;
 
   /// User location; may be null
   Location? user_location;
 
-  /// Text of the query 
+  /// Text of the query
   string? query;
 
-  /// Identifier of the chosen result 
+  /// Identifier of the chosen result
   string? result_id;
 
   /// Identifier of the sent inline message, if known
@@ -4159,24 +4236,24 @@ class UpdateNewChosenInlineResult extends Update {
   }
 }
 
-/// A new incoming callback query; for bots only 
+/// A new incoming callback query; for bots only
 class UpdateNewCallbackQuery extends Update {
   String get tdType => 'updateNewCallbackQuery';
 
 
-  /// Unique query identifier 
+  /// Unique query identifier
   int64? id;
 
   /// Identifier of the user who sent the query
   int53? sender_user_id;
 
-  /// Identifier of the chat where the query was sent 
+  /// Identifier of the chat where the query was sent
   int53? chat_id;
 
   /// Identifier of the message from which the query originated
   int53? message_id;
 
-  /// Identifier that uniquely corresponds to the chat to which the message was sent 
+  /// Identifier that uniquely corresponds to the chat to which the message was sent
   int64? chat_instance;
 
   /// Query payload
@@ -4225,21 +4302,21 @@ class UpdateNewCallbackQuery extends Update {
   }
 }
 
-/// A new incoming callback query from a message sent via a bot; for bots only 
+/// A new incoming callback query from a message sent via a bot; for bots only
 class UpdateNewInlineCallbackQuery extends Update {
   String get tdType => 'updateNewInlineCallbackQuery';
 
 
-  /// Unique query identifier 
+  /// Unique query identifier
   int64? id;
 
-  /// Identifier of the user who sent the query 
+  /// Identifier of the user who sent the query
   int53? sender_user_id;
 
   /// Identifier of the inline message from which the query originated
   string? inline_message_id;
 
-  /// An identifier uniquely corresponding to the chat a message was sent to 
+  /// An identifier uniquely corresponding to the chat a message was sent to
   int64? chat_instance;
 
   /// Query payload
@@ -4285,18 +4362,18 @@ class UpdateNewInlineCallbackQuery extends Update {
   }
 }
 
-/// A new incoming shipping query; for bots only. Only for invoices with flexible price 
+/// A new incoming shipping query; for bots only. Only for invoices with flexible price
 class UpdateNewShippingQuery extends Update {
   String get tdType => 'updateNewShippingQuery';
 
 
-  /// Unique query identifier 
+  /// Unique query identifier
   int64? id;
 
-  /// Identifier of the user who sent the query 
+  /// Identifier of the user who sent the query
   int53? sender_user_id;
 
-  /// Invoice payload 
+  /// Invoice payload
   string? invoice_payload;
 
   /// User shipping address
@@ -4339,27 +4416,27 @@ class UpdateNewShippingQuery extends Update {
   }
 }
 
-/// A new incoming pre-checkout query; for bots only. Contains full information about a checkout 
+/// A new incoming pre-checkout query; for bots only. Contains full information about a checkout
 class UpdateNewPreCheckoutQuery extends Update {
   String get tdType => 'updateNewPreCheckoutQuery';
 
 
-  /// Unique query identifier 
+  /// Unique query identifier
   int64? id;
 
-  /// Identifier of the user who sent the query 
+  /// Identifier of the user who sent the query
   int53? sender_user_id;
 
-  /// Currency for the product price 
+  /// Currency for the product price
   string? currency;
 
   /// Total price for the product, in the smallest units of the currency
   int53? total_amount;
 
-  /// Invoice payload 
+  /// Invoice payload
   bytes? invoice_payload;
 
-  /// Identifier of a shipping option chosen by the user; may be empty if not applicable 
+  /// Identifier of a shipping option chosen by the user; may be empty if not applicable
   string? shipping_option_id;
 
   /// Information about the order; may be null
@@ -4578,24 +4655,24 @@ class UpdatePollAnswer extends Update {
   }
 }
 
-/// User rights changed in a chat; for bots only 
+/// User rights changed in a chat; for bots only
 class UpdateChatMember extends Update {
   String get tdType => 'updateChatMember';
 
 
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// Identifier of the user, changing the rights
   int53? actor_user_id;
 
-  /// Point in time (Unix timestamp) when the user rights was changed 
+  /// Point in time (Unix timestamp) when the user rights was changed
   int32? date;
 
   /// If user has joined the chat using an invite link, the invite link; may be null
   ChatInviteLink? invite_link;
 
-  /// Previous chat member 
+  /// Previous chat member
   ChatMember? old_chat_member;
 
   /// New chat member

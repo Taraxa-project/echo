@@ -1,7 +1,7 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Re-sends the code to verify an email address to be added to a user's Telegram Passport
+/// Resends the code to verify an email address to be added to a user's Telegram Passport
 class ResendEmailAddressVerificationCode extends TdFunction {
   String get tdType => 'resendEmailAddressVerificationCode';
   String get tdReturnType => 'EmailAddressAuthenticationCodeInfo';

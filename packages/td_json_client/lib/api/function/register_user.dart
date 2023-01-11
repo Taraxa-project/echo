@@ -7,7 +7,7 @@ class RegisterUser extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// The first name of the user; 1-64 characters 
+  /// The first name of the user; 1-64 characters
   string? first_name;
 
   /// The last name of the user; 0-64 characters

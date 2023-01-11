@@ -440,7 +440,7 @@ class RichTextPhoneNumber extends RichText {
   }
 }
 
-/// A small image inside the text 
+/// A small image inside the text
 class RichTextIcon extends RichText {
   String get tdType => 'richTextIcon';
 

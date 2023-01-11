@@ -27,7 +27,7 @@ class SendInlineQueryResultMessage extends TdFunction {
   /// Identifier of the inline result
   string? result_id;
 
-  /// Pass true to hide the bot, via which the message is sent. Can be used only for bots GetOption("animation_search_bot_username"), GetOption("photo_search_bot_username"), and GetOption("venue_search_bot_username")
+  /// Pass true to hide the bot, via which the message is sent. Can be used only for bots getOption("animation_search_bot_username"), getOption("photo_search_bot_username"), and getOption("venue_search_bot_username")
   Bool? hide_via_bot;
 
   SendInlineQueryResultMessage({

@@ -458,12 +458,12 @@ class PageBlockList extends PageBlock {
   }
 }
 
-/// A block quote 
+/// A block quote
 class PageBlockBlockQuote extends PageBlock {
   String get tdType => 'pageBlockBlockQuote';
 
 
-  /// Quote text 
+  /// Quote text
   RichText? text;
 
   /// Quote credit
@@ -502,12 +502,12 @@ class PageBlockBlockQuote extends PageBlock {
   }
 }
 
-/// A pull quote 
+/// A pull quote
 class PageBlockPullQuote extends PageBlock {
   String get tdType => 'pageBlockPullQuote';
 
 
-  /// Quote text 
+  /// Quote text
   RichText? text;
 
   /// Quote credit
@@ -546,15 +546,15 @@ class PageBlockPullQuote extends PageBlock {
   }
 }
 
-/// An animation 
+/// An animation
 class PageBlockAnimation extends PageBlock {
   String get tdType => 'pageBlockAnimation';
 
 
-  /// Animation file; may be null 
+  /// Animation file; may be null
   Animation? animation;
 
-  /// Animation caption 
+  /// Animation caption
   PageBlockCaption? caption;
 
   /// True, if the animation must be played automatically
@@ -596,12 +596,12 @@ class PageBlockAnimation extends PageBlock {
   }
 }
 
-/// An audio file 
+/// An audio file
 class PageBlockAudio extends PageBlock {
   String get tdType => 'pageBlockAudio';
 
 
-  /// Audio file; may be null 
+  /// Audio file; may be null
   Audio? audio;
 
   /// Audio file caption
@@ -640,15 +640,15 @@ class PageBlockAudio extends PageBlock {
   }
 }
 
-/// A photo 
+/// A photo
 class PageBlockPhoto extends PageBlock {
   String get tdType => 'pageBlockPhoto';
 
 
-  /// Photo file; may be null 
+  /// Photo file; may be null
   Photo? photo;
 
-  /// Photo caption 
+  /// Photo caption
   PageBlockCaption? caption;
 
   /// URL that needs to be opened when the photo is clicked
@@ -690,18 +690,18 @@ class PageBlockPhoto extends PageBlock {
   }
 }
 
-/// A video 
+/// A video
 class PageBlockVideo extends PageBlock {
   String get tdType => 'pageBlockVideo';
 
 
-  /// Video file; may be null 
+  /// Video file; may be null
   Video? video;
 
-  /// Video caption 
+  /// Video caption
   PageBlockCaption? caption;
 
-  /// True, if the video must be played automatically 
+  /// True, if the video must be played automatically
   Bool? need_autoplay;
 
   /// True, if the video must be looped
@@ -746,12 +746,12 @@ class PageBlockVideo extends PageBlock {
   }
 }
 
-/// A voice note 
+/// A voice note
 class PageBlockVoiceNote extends PageBlock {
   String get tdType => 'pageBlockVoiceNote';
 
 
-  /// Voice note; may be null 
+  /// Voice note; may be null
   VoiceNote? voice_note;
 
   /// Voice note caption
@@ -790,7 +790,7 @@ class PageBlockVoiceNote extends PageBlock {
   }
 }
 
-/// A page cover 
+/// A page cover
 class PageBlockCover extends PageBlock {
   String get tdType => 'pageBlockCover';
 
@@ -824,30 +824,30 @@ class PageBlockCover extends PageBlock {
   }
 }
 
-/// An embedded web page 
+/// An embedded web page
 class PageBlockEmbedded extends PageBlock {
   String get tdType => 'pageBlockEmbedded';
 
 
-  /// Web page URL, if available 
+  /// Web page URL, if available
   string? url;
 
-  /// HTML-markup of the embedded page 
+  /// HTML-markup of the embedded page
   string? html;
 
-  /// Poster photo, if available; may be null 
+  /// Poster photo, if available; may be null
   Photo? poster_photo;
 
-  /// Block width; 0 if unknown 
+  /// Block width; 0 if unknown
   int32? width;
 
-  /// Block height; 0 if unknown 
+  /// Block height; 0 if unknown
   int32? height;
 
-  /// Block caption 
+  /// Block caption
   PageBlockCaption? caption;
 
-  /// True, if the block must be full width 
+  /// True, if the block must be full width
   Bool? is_full_width;
 
   /// True, if scrolling needs to be allowed
@@ -904,24 +904,24 @@ class PageBlockEmbedded extends PageBlock {
   }
 }
 
-/// An embedded post 
+/// An embedded post
 class PageBlockEmbeddedPost extends PageBlock {
   String get tdType => 'pageBlockEmbeddedPost';
 
 
-  /// Web page URL 
+  /// Web page URL
   string? url;
 
-  /// Post author 
+  /// Post author
   string? author;
 
-  /// Post author photo; may be null 
+  /// Post author photo; may be null
   Photo? author_photo;
 
-  /// Point in time (Unix timestamp) when the post was created; 0 if unknown 
+  /// Point in time (Unix timestamp) when the post was created; 0 if unknown
   int32? date;
 
-  /// Post content 
+  /// Post content
   vector<PageBlock>? page_blocks;
 
   /// Post caption
@@ -977,12 +977,12 @@ class PageBlockEmbeddedPost extends PageBlock {
   }
 }
 
-/// A collage 
+/// A collage
 class PageBlockCollage extends PageBlock {
   String get tdType => 'pageBlockCollage';
 
 
-  /// Collage item contents 
+  /// Collage item contents
   vector<PageBlock>? page_blocks;
 
   /// Block caption
@@ -1024,12 +1024,12 @@ class PageBlockCollage extends PageBlock {
   }
 }
 
-/// A slideshow 
+/// A slideshow
 class PageBlockSlideshow extends PageBlock {
   String get tdType => 'pageBlockSlideshow';
 
 
-  /// Slideshow item contents 
+  /// Slideshow item contents
   vector<PageBlock>? page_blocks;
 
   /// Block caption
@@ -1071,15 +1071,15 @@ class PageBlockSlideshow extends PageBlock {
   }
 }
 
-/// A link to a chat 
+/// A link to a chat
 class PageBlockChatLink extends PageBlock {
   String get tdType => 'pageBlockChatLink';
 
 
-  /// Chat title 
+  /// Chat title
   string? title;
 
-  /// Chat photo; may be null 
+  /// Chat photo; may be null
   ChatPhotoInfo? photo;
 
   /// Chat username by which all other information about the chat can be resolved
@@ -1119,18 +1119,18 @@ class PageBlockChatLink extends PageBlock {
   }
 }
 
-/// A table 
+/// A table
 class PageBlockTable extends PageBlock {
   String get tdType => 'pageBlockTable';
 
 
-  /// Table caption 
+  /// Table caption
   RichText? caption;
 
-  /// Table cells 
+  /// Table cells
   vector<vector<PageBlockTableCell>>? cells;
 
-  /// True, if the table is bordered 
+  /// True, if the table is bordered
   Bool? is_bordered;
 
   /// True, if the table is striped
@@ -1184,15 +1184,15 @@ class PageBlockTable extends PageBlock {
   }
 }
 
-/// A collapsible block 
+/// A collapsible block
 class PageBlockDetails extends PageBlock {
   String get tdType => 'pageBlockDetails';
 
 
-  /// Always visible heading for the block 
+  /// Always visible heading for the block
   RichText? header;
 
-  /// Block contents 
+  /// Block contents
   vector<PageBlock>? page_blocks;
 
   /// True, if the block is open by default
@@ -1237,12 +1237,12 @@ class PageBlockDetails extends PageBlock {
   }
 }
 
-/// Related articles 
+/// Related articles
 class PageBlockRelatedArticles extends PageBlock {
   String get tdType => 'pageBlockRelatedArticles';
 
 
-  /// Block header 
+  /// Block header
   RichText? header;
 
   /// List of related articles
@@ -1286,21 +1286,21 @@ class PageBlockRelatedArticles extends PageBlock {
   }
 }
 
-/// A map 
+/// A map
 class PageBlockMap extends PageBlock {
   String get tdType => 'pageBlockMap';
 
 
-  /// Location of the map center 
+  /// Location of the map center
   Location? location;
 
-  /// Map zoom level 
+  /// Map zoom level
   int32? zoom;
 
-  /// Map width 
+  /// Map width
   int32? width;
 
-  /// Map height 
+  /// Map height
   int32? height;
 
   /// Block caption

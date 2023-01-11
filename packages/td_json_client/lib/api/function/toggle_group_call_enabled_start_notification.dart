@@ -7,7 +7,7 @@ class ToggleGroupCallEnabledStartNotification extends TdFunction {
   String get tdReturnType => 'Ok';
 
 
-  /// Group call identifier 
+  /// Group call identifier
   int32? group_call_id;
 
   /// New value of the enabled_start_notification setting

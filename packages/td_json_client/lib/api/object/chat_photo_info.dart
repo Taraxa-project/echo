@@ -21,6 +21,9 @@ class ChatPhotoInfo extends TdObject {
   /// True, if the photo has animated variant
   Bool? has_animation;
 
+  /// True, if the photo is visible only for the current user
+  Bool? is_personal;
+
   ChatPhotoInfo({
     super.extra,
     super.client_id,
@@ -28,6 +31,7 @@ class ChatPhotoInfo extends TdObject {
     this.big,
     this.minithumbnail,
     this.has_animation,
+    this.is_personal,
   });
 
   ChatPhotoInfo.fromMap(Map<String, dynamic> map) {
@@ -43,6 +47,7 @@ class ChatPhotoInfo extends TdObject {
       minithumbnail = TdApiMap.fromMap(map['minithumbnail']) as Minithumbnail;
     }
     has_animation = map['has_animation'];
+    is_personal = map['is_personal'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -54,6 +59,7 @@ class ChatPhotoInfo extends TdObject {
       'big': big?.toMap(skipNulls: skipNulls),
       'minithumbnail': minithumbnail?.toMap(skipNulls: skipNulls),
       'has_animation': has_animation?.toMap(skipNulls: skipNulls),
+      'is_personal': is_personal?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

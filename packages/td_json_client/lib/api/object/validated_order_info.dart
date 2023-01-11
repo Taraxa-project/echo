@@ -3,7 +3,7 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/shipping_option.dart';
 
 
-/// Contains a temporary identifier of validated order information, which is stored for one hour. Also contains the available shipping options 
+/// Contains a temporary identifier of validated order information, which is stored for one hour, and the available shipping options 
 class ValidatedOrderInfo extends TdObject {
   String get tdType => 'validatedOrderInfo';
 

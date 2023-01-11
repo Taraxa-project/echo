@@ -1,22 +1,22 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Discards a call 
+/// Discards a call
 class DiscardCall extends TdFunction {
   String get tdType => 'discardCall';
   String get tdReturnType => 'Ok';
 
 
-  /// Call identifier 
+  /// Call identifier
   int32? call_id;
 
-  /// Pass true if the user was disconnected 
+  /// Pass true if the user was disconnected
   Bool? is_disconnected;
 
-  /// The call duration, in seconds 
+  /// The call duration, in seconds
   int32? duration;
 
-  /// Pass true if the call was a video call 
+  /// Pass true if the call was a video call
   Bool? is_video;
 
   /// Identifier of the connection used during the call

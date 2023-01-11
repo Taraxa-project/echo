@@ -1,24 +1,24 @@
 import 'package:td_json_client/api/base.dart';
 
 
-/// Describes an address 
+/// Describes an address
 class Address extends TdObject {
   String get tdType => 'address';
 
 
-  /// A two-letter ISO 3166-1 alpha-2 country code 
+  /// A two-letter ISO 3166-1 alpha-2 country code
   string? country_code;
 
-  /// State, if applicable 
+  /// State, if applicable
   string? state;
 
-  /// City 
+  /// City
   string? city;
 
-  /// First line of the address 
+  /// First line of the address
   string? street_line1;
 
-  /// Second line of the address 
+  /// Second line of the address
   string? street_line2;
 
   /// Address postal code
