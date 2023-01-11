@@ -93,8 +93,8 @@ class TelegramCommandMessages extends Command {
       );
   }
 
-  void initDB() {
-    db = DB(
+  void initDB() async {
+    db = await DB(
       dbPath: globalResults!['message-database-path'],
       logger: Logger('DB')
         ..level = getLogLevel()
@@ -110,8 +110,8 @@ class TelegramCommandMessages extends Command {
     await telegramClient?.exit();
   }
 
-  void closeDB() {
-    db?.close();
+  void closeDB() async{
+    await db?.close();
   }
 
   Future<void> login() async {
@@ -193,7 +193,7 @@ class TelegramCommandMessages extends Command {
 
   Future<void> readChatsHistory() async {
     _logger.info('selecting chats locally...');
-    var chatsIds = db?.selectChats() ?? [];
+    var chatsIds = await db?.selectChats() ?? [];
     _logger.info('found ${chatsIds.length} chats locally.');
 
     for (int id in chatsIds) {
@@ -263,7 +263,7 @@ class TelegramCommandMessages extends Command {
           }
         }
 
-        db?.addMessage(
+        await db?.addMessage(
             chatId: WrapId.unwrapChatId(message.chat_id)!,
             messageId: WrapId.unwrapMessageId(message.id)!,
             date: message.date!,
@@ -286,7 +286,7 @@ class TelegramCommandMessages extends Command {
 
   Future<int> getMessageIdLast(int chatId, DateTime twoWeeksAgo) async {
     _logger.info('[$chatId] reading last message id locally...');
-    var messageIdLast = getMessageIdLastLocally(chatId, twoWeeksAgo);
+    var messageIdLast = await getMessageIdLastLocally(chatId, twoWeeksAgo);
 
     if (messageIdLast == null) {
       _logger.info('[$chatId] did not find last message id locally.');
@@ -303,8 +303,8 @@ class TelegramCommandMessages extends Command {
     return messageIdLast;
   }
 
-  int? getMessageIdLastLocally(int chatId, DateTime newerThan) {
-    return db?.selectMaxMessageId(chatId, newerThan);
+  Future<int?> getMessageIdLastLocally(int chatId, DateTime newerThan) async {
+    return await db?.selectMaxMessageId(chatId, newerThan);
   }
 
   Future<int?> getMessageIdLastRemote(int chatId, DateTime olderThan) async {
