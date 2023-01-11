@@ -1,5 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/email_address_authentication_code_info.dart';
 import 'package:td_json_client/api/object/authentication_code_info.dart';
 import 'package:td_json_client/api/object/terms_of_service.dart';
 
@@ -8,11 +9,9 @@ abstract class AuthorizationState extends TdObject {
   AuthorizationState({super.extra, super.client_id});
 }
 
-
-/// TDLib needs TdlibParameters for initialization
+/// Initializetion parameters are needed. Call setTdlibParameters to provide them
 class AuthorizationStateWaitTdlibParameters extends AuthorizationState {
   String get tdType => 'authorizationStateWaitTdlibParameters';
-
 
   AuthorizationStateWaitTdlibParameters({
     super.extra,
@@ -37,44 +36,9 @@ class AuthorizationStateWaitTdlibParameters extends AuthorizationState {
   }
 }
 
-/// TDLib needs an encryption key to decrypt the local database 
-class AuthorizationStateWaitEncryptionKey extends AuthorizationState {
-  String get tdType => 'authorizationStateWaitEncryptionKey';
-
-
-  /// True, if the database is currently encrypted
-  Bool? is_encrypted;
-
-  AuthorizationStateWaitEncryptionKey({
-    super.extra,
-    super.client_id,
-    this.is_encrypted,
-  });
-
-  AuthorizationStateWaitEncryptionKey.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    is_encrypted = map['is_encrypted'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'is_encrypted': is_encrypted?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// TDLib needs the user's phone number to authorize. Call `setAuthenticationPhoneNumber` to provide the phone number, or use `requestQrCodeAuthentication`, or `checkAuthenticationBotToken` for other authentication options
+/// TDLib needs the user's phone number to authorize. Call setAuthenticationPhoneNumber to provide the phone number, or use requestQrCodeAuthentication or checkAuthenticationBotToken for other authentication options
 class AuthorizationStateWaitPhoneNumber extends AuthorizationState {
   String get tdType => 'authorizationStateWaitPhoneNumber';
-
 
   AuthorizationStateWaitPhoneNumber({
     super.extra,
@@ -99,10 +63,104 @@ class AuthorizationStateWaitPhoneNumber extends AuthorizationState {
   }
 }
 
-/// TDLib needs the user's authentication code to authorize 
+/// TDLib needs the user's email address to authorize. Call setAuthenticationEmailAddress to provide the email address, or directly call checkAuthenticationEmailCode with Apple ID/Google ID token if allowed
+class AuthorizationStateWaitEmailAddress extends AuthorizationState {
+  String get tdType => 'authorizationStateWaitEmailAddress';
+
+  /// True, if authorization through Apple ID is allowed
+  Bool? allow_apple_id;
+
+  /// True, if authorization through Google ID is allowed
+  Bool? allow_google_id;
+
+  AuthorizationStateWaitEmailAddress({
+    super.extra,
+    super.client_id,
+    this.allow_apple_id,
+    this.allow_google_id,
+  });
+
+  AuthorizationStateWaitEmailAddress.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    allow_apple_id = map['allow_apple_id'];
+    allow_google_id = map['allow_google_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'allow_apple_id': allow_apple_id?.toMap(skipNulls: skipNulls),
+      'allow_google_id': allow_google_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// TDLib needs the user's authentication code sent to an email address to authorize. Call checkAuthenticationEmailCode to provide the code
+class AuthorizationStateWaitEmailCode extends AuthorizationState {
+  String get tdType => 'authorizationStateWaitEmailCode';
+
+  /// True, if authorization through Apple ID is allowed
+  Bool? allow_apple_id;
+
+  /// True, if authorization through Google ID is allowed
+  Bool? allow_google_id;
+
+  /// Information about the sent authentication code
+  EmailAddressAuthenticationCodeInfo? code_info;
+
+  /// Point in time (Unix timestamp) when the user will be able to authorize with a code sent to the user's phone number; 0 if unknown
+  int32? next_phone_number_authorization_date;
+
+  AuthorizationStateWaitEmailCode({
+    super.extra,
+    super.client_id,
+    this.allow_apple_id,
+    this.allow_google_id,
+    this.code_info,
+    this.next_phone_number_authorization_date,
+  });
+
+  AuthorizationStateWaitEmailCode.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    allow_apple_id = map['allow_apple_id'];
+    allow_google_id = map['allow_google_id'];
+    if (map['code_info'] != null) {
+      code_info = TdApiMap.fromMap(map['code_info'])
+          as EmailAddressAuthenticationCodeInfo;
+    }
+    next_phone_number_authorization_date =
+        map['next_phone_number_authorization_date'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'allow_apple_id': allow_apple_id?.toMap(skipNulls: skipNulls),
+      'allow_google_id': allow_google_id?.toMap(skipNulls: skipNulls),
+      'code_info': code_info?.toMap(skipNulls: skipNulls),
+      'next_phone_number_authorization_date':
+          next_phone_number_authorization_date?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// TDLib needs the user's authentication code to authorize. Call checkAuthenticationCode to check the code
 class AuthorizationStateWaitCode extends AuthorizationState {
   String get tdType => 'authorizationStateWaitCode';
-
 
   /// Information about the authorization code that was sent
   AuthenticationCodeInfo? code_info;
@@ -135,10 +193,9 @@ class AuthorizationStateWaitCode extends AuthorizationState {
   }
 }
 
-/// The user needs to confirm authorization on another logged in device by scanning a QR code with the provided link 
+/// The user needs to confirm authorization on another logged in device by scanning a QR code with the provided link
 class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
   String get tdType => 'authorizationStateWaitOtherDeviceConfirmation';
-
 
   /// A tg:// URL for the QR code. The link will be updated frequently
   string? link;
@@ -149,7 +206,8 @@ class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
     this.link,
   });
 
-  AuthorizationStateWaitOtherDeviceConfirmation.fromMap(Map<String, dynamic> map) {
+  AuthorizationStateWaitOtherDeviceConfirmation.fromMap(
+      Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     link = map['link'];
@@ -169,10 +227,9 @@ class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
   }
 }
 
-/// The user is unregistered and need to accept terms of service and enter their first name and last name to finish registration 
+/// The user is unregistered and need to accept terms of service and enter their first name and last name to finish registration. Call registerUser to accept the terms of service and provide the data
 class AuthorizationStateWaitRegistration extends AuthorizationState {
   String get tdType => 'authorizationStateWaitRegistration';
-
 
   /// Telegram terms of service
   TermsOfService? terms_of_service;
@@ -187,7 +244,8 @@ class AuthorizationStateWaitRegistration extends AuthorizationState {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['terms_of_service'] != null) {
-      terms_of_service = TdApiMap.fromMap(map['terms_of_service']) as TermsOfService;
+      terms_of_service =
+          TdApiMap.fromMap(map['terms_of_service']) as TermsOfService;
     }
   }
 
@@ -205,12 +263,12 @@ class AuthorizationStateWaitRegistration extends AuthorizationState {
   }
 }
 
-/// The user has been authorized, but needs to enter a 2-step verification password to start using the application 
+/// The user has been authorized, but needs to enter a 2-step verification password to start using the application.
+/// Call checkAuthenticationPassword to provide the password, or requestAuthenticationPasswordRecovery to recover the password, or deleteAccount to delete the account after a week
 class AuthorizationStateWaitPassword extends AuthorizationState {
   String get tdType => 'authorizationStateWaitPassword';
 
-
-  /// Hint for the password; may be empty 
+  /// Hint for the password; may be empty
   string? password_hint;
 
   /// True, if a recovery email address has been set up
@@ -241,8 +299,10 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'password_hint': password_hint?.toMap(skipNulls: skipNulls),
-      'has_recovery_email_address': has_recovery_email_address?.toMap(skipNulls: skipNulls),
-      'recovery_email_address_pattern': recovery_email_address_pattern?.toMap(skipNulls: skipNulls),
+      'has_recovery_email_address':
+          has_recovery_email_address?.toMap(skipNulls: skipNulls),
+      'recovery_email_address_pattern':
+          recovery_email_address_pattern?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -251,10 +311,9 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
   }
 }
 
-/// The user has been successfully authorized. TDLib is now ready to answer queries
+/// The user has been successfully authorized. TDLib is now ready to answer general requests
 class AuthorizationStateReady extends AuthorizationState {
   String get tdType => 'authorizationStateReady';
-
 
   AuthorizationStateReady({
     super.extra,
@@ -283,7 +342,6 @@ class AuthorizationStateReady extends AuthorizationState {
 class AuthorizationStateLoggingOut extends AuthorizationState {
   String get tdType => 'authorizationStateLoggingOut';
 
-
   AuthorizationStateLoggingOut({
     super.extra,
     super.client_id,
@@ -310,7 +368,6 @@ class AuthorizationStateLoggingOut extends AuthorizationState {
 /// TDLib is closing, all subsequent queries will be answered with the error 500. Note that closing TDLib can take a while. All resources will be freed only after authorizationStateClosed has been received
 class AuthorizationStateClosing extends AuthorizationState {
   String get tdType => 'authorizationStateClosing';
-
 
   AuthorizationStateClosing({
     super.extra,
@@ -339,7 +396,6 @@ class AuthorizationStateClosing extends AuthorizationState {
 /// with error code 500. To continue working, one must create a new instance of the TDLib client
 class AuthorizationStateClosed extends AuthorizationState {
   String get tdType => 'authorizationStateClosed';
-
 
   AuthorizationStateClosed({
     super.extra,

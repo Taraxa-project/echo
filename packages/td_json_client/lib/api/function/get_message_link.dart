@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Returns an HTTPS link to a message in a chat. Available only for already sent messages in supergroups and channels, or if message.can_get_media_timestamp_links and a media timestamp link is generated. This is an offline request
 class GetMessageLink extends TdFunction {
   String get tdType => 'getMessageLink';
   String get tdReturnType => 'MessageLink';
-
 
   /// Identifier of the chat to which the message belongs
   int53? chat_id;
@@ -19,8 +17,8 @@ class GetMessageLink extends TdFunction {
   /// Pass true to create a link for the whole media album
   Bool? for_album;
 
-  /// Pass true to create a link to the message as a channel post comment, or from a message thread
-  Bool? for_comment;
+  /// Pass true to create a link to the message as a channel post comment, in a message thread, or a forum topic
+  Bool? in_message_thread;
 
   GetMessageLink({
     super.extra,
@@ -29,7 +27,7 @@ class GetMessageLink extends TdFunction {
     this.message_id,
     this.media_timestamp,
     this.for_album,
-    this.for_comment,
+    this.in_message_thread,
   });
 
   GetMessageLink.fromMap(Map<String, dynamic> map) {
@@ -39,7 +37,7 @@ class GetMessageLink extends TdFunction {
     message_id = map['message_id'];
     media_timestamp = map['media_timestamp'];
     for_album = map['for_album'];
-    for_comment = map['for_comment'];
+    in_message_thread = map['in_message_thread'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -51,7 +49,7 @@ class GetMessageLink extends TdFunction {
       'message_id': message_id?.toMap(skipNulls: skipNulls),
       'media_timestamp': media_timestamp?.toMap(skipNulls: skipNulls),
       'for_album': for_album?.toMap(skipNulls: skipNulls),
-      'for_comment': for_comment?.toMap(skipNulls: skipNulls),
+      'in_message_thread': in_message_thread?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

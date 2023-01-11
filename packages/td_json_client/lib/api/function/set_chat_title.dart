@@ -1,13 +1,11 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Changes the chat title. Supported only for basic groups, supergroups and channels. Requires can_change_info administrator right
 class SetChatTitle extends TdFunction {
   String get tdType => 'setChatTitle';
   String get tdReturnType => 'Ok';
 
-
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// New title of the chat; 1-128 characters

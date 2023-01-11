@@ -1,15 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
+import 'package:td_json_client/api/object/reaction_type.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
-
 
 /// Contains information about a reaction to a message
 class MessageReaction extends TdObject {
   String get tdType => 'messageReaction';
 
-
-  /// Text representation of the reaction
-  string? reaction;
+  /// Type of the reaction
+  ReactionType? type;
 
   /// Number of times the reaction was added
   int32? total_count;
@@ -23,7 +22,7 @@ class MessageReaction extends TdObject {
   MessageReaction({
     super.extra,
     super.client_id,
-    this.reaction,
+    this.type,
     this.total_count,
     this.is_chosen,
     this.recent_sender_ids,
@@ -32,7 +31,9 @@ class MessageReaction extends TdObject {
   MessageReaction.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    reaction = map['reaction'];
+    if (map['type'] != null) {
+      type = TdApiMap.fromMap(map['type']) as ReactionType;
+    }
     total_count = map['total_count'];
     is_chosen = map['is_chosen'];
     if (map['recent_sender_ids'] != null) {
@@ -50,7 +51,7 @@ class MessageReaction extends TdObject {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'reaction': reaction?.toMap(skipNulls: skipNulls),
+      'type': type?.toMap(skipNulls: skipNulls),
       'total_count': total_count?.toMap(skipNulls: skipNulls),
       'is_chosen': is_chosen?.toMap(skipNulls: skipNulls),
       'recent_sender_ids': recent_sender_ids?.toMap(skipNulls: skipNulls),

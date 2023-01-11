@@ -5,11 +5,9 @@ abstract class ChatActionBar extends TdObject {
   ChatActionBar({super.extra, super.client_id});
 }
 
-
-/// The chat can be reported as spam using the method reportChat with the reason chatReportReasonSpam
+/// The chat can be reported as spam using the method reportChat with the reason chatReportReasonSpam. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown
 class ChatActionBarReportSpam extends ChatActionBar {
   String get tdType => 'chatActionBarReportSpam';
-
 
   /// If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings
   Bool? can_unarchive;
@@ -44,7 +42,6 @@ class ChatActionBarReportSpam extends ChatActionBar {
 class ChatActionBarReportUnrelatedLocation extends ChatActionBar {
   String get tdType => 'chatActionBarReportUnrelatedLocation';
 
-
   ChatActionBarReportUnrelatedLocation({
     super.extra,
     super.client_id,
@@ -72,7 +69,6 @@ class ChatActionBarReportUnrelatedLocation extends ChatActionBar {
 class ChatActionBarInviteMembers extends ChatActionBar {
   String get tdType => 'chatActionBarInviteMembers';
 
-
   ChatActionBarInviteMembers({
     super.extra,
     super.client_id,
@@ -96,10 +92,10 @@ class ChatActionBarInviteMembers extends ChatActionBar {
   }
 }
 
-/// The chat is a private or secret chat, which can be reported using the method reportChat, or the other user can be blocked using the method toggleMessageSenderIsBlocked, or the other user can be added to the contact list using the method addContact
+/// The chat is a private or secret chat, which can be reported using the method reportChat, or the other user can be blocked using the method toggleMessageSenderIsBlocked,
+/// or the other user can be added to the contact list using the method addContact. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown
 class ChatActionBarReportAddBlock extends ChatActionBar {
   String get tdType => 'chatActionBarReportAddBlock';
-
 
   /// If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings
   Bool? can_unarchive;
@@ -140,7 +136,6 @@ class ChatActionBarReportAddBlock extends ChatActionBar {
 class ChatActionBarAddContact extends ChatActionBar {
   String get tdType => 'chatActionBarAddContact';
 
-
   ChatActionBarAddContact({
     super.extra,
     super.client_id,
@@ -168,7 +163,6 @@ class ChatActionBarAddContact extends ChatActionBar {
 class ChatActionBarSharePhoneNumber extends ChatActionBar {
   String get tdType => 'chatActionBarSharePhoneNumber';
 
-
   ChatActionBarSharePhoneNumber({
     super.extra,
     super.client_id,
@@ -195,7 +189,6 @@ class ChatActionBarSharePhoneNumber extends ChatActionBar {
 /// The chat is a private chat with an administrator of a chat to which the user sent join request
 class ChatActionBarJoinRequest extends ChatActionBar {
   String get tdType => 'chatActionBarJoinRequest';
-
 
   /// Title of the chat to which the join request was sent
   string? title;

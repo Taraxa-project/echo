@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
-/// Contains information about a language pack 
+/// Contains information about a language pack
 class LanguagePackInfo extends TdObject {
   String get tdType => 'languagePackInfo';
-
 
   /// Unique language pack identifier
   string? id;
@@ -12,7 +10,7 @@ class LanguagePackInfo extends TdObject {
   /// Identifier of a base language pack; may be empty. If a string is missed in the language pack, then it must be fetched from base language pack. Unsupported in custom language packs
   string? base_language_pack_id;
 
-  /// Language name 
+  /// Language name
   string? name;
 
   /// Name of the language in that language
@@ -21,10 +19,10 @@ class LanguagePackInfo extends TdObject {
   /// A language code to be used to apply plural forms. See https://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html for more information
   string? plural_code;
 
-  /// True, if the language pack is official 
+  /// True, if the language pack is official
   Bool? is_official;
 
-  /// True, if the language pack strings are RTL 
+  /// True, if the language pack strings are RTL
   Bool? is_rtl;
 
   /// True, if the language pack is a beta language pack
@@ -33,13 +31,13 @@ class LanguagePackInfo extends TdObject {
   /// True, if the language pack is installed by the current user
   Bool? is_installed;
 
-  /// Total number of non-deleted strings from the language pack 
+  /// Total number of non-deleted strings from the language pack
   int32? total_string_count;
 
   /// Total number of translated strings from the language pack
   int32? translated_string_count;
 
-  /// Total number of non-deleted strings from the language pack available locally 
+  /// Total number of non-deleted strings from the language pack available locally
   int32? local_string_count;
 
   /// Link to language translation interface; empty for custom local language packs
@@ -87,7 +85,8 @@ class LanguagePackInfo extends TdObject {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'id': id?.toMap(skipNulls: skipNulls),
-      'base_language_pack_id': base_language_pack_id?.toMap(skipNulls: skipNulls),
+      'base_language_pack_id':
+          base_language_pack_id?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),
       'native_name': native_name?.toMap(skipNulls: skipNulls),
       'plural_code': plural_code?.toMap(skipNulls: skipNulls),
@@ -96,7 +95,8 @@ class LanguagePackInfo extends TdObject {
       'is_beta': is_beta?.toMap(skipNulls: skipNulls),
       'is_installed': is_installed?.toMap(skipNulls: skipNulls),
       'total_string_count': total_string_count?.toMap(skipNulls: skipNulls),
-      'translated_string_count': translated_string_count?.toMap(skipNulls: skipNulls),
+      'translated_string_count':
+          translated_string_count?.toMap(skipNulls: skipNulls),
       'local_string_count': local_string_count?.toMap(skipNulls: skipNulls),
       'translation_url': translation_url?.toMap(skipNulls: skipNulls),
     };

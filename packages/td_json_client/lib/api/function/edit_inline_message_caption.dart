@@ -3,12 +3,10 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 
-
 /// Edits the caption of an inline message sent via a bot; for bots only
 class EditInlineMessageCaption extends TdFunction {
   String get tdType => 'editInlineMessageCaption';
   String get tdReturnType => 'Ok';
-
 
   /// Inline message identifier
   string? inline_message_id;
@@ -16,7 +14,7 @@ class EditInlineMessageCaption extends TdFunction {
   /// The new message reply markup; pass null if none
   ReplyMarkup? reply_markup;
 
-  /// New message content caption; pass null to remove caption; 0-GetOption("message_caption_length_max") characters
+  /// New message content caption; pass null to remove caption; 0-getOption("message_caption_length_max") characters
   FormattedText? caption;
 
   EditInlineMessageCaption({

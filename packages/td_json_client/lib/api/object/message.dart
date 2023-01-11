@@ -9,11 +9,9 @@ import 'package:td_json_client/api/object/unread_reaction.dart';
 import 'package:td_json_client/api/object/message_content.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 
-
 /// Describes a message
 class Message extends TdObject {
   String get tdType => 'message';
-
 
   /// Message identifier; unique for the chat to which the message belongs
   int53? id;
@@ -66,11 +64,17 @@ class Message extends TdObject {
   /// True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description through getMessageLink
   Bool? can_get_media_timestamp_links;
 
+  /// True, if reactions on the message can be reported through reportMessageReactions
+  Bool? can_report_reactions;
+
   /// True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message
   Bool? has_timestamped_media;
 
   /// True, if the message is a channel post. All messages to channels are channel posts, all other messages are not channel posts
   Bool? is_channel_post;
+
+  /// True, if the message is a forum topic message
+  Bool? is_topic_message;
 
   /// True, if the message contains an unread mention for the current user
   Bool? contains_unread_mention;
@@ -99,11 +103,14 @@ class Message extends TdObject {
   /// If non-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs
   int53? message_thread_id;
 
-  /// For self-destructing messages, the message's TTL (Time To Live), in seconds; 0 if none. TDLib will send updateDeleteMessages or updateMessageContent once the TTL expires
-  int32? ttl;
+  /// The message's self-destruct time, in seconds; 0 if none. TDLib will send updateDeleteMessages or updateMessageContent once the time expires
+  int32? self_destruct_time;
 
-  /// Time left before the message expires, in seconds. If the TTL timer isn't started yet, equals to the value of the ttl field
-  double? ttl_expires_in;
+  /// Time left before the message self-destruct timer expires, in seconds. If the self-destruct timer isn't started yet, equals to the value of the self_destruct_time field
+  double? self_destruct_in;
+
+  /// Time left before the message will be automatically deleted by message_auto_delete_time setting of the chat, in seconds; 0 if never. TDLib will send updateDeleteMessages or updateMessageContent once the time expires
+  double? auto_delete_in;
 
   /// If non-zero, the user identifier of the bot through which this message was sent
   int53? via_bot_user_id;
@@ -143,8 +150,10 @@ class Message extends TdObject {
     this.can_get_message_thread,
     this.can_get_viewers,
     this.can_get_media_timestamp_links,
+    this.can_report_reactions,
     this.has_timestamped_media,
     this.is_channel_post,
+    this.is_topic_message,
     this.contains_unread_mention,
     this.date,
     this.edit_date,
@@ -154,8 +163,9 @@ class Message extends TdObject {
     this.reply_in_chat_id,
     this.reply_to_message_id,
     this.message_thread_id,
-    this.ttl,
-    this.ttl_expires_in,
+    this.self_destruct_time,
+    this.self_destruct_in,
+    this.auto_delete_in,
     this.via_bot_user_id,
     this.author_signature,
     this.media_album_id,
@@ -173,10 +183,12 @@ class Message extends TdObject {
     }
     chat_id = map['chat_id'];
     if (map['sending_state'] != null) {
-      sending_state = TdApiMap.fromMap(map['sending_state']) as MessageSendingState;
+      sending_state =
+          TdApiMap.fromMap(map['sending_state']) as MessageSendingState;
     }
     if (map['scheduling_state'] != null) {
-      scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
+      scheduling_state =
+          TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
     }
     is_outgoing = map['is_outgoing'];
     is_pinned = map['is_pinned'];
@@ -190,16 +202,20 @@ class Message extends TdObject {
     can_get_message_thread = map['can_get_message_thread'];
     can_get_viewers = map['can_get_viewers'];
     can_get_media_timestamp_links = map['can_get_media_timestamp_links'];
+    can_report_reactions = map['can_report_reactions'];
     has_timestamped_media = map['has_timestamped_media'];
     is_channel_post = map['is_channel_post'];
+    is_topic_message = map['is_topic_message'];
     contains_unread_mention = map['contains_unread_mention'];
     date = map['date'];
     edit_date = map['edit_date'];
     if (map['forward_info'] != null) {
-      forward_info = TdApiMap.fromMap(map['forward_info']) as MessageForwardInfo;
+      forward_info =
+          TdApiMap.fromMap(map['forward_info']) as MessageForwardInfo;
     }
     if (map['interaction_info'] != null) {
-      interaction_info = TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
+      interaction_info =
+          TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
     }
     if (map['unread_reactions'] != null) {
       unread_reactions = [];
@@ -212,8 +228,9 @@ class Message extends TdObject {
     reply_in_chat_id = map['reply_in_chat_id'];
     reply_to_message_id = map['reply_to_message_id'];
     message_thread_id = map['message_thread_id'];
-    ttl = map['ttl'];
-    ttl_expires_in = map['ttl_expires_in'];
+    self_destruct_time = map['self_destruct_time'];
+    self_destruct_in = map['self_destruct_in'];
+    auto_delete_in = map['auto_delete_in'];
     via_bot_user_id = map['via_bot_user_id'];
     author_signature = map['author_signature'];
     media_album_id = map['media_album_id'];
@@ -241,16 +258,25 @@ class Message extends TdObject {
       'can_be_edited': can_be_edited?.toMap(skipNulls: skipNulls),
       'can_be_forwarded': can_be_forwarded?.toMap(skipNulls: skipNulls),
       'can_be_saved': can_be_saved?.toMap(skipNulls: skipNulls),
-      'can_be_deleted_only_for_self': can_be_deleted_only_for_self?.toMap(skipNulls: skipNulls),
-      'can_be_deleted_for_all_users': can_be_deleted_for_all_users?.toMap(skipNulls: skipNulls),
-      'can_get_added_reactions': can_get_added_reactions?.toMap(skipNulls: skipNulls),
+      'can_be_deleted_only_for_self':
+          can_be_deleted_only_for_self?.toMap(skipNulls: skipNulls),
+      'can_be_deleted_for_all_users':
+          can_be_deleted_for_all_users?.toMap(skipNulls: skipNulls),
+      'can_get_added_reactions':
+          can_get_added_reactions?.toMap(skipNulls: skipNulls),
       'can_get_statistics': can_get_statistics?.toMap(skipNulls: skipNulls),
-      'can_get_message_thread': can_get_message_thread?.toMap(skipNulls: skipNulls),
+      'can_get_message_thread':
+          can_get_message_thread?.toMap(skipNulls: skipNulls),
       'can_get_viewers': can_get_viewers?.toMap(skipNulls: skipNulls),
-      'can_get_media_timestamp_links': can_get_media_timestamp_links?.toMap(skipNulls: skipNulls),
-      'has_timestamped_media': has_timestamped_media?.toMap(skipNulls: skipNulls),
+      'can_get_media_timestamp_links':
+          can_get_media_timestamp_links?.toMap(skipNulls: skipNulls),
+      'can_report_reactions': can_report_reactions?.toMap(skipNulls: skipNulls),
+      'has_timestamped_media':
+          has_timestamped_media?.toMap(skipNulls: skipNulls),
       'is_channel_post': is_channel_post?.toMap(skipNulls: skipNulls),
-      'contains_unread_mention': contains_unread_mention?.toMap(skipNulls: skipNulls),
+      'is_topic_message': is_topic_message?.toMap(skipNulls: skipNulls),
+      'contains_unread_mention':
+          contains_unread_mention?.toMap(skipNulls: skipNulls),
       'date': date?.toMap(skipNulls: skipNulls),
       'edit_date': edit_date?.toMap(skipNulls: skipNulls),
       'forward_info': forward_info?.toMap(skipNulls: skipNulls),
@@ -259,8 +285,9 @@ class Message extends TdObject {
       'reply_in_chat_id': reply_in_chat_id?.toMap(skipNulls: skipNulls),
       'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
       'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),
-      'ttl': ttl?.toMap(skipNulls: skipNulls),
-      'ttl_expires_in': ttl_expires_in?.toMap(skipNulls: skipNulls),
+      'self_destruct_time': self_destruct_time?.toMap(skipNulls: skipNulls),
+      'self_destruct_in': self_destruct_in?.toMap(skipNulls: skipNulls),
+      'auto_delete_in': auto_delete_in?.toMap(skipNulls: skipNulls),
       'via_bot_user_id': via_bot_user_id?.toMap(skipNulls: skipNulls),
       'author_signature': author_signature?.toMap(skipNulls: skipNulls),
       'media_album_id': media_album_id?.toMap(skipNulls: skipNulls),

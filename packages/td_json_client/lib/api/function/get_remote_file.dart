@@ -2,15 +2,13 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file_type.dart';
 
-
 /// Returns information about a file by its remote ID; this is an offline request. Can be used to register a URL as a file for further uploading, or sending as a message. Even the request succeeds, the file can be used only if it is still accessible to the user.
 /// For example, if the file is from a message, then the message must be not deleted and accessible to the user. If the file database is disabled, then the corresponding object with the file must be preloaded by the application
 class GetRemoteFile extends TdFunction {
   String get tdType => 'getRemoteFile';
   String get tdReturnType => 'File';
 
-
-  /// Remote identifier of the file to get 
+  /// Remote identifier of the file to get
   string? remote_file_id;
 
   /// File type; pass null if unknown

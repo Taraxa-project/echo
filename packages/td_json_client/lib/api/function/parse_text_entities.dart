@@ -2,14 +2,12 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/text_parse_mode.dart';
 
-
-/// Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text. Can be called synchronously 
+/// Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities from a marked-up text. Can be called synchronously
 class ParseTextEntities extends TdFunction {
   String get tdType => 'parseTextEntities';
   String get tdReturnType => 'FormattedText';
 
-
-  /// The text to parse 
+  /// The text to parse
   string? text;
 
   /// Text parse mode

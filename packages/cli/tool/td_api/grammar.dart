@@ -66,7 +66,7 @@ class TlGrammarDefinition extends GrammarDefinition {
           .map((value) => value[1]);
 
   Parser paramComment() =>
-      (ref0(paramCommentBegin) & ref0(classCommentContinued).star())
+      (ref0(paramCommentBegin) & ref0(paramCommentContinued).star())
           .map((value) => TlParamComment(
                 text: value[0][3],
                 paramName: value[0][1],

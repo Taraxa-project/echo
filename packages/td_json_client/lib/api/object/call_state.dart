@@ -10,13 +10,11 @@ abstract class CallState extends TdObject {
   CallState({super.extra, super.client_id});
 }
 
-
-/// The call is pending, waiting to be accepted by a user 
+/// The call is pending, waiting to be accepted by a user
 class CallStatePending extends CallState {
   String get tdType => 'callStatePending';
 
-
-  /// True, if the call has already been created by the server 
+  /// True, if the call has already been created by the server
   Bool? is_created;
 
   /// True, if the call has already been received by the other party
@@ -55,7 +53,6 @@ class CallStatePending extends CallState {
 class CallStateExchangingKeys extends CallState {
   String get tdType => 'callStateExchangingKeys';
 
-
   CallStateExchangingKeys({
     super.extra,
     super.client_id,
@@ -79,24 +76,23 @@ class CallStateExchangingKeys extends CallState {
   }
 }
 
-/// The call is ready to use 
+/// The call is ready to use
 class CallStateReady extends CallState {
   String get tdType => 'callStateReady';
 
-
-  /// Call protocols supported by the peer 
+  /// Call protocols supported by the peer
   CallProtocol? protocol;
 
-  /// List of available call servers 
+  /// List of available call servers
   vector<CallServer>? servers;
 
-  /// A JSON-encoded call config 
+  /// A JSON-encoded call config
   string? config;
 
-  /// Call encryption key 
+  /// Call encryption key
   bytes? encryption_key;
 
-  /// Encryption key emojis fingerprint 
+  /// Encryption key emojis fingerprint
   vector<string>? emojis;
 
   /// True, if peer-to-peer connection is allowed by users privacy settings
@@ -161,7 +157,6 @@ class CallStateReady extends CallState {
 class CallStateHangingUp extends CallState {
   String get tdType => 'callStateHangingUp';
 
-
   CallStateHangingUp({
     super.extra,
     super.client_id,
@@ -185,18 +180,17 @@ class CallStateHangingUp extends CallState {
   }
 }
 
-/// The call has ended successfully 
+/// The call has ended successfully
 class CallStateDiscarded extends CallState {
   String get tdType => 'callStateDiscarded';
 
-
-  /// The reason, why the call has ended 
+  /// The reason, why the call has ended
   CallDiscardReason? reason;
 
-  /// True, if the call rating must be sent to the server 
+  /// True, if the call rating must be sent to the server
   Bool? need_rating;
 
-  /// True, if the call debug information must be sent to the server 
+  /// True, if the call debug information must be sent to the server
   Bool? need_debug_information;
 
   /// True, if the call log must be sent to the server
@@ -229,7 +223,8 @@ class CallStateDiscarded extends CallState {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'reason': reason?.toMap(skipNulls: skipNulls),
       'need_rating': need_rating?.toMap(skipNulls: skipNulls),
-      'need_debug_information': need_debug_information?.toMap(skipNulls: skipNulls),
+      'need_debug_information':
+          need_debug_information?.toMap(skipNulls: skipNulls),
       'need_log': need_log?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -239,10 +234,9 @@ class CallStateDiscarded extends CallState {
   }
 }
 
-/// The call has ended with an error 
+/// The call has ended with an error
 class CallStateError extends CallState {
   String get tdType => 'callStateError';
-
 
   /// Error. An error with the code 4005000 will be returned if an outgoing call is missed because of an expired timeout
   Error? error;

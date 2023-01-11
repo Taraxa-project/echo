@@ -7,16 +7,15 @@ import 'package:td_json_client/api/object/message.dart';
 import 'package:td_json_client/api/object/chat_position.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/chat_notification_settings.dart';
+import 'package:td_json_client/api/object/chat_available_reactions.dart';
 import 'package:td_json_client/api/object/chat_action_bar.dart';
 import 'package:td_json_client/api/object/video_chat.dart';
 import 'package:td_json_client/api/object/chat_join_requests_info.dart';
 import 'package:td_json_client/api/object/draft_message.dart';
 
-
 /// A chat. (Can be a private chat, basic group, supergroup, or secret chat)
 class Chat extends TdObject {
   String get tdType => 'chat';
-
 
   /// Chat unique identifier
   int53? id;
@@ -84,11 +83,11 @@ class Chat extends TdObject {
   /// Notification settings for the chat
   ChatNotificationSettings? notification_settings;
 
-  /// List of reactions, available in the chat
-  vector<string>? available_reactions;
+  /// Types of reaction, available in the chat
+  ChatAvailableReactions? available_reactions;
 
-  /// Current message Time To Live setting (self-destruct timer) for the chat; 0 if not defined. TTL is counted from the time message or its content is viewed in secret chats and from the send date in other chats
-  int32? message_ttl;
+  /// Current message auto-delete or self-destruct timer setting for the chat, in seconds; 0 if disabled. Self-destruct timer in secret chats starts after the message or its content is viewed. Auto-delete timer in other chats starts from the send date
+  int32? message_auto_delete_time;
 
   /// If non-empty, name of a theme, set for the chat
   string? theme_name;
@@ -137,7 +136,7 @@ class Chat extends TdObject {
     this.unread_reaction_count,
     this.notification_settings,
     this.available_reactions,
-    this.message_ttl,
+    this.message_auto_delete_time,
     this.theme_name,
     this.action_bar,
     this.video_chat,
@@ -173,7 +172,8 @@ class Chat extends TdObject {
       }
     }
     if (map['message_sender_id'] != null) {
-      message_sender_id = TdApiMap.fromMap(map['message_sender_id']) as MessageSender;
+      message_sender_id =
+          TdApiMap.fromMap(map['message_sender_id']) as MessageSender;
     }
     has_protected_content = map['has_protected_content'];
     is_marked_as_unread = map['is_marked_as_unread'];
@@ -189,15 +189,14 @@ class Chat extends TdObject {
     unread_mention_count = map['unread_mention_count'];
     unread_reaction_count = map['unread_reaction_count'];
     if (map['notification_settings'] != null) {
-      notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
+      notification_settings = TdApiMap.fromMap(map['notification_settings'])
+          as ChatNotificationSettings;
     }
     if (map['available_reactions'] != null) {
-      available_reactions = [];
-      for (var someValue in map['available_reactions']) {
-        available_reactions?.add(someValue);
-      }
+      available_reactions = TdApiMap.fromMap(map['available_reactions'])
+          as ChatAvailableReactions;
     }
-    message_ttl = map['message_ttl'];
+    message_auto_delete_time = map['message_auto_delete_time'];
     theme_name = map['theme_name'];
     if (map['action_bar'] != null) {
       action_bar = TdApiMap.fromMap(map['action_bar']) as ChatActionBar;
@@ -206,7 +205,8 @@ class Chat extends TdObject {
       video_chat = TdApiMap.fromMap(map['video_chat']) as VideoChat;
     }
     if (map['pending_join_requests'] != null) {
-      pending_join_requests = TdApiMap.fromMap(map['pending_join_requests']) as ChatJoinRequestsInfo;
+      pending_join_requests = TdApiMap.fromMap(map['pending_join_requests'])
+          as ChatJoinRequestsInfo;
     }
     reply_markup_message_id = map['reply_markup_message_id'];
     if (map['draft_message'] != null) {
@@ -228,27 +228,39 @@ class Chat extends TdObject {
       'last_message': last_message?.toMap(skipNulls: skipNulls),
       'positions': positions?.toMap(skipNulls: skipNulls),
       'message_sender_id': message_sender_id?.toMap(skipNulls: skipNulls),
-      'has_protected_content': has_protected_content?.toMap(skipNulls: skipNulls),
+      'has_protected_content':
+          has_protected_content?.toMap(skipNulls: skipNulls),
       'is_marked_as_unread': is_marked_as_unread?.toMap(skipNulls: skipNulls),
       'is_blocked': is_blocked?.toMap(skipNulls: skipNulls),
-      'has_scheduled_messages': has_scheduled_messages?.toMap(skipNulls: skipNulls),
-      'can_be_deleted_only_for_self': can_be_deleted_only_for_self?.toMap(skipNulls: skipNulls),
-      'can_be_deleted_for_all_users': can_be_deleted_for_all_users?.toMap(skipNulls: skipNulls),
+      'has_scheduled_messages':
+          has_scheduled_messages?.toMap(skipNulls: skipNulls),
+      'can_be_deleted_only_for_self':
+          can_be_deleted_only_for_self?.toMap(skipNulls: skipNulls),
+      'can_be_deleted_for_all_users':
+          can_be_deleted_for_all_users?.toMap(skipNulls: skipNulls),
       'can_be_reported': can_be_reported?.toMap(skipNulls: skipNulls),
-      'default_disable_notification': default_disable_notification?.toMap(skipNulls: skipNulls),
+      'default_disable_notification':
+          default_disable_notification?.toMap(skipNulls: skipNulls),
       'unread_count': unread_count?.toMap(skipNulls: skipNulls),
-      'last_read_inbox_message_id': last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
-      'last_read_outbox_message_id': last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
+      'last_read_inbox_message_id':
+          last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
+      'last_read_outbox_message_id':
+          last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
       'unread_mention_count': unread_mention_count?.toMap(skipNulls: skipNulls),
-      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
-      'notification_settings': notification_settings?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count':
+          unread_reaction_count?.toMap(skipNulls: skipNulls),
+      'notification_settings':
+          notification_settings?.toMap(skipNulls: skipNulls),
       'available_reactions': available_reactions?.toMap(skipNulls: skipNulls),
-      'message_ttl': message_ttl?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time':
+          message_auto_delete_time?.toMap(skipNulls: skipNulls),
       'theme_name': theme_name?.toMap(skipNulls: skipNulls),
       'action_bar': action_bar?.toMap(skipNulls: skipNulls),
       'video_chat': video_chat?.toMap(skipNulls: skipNulls),
-      'pending_join_requests': pending_join_requests?.toMap(skipNulls: skipNulls),
-      'reply_markup_message_id': reply_markup_message_id?.toMap(skipNulls: skipNulls),
+      'pending_join_requests':
+          pending_join_requests?.toMap(skipNulls: skipNulls),
+      'reply_markup_message_id':
+          reply_markup_message_id?.toMap(skipNulls: skipNulls),
       'draft_message': draft_message?.toMap(skipNulls: skipNulls),
       'client_data': client_data?.toMap(skipNulls: skipNulls),
     };

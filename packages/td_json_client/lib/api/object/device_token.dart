@@ -1,17 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
-/// Represents a data needed to subscribe for push notifications through registerDevice method. To use specific push notification service, the correct application platform must be specified and a valid server authentication data must be uploaded at https://my.telegram.org
+/// Represents a data needed to subscribe for push notifications through registerDevice method.
 abstract class DeviceToken extends TdObject {
   DeviceToken({super.extra, super.client_id});
 }
 
-
-/// A token for Firebase Cloud Messaging 
+/// A token for Firebase Cloud Messaging
 class DeviceTokenFirebaseCloudMessaging extends DeviceToken {
   String get tdType => 'deviceTokenFirebaseCloudMessaging';
 
-
-  /// Device registration token; may be empty to deregister a device 
+  /// Device registration token; may be empty to deregister a device
   string? token;
 
   /// True, if push notifications must be additionally encrypted
@@ -46,12 +44,11 @@ class DeviceTokenFirebaseCloudMessaging extends DeviceToken {
   }
 }
 
-/// A token for Apple Push Notification service 
+/// A token for Apple Push Notification service
 class DeviceTokenApplePush extends DeviceToken {
   String get tdType => 'deviceTokenApplePush';
 
-
-  /// Device token; may be empty to deregister a device 
+  /// Device token; may be empty to deregister a device
   string? device_token;
 
   /// True, if App Sandbox is enabled
@@ -86,15 +83,14 @@ class DeviceTokenApplePush extends DeviceToken {
   }
 }
 
-/// A token for Apple Push Notification service VoIP notifications 
+/// A token for Apple Push Notification service VoIP notifications
 class DeviceTokenApplePushVoIP extends DeviceToken {
   String get tdType => 'deviceTokenApplePushVoIP';
 
-
-  /// Device token; may be empty to deregister a device 
+  /// Device token; may be empty to deregister a device
   string? device_token;
 
-  /// True, if App Sandbox is enabled 
+  /// True, if App Sandbox is enabled
   Bool? is_app_sandbox;
 
   /// True, if push notifications must be additionally encrypted
@@ -132,10 +128,9 @@ class DeviceTokenApplePushVoIP extends DeviceToken {
   }
 }
 
-/// A token for Windows Push Notification Services 
+/// A token for Windows Push Notification Services
 class DeviceTokenWindowsPush extends DeviceToken {
   String get tdType => 'deviceTokenWindowsPush';
-
 
   /// The access token that will be used to send notifications; may be empty to deregister a device
   string? access_token;
@@ -166,10 +161,9 @@ class DeviceTokenWindowsPush extends DeviceToken {
   }
 }
 
-/// A token for Microsoft Push Notification Service 
+/// A token for Microsoft Push Notification Service
 class DeviceTokenMicrosoftPush extends DeviceToken {
   String get tdType => 'deviceTokenMicrosoftPush';
-
 
   /// Push notification channel URI; may be empty to deregister a device
   string? channel_uri;
@@ -200,10 +194,9 @@ class DeviceTokenMicrosoftPush extends DeviceToken {
   }
 }
 
-/// A token for Microsoft Push Notification Service VoIP channel 
+/// A token for Microsoft Push Notification Service VoIP channel
 class DeviceTokenMicrosoftPushVoIP extends DeviceToken {
   String get tdType => 'deviceTokenMicrosoftPushVoIP';
-
 
   /// Push notification channel URI; may be empty to deregister a device
   string? channel_uri;
@@ -234,15 +227,14 @@ class DeviceTokenMicrosoftPushVoIP extends DeviceToken {
   }
 }
 
-/// A token for web Push API 
+/// A token for web Push API
 class DeviceTokenWebPush extends DeviceToken {
   String get tdType => 'deviceTokenWebPush';
-
 
   /// Absolute URL exposed by the push service where the application server can send push messages; may be empty to deregister a device
   string? endpoint;
 
-  /// Base64url-encoded P-256 elliptic curve Diffie-Hellman public key 
+  /// Base64url-encoded P-256 elliptic curve Diffie-Hellman public key
   string? p256dh_base64url;
 
   /// Base64url-encoded authentication secret
@@ -280,10 +272,9 @@ class DeviceTokenWebPush extends DeviceToken {
   }
 }
 
-/// A token for Simple Push API for Firefox OS 
+/// A token for Simple Push API for Firefox OS
 class DeviceTokenSimplePush extends DeviceToken {
   String get tdType => 'deviceTokenSimplePush';
-
 
   /// Absolute URL exposed by the push service where the application server can send push messages; may be empty to deregister a device
   string? endpoint;
@@ -314,10 +305,9 @@ class DeviceTokenSimplePush extends DeviceToken {
   }
 }
 
-/// A token for Ubuntu Push Client service 
+/// A token for Ubuntu Push Client service
 class DeviceTokenUbuntuPush extends DeviceToken {
   String get tdType => 'deviceTokenUbuntuPush';
-
 
   /// Token; may be empty to deregister a device
   string? token;
@@ -348,10 +338,9 @@ class DeviceTokenUbuntuPush extends DeviceToken {
   }
 }
 
-/// A token for BlackBerry Push Service 
+/// A token for BlackBerry Push Service
 class DeviceTokenBlackBerryPush extends DeviceToken {
   String get tdType => 'deviceTokenBlackBerryPush';
-
 
   /// Token; may be empty to deregister a device
   string? token;
@@ -382,10 +371,9 @@ class DeviceTokenBlackBerryPush extends DeviceToken {
   }
 }
 
-/// A token for Tizen Push Service 
+/// A token for Tizen Push Service
 class DeviceTokenTizenPush extends DeviceToken {
   String get tdType => 'deviceTokenTizenPush';
-
 
   /// Push service registration identifier; may be empty to deregister a device
   string? reg_id;

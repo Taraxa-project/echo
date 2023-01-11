@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/theme_parameters.dart';
 
-
 /// Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp button is pressed
 class GetWebAppUrl extends TdFunction {
   String get tdType => 'getWebAppUrl';
   String get tdReturnType => 'HttpUrl';
-
 
   /// Identifier of the target bot
   int53? bot_user_id;
@@ -18,12 +16,16 @@ class GetWebAppUrl extends TdFunction {
   /// Preferred Web App theme; pass null to use the default theme
   ThemeParameters? theme;
 
+  /// Short name of the application; 0-64 English letters, digits, and underscores
+  string? application_name;
+
   GetWebAppUrl({
     super.extra,
     super.client_id,
     this.bot_user_id,
     this.url,
     this.theme,
+    this.application_name,
   });
 
   GetWebAppUrl.fromMap(Map<String, dynamic> map) {
@@ -34,6 +36,7 @@ class GetWebAppUrl extends TdFunction {
     if (map['theme'] != null) {
       theme = TdApiMap.fromMap(map['theme']) as ThemeParameters;
     }
+    application_name = map['application_name'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -44,6 +47,7 @@ class GetWebAppUrl extends TdFunction {
       'bot_user_id': bot_user_id?.toMap(skipNulls: skipNulls),
       'url': url?.toMap(skipNulls: skipNulls),
       'theme': theme?.toMap(skipNulls: skipNulls),
+      'application_name': application_name?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -5,11 +5,9 @@ abstract class MessageSendingState extends TdObject {
   MessageSendingState({super.extra, super.client_id});
 }
 
-
 /// The message is being sent now, but has not yet been delivered to the server
 class MessageSendingStatePending extends MessageSendingState {
   String get tdType => 'messageSendingStatePending';
-
 
   MessageSendingStatePending({
     super.extra,
@@ -34,12 +32,11 @@ class MessageSendingStatePending extends MessageSendingState {
   }
 }
 
-/// The message failed to be sent 
+/// The message failed to be sent
 class MessageSendingStateFailed extends MessageSendingState {
   String get tdType => 'messageSendingStateFailed';
 
-
-  /// An error code; 0 if unknown 
+  /// An error code; 0 if unknown
   int32? error_code;
 
   /// Error message

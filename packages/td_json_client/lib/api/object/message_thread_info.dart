@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/message_reply_info.dart';
 import 'package:td_json_client/api/object/message.dart';
 import 'package:td_json_client/api/object/draft_message.dart';
 
-
 /// Contains information about a message thread
 class MessageThreadInfo extends TdObject {
   String get tdType => 'messageThreadInfo';
-
 
   /// Identifier of the chat to which the message thread belongs
   int53? chat_id;
@@ -16,7 +14,7 @@ class MessageThreadInfo extends TdObject {
   /// Message thread identifier, unique within the chat
   int53? message_thread_id;
 
-  /// Information about the message thread
+  /// Information about the message thread; may be null for forum topic threads
   MessageReplyInfo? reply_info;
 
   /// Approximate number of unread messages in the message thread

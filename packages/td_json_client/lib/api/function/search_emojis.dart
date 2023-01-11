@@ -1,16 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
-
-/// Searches for emojis by keywords. Supported only if the file database is enabled 
+/// Searches for emojis by keywords. Supported only if the file database is enabled
 class SearchEmojis extends TdFunction {
   String get tdType => 'searchEmojis';
   String get tdReturnType => 'Emojis';
 
-
-  /// Text to search for 
+  /// Text to search for
   string? text;
 
-  /// Pass true if only emojis, which exactly match the text, needs to be returned 
+  /// Pass true if only emojis, which exactly match the text, needs to be returned
   Bool? exact_match;
 
   /// List of possible IETF language tags of the user's input language; may be empty if unknown

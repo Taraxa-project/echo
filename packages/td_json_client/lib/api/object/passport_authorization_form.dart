@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_required_element.dart';
 
-
-/// Contains information about a Telegram Passport authorization form that was requested 
+/// Contains information about a Telegram Passport authorization form that was requested
 class PassportAuthorizationForm extends TdObject {
   String get tdType => 'passportAuthorizationForm';
-
 
   /// Unique identifier of the authorization form
   int32? id;
@@ -33,7 +31,8 @@ class PassportAuthorizationForm extends TdObject {
       required_elements = [];
       for (var someValue in map['required_elements']) {
         if (someValue != null) {
-          required_elements?.add(TdApiMap.fromMap(someValue) as PassportRequiredElement);
+          required_elements
+              ?.add(TdApiMap.fromMap(someValue) as PassportRequiredElement);
         }
       }
     }

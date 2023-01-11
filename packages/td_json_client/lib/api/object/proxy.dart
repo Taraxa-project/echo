@@ -2,25 +2,23 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/proxy_type.dart';
 
-
-/// Contains information about a proxy server 
+/// Contains information about a proxy server
 class Proxy extends TdObject {
   String get tdType => 'proxy';
 
-
-  /// Unique identifier of the proxy 
+  /// Unique identifier of the proxy
   int32? id;
 
-  /// Proxy server IP address 
+  /// Proxy server IP address
   string? server;
 
-  /// Proxy server port 
+  /// Proxy server port
   int32? port;
 
-  /// Point in time (Unix timestamp) when the proxy was last used; 0 if never 
+  /// Point in time (Unix timestamp) when the proxy was last used; 0 if never
   int32? last_used_date;
 
-  /// True, if the proxy is enabled now 
+  /// True, if the proxy is enabled now
   Bool? is_enabled;
 
   /// Type of the proxy

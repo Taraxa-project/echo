@@ -5,11 +5,9 @@ abstract class LanguagePackStringValue extends TdObject {
   LanguagePackStringValue({super.extra, super.client_id});
 }
 
-
-/// An ordinary language pack string 
+/// An ordinary language pack string
 class LanguagePackStringValueOrdinary extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValueOrdinary';
-
 
   /// String value
   string? value;
@@ -44,20 +42,19 @@ class LanguagePackStringValueOrdinary extends LanguagePackStringValue {
 class LanguagePackStringValuePluralized extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValuePluralized';
 
-
-  /// Value for zero objects 
+  /// Value for zero objects
   string? zero_value;
 
-  /// Value for one object 
+  /// Value for one object
   string? one_value;
 
   /// Value for two objects
   string? two_value;
 
-  /// Value for few objects 
+  /// Value for few objects
   string? few_value;
 
-  /// Value for many objects 
+  /// Value for many objects
   string? many_value;
 
   /// Default value
@@ -107,7 +104,6 @@ class LanguagePackStringValuePluralized extends LanguagePackStringValue {
 /// A deleted language pack string, the value must be taken from the built-in English language pack
 class LanguagePackStringValueDeleted extends LanguagePackStringValue {
   String get tdType => 'languagePackStringValueDeleted';
-
 
   LanguagePackStringValueDeleted({
     super.extra,

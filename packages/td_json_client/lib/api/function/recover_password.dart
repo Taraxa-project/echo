@@ -1,16 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Recovers the 2-step verification password using a recovery code sent to an email address that was previously set up
 class RecoverPassword extends TdFunction {
   String get tdType => 'recoverPassword';
   String get tdReturnType => 'PasswordState';
 
-
-  /// Recovery code to check 
+  /// Recovery code to check
   string? recovery_code;
 
-  /// New 2-step verification password of the user; may be empty to remove the password 
+  /// New 2-step verification password of the user; may be empty to remove the password
   string? new_password;
 
   /// New password hint; may be empty

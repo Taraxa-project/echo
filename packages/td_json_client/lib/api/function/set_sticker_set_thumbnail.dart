@@ -2,14 +2,12 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
-
 /// Sets a sticker set thumbnail; for bots only. Returns the sticker set
 class SetStickerSetThumbnail extends TdFunction {
   String get tdType => 'setStickerSetThumbnail';
   String get tdReturnType => 'StickerSet';
 
-
-  /// Sticker set owner 
+  /// Sticker set owner
   int53? user_id;
 
   /// Sticker set name

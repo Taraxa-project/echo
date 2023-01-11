@@ -1,16 +1,14 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Invites a bot to a chat (if it is not yet a member) and sends it the /start command. Bots can't be invited to a private chat other than the chat with the bot. Bots can't be invited to channels (although they can be added as admins) and secret chats. Returns the sent message
 class SendBotStartMessage extends TdFunction {
   String get tdType => 'sendBotStartMessage';
   String get tdReturnType => 'Message';
 
-
-  /// Identifier of the bot 
+  /// Identifier of the bot
   int53? bot_user_id;
 
-  /// Identifier of the target chat 
+  /// Identifier of the target chat
   int53? chat_id;
 
   /// A hidden parameter sent to the bot for deep linking purposes (https://core.telegram.org/bots#deep-linking)

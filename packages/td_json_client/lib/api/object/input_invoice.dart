@@ -1,17 +1,15 @@
 import 'package:td_json_client/api/base.dart';
 
-/// Describe an invoice to process
+/// Describes an invoice to process
 abstract class InputInvoice extends TdObject {
   InputInvoice({super.extra, super.client_id});
 }
 
-
-/// An invoice from a message of the type messageInvoice 
+/// An invoice from a message of the type messageInvoice
 class InputInvoiceMessage extends InputInvoice {
   String get tdType => 'inputInvoiceMessage';
 
-
-  /// Chat identifier of the message 
+  /// Chat identifier of the message
   int53? chat_id;
 
   /// Message identifier
@@ -46,10 +44,9 @@ class InputInvoiceMessage extends InputInvoice {
   }
 }
 
-/// An invoice from a link of the type internalLinkTypeInvoice 
+/// An invoice from a link of the type internalLinkTypeInvoice
 class InputInvoiceName extends InputInvoice {
   String get tdType => 'inputInvoiceName';
-
 
   /// Name of the invoice
   string? name;

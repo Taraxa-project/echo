@@ -2,24 +2,22 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/photo.dart';
 
-
-/// Contains information about a related article 
+/// Contains information about a related article
 class PageBlockRelatedArticle extends TdObject {
   String get tdType => 'pageBlockRelatedArticle';
 
-
-  /// Related article URL 
+  /// Related article URL
   string? url;
 
-  /// Article title; may be empty 
+  /// Article title; may be empty
   string? title;
 
   string? description;
 
-  /// Article photo; may be null 
+  /// Article photo; may be null
   Photo? photo;
 
-  /// Article author; may be empty 
+  /// Article author; may be empty
   string? author;
 
   /// Point in time (Unix timestamp) when the article was published; 0 if unknown

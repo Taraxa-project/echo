@@ -2,23 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/proxy_type.dart';
 
-
-/// Sends a simple network request to the Telegram servers via proxy; for testing only. Can be called before authorization 
+/// Sends a simple network request to the Telegram servers via proxy; for testing only. Can be called before authorization
 class TestProxy extends TdFunction {
   String get tdType => 'testProxy';
   String get tdReturnType => 'Ok';
 
-
-  /// Proxy server IP address 
+  /// Proxy server IP address
   string? server;
 
-  /// Proxy server port 
+  /// Proxy server port
   int32? port;
 
   /// Proxy type
   ProxyType? type;
 
-  /// Identifier of a datacenter with which to test connection 
+  /// Identifier of a datacenter with which to test connection
   int32? dc_id;
 
   /// The maximum overall timeout for the request

@@ -2,23 +2,21 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/proxy_type.dart';
 
-
-/// Edits an existing proxy server for network requests. Can be called before authorization 
+/// Edits an existing proxy server for network requests. Can be called before authorization
 class EditProxy extends TdFunction {
   String get tdType => 'editProxy';
   String get tdReturnType => 'Proxy';
 
-
-  /// Proxy identifier 
+  /// Proxy identifier
   int32? proxy_id;
 
-  /// Proxy server IP address 
+  /// Proxy server IP address
   string? server;
 
-  /// Proxy server port 
+  /// Proxy server port
   int32? port;
 
-  /// Pass true to immediately enable the proxy 
+  /// Pass true to immediately enable the proxy
   Bool? enable;
 
   /// Proxy type

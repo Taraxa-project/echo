@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_send_options.dart';
 
-
 /// Sends the result of an inline query as a message. Returns the sent message. Always clears a chat draft message
 class SendInlineQueryResultMessage extends TdFunction {
   String get tdType => 'sendInlineQueryResultMessage';
   String get tdReturnType => 'Message';
-
 
   /// Target chat
   int53? chat_id;
@@ -27,7 +25,7 @@ class SendInlineQueryResultMessage extends TdFunction {
   /// Identifier of the inline result
   string? result_id;
 
-  /// Pass true to hide the bot, via which the message is sent. Can be used only for bots GetOption("animation_search_bot_username"), GetOption("photo_search_bot_username"), and GetOption("venue_search_bot_username")
+  /// Pass true to hide the bot, via which the message is sent. Can be used only for bots getOption("animation_search_bot_username"), getOption("photo_search_bot_username"), and getOption("venue_search_bot_username")
   Bool? hide_via_bot;
 
   SendInlineQueryResultMessage({

@@ -3,12 +3,10 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 
-
 /// Edits the message content caption. Returns the edited message after the edit is completed on the server side
 class EditMessageCaption extends TdFunction {
   String get tdType => 'editMessageCaption';
   String get tdReturnType => 'Message';
-
 
   /// The chat the message belongs to
   int53? chat_id;
@@ -19,7 +17,7 @@ class EditMessageCaption extends TdFunction {
   /// The new message reply markup; pass null if none; for bots only
   ReplyMarkup? reply_markup;
 
-  /// New message content caption; 0-GetOption("message_caption_length_max") characters; pass null to remove caption
+  /// New message content caption; 0-getOption("message_caption_length_max") characters; pass null to remove caption
   FormattedText? caption;
 
   EditMessageCaption({

@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Describes rights of the administrator
 class ChatAdministratorRights extends TdObject {
   String get tdType => 'chatAdministratorRights';
-
 
   /// True, if the administrator can get chat event log, get chat statistics, get message statistics in channels, get channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other privilege; applicable to supergroups and channels only
   Bool? can_manage_chat;
@@ -30,6 +28,9 @@ class ChatAdministratorRights extends TdObject {
   /// True, if the administrator can pin messages; applicable to basic groups and supergroups only
   Bool? can_pin_messages;
 
+  /// True, if the administrator can manage topics; applicable to forum supergroups only
+  Bool? can_manage_topics;
+
   /// True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that were directly or indirectly promoted by them
   Bool? can_promote_members;
 
@@ -50,6 +51,7 @@ class ChatAdministratorRights extends TdObject {
     this.can_invite_users,
     this.can_restrict_members,
     this.can_pin_messages,
+    this.can_manage_topics,
     this.can_promote_members,
     this.can_manage_video_chats,
     this.is_anonymous,
@@ -66,6 +68,7 @@ class ChatAdministratorRights extends TdObject {
     can_invite_users = map['can_invite_users'];
     can_restrict_members = map['can_restrict_members'];
     can_pin_messages = map['can_pin_messages'];
+    can_manage_topics = map['can_manage_topics'];
     can_promote_members = map['can_promote_members'];
     can_manage_video_chats = map['can_manage_video_chats'];
     is_anonymous = map['is_anonymous'];
@@ -84,8 +87,10 @@ class ChatAdministratorRights extends TdObject {
       'can_invite_users': can_invite_users?.toMap(skipNulls: skipNulls),
       'can_restrict_members': can_restrict_members?.toMap(skipNulls: skipNulls),
       'can_pin_messages': can_pin_messages?.toMap(skipNulls: skipNulls),
+      'can_manage_topics': can_manage_topics?.toMap(skipNulls: skipNulls),
       'can_promote_members': can_promote_members?.toMap(skipNulls: skipNulls),
-      'can_manage_video_chats': can_manage_video_chats?.toMap(skipNulls: skipNulls),
+      'can_manage_video_chats':
+          can_manage_video_chats?.toMap(skipNulls: skipNulls),
       'is_anonymous': is_anonymous?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

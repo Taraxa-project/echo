@@ -5,13 +5,11 @@ abstract class LoginUrlInfo extends TdObject {
   LoginUrlInfo({super.extra, super.client_id});
 }
 
-
-/// An HTTP url needs to be open 
+/// An HTTP url needs to be open
 class LoginUrlInfoOpen extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoOpen';
 
-
-  /// The URL to open 
+  /// The URL to open
   string? url;
 
   /// True, if there is no need to show an ordinary open URL confirm
@@ -46,18 +44,17 @@ class LoginUrlInfoOpen extends LoginUrlInfo {
   }
 }
 
-/// An authorization confirmation dialog needs to be shown to the user 
+/// An authorization confirmation dialog needs to be shown to the user
 class LoginUrlInfoRequestConfirmation extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoRequestConfirmation';
 
-
-  /// An HTTP URL to be opened 
+  /// An HTTP URL to be opened
   string? url;
 
   /// A domain of the URL
   string? domain;
 
-  /// User identifier of a bot linked with the website 
+  /// User identifier of a bot linked with the website
   int53? bot_user_id;
 
   /// True, if the user needs to be requested to give the permission to the bot to send them messages

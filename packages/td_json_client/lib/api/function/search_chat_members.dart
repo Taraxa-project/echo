@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_members_filter.dart';
 
-
-/// Searches for a specified query in the first name, last name and username of the members of a specified chat. Requires administrator rights in channels
+/// Searches for a specified query in the first name, last name and usernames of the members of a specified chat. Requires administrator rights in channels
 class SearchChatMembers extends TdFunction {
   String get tdType => 'searchChatMembers';
   String get tdReturnType => 'ChatMembers';
-
 
   /// Chat identifier
   int53? chat_id;

@@ -2,14 +2,12 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
-
 /// Toggles whether a group call participant hand is rased
 class ToggleGroupCallParticipantIsHandRaised extends TdFunction {
   String get tdType => 'toggleGroupCallParticipantIsHandRaised';
   String get tdReturnType => 'Ok';
 
-
-  /// Group call identifier 
+  /// Group call identifier
   int32? group_call_id;
 
   /// Participant identifier

@@ -2,19 +2,17 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/notification_type.dart';
 
-
-/// Contains information about a notification 
+/// Contains information about a notification
 class Notification extends TdObject {
   String get tdType => 'notification';
 
-
-  /// Unique persistent identifier of this notification 
+  /// Unique persistent identifier of this notification
   int32? id;
 
   /// Notification date
   int32? date;
 
-  /// True, if the notification was explicitly sent without sound 
+  /// True, if the notification was explicitly sent without sound
   Bool? is_silent;
 
   /// Notification type

@@ -2,17 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/callback_query_payload.dart';
 
-
-/// Sends a callback query to a bot and returns an answer. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires 
+/// Sends a callback query to a bot and returns an answer. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires
 class GetCallbackQueryAnswer extends TdFunction {
   String get tdType => 'getCallbackQueryAnswer';
   String get tdReturnType => 'CallbackQueryAnswer';
 
-
-  /// Identifier of the chat with the message 
+  /// Identifier of the chat with the message
   int53? chat_id;
 
-  /// Identifier of the message from which the query originated 
+  /// Identifier of the message from which the query originated
   int53? message_id;
 
   /// Query payload

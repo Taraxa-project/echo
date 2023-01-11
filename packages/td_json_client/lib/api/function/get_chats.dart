@@ -2,14 +2,12 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 
-
 /// Returns an ordered list of chats from the beginning of a chat list. For informational purposes only. Use loadChats and updates processing instead to maintain chat lists in a consistent state
 class GetChats extends TdFunction {
   String get tdType => 'getChats';
   String get tdReturnType => 'Chats';
 
-
-  /// The chat list in which to return chats; pass null to get chats from the main chat list 
+  /// The chat list in which to return chats; pass null to get chats from the main chat list
   ChatList? chat_list;
 
   /// The maximum number of chats to be returned

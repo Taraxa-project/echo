@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
-/// Re-sends the code to verify a phone number to be added to a user's Telegram Passport
+/// Resends the code to verify a phone number to be added to a user's Telegram Passport
 class ResendPhoneNumberVerificationCode extends TdFunction {
   String get tdType => 'resendPhoneNumberVerificationCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
-
 
   ResendPhoneNumberVerificationCode({
     super.extra,

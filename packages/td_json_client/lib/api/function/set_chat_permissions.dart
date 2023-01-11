@@ -2,14 +2,12 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_permissions.dart';
 
-
 /// Changes the chat members permissions. Supported only for basic groups and supergroups. Requires can_restrict_members administrator right
 class SetChatPermissions extends TdFunction {
   String get tdType => 'setChatPermissions';
   String get tdReturnType => 'Ok';
 
-
-  /// Chat identifier 
+  /// Chat identifier
   int53? chat_id;
 
   /// New non-administrator members permissions in the chat

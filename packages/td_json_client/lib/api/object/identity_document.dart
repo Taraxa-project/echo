@@ -3,25 +3,23 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/date.dart';
 import 'package:td_json_client/api/object/dated_file.dart';
 
-
-/// An identity document 
+/// An identity document
 class IdentityDocument extends TdObject {
   String get tdType => 'identityDocument';
 
-
-  /// Document number; 1-24 characters 
+  /// Document number; 1-24 characters
   string? number;
 
-  /// Document expiry date; may be null if not applicable 
+  /// Document expiry date; may be null if not applicable
   Date? expiry_date;
 
   /// Front side of the document
   DatedFile? front_side;
 
-  /// Reverse side of the document; only for driver license and identity card; may be null 
+  /// Reverse side of the document; only for driver license and identity card; may be null
   DatedFile? reverse_side;
 
-  /// Selfie with the document; may be null 
+  /// Selfie with the document; may be null
   DatedFile? selfie;
 
   /// List of files containing a certified English translation of the document

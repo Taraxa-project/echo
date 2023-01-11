@@ -2,22 +2,20 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/inline_query_result.dart';
 
-
-/// Represents the results of the inline query. Use sendInlineQueryResultMessage to send the result of the query 
+/// Represents the results of the inline query. Use sendInlineQueryResultMessage to send the result of the query
 class InlineQueryResults extends TdObject {
   String get tdType => 'inlineQueryResults';
 
-
-  /// Unique identifier of the inline query 
+  /// Unique identifier of the inline query
   int64? inline_query_id;
 
-  /// The offset for the next request. If empty, there are no more results 
+  /// The offset for the next request. If empty, there are no more results
   string? next_offset;
 
   /// Results of the query
   vector<InlineQueryResult>? results;
 
-  /// If non-empty, this text must be shown on the button, which opens a private chat with the bot and sends the bot a start message with the switch_pm_parameter 
+  /// If non-empty, this text must be shown on the button, which opens a private chat with the bot and sends the bot a start message with the switch_pm_parameter
   string? switch_pm_text;
 
   /// Parameter for the bot start message

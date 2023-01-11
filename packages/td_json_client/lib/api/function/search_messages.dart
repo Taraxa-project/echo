@@ -3,13 +3,11 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 import 'package:td_json_client/api/object/search_messages_filter.dart';
 
-
 /// Searches for messages in all chats except secret chats. Returns the results in reverse chronological order (i.e., in order of decreasing (date, chat_id, message_id)).
 /// For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 class SearchMessages extends TdFunction {
   String get tdType => 'searchMessages';
-  String get tdReturnType => 'Messages';
-
+  String get tdReturnType => 'FoundMessages';
 
   /// Chat list in which to search messages; pass null to search in all chats regardless of their chat list. Only Main and Archive chat lists are supported
   ChatList? chat_list;
@@ -17,14 +15,8 @@ class SearchMessages extends TdFunction {
   /// Query to search for
   string? query;
 
-  /// The date of the message starting from which the results need to be fetched. Use 0 or any date in the future to get results from the last message
-  int32? offset_date;
-
-  /// The chat identifier of the last found message, or 0 for the first request
-  int53? offset_chat_id;
-
-  /// The message identifier of the last found message, or 0 for the first request
-  int53? offset_message_id;
+  /// Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+  string? offset;
 
   /// The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
   int32? limit;
@@ -43,9 +35,7 @@ class SearchMessages extends TdFunction {
     super.client_id,
     this.chat_list,
     this.query,
-    this.offset_date,
-    this.offset_chat_id,
-    this.offset_message_id,
+    this.offset,
     this.limit,
     this.filter,
     this.min_date,
@@ -59,9 +49,7 @@ class SearchMessages extends TdFunction {
       chat_list = TdApiMap.fromMap(map['chat_list']) as ChatList;
     }
     query = map['query'];
-    offset_date = map['offset_date'];
-    offset_chat_id = map['offset_chat_id'];
-    offset_message_id = map['offset_message_id'];
+    offset = map['offset'];
     limit = map['limit'];
     if (map['filter'] != null) {
       filter = TdApiMap.fromMap(map['filter']) as SearchMessagesFilter;
@@ -77,9 +65,7 @@ class SearchMessages extends TdFunction {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_list': chat_list?.toMap(skipNulls: skipNulls),
       'query': query?.toMap(skipNulls: skipNulls),
-      'offset_date': offset_date?.toMap(skipNulls: skipNulls),
-      'offset_chat_id': offset_chat_id?.toMap(skipNulls: skipNulls),
-      'offset_message_id': offset_message_id?.toMap(skipNulls: skipNulls),
+      'offset': offset?.toMap(skipNulls: skipNulls),
       'limit': limit?.toMap(skipNulls: skipNulls),
       'filter': filter?.toMap(skipNulls: skipNulls),
       'min_date': min_date?.toMap(skipNulls: skipNulls),

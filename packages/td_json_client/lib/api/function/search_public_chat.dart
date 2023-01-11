@@ -1,6 +1,6 @@
 import 'package:td_json_client/api/base.dart';
 
-/// Searches a public chat by its username. Currently, only private chats, supergroups and channels can be public. Returns the chat if found; otherwise an error is returned
+/// Searches a public chat by its username. Currently, only private chats, supergroups and channels can be public. Returns the chat if found; otherwise, an error is returned
 class SearchPublicChat extends TdFunction {
   String get tdType => 'searchPublicChat';
   String get tdReturnType => 'Chat';

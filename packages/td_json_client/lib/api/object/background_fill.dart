@@ -5,11 +5,9 @@ abstract class BackgroundFill extends TdObject {
   BackgroundFill({super.extra, super.client_id});
 }
 
-
-/// Describes a solid fill of a background 
+/// Describes a solid fill of a background
 class BackgroundFillSolid extends BackgroundFill {
   String get tdType => 'backgroundFillSolid';
-
 
   /// A color of the background in the RGB24 format
   int32? color;
@@ -40,18 +38,17 @@ class BackgroundFillSolid extends BackgroundFill {
   }
 }
 
-/// Describes a gradient fill of a background 
+/// Describes a gradient fill of a background
 class BackgroundFillGradient extends BackgroundFill {
   String get tdType => 'backgroundFillGradient';
 
-
-  /// A top color of the background in the RGB24 format 
+  /// A top color of the background in the RGB24 format
   int32? top_color;
 
   /// A bottom color of the background in the RGB24 format
   int32? bottom_color;
 
-  /// Clockwise rotation angle of the gradient, in degrees; 0-359. Must be always divisible by 45
+  /// Clockwise rotation angle of the gradient, in degrees; 0-359. Must always be divisible by 45
   int32? rotation_angle;
 
   BackgroundFillGradient({
@@ -86,10 +83,9 @@ class BackgroundFillGradient extends BackgroundFill {
   }
 }
 
-/// Describes a freeform gradient fill of a background 
+/// Describes a freeform gradient fill of a background
 class BackgroundFillFreeformGradient extends BackgroundFill {
   String get tdType => 'backgroundFillFreeformGradient';
-
 
   /// A list of 3 or 4 colors of the freeform gradients in the RGB24 format
   vector<int32>? colors;

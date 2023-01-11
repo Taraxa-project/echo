@@ -2,26 +2,24 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/location.dart';
 
-
-/// Returns information about a file with a map thumbnail in PNG format. Only map thumbnail files with size less than 1MB can be downloaded 
+/// Returns information about a file with a map thumbnail in PNG format. Only map thumbnail files with size less than 1MB can be downloaded
 class GetMapThumbnailFile extends TdFunction {
   String get tdType => 'getMapThumbnailFile';
   String get tdReturnType => 'File';
 
-
-  /// Location of the map center 
+  /// Location of the map center
   Location? location;
 
-  /// Map zoom level; 13-20 
+  /// Map zoom level; 13-20
   int32? zoom;
 
-  /// Map width in pixels before applying scale; 16-1024 
+  /// Map width in pixels before applying scale; 16-1024
   int32? width;
 
-  /// Map height in pixels before applying scale; 16-1024 
+  /// Map height in pixels before applying scale; 16-1024
   int32? height;
 
-  /// Map scale; 1-3 
+  /// Map scale; 1-3
   int32? scale;
 
   /// Identifier of a chat in which the thumbnail will be shown. Use 0 if unknown

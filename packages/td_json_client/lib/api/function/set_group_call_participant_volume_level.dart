@@ -2,17 +2,15 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
-
 /// Changes volume level of a participant of an active group call. If the current user can manage the group call, then the participant's volume level will be changed for all users with the default volume level
 class SetGroupCallParticipantVolumeLevel extends TdFunction {
   String get tdType => 'setGroupCallParticipantVolumeLevel';
   String get tdReturnType => 'Ok';
 
-
-  /// Group call identifier 
+  /// Group call identifier
   int32? group_call_id;
 
-  /// Participant identifier 
+  /// Participant identifier
   MessageSender? participant_id;
 
   /// New participant's volume level; 1-20000 in hundreds of percents

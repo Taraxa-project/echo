@@ -18,19 +18,17 @@ abstract class InlineQueryResult extends TdObject {
   InlineQueryResult({super.extra, super.client_id});
 }
 
-
-/// Represents a link to an article or web page 
+/// Represents a link to an article or web page
 class InlineQueryResultArticle extends InlineQueryResult {
   String get tdType => 'inlineQueryResultArticle';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// URL of the result, if it exists 
+  /// URL of the result, if it exists
   string? url;
 
-  /// True, if the URL must be not shown 
+  /// True, if the URL must be not shown
   Bool? hide_url;
 
   /// Title of the result
@@ -84,15 +82,14 @@ class InlineQueryResultArticle extends InlineQueryResult {
   }
 }
 
-/// Represents a user contact 
+/// Represents a user contact
 class InlineQueryResultContact extends InlineQueryResult {
   String get tdType => 'inlineQueryResultContact';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// A user contact 
+  /// A user contact
   Contact? contact;
 
   /// Result thumbnail in JPEG format; may be null
@@ -134,18 +131,17 @@ class InlineQueryResultContact extends InlineQueryResult {
   }
 }
 
-/// Represents a point on the map 
+/// Represents a point on the map
 class InlineQueryResultLocation extends InlineQueryResult {
   String get tdType => 'inlineQueryResultLocation';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Location result 
+  /// Location result
   Location? location;
 
-  /// Title of the result 
+  /// Title of the result
   string? title;
 
   /// Result thumbnail in JPEG format; may be null
@@ -190,15 +186,14 @@ class InlineQueryResultLocation extends InlineQueryResult {
   }
 }
 
-/// Represents information about a venue 
+/// Represents information about a venue
 class InlineQueryResultVenue extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVenue';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Venue result 
+  /// Venue result
   Venue? venue;
 
   /// Result thumbnail in JPEG format; may be null
@@ -240,12 +235,11 @@ class InlineQueryResultVenue extends InlineQueryResult {
   }
 }
 
-/// Represents information about a game 
+/// Represents information about a game
 class InlineQueryResultGame extends InlineQueryResult {
   String get tdType => 'inlineQueryResultGame';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
   /// Game result
@@ -282,15 +276,14 @@ class InlineQueryResultGame extends InlineQueryResult {
   }
 }
 
-/// Represents an animation file 
+/// Represents an animation file
 class InlineQueryResultAnimation extends InlineQueryResult {
   String get tdType => 'inlineQueryResultAnimation';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Animation file 
+  /// Animation file
   Animation? animation;
 
   /// Animation title
@@ -330,12 +323,11 @@ class InlineQueryResultAnimation extends InlineQueryResult {
   }
 }
 
-/// Represents an audio file 
+/// Represents an audio file
 class InlineQueryResultAudio extends InlineQueryResult {
   String get tdType => 'inlineQueryResultAudio';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
   /// Audio file
@@ -372,18 +364,17 @@ class InlineQueryResultAudio extends InlineQueryResult {
   }
 }
 
-/// Represents a document 
+/// Represents a document
 class InlineQueryResultDocument extends InlineQueryResult {
   String get tdType => 'inlineQueryResultDocument';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Document 
+  /// Document
   Document? document;
 
-  /// Document title 
+  /// Document title
   string? title;
 
   string? description;
@@ -425,18 +416,17 @@ class InlineQueryResultDocument extends InlineQueryResult {
   }
 }
 
-/// Represents a photo 
+/// Represents a photo
 class InlineQueryResultPhoto extends InlineQueryResult {
   String get tdType => 'inlineQueryResultPhoto';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Photo 
+  /// Photo
   Photo? photo;
 
-  /// Title of the result, if known 
+  /// Title of the result, if known
   string? title;
 
   string? description;
@@ -478,12 +468,11 @@ class InlineQueryResultPhoto extends InlineQueryResult {
   }
 }
 
-/// Represents a sticker 
+/// Represents a sticker
 class InlineQueryResultSticker extends InlineQueryResult {
   String get tdType => 'inlineQueryResultSticker';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
   /// Sticker
@@ -520,18 +509,17 @@ class InlineQueryResultSticker extends InlineQueryResult {
   }
 }
 
-/// Represents a video 
+/// Represents a video
 class InlineQueryResultVideo extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVideo';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Video 
+  /// Video
   Video? video;
 
-  /// Title of the video 
+  /// Title of the video
   string? title;
 
   string? description;
@@ -573,15 +561,14 @@ class InlineQueryResultVideo extends InlineQueryResult {
   }
 }
 
-/// Represents a voice note 
+/// Represents a voice note
 class InlineQueryResultVoiceNote extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVoiceNote';
 
-
-  /// Unique identifier of the query result 
+  /// Unique identifier of the query result
   string? id;
 
-  /// Voice note 
+  /// Voice note
   VoiceNote? voice_note;
 
   /// Title of the voice note

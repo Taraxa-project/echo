@@ -5,11 +5,9 @@ abstract class PaymentProvider extends TdObject {
   PaymentProvider({super.extra, super.client_id});
 }
 
-
-/// Smart Glocal payment provider 
+/// Smart Glocal payment provider
 class PaymentProviderSmartGlocal extends PaymentProvider {
   String get tdType => 'paymentProviderSmartGlocal';
-
 
   /// Public payment token
   string? public_token;
@@ -40,18 +38,17 @@ class PaymentProviderSmartGlocal extends PaymentProvider {
   }
 }
 
-/// Stripe payment provider 
+/// Stripe payment provider
 class PaymentProviderStripe extends PaymentProvider {
   String get tdType => 'paymentProviderStripe';
 
-
-  /// Stripe API publishable key 
+  /// Stripe API publishable key
   string? publishable_key;
 
-  /// True, if the user country must be provided 
+  /// True, if the user country must be provided
   Bool? need_country;
 
-  /// True, if the user ZIP/postal code must be provided 
+  /// True, if the user ZIP/postal code must be provided
   Bool? need_postal_code;
 
   /// True, if the cardholder name must be provided
@@ -92,10 +89,9 @@ class PaymentProviderStripe extends PaymentProvider {
   }
 }
 
-/// Some other payment provider, for which a web payment form must be shown 
+/// Some other payment provider, for which a web payment form must be shown
 class PaymentProviderOther extends PaymentProvider {
   String get tdType => 'paymentProviderOther';
-
 
   /// Payment form URL
   string? url;

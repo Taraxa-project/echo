@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_location.dart';
 
-
 /// Creates a new supergroup or channel and sends a corresponding messageSupergroupChatCreate. Returns the newly created chat
 class CreateNewSupergroupChat extends TdFunction {
   String get tdType => 'createNewSupergroupChat';
   String get tdReturnType => 'Chat';
-
 
   /// Title of the new chat; 1-128 characters
   string? title;
@@ -20,6 +18,9 @@ class CreateNewSupergroupChat extends TdFunction {
   /// Chat location if a location-based supergroup is being created; pass null to create an ordinary supergroup chat
   ChatLocation? location;
 
+  /// Message auto-delete time value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
+  int32? message_auto_delete_time;
+
   /// Pass true to create a supergroup for importing messages using importMessage
   Bool? for_import;
 
@@ -30,6 +31,7 @@ class CreateNewSupergroupChat extends TdFunction {
     this.is_channel,
     this.description,
     this.location,
+    this.message_auto_delete_time,
     this.for_import,
   });
 
@@ -42,6 +44,7 @@ class CreateNewSupergroupChat extends TdFunction {
     if (map['location'] != null) {
       location = TdApiMap.fromMap(map['location']) as ChatLocation;
     }
+    message_auto_delete_time = map['message_auto_delete_time'];
     for_import = map['for_import'];
   }
 
@@ -54,6 +57,8 @@ class CreateNewSupergroupChat extends TdFunction {
       'is_channel': is_channel?.toMap(skipNulls: skipNulls),
       'description': description?.toMap(skipNulls: skipNulls),
       'location': location?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time':
+          message_auto_delete_time?.toMap(skipNulls: skipNulls),
       'for_import': for_import?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

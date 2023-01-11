@@ -2,17 +2,16 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/contact.dart';
 
-
-/// Adds a user to the contact list or edits an existing contact by their user identifier 
+/// Adds a user to the contact list or edits an existing contact by their user identifier
 class AddContact extends TdFunction {
   String get tdType => 'addContact';
   String get tdReturnType => 'Ok';
 
-
   /// The contact to add or edit; phone number may be empty and needs to be specified only if known, vCard is ignored
   Contact? contact;
 
-  /// Pass true to share the current user's phone number with the new contact. A corresponding rule to userPrivacySettingShowPhoneNumber will be added if needed. Use the field userFullInfo.need_phone_number_privacy_exception to check whether the current user needs to be asked to share their phone number
+  /// Pass true to share the current user's phone number with the new contact. A corresponding rule to userPrivacySettingShowPhoneNumber will be added if needed.
+  /// Use the field userFullInfo.need_phone_number_privacy_exception to check whether the current user needs to be asked to share their phone number
   Bool? share_phone_number;
 
   AddContact({

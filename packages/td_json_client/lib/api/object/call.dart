@@ -2,22 +2,20 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/call_state.dart';
 
-
-/// Describes a call 
+/// Describes a call
 class Call extends TdObject {
   String get tdType => 'call';
 
-
-  /// Call identifier, not persistent 
+  /// Call identifier, not persistent
   int32? id;
 
-  /// Peer user identifier 
+  /// Peer user identifier
   int53? user_id;
 
-  /// True, if the call is outgoing 
+  /// True, if the call is outgoing
   Bool? is_outgoing;
 
-  /// True, if the call is a video call 
+  /// True, if the call is a video call
   Bool? is_video;
 
   /// Call state

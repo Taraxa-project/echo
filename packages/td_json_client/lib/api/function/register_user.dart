@@ -1,13 +1,11 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Finishes user registration. Works only when the current authorization state is authorizationStateWaitRegistration
 class RegisterUser extends TdFunction {
   String get tdType => 'registerUser';
   String get tdReturnType => 'Ok';
 
-
-  /// The first name of the user; 1-64 characters 
+  /// The first name of the user; 1-64 characters
   string? first_name;
 
   /// The last name of the user; 0-64 characters

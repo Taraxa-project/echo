@@ -1,22 +1,20 @@
 import 'package:td_json_client/api/base.dart';
 
-
-/// Sets the result of a callback query; for bots only 
+/// Sets the result of a callback query; for bots only
 class AnswerCallbackQuery extends TdFunction {
   String get tdType => 'answerCallbackQuery';
   String get tdReturnType => 'Ok';
 
-
-  /// Identifier of the callback query 
+  /// Identifier of the callback query
   int64? callback_query_id;
 
-  /// Text of the answer 
+  /// Text of the answer
   string? text;
 
-  /// Pass true to show an alert to the user instead of a toast notification 
+  /// Pass true to show an alert to the user instead of a toast notification
   Bool? show_alert;
 
-  /// URL to be opened 
+  /// URL to be opened
   string? url;
 
   /// Time during which the result of the query can be cached, in seconds
