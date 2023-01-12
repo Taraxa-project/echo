@@ -3,6 +3,184 @@ import 'dart:isolate';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:logging/logging.dart';
 
+
+class IsolateDB {
+  // late final DB dbInstance;
+  late final ReceivePort _isolateReceivePort;
+  late final Stream<dynamic> _isolateReceivePortBroadcast;
+  late final SendPort _isolateSendPort;
+  SendPort? isolateSendPort;
+  String dbPath;
+  Logger? logger;
+
+  IsolateDB(
+    String dbPath,
+    Logger? logger
+  ) : dbPath = dbPath,
+   logger = logger
+    {}
+ 
+
+  Future<void> createDBIsolate() async {
+    _isolateReceivePort = ReceivePort();
+    _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
+    await Isolate.spawn(
+      IsolateDB._entryPointDB,
+      [dbPath, logger, this._isolateReceivePort.sendPort]
+    );
+
+    _isolateSendPort = await _isolateReceivePortBroadcast.first;
+
+    _isolateReceivePortBroadcast.listen((event) {
+        print('Received event ${event}');
+    });
+  }
+
+  static void _entryPointDB(List<dynamic> initialSpawnMessage) {
+    String dbPath = initialSpawnMessage[0];
+    Logger logger = initialSpawnMessage[1];
+    SendPort parentSendPort = initialSpawnMessage[2];
+
+    final DB dbInstance = DB(dbPath: dbPath, logger: logger);
+
+    var receivePort = ReceivePort();
+    parentSendPort.send(receivePort.sendPort);
+
+    receivePort.listen((message) {
+      print("db isolate got message: ${message}");
+
+      if (message is DbExit){
+        receivePort.close();
+        Isolate.exit();
+      }
+      else if (message == DbClose){
+        dbInstance.close();
+      }
+      else if (message == DbMigrate){
+        dbInstance.migrate();
+      }
+      else if (message[0] == DbAddChat){
+        dbInstance.addChat(message[1]);
+      }
+      else if (message[0] == DbAddMessage){
+        final chatId = message[1];
+        final messageId = message[2];
+        final date = message[3];
+        final userId = message[4];
+        final text = message[5];
+        print('chatId ${chatId} and messageId ${messageId}, date ${date} , userId ${userId}');
+        dbInstance.addMessage(
+            chatId: message.chat_id,
+            messageId: message.id,
+            date: message.date,
+            userId: userId,
+            text: text);
+      }
+      else if (message[0] == DbUpdateChat){
+        dbInstance.updateChat(message[1], message[2], message[3]);
+      }
+      else if (message[0] == DbSelectChats){
+        dbInstance.selectChats();
+      }
+    });
+  }
+
+  void open() {
+    _isolateSendPort.send(DbOpen());
+  }
+
+  void close() {
+    _isolateSendPort.send(DbClose());
+  }
+
+  void migrate() {
+    _isolateSendPort.send(DbMigrate());
+  }
+
+  void addChat(String username) {
+    _isolateSendPort.send([DbAddChat(), username]);
+    
+  }
+
+  void updateChat(String username, int id, String title) {
+    _isolateSendPort.send([DbUpdateChat(), username, id, title]);
+  }
+
+  Future<dynamic> selectChats() async {
+    _isolateSendPort.send(DbSelectChats());
+
+    var response;
+    var sub = _isolateReceivePortBroadcast.listen((event) {
+      if (event is List<int>) {
+        print('Received an event when selecting chats ${event}');
+        response = event;
+      }
+    });
+
+    while (true) {
+      if (response != null) {
+        sub.cancel();
+        return response;
+      }
+      await Future.delayed(const Duration(milliseconds: 10));
+    }
+  }
+
+  Future<int?> selectMaxMessageId(int chatId, DateTime newerThan) async {
+    _isolateSendPort.send(DbSelectMaxMessageId());
+
+    var response;
+    var sub = _isolateReceivePortBroadcast.listen((event) {
+      if (event is List<int>) {
+        print('Received an event when selecting MaxMessageId ${event}');
+        response = event;
+      }
+    });
+
+    while (true) {
+      if (response != null) {
+        sub.cancel();
+        return response;
+      }
+      await Future.delayed(const Duration(milliseconds: 10));
+    }
+  }
+
+  void addMessage(
+      {required int chatId,
+      required int messageId,
+      required int date,
+      int? userId,
+      String? text}) {
+    _isolateSendPort.send([DbAddMessage(), chatId, messageId, date, userId, text]);
+  }
+}
+
+abstract class DbOperation {}
+
+class DBLogin extends DbOperation {}
+
+class DbOpen extends DbOperation {}
+
+class DbMigrate extends DbOperation {}
+
+class DbClose extends DbOperation {}
+
+class DbExit extends DbOperation {}
+
+class DbUpdateChat extends DbOperation {}
+
+class DbSelectChats extends DbOperation {}
+
+class DbSelectMaxMessageId extends DbOperation {}
+
+class DbAddMessage extends DbOperation {}
+
+class DbAddChat extends DbOperation {}
+
+
+
+
 class DB {
   final String dbPath;
   Database? db;
@@ -13,52 +191,29 @@ class DB {
     this.logger,
   });
 
-  Future<void> open() async {
-    final p = ReceivePort();
-    await Isolate.spawn(_openIsolate, p.sendPort);
-  }
-
-  Future<void> _openIsolate(SendPort p) {
+  void open() {
     logger?.info('opening...');
     db = sqlite3.open(this.dbPath);
     logger?.info('opened.');
-    Isolate.exit(p);
+    print("opened sqlite");
   }
 
-  Future<void> close() async {
-    final p = ReceivePort();
-    await Isolate.spawn(_closeIsolate, p.sendPort);
-  }
-
-  Future<void> _closeIsolate(SendPort p) {
+  void close() {
     logger?.info('closing...');
     db?.dispose();
     logger?.info('closed.');
-    Isolate.exit(p);
+    print("closed db");
   }
 
-  Future<void> migrate() async {
-    final p = ReceivePort();
-    await Isolate.spawn(_migrateIsolate, p.sendPort);
-  }
-
-  Future<void> _migrateIsolate(SendPort p) async {
+  void migrate() {
     logger?.info('running migrations...');
     for (final sql in sqlInit()) {
       db?.execute(sql);
     }
     logger?.info('running migrations... done.');
-    Isolate.exit(p);
   }
 
-  Future<void> addChat(String username) async {
-    final p = ReceivePort();
-    await Isolate.spawn(_addChatIsolate, [p.sendPort, username]);
-  }
-
-  Future<void> _addChatIsolate(List<dynamic> args) async {
-    SendPort responsePort = args[0];
-    String username = args[1];
+  void addChat(String username) {
     final stmt =
         db?.prepare('INSERT INTO chat (username, created_at) VALUES (?, ?)');
 
@@ -67,15 +222,9 @@ class DB {
     logger?.info('added chat $username.');
 
     stmt?.dispose();
-    Isolate.exit(responsePort);
   }
 
-  Future<void> _updateChatIsolate(List<dynamic> args) async {
-    SendPort responsePort = args[0];
-    String username = args[1];
-    int id = args[2];
-    String title = args[3];
-
+  void updateChat(String username, int id, String title) {
     final stmt = db?.prepare(
         'UPDATE chat SET id = ?, title = ?, updated_at = ? WHERE username = ?;');
 
@@ -89,50 +238,26 @@ class DB {
     logger?.info('updated chat $username, id $id.');
 
     stmt?.dispose();
-    Isolate.exit(responsePort);
   }
 
-  Future<void> updateChat(String username, int id, String title) async {
-    logger?.info('Updating chat $id with username $username');
-    final p = ReceivePort();
-    await Isolate.spawn(_updateChatIsolate, [p.sendPort, username, id, title]);
-  }
-
-  Future<List<int>> selectChats() async {
-    final p = ReceivePort();
-    
-    await Isolate.spawn(_selectChatsIsolate, p.sendPort);
-    return await p.first as List<int>;
-  }
-  
-  Future<List<int>> _selectChatsIsolate(SendPort p) async{
+  List<int> selectChats() {
+    print("reading chats");
     logger?.info('reading chats...');
     final ResultSet? resultSet =
         db?.select('SELECT id FROM chat ORDER BY created_at ASC;');
 
     List<int> ids = [];
-    logger?.info('found ${resultSet} results.');
     if (resultSet != null) {
       for (final Row row in resultSet) {
         ids.add(row['id']);
       }
     }
-
+    print("found ids: ${ids}");
     logger?.info('found ${ids.length} chats.');
-    Isolate.exit(p, ids);
+    return ids;
   }
 
-  Future<int?> selectMaxMessageId(int chatId, DateTime newerThan) async {
-    final p = ReceivePort();
-    await Isolate.spawn(_selectMaxMessageIdIsolate, [p.sendPort, chatId, newerThan]);
-    return await p.first as int?;
-  }
-
-  Future<int?> _selectMaxMessageIdIsolate(List<dynamic> args) {
-    SendPort responsePort = args[0];
-    int chatId = args[1];
-    DateTime newerThan = args[2];
-
+  int? selectMaxMessageId(int chatId, DateTime newerThan) {
     logger?.info('reading last message id for $chatId...');
     final ResultSet? resultSet = db?.select(
         'SELECT max(id) id FROM message WHERE chat_id = ? AND date >= ?;', [
@@ -148,30 +273,19 @@ class DB {
       logger?.info('did not find last message id for chat $chatId.');
     }
 
-    Isolate.exit(responsePort, id);
+    return id;
   }
 
-  Future<void> addMessage({required int chatId,
+  void addMessage(
+      {required int chatId,
       required int messageId,
       required int date,
       int? userId,
-      String? text}) async {
-    final p = ReceivePort();
-    await Isolate.spawn(_addMessageIsolate, [p.sendPort, messageId, date, userId, text]);
-  }
-
-  Future<void> _addMessageIsolate(List<dynamic> args) async {
-    SendPort responsePort = args[0];
-    String chatId = args[1];
-    int messageId = args[2];
-    int date = args[3];
-    int? userId = args[4];
-    String? text = args[5];
-    
+      String? text}) {
     final sql = """
-INSERT INTO message (chat_id, id, date, user_id, text, created_at, updated_at)
-VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
-""";
+      INSERT INTO message (chat_id, id, date, user_id, text, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
+      """;
     final stmt = db?.prepare(sql);
     stmt?.execute([
       chatId,
@@ -185,35 +299,34 @@ VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
       DateTime.now().toUtc().toIso8601String(),
     ]);
     stmt?.dispose();
-    Isolate.exit(responsePort);
   }
 
   List<String> sqlInit() {
     return [
       """
-CREATE TABLE IF NOT EXISTS chat (
-  username TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
-  id INTEGER,
-  title TEXT,
-  created_at TEXT,
-  updated_at TEXT
-);
-""",
-      """
-CREATE TABLE IF NOT EXISTS message (
-  chat_id INTEGER NOT NULL,
-  id INTEGER NOT NULL,
-  date TEXT,
-  user_id INTEGER,
-  text TEXT,
-  created_at TEXT,
-  updated_at TEXT
-);
-""",
-      """
-CREATE UNIQUE INDEX IF NOT EXISTS idx_message_chat_id_message_id ON
-  message(chat_id, id);
-""",
-    ];
+    CREATE TABLE IF NOT EXISTS chat (
+      username TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
+      id INTEGER,
+      title TEXT,
+      created_at TEXT,
+      updated_at TEXT
+    );
+    """,
+          """
+    CREATE TABLE IF NOT EXISTS message (
+      chat_id INTEGER NOT NULL,
+      id INTEGER NOT NULL,
+      date TEXT,
+      user_id INTEGER,
+      text TEXT,
+      created_at TEXT,
+      updated_at TEXT
+    );
+    """,
+          """
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_message_chat_id_message_id ON
+      message(chat_id, id);
+    """,
+        ];
   }
 }

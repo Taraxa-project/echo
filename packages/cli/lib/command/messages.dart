@@ -22,7 +22,7 @@ class TelegramCommandMessages extends Command {
 
   TelegramClient? telegramClient;
 
-  DB? db;
+  IsolateDB? db;
 
   void run() async {
     initLogging();
@@ -94,24 +94,27 @@ class TelegramCommandMessages extends Command {
   }
 
   void initDB() async {
-    db = await DB(
-      dbPath: globalResults!['message-database-path'],
-      logger: Logger('DB')
+   
+    db = IsolateDB(
+      globalResults!['message-database-path'],
+      Logger('DB')
         ..level = getLogLevel()
         ..onRecord.listen((event) {
           print(event);
-        }),
-    )
-      ..open()
-      ..migrate();
+        })
+    );
+    await db?.createDBIsolate();
+
+    db?.open();
+    db?.migrate();
   }
 
   Future<void> closeClient() async {
     await telegramClient?.exit();
   }
 
-  void closeDB() async{
-    await db?.close();
+  void closeDB() {
+    db?.close();
   }
 
   Future<void> login() async {
@@ -193,7 +196,15 @@ class TelegramCommandMessages extends Command {
 
   Future<void> readChatsHistory() async {
     _logger.info('selecting chats locally...');
-    var chatsIds = await db?.selectChats() ?? [];
+    var chatsIds;
+    db?.selectChats().then((ids) {
+      print("chatids received ${ids}");
+      if ((ids != null) | (ids != [])) {
+        chatsIds = ids;
+      } else {
+        chatsIds = [];
+      }
+    }); 
     _logger.info('found ${chatsIds.length} chats locally.');
 
     for (int id in chatsIds) {
@@ -263,7 +274,7 @@ class TelegramCommandMessages extends Command {
           }
         }
 
-        await db?.addMessage(
+        db?.addMessage(
             chatId: WrapId.unwrapChatId(message.chat_id)!,
             messageId: WrapId.unwrapMessageId(message.id)!,
             date: message.date!,
@@ -304,7 +315,12 @@ class TelegramCommandMessages extends Command {
   }
 
   Future<int?> getMessageIdLastLocally(int chatId, DateTime newerThan) async {
-    return await db?.selectMaxMessageId(chatId, newerThan);
+    var maxId;
+    db?.selectMaxMessageId(chatId, newerThan).then((messageId) {
+      print("received max message id ${messageId}");
+      maxId = messageId;
+    });
+    return maxId;
   }
 
   Future<int?> getMessageIdLastRemote(int chatId, DateTime olderThan) async {
