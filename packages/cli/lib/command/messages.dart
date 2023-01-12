@@ -28,13 +28,22 @@ class TelegramCommandMessages extends Command {
 
   void run() async {
     var tg = Tg();
-    tg.spawn().then((tgSpawned) {
-      tg.login().then((loginResult) {
-        print(loginResult);
-        tg.readChatsHistory().then((value) {
-          print('done reading chat history');
-        });
+    await tg.spawn();
+
+    // chained
+    tg.login().then((loginResult) {
+      print(loginResult);
+      tg.readChatsHistory().then((value) {
+        print('done reading chat history');
       });
+    });
+
+    // concurent
+    tg.login().then((loginResult) {
+      print(loginResult);
+    });
+    tg.readChatsHistory().then((value) {
+      print('done reading chat history');
     });
 
     await Future.delayed(Duration(seconds: 3));
