@@ -32,7 +32,7 @@ class Tg {
         receivePort.close();
         Isolate.exit();
       } else if (message is TgLogin) {
-        tgIsolated.login();
+        parentSendPort.send(tgIsolated.login());
       } else if (message is TgReadChatsHistory) {
         tgIsolated.readChatsHistory();
       }
@@ -43,8 +43,11 @@ class Tg {
     _isolateSendPort.send(TgExit());
   }
 
-  void login() {
+  Future<TgIsolatedLogin> login() async {
     _isolateSendPort.send(TgLogin());
+
+    TgIsolatedLogin? tgIsolatedLogin = await _isolateReceivePortBroadcast.first;
+    return tgIsolatedLogin!;
   }
 
   void readChatsHistory() {
@@ -61,8 +64,9 @@ class TgReadChatsHistory extends TgMsg {}
 class TgExit extends TgMsg {}
 
 class TgIsolated {
-  void login() {
+  TgIsolatedLogin login() {
     print('${Isolate.current.debugName}:${runtimeType.toString()}:login');
+    return TgIsolatedLogin();
   }
 
   void readChatsHistory() {
@@ -70,3 +74,5 @@ class TgIsolated {
         '${Isolate.current.debugName}:${runtimeType.toString()}:readChatsHistory');
   }
 }
+
+class TgIsolatedLogin {}

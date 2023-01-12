@@ -30,8 +30,8 @@ class TelegramCommandMessages extends Command {
     var tg = Tg();
     await tg.spawn();
 
-    tg.login();
-    await Future.delayed(Duration(seconds: 3));
+    var l = await tg.login();
+    print(l);
 
     tg.readChatsHistory();
     await Future.delayed(Duration(seconds: 3));
