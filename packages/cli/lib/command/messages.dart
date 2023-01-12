@@ -196,20 +196,25 @@ class TelegramCommandMessages extends Command {
 
   Future<void> readChatsHistory() async {
     _logger.info('selecting chats locally...');
-    var chatsIds;
-    db?.selectChats().then((ids) {
-      print("chatids received ${ids}");
-      if ((ids != null) | (ids != [])) {
-        chatsIds = ids;
-      } else {
-        chatsIds = [];
+    // var chatsIds;
+    // db?.selectChats().then((ids) {
+    //   print("chatids received ${ids}");
+    //   if ((ids != null) | (ids != [])) {
+    //     chatsIds = ids;
+    //   } else {
+    //     chatsIds = [];
+    //   }
+    // }); 
+    db?.selectChats().then((chatsIds) async {
+      print('chatsIds ${chatsIds}');
+      for (int id in chatsIds) {
+        await readChatHistory(id);
       }
-    }); 
-    _logger.info('found ${chatsIds.length} chats locally.');
-
-    for (int id in chatsIds) {
-      await readChatHistory(id);
-    }
+    });
+    
+    // for (int id in chatsIds) {
+    //   await readChatHistory(id);
+    // }
   }
 
   Future<void> readChatHistory(int chatId) async {

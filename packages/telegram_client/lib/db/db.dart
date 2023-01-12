@@ -53,16 +53,30 @@ class IsolateDB {
         receivePort.close();
         Isolate.exit();
       }
-      else if (message == DbClose){
+      else if (message is DbOpen){
+        print('open db inside isolate');
+        dbInstance.open();
+      }
+      else if (message is DbClose){
+        print('close db inside isolate');
+
         dbInstance.close();
       }
-      else if (message == DbMigrate){
+      else if (message is DbMigrate){
+        print('migrate db inside isolate');
+
         dbInstance.migrate();
       }
-      else if (message[0] == DbAddChat){
+      else if (message is DbSelectChats){
+        print('selecting chats within isolate');
+        dbInstance.selectChats();
+      }
+      else if (message[0] is DbAddChat){
+        print('add chat db inside isolate');
+
         dbInstance.addChat(message[1]);
       }
-      else if (message[0] == DbAddMessage){
+      else if (message[0] is DbAddMessage){
         final chatId = message[1];
         final messageId = message[2];
         final date = message[3];
@@ -76,30 +90,30 @@ class IsolateDB {
             userId: userId,
             text: text);
       }
-      else if (message[0] == DbUpdateChat){
+      else if (message[0] is DbUpdateChat){
+        print('updating chats within isolate, args ${message[1]}, ${message[2]}, ${message[3]}');
         dbInstance.updateChat(message[1], message[2], message[3]);
-      }
-      else if (message[0] == DbSelectChats){
-        dbInstance.selectChats();
       }
     });
   }
 
   void open() {
+    print("received db open, sending to isolate");
     _isolateSendPort.send(DbOpen());
   }
 
   void close() {
+    print("received db close, sending to isolate");
     _isolateSendPort.send(DbClose());
   }
 
   void migrate() {
+    print("received db migrate, sending to isolate");
     _isolateSendPort.send(DbMigrate());
   }
 
   void addChat(String username) {
     _isolateSendPort.send([DbAddChat(), username]);
-    
   }
 
   void updateChat(String username, int id, String title) {
@@ -109,13 +123,20 @@ class IsolateDB {
   Future<dynamic> selectChats() async {
     _isolateSendPort.send(DbSelectChats());
 
+    // List<int>? tgIsolatedLogin = await _isolateReceivePortBroadcast.first;
+    // print('response select chats ${tgIsolatedLogin}');
+    // return tgIsolatedLogin!;
+
     var response;
     var sub = _isolateReceivePortBroadcast.listen((event) {
+      print('event from select chats ${event}');
       if (event is List<int>) {
         print('Received an event when selecting chats ${event}');
         response = event;
       }
     });
+    print('response ${response}');
+    // return response;
 
     while (true) {
       if (response != null) {
@@ -246,6 +267,7 @@ class DB {
     final ResultSet? resultSet =
         db?.select('SELECT id FROM chat ORDER BY created_at ASC;');
 
+    print("result set: ${resultSet}");
     List<int> ids = [];
     if (resultSet != null) {
       for (final Row row in resultSet) {
@@ -253,7 +275,7 @@ class DB {
       }
     }
     print("found ids: ${ids}");
-    logger?.info('found ${ids.length} chats.');
+    // logger?.info('found ${ids.length} chats.');
     return ids;
   }
 
