@@ -14,6 +14,8 @@ import 'package:telegram_client/db/db.dart';
 import 'package:telegram_client/wrap_id.dart';
 import 'package:echo_cli/callback/cli.dart';
 
+import 'package:telegram_client/tg.dart';
+
 class TelegramCommandMessages extends Command {
   final name = 'messages';
   final description = 'Read and save messages from the last two weeks.';
@@ -25,6 +27,20 @@ class TelegramCommandMessages extends Command {
   DB? db;
 
   void run() async {
+    var tg = Tg();
+    await tg.spawn();
+
+    tg.login();
+    await Future.delayed(Duration(seconds: 3));
+
+    tg.readChatsHistory();
+    await Future.delayed(Duration(seconds: 3));
+
+    tg.exit();
+    await Future.delayed(Duration(seconds: 3));
+
+    exit(0);
+
     initLogging();
     initDB();
     initClient();
