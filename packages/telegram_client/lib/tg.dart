@@ -9,6 +9,7 @@ class Tg {
   Future<void> spawn() async {
     _isolateReceivePort = ReceivePort();
     _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
+
     await Isolate.spawn(
       Tg._entryPoint,
       [
@@ -16,6 +17,7 @@ class Tg {
       ],
       debugName: runtimeType.toString(),
     );
+
     _isolateSendPort = await _isolateReceivePortBroadcast.first;
   }
 
@@ -43,14 +45,26 @@ class Tg {
     _isolateSendPort.send(TgExit());
   }
 
-  Future<TgIsolatedLogin> login() async {
+  Future<dynamic> login() async {
     _isolateSendPort.send(TgLogin());
 
-    TgIsolatedLogin? tgIsolatedLogin = await _isolateReceivePortBroadcast.first;
-    return tgIsolatedLogin!;
+    var response;
+    var sub = _isolateReceivePortBroadcast.listen((event) {
+      if (event is TgIsolatedLogin) {
+        response = event;
+      }
+    });
+
+    while (true) {
+      if (response != null) {
+        sub.cancel();
+        return response;
+      }
+      await Future.delayed(const Duration(milliseconds: 10));
+    }
   }
 
-  void readChatsHistory() {
+  Future<void> readChatsHistory() async {
     _isolateSendPort.send(TgReadChatsHistory());
   }
 }
