@@ -1,16 +1,16 @@
 // import 'dart:io';
 // import 'dart:convert';
 
-import 'package:logging/logging.dart';
+// import 'package:logging/logging.dart';
 import 'package:args/command_runner.dart';
 
 // import 'package:td_json_client/td_json_client.dart';
-import 'package:telegram_client/client.dart';
+// import 'package:telegram_client/client.dart';
 // import 'package:telegram_client/listener/login_listener.dart';
 // import 'package:telegram_client/listener/get_chat_message_by_date_listener.dart';
 // import 'package:telegram_client/listener/search_public_chat_listener.dart';
 // import 'package:telegram_client/listener/get_chat_history_listener.dart';
-import 'package:telegram_client/db/db.dart';
+// import 'package:telegram_client/db/db.dart';
 // import 'package:telegram_client/wrap_id.dart';
 // import 'package:echo_cli/callback/cli.dart';
 
@@ -33,9 +33,11 @@ class TelegramCommandMessages extends Command {
           _tg.spawn(lg: _lg, db: _db).then((tgSpawned) {
             _tg.login().then((loggedIn) {
               _tg.readChatsHistory().then((value) {
-                _tg.exit();
-                _db.exit();
-                _lg.exit();
+                _tg.exit().then((tgExited) {
+                  _db.exit().then((dbExited) {
+                    _lg.exit();
+                  });
+                });
               });
             });
           });

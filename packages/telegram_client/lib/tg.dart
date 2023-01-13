@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:logging/logging.dart';
+
 import 'lg.dart';
 import 'db.dart';
 
@@ -12,6 +14,8 @@ class Tg {
   late final Lg _lg;
   late final Db _db;
 
+  final _logger = Logger('Tg');
+
   Future<void> spawn({
     required Lg lg,
     required Db db,
@@ -19,9 +23,19 @@ class Tg {
     _lg = lg;
     _db = db;
 
+    _logger.onRecord.listen((event) {
+      _lg.isolateSendPort.send(event);
+    });
+
     _isolateReceivePort = ReceivePort();
     _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
+    _isolateReceivePortBroadcast
+        .where((event) => event is LogRecord)
+        .listen((logRecord) {
+      _lg.isolateSendPort.send(logRecord);
+    });
 
+    _logger.info('spawning TgIsolated...');
     await Isolate.spawn(
       Tg._entryPoint,
       [
@@ -36,14 +50,14 @@ class Tg {
   static void _entryPoint(dynamic initialSpawnMessage) {
     SendPort parentSendPort = initialSpawnMessage[0];
 
-    final tgIsolated = TgIsolated();
-
     var receivePort = ReceivePort();
     parentSendPort.send(receivePort.sendPort);
 
+    final tgIsolated = TgIsolated(parentSendPort: parentSendPort);
+
     receivePort.listen((message) {
       if (message is TgExit) {
-        print('${Isolate.current.debugName}: existing...');
+        tgIsolated._logger.info('exiting...');
         receivePort.close();
         Isolate.exit();
       } else if (message is TgLogin) {
@@ -53,11 +67,12 @@ class Tg {
       }
     });
 
-    print('${Isolate.current.debugName}: spawned...');
+    tgIsolated._logger.info('spawned.');
   }
 
-  void exit() {
+  Future<void> exit() async {
     _isolateSendPort.send(TgExit());
+    await Future.delayed(const Duration(milliseconds: 10));
     _isolateReceivePort.close();
   }
 
@@ -94,14 +109,22 @@ class TgReadChatsHistory extends TgMsg {}
 class TgExit extends TgMsg {}
 
 class TgIsolated {
+  final _logger = Logger('TgIsolated');
+  final SendPort parentSendPort;
+
+  TgIsolated({required this.parentSendPort}) {
+    _logger.onRecord.listen((logRecord) {
+      parentSendPort.send(logRecord);
+    });
+  }
+
   TgIsolatedLogin login() {
-    print('${Isolate.current.debugName}:${runtimeType.toString()}:login');
+    _logger.info('loggin in...');
     return TgIsolatedLogin();
   }
 
   void readChatsHistory() {
-    print(
-        '${Isolate.current.debugName}:${runtimeType.toString()}:readChatsHistory');
+    _logger.info('reading chats history...');
   }
 }
 
