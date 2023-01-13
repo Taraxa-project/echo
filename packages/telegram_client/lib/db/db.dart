@@ -136,31 +136,17 @@ class Db {
   }
 
   //this now needs to dynamic instead of List<int> since it now returns log statements instead of selectChat results
-  Future<dynamic> selectChats() async {
+  Future<List<int>> selectChats() async {
     _isolateSendPort.send(DbSelectChats());
-
-    var response;
-
-    //this used to give me the result of selectChats
-    // now it gives me the last log message being printed in selectChats function
-    // response = await _isolateReceivePortBroadcast.first;
-
-    //If I listen in to the _isolateReceivePortBroadcast I don't get any messages 
-    _isolateReceivePortBroadcast
-        .listen((message) {
-          print('incoming record in select chats ${message}');
-          response = message;
-    });
-    print('response ${response}');
-    return response;
+    var response = await _isolateReceivePortBroadcast.where((event) => event is IsolateSelectChats).first;
+    return response.chats;
   }
 
   //this now needs to dynamic instead of int since it now returns log statements instead of selectMaxMessageId result
-  Future<dynamic> selectMaxMessageId(int chatId, DateTime newerThan) async {
+  Future<int?> selectMaxMessageId(int chatId, DateTime newerThan) async {
     _isolateSendPort.send([ DbSelectMaxMessageId(), chatId, newerThan]);
-
-    var response = await _isolateReceivePortBroadcast.first;
-    return response;
+    var response = await _isolateReceivePortBroadcast.where((event) => event is IsolateMaxMessageId).first;
+    return response.maxMessageId;
   }
 
   void addMessage(
@@ -194,6 +180,8 @@ class DbSelectMaxMessageId extends DbOperation {}
 class DbAddMessage extends DbOperation {}
 
 class DbAddChat extends DbOperation {}
+
+
 
 
 
@@ -263,7 +251,7 @@ class DbIsolated{
     stmt?.dispose();
   }
 
-  List<int?> selectChats() {
+  IsolateSelectChats selectChats() {
     _logger.info('reading chats...');
     final ResultSet? resultSet =
         db?.select('SELECT id FROM chat ORDER BY created_at ASC;');
@@ -279,10 +267,10 @@ class DbIsolated{
       }
     }
     _logger.info('found ${ids.length} chats.');
-    return ids;
+    return IsolateSelectChats(ids);
   }
 
-  int? selectMaxMessageId(int chatId, DateTime newerThan) {
+  IsolateMaxMessageId selectMaxMessageId(int chatId, DateTime newerThan) {
     print('selecting max message id ${chatId}, datetime ${newerThan}');
     _logger.info('reading last message id for $chatId...');
     final ResultSet? resultSet = db?.select(
@@ -298,8 +286,7 @@ class DbIsolated{
     } else {
       _logger.info('did not find last message id for chat $chatId.');
     }
-
-    return id;
+    return IsolateMaxMessageId(id);
   }
 
   void addMessage(
@@ -357,4 +344,12 @@ class DbIsolated{
   }
 }
 
-class IsolateSelectChats {}
+class IsolateSelectChats {
+  List<int> chats;
+  IsolateSelectChats(this.chats);
+}
+
+class IsolateMaxMessageId {
+  int? maxMessageId;
+  IsolateMaxMessageId(this.maxMessageId);
+}

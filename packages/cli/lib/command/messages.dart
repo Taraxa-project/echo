@@ -43,11 +43,11 @@ class TelegramCommandMessages extends Command {
     var chatIds = await db?.selectChats();
     print('chatids ${chatIds}');
     // await db?.selectChats();
-    // var parsedDate = DateTime.parse('2022-01-01');
-    // await Future.delayed(Duration(seconds: 3));
+    var parsedDate = DateTime.parse('2022-01-01');
+    await Future.delayed(Duration(seconds: 3));
 
-    // var maxId = await db?.selectMaxMessageId(1176547813, parsedDate);
-    // print("🚀 ~ file: messages.dart:51 ~ TelegramCommandMessages ~ voidrun ~ maxId ${maxId}");
+    var maxId = await db?.selectMaxMessageId(1176547813, parsedDate);
+    print("🚀 ~ file: messages.dart:51 ~ TelegramCommandMessages ~ voidrun ~ maxId ${maxId}");
 
 
     // db?.addMessage(chatId: 1176547813,
