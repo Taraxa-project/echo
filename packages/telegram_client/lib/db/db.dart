@@ -26,17 +26,14 @@ class IsolateDB {
     _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
     await Isolate.spawn(
       IsolateDB._entryPointDB,
-      [dbPath, logger, this._isolateReceivePort.sendPort]
+      [dbPath, logger, this._isolateReceivePort.sendPort],
+      debugName: runtimeType.toString()
     );
 
     _isolateSendPort = await _isolateReceivePortBroadcast.first;
-
-    _isolateReceivePortBroadcast.listen((event) {
-        print('Received event ${event}');
-    });
   }
 
-  static void _entryPointDB(List<dynamic> initialSpawnMessage) {
+  static void _entryPointDB(List<dynamic> initialSpawnMessage) async {
     String dbPath = initialSpawnMessage[0];
     Logger logger = initialSpawnMessage[1];
     SendPort parentSendPort = initialSpawnMessage[2];
@@ -69,12 +66,15 @@ class IsolateDB {
       }
       else if (message is DbSelectChats){
         print('selecting chats within isolate');
-        dbInstance.selectChats();
+        parentSendPort.send(dbInstance.selectChats());
       }
       else if (message[0] is DbAddChat){
         print('add chat db inside isolate');
-
         dbInstance.addChat(message[1]);
+      }
+      else if (message[0] is DbSelectMaxMessageId) {
+        print('select max message id db inside isolate, message1 ${message[1]}, message2 ${message[2]}');
+        parentSendPort.send(dbInstance.selectMaxMessageId(message[1], message[2]));
       }
       else if (message[0] is DbAddMessage){
         final chatId = message[1];
@@ -107,12 +107,12 @@ class IsolateDB {
     _isolateSendPort.send(DbClose());
   }
 
-  void migrate() {
+  void  migrate() {
     print("received db migrate, sending to isolate");
     _isolateSendPort.send(DbMigrate());
   }
 
-  void addChat(String username) {
+  Future<void> addChat(String username) async {
     _isolateSendPort.send([DbAddChat(), username]);
   }
 
@@ -123,48 +123,17 @@ class IsolateDB {
   Future<dynamic> selectChats() async {
     _isolateSendPort.send(DbSelectChats());
 
-    // List<int>? tgIsolatedLogin = await _isolateReceivePortBroadcast.first;
-    // print('response select chats ${tgIsolatedLogin}');
-    // return tgIsolatedLogin!;
-
-    var response;
-    var sub = _isolateReceivePortBroadcast.listen((event) {
-      print('event from select chats ${event}');
-      if (event is List<int>) {
-        print('Received an event when selecting chats ${event}');
-        response = event;
-      }
-    });
+    var response = await _isolateReceivePortBroadcast.first;
     print('response ${response}');
-    // return response;
-
-    while (true) {
-      if (response != null) {
-        sub.cancel();
-        return response;
-      }
-      await Future.delayed(const Duration(milliseconds: 10));
-    }
+    return response;
   }
 
   Future<int?> selectMaxMessageId(int chatId, DateTime newerThan) async {
-    _isolateSendPort.send(DbSelectMaxMessageId());
+    _isolateSendPort.send([ DbSelectMaxMessageId(), chatId, newerThan]);
 
-    var response;
-    var sub = _isolateReceivePortBroadcast.listen((event) {
-      if (event is List<int>) {
-        print('Received an event when selecting MaxMessageId ${event}');
-        response = event;
-      }
-    });
+    var response = await _isolateReceivePortBroadcast.first;
+    return response;
 
-    while (true) {
-      if (response != null) {
-        sub.cancel();
-        return response;
-      }
-      await Future.delayed(const Duration(milliseconds: 10));
-    }
   }
 
   void addMessage(
@@ -217,6 +186,8 @@ class DB {
     db = sqlite3.open(this.dbPath);
     logger?.info('opened.');
     print("opened sqlite");
+    print(
+        '${Isolate.current.debugName}:${runtimeType.toString()}:open');
   }
 
   void close() {
@@ -232,6 +203,7 @@ class DB {
       db?.execute(sql);
     }
     logger?.info('running migrations... done.');
+    print('ended migrations');
   }
 
   void addChat(String username) {
@@ -261,7 +233,7 @@ class DB {
     stmt?.dispose();
   }
 
-  List<int> selectChats() {
+  List<int?> selectChats() {
     print("reading chats");
     logger?.info('reading chats...');
     final ResultSet? resultSet =
@@ -271,7 +243,10 @@ class DB {
     List<int> ids = [];
     if (resultSet != null) {
       for (final Row row in resultSet) {
-        ids.add(row['id']);
+        print('row ${row}');
+        if (row['id'] != null){
+          ids.add(row['id']);
+        }
       }
     }
     print("found ids: ${ids}");
@@ -352,3 +327,5 @@ class DB {
         ];
   }
 }
+
+class IsolateSelectChats {}
