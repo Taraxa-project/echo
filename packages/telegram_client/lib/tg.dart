@@ -1,12 +1,24 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'lg.dart';
+import 'db.dart';
+
 class Tg {
   late final ReceivePort _isolateReceivePort;
   late final Stream<dynamic> _isolateReceivePortBroadcast;
   late final SendPort _isolateSendPort;
 
-  Future<void> spawn() async {
+  late final Lg _lg;
+  late final Db _db;
+
+  Future<void> spawn({
+    required Lg lg,
+    required Db db,
+  }) async {
+    _lg = lg;
+    _db = db;
+
     _isolateReceivePort = ReceivePort();
     _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
 
@@ -31,6 +43,7 @@ class Tg {
 
     receivePort.listen((message) {
       if (message is TgExit) {
+        print('${Isolate.current.debugName}: existing...');
         receivePort.close();
         Isolate.exit();
       } else if (message is TgLogin) {
@@ -39,10 +52,13 @@ class Tg {
         tgIsolated.readChatsHistory();
       }
     });
+
+    print('${Isolate.current.debugName}: spawned...');
   }
 
-  void exit() async {
+  void exit() {
     _isolateSendPort.send(TgExit());
+    _isolateReceivePort.close();
   }
 
   Future<dynamic> login() async {
