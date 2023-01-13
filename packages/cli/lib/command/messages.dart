@@ -13,6 +13,7 @@ import 'package:telegram_client/listener/get_chat_history_listener.dart';
 import 'package:telegram_client/db/db.dart';
 import 'package:telegram_client/wrap_id.dart';
 import 'package:echo_cli/callback/cli.dart';
+import 'package:telegram_client/lg.dart';
 
 class TelegramCommandMessages extends Command {
   final name = 'messages';
@@ -22,18 +23,58 @@ class TelegramCommandMessages extends Command {
 
   TelegramClient? telegramClient;
 
-  IsolateDB? db;
+  Db? db;
 
   void run() async {
     initLogging();
-    initDB();
-    initClient();
+    // initDB();
+    final Lg _lg = Lg();
+    await _lg.spawn();
 
-    await login();
-    await seachPublicChats();
-    await readChatsHistory();
 
-    await closeClient();
+    db = Db(dbPath: globalResults!['message-database-path']);
+    await db?.spawn(lg: _lg);
+    await Future.delayed(Duration(seconds: 3));
+
+    db?.open();
+    db?.migrate();
+    await Future.delayed(Duration(seconds: 3));
+
+    var chatIds = await db?.selectChats();
+    print('chatids ${chatIds}');
+    // await db?.selectChats();
+    // var parsedDate = DateTime.parse('2022-01-01');
+    // await Future.delayed(Duration(seconds: 3));
+
+    // var maxId = await db?.selectMaxMessageId(1176547813, parsedDate);
+    // print("🚀 ~ file: messages.dart:51 ~ TelegramCommandMessages ~ voidrun ~ maxId ${maxId}");
+
+
+    // db?.addMessage(chatId: 1176547813,
+    //                 messageId: 123456789, 
+    //                 date: 1673610624,
+    //                 userId: 47829382,
+    //                 text: "test message");
+
+
+
+    // db?.addChat('usernametest').then((value) {
+    //   print('done with adding chat');
+    // });
+    // await db?.addChat('usernametest');
+
+    // await Future.delayed(Duration(seconds: 3));
+
+    exit(0);
+
+
+    // initClient();
+
+    // await login();
+    // await seachPublicChats();
+    // await readChatsHistory();
+
+    // await closeClient();
     closeDB();
   }
 
@@ -95,18 +136,13 @@ class TelegramCommandMessages extends Command {
 
   void initDB() async {
    
-    db = IsolateDB(
-      globalResults!['message-database-path'],
-      Logger('DB')
-        ..level = getLogLevel()
-        ..onRecord.listen((event) {
-          print(event);
-        })
+    db = Db(
+     dbPath: globalResults!['message-database-path']
     );
-    await db?.createDBIsolate();
+    // await db?.createDBIsolate();
 
-    db?.open();
-    db?.migrate();
+    // db?.open();
+    // db?.migrate();
   }
 
   Future<void> closeClient() async {

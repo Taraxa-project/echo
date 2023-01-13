@@ -29,12 +29,12 @@ abstract class TelegramEventListener {
 
   late final String uniqueKey;
   TelegramSender? telegramSender;
-  IsolateDB? db;
+  Db? db;
   Logger? logger;
 
   TelegramEventListener({
     TelegramSender? this.telegramSender,
-    IsolateDB? this.db,
+    Db? this.db,
     Logger? this.logger,
   }) {
     uniqueKey = Uuid().v1();

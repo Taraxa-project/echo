@@ -26,7 +26,7 @@ class SearchPublicChatListener extends TelegramEventListener {
 
   SearchPublicChatListener({
     TelegramSender? super.telegramSender,
-    IsolateDB? db,
+    Db? db,
     required this.username,
     super.logger,
   });
