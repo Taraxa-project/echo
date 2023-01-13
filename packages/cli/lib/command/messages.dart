@@ -23,15 +23,15 @@ class TelegramCommandMessages extends Command {
   final description = 'Read and save messages from the last two weeks.';
 
   final Lg _lg = Lg();
-  final Tg _tg = Tg();
   final Db _db = Db();
+  final Tg _tg = Tg();
 
   void run() async {
     _lg.spawn().then(
       (lgSpawned) {
-        _db.spawn(lg: _lg).then((value) {
-          _tg.spawn(lg: _lg, db: _db).then((value) {
-            _tg.login().then((value) {
+        _db.spawn(lg: _lg).then((dbSpawned) {
+          _tg.spawn(lg: _lg, db: _db).then((tgSpawned) {
+            _tg.login().then((loggedIn) {
               _tg.readChatsHistory().then((value) {
                 _tg.exit();
                 _db.exit();
