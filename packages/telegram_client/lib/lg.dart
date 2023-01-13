@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:logging/logging.dart';
-import 'package:td_json_client/td_json_client.dart';
 
 class Lg {
   late final ReceivePort _isolateReceivePort;
@@ -39,7 +38,7 @@ class Lg {
     parentSendPort.send(receivePort.sendPort);
 
     receivePort.listen((message) {
-      if (message is LgExit) {
+      if (message is LgMsgDoExit) {
         lgIsolated._logger.info('exiting...');
         receivePort.close();
         Isolate.exit();
@@ -51,23 +50,24 @@ class Lg {
     lgIsolated._logger.info('Spawned.');
   }
 
-  void exit() {
-    isolateSendPort.send(LgExit());
+  Future<void> exit() async {
+    isolateSendPort.send(LgMsgDoExit());
+    await Future.delayed(const Duration(milliseconds: 10));
     _isolateReceivePort.close();
   }
 }
 
 abstract class LgMsg {}
 
-class LgExit extends LgMsg {}
+class LgMsgDoExit extends LgMsg {}
 
 class LgIsolated {
   final _logger = Logger('LgIsolated');
+
   LgIsolated() {
     _logger.onRecord.listen((event) {
       if (event.object != null && event.object is LogRecord) {
-        var logRecord = event.object as LogRecord;
-        log(logRecord);
+        log(event.object as LogRecord);
       } else {
         log(event);
       }

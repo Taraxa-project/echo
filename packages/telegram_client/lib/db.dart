@@ -52,7 +52,7 @@ class Db {
     parentSendPort.send(receivePort.sendPort);
 
     receivePort.listen((message) {
-      if (message is DbExit) {
+      if (message is DbMsgDoExit) {
         dbIsolated._logger.info('exiting...');
         receivePort.close();
         Isolate.exit();
@@ -62,7 +62,7 @@ class Db {
   }
 
   Future<void> exit() async {
-    isolateSendPort.send(DbExit());
+    isolateSendPort.send(DbMsgDoExit());
     await Future.delayed(const Duration(milliseconds: 10));
     _isolateReceivePort.close();
   }
@@ -70,7 +70,7 @@ class Db {
 
 abstract class DbMsg {}
 
-class DbExit extends DbMsg {}
+class DbMsgDoExit extends DbMsg {}
 
 class DbIsolated {
   final _logger = Logger('DbIsolated');

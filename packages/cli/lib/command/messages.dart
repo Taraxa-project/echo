@@ -1,19 +1,5 @@
-// import 'dart:io';
-// import 'dart:convert';
-
-// import 'package:logging/logging.dart';
 import 'package:args/command_runner.dart';
-
-// import 'package:td_json_client/td_json_client.dart';
-// import 'package:telegram_client/client.dart';
-// import 'package:telegram_client/listener/login_listener.dart';
-// import 'package:telegram_client/listener/get_chat_message_by_date_listener.dart';
-// import 'package:telegram_client/listener/search_public_chat_listener.dart';
-// import 'package:telegram_client/listener/get_chat_history_listener.dart';
-// import 'package:telegram_client/db/db.dart';
-// import 'package:telegram_client/wrap_id.dart';
-// import 'package:echo_cli/callback/cli.dart';
-
+import 'package:echo_cli/callback/cli.dart';
 import 'package:telegram_client/tg.dart';
 import 'package:telegram_client/lg.dart';
 import 'package:telegram_client/db.dart';
@@ -27,23 +13,42 @@ class TelegramCommandMessages extends Command {
   final Tg _tg = Tg();
 
   void run() async {
-    _lg.spawn().then(
-      (lgSpawned) {
-        _db.spawn(lg: _lg).then((dbSpawned) {
-          _tg.spawn(lg: _lg, db: _db).then((tgSpawned) {
-            _tg.login().then((loggedIn) {
-              _tg.readChatsHistory().then((value) {
-                _tg.exit().then((tgExited) {
-                  _db.exit().then((dbExited) {
-                    _lg.exit();
-                  });
-                });
-              });
-            });
-          });
-        });
-      },
+    await _lg.spawn();
+    await _db.spawn(
+      lg: _lg,
     );
+    await _tg.spawn(
+      lg: _lg,
+      db: _db,
+      libtdjsonlcPath: globalResults!['libtdjson-path'],
+    );
+
+    await _tg.login(
+      apiId: int.parse(globalResults!['api-id']),
+      apiHash: globalResults!['api-hash'],
+      phoneNumber: globalResults!['phone-number'],
+      databasePath: globalResults!['database-path'],
+      checkAuthenticationCodeWithCallback: CheckAuthenticationCodeWithCallback(
+        readTelegramCode: readTelegramCode,
+      ),
+      authorizationStateWaitOtherDeviceConfirmationWithCallback:
+          AuthorizationStateWaitOtherDeviceConfirmationWithCallback(
+        writeQrCodeLink: writeQrCodeLink,
+      ),
+      registerUserWithCallback: RegisterUserWithCallback(
+        readUserFirstName: readUserFirstName,
+        readUserLastName: readUserLastName,
+      ),
+      checkAuthenticationPasswordWithCallback:
+          CheckAuthenticationPasswordWithCallback(
+              readUserPassword: readUserPassword),
+    );
+
+    await _tg.readChatsHistory();
+
+    await _tg.exit();
+    await _db.exit();
+    await _lg.exit();
   }
 
   // List<string> getChatsNames() {
