@@ -28,20 +28,11 @@ class TelegramCommandMessages extends Command {
       apiHash: globalResults!['api-hash'],
       phoneNumber: globalResults!['phone-number'],
       databasePath: globalResults!['database-path'],
-      checkAuthenticationCodeWithCallback: CheckAuthenticationCodeWithCallback(
-        readTelegramCode: readTelegramCode,
-      ),
-      authorizationStateWaitOtherDeviceConfirmationWithCallback:
-          AuthorizationStateWaitOtherDeviceConfirmationWithCallback(
-        writeQrCodeLink: writeQrCodeLink,
-      ),
-      registerUserWithCallback: RegisterUserWithCallback(
-        readUserFirstName: readUserFirstName,
-        readUserLastName: readUserLastName,
-      ),
-      checkAuthenticationPasswordWithCallback:
-          CheckAuthenticationPasswordWithCallback(
-              readUserPassword: readUserPassword),
+      readTelegramCode: readTelegramCode,
+      writeQrCodeLink: writeQrCodeLink,
+      readUserFirstName: readUserFirstName,
+      readUserLastName: readUserLastName,
+      readUserPassword: readUserPassword,
     );
 
     await _tg.readChatsHistory();

@@ -76,13 +76,11 @@ class Tg {
               apiHash: message.apiHash,
               phoneNumber: message.phoneNumber,
               databasePath: message.databasePath,
-              checkAuthenticationCodeWithCallback:
-                  message.checkAuthenticationCodeWithCallback,
-              authorizationStateWaitOtherDeviceConfirmationWithCallback: message
-                  .authorizationStateWaitOtherDeviceConfirmationWithCallback,
-              registerUserWithCallback: message.registerUserWithCallback,
-              checkAuthenticationPasswordWithCallback:
-                  message.checkAuthenticationPasswordWithCallback,
+              readTelegramCode: message.readTelegramCode,
+              writeQrCodeLink: message.writeQrCodeLink,
+              readUserFirstName: message.readUserFirstName,
+              readUserLastName: message.readUserLastName,
+              readUserPassword: message.readUserPassword,
             )
             .then((value) => parentSendPort.send(value));
       } else if (message is TgMsgDoReadChatsHistory) {
@@ -104,41 +102,26 @@ class Tg {
     required String apiHash,
     required String phoneNumber,
     required String databasePath,
-    required CheckAuthenticationCodeWithCallback
-        checkAuthenticationCodeWithCallback,
-    required AuthorizationStateWaitOtherDeviceConfirmationWithCallback
-        authorizationStateWaitOtherDeviceConfirmationWithCallback,
-    required RegisterUserWithCallback registerUserWithCallback,
-    required CheckAuthenticationPasswordWithCallback
-        checkAuthenticationPasswordWithCallback,
+    required String Function() readTelegramCode,
+    required void Function(String) writeQrCodeLink,
+    required String Function() readUserFirstName,
+    required String Function() readUserLastName,
+    required String Function() readUserPassword,
   }) async {
     _isolateSendPort.send(TgMsgDoLogin(
       apiId: apiId,
       apiHash: apiHash,
       phoneNumber: phoneNumber,
       databasePath: databasePath,
-      checkAuthenticationCodeWithCallback: checkAuthenticationCodeWithCallback,
-      authorizationStateWaitOtherDeviceConfirmationWithCallback:
-          authorizationStateWaitOtherDeviceConfirmationWithCallback,
-      registerUserWithCallback: registerUserWithCallback,
-      checkAuthenticationPasswordWithCallback:
-          checkAuthenticationPasswordWithCallback,
+      readTelegramCode: readTelegramCode,
+      writeQrCodeLink: writeQrCodeLink,
+      readUserFirstName: readUserFirstName,
+      readUserLastName: readUserLastName,
+      readUserPassword: readUserPassword,
     ));
-
-    var response;
-    var sub = _isolateReceivePortBroadcast.listen((event) {
-      if (event is TgMsgLogin) {
-        response = event;
-      }
-    });
-
-    while (true) {
-      if (response != null) {
-        sub.cancel();
-        return response;
-      }
-      await Future.delayed(const Duration(milliseconds: 10));
-    }
+    return await _isolateReceivePortBroadcast
+        .where((event) => event is TgMsgLogin)
+        .first;
   }
 
   Future<void> readChatsHistory() async {
@@ -153,22 +136,22 @@ class TgMsgDoLogin extends TgMsg {
   final String apiHash;
   final String phoneNumber;
   final String databasePath;
-  final CheckAuthenticationCodeWithCallback checkAuthenticationCodeWithCallback;
-  final AuthorizationStateWaitOtherDeviceConfirmationWithCallback
-      authorizationStateWaitOtherDeviceConfirmationWithCallback;
-  final RegisterUserWithCallback registerUserWithCallback;
-  final CheckAuthenticationPasswordWithCallback
-      checkAuthenticationPasswordWithCallback;
+  final String Function() readTelegramCode;
+  final void Function(String) writeQrCodeLink;
+  final String Function() readUserFirstName;
+  final String Function() readUserLastName;
+  final String Function() readUserPassword;
 
   TgMsgDoLogin({
     required this.apiId,
     required this.apiHash,
     required this.phoneNumber,
     required this.databasePath,
-    required this.checkAuthenticationCodeWithCallback,
-    required this.authorizationStateWaitOtherDeviceConfirmationWithCallback,
-    required this.registerUserWithCallback,
-    required this.checkAuthenticationPasswordWithCallback,
+    required String Function() this.readTelegramCode,
+    required void Function(String) this.writeQrCodeLink,
+    required String Function() this.readUserFirstName,
+    required String Function() this.readUserLastName,
+    required String Function() this.readUserPassword,
   });
 }
 
@@ -259,13 +242,11 @@ class TgIsolated {
     required String apiHash,
     required String phoneNumber,
     required String databasePath,
-    required CheckAuthenticationCodeWithCallback
-        checkAuthenticationCodeWithCallback,
-    required AuthorizationStateWaitOtherDeviceConfirmationWithCallback
-        authorizationStateWaitOtherDeviceConfirmationWithCallback,
-    required RegisterUserWithCallback registerUserWithCallback,
-    required CheckAuthenticationPasswordWithCallback
-        checkAuthenticationPasswordWithCallback,
+    required String Function() readTelegramCode,
+    required void Function(String) writeQrCodeLink,
+    required String Function() readUserFirstName,
+    required String Function() readUserLastName,
+    required String Function() readUserPassword,
   }) async {
     _logger.info('logging in...');
 
@@ -308,27 +289,28 @@ class TgIsolated {
               break;
             case AuthorizationStateWaitCode:
               _tdSend(CheckAuthenticationCode(
-                code: checkAuthenticationCodeWithCallback.readTelegramCode(),
+                code: readTelegramCode(),
                 extra: extra,
               ));
               break;
-
             case AuthorizationStateWaitOtherDeviceConfirmation:
-              var authorizationStateWaitOtherDeviceConfirmation =
-                  event as AuthorizationStateWaitOtherDeviceConfirmation;
-              authorizationStateWaitOtherDeviceConfirmationWithCallback
-                  .writeQrCodeLink(
-                      authorizationStateWaitOtherDeviceConfirmation.link);
+              writeQrCodeLink(
+                  (event as AuthorizationStateWaitOtherDeviceConfirmation)
+                          .link ??
+                      '');
               break;
             case AuthorizationStateWaitRegistration:
               _tdSend(RegisterUser(
-                  first_name: registerUserWithCallback.readUserFirstName(),
-                  last_name: registerUserWithCallback.readUserLastName()));
+                first_name: readUserFirstName(),
+                last_name: readUserLastName(),
+                extra: extra,
+              ));
               break;
             case AuthorizationStateWaitPassword:
               _tdSend(CheckAuthenticationPassword(
-                  password: checkAuthenticationPasswordWithCallback
-                      .readUserPassword()));
+                password: readUserPassword(),
+                extra: extra,
+              ));
               break;
             case AuthorizationStateReady:
               isAuthorized = true;
@@ -383,38 +365,6 @@ class TgIsolated {
   void readChatsHistory() {
     _logger.info('reading chats history...');
   }
-}
-
-class CheckAuthenticationCodeWithCallback extends CheckAuthenticationCode {
-  final String Function() readTelegramCode;
-  CheckAuthenticationCodeWithCallback({
-    required this.readTelegramCode,
-  });
-}
-
-class AuthorizationStateWaitOtherDeviceConfirmationWithCallback
-    extends AuthorizationStateWaitOtherDeviceConfirmation {
-  final void Function(String? link) writeQrCodeLink;
-  AuthorizationStateWaitOtherDeviceConfirmationWithCallback({
-    required this.writeQrCodeLink,
-  });
-}
-
-class RegisterUserWithCallback extends RegisterUser {
-  final String Function() readUserFirstName;
-  final String Function() readUserLastName;
-  RegisterUserWithCallback({
-    required this.readUserFirstName,
-    required this.readUserLastName,
-  });
-}
-
-class CheckAuthenticationPasswordWithCallback
-    extends CheckAuthenticationPassword {
-  final String Function() readUserPassword;
-  CheckAuthenticationPasswordWithCallback({
-    required this.readUserPassword,
-  });
 }
 
 class TgMsgLogin {
