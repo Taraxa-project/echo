@@ -644,6 +644,7 @@ class TgIsolated {
   }) async {
     _logger.info('[$chatName] searching last message id locally...');
 
+    // TODO: search last message id in DB
     var messageIdLast;
 
     _logger.info('[$chatName] searching last message id locally... done.');
