@@ -506,7 +506,8 @@ class TgIsolated {
     required String chatName,
     required int chatId,
   }) async {
-    _logger.info('[$chatName] reading last message by date from TG...');
+    _logger.info('[$chatName] reading last message '
+        'before ${datetimeFrom.toIso8601String()} from TG...');
 
     var extra = Uuid().v1();
     _tdSend(GetChatMessageByDate(
@@ -621,7 +622,14 @@ class TgIsolated {
 
       messageCount += 1;
 
-      messageIdLast = WrapId.unwrapMessageId(message.id);
+      var messageId = WrapId.unwrapMessageId(message.id);
+      if (messageId != null) {
+        if (messageIdLast == null) {
+          messageIdLast = messageId;
+        } else if (messageId > messageIdLast) {
+          messageIdLast = messageId;
+        }
+      }
     }
 
     _logger.info('[$chatName] saved ${messageCount} messages.');
