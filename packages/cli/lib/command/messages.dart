@@ -31,38 +31,6 @@ class TelegramCommandMessages extends Command {
     final Lg _lg = Lg();
     await _lg.spawn();
     initDB(_lg);
-
-
-
-    // db?..open()
-    //   ..migrate();
-    // await Future.delayed(Duration(seconds: 3));
-
-    // var chatIds = await db?.selectChats();
-    // print('chatids ${chatIds}');
-    // // await db?.selectChats();
-    // var parsedDate = DateTime.parse('2022-01-01');
-    // await Future.delayed(Duration(seconds: 3));
-
-    // var maxId = await db?.selectMaxMessageId(1176547813, parsedDate);
-    // print("🚀 ~ file: messages.dart:51 ~ TelegramCommandMessages ~ voidrun ~ maxId ${maxId}");
-
-
-    // await db?.addMessage(chatId: 1176547813,
-    //                 messageId: 123456789, 
-    //                 date: 1673610624,
-    //                 userId: 47829382,
-    //                 text: "test message");
-
-
-
-  
-    // await db?.addChat('usernametest');
-
-    // await Future.delayed(Duration(seconds: 3));
-
-    // exit(0);
-
     initClient();
 
     await login();

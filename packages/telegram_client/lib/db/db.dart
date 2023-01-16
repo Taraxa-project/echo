@@ -6,11 +6,9 @@ import 'package:logging/logging.dart';
 import 'package:telegram_client/lg.dart';
 
 class Db {
-  // late final DB dbInstance;
   late final ReceivePort _isolateReceivePort;
   late final Stream<dynamic> _isolateReceivePortBroadcast;
   late final SendPort _isolateSendPort;
-  // SendPort? isolateSendPort;
   String dbPath;
 
   late final Lg _lg;
@@ -56,7 +54,6 @@ class Db {
     parentSendPort.send(receivePort.sendPort);
 
     receivePort.listen((message) {
-      print("db isolate got message: ${message}");
 
       if (message is DbExit){
         dbIsolated._logger.info('exiting...');
@@ -64,29 +61,21 @@ class Db {
         Isolate.exit();
       }
       else if (message is DbOpen){
-        print('open db inside isolate');
         dbIsolated.open();
       }
       else if (message is DbClose){
-        print('close db inside isolate');
-
         dbIsolated.close();
       }
       else if (message is DbMigrate){
-        print('migrate db inside isolate');
-
         dbIsolated.migrate();
       }
       else if (message is DbSelectChats){
-        print('selecting chats within isolate');
         parentSendPort.send(dbIsolated.selectChats());
       }
       else if (message[0] is DbAddChat){
-        print('add chat db inside isolate');
         dbIsolated.addChat(message[1]);
       }
       else if (message[0] is DbSelectMaxMessageId) {
-        print('select max message id db inside isolate, message1 ${message[1]}, message2 ${message[2]}');
         parentSendPort.send(dbIsolated.selectMaxMessageId(message[1], message[2]));
       }
       else if (message[0] is DbAddMessage){
@@ -104,7 +93,6 @@ class Db {
             text: text);
       }
       else if (message[0] is DbUpdateChat){
-        print('updating chats within isolate, args ${message[1]}, ${message[2]}, ${message[3]}');
         dbIsolated.updateChat(message[1], message[2], message[3]);
       }
     });
@@ -135,14 +123,12 @@ class Db {
     _isolateSendPort.send([DbUpdateChat(), username, id, title]);
   }
 
-  //this now needs to dynamic instead of List<int> since it now returns log statements instead of selectChat results
   Future<List<int>> selectChats() async {
     _isolateSendPort.send(DbSelectChats());
     var response = await _isolateReceivePortBroadcast.where((event) => event is IsolateSelectChats).first;
     return response.chats;
   }
 
-  //this now needs to dynamic instead of int since it now returns log statements instead of selectMaxMessageId result
   Future<int?> selectMaxMessageId(int chatId, DateTime newerThan) async {
     _isolateSendPort.send([ DbSelectMaxMessageId(), chatId, newerThan]);
     var response = await _isolateReceivePortBroadcast.where((event) => event is IsolateMaxMessageId).first;

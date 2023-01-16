@@ -3,7 +3,6 @@ import 'dart:isolate';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
 import 'package:logging/logging.dart';
-
 import 'db/db.dart';
 
 abstract class TelegramSender {
