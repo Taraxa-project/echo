@@ -31,7 +31,7 @@ class Db {
       _lg.isolateSendPort.send(logRecord);
     });
 
-    _logger.info('spawning DbIsolated...');
+    _logger.fine('spawning DbIsolated...');
     await Isolate.spawn(
       Db._entryPoint,
       [
@@ -52,17 +52,18 @@ class Db {
     parentSendPort.send(receivePort.sendPort);
 
     receivePort.listen((message) {
-      if (message is DbMsgDoExit) {
-        dbIsolated._logger.info('exiting...');
+      if (message is DbMsgRequestExit) {
+        dbIsolated._logger.fine('exiting...');
         receivePort.close();
         Isolate.exit();
       }
     });
-    dbIsolated._logger.info('spawned.');
+
+    dbIsolated._logger.fine('spawned.');
   }
 
   Future<void> exit() async {
-    isolateSendPort.send(DbMsgDoExit());
+    isolateSendPort.send(DbMsgRequestExit());
     await Future.delayed(const Duration(milliseconds: 10));
     _isolateReceivePort.close();
   }
@@ -70,7 +71,11 @@ class Db {
 
 abstract class DbMsg {}
 
-class DbMsgDoExit extends DbMsg {}
+abstract class DbMsgRequest extends DbMsg {}
+
+abstract class DbMsgResponse extends DbMsg {}
+
+class DbMsgRequestExit extends DbMsg {}
 
 class DbIsolated {
   final _logger = Logger('DbIsolated');

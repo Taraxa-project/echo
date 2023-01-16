@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:logging/logging.dart';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
+import 'package:telegram_client/wrap_id.dart';
 
 import 'lg.dart';
 import 'db.dart';
@@ -21,7 +22,9 @@ class Tg {
   Future<void> spawn({
     required Lg lg,
     required Db db,
-    required libtdjsonlcPath,
+    required String libtdjsonlcPath,
+    double tdReceiveWaitTimeout = 0.005,
+    Duration tdReceiveFrequency = const Duration(milliseconds: 10),
   }) async {
     _lg = lg;
     _db = db;
@@ -38,12 +41,14 @@ class Tg {
       _lg.isolateSendPort.send(logRecord);
     });
 
-    _logger.info('spawning TgIsolated...');
+    _logger.fine('spawning TgIsolated...');
     await Isolate.spawn(
       Tg._entryPoint,
       [
         _isolateReceivePort.sendPort,
         libtdjsonlcPath,
+        tdReceiveWaitTimeout,
+        tdReceiveFrequency,
       ],
       debugName: runtimeType.toString(),
     );
@@ -54,6 +59,8 @@ class Tg {
   static void _entryPoint(dynamic initialSpawnMessage) {
     final SendPort parentSendPort = initialSpawnMessage[0];
     final String libtdjsonlcPath = initialSpawnMessage[1];
+    final double tdReceiveWaitTimeout = initialSpawnMessage[2];
+    final Duration tdReceiveFrequency = initialSpawnMessage[3];
 
     var receivePort = ReceivePort();
     parentSendPort.send(receivePort.sendPort);
@@ -61,15 +68,17 @@ class Tg {
     final tgIsolated = TgIsolated(
       parentSendPort: parentSendPort,
       libtdjsonlcPath: libtdjsonlcPath,
+      tdReceiveWaitTimeout: tdReceiveWaitTimeout,
+      tdReceiveFrequency: tdReceiveFrequency,
     );
 
     receivePort.listen((message) {
-      if (message is TgMsgDoExit) {
-        tgIsolated._logger.info('exiting...');
+      if (message is TgMsgRequestExit) {
+        tgIsolated._logger.fine('exiting...');
         tgIsolated.exit();
         receivePort.close();
         Isolate.exit();
-      } else if (message is TgMsgDoLogin) {
+      } else if (message is TgMsgRequestLogin) {
         tgIsolated
             .login(
               apiId: message.apiId,
@@ -83,21 +92,26 @@ class Tg {
               readUserPassword: message.readUserPassword,
             )
             .then((value) => parentSendPort.send(value));
-      } else if (message is TgMsgDoReadChatsHistory) {
-        tgIsolated.readChatsHistory();
+      } else if (message is TgMsgRequestReadChatsHistory) {
+        tgIsolated
+            .readChatsHistory(
+              datetimeFrom: message.datetimeFrom,
+              chatsNames: message.chatsNames,
+            )
+            .then((value) => parentSendPort.send(value));
       }
     });
 
-    tgIsolated._logger.info('spawned.');
+    tgIsolated._logger.fine('spawned.');
   }
 
   Future<void> exit() async {
-    _isolateSendPort.send(TgMsgDoExit());
+    _isolateSendPort.send(TgMsgRequestExit());
     await Future.delayed(const Duration(milliseconds: 1000));
     _isolateReceivePort.close();
   }
 
-  Future<dynamic> login({
+  Future<TgMsgResponseLogin> login({
     required int apiId,
     required String apiHash,
     required String phoneNumber,
@@ -108,7 +122,7 @@ class Tg {
     required String Function() readUserLastName,
     required String Function() readUserPassword,
   }) async {
-    _isolateSendPort.send(TgMsgDoLogin(
+    _isolateSendPort.send(TgMsgRequestLogin(
       apiId: apiId,
       apiHash: apiHash,
       phoneNumber: phoneNumber,
@@ -120,44 +134,23 @@ class Tg {
       readUserPassword: readUserPassword,
     ));
     return await _isolateReceivePortBroadcast
-        .where((event) => event is TgMsgLogin)
+        .where((event) => event is TgMsgResponseLogin)
         .first;
   }
 
-  Future<void> readChatsHistory() async {
-    _isolateSendPort.send(TgMsgDoReadChatsHistory());
+  Future<TgMsgResponseReadChatHistory> readChatsHistory({
+    required DateTime datetimeFrom,
+    required List<String> chatsNames,
+  }) async {
+    _isolateSendPort.send(TgMsgRequestReadChatsHistory(
+      datetimeFrom: datetimeFrom,
+      chatsNames: chatsNames,
+    ));
+    return await _isolateReceivePortBroadcast
+        .where((event) => event is TgMsgResponseReadChatHistory)
+        .first;
   }
 }
-
-abstract class TgMsg {}
-
-class TgMsgDoLogin extends TgMsg {
-  final int apiId;
-  final String apiHash;
-  final String phoneNumber;
-  final String databasePath;
-  final String Function() readTelegramCode;
-  final void Function(String) writeQrCodeLink;
-  final String Function() readUserFirstName;
-  final String Function() readUserLastName;
-  final String Function() readUserPassword;
-
-  TgMsgDoLogin({
-    required this.apiId,
-    required this.apiHash,
-    required this.phoneNumber,
-    required this.databasePath,
-    required String Function() this.readTelegramCode,
-    required void Function(String) this.writeQrCodeLink,
-    required String Function() this.readUserFirstName,
-    required String Function() this.readUserLastName,
-    required String Function() this.readUserPassword,
-  });
-}
-
-class TgMsgDoReadChatsHistory extends TgMsg {}
-
-class TgMsgDoExit extends TgMsg {}
 
 class TgIsolated {
   final _logger = Logger('TgIsolated');
@@ -170,26 +163,29 @@ class TgIsolated {
 
   late final StreamController _tdStreamController;
 
-  double waitTimeout = 0.005;
+  double tdReceiveWaitTimeout = 0.005;
+  Duration tdReceiveFrequency = Duration(milliseconds: 10);
+
   bool _isTdReceiving = false;
-  Duration readEventsFrequency = Duration(milliseconds: 10);
   Timer? receiveTimer;
 
   TgIsolated({
     required this.parentSendPort,
     required this.libtdjsonlcPath,
+    this.tdReceiveWaitTimeout = 0.005,
+    this.tdReceiveFrequency = const Duration(milliseconds: 10),
   }) {
     _logger.onRecord.listen((logRecord) {
       parentSendPort.send(logRecord);
     });
 
-    _logger.info('initializing TdJsonClient...');
+    _logger.fine('initializing TdJsonClient...');
 
     _tdJsonClient = TdJsonClient(libtdjsonlcPath: libtdjsonlcPath);
     _tdJsonClientId = _tdJsonClient.create_client_id();
 
-    _logger.info('created client id $_tdJsonClientId.');
-    _logger.info('initialization finished.');
+    _logger.fine('created client id $_tdJsonClientId.');
+    _logger.fine('initialization finished.');
 
     _tdStreamController = StreamController.broadcast(
       onListen: _tdStart,
@@ -203,25 +199,25 @@ class TgIsolated {
   }
 
   void _tdStart() {
-    _logger.info('starting the receive timer...');
-    receiveTimer = Timer.periodic(readEventsFrequency, _tdReceive);
-    _logger.info('timer started.');
+    _logger.fine('starting the receive timer...');
+    receiveTimer = Timer.periodic(tdReceiveFrequency, _tdReceive);
+    _logger.fine('receive timer started.');
   }
 
   void _tdStop() {
-    _logger.info('stopping the receive timer...');
+    _logger.fine('stopping the receive timer...');
     receiveTimer?.cancel();
     receiveTimer = null;
-    _logger.info('receive timer stopped.');
+    _logger.fine('receive timer stopped.');
   }
 
   void _tdReceive(Timer timer) {
     if (!_isTdReceiving) {
       _isTdReceiving = true;
 
-      var event = _tdJsonClient.receive(waitTimeout: waitTimeout);
+      var event = _tdJsonClient.receive(waitTimeout: tdReceiveWaitTimeout);
       if (event != null) {
-        // _logger.info('received ${event.runtimeType}.');
+        _logger.finer('received ${event.runtimeType}.');
         _tdStreamController.add(event);
       }
 
@@ -232,12 +228,13 @@ class TgIsolated {
   void _tdSend(
     TdFunction tdFunction,
   ) {
-    _logger.info('sending ${tdFunction.runtimeType}...');
+    _logger.fine('sending ${tdFunction.runtimeType}...');
+    _logger.finer('sending $tdFunction...');
     _tdJsonClient.send(_tdJsonClientId, tdFunction);
-    _logger.info('sent ${tdFunction.runtimeType}.');
+    _logger.fine('sent ${tdFunction.runtimeType}.');
   }
 
-  Future<TgMsgLogin> login({
+  Future<TgMsgResponseLogin> login({
     required int apiId,
     required String apiHash,
     required String phoneNumber,
@@ -260,7 +257,7 @@ class TgIsolated {
         .where((event) => event.extra == extra)
         .listen(
       (event) {
-        _logger.info('login: received ${event.runtimeType}.');
+        _logger.fine('login: received ${event.runtimeType}.');
         if (event is Error) {
           isError = true;
           _logger.warning('login: $event');
@@ -350,30 +347,353 @@ class TgIsolated {
         _logger.info('login: error.');
         break;
       }
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 100));
     }
 
     sub.cancel();
 
-    return TgMsgLogin(
+    return TgMsgResponseLogin(
       isAuthorized: isAuthorized,
       isClosed: isClosed,
       isError: isError,
     );
   }
 
-  void readChatsHistory() {
+  Future<TgMsgResponseReadChatHistory> readChatsHistory({
+    required DateTime datetimeFrom,
+    required List<String> chatsNames,
+  }) async {
     _logger.info('reading chats history...');
+
+    for (var chatName in chatsNames) {
+      _logger.info('[$chatName] reading chat history...');
+
+      await _readChatHistory(
+        datetimeFrom: datetimeFrom,
+        chatName: chatName,
+      );
+
+      _logger.info('[$chatName] reading chat history... done.');
+    }
+
+    return TgMsgResponseReadChatHistory();
+  }
+
+  Future<void> _readChatHistory({
+    required DateTime datetimeFrom,
+    required String chatName,
+  }) async {
+    var chat = await _searchPublicChat(chatName: chatName);
+
+    if (chat == null) {
+      return;
+    }
+
+    if (chat.id == null) {
+      _logger.warning('[$chatName] chat id is null.');
+      return;
+    }
+    _logger.info('[$chatName] chat id is ${chat.id}.');
+
+    var chatId = WrapId.unwrapChatId(chat.id);
+    if (chatId == null) {
+      _logger.warning('[$chatName] could not unwrap ${chat.id}.');
+      return;
+    }
+    _logger.info('[$chatName] unwrapped chat id is $chatId.');
+
+    await _saveChat(
+      chatName: chatName,
+      chat: chat,
+    );
+
+    var messsageIdLast = await _searchMessageIdLast(
+      datetimeFrom: datetimeFrom,
+      chatName: chatName,
+      chatId: chatId,
+    );
+
+    if (messsageIdLast == null) {
+      messsageIdLast = 0;
+    }
+
+    while (true) {
+      var messageIdFrom = messsageIdLast! + 1;
+
+      var messages = await _getChatHistory(
+        chatName: chatName,
+        chatId: chatId,
+        messageIdFrom: messageIdFrom,
+      );
+
+      if (messages == null ||
+          messages.messages == null ||
+          messages.messages?.length == 0) {
+        break;
+      }
+
+      messsageIdLast = await _saveMessages(
+        chatName: chatName,
+        chatId: chatId,
+        messages: messages,
+      );
+
+      if (messsageIdLast == null) {
+        break;
+      }
+    }
+  }
+
+  Future<Chat?> _searchPublicChat({
+    required String chatName,
+  }) async {
+    _logger.info('[$chatName] searching public chat...');
+
+    var extra = Uuid().v1();
+    _tdSend(SearchPublicChat(
+      username: chatName,
+      extra: extra,
+    ));
+
+    var response = await _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .first;
+
+    var chat;
+
+    if (response is Error) {
+      _logger.warning('[$chatName] searching public chat failed with error.');
+      _logger.warning('[$chatName] $response.');
+    } else if (response is Chat) {
+      chat = response;
+    }
+
+    _logger.info('[$chatName] searching public chat... done.');
+
+    return chat;
+  }
+
+  Future<int?> _searchMessageIdLast({
+    required DateTime datetimeFrom,
+    required String chatName,
+    required int chatId,
+  }) async {
+    _logger.info('[$chatName] searching last message by date...');
+
+    var messageIdLast;
+
+    messageIdLast = await _searchMessageIdLastLocally(
+      datetimeFrom: datetimeFrom,
+      chatName: chatName,
+      chatId: chatId,
+    );
+
+    if (messageIdLast == null) {
+      messageIdLast = await _getChatMessageByDate(
+        datetimeFrom: datetimeFrom,
+        chatName: chatName,
+        chatId: chatId,
+      );
+    }
+
+    _logger.info('[$chatName] searching last message by date... done.');
+
+    return messageIdLast;
+  }
+
+  Future<int?> _getChatMessageByDate({
+    required DateTime datetimeFrom,
+    required String chatName,
+    required int chatId,
+  }) async {
+    _logger.info('[$chatName] reading last message by date from TG...');
+
+    var extra = Uuid().v1();
+    _tdSend(GetChatMessageByDate(
+      chat_id: WrapId.wrapChatId(chatId),
+      date: datetimeFrom.millisecondsSinceEpoch ~/ 1000,
+      extra: extra,
+    ));
+
+    var response = await _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .first;
+
+    var messageId;
+
+    if (response is Error) {
+      _logger.warning('[$chatName] reading last message by date from TG'
+          'failed with error.');
+      _logger.warning('[$chatName] $response.');
+    } else if (response is Message) {
+      if (response.id != null) {
+        _logger.info('[$chatName] found message id ${response.id}.');
+        messageId = WrapId.unwrapMessageId(response.id);
+        _logger.info('[$chatName] unwrapped message id is $messageId.');
+      } else {
+        _logger.warning('[$chatName] reading last message by date from TG '
+            'failed with no message id.');
+        _logger.warning('[$chatName] $response.');
+      }
+    }
+
+    _logger.info('[$chatName] reading last message by date from TG... done.');
+
+    return messageId;
+  }
+
+  Future<Messages?> _getChatHistory({
+    required String chatName,
+    required int chatId,
+    required int messageIdFrom,
+  }) async {
+    _logger.info('[$chatName] getting chat history from $messageIdFrom...');
+
+    var extra = Uuid().v1();
+    _tdSend(GetChatHistory(
+      chat_id: WrapId.wrapChatId(chatId),
+      from_message_id: WrapId.wrapMessageId(messageIdFrom),
+      offset: -99,
+      limit: 99,
+      only_local: false,
+      extra: extra,
+    ));
+
+    var response = await _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .first;
+
+    if (response is Error) {
+      _logger.warning('[$chatName] getting chat history '
+          'failed with error.');
+      _logger.warning('[$chatName] $response.');
+    }
+
+    _logger
+        .info('[$chatName] getting chat history from $messageIdFrom... done.');
+
+    return response;
+  }
+
+  Future<void> _saveChat({
+    required String chatName,
+    required Chat chat,
+  }) async {
+    _logger.info('[$chatName] saving chat...');
+    // TODO: save chat in Db
+    _logger.info('[$chatName] saving chat... done.');
+  }
+
+  Future<int?> _saveMessages({
+    required String chatName,
+    required int chatId,
+    required Messages messages,
+  }) async {
+    _logger.info('[$chatName] saving messages...');
+
+    var messageCount = 0;
+
+    var messageIdLast;
+
+    for (Message message in messages.messages!) {
+      if (message.chat_id == null ||
+          message.id == null ||
+          message.date == null) {
+        continue;
+      }
+
+      var userId = null;
+      if (message.sender_id != null &&
+          message.sender_id.runtimeType == MessageSenderUser) {
+        userId = (message.sender_id as MessageSenderUser).user_id;
+      }
+
+      var text = null;
+      if (message.content != null &&
+          message.content.runtimeType == MessageText) {
+        var formattedText = (message.content as MessageText).text;
+        if (formattedText != null) {
+          text = formattedText.text;
+        }
+      }
+
+      // TODO: save message here
+
+      messageCount += 1;
+
+      messageIdLast = WrapId.unwrapMessageId(message.id);
+    }
+
+    _logger.info('[$chatName] saved ${messageCount} messages.');
+
+    return messageIdLast;
+  }
+
+  Future<int?> _searchMessageIdLastLocally({
+    required DateTime datetimeFrom,
+    required String chatName,
+    required int chatId,
+  }) async {
+    _logger.info('[$chatName] searching last message id locally...');
+
+    var messageIdLast;
+
+    _logger.info('[$chatName] searching last message id locally... done.');
+    return messageIdLast;
   }
 }
 
-class TgMsgLogin {
+abstract class TgMsg {}
+
+abstract class TgMsgRequest extends TgMsg {}
+
+abstract class TgMsgResponse extends TgMsg {}
+
+class TgMsgRequestExit extends TgMsgRequest {}
+
+class TgMsgRequestLogin extends TgMsgRequest {
+  final int apiId;
+  final String apiHash;
+  final String phoneNumber;
+  final String databasePath;
+  final String Function() readTelegramCode;
+  final void Function(String) writeQrCodeLink;
+  final String Function() readUserFirstName;
+  final String Function() readUserLastName;
+  final String Function() readUserPassword;
+
+  TgMsgRequestLogin({
+    required this.apiId,
+    required this.apiHash,
+    required this.phoneNumber,
+    required this.databasePath,
+    required String Function() this.readTelegramCode,
+    required void Function(String) this.writeQrCodeLink,
+    required String Function() this.readUserFirstName,
+    required String Function() this.readUserLastName,
+    required String Function() this.readUserPassword,
+  });
+}
+
+class TgMsgRequestReadChatsHistory extends TgMsgRequest {
+  final DateTime datetimeFrom;
+  final List<string> chatsNames;
+
+  TgMsgRequestReadChatsHistory({
+    required this.datetimeFrom,
+    required this.chatsNames,
+  });
+}
+
+class TgMsgResponseLogin extends TgMsgResponse {
   bool isAuthorized = false;
   bool isClosed = false;
   bool isError = false;
-  TgMsgLogin({
+  TgMsgResponseLogin({
     required this.isAuthorized,
     required this.isClosed,
     required this.isError,
   }) {}
 }
+
+class TgMsgResponseReadChatHistory extends TgMsgResponse {}

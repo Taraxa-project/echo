@@ -39,7 +39,7 @@ class Lg {
 
     receivePort.listen((message) {
       if (message is LgMsgDoExit) {
-        lgIsolated._logger.info('exiting...');
+        lgIsolated._logger.fine('exiting...');
         receivePort.close();
         Isolate.exit();
       } else if (message is LogRecord) {
@@ -47,7 +47,7 @@ class Lg {
       }
     });
 
-    lgIsolated._logger.info('Spawned.');
+    lgIsolated._logger.fine('Spawned.');
   }
 
   Future<void> exit() async {
