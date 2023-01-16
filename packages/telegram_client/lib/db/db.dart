@@ -97,9 +97,9 @@ class Db {
         final text = message[5];
         print('chatId ${chatId} and messageId ${messageId}, date ${date} , userId ${userId}');
         dbIsolated.addMessage(
-            chatId: message.chat_id,
-            messageId: message.id,
-            date: message.date,
+            chatId: chatId,
+            messageId: messageId,
+            date: date,
             userId: userId,
             text: text);
       }
@@ -112,17 +112,17 @@ class Db {
 
   }
 
-  void open() {
+  Future<void> open() async {
     print("received db open, sending to isolate");
     _isolateSendPort.send(DbOpen());
   }
 
-  void close() {
+  Future<void> close() async {
     print("received db close, sending to isolate");
     _isolateSendPort.send(DbClose());
   }
 
-  void  migrate() {
+  Future<void>  migrate() async {
     print("received db migrate, sending to isolate");
     _isolateSendPort.send(DbMigrate());
   }
@@ -131,7 +131,7 @@ class Db {
     _isolateSendPort.send([DbAddChat(), username]);
   }
 
-  void updateChat(String username, int id, String title) {
+  Future<void> updateChat(String username, int id, String title) async  {
     _isolateSendPort.send([DbUpdateChat(), username, id, title]);
   }
 
@@ -149,12 +149,12 @@ class Db {
     return response.maxMessageId;
   }
 
-  void addMessage(
+  Future<void> addMessage(
       {required int chatId,
       required int messageId,
       required int date,
       int? userId,
-      String? text}) {
+      String? text}) async {
     _isolateSendPort.send([DbAddMessage(), chatId, messageId, date, userId, text]);
   }
 }

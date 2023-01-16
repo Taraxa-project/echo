@@ -39,7 +39,7 @@ class SearchPublicChatListener extends TelegramEventListener {
 
     if (id != null) {
       logger?.info('[$username] updating chat in db...');
-      db?.updateChat(
+      await db?.updateChat(
         username,
         id,
         chat.title ?? '',
@@ -54,7 +54,7 @@ class SearchPublicChatListener extends TelegramEventListener {
 
   Future<void> search_public_chat() async {
     logger?.info('[$username] adding chat to db...');
-    db?.addChat(username);
+    await db?.addChat(username);
     logger?.info('[$username] added chat to db.');
 
     logger?.info('[$username] searching public chat in TG...');

@@ -27,30 +27,28 @@ class TelegramCommandMessages extends Command {
 
   void run() async {
     initLogging();
-    // initDB();
+    
     final Lg _lg = Lg();
     await _lg.spawn();
+    initDB(_lg);
 
 
-    db = Db(dbPath: globalResults!['message-database-path']);
-    await db?.spawn(lg: _lg);
-    await Future.delayed(Duration(seconds: 3));
 
-    db?.open();
-    db?.migrate();
-    await Future.delayed(Duration(seconds: 3));
+    // db?..open()
+    //   ..migrate();
+    // await Future.delayed(Duration(seconds: 3));
 
-    var chatIds = await db?.selectChats();
-    print('chatids ${chatIds}');
-    // await db?.selectChats();
-    var parsedDate = DateTime.parse('2022-01-01');
-    await Future.delayed(Duration(seconds: 3));
+    // var chatIds = await db?.selectChats();
+    // print('chatids ${chatIds}');
+    // // await db?.selectChats();
+    // var parsedDate = DateTime.parse('2022-01-01');
+    // await Future.delayed(Duration(seconds: 3));
 
-    var maxId = await db?.selectMaxMessageId(1176547813, parsedDate);
-    print("🚀 ~ file: messages.dart:51 ~ TelegramCommandMessages ~ voidrun ~ maxId ${maxId}");
+    // var maxId = await db?.selectMaxMessageId(1176547813, parsedDate);
+    // print("🚀 ~ file: messages.dart:51 ~ TelegramCommandMessages ~ voidrun ~ maxId ${maxId}");
 
 
-    // db?.addMessage(chatId: 1176547813,
+    // await db?.addMessage(chatId: 1176547813,
     //                 messageId: 123456789, 
     //                 date: 1673610624,
     //                 userId: 47829382,
@@ -58,23 +56,20 @@ class TelegramCommandMessages extends Command {
 
 
 
-    // db?.addChat('usernametest').then((value) {
-    //   print('done with adding chat');
-    // });
+  
     // await db?.addChat('usernametest');
 
     // await Future.delayed(Duration(seconds: 3));
 
-    exit(0);
+    // exit(0);
 
+    initClient();
 
-    // initClient();
+    await login();
+    await seachPublicChats();
+    await readChatsHistory();
 
-    // await login();
-    // await seachPublicChats();
-    // await readChatsHistory();
-
-    // await closeClient();
+    await closeClient();
     closeDB();
   }
 
@@ -134,23 +129,19 @@ class TelegramCommandMessages extends Command {
       );
   }
 
-  void initDB() async {
-   
-    db = Db(
-     dbPath: globalResults!['message-database-path']
-    );
-    // await db?.createDBIsolate();
-
-    // db?.open();
-    // db?.migrate();
+  void initDB(Lg _lg) async {
+    db = Db(dbPath: globalResults!['message-database-path']);
+    await db?.spawn(lg: _lg);
+    db?..open()
+      ..migrate();
   }
 
   Future<void> closeClient() async {
     await telegramClient?.exit();
   }
 
-  void closeDB() {
-    db?.close();
+  void closeDB() async {
+    await db?.close();
   }
 
   Future<void> login() async {
@@ -232,25 +223,11 @@ class TelegramCommandMessages extends Command {
 
   Future<void> readChatsHistory() async {
     _logger.info('selecting chats locally...');
-    // var chatsIds;
-    // db?.selectChats().then((ids) {
-    //   print("chatids received ${ids}");
-    //   if ((ids != null) | (ids != [])) {
-    //     chatsIds = ids;
-    //   } else {
-    //     chatsIds = [];
-    //   }
-    // }); 
-    db?.selectChats().then((chatsIds) async {
-      print('chatsIds ${chatsIds}');
-      for (int id in chatsIds) {
-        await readChatHistory(id);
-      }
-    });
-    
-    // for (int id in chatsIds) {
-    //   await readChatHistory(id);
-    // }
+    var chatsIds = await db?.selectChats() ?? [];
+    _logger.info('found ${chatsIds.length} chats locally.');
+    for (int id in chatsIds) {
+      await readChatHistory(id);
+    }
   }
 
   Future<void> readChatHistory(int chatId) async {
@@ -315,7 +292,7 @@ class TelegramCommandMessages extends Command {
           }
         }
 
-        db?.addMessage(
+        await db?.addMessage(
             chatId: WrapId.unwrapChatId(message.chat_id)!,
             messageId: WrapId.unwrapMessageId(message.id)!,
             date: message.date!,
@@ -357,7 +334,7 @@ class TelegramCommandMessages extends Command {
 
   Future<int?> getMessageIdLastLocally(int chatId, DateTime newerThan) async {
     var maxId;
-    db?.selectMaxMessageId(chatId, newerThan).then((messageId) {
+    await db?.selectMaxMessageId(chatId, newerThan).then((messageId) {
       print("received max message id ${messageId}");
       maxId = messageId;
     });
