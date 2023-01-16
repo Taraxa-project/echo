@@ -97,10 +97,10 @@ class TelegramCommandMessages extends Command {
       );
   }
 
-  void initDB(Lg _lg) async {
+  Future<void> initDB(Lg _lg) async {
     db = Db(dbPath: globalResults!['message-database-path']);
     await db?.spawn(lg: _lg);
-    db?..open()
+    await db?..open()
       ..migrate();
   }
 
@@ -108,7 +108,7 @@ class TelegramCommandMessages extends Command {
     await telegramClient?.exit();
   }
 
-  void closeDB() async {
+  Future<void> closeDB() async {
     await db?.close();
   }
 

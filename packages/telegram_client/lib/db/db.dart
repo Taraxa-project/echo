@@ -84,7 +84,6 @@ class Db {
         final date = message[3];
         final userId = message[4];
         final text = message[5];
-        print('chatId ${chatId} and messageId ${messageId}, date ${date} , userId ${userId}');
         dbIsolated.addMessage(
             chatId: chatId,
             messageId: messageId,
@@ -101,17 +100,14 @@ class Db {
   }
 
   Future<void> open() async {
-    print("received db open, sending to isolate");
     _isolateSendPort.send(DbOpen());
   }
 
   Future<void> close() async {
-    print("received db close, sending to isolate");
     _isolateSendPort.send(DbClose());
   }
 
   Future<void>  migrate() async {
-    print("received db migrate, sending to isolate");
     _isolateSendPort.send(DbMigrate());
   }
 
@@ -191,7 +187,6 @@ class DbIsolated{
     _logger.info('opening...');
     db = sqlite3.open(this.dbPath);
     _logger.info('opened.');
-    print("opened sqlite");
     print(
         '${Isolate.current.debugName}:${runtimeType.toString()}:open');
   }
