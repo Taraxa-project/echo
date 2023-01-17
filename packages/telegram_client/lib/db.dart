@@ -104,10 +104,9 @@ class Db {
         final chatId = message[1];
         final messageId = message[2];
         final date = message[3];
-        print("save messages incoming: chatName ");
         final userId = message[4];
         final text = message[5];
-        // print('save messages incoming from TG ${messageId}, chatId ${chatId} userId ${userId} and messages ${text}');
+        print('save messages incoming from TG ${messageId}, chatId ${chatId} userId ${userId} and messages ${text}');
         dbIsolated.addMessage(
             chatId: chatId,
             messageId: messageId,
@@ -120,8 +119,7 @@ class Db {
         final datetimeFrom = message[1];
         final chatName = message[2];
         final chatId = message[3];
-        // print("dateFrom ${datetimeFrom} and chatName ${chatName} and chatId ${chatId}");
-        // parentSendPort.send(dbIsolated.selectChats());
+        dbIsolated.tgSendPort.send(dbIsolated.selectMaxMessageId(chatId, datetimeFrom));
       }
       else if (message[0] is SaveChat){
         print('save chat incoming from TG');

@@ -656,8 +656,9 @@ class TgIsolated {
 
     // TODO: search last message id in DB
     dbIsolateSendPort.send([SearchMessageIdLastLocally(), datetimeFrom, chatName, chatId]);
-    var messageIdLast;
-
+    var messageIdLast = await _tdStreamController.stream
+        .where((event) => event is IsolateMaxMessageId)
+        .first;
 
     _logger.info('[$chatName] searching last message id locally... done.');
     return messageIdLast;
