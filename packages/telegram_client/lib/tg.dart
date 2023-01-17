@@ -46,6 +46,7 @@ class Tg {
       Tg._entryPoint,
       [
         _isolateReceivePort.sendPort,
+        _db.isolateSendPort,
         libtdjsonlcPath,
         tdReceiveWaitTimeout,
         tdReceiveFrequency,
@@ -58,15 +59,18 @@ class Tg {
 
   static void _entryPoint(dynamic initialSpawnMessage) {
     final SendPort parentSendPort = initialSpawnMessage[0];
-    final String libtdjsonlcPath = initialSpawnMessage[1];
-    final double tdReceiveWaitTimeout = initialSpawnMessage[2];
-    final Duration tdReceiveFrequency = initialSpawnMessage[3];
+    final SendPort dbIsolateSendPort = initialSpawnMessage[1];
+    final String libtdjsonlcPath = initialSpawnMessage[2];
+    final double tdReceiveWaitTimeout = initialSpawnMessage[3];
+    final Duration tdReceiveFrequency = initialSpawnMessage[4];
 
     var receivePort = ReceivePort();
     parentSendPort.send(receivePort.sendPort);
+    dbIsolateSendPort.send(receivePort.sendPort); // send this port to dbIsolate to communicate back
 
     final tgIsolated = TgIsolated(
       parentSendPort: parentSendPort,
+      dbIsolateSendPort: dbIsolateSendPort,
       libtdjsonlcPath: libtdjsonlcPath,
       tdReceiveWaitTimeout: tdReceiveWaitTimeout,
       tdReceiveFrequency: tdReceiveFrequency,
@@ -169,11 +173,15 @@ class TgIsolated {
   bool _isTdReceiving = false;
   Timer? receiveTimer;
 
+  late final SendPort dbIsolateSendPort;
+
   TgIsolated({
     required this.parentSendPort,
     required this.libtdjsonlcPath,
+    required this.dbIsolateSendPort,
     this.tdReceiveWaitTimeout = 0.005,
     this.tdReceiveFrequency = const Duration(milliseconds: 10),
+    
   }) {
     _logger.onRecord.listen((logRecord) {
       parentSendPort.send(logRecord);
@@ -582,6 +590,7 @@ class TgIsolated {
   }) async {
     _logger.info('[$chatName] saving chat...');
     // TODO: save chat in Db
+    dbIsolateSendPort.send([SaveChat(), chatName, chat]);
     _logger.info('[$chatName] saving chat... done.');
   }
 
@@ -618,11 +627,12 @@ class TgIsolated {
         }
       }
 
+      var messageId = WrapId.unwrapMessageId(message.id);
       // TODO: save message here
+      dbIsolateSendPort.send([SaveMessages(), chatId, messageId, message.date, userId, text]);
 
       messageCount += 1;
 
-      var messageId = WrapId.unwrapMessageId(message.id);
       if (messageId != null) {
         if (messageIdLast == null) {
           messageIdLast = messageId;
@@ -645,7 +655,9 @@ class TgIsolated {
     _logger.info('[$chatName] searching last message id locally...');
 
     // TODO: search last message id in DB
+    dbIsolateSendPort.send([SearchMessageIdLastLocally(), datetimeFrom, chatName, chatId]);
     var messageIdLast;
+
 
     _logger.info('[$chatName] searching last message id locally... done.');
     return messageIdLast;
@@ -706,3 +718,10 @@ class TgMsgResponseLogin extends TgMsgResponse {
 }
 
 class TgMsgResponseReadChatHistory extends TgMsgResponse {}
+
+class SaveChat extends DbOperation {}
+
+class SaveMessages extends DbOperation {}
+
+class SearchMessageIdLastLocally extends DbOperation {}
+

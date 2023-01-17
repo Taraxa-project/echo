@@ -12,10 +12,11 @@ class TelegramCommandMessages extends Command {
   final description = 'Read and save messages from the last two weeks.';
 
   final Lg _lg = Lg();
-  final Db _db = Db();
+
   final Tg _tg = Tg();
 
   void run() async {
+    final Db _db = Db(dbPath: globalResults!['message-database-path']);
     await _lg.spawn();
     await _db.spawn(
       lg: _lg,
@@ -46,7 +47,7 @@ class TelegramCommandMessages extends Command {
     );
 
     await _tg.exit();
-    await _db.exit();
+    await _db.close();
     await _lg.exit();
   }
 
