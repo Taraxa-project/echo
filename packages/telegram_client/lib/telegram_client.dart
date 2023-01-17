@@ -6,108 +6,85 @@ import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
 import 'package:telegram_client/wrap_id.dart';
 
-import 'lg.dart';
+import 'log.dart';
 import 'db.dart';
 
-class Tg {
+class TelegramClient {
   late final ReceivePort _isolateReceivePort;
   late final Stream<dynamic> _isolateReceivePortBroadcast;
-  late final SendPort _isolateSendPort;
+  late final SendPort isolateSendPort;
 
-  late final Lg _lg;
+  late final Log _log;
   late final Db _db;
 
-  final _logger = Logger('Tg');
+  final _logger = Logger('TelegramClient');
+  final Level logLevelLibTdJson;
+
+  TelegramClient({
+    required Level logLevel,
+    required this.logLevelLibTdJson,
+  }) {
+    _logger.level = logLevel;
+  }
 
   Future<void> spawn({
-    required Lg lg,
+    required Log log,
     required Db db,
     required String libtdjsonlcPath,
     double tdReceiveWaitTimeout = 0.005,
     Duration tdReceiveFrequency = const Duration(milliseconds: 10),
   }) async {
-    _lg = lg;
+    _log = log;
     _db = db;
 
     _logger.onRecord.listen((event) {
-      _lg.isolateSendPort.send(event);
+      _log.isolateSendPort.send(event);
     });
 
     _isolateReceivePort = ReceivePort();
     _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
-    _isolateReceivePortBroadcast
-        .where((event) => event is LogRecord)
-        .listen((logRecord) {
-      _lg.isolateSendPort.send(logRecord);
-    });
 
     _logger.fine('spawning TgIsolated...');
     await Isolate.spawn(
-      Tg._entryPoint,
-      [
-        _isolateReceivePort.sendPort,
-        libtdjsonlcPath,
-        tdReceiveWaitTimeout,
-        tdReceiveFrequency,
-      ],
+      TelegramClient._entryPoint,
+      TgIsolatedSpwanMessage(
+        parentSendPort: _isolateReceivePort.sendPort,
+        logSendPort: _log.isolateSendPort,
+        dbSendPort: _db.isolateSendPort,
+        libtdjsonlcPath: libtdjsonlcPath,
+        logLevelLibtdjson: logLevelLibTdJson,
+        tdReceiveWaitTimeout: tdReceiveWaitTimeout,
+        tdReceiveFrequency: tdReceiveFrequency,
+      ),
       debugName: runtimeType.toString(),
     );
+    _logger.fine('spawned.');
 
-    _isolateSendPort = await _isolateReceivePortBroadcast.first;
+    isolateSendPort = await _isolateReceivePortBroadcast.first;
   }
 
-  static void _entryPoint(dynamic initialSpawnMessage) {
-    final SendPort parentSendPort = initialSpawnMessage[0];
-    final String libtdjsonlcPath = initialSpawnMessage[1];
-    final double tdReceiveWaitTimeout = initialSpawnMessage[2];
-    final Duration tdReceiveFrequency = initialSpawnMessage[3];
+  static void _entryPoint(
+    TgIsolatedSpwanMessage tgIsolatedSpwanMessage,
+  ) {
+    hierarchicalLoggingEnabled = true;
 
-    var receivePort = ReceivePort();
-    parentSendPort.send(receivePort.sendPort);
-
-    final tgIsolated = TgIsolated(
-      parentSendPort: parentSendPort,
-      libtdjsonlcPath: libtdjsonlcPath,
-      tdReceiveWaitTimeout: tdReceiveWaitTimeout,
-      tdReceiveFrequency: tdReceiveFrequency,
+    final tgIsolated = TelegramClientIsolated(
+      parentSendPort: tgIsolatedSpwanMessage.parentSendPort,
+      logSendPort: tgIsolatedSpwanMessage.logSendPort,
+      dbSendPort: tgIsolatedSpwanMessage.dbSendPort,
+      libtdjsonlcPath: tgIsolatedSpwanMessage.libtdjsonlcPath,
+      logLevelLibtdjson: tgIsolatedSpwanMessage.logLevelLibtdjson,
+      tdReceiveWaitTimeout: tgIsolatedSpwanMessage.tdReceiveWaitTimeout,
+      tdReceiveFrequency: tgIsolatedSpwanMessage.tdReceiveFrequency,
     );
-
-    receivePort.listen((message) {
-      if (message is TgMsgRequestExit) {
-        tgIsolated._logger.fine('exiting...');
-        tgIsolated.exit();
-        receivePort.close();
-        Isolate.exit();
-      } else if (message is TgMsgRequestLogin) {
-        tgIsolated
-            .login(
-              apiId: message.apiId,
-              apiHash: message.apiHash,
-              phoneNumber: message.phoneNumber,
-              databasePath: message.databasePath,
-              readTelegramCode: message.readTelegramCode,
-              writeQrCodeLink: message.writeQrCodeLink,
-              readUserFirstName: message.readUserFirstName,
-              readUserLastName: message.readUserLastName,
-              readUserPassword: message.readUserPassword,
-            )
-            .then((value) => parentSendPort.send(value));
-      } else if (message is TgMsgRequestReadChatsHistory) {
-        tgIsolated
-            .readChatsHistory(
-              datetimeFrom: message.datetimeFrom,
-              chatsNames: message.chatsNames,
-            )
-            .then((value) => parentSendPort.send(value));
-      }
-    });
-
-    tgIsolated._logger.fine('spawned.');
+    tgIsolated.init();
   }
 
   Future<void> exit() async {
-    _isolateSendPort.send(TgMsgRequestExit());
-    await Future.delayed(const Duration(milliseconds: 1000));
+    isolateSendPort.send(TgMsgRequestExit());
+    await _isolateReceivePortBroadcast
+        .where((event) => event is TgMsgResponseExit)
+        .first;
     _isolateReceivePort.close();
   }
 
@@ -122,7 +99,7 @@ class Tg {
     required String Function() readUserLastName,
     required String Function() readUserPassword,
   }) async {
-    _isolateSendPort.send(TgMsgRequestLogin(
+    isolateSendPort.send(TgMsgRequestLogin(
       apiId: apiId,
       apiHash: apiHash,
       phoneNumber: phoneNumber,
@@ -139,11 +116,11 @@ class Tg {
   }
 
   Future<TgMsgResponseReadChatHistory> readChatsHistory({
-    required DateTime datetimeFrom,
+    required DateTime dateTimeFrom,
     required List<String> chatsNames,
   }) async {
-    _isolateSendPort.send(TgMsgRequestReadChatsHistory(
-      datetimeFrom: datetimeFrom,
+    isolateSendPort.send(TgMsgRequestReadChatsHistory(
+      dateTimeFrom: dateTimeFrom,
       chatsNames: chatsNames,
     ));
     return await _isolateReceivePortBroadcast
@@ -152,10 +129,35 @@ class Tg {
   }
 }
 
-class TgIsolated {
-  final _logger = Logger('TgIsolated');
+class TgIsolatedSpwanMessage {
+  final SendPort parentSendPort;
+  final SendPort logSendPort;
+  final SendPort dbSendPort;
+  final String libtdjsonlcPath;
+  final Level logLevelLibtdjson;
+  final double tdReceiveWaitTimeout;
+  final Duration tdReceiveFrequency;
+
+  TgIsolatedSpwanMessage({
+    required this.parentSendPort,
+    required this.logSendPort,
+    required this.dbSendPort,
+    required this.libtdjsonlcPath,
+    required this.logLevelLibtdjson,
+    required this.tdReceiveWaitTimeout,
+    required this.tdReceiveFrequency,
+  });
+}
+
+class TelegramClientIsolated {
+  final _logger = Logger('TelegramClientIsolated');
 
   final SendPort parentSendPort;
+  final SendPort logSendPort;
+  final SendPort dbSendPort;
+
+  late final ReceivePort receivePort;
+  late final Stream<dynamic> receivePortBroadcast;
 
   final String libtdjsonlcPath;
   late final TdJsonClient _tdJsonClient;
@@ -169,20 +171,35 @@ class TgIsolated {
   bool _isTdReceiving = false;
   Timer? receiveTimer;
 
-  TgIsolated({
+  TelegramClientIsolated({
     required this.parentSendPort,
+    required this.logSendPort,
+    required this.dbSendPort,
     required this.libtdjsonlcPath,
+    required Level logLevelLibtdjson,
     this.tdReceiveWaitTimeout = 0.005,
     this.tdReceiveFrequency = const Duration(milliseconds: 10),
   }) {
     _logger.onRecord.listen((logRecord) {
-      parentSendPort.send(logRecord);
+      logSendPort.send(logRecord);
     });
 
     _logger.fine('initializing TdJsonClient...');
 
     _tdJsonClient = TdJsonClient(libtdjsonlcPath: libtdjsonlcPath);
     _tdJsonClientId = _tdJsonClient.create_client_id();
+
+    final loggerTdJsonClient = Logger('TdJsonClient');
+    loggerTdJsonClient.level = Level.ALL;
+    loggerTdJsonClient.onRecord.listen((event) {
+      logSendPort.send(event);
+    });
+    final loggerLibTdJson = Logger('LibTdJson');
+    loggerLibTdJson.level = logLevelLibtdjson;
+    loggerLibTdJson.onRecord.listen((event) {
+      logSendPort.send(event);
+    });
+    _tdJsonClient.setupLogs(loggerTdJsonClient, loggerLibTdJson);
 
     _logger.fine('created client id $_tdJsonClientId.');
     _logger.fine('initialization finished.');
@@ -193,9 +210,63 @@ class TgIsolated {
     );
   }
 
-  Future<void> exit() async {
+  Future<void> init() async {
+    _initPorts();
+    _initDispatch();
+    await _initDb();
+  }
+
+  void _initPorts() {
+    receivePort = ReceivePort();
+    receivePortBroadcast = receivePort.asBroadcastStream();
+
+    parentSendPort.send(receivePort.sendPort);
+  }
+
+  Future<void> _initDb() async {
+    dbSendPort.send(DbMsgRequestSetTgSendPort(
+      sendPort: receivePort.sendPort,
+    ));
+    await receivePortBroadcast
+        .where((event) => event is DbMsgResponseSetTgSendPort)
+        .first;
+  }
+
+  void _initDispatch() {
+    receivePortBroadcast.listen((message) {
+      if (message is TgMsgRequestExit) {
+        _logger.fine('exiting...');
+        _exit();
+      } else if (message is TgMsgRequestLogin) {
+        _login(
+          apiId: message.apiId,
+          apiHash: message.apiHash,
+          phoneNumber: message.phoneNumber,
+          databasePath: message.databasePath,
+          readTelegramCode: message.readTelegramCode,
+          writeQrCodeLink: message.writeQrCodeLink,
+          readUserFirstName: message.readUserFirstName,
+          readUserLastName: message.readUserLastName,
+          readUserPassword: message.readUserPassword,
+        ).then((value) => parentSendPort.send(value));
+      } else if (message is TgMsgRequestReadChatsHistory) {
+        _readChatsHistory(
+          datetimeFrom: message.dateTimeFrom,
+          chatsNames: message.chatsNames,
+        ).then((value) => parentSendPort.send(value));
+      }
+    });
+  }
+
+  Future<void> _exit() async {
     _tdJsonClient.exit();
     await _tdStreamController.close();
+
+    parentSendPort.send(TgMsgResponseExit());
+    await Future.delayed(const Duration(milliseconds: 10));
+
+    receivePort.close();
+    Isolate.exit();
   }
 
   void _tdStart() {
@@ -234,7 +305,7 @@ class TgIsolated {
     _logger.fine('sent ${tdFunction.runtimeType}.');
   }
 
-  Future<TgMsgResponseLogin> login({
+  Future<TgMsgResponseLogin> _login({
     required int apiId,
     required String apiHash,
     required String phoneNumber,
@@ -359,17 +430,19 @@ class TgIsolated {
     );
   }
 
-  Future<TgMsgResponseReadChatHistory> readChatsHistory({
+  Future<TgMsgResponseReadChatHistory> _readChatsHistory({
     required DateTime datetimeFrom,
     required List<String> chatsNames,
   }) async {
+    await _addChats(usernames: chatsNames);
+
     _logger.info('reading chats history...');
 
     for (var chatName in chatsNames) {
       _logger.info('[$chatName] reading chat history...');
 
       await _readChatHistory(
-        datetimeFrom: datetimeFrom,
+        dateTimeFrom: datetimeFrom,
         chatName: chatName,
       );
 
@@ -380,7 +453,7 @@ class TgIsolated {
   }
 
   Future<void> _readChatHistory({
-    required DateTime datetimeFrom,
+    required DateTime dateTimeFrom,
     required String chatName,
   }) async {
     var chat = await _searchPublicChat(chatName: chatName);
@@ -402,13 +475,13 @@ class TgIsolated {
     }
     _logger.info('[$chatName] unwrapped chat id is $chatId.');
 
-    await _saveChat(
+    await _updateChat(
       chatName: chatName,
       chat: chat,
     );
 
     var messsageIdLast = await _searchMessageIdLast(
-      datetimeFrom: datetimeFrom,
+      datetimeFrom: dateTimeFrom,
       chatName: chatName,
       chatId: chatId,
     );
@@ -483,7 +556,7 @@ class TgIsolated {
     var messageIdLast;
 
     messageIdLast = await _searchMessageIdLastLocally(
-      datetimeFrom: datetimeFrom,
+      dateTimeFrom: datetimeFrom,
       chatName: chatName,
       chatId: chatId,
     );
@@ -576,13 +649,36 @@ class TgIsolated {
     return response;
   }
 
-  Future<void> _saveChat({
+  Future<void> _addChats({
+    required List<String> usernames,
+  }) async {
+    _logger.info('adding chats to db...');
+
+    dbSendPort.send(DbMsgRequestAddChats(
+      usernames: usernames,
+    ));
+    await receivePortBroadcast
+        .where((event) => event is DbMsgResponseAddChats)
+        .first;
+
+    _logger.info('adding chats to db... done.');
+  }
+
+  Future<void> _updateChat({
     required String chatName,
     required Chat chat,
   }) async {
-    _logger.info('[$chatName] saving chat...');
-    // TODO: save chat in Db
-    _logger.info('[$chatName] saving chat... done.');
+    _logger.info('[$chatName] updating chat in db...');
+
+    dbSendPort.send(DbMsgRequestUpdateChat(
+      username: chatName,
+      chat: chat,
+    ));
+    await receivePortBroadcast
+        .where((event) => event is DbMsgResponseUpdateChat)
+        .first;
+
+    _logger.info('[$chatName] updating chat in db... done.');
   }
 
   Future<int?> _saveMessages({
@@ -597,30 +693,16 @@ class TgIsolated {
     var messageIdLast;
 
     for (Message message in messages.messages!) {
-      if (message.chat_id == null ||
-          message.id == null ||
-          message.date == null) {
-        continue;
+      dbSendPort.send(DbMsgRequestAddMessage(
+        message: message,
+      ));
+      var response = await receivePortBroadcast
+          .where((event) => event is DbMsgResponseAddMessage)
+          .first;
+
+      if (response.added) {
+        messageCount += 1;
       }
-
-      var userId = null;
-      if (message.sender_id != null &&
-          message.sender_id.runtimeType == MessageSenderUser) {
-        userId = (message.sender_id as MessageSenderUser).user_id;
-      }
-
-      var text = null;
-      if (message.content != null &&
-          message.content.runtimeType == MessageText) {
-        var formattedText = (message.content as MessageText).text;
-        if (formattedText != null) {
-          text = formattedText.text;
-        }
-      }
-
-      // TODO: save message here
-
-      messageCount += 1;
 
       var messageId = WrapId.unwrapMessageId(message.id);
       if (messageId != null) {
@@ -638,17 +720,31 @@ class TgIsolated {
   }
 
   Future<int?> _searchMessageIdLastLocally({
-    required DateTime datetimeFrom,
+    required DateTime dateTimeFrom,
     required String chatName,
     required int chatId,
   }) async {
     _logger.info('[$chatName] searching last message id locally...');
 
-    // TODO: search last message id in DB
-    var messageIdLast;
+    dbSendPort.send(DbMsgRequestSelectMaxMessageId(
+      chatId: chatId,
+      dateTimeFrom: dateTimeFrom,
+    ));
+    var response = await receivePortBroadcast
+        .where((event) => event is DbMsgResponseSelectMaxMessageId)
+        .first;
+
+    if (response.id == null) {
+      _logger.info('[$chatName] searching last message id locally... '
+          'not found.');
+    } else {
+      _logger.info('[$chatName] searching last message id locally... '
+          'found ${response.id}.');
+    }
 
     _logger.info('[$chatName] searching last message id locally... done.');
-    return messageIdLast;
+
+    return response.id;
   }
 }
 
@@ -659,6 +755,8 @@ abstract class TgMsgRequest extends TgMsg {}
 abstract class TgMsgResponse extends TgMsg {}
 
 class TgMsgRequestExit extends TgMsgRequest {}
+
+class TgMsgResponseExit extends TgMsgResponse {}
 
 class TgMsgRequestLogin extends TgMsgRequest {
   final int apiId;
@@ -685,11 +783,11 @@ class TgMsgRequestLogin extends TgMsgRequest {
 }
 
 class TgMsgRequestReadChatsHistory extends TgMsgRequest {
-  final DateTime datetimeFrom;
+  final DateTime dateTimeFrom;
   final List<string> chatsNames;
 
   TgMsgRequestReadChatsHistory({
-    required this.datetimeFrom,
+    required this.dateTimeFrom,
     required this.chatsNames,
   });
 }
@@ -698,11 +796,12 @@ class TgMsgResponseLogin extends TgMsgResponse {
   bool isAuthorized = false;
   bool isClosed = false;
   bool isError = false;
+
   TgMsgResponseLogin({
     required this.isAuthorized,
     required this.isClosed,
     required this.isError,
-  }) {}
+  });
 }
 
 class TgMsgResponseReadChatHistory extends TgMsgResponse {}

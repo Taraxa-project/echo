@@ -2,33 +2,46 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:args/command_runner.dart';
+import 'package:logging/logging.dart';
 import 'package:echo_cli/callback/cli.dart';
-import 'package:telegram_client/tg.dart';
-import 'package:telegram_client/lg.dart';
+import 'package:telegram_client/telegram_client.dart';
+import 'package:telegram_client/log.dart';
 import 'package:telegram_client/db.dart';
 
 class TelegramCommandMessages extends Command {
   final name = 'messages';
   final description = 'Read and save messages from the last two weeks.';
 
-  final Lg _lg = Lg();
-  final Db _db = Db();
-  final Tg _tg = Tg();
-
   void run() async {
-    await _lg.spawn();
-    await _db.spawn(
-      lg: _lg,
+    hierarchicalLoggingEnabled = true;
+
+    var logLevel = getLogLevel();
+    var logLevelLibTdJson = getLogLevelLibtdjson();
+
+    final log = Log(logLevel: logLevel);
+    await log.spawn();
+
+    final db = Db(logLevel: logLevel);
+    await db.spawn(
+      log: log,
+      dbPath: globalResults!['message-database-path'],
     );
-    await _tg.spawn(
-      lg: _lg,
-      db: _db,
+    await db.open();
+    await db.migrate();
+
+    final telegramClient = TelegramClient(
+      logLevel: logLevel,
+      logLevelLibTdJson: logLevelLibTdJson,
+    );
+    await telegramClient.spawn(
+      log: log,
+      db: db,
       libtdjsonlcPath: globalResults!['libtdjson-path'],
       tdReceiveWaitTimeout: 0.005,
       tdReceiveFrequency: const Duration(milliseconds: 10),
     );
 
-    await _tg.login(
+    await telegramClient.login(
       apiId: int.parse(globalResults!['api-id']),
       apiHash: globalResults!['api-hash'],
       phoneNumber: globalResults!['phone-number'],
@@ -40,14 +53,14 @@ class TelegramCommandMessages extends Command {
       readUserPassword: readUserPassword,
     );
 
-    await _tg.readChatsHistory(
-      datetimeFrom: computeTwoWeeksAgo(),
+    await telegramClient.readChatsHistory(
+      dateTimeFrom: computeTwoWeeksAgo(),
       chatsNames: getChatsNames(),
     );
 
-    await _tg.exit();
-    await _db.exit();
-    await _lg.exit();
+    await telegramClient.exit();
+    await db.exit();
+    await log.exit();
   }
 
   List<String> getChatsNames() {
@@ -83,18 +96,18 @@ class TelegramCommandMessages extends Command {
     return DateTime.now().subtract(const Duration(days: 14));
   }
 
-  // Level getLogLevel() {
-  //   return getLogLevelByName(globalResults!['loglevel']);
-  // }
+  Level getLogLevel() {
+    return getLogLevelByName(globalResults!['loglevel']);
+  }
 
-  // Level getLogLevelLibtdjson() {
-  //   return getLogLevelByName(globalResults!['libtdjson-loglevel']);
-  // }
+  Level getLogLevelLibtdjson() {
+    return getLogLevelByName(globalResults!['libtdjson-loglevel']);
+  }
 
-  // Level getLogLevelByName(String name) {
-  //   return Level.LEVELS.firstWhere(
-  //     (level) => level.name == name.toUpperCase(),
-  //     orElse: () => Level.WARNING,
-  //   );
-  // }
+  Level getLogLevelByName(String name) {
+    return Level.LEVELS.firstWhere(
+      (level) => level.name == name.toUpperCase(),
+      orElse: () => Level.WARNING,
+    );
+  }
 }
