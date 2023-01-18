@@ -697,6 +697,7 @@ class TelegramClientIsolated {
         'Reason: $reason.');
 
     dbSendPort.send(DbMsgRequestBlacklistChat(
+      replySendPort: receivePort.sendPort,
       username: chatName,
       reason: reason,
     ));

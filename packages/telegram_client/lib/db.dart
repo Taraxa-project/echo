@@ -149,7 +149,7 @@ class DbIsolated {
           message.usernames,
         ));
       } else if (message is DbMsgRequestBlacklistChat) {
-        tgSendPort?.send(blacklistChat(
+        message.replySendPort?.send(blacklistChat(
           username: message.username,
           reason: message.reason,
         ));
@@ -420,6 +420,7 @@ class DbMsgRequestBlacklistChat extends DbMsgRequest {
   final String reason;
 
   DbMsgRequestBlacklistChat({
+    super.replySendPort,
     required this.username,
     required this.reason,
   });
