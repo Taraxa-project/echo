@@ -59,14 +59,18 @@ class Db {
   }
 
   Future<void> open() async {
-    isolateSendPort.send(DbMsgRequestOpen());
+    isolateSendPort.send(DbMsgRequestOpen(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
     await _isolateReceivePortBroadcast
         .where((event) => event is DbMsgResponseOpen)
         .first;
   }
 
   Future<void> exit() async {
-    isolateSendPort.send(DbMsgRequestExit());
+    isolateSendPort.send(DbMsgRequestExit(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
     await _isolateReceivePortBroadcast
         .where((event) => event is DbMsgResponseExit)
         .first;
@@ -74,7 +78,9 @@ class Db {
   }
 
   Future<void> migrate() async {
-    isolateSendPort.send(DbMsgRequestMigrate());
+    isolateSendPort.send(DbMsgRequestMigrate(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
     await _isolateReceivePortBroadcast
         .where((event) => event is DbMsgResponseMigrate)
         .first;
@@ -98,7 +104,6 @@ class DbIsolated {
 
   final SendPort parentSendPort;
   final SendPort logSendPort;
-  SendPort? tgSendPort;
 
   late final ReceivePort receivePort;
   late final Stream<dynamic> receivePortBroadcast;
@@ -128,17 +133,19 @@ class DbIsolated {
     parentSendPort.send(receivePort.sendPort);
   }
 
-  void _initDispatch() {
+  Future<void> _initDispatch() async {
     receivePortBroadcast.listen((message) {
       if (message is DbMsgRequestExit) {
         _logger.fine('exiting...');
-        _exit();
+        _exit(
+          replySendPort: message.replySendPort,
+        );
       } else if (message is DbMsgRequestOpen) {
-        parentSendPort.send(_open());
+        message.replySendPort?.send(_open());
       } else if (message is DbMsgRequestMigrate) {
-        parentSendPort.send(_migrate());
+        message.replySendPort?.send(_migrate());
       } else if (message is DbMsgRequestAddChats) {
-        tgSendPort?.send(addChats(
+        message.replySendPort?.send(addChats(
           message.usernames,
         ));
       } else if (message is DbMsgRequestBlacklistChat) {
@@ -147,28 +154,21 @@ class DbIsolated {
           reason: message.reason,
         ));
       } else if (message is DbMsgRequestUpdateChat) {
-        tgSendPort?.send(updateChat(
+        message.replySendPort?.send(updateChat(
           username: message.username,
           chat: message.chat,
         ));
       } else if (message is DbMsgRequestSelectMaxMessageId) {
-        tgSendPort?.send(selectMaxMessageId(
+        message.replySendPort?.send(selectMaxMessageId(
           chatId: message.chatId,
           dateTimeFrom: message.dateTimeFrom,
         ));
       } else if (message is DbMsgRequestAddMessage) {
-        tgSendPort?.send(addMessage(
+        message.replySendPort?.send(addMessage(
           message: message.message,
         ));
-      } else if (message is DbMsgRequestSetTgSendPort) {
-        setTgSendPort(message.sendPort);
       }
     });
-  }
-
-  void setTgSendPort(SendPort sendPort) {
-    tgSendPort = sendPort;
-    tgSendPort?.send(DbMsgResponseSetTgSendPort());
   }
 
   DbMsgResponseOpen _open() {
@@ -179,12 +179,13 @@ class DbIsolated {
     return DbMsgResponseOpen();
   }
 
-  Future<void> _exit() async {
+  Future<void> _exit({SendPort? replySendPort}) async {
     _logger.fine('closing...');
     db?.dispose();
     _logger.fine('closed.');
 
-    parentSendPort.send(DbMsgResponseExit());
+    replySendPort?.send(DbMsgResponseExit());
+
     await Future.delayed(const Duration(milliseconds: 10));
 
     receivePort.close();
@@ -370,19 +371,36 @@ class DbIsolated {
 
 abstract class DbMsg {}
 
-abstract class DbMsgRequest extends DbMsg {}
+abstract class DbMsgRequest extends DbMsg {
+  final SendPort? replySendPort;
+  DbMsgRequest({
+    this.replySendPort,
+  });
+}
 
 abstract class DbMsgResponse extends DbMsg {}
 
-class DbMsgRequestOpen extends DbMsgRequest {}
+class DbMsgRequestOpen extends DbMsgRequest {
+  DbMsgRequestOpen({
+    super.replySendPort,
+  });
+}
 
 class DbMsgResponseOpen extends DbMsgResponse {}
 
-class DbMsgRequestExit extends DbMsgRequest {}
+class DbMsgRequestExit extends DbMsgRequest {
+  DbMsgRequestExit({
+    super.replySendPort,
+  });
+}
 
 class DbMsgResponseExit extends DbMsgResponse {}
 
-class DbMsgRequestMigrate extends DbMsgRequest {}
+class DbMsgRequestMigrate extends DbMsgRequest {
+  DbMsgRequestMigrate({
+    super.replySendPort,
+  });
+}
 
 class DbMsgResponseMigrate extends DbMsgResponse {}
 
@@ -390,6 +408,7 @@ class DbMsgRequestAddChats extends DbMsgRequest {
   final List<String> usernames;
 
   DbMsgRequestAddChats({
+    super.replySendPort,
     required this.usernames,
   });
 }
@@ -413,6 +432,7 @@ class DbMsgRequestUpdateChat extends DbMsgRequest {
   final Chat chat;
 
   DbMsgRequestUpdateChat({
+    super.replySendPort,
     required this.username,
     required this.chat,
   });
@@ -425,6 +445,7 @@ class DbMsgRequestSelectMaxMessageId extends DbMsgRequest {
   final DateTime dateTimeFrom;
 
   DbMsgRequestSelectMaxMessageId({
+    super.replySendPort,
     required this.chatId,
     required this.dateTimeFrom,
   }) {}
@@ -442,6 +463,7 @@ class DbMsgRequestAddMessage extends DbMsgRequest {
   final Message message;
 
   DbMsgRequestAddMessage({
+    super.replySendPort,
     required this.message,
   });
 }
@@ -453,13 +475,3 @@ class DbMsgResponseAddMessage extends DbMsgResponse {
     required this.added,
   });
 }
-
-class DbMsgRequestSetTgSendPort extends DbMsgRequest {
-  final SendPort sendPort;
-
-  DbMsgRequestSetTgSendPort({
-    required this.sendPort,
-  });
-}
-
-class DbMsgResponseSetTgSendPort extends DbMsgResponse {}

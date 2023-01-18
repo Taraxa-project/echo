@@ -45,7 +45,9 @@ class Log {
   }
 
   Future<void> exit() async {
-    isolateSendPort.send(LgMsgRequestExit());
+    isolateSendPort.send(LgMsgRequestExit(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
     await _isolateReceivePortBroadcast
         .where((event) => event is LgMsgResponseExit)
         .first;
@@ -97,15 +99,18 @@ class LogIsolated {
     receivePort.listen((message) {
       if (message is LgMsgRequestExit) {
         _logger.fine('exiting...');
-        _exit();
+        _exit(
+          replySendPort: message.replySendPort,
+        );
       } else if (message is LogRecord) {
         logExternal(message);
       }
     });
   }
 
-  Future<void> _exit() async {
-    parentSendPort.send(LgMsgResponseExit());
+  Future<void> _exit({SendPort? replySendPort}) async {
+    replySendPort?.send(LgMsgResponseExit());
+
     await Future.delayed(const Duration(milliseconds: 10));
 
     receivePort.close();
@@ -123,10 +128,19 @@ class LogIsolated {
 
 abstract class LgMsg {}
 
-abstract class DbMsgRequest extends LgMsg {}
+abstract class LgMsgRequest extends LgMsg {
+  final SendPort? replySendPort;
+  LgMsgRequest({
+    this.replySendPort,
+  });
+}
 
-abstract class DbMsgResponse extends LgMsg {}
+abstract class LgMsgResponse extends LgMsg {}
 
-class LgMsgRequestExit extends DbMsgRequest {}
+class LgMsgRequestExit extends LgMsgRequest {
+  LgMsgRequestExit({
+    super.replySendPort,
+  });
+}
 
-class LgMsgResponseExit extends DbMsgResponse {}
+class LgMsgResponseExit extends LgMsgResponse {}
