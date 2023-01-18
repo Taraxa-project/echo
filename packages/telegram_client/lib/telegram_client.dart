@@ -81,7 +81,9 @@ class TelegramClient {
   }
 
   Future<void> exit() async {
-    isolateSendPort.send(TgMsgRequestExit());
+    isolateSendPort.send(TgMsgRequestExit(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
     await _isolateReceivePortBroadcast
         .where((event) => event is TgMsgResponseExit)
         .first;
@@ -100,6 +102,7 @@ class TelegramClient {
     required String Function() readUserPassword,
   }) async {
     isolateSendPort.send(TgMsgRequestLogin(
+      replySendPort: _isolateReceivePort.sendPort,
       apiId: apiId,
       apiHash: apiHash,
       phoneNumber: phoneNumber,
@@ -120,6 +123,7 @@ class TelegramClient {
     required List<String> chatsNames,
   }) async {
     isolateSendPort.send(TgMsgRequestReadChatsHistory(
+      replySendPort: _isolateReceivePort.sendPort,
       dateTimeFrom: dateTimeFrom,
       chatsNames: chatsNames,
     ));
@@ -213,7 +217,6 @@ class TelegramClientIsolated {
   Future<void> init() async {
     _initPorts();
     _initDispatch();
-    await _initDb();
   }
 
   void _initPorts() {
@@ -223,20 +226,13 @@ class TelegramClientIsolated {
     parentSendPort.send(receivePort.sendPort);
   }
 
-  Future<void> _initDb() async {
-    dbSendPort.send(DbMsgRequestSetTgSendPort(
-      sendPort: receivePort.sendPort,
-    ));
-    await receivePortBroadcast
-        .where((event) => event is DbMsgResponseSetTgSendPort)
-        .first;
-  }
-
   void _initDispatch() {
     receivePortBroadcast.listen((message) {
       if (message is TgMsgRequestExit) {
         _logger.fine('exiting...');
-        _exit();
+        _exit(
+          replySendPort: message.replySendPort,
+        );
       } else if (message is TgMsgRequestLogin) {
         _login(
           apiId: message.apiId,
@@ -248,21 +244,22 @@ class TelegramClientIsolated {
           readUserFirstName: message.readUserFirstName,
           readUserLastName: message.readUserLastName,
           readUserPassword: message.readUserPassword,
-        ).then((value) => parentSendPort.send(value));
+        ).then((value) => message.replySendPort?.send(value));
       } else if (message is TgMsgRequestReadChatsHistory) {
         _readChatsHistory(
           datetimeFrom: message.dateTimeFrom,
           chatsNames: message.chatsNames,
-        ).then((value) => parentSendPort.send(value));
+        ).then((value) => message.replySendPort?.send(value));
       }
     });
   }
 
-  Future<void> _exit() async {
+  Future<void> _exit({SendPort? replySendPort}) async {
     _tdJsonClient.exit();
     await _tdStreamController.close();
 
-    parentSendPort.send(TgMsgResponseExit());
+    replySendPort?.send(TgMsgResponseExit());
+
     await Future.delayed(const Duration(milliseconds: 10));
 
     receivePort.close();
@@ -655,6 +652,7 @@ class TelegramClientIsolated {
     _logger.info('adding chats to db...');
 
     dbSendPort.send(DbMsgRequestAddChats(
+      replySendPort: receivePort.sendPort,
       usernames: usernames,
     ));
     await receivePortBroadcast
@@ -671,6 +669,7 @@ class TelegramClientIsolated {
     _logger.info('[$chatName] updating chat in db...');
 
     dbSendPort.send(DbMsgRequestUpdateChat(
+      replySendPort: receivePort.sendPort,
       username: chatName,
       chat: chat,
     ));
@@ -694,6 +693,7 @@ class TelegramClientIsolated {
 
     for (Message message in messages.messages!) {
       dbSendPort.send(DbMsgRequestAddMessage(
+        replySendPort: receivePort.sendPort,
         message: message,
       ));
       var response = await receivePortBroadcast
@@ -727,6 +727,7 @@ class TelegramClientIsolated {
     _logger.info('[$chatName] searching last message id locally...');
 
     dbSendPort.send(DbMsgRequestSelectMaxMessageId(
+      replySendPort: receivePort.sendPort,
       chatId: chatId,
       dateTimeFrom: dateTimeFrom,
     ));
@@ -750,11 +751,20 @@ class TelegramClientIsolated {
 
 abstract class TgMsg {}
 
-abstract class TgMsgRequest extends TgMsg {}
+abstract class TgMsgRequest extends TgMsg {
+  final SendPort? replySendPort;
+  TgMsgRequest({
+    this.replySendPort,
+  });
+}
 
 abstract class TgMsgResponse extends TgMsg {}
 
-class TgMsgRequestExit extends TgMsgRequest {}
+class TgMsgRequestExit extends TgMsgRequest {
+  TgMsgRequestExit({
+    super.replySendPort,
+  });
+}
 
 class TgMsgResponseExit extends TgMsgResponse {}
 
@@ -770,6 +780,7 @@ class TgMsgRequestLogin extends TgMsgRequest {
   final String Function() readUserPassword;
 
   TgMsgRequestLogin({
+    super.replySendPort,
     required this.apiId,
     required this.apiHash,
     required this.phoneNumber,
@@ -782,16 +793,6 @@ class TgMsgRequestLogin extends TgMsgRequest {
   });
 }
 
-class TgMsgRequestReadChatsHistory extends TgMsgRequest {
-  final DateTime dateTimeFrom;
-  final List<string> chatsNames;
-
-  TgMsgRequestReadChatsHistory({
-    required this.dateTimeFrom,
-    required this.chatsNames,
-  });
-}
-
 class TgMsgResponseLogin extends TgMsgResponse {
   bool isAuthorized = false;
   bool isClosed = false;
@@ -801,6 +802,17 @@ class TgMsgResponseLogin extends TgMsgResponse {
     required this.isAuthorized,
     required this.isClosed,
     required this.isError,
+  });
+}
+
+class TgMsgRequestReadChatsHistory extends TgMsgRequest {
+  final DateTime dateTimeFrom;
+  final List<string> chatsNames;
+
+  TgMsgRequestReadChatsHistory({
+    super.replySendPort,
+    required this.dateTimeFrom,
+    required this.chatsNames,
   });
 }
 
