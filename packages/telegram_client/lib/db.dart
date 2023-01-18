@@ -141,6 +141,11 @@ class DbIsolated {
         tgSendPort?.send(addChats(
           message.usernames,
         ));
+      } else if (message is DbMsgRequestBlacklistChat) {
+        tgSendPort?.send(blacklistChat(
+          username: message.username,
+          reason: message.reason,
+        ));
       } else if (message is DbMsgRequestUpdateChat) {
         tgSendPort?.send(updateChat(
           username: message.username,
@@ -222,8 +227,8 @@ class DbIsolated {
         'UPDATE chat SET id = ?, title = ?, updated_at = ? WHERE username = ?;');
 
     var id = WrapId.unwrapChatId(chat.id);
-    _logger.fine('updating chat $username, id $id...');
 
+    _logger.fine('updating chat $username, id $id...');
     stmt?.execute([
       id,
       chat.title,
@@ -235,6 +240,26 @@ class DbIsolated {
     stmt?.dispose();
 
     return DbMsgResponseUpdateChat();
+  }
+
+  DbMsgResponseBlacklistChat blacklistChat({
+    required String username,
+    required String reason,
+  }) {
+    final stmt = db?.prepare(
+        'UPDATE chat SET blacklisted = 1, blacklist_reason = ?, updated_at = ? WHERE username = ?;');
+
+    _logger.fine('blacklisting chat $username, reason $reason...');
+    stmt?.execute([
+      reason,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('blacklisted chat $username.');
+
+    stmt?.dispose();
+
+    return DbMsgResponseBlacklistChat();
   }
 
   DbMsgResponseSelectMaxMessageId selectMaxMessageId({
@@ -315,6 +340,11 @@ class DbIsolated {
       username TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
       id INTEGER,
       title TEXT,
+      bot_count INTEGER,
+      participants_count INTEGER,
+      average_online_count INTEGER,
+      blacklisted INTEGER DEFAULT 0, /* 0 - false; 1 - true; */
+      blacklist_reason TEXT,
       created_at TEXT,
       updated_at TEXT
     );
@@ -365,6 +395,18 @@ class DbMsgRequestAddChats extends DbMsgRequest {
 }
 
 class DbMsgResponseAddChats extends DbMsgResponse {}
+
+class DbMsgRequestBlacklistChat extends DbMsgRequest {
+  final String username;
+  final String reason;
+
+  DbMsgRequestBlacklistChat({
+    required this.username,
+    required this.reason,
+  });
+}
+
+class DbMsgResponseBlacklistChat extends DbMsgResponse {}
 
 class DbMsgRequestUpdateChat extends DbMsgRequest {
   final String username;

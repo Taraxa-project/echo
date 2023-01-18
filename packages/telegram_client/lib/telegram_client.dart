@@ -446,6 +446,8 @@ class TelegramClientIsolated {
         chatName: chatName,
       );
 
+      await Future.delayed(const Duration(seconds: 20));
+
       _logger.info('[$chatName] reading chat history... done.');
     }
 
@@ -459,6 +461,22 @@ class TelegramClientIsolated {
     var chat = await _searchPublicChat(chatName: chatName);
 
     if (chat == null) {
+      _logger.severe('[$chatName] searching public chat failed. '
+          'Received null response from td_json_client.');
+      return;
+    }
+
+    if (chat is Error) {
+      if (chat.code == 400) {
+        _logger.warning('[$chatName] chat not found.');
+        await _blacklistChat(
+          chatName: chatName,
+          reason: chat.message ?? 'Chat not found.',
+        );
+      } else {
+        _logger.warning('[$chatName] searching public chat failed. '
+            'Code: ${chat.code}. Message: ${chat.message}.');
+      }
       return;
     }
 
@@ -517,7 +535,7 @@ class TelegramClientIsolated {
     }
   }
 
-  Future<Chat?> _searchPublicChat({
+  Future<dynamic> _searchPublicChat({
     required String chatName,
   }) async {
     _logger.info('[$chatName] searching public chat...');
@@ -532,18 +550,9 @@ class TelegramClientIsolated {
         .where((event) => event.extra == extra)
         .first;
 
-    var chat;
-
-    if (response is Error) {
-      _logger.warning('[$chatName] searching public chat failed with error.');
-      _logger.warning('[$chatName] $response.');
-    } else if (response is Chat) {
-      chat = response;
-    }
-
     _logger.info('[$chatName] searching public chat... done.');
 
-    return chat;
+    return response;
   }
 
   Future<int?> _searchMessageIdLast({
@@ -679,6 +688,24 @@ class TelegramClientIsolated {
         .first;
 
     _logger.info('[$chatName] updating chat in db... done.');
+  }
+
+  Future<void> _blacklistChat({
+    required String chatName,
+    required String reason,
+  }) async {
+    _logger.info('[$chatName] blacklisting chat in db... '
+        'Reason: $reason.');
+
+    dbSendPort.send(DbMsgRequestBlacklistChat(
+      username: chatName,
+      reason: reason,
+    ));
+    await receivePortBroadcast
+        .where((event) => event is DbMsgResponseBlacklistChat)
+        .first;
+
+    _logger.info('[$chatName] blacklisting chat in db... done.');
   }
 
   Future<int?> _saveMessages({
