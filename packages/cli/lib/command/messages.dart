@@ -59,6 +59,7 @@ class TelegramCommandMessages extends Command {
     );
 
     await telegramClient.exit();
+    await Future.delayed( Duration(seconds: 2));
     await db.exit();
     await log.exit();
   }
