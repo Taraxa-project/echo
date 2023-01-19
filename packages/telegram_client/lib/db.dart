@@ -327,7 +327,7 @@ class DbIsolated {
         _logger.fine('reading last message id for $chatId...');
 
         final ResultSet? resultSet = db?.select(
-            'blablabl SELECT max(id) id FROM message WHERE chat_id = ? AND date >= ?;', [
+            'SELECT max(id) id FROM message WHERE chat_id = ? AND date >= ?;', [
           chatId,
           dateTimeFrom.toIso8601String(),
         ]);
