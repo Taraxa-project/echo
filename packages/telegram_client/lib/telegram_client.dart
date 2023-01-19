@@ -175,6 +175,9 @@ class TelegramClientIsolated {
   bool _isTdReceiving = false;
   Timer? receiveTimer;
 
+  static const int retryCountMax = 5;
+  static const int delaySecondsSearchPublicChat = 15;
+
   TelegramClientIsolated({
     required this.parentSendPort,
     required this.logSendPort,
@@ -437,15 +440,17 @@ class TelegramClientIsolated {
 
     for (var chatName in chatsNames) {
       _logger.info('[$chatName] reading chat history...');
-
       await _readChatHistory(
         dateTimeFrom: datetimeFrom,
         chatName: chatName,
       );
-
-      await Future.delayed(const Duration(seconds: 20));
-
       _logger.info('[$chatName] reading chat history... done.');
+
+      _logger.info('reading chat history... '
+          'Sleeping for $delaySecondsSearchPublicChat seconds.');
+      await Future.delayed(const Duration(
+        seconds: delaySecondsSearchPublicChat,
+      ));
     }
 
     return TgMsgResponseReadChatHistory();
@@ -455,26 +460,27 @@ class TelegramClientIsolated {
     required DateTime dateTimeFrom,
     required String chatName,
   }) async {
-    var chat = await _searchPublicChat(chatName: chatName);
+    var chat = await _retrySearchPublicChat(chatName: chatName);
 
     if (chat == null) {
-      _logger.severe('[$chatName] searching public chat failed. '
-          'Received null response from td_json_client.');
       return;
     }
 
-    if (chat is Error) {
-      if (chat.code == 400) {
-        _logger.warning('[$chatName] chat not found.');
-        await _blacklistChat(
-          chatName: chatName,
-          reason: chat.message ?? 'Chat not found.',
-        );
-      } else {
-        _logger.warning('[$chatName] searching public chat failed. '
-            'Code: ${chat.code}. Message: ${chat.message}.');
-      }
+    var chatType = chat.type;
+
+    if (chatType == null) {
+      _logger.severe('[$chatName] searching public chat failed. '
+          'Chat.type is null.');
       return;
+    }
+
+    if (!(chatType is ChatTypeSupergroup)) {
+      _logger.warning('[$chatName] chat type is ${chatType.runtimeType} '
+          'instead of ChatTypeSupergroup.');
+      await _blacklistChat(
+        chatName: chatName,
+        reason: 'Chat.type is not ChatTypeSupergroup.',
+      );
     }
 
     if (chat.id == null) {
@@ -532,24 +538,87 @@ class TelegramClientIsolated {
     }
   }
 
+  Future<Chat?> _retrySearchPublicChat({
+    int retryCountMax = retryCountMax,
+    required String chatName,
+  }) async {
+    Chat? chat;
+
+    var retryCountIndex = 0;
+    while (retryCountIndex <= retryCountMax) {
+      retryCountIndex += 1;
+
+      _logger.info('[$chatName] searching public chat... '
+          'Retry [$retryCountIndex/$retryCountMax].');
+
+      var searchPublicChat = await _searchPublicChat(chatName: chatName);
+
+      if (searchPublicChat is Chat) {
+        chat = searchPublicChat;
+        break;
+      } else if (searchPublicChat is Error) {
+        if (searchPublicChat.code == 400) {
+          _logger.warning('[$chatName] chat not found.');
+          await _blacklistChat(
+            chatName: chatName,
+            reason: searchPublicChat.message ?? 'Chat not found.',
+          );
+          break;
+        } else if (searchPublicChat.code == 402) {
+          _logger.warning('[$chatName] searching public chat failed. '
+              'Code: ${searchPublicChat.code}. '
+              'Message: ${searchPublicChat.message}.');
+
+          var floodWaitSeconds =
+              _getFloodWaitSeconds(floodWaitMessage: searchPublicChat.message);
+          if (floodWaitSeconds == null) {
+            _logger.warning(
+                '[$chatName] could not parse flood wait seconds. Skipping...');
+            break;
+          } else {
+            var delaySeconds = floodWaitSeconds * 2;
+            _logger
+                .warning('[$chatName] retrying after $delaySeconds seconds.');
+            await Future.delayed(Duration(seconds: delaySeconds));
+            continue;
+          }
+        } else if (searchPublicChat.code == 406) {
+          _logger.warning('[$chatName] searching public chat failed. '
+              'Code: ${searchPublicChat.code}');
+          // TODO check https://core.telegram.org/api/errors#406-not-acceptable
+          break;
+        } else {
+          _logger.warning('[$chatName] searching public chat failed. '
+              'Code: ${searchPublicChat.code}. '
+              'Message: ${searchPublicChat.message}.');
+          break;
+        }
+      } else {
+        _logger.severe('[$chatName] searching public chat failed. '
+            'Received ${searchPublicChat.runtimeType} response '
+            'instead of Chat from td_json_client.');
+        break;
+      }
+    }
+
+    _logger.info('[$chatName] searching public chat... done. '
+        'Retry [$retryCountIndex/$retryCountMax].');
+
+    return chat;
+  }
+
   Future<dynamic> _searchPublicChat({
     required String chatName,
   }) async {
-    _logger.info('[$chatName] searching public chat...');
-
     var extra = Uuid().v1();
     _tdSend(SearchPublicChat(
       username: chatName,
       extra: extra,
     ));
 
-    var response = await _tdStreamController.stream
+    return await _tdStreamController.stream
         .where((event) => event.extra == extra)
         .first;
-
-    _logger.info('[$chatName] searching public chat... done.');
-
-    return response;
   }
 
   Future<int?> _searchMessageIdLast({
@@ -774,6 +843,17 @@ class TelegramClientIsolated {
     _logger.info('[$chatName] searching last message id locally... done.');
 
     return response.id;
+  }
+
+  int? _getFloodWaitSeconds({String? floodWaitMessage}) {
+    var floodWaitSeconds;
+
+    if (floodWaitMessage != null) {
+      floodWaitSeconds =
+          int.tryParse(floodWaitMessage.replaceFirst('FLOOD_WAIT_', ''));
+    }
+
+    return floodWaitSeconds;
   }
 }
 
