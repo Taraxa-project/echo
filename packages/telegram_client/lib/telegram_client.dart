@@ -127,9 +127,13 @@ class TelegramClient {
       dateTimeFrom: dateTimeFrom,
       chatsNames: chatsNames,
     ));
-    return await _isolateReceivePortBroadcast
+    TgMsgResponseReadChatHistory response = await _isolateReceivePortBroadcast
         .where((event) => event is TgMsgResponseReadChatHistory)
         .first;
+    if (response.exception != null) {
+      throw response.exception!;
+    }
+    return response;
   }
 }
 
@@ -434,7 +438,11 @@ class TelegramClientIsolated {
     required DateTime datetimeFrom,
     required List<String> chatsNames,
   }) async {
-    await _addChats(usernames: chatsNames);
+    try {
+      await _addChats(usernames: chatsNames);
+    } on DbException catch (ex) {
+      return TgMsgResponseReadChatHistory(ex);
+    }
 
     _logger.info('reading chats history...');
 
@@ -446,9 +454,15 @@ class TelegramClientIsolated {
           dateTimeFrom: datetimeFrom,
           chatName: chatName,
         );
-      } on TgException catch (ex) {
-        _logger.severe('[$chatName] $ex.');
+      } on TgBadRequestException catch (ex) {
+        _logger.warning('[$chatName] $ex.');
+        await _blacklistChat(
+          chatName: chatName,
+          reason: ex.message ?? 'Chat not found.',
+        );
       } on TgFloodWaitMaxRetriesExceededException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on TgException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       }
 
@@ -468,18 +482,7 @@ class TelegramClientIsolated {
     required DateTime dateTimeFrom,
     required String chatName,
   }) async {
-    Chat chat;
-
-    try {
-      chat = await _retrySearchPublicChat(chatName: chatName);
-    } on TgBadRequestException catch (ex) {
-      _logger.warning('[$chatName] $ex.');
-      await _blacklistChat(
-        chatName: chatName,
-        reason: ex.message ?? 'Chat not found.',
-      );
-      return;
-    }
+    var chat = await _retrySearchPublicChat(chatName: chatName);
 
     var chatId = WrapId.unwrapChatId(chat.id);
     if (chatId == null) {
@@ -535,7 +538,7 @@ class TelegramClientIsolated {
     required String chatName,
   }) async {
     var retryCountIndex = 0;
-    while (retryCountIndex <= retryCountMax) {
+    while (retryCountIndex < retryCountMax) {
       retryCountIndex += 1;
 
       _logger.info('[$chatName] searching public chat... '
@@ -578,10 +581,7 @@ class TelegramClientIsolated {
       }
     }
 
-    throw TgFloodWaitMaxRetriesExceededException(
-      'max retries exceded',
-      retryCountMax,
-    );
+    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
   }
 
   Future<dynamic> _searchPublicChat({
@@ -710,9 +710,13 @@ class TelegramClientIsolated {
       replySendPort: receivePort.sendPort,
       usernames: usernames,
     ));
-    await receivePortBroadcast
+    DbMsgResponseAddChats response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseAddChats)
         .first;
+
+    if (response.exception != null) {
+      throw response.exception!;
+    }
 
     _logger.info('adding chats to db... done.');
   }
@@ -823,14 +827,8 @@ class TelegramClientIsolated {
   }
 
   int? _parseFloodWaitSeconds({String? floodWaitMessage}) {
-    var floodWaitSeconds;
-
-    if (floodWaitMessage != null) {
-      floodWaitSeconds =
-          int.tryParse(floodWaitMessage.replaceFirst('FLOOD_WAIT_', ''));
-    }
-
-    return floodWaitSeconds;
+    return int.tryParse(
+        floodWaitMessage?.replaceFirst('FLOOD_WAIT_', '') ?? '');
   }
 
   void _handleTdError(Error error) {
@@ -851,9 +849,7 @@ class TelegramClientIsolated {
         throw TgException('could not parse flood wait seconds: '
             '${error.message}');
       } else {
-        throw TgFloodWaiException(
-          waitSeconds: floodWaitSeconds,
-        );
+        throw TgFloodWaiException(floodWaitSeconds);
       }
     } else if (error.code == 406) {
       throw TgNotExceptableException(
@@ -937,7 +933,12 @@ class TgMsgRequestReadChatsHistory extends TgMsgRequest {
   });
 }
 
-class TgMsgResponseReadChatHistory extends TgMsgResponse {}
+class TgMsgResponseReadChatHistory extends TgMsgResponse {
+  Object? exception;
+  TgMsgResponseReadChatHistory([
+    this.exception,
+  ]);
+}
 
 class TgException implements Exception {
   final String? message;
@@ -1019,9 +1020,9 @@ class TgInternalException implements Exception {
 class TgFloodWaiException implements Exception {
   final int waitSeconds;
 
-  TgFloodWaiException({
-    required this.waitSeconds,
-  });
+  TgFloodWaiException(
+    this.waitSeconds,
+  );
 
   String toString() {
     return "TgFloodWaiException: $waitSeconds";
@@ -1029,22 +1030,13 @@ class TgFloodWaiException implements Exception {
 }
 
 class TgFloodWaitMaxRetriesExceededException implements Exception {
-  final String? message;
-  final int? maxRetries;
+  final int maxRetries;
 
-  TgFloodWaitMaxRetriesExceededException([
-    this.message = '',
-    this.maxRetries = 0,
-  ]);
+  TgFloodWaitMaxRetriesExceededException(
+    this.maxRetries,
+  );
 
   String toString() {
-    var report = "TgMaxRetriesExcedeedException";
-    if (message != null) {
-      report += ': $message';
-    }
-    if (maxRetries != null) {
-      report += ', retried: $maxRetries';
-    }
-    return report;
+    return "TgMaxRetriesExcedeedException: $maxRetries";
   }
 }

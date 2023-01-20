@@ -202,22 +202,28 @@ class DbIsolated {
   }
 
   DbMsgResponseAddChats addChats(List<String> usernames) {
-    final stmt = db?.prepare(
-        'INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
+    try {
+      final stmt = db?.prepare(
+          'INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
 
-    for (var username in usernames) {
-      _logger.fine('adding chat $username...');
-      stmt?.execute([
-        username,
-        DateTime.now().toUtc().toIso8601String(),
-        DateTime.now().toUtc().toIso8601String(),
-      ]);
-      _logger.fine('added chat $username.');
+      for (var username in usernames) {
+        _logger.fine('adding chat $username...');
+        stmt?.execute([
+          username,
+          DateTime.now().toUtc().toIso8601String(),
+          DateTime.now().toUtc().toIso8601String(),
+        ]);
+        _logger.fine('added chat $username.');
+      }
+
+      stmt?.dispose();
+
+      throw DbException('Some exception');
+
+      return DbMsgResponseAddChats();
+    } on DbException catch (ex) {
+      return DbMsgResponseAddChats(ex);
     }
-
-    stmt?.dispose();
-
-    return DbMsgResponseAddChats();
   }
 
   DbMsgResponseUpdateChat updateChat({
@@ -413,7 +419,11 @@ class DbMsgRequestAddChats extends DbMsgRequest {
   });
 }
 
-class DbMsgResponseAddChats extends DbMsgResponse {}
+class DbMsgResponseAddChats extends DbMsgResponse {
+  DbException? exception;
+
+  DbMsgResponseAddChats([this.exception]);
+}
 
 class DbMsgRequestBlacklistChat extends DbMsgRequest {
   final String username;
@@ -475,4 +485,19 @@ class DbMsgResponseAddMessage extends DbMsgResponse {
   DbMsgResponseAddMessage({
     required this.added,
   });
+}
+
+class DbException implements Exception {
+  String? message;
+  DbException([
+    this.message,
+  ]);
+
+  String toString() {
+    var report = 'DbException';
+    if (message != null) {
+      report += ': $message';
+    }
+    return report;
+  }
 }
