@@ -440,10 +440,18 @@ class TelegramClientIsolated {
 
     for (var chatName in chatsNames) {
       _logger.info('[$chatName] reading chat history...');
-      await _readChatHistory(
-        dateTimeFrom: datetimeFrom,
-        chatName: chatName,
-      );
+
+      try {
+        await _readChatHistory(
+          dateTimeFrom: datetimeFrom,
+          chatName: chatName,
+        );
+      } on TgException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on TgFloodWaitMaxRetriesExceededException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      }
+
       _logger.info('[$chatName] reading chat history... done.');
 
       _logger.info('reading chat history... '
@@ -460,34 +468,18 @@ class TelegramClientIsolated {
     required DateTime dateTimeFrom,
     required String chatName,
   }) async {
-    var chat = await _retrySearchPublicChat(chatName: chatName);
+    Chat chat;
 
-    if (chat == null) {
-      return;
-    }
-
-    var chatType = chat.type;
-
-    if (chatType == null) {
-      _logger.severe('[$chatName] searching public chat failed. '
-          'Chat.type is null.');
-      return;
-    }
-
-    if (!(chatType is ChatTypeSupergroup)) {
-      _logger.warning('[$chatName] chat type is ${chatType.runtimeType} '
-          'instead of ChatTypeSupergroup.');
+    try {
+      chat = await _retrySearchPublicChat(chatName: chatName);
+    } on TgBadRequestException catch (ex) {
+      _logger.warning('[$chatName] $ex.');
       await _blacklistChat(
         chatName: chatName,
-        reason: 'Chat.type is not ChatTypeSupergroup.',
+        reason: ex.message ?? 'Chat not found.',
       );
-    }
-
-    if (chat.id == null) {
-      _logger.warning('[$chatName] chat id is null.');
       return;
     }
-    _logger.info('[$chatName] chat id is ${chat.id}.');
 
     var chatId = WrapId.unwrapChatId(chat.id);
     if (chatId == null) {
@@ -538,12 +530,10 @@ class TelegramClientIsolated {
     }
   }
 
-  Future<Chat?> _retrySearchPublicChat({
+  Future<Chat> _retrySearchPublicChat({
     int retryCountMax = retryCountMax,
     required String chatName,
   }) async {
-    Chat? chat;
-
     var retryCountIndex = 0;
     while (retryCountIndex <= retryCountMax) {
       retryCountIndex += 1;
@@ -554,57 +544,44 @@ class TelegramClientIsolated {
       var searchPublicChat = await _searchPublicChat(chatName: chatName);
 
       if (searchPublicChat is Chat) {
-        chat = searchPublicChat;
-        break;
-      } else if (searchPublicChat is Error) {
-        if (searchPublicChat.code == 400) {
-          _logger.warning('[$chatName] chat not found.');
-          await _blacklistChat(
-            chatName: chatName,
-            reason: searchPublicChat.message ?? 'Chat not found.',
-          );
-          break;
-        } else if (searchPublicChat.code == 402) {
-          _logger.warning('[$chatName] searching public chat failed. '
-              'Code: ${searchPublicChat.code}. '
-              'Message: ${searchPublicChat.message}.');
+        _logger.info('[$chatName] received Chat. '
+            'Retry [$retryCountIndex/$retryCountMax].');
 
-          var floodWaitSeconds =
-              _getFloodWaitSeconds(floodWaitMessage: searchPublicChat.message);
-          if (floodWaitSeconds == null) {
-            _logger.warning(
-                '[$chatName] could not parse flood wait seconds. Skipping...');
-            break;
-          } else {
-            var delaySeconds = floodWaitSeconds * 2;
-            _logger
-                .warning('[$chatName] retrying after $delaySeconds seconds.');
-            await Future.delayed(Duration(seconds: delaySeconds));
-            continue;
-          }
-        } else if (searchPublicChat.code == 406) {
-          _logger.warning('[$chatName] searching public chat failed. '
-              'Code: ${searchPublicChat.code}');
-          // TODO check https://core.telegram.org/api/errors#406-not-acceptable
-          break;
-        } else {
-          _logger.warning('[$chatName] searching public chat failed. '
-              'Code: ${searchPublicChat.code}. '
-              'Message: ${searchPublicChat.message}.');
-          break;
+        if (searchPublicChat.id == null) {
+          throw TgException('Chat.id is null');
+        } else if (searchPublicChat.type == null) {
+          throw TgException('Chat.type is null');
+        } else if (!(searchPublicChat.type is ChatTypeSupergroup)) {
+          throw TgBadRequestException('Invalid Chat.type: '
+              '${searchPublicChat.type.runtimeType}');
+        }
+        return searchPublicChat;
+      } else if (searchPublicChat is Error) {
+        _logger.info('[$chatName] received Error. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        try {
+          _handleTdError(searchPublicChat);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
+          await Future.delayed(Duration(seconds: ex.waitSeconds));
+          continue;
         }
       } else {
-        _logger.severe('[$chatName] searching public chat failed. '
-            'Received ${searchPublicChat.runtimeType} response '
-            'instead of Chat from td_json_client.');
-        break;
+        _logger.info('[$chatName] received ${searchPublicChat.runtimeType}. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        throw TgException(
+          'received ${searchPublicChat.runtimeType} response '
+          'instead of Chat from td_json_client',
+        );
       }
     }
 
-    _logger.info('[$chatName] searching public chat... done. '
-        'Retry [$retryCountIndex/$retryCountMax].');
-
-    return chat;
+    throw TgFloodWaitMaxRetriesExceededException(
+      'max retries exceded',
+      retryCountMax,
+    );
   }
 
   Future<dynamic> _searchPublicChat({
@@ -845,7 +822,7 @@ class TelegramClientIsolated {
     return response.id;
   }
 
-  int? _getFloodWaitSeconds({String? floodWaitMessage}) {
+  int? _parseFloodWaitSeconds({String? floodWaitMessage}) {
     var floodWaitSeconds;
 
     if (floodWaitMessage != null) {
@@ -854,6 +831,42 @@ class TelegramClientIsolated {
     }
 
     return floodWaitSeconds;
+  }
+
+  void _handleTdError(Error error) {
+    // TODO handle
+    // 401 UNAUTHORIZED
+    // 403 FORBIDDEN
+    // 404 NOT_FOUND
+    // 500 INTERNAL
+    if (error.code == 400) {
+      throw TgBadRequestException(
+        error.message,
+        error.code,
+      );
+    } else if (error.code == 402) {
+      var floodWaitSeconds =
+          _parseFloodWaitSeconds(floodWaitMessage: error.message);
+      if (floodWaitSeconds == null) {
+        throw TgException('could not parse flood wait seconds: '
+            '${error.message}');
+      } else {
+        throw TgFloodWaiException(
+          waitSeconds: floodWaitSeconds,
+        );
+      }
+    } else if (error.code == 406) {
+      throw TgNotExceptableException(
+        'Handle me: '
+        'https://core.telegram.org/api/errors#406-not-acceptable',
+        error.code,
+      );
+    } else {
+      throw TgInternalException(
+        error.message,
+        error.code,
+      );
+    }
   }
 }
 
@@ -925,3 +938,113 @@ class TgMsgRequestReadChatsHistory extends TgMsgRequest {
 }
 
 class TgMsgResponseReadChatHistory extends TgMsgResponse {}
+
+class TgException implements Exception {
+  final String? message;
+
+  TgException([this.message = '']);
+
+  String toString() {
+    var report = "TgException";
+    if (message != null) {
+      report += ': $message';
+    }
+    return report;
+  }
+}
+
+class TgBadRequestException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgBadRequestException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = "TgBadRequestException";
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
+    }
+    return report;
+  }
+}
+
+class TgNotExceptableException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgNotExceptableException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = "TgNotExceptableException";
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
+    }
+    return report;
+  }
+}
+
+class TgInternalException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgInternalException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = "TgInternalException";
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
+    }
+    return report;
+  }
+}
+
+class TgFloodWaiException implements Exception {
+  final int waitSeconds;
+
+  TgFloodWaiException({
+    required this.waitSeconds,
+  });
+
+  String toString() {
+    return "TgFloodWaiException: $waitSeconds";
+  }
+}
+
+class TgFloodWaitMaxRetriesExceededException implements Exception {
+  final String? message;
+  final int? maxRetries;
+
+  TgFloodWaitMaxRetriesExceededException([
+    this.message = '',
+    this.maxRetries = 0,
+  ]);
+
+  String toString() {
+    var report = "TgMaxRetriesExcedeedException";
+    if (message != null) {
+      report += ': $message';
+    }
+    if (maxRetries != null) {
+      report += ', retried: $maxRetries';
+    }
+    return report;
+  }
+}
