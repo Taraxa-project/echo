@@ -131,18 +131,22 @@ class TelegramClient {
       chatsNames: chatsNames,
     ));
 
-    var response = await _isolateReceivePortBroadcast
+    try {
+      return await _isolateReceivePortBroadcast
         .where((event) => event is TgMsgResponseReadChatHistory)
         .first;
-
-    if (response.exceptionError != null) {
-      _logger.severe('Db Exception error encountered in read chats history, error: ${response.exceptionError}');
-      exit();
-      return response;
-    } else {
-      _logger.info('Read Chats History completed');
-      return response;
+    } on TgDbException {
+      throw TgDbException;
     }
+
+    // if (response.exceptionError != null) {
+    //   _logger.severe('Db Exception error encountered in read chats history, error: ${response.exceptionError}');
+    //   exit();
+    //   return response;
+    // } else {
+    //   _logger.info('Read Chats History completed');
+    //   return response;
+    // }
   }
 }
 
@@ -444,23 +448,32 @@ class TelegramClientIsolated {
     required DateTime datetimeFrom,
     required List<String> chatsNames,
   }) async {
-    var addChatResponse = await _addChats(usernames: chatsNames);
-    
-    if (addChatResponse.exceptionError != null) {
-      return TgMsgResponseReadChatHistory(exceptionError: addChatResponse.exceptionError);
+    try {
+      await _addChats(usernames: chatsNames);
+    } catch (exception) {
+      print('exception ${exception}');
+      throw TgDbException;
     }
+    
+    // if (addChatResponse.exceptionError != null) {
+    //   return TgMsgResponseReadChatHistory(exceptionError: addChatResponse.exceptionError);
+    // }
     _logger.info('reading chats history...');
 
     for (var chatName in chatsNames) {
       _logger.info('[$chatName] reading chat history...');
 
-      var readChatResponse = await _readChatHistory(
+       try {
+        await _readChatHistory(
         dateTimeFrom: datetimeFrom,
         chatName: chatName,
       );
-      if (readChatResponse?.exceptionError != null) {
-        return TgMsgResponseReadChatHistory(exceptionError: readChatResponse?.exceptionError);
-      }
+        } on TgDbException {
+          throw TgDbException;
+        }
+      // if (readChatResponse?.exceptionError != null) {
+      //   return TgMsgResponseReadChatHistory(exceptionError: readChatResponse?.exceptionError);
+      // }
 
       _logger.info('[$chatName] reading chat history... done.');
     }
@@ -672,7 +685,7 @@ class TelegramClientIsolated {
     return response;
   }
 
-  Future<DbMsgResponseAddChats> _addChats({
+  Future<void> _addChats({
     required List<String> usernames,
   }) async {
     _logger.info('adding chats to db...');
@@ -681,16 +694,16 @@ class TelegramClientIsolated {
       replySendPort: receivePort.sendPort,
       usernames: usernames,
     ));
-    var response =  await receivePortBroadcast
+    // var response =  await receivePortBroadcast
+    //     .where((event) => event is DbMsgResponseAddChats)
+    //     .first;
+    try {
+      await receivePortBroadcast
         .where((event) => event is DbMsgResponseAddChats)
         .first;
-      
-    if (response.exceptionError != null) {
-      _logger.info('Db error encountered when executing add Chats');
-    } else {
-      _logger.info('adding chats to db... done.');
+    } on SqliteException catch (exception) {
+      throw TgDbException(exception: exception);
     }
-    return response;
   }
 
   Future<DbMsgResponseUpdateChat> _updateChat({
@@ -859,4 +872,9 @@ class TgMsgResponseReadChatHistory extends TgMsgResponse {
   TgMsgResponseReadChatHistory({
     super.exceptionError
   });
+}
+
+class TgDbException {
+  SqliteException? exception;
+  TgDbException({this.exception});
 }

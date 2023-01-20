@@ -158,8 +158,16 @@ class DbIsolated {
       } else if (message is DbMsgRequestMigrate) {
         message.replySendPort?.send(_migrate());
       } else if (message is DbMsgRequestAddChats) {
-        message.replySendPort?.send(addChats(
-          message.usernames));
+        var response;
+         try{
+          response = addChats(
+          message.usernames);
+        } on DbMsgResponseAddChats{
+          print('caught response');
+        } catch (exception) {
+          print('exception ${exception}');
+        }
+        message.replySendPort?.send(response);
       } else if (message is DbMsgRequestUpdateChat) {
         message.replySendPort?.send(updateChat(
           username: message.username,
@@ -247,10 +255,8 @@ class DbIsolated {
           try{
             for (var username in usernames) {
               _logger.fine('adding chat $username...');
-              //'mal represented query INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
-
               final stmt = db?.prepare(
-                'INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
+                'blabla INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
               stmt?.execute([
                 username,
                 DateTime.now().toUtc().toIso8601String(),
@@ -265,10 +271,10 @@ class DbIsolated {
           if (retry == true) {
             _logger.info("Retry Count: ${count}");
             if (++count == maxTries) {
-              return DbMsgResponseAddChats(exceptionError: err);
+              throw SqliteException;//DbMsgResponseAddChats(exceptionError: err);
             }
           } else {
-            return DbMsgResponseAddChats(exceptionError: err);
+            throw SqliteException;//DbMsgResponseAddChats(exceptionError: err);
           }
         }
     }

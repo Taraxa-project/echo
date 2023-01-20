@@ -53,10 +53,14 @@ class TelegramCommandMessages extends Command {
       readUserPassword: readUserPassword,
     );
 
-    await telegramClient.readChatsHistory(
+    try {
+      await telegramClient.readChatsHistory(
       dateTimeFrom: computeTwoWeeksAgo(),
       chatsNames: getChatsNames(),
     );
+    } on TgDbException {
+      print('exception founr in DB operation ${TgDbException}');
+    }
 
     await telegramClient.exit();
     await Future.delayed( Duration(seconds: 2));
