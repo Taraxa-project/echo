@@ -499,7 +499,7 @@ class TelegramClientIsolated {
     
     var messageIdLast;
     try {
-      var messageIdLast = await _searchMessageIdLast(
+      messageIdLast = await _searchMessageIdLast(
         datetimeFrom: dateTimeFrom,
         chatName: chatName,
         chatId: chatId,
@@ -694,13 +694,6 @@ class TelegramClientIsolated {
     if (response.exception != null) {
       throw TgDbException(exception: response.exception);
     }
-    // try {
-    //   await receivePortBroadcast
-    //     .where((event) => event is DbMsgResponseAddChats)
-    //     .first;
-    // } on SqliteException catch (exception) {
-    //   throw TgDbException(exception: exception);
-    // }
   }
 
   Future<void> _updateChat({

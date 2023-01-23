@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:sqlite3/sqlite3.dart';
-
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
 import 'package:echo_cli/callback/cli.dart';
@@ -15,6 +13,7 @@ class TelegramCommandMessages extends Command {
 
   void run() async {
     hierarchicalLoggingEnabled = true;
+    var exception = false;
 
     var logLevel = getLogLevel();
     var logLevelLibTdJson = getLogLevelLibtdjson();
@@ -32,14 +31,19 @@ class TelegramCommandMessages extends Command {
       await db.open();
     } on Exception catch (dbException) {
       print("Opening Db resulted in exception: \n ${dbException}");
+      exception = true;
     }
 
     try {
-      await db.migrate();
+      if (!exception) {
+        await db.migrate();
+      }
     } on Exception catch (dbException) {
       print("Migrating Db resulted in exception: \n ${dbException}");
+      exception = true;
     }
 
+    
     final telegramClient = TelegramClient(
       logLevel: logLevel,
       logLevelLibTdJson: logLevelLibTdJson,
@@ -51,30 +55,32 @@ class TelegramCommandMessages extends Command {
       tdReceiveWaitTimeout: 0.005,
       tdReceiveFrequency: const Duration(milliseconds: 10),
     );
-
-    await telegramClient.login(
-      apiId: int.parse(globalResults!['api-id']),
-      apiHash: globalResults!['api-hash'],
-      phoneNumber: globalResults!['phone-number'],
-      databasePath: globalResults!['database-path'],
-      readTelegramCode: readTelegramCode,
-      writeQrCodeLink: writeQrCodeLink,
-      readUserFirstName: readUserFirstName,
-      readUserLastName: readUserLastName,
-      readUserPassword: readUserPassword,
-    );
+    if (!exception) {
+      await telegramClient.login(
+        apiId: int.parse(globalResults!['api-id']),
+        apiHash: globalResults!['api-hash'],
+        phoneNumber: globalResults!['phone-number'],
+        databasePath: globalResults!['database-path'],
+        readTelegramCode: readTelegramCode,
+        writeQrCodeLink: writeQrCodeLink,
+        readUserFirstName: readUserFirstName,
+        readUserLastName: readUserLastName,
+        readUserPassword: readUserPassword,
+      );
+    }
 
     try {
-      await telegramClient.readChatsHistory(
-      dateTimeFrom: computeTwoWeeksAgo(),
-      chatsNames: getChatsNames(),
-      );
-    } on Exception catch(tbException){
-      print('Read chats history resulted in Exception: \n ${tbException}');
+      if (!exception) {
+        await telegramClient.readChatsHistory(
+        dateTimeFrom: computeTwoWeeksAgo(),
+        chatsNames: getChatsNames(),
+        );
+      }
+    } on Exception catch(tgException){
+      print('Read chats history resulted in Exception: \n ${tgException}');
     }
 
     await telegramClient.exit();
-    await Future.delayed( Duration(seconds: 2));
     await db.exit();
     await log.exit();
   }
