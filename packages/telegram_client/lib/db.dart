@@ -68,7 +68,7 @@ class Db {
 
     var response = await _isolateReceivePortBroadcast.where((event) => event is DbMsgResponseOpen).first;
     
-    if (response.exceptionError != null) {
+    if (response.exception != null) {
       exit();
     }
     else {
@@ -92,8 +92,8 @@ class Db {
     ));
     var response = await _isolateReceivePortBroadcast.where((event) => event is DbMsgResponseMigrate).first;
     
-    if (response.exceptionError != null) {
-      _logger.severe('there is an exception error in migrate: ${response.exceptionError}');
+    if (response.exception != null) {
+      _logger.severe('there is an exception error in migrate: ${response.exception}');
       exit();
     }
     else {
@@ -158,16 +158,8 @@ class DbIsolated {
       } else if (message is DbMsgRequestMigrate) {
         message.replySendPort?.send(_migrate());
       } else if (message is DbMsgRequestAddChats) {
-        var response;
-         try{
-          response = addChats(
-          message.usernames);
-        } on DbMsgResponseAddChats{
-          print('caught response');
-        } catch (exception) {
-          print('exception ${exception}');
-        }
-        message.replySendPort?.send(response);
+        message.replySendPort?.send(addChats(
+          message.usernames));
       } else if (message is DbMsgRequestUpdateChat) {
         message.replySendPort?.send(updateChat(
           username: message.username,
@@ -196,13 +188,13 @@ class DbIsolated {
         db = sqlite3.open(this.dbPath);
         _logger.fine('opened.');
         return DbMsgResponseOpen();
-        } on SqliteException catch  (err) {
-          var retry = dbErrorHandler(err);
+        } on SqliteException catch  (exception) {
+          var retry = dbErrorHandler(exception);
           if (retry == true) {
             _logger.info("Retry Count: ${count}");
-            if (++count == maxTries) return DbMsgResponseOpen(exceptionError: err);
+            if (++count == maxTries) return DbMsgResponseOpen(exception: exception);
           } else {
-            return DbMsgResponseOpen(exceptionError: err);
+            return DbMsgResponseOpen(exception: exception);
           }
         }
     }
@@ -233,15 +225,15 @@ class DbIsolated {
         }
         _logger.fine('running migrations... done.');
         return DbMsgResponseMigrate();
-        } on SqliteException catch  (err) {
-          var retry = dbErrorHandler(err);
+        } on SqliteException catch  (exception) {
+          var retry = dbErrorHandler(exception);
           if (retry == true) {
             _logger.info("Retry Count: ${count}");
             if (++count == maxTries) {
-              return DbMsgResponseMigrate(exceptionError: err);
+              return DbMsgResponseMigrate(exception: exception);
             }
           } else {
-            return DbMsgResponseMigrate(exceptionError: err);
+            return DbMsgResponseMigrate(exception: exception);
           }
         }
     }
@@ -256,7 +248,7 @@ class DbIsolated {
             for (var username in usernames) {
               _logger.fine('adding chat $username...');
               final stmt = db?.prepare(
-                'blabla INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
+                'INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
               stmt?.execute([
                 username,
                 DateTime.now().toUtc().toIso8601String(),
@@ -266,15 +258,15 @@ class DbIsolated {
               stmt?.dispose();
             }
             return DbMsgResponseAddChats();
-        } on SqliteException catch  (err) {
-          var retry = dbErrorHandler(err);
+        } on SqliteException catch  (exception) {
+          var retry = dbErrorHandler(exception);
           if (retry == true) {
             _logger.info("Retry Count: ${count}");
             if (++count == maxTries) {
-              throw SqliteException;//DbMsgResponseAddChats(exceptionError: err);
+              return DbMsgResponseAddChats(exception: exception);
             }
           } else {
-            throw SqliteException;//DbMsgResponseAddChats(exceptionError: err);
+            return DbMsgResponseAddChats(exception: exception);
           }
         }
     }
@@ -307,15 +299,15 @@ class DbIsolated {
         stmt?.dispose();
 
         return DbMsgResponseUpdateChat();
-      } on SqliteException catch  (err) {
-        var retry = dbErrorHandler(err);
+      } on SqliteException catch  (exception) {
+        var retry = dbErrorHandler(exception);
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
-            return DbMsgResponseUpdateChat(exceptionError: err);
+            return DbMsgResponseUpdateChat(exception: exception);
           }
         } else {
-          return DbMsgResponseUpdateChat(exceptionError: err);
+          return DbMsgResponseUpdateChat(exception: exception);
         }
       }
     }
@@ -349,15 +341,15 @@ class DbIsolated {
         return DbMsgResponseSelectMaxMessageId(
           id: id,
         );
-      } on SqliteException catch  (err) {
-        var retry = dbErrorHandler(err);
+      } on SqliteException catch  (exception) {
+        var retry = dbErrorHandler(exception);
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
-            return DbMsgResponseSelectMaxMessageId(id: null, exceptionError: err);
+            return DbMsgResponseSelectMaxMessageId(id: null, exception: exception);
           }
         } else {
-          return DbMsgResponseSelectMaxMessageId(id: null,exceptionError: err);
+          return DbMsgResponseSelectMaxMessageId(id: null,exception: exception);
         }
       }
     }
@@ -535,9 +527,9 @@ abstract class DbMsgRequest extends DbMsg {
 }
 
 abstract class DbMsgResponse extends DbMsg {
-  final SqliteException? exceptionError;
+  final SqliteException? exception;
   DbMsgResponse({
-    this.exceptionError
+    this.exception
   });
 }
 
@@ -549,7 +541,7 @@ class DbMsgRequestOpen extends DbMsgRequest {
 
 class DbMsgResponseOpen extends DbMsgResponse {
   DbMsgResponseOpen({
-    super.exceptionError,
+    super.exception,
   });
 }
 
@@ -569,7 +561,7 @@ class DbMsgRequestMigrate extends DbMsgRequest {
 
 class DbMsgResponseMigrate extends DbMsgResponse {
   DbMsgResponseMigrate({
-    super.exceptionError
+    super.exception
   });
 }
 
@@ -584,7 +576,7 @@ class DbMsgRequestAddChats extends DbMsgRequest {
 
 class DbMsgResponseAddChats extends DbMsgResponse {
   DbMsgResponseAddChats({
-    super.exceptionError
+    super.exception
   });
 }
 
@@ -600,7 +592,7 @@ class DbMsgRequestUpdateChat extends DbMsgRequest {
 }
 
 class DbMsgResponseUpdateChat extends DbMsgResponse {
-  DbMsgResponseUpdateChat({super.exceptionError});
+  DbMsgResponseUpdateChat({super.exception});
 }
 
 class DbMsgRequestSelectMaxMessageId extends DbMsgRequest {
@@ -619,7 +611,7 @@ class DbMsgResponseSelectMaxMessageId extends DbMsgResponse {
 
   DbMsgResponseSelectMaxMessageId({
     required this.id,
-    super.exceptionError
+    super.exception
   });
 }
 

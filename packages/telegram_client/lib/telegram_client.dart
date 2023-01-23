@@ -131,22 +131,14 @@ class TelegramClient {
       chatsNames: chatsNames,
     ));
 
-    try {
-      return await _isolateReceivePortBroadcast
+    TgMsgResponseReadChatHistory response = await _isolateReceivePortBroadcast
         .where((event) => event is TgMsgResponseReadChatHistory)
         .first;
-    } on TgDbException {
-      throw TgDbException;
+    
+    if (response.exception != null) {
+     throw response.exception! ;
     }
-
-    // if (response.exceptionError != null) {
-    //   _logger.severe('Db Exception error encountered in read chats history, error: ${response.exceptionError}');
-    //   exit();
-    //   return response;
-    // } else {
-    //   _logger.info('Read Chats History completed');
-    //   return response;
-    // }
+    return response;
   }
 }
 
@@ -450,83 +442,78 @@ class TelegramClientIsolated {
   }) async {
     try {
       await _addChats(usernames: chatsNames);
-    } catch (exception) {
-      print('exception ${exception}');
-      throw TgDbException;
+    } on TgDbException catch (dbException) {
+      return TgMsgResponseReadChatHistory(exception: dbException.exception);
     }
     
-    // if (addChatResponse.exceptionError != null) {
-    //   return TgMsgResponseReadChatHistory(exceptionError: addChatResponse.exceptionError);
-    // }
     _logger.info('reading chats history...');
 
     for (var chatName in chatsNames) {
       _logger.info('[$chatName] reading chat history...');
 
-       try {
+      try {
         await _readChatHistory(
         dateTimeFrom: datetimeFrom,
         chatName: chatName,
       );
-        } on TgDbException {
-          throw TgDbException;
-        }
-      // if (readChatResponse?.exceptionError != null) {
-      //   return TgMsgResponseReadChatHistory(exceptionError: readChatResponse?.exceptionError);
-      // }
+      } on TgDbException catch (dbException) {
+        return TgMsgResponseReadChatHistory(exception: dbException.exception);
+      }
 
       _logger.info('[$chatName] reading chat history... done.');
     }
     return TgMsgResponseReadChatHistory();
   }
 
-  Future<DbMsgResponse?> _readChatHistory({
+  Future<void> _readChatHistory({
     required DateTime dateTimeFrom,
     required String chatName,
   }) async {
     var chat = await _searchPublicChat(chatName: chatName);
 
     if (chat == null) {
-      return DbMsgResponseUpdateChat();
+      return;
     }
 
     if (chat.id == null) {
       _logger.warning('[$chatName] chat id is null.');
-      return DbMsgResponseUpdateChat();
+      return;
     }
     _logger.info('[$chatName] chat id is ${chat.id}.');
 
     var chatId = WrapId.unwrapChatId(chat.id);
     if (chatId == null) {
       _logger.warning('[$chatName] could not unwrap ${chat.id}.');
-      return DbMsgResponseUpdateChat();
+      return;
     }
     _logger.info('[$chatName] unwrapped chat id is $chatId.');
 
-    var updateChatResponse = await _updateChat(
+    try {
+      await _updateChat(
       chatName: chatName,
       chat: chat,
     );
-    if (updateChatResponse.exceptionError != null){
-      return updateChatResponse;
+    } on TgDbException catch (dbException) {
+      throw  dbException;
     }
     
-    var searchMessageIdLastResponse = await _searchMessageIdLast(
-      datetimeFrom: dateTimeFrom,
-      chatName: chatName,
-      chatId: chatId,
-    );
-    if (searchMessageIdLastResponse.exceptionError != null) {
-      return searchMessageIdLastResponse;
+    var messageIdLast;
+    try {
+      var messageIdLast = await _searchMessageIdLast(
+        datetimeFrom: dateTimeFrom,
+        chatName: chatName,
+        chatId: chatId,
+      );
+    } on TgDbException catch (dbException) {
+      throw dbException;
     }
-    var messsageIdLast = searchMessageIdLastResponse.id;
 
-    if (messsageIdLast == null) {
-      messsageIdLast = 0;
+    if (messageIdLast == null) {
+      messageIdLast = 0;
     }
 
     while (true) {
-      var messageIdFrom = messsageIdLast! + 1;
+      var messageIdFrom = messageIdLast! + 1;
 
       var messages = await _getChatHistory(
         chatName: chatName,
@@ -540,13 +527,17 @@ class TelegramClientIsolated {
         break;
       }
 
-      messsageIdLast = await _saveMessages(
-        chatName: chatName,
-        chatId: chatId,
-        messages: messages,
-      );
+      try {
+        messageIdLast = await _saveMessages(
+          chatName: chatName,
+          chatId: chatId,
+          messages: messages,
+        );
+      } on TgDbException catch (dbException) {
+        throw dbException;
+      }
 
-      if (messsageIdLast == null) {
+      if (messageIdLast == null) {
         break;
       }
     }
@@ -581,7 +572,7 @@ class TelegramClientIsolated {
     return chat;
   }
 
-  Future<DbMsgResponseSelectMaxMessageId> _searchMessageIdLast({
+  Future<int?> _searchMessageIdLast({
     required DateTime datetimeFrom,
     required String chatName,
     required int chatId,
@@ -589,25 +580,27 @@ class TelegramClientIsolated {
     _logger.info('[$chatName] searching last message by date...');
 
     var messageIdLast;
-
-    var searchMessageIdLastResponse = await _searchMessageIdLastLocally(
+    try {
+      messageIdLast = await _searchMessageIdLastLocally(
       dateTimeFrom: datetimeFrom,
       chatName: chatName,
       chatId: chatId,
     );
+    } on TgDbException catch (dbException) {
+      throw dbException;
+    }
 
-    if (searchMessageIdLastResponse.id == null) {
+    if (messageIdLast == null) {
       messageIdLast = await _getChatMessageByDate(
         datetimeFrom: datetimeFrom,
         chatName: chatName,
         chatId: chatId,
       );
-      searchMessageIdLastResponse.id = messageIdLast;
     }
 
     _logger.info('[$chatName] searching last message by date... done.');
 
-    return searchMessageIdLastResponse;
+    return messageIdLast;
   }
 
   Future<int?> _getChatMessageByDate({
@@ -694,19 +687,23 @@ class TelegramClientIsolated {
       replySendPort: receivePort.sendPort,
       usernames: usernames,
     ));
-    // var response =  await receivePortBroadcast
-    //     .where((event) => event is DbMsgResponseAddChats)
-    //     .first;
-    try {
-      await receivePortBroadcast
+    var response =  await receivePortBroadcast
         .where((event) => event is DbMsgResponseAddChats)
         .first;
-    } on SqliteException catch (exception) {
-      throw TgDbException(exception: exception);
+      
+    if (response.exception != null) {
+      throw TgDbException(exception: response.exception);
     }
+    // try {
+    //   await receivePortBroadcast
+    //     .where((event) => event is DbMsgResponseAddChats)
+    //     .first;
+    // } on SqliteException catch (exception) {
+    //   throw TgDbException(exception: exception);
+    // }
   }
 
-  Future<DbMsgResponseUpdateChat> _updateChat({
+  Future<void> _updateChat({
     required String chatName,
     required Chat chat,
   }) async {
@@ -721,8 +718,10 @@ class TelegramClientIsolated {
         .where((event) => event is DbMsgResponseUpdateChat)
         .first;
 
+    if (response.exception != null) {
+      throw TgDbException(exception: response.exception);
+    }
     _logger.info('[$chatName] updating chat in db... done.');
-    return response;
   }
 
   Future<int?> _saveMessages({
@@ -744,8 +743,10 @@ class TelegramClientIsolated {
       var response = await receivePortBroadcast
           .where((event) => event is DbMsgResponseAddMessage)
           .first;
-
-      if (response.added) {
+        
+      if (response.exception != null) {
+        throw TgDbException(exception: response.exception);
+      } else if (response.added) {
         messageCount += 1;
       }
 
@@ -764,7 +765,7 @@ class TelegramClientIsolated {
     return messageIdLast;
   }
 
-  Future<DbMsgResponseSelectMaxMessageId> _searchMessageIdLastLocally({
+  Future<int?> _searchMessageIdLastLocally({
     required DateTime dateTimeFrom,
     required String chatName,
     required int chatId,
@@ -780,11 +781,13 @@ class TelegramClientIsolated {
         .where((event) => event is DbMsgResponseSelectMaxMessageId)
         .first;
 
-    if (response.id == null) {
+    if (response.exception != null) {
+      _logger.info('[_searchMessageIdLastLocally] experienced Db error');
+      throw TgDbException(exception: response.exception);
+    }
+    else if (response.id == null) {
       _logger.info('[$chatName] searching last message id locally... '
           'not found.');
-    } else if (response.exceptionError != null) {
-      _logger.info('[_searchMessageIdLastLocally] experienced Db error');
     } else {
       _logger.info('[$chatName] searching last message id locally... '
           'found ${response.id}.');
@@ -792,7 +795,7 @@ class TelegramClientIsolated {
 
     _logger.info('[$chatName] searching last message id locally... done.');
 
-    return response;
+    return response.id;
   }
 }
 
@@ -806,9 +809,9 @@ abstract class TgMsgRequest extends TgMsg {
 }
 
 abstract class TgMsgResponse extends TgMsg {
-  final SqliteException? exceptionError;
+  final SqliteException? exception;
   TgMsgResponse({
-    this.exceptionError
+    this.exception
   });
 }
 
@@ -870,7 +873,7 @@ class TgMsgRequestReadChatsHistory extends TgMsgRequest {
 
 class TgMsgResponseReadChatHistory extends TgMsgResponse {
   TgMsgResponseReadChatHistory({
-    super.exceptionError
+    super.exception
   });
 }
 

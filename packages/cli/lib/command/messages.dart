@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:sqlite3/sqlite3.dart';
 
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
@@ -26,8 +27,18 @@ class TelegramCommandMessages extends Command {
       log: log,
       dbPath: globalResults!['message-database-path'],
     );
-    await db.open();
-    await db.migrate();
+    
+    try {
+      await db.open();
+    } on Exception catch (dbException) {
+      print("Opening Db resulted in exception: \n ${dbException}");
+    }
+
+    try {
+      await db.migrate();
+    } on Exception catch (dbException) {
+      print("Migrating Db resulted in exception: \n ${dbException}");
+    }
 
     final telegramClient = TelegramClient(
       logLevel: logLevel,
@@ -57,9 +68,9 @@ class TelegramCommandMessages extends Command {
       await telegramClient.readChatsHistory(
       dateTimeFrom: computeTwoWeeksAgo(),
       chatsNames: getChatsNames(),
-    );
-    } on TgDbException {
-      print('exception founr in DB operation ${TgDbException}');
+      );
+    } on Exception catch(tbException){
+      print('Read chats history resulted in Exception: \n ${tbException}');
     }
 
     await telegramClient.exit();
