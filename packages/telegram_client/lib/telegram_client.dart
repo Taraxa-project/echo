@@ -270,7 +270,7 @@ class TelegramClientIsolated {
     replySendPort?.send(TgMsgResponseExit());
 
     await Future.delayed(const Duration(milliseconds: 10));
-    _logger.info('closing tg isolate port');
+    _logger.fine('closing tg isolate port');
     receivePort.close();
     Isolate.exit();
   }
@@ -488,25 +488,16 @@ class TelegramClientIsolated {
     }
     _logger.info('[$chatName] unwrapped chat id is $chatId.');
 
-    try {
-      await _updateChat(
+    await _updateChat(
       chatName: chatName,
       chat: chat,
     );
-    } on TgDbException catch (dbException) {
-      throw  dbException;
-    }
     
-    var messageIdLast;
-    try {
-      messageIdLast = await _searchMessageIdLast(
+    var messageIdLast = await _searchMessageIdLast(
         datetimeFrom: dateTimeFrom,
         chatName: chatName,
         chatId: chatId,
       );
-    } on TgDbException catch (dbException) {
-      throw dbException;
-    }
 
     if (messageIdLast == null) {
       messageIdLast = 0;
@@ -527,15 +518,11 @@ class TelegramClientIsolated {
         break;
       }
 
-      try {
-        messageIdLast = await _saveMessages(
-          chatName: chatName,
-          chatId: chatId,
-          messages: messages,
-        );
-      } on TgDbException catch (dbException) {
-        throw dbException;
-      }
+      messageIdLast = await _saveMessages(
+        chatName: chatName,
+        chatId: chatId,
+        messages: messages,
+      );
 
       if (messageIdLast == null) {
         break;
@@ -579,16 +566,11 @@ class TelegramClientIsolated {
   }) async {
     _logger.info('[$chatName] searching last message by date...');
 
-    var messageIdLast;
-    try {
-      messageIdLast = await _searchMessageIdLastLocally(
+    var messageIdLast = await _searchMessageIdLastLocally(
       dateTimeFrom: datetimeFrom,
       chatName: chatName,
       chatId: chatId,
     );
-    } on TgDbException catch (dbException) {
-      throw dbException;
-    }
 
     if (messageIdLast == null) {
       messageIdLast = await _getChatMessageByDate(
@@ -775,7 +757,7 @@ class TelegramClientIsolated {
         .first;
 
     if (response.exception != null) {
-      _logger.info('[_searchMessageIdLastLocally] experienced Db error');
+      _logger.info('[_searchMessageIdLastLocally] db error occured');
       throw TgDbException(exception: response.exception);
     }
     else if (response.id == null) {

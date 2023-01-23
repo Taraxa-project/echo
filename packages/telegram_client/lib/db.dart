@@ -122,6 +122,8 @@ class DbIsolated {
   final String dbPath;
   Database? db;
 
+  static const maxTries = 3;
+
   DbIsolated({
     required this.parentSendPort,
     required this.logSendPort,
@@ -179,7 +181,7 @@ class DbIsolated {
       _logger.fine('opening...');
       db = sqlite3.open(this.dbPath);
       _logger.fine('opened.');
-      return DbMsgResponseOpen(exception: SqliteException(0, "testing", "['explanation', 'causing statment']"));
+      return DbMsgResponseOpen();//exception: SqliteException(0, "testing", "['explanation', 'causing statment']"));
       } on SqliteException catch  (exception) {
         const operationName = "Open DB";
         dbErrorHandler(exception, operationName);
@@ -216,7 +218,6 @@ class DbIsolated {
   }
 
   DbMsgResponseAddChats? addChats(List<String> usernames) {
-    var maxTries = 3;
     var retry = true;
     var count = 0;
     while(retry) {
@@ -253,8 +254,6 @@ class DbIsolated {
     required String username,
     required Chat chat,
   }) {
-
-    var maxTries = 3;
     var retry = true;
     var count = 0;
     while(retry) {
@@ -295,7 +294,6 @@ class DbIsolated {
     required int chatId,
     required DateTime dateTimeFrom,
   }) {
-    var maxTries = 3;
     var retry = true;
     var count = 0;
     while(retry) {
@@ -317,7 +315,7 @@ class DbIsolated {
         }
 
         return DbMsgResponseSelectMaxMessageId(
-          id: id,
+          id: id
         );
       } on SqliteException catch  (exception) {
         const operationName = 'Select Max Message Id';
@@ -343,8 +341,6 @@ class DbIsolated {
         added: false,
       );
     }
-
-    var maxTries = 3;
     var retry = true;
     var count = 0;
     while(retry) {
@@ -370,7 +366,7 @@ class DbIsolated {
         }
 
         stmt?.execute([
-          WrapId.unwrapChatId(0000000),//message.chat_id),
+          WrapId.unwrapChatId(message.chat_id),
           WrapId.unwrapMessageId(message.id),
           DateTime.fromMillisecondsSinceEpoch(message.date! * 1000)
               .toUtc()
@@ -383,7 +379,7 @@ class DbIsolated {
         stmt?.dispose();
 
         return DbMsgResponseAddMessage(
-          added: true,
+          added: true
         );
       } on SqliteException catch  (exception) {
         const operationName = "Adding Message";
