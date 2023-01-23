@@ -721,9 +721,9 @@ class TelegramClientIsolated {
         
       if (response.exception != null) {
         throw TgDbException(exception: response.exception);
-      } else if (response.added) {
-        messageCount += 1;
-      }
+      } 
+
+      messageCount += 1;
 
       var messageId = WrapId.unwrapMessageId(message.id);
       if (messageId != null) {
