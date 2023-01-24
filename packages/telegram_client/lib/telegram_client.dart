@@ -524,8 +524,59 @@ class TelegramClientIsolated {
         messages: messages,
       );
 
+      await _saveUsers (
+        chatName: chatName,
+        chatId: chatId,
+        messages: messages
+      );
+
+
       if (messageIdLast == null) {
         break;
+      }
+    }
+  }
+
+  Future<void> _addUser({required int user_id, required Message message}) async {
+    dbSendPort.send(DbMsgRequestAddUser(
+          replySendPort: receivePort.sendPort,
+          user_id: user_id,
+          message: message
+        ));
+    var response = await receivePortBroadcast
+        .where((event) => event is DbMsgResponseAddUser)
+        .first;
+    _logger.fine('[$user_id] added user to user table.');
+  }
+
+  Future<void> _saveUsers({
+    required String chatName,
+    required int chatId,
+    required Messages messages,
+  }) async {
+    _logger.info('[$chatName] saving users...');
+
+    for (Message message in messages.messages!) {
+      var userId = null;
+
+      if (message.sender_id != null &&
+          message.sender_id.runtimeType == MessageSenderUser) {
+        userId = (message.sender_id as MessageSenderUser).user_id;
+      }
+
+      if (userId != null){
+        //ask 
+        dbSendPort.send(DbMsgRequestUserExist(
+          replySendPort: receivePort.sendPort,
+          user_id: userId,
+        ));
+        var response = await receivePortBroadcast
+            .where((event) => event is DbMsgResponseUserExist)
+            .first;
+
+        if (!response.exists) {
+          await _addUser(user_id: userId, message: message);
+        }
       }
     }
   }

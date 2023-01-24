@@ -172,6 +172,15 @@ class DbIsolated {
         message.replySendPort?.send(addMessage(
           message: message.message,
         ));
+      } else if (message is DbMsgRequestUserExist) {
+        message.replySendPort?.send(checkUserExists(
+          user_id: message.user_id 
+        ));
+      } else if (message is DbMsgRequestAddUser) {
+        message.replySendPort?.send(addUser(
+          user_id: message.user_id,
+          message: message.message
+        ));
       }
     });
   }
@@ -396,6 +405,51 @@ class DbIsolated {
     }
   }
 
+  DbMsgResponseUserExist? checkUserExists({required int user_id}) {
+    _logger.fine('Checking if user_id exists in users  $user_id...');
+
+    final ResultSet? resultSet = db?.select(
+      'SELECT user_id FROM user WHERE user_id = ?;', [
+      user_id
+    ]);
+
+    int? user_id_found;
+    if (resultSet != null && resultSet.isNotEmpty) {
+      user_id_found = resultSet.first['user_id'];
+      _logger.fine('found user_id $user_id.');
+      return DbMsgResponseUserExist(
+        exists: true,
+      );
+    } else {
+      _logger.fine('did not find user_id $user_id.');
+      return DbMsgResponseUserExist(
+        exists: false,
+      );
+    }
+  }
+
+  DbMsgResponseAddUser addUser({required int user_id, required Message message}) {
+    _logger.fine('Adding new user  $user_id...');
+    final sql = """
+      INSERT INTO user (user_id, first_name, last_name, username, bot, verified, scam, fake)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
+      """;
+    final stmt = db?.prepare(sql);
+    stmt?.execute([
+          user_id,
+          null,
+          null,
+          null,
+          false,
+          false,
+          false,
+          false
+        ]);
+    stmt?.dispose();
+    _logger.fine('User $user_id added');
+    return DbMsgResponseAddUser();
+  }
+
   List<String> sqlInit() {
     return [
       """
@@ -416,6 +470,19 @@ class DbIsolated {
       text TEXT,
       created_at TEXT,
       updated_at TEXT
+    );
+    """,
+     """
+    CREATE TABLE IF NOT EXISTS user (
+      id INTEGER NOT NULL PRIMARY KEY,
+      user_id INTEGER UNIQUE NOT NULL,
+      first_name STRING,
+      last_name STRING,
+      username STRING,
+      bot BOOLEAN,
+      verified BOOLEAN,
+      scam BOOLEAN,
+      fake BOOLEAN
     );
     """,
       """
@@ -624,3 +691,33 @@ class DbMsgResponseAddMessage extends DbMsgResponse {
     super.exception
   });
 }
+
+class DbMsgRequestUserExist extends DbMsgRequest {
+  final int user_id;
+
+  DbMsgRequestUserExist({
+    super.replySendPort,
+    required this.user_id,
+  });
+}
+
+class DbMsgResponseUserExist extends DbMsgResponse {
+  final bool exists;
+
+  DbMsgResponseUserExist({
+    required this.exists,
+  });
+}
+
+class DbMsgRequestAddUser extends DbMsgRequest {
+  final int user_id;
+  final Message message;
+
+  DbMsgRequestAddUser({
+    super.replySendPort,
+    required this.user_id,
+    required this.message
+  });
+}
+
+class DbMsgResponseAddUser extends DbMsgResponse {}
