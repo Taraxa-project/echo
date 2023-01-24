@@ -1,4 +1,5 @@
 import 'dart:isolate';
+import 'package:collection/collection.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:logging/logging.dart';
 import 'package:telegram_client/log.dart';
@@ -179,7 +180,7 @@ class DbIsolated {
       } else if (message is DbMsgRequestAddUser) {
         message.replySendPort?.send(addUser(
           user_id: message.user_id,
-          message: message.message
+          user: message.user
         ));
       }
     });
@@ -428,7 +429,7 @@ class DbIsolated {
     }
   }
 
-  DbMsgResponseAddUser addUser({required int user_id, required Message message}) {
+  DbMsgResponseAddUser addUser({required int user_id, required User user}) {
     _logger.fine('Adding new user  $user_id...');
     final sql = """
       INSERT INTO user (user_id, first_name, last_name, username, bot, verified, scam, fake)
@@ -437,13 +438,13 @@ class DbIsolated {
     final stmt = db?.prepare(sql);
     stmt?.execute([
           user_id,
-          null,
-          null,
-          null,
-          false,
-          false,
-          false,
-          false
+          user.first_name != null ? user.first_name : null,
+          user.last_name != null ? user.last_name : null,
+          user.usernames?.active_usernames?.firstOrNull!,
+          user.type is UserTypeBot ? true : false,
+          user.is_verified != null ? user.is_verified : false,
+          user.is_scam != null ? user.is_scam : false,
+          user.is_fake != null ? user.is_fake : false,
         ]);
     stmt?.dispose();
     _logger.fine('User $user_id added');
@@ -711,12 +712,12 @@ class DbMsgResponseUserExist extends DbMsgResponse {
 
 class DbMsgRequestAddUser extends DbMsgRequest {
   final int user_id;
-  final Message message;
+  final User user;
 
   DbMsgRequestAddUser({
     super.replySendPort,
     required this.user_id,
-    required this.message
+    required this.user
   });
 }
 

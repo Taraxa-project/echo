@@ -537,11 +537,11 @@ class TelegramClientIsolated {
     }
   }
 
-  Future<void> _addUser({required int user_id, required Message message}) async {
+  Future<void> _addUser({required int user_id, required User user}) async {
     dbSendPort.send(DbMsgRequestAddUser(
           replySendPort: receivePort.sendPort,
           user_id: user_id,
-          message: message
+          user: user
         ));
     var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseAddUser)
@@ -554,7 +554,7 @@ class TelegramClientIsolated {
     required int chatId,
     required Messages messages,
   }) async {
-    _logger.info('[$chatName] saving users...');
+    _logger.fine('[$chatName] saving users...');
 
     for (Message message in messages.messages!) {
       var userId = null;
@@ -565,7 +565,6 @@ class TelegramClientIsolated {
       }
 
       if (userId != null){
-        //ask 
         dbSendPort.send(DbMsgRequestUserExist(
           replySendPort: receivePort.sendPort,
           user_id: userId,
@@ -574,12 +573,43 @@ class TelegramClientIsolated {
             .where((event) => event is DbMsgResponseUserExist)
             .first;
 
+        var user = await _getUser(user_id: userId);
+
         if (!response.exists) {
-          await _addUser(user_id: userId, message: message);
+          await _addUser(user_id: userId, user: user);
         }
       }
     }
   }
+
+  Future<User> _getUser({required int user_id}) async {
+    _logger.fine('[$user_id] get info about user...');
+
+    var extra = Uuid().v1();
+    _tdSend(GetUser(
+      client_id: _tdJsonClientId,
+      extra: extra,
+      user_id: user_id
+    ));
+
+    var response = await _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .first;
+
+    var user;
+
+    if (response is Error) {
+      _logger.warning('[$user_id] searching public chat failed with error.');
+      _logger.warning('[$user_id] $response.');
+    } else if (response is User) {
+      user = response;
+    }
+
+    _logger.fine('[$user_id] searching public chat... done.');
+
+    return user;
+  }
+  
 
   Future<Chat?> _searchPublicChat({
     required String chatName,
