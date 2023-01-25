@@ -525,8 +525,6 @@ class TelegramClientIsolated {
       );
 
       await _saveUsers (
-        chatName: chatName,
-        chatId: chatId,
         messages: messages
       );
 
@@ -550,11 +548,9 @@ class TelegramClientIsolated {
   }
 
   Future<void> _saveUsers({
-    required String chatName,
-    required int chatId,
     required Messages messages,
   }) async {
-    _logger.fine('[$chatName] saving users...');
+    _logger.fine('Saving users...');
 
     for (Message message in messages.messages!) {
       var userId = null;
