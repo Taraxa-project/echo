@@ -501,6 +501,8 @@ class TelegramClientIsolated {
     );
     if (supergroupFullInfo.member_count != null &&
         supergroupFullInfo.member_count != 0) {
+      _logger.info('[$chatName] member count is '
+          'is ${supergroupFullInfo.member_count}.');
       await _updateChatMembersCount(
         chatName: chatName,
         memberCount: supergroupFullInfo.member_count!,
@@ -515,15 +517,14 @@ class TelegramClientIsolated {
 
     await _retryOpenChat(chatName: chatName, chatId: chatId);
 
-    // wait for UpdateChatOnlineMemberCount
-    await Future.delayed(const Duration(seconds: 1));
-
     final chatMembersBots = await _retryGetSupergroupMembers(
       chatName: chatName,
       chatId: chatId,
       supergroupMembersFilter: SupergroupMembersFilterBots(),
     );
     if (chatMembersBots.members != null) {
+      _logger.info('[$chatName] bot count is '
+          'is ${chatMembersBots.members!.length}.');
       await _updateChatMembersBotsCount(
         chatName: chatName,
         memberCount: chatMembersBots.members!.length,
@@ -698,7 +699,9 @@ class TelegramClientIsolated {
         .listen((event) {
       final updateChatOnlineMemberCount = event as UpdateChatOnlineMemberCount;
       if (updateChatOnlineMemberCount.online_member_count != null) {
-        if (updateChatOnlineMemberCount.online_member_count! > 0) {
+        if (updateChatOnlineMemberCount.online_member_count != 0) {
+          _logger.info('[$chatName] online member count is '
+              'is ${updateChatOnlineMemberCount.online_member_count}.');
           _updateChatMembersOnlineCount(
               chatName: chatName,
               memberCount: updateChatOnlineMemberCount.online_member_count!);
@@ -1021,7 +1024,7 @@ class TelegramClientIsolated {
     required String chatName,
     required int memberCount,
   }) async {
-    _logger.info('[$chatName] updating chat members count in db...');
+    _logger.info('[$chatName] updating chat member count in db...');
 
     dbSendPort.send(DbMsgRequestUpdateChatMembersCount(
       replySendPort: receivePort.sendPort,
@@ -1032,14 +1035,14 @@ class TelegramClientIsolated {
         .where((event) => event is DbMsgResponseUpdateChatMembersCount)
         .first;
 
-    _logger.info('[$chatName] updating chat members count in db... done.');
+    _logger.info('[$chatName] updating chat member count in db... done.');
   }
 
   Future<void> _updateChatMembersBotsCount({
     required String chatName,
     required int memberCount,
   }) async {
-    _logger.info('[$chatName] updating chat members bots count in db...');
+    _logger.info('[$chatName] updating chat bot count in db...');
 
     dbSendPort.send(DbMsgRequestUpdateChatMembersBotsCount(
       replySendPort: receivePort.sendPort,
@@ -1050,14 +1053,14 @@ class TelegramClientIsolated {
         .where((event) => event is DbMsgResponseUpdateChatMembersBotsCount)
         .first;
 
-    _logger.info('[$chatName] updating chat members bots count in db... done.');
+    _logger.info('[$chatName] updating chat bot count in db... done.');
   }
 
   Future<void> _updateChatMembersOnlineCount({
     required String chatName,
     required int memberCount,
   }) async {
-    _logger.info('[$chatName] updating chat members online count in db...');
+    _logger.info('[$chatName] updating chat online member count in db...');
 
     dbSendPort.send(DbMsgRequestUpdateChatMembersOnlineCount(
       replySendPort: receivePort.sendPort,
@@ -1069,7 +1072,7 @@ class TelegramClientIsolated {
         .first;
 
     _logger
-        .info('[$chatName] updating chat members online count in db... done.');
+        .info('[$chatName] updating chat online member count in db... done.');
   }
 
   Future<void> _blacklistChat({
