@@ -175,11 +175,11 @@ class DbIsolated {
         ));
       } else if (message is DbMsgRequestUserExist) {
         message.replySendPort?.send(checkUserExists(
-          user_id: message.user_id 
+          userId: message.userId 
         ));
       } else if (message is DbMsgRequestAddUser) {
         message.replySendPort?.send(addUser(
-          user_id: message.user_id,
+          userId: message.userId,
           user: message.user
         ));
       }
@@ -406,48 +406,48 @@ class DbIsolated {
     }
   }
 
-  DbMsgResponseUserExist? checkUserExists({required int user_id}) {
-    _logger.fine('Checking if user_id exists in users  $user_id...');
+  DbMsgResponseUserExist? checkUserExists({required int userId}) {
+    _logger.fine('Checking if user_id exists in users  $userId...');
 
     final ResultSet? resultSet = db?.select(
       'SELECT user_id FROM user WHERE user_id = ?;', [
-      user_id
+      userId
     ]);
 
-    int? user_id_found;
+    int? userIdFound;
     if (resultSet != null && resultSet.isNotEmpty) {
-      user_id_found = resultSet.first['user_id'];
-      _logger.fine('found user_id $user_id.');
+      final userIdFound = resultSet.first['user_id'];
+      _logger.fine('found user_id $userId.');
       return DbMsgResponseUserExist(
         exists: true,
       );
     } else {
-      _logger.fine('did not find user_id $user_id.');
+      _logger.fine('did not find user_id $userId.');
       return DbMsgResponseUserExist(
         exists: false,
       );
     }
   }
 
-  DbMsgResponseAddUser addUser({required int user_id, required User user}) {
-    _logger.fine('Adding new user  $user_id...');
+  DbMsgResponseAddUser addUser({required int userId, required User user}) {
+    _logger.fine('Adding new user  $userId...');
     final sql = """
       INSERT INTO user (user_id, first_name, last_name, username, bot, verified, scam, fake)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
       """;
     final stmt = db?.prepare(sql);
     stmt?.execute([
-          user_id,
-          user.first_name != null ? user.first_name : null,
-          user.last_name != null ? user.last_name : null,
+          userId,
+          user.first_name,
+          user.last_name,
           user.usernames?.active_usernames?.firstOrNull!,
-          user.type is UserTypeBot ? true : false,
-          user.is_verified != null ? user.is_verified : false,
-          user.is_scam != null ? user.is_scam : false,
-          user.is_fake != null ? user.is_fake : false,
+          user.type is UserTypeBot,
+          user.is_verified,
+          user.is_scam,
+          user.is_fake,
         ]);
     stmt?.dispose();
-    _logger.fine('User $user_id added');
+    _logger.fine('User $userId added');
     return DbMsgResponseAddUser();
   }
 
@@ -477,13 +477,13 @@ class DbIsolated {
     CREATE TABLE IF NOT EXISTS user (
       id INTEGER NOT NULL PRIMARY KEY,
       user_id INTEGER UNIQUE NOT NULL,
-      first_name STRING,
-      last_name STRING,
-      username STRING,
-      bot BOOLEAN,
-      verified BOOLEAN,
-      scam BOOLEAN,
-      fake BOOLEAN
+      first_name TEXT,
+      last_name TEXT,
+      username TEXT,
+      bot INTEGER,
+      verified INTEGER,
+      scam INTEGER,
+      fake INTEGER
     );
     """,
       """
@@ -694,11 +694,11 @@ class DbMsgResponseAddMessage extends DbMsgResponse {
 }
 
 class DbMsgRequestUserExist extends DbMsgRequest {
-  final int user_id;
+  final int userId;
 
   DbMsgRequestUserExist({
     super.replySendPort,
-    required this.user_id,
+    required this.userId,
   });
 }
 
@@ -711,12 +711,12 @@ class DbMsgResponseUserExist extends DbMsgResponse {
 }
 
 class DbMsgRequestAddUser extends DbMsgRequest {
-  final int user_id;
+  final int userId;
   final User user;
 
   DbMsgRequestAddUser({
     super.replySendPort,
-    required this.user_id,
+    required this.userId,
     required this.user
   });
 }

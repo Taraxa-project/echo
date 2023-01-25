@@ -535,16 +535,16 @@ class TelegramClientIsolated {
     }
   }
 
-  Future<void> _addUser({required int user_id, required User user}) async {
+  Future<void> _addUser({required int userId, required User user}) async {
     dbSendPort.send(DbMsgRequestAddUser(
           replySendPort: receivePort.sendPort,
-          user_id: user_id,
+          userId: userId,
           user: user
         ));
     var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseAddUser)
         .first;
-    _logger.fine('[$user_id] added user to user table.');
+    _logger.fine('[$userId] added user to user table.');
   }
 
   Future<void> _saveUsers({
@@ -563,28 +563,28 @@ class TelegramClientIsolated {
       if (userId != null){
         dbSendPort.send(DbMsgRequestUserExist(
           replySendPort: receivePort.sendPort,
-          user_id: userId,
+          userId: userId,
         ));
         var response = await receivePortBroadcast
             .where((event) => event is DbMsgResponseUserExist)
             .first;
 
         if (!response.exists) {
-          var user = await _getUser(user_id: userId);
-          await _addUser(user_id: userId, user: user);
+          var user = await _getUser(userId: userId);
+          await _addUser(userId: userId, user: user);
         }
       }
     }
   }
 
-  Future<User> _getUser({required int user_id}) async {
-    _logger.fine('[$user_id] get info about user...');
+  Future<User> _getUser({required int userId}) async {
+    _logger.fine('[$userId] get info about user...');
 
     var extra = Uuid().v1();
     _tdSend(GetUser(
       client_id: _tdJsonClientId,
       extra: extra,
-      user_id: user_id
+      user_id: userId
     ));
 
     var response = await _tdStreamController.stream
@@ -594,13 +594,13 @@ class TelegramClientIsolated {
     var user;
 
     if (response is Error) {
-      _logger.warning('[$user_id] searching public chat failed with error.');
-      _logger.warning('[$user_id] $response.');
+      _logger.warning('[$userId] searching public chat failed with error.');
+      _logger.warning('[$userId] $response.');
     } else if (response is User) {
       user = response;
     }
 
-    _logger.fine('[$user_id] searching public chat... done.');
+    _logger.fine('[$userId] searching public chat... done.');
 
     return user;
   }
