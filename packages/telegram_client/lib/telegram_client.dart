@@ -569,9 +569,8 @@ class TelegramClientIsolated {
             .where((event) => event is DbMsgResponseUserExist)
             .first;
 
-        var user = await _getUser(user_id: userId);
-
         if (!response.exists) {
+          var user = await _getUser(user_id: userId);
           await _addUser(user_id: userId, user: user);
         }
       }
