@@ -476,7 +476,7 @@ class DbIsolated {
      """
     CREATE TABLE IF NOT EXISTS user (
       id INTEGER NOT NULL PRIMARY KEY,
-      user_id INTEGER UNIQUE NOT NULL,
+      user_id INTEGER UNIQUE ON CONFLICT IGNORE NOT NULL,
       first_name TEXT,
       last_name TEXT,
       username TEXT,
