@@ -217,7 +217,7 @@ class DbIsolated {
 
   DbMsgResponseMigrate _migrate() {
     _logger.fine('running migrations...');
-    for (final sql in sqlInit()) {
+    for (final sql in _sqlInit()) {
       db?.execute(sql);
     }
     _logger.fine('running migrations... done.');
@@ -271,7 +271,7 @@ class DbIsolated {
     required int memberCount,
   }) {
     final stmt = db?.prepare(
-        'UPDATE chat SET participants_count = ?, updated_at = ? WHERE username = ?;');
+        'UPDATE chat SET member_count = ?, updated_at = ? WHERE username = ?;');
 
     _logger.fine('updating chat $username, members count $memberCount...');
     stmt?.execute([
@@ -311,7 +311,7 @@ class DbIsolated {
     required int memberCount,
   }) {
     final stmt = db?.prepare(
-        'UPDATE chat SET average_online_count = ?, updated_at = ? WHERE username = ?;');
+        'UPDATE chat SET member_online_count = ?, updated_at = ? WHERE username = ?;');
 
     _logger.fine('updating chat $username, bots count $memberCount...');
     stmt?.execute([
@@ -417,16 +417,16 @@ class DbIsolated {
     );
   }
 
-  List<String> sqlInit() {
+  List<String> _sqlInit() {
     return [
       """
     CREATE TABLE IF NOT EXISTS chat (
       username TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
       id INTEGER,
       title TEXT,
+      member_count INTEGER, 
+      member_online_count INTEGER,
       bot_count INTEGER,
-      participants_count INTEGER,
-      average_online_count INTEGER,
       blacklisted INTEGER DEFAULT 0, /* 0 - false; 1 - true; */
       blacklist_reason TEXT,
       created_at TEXT,
