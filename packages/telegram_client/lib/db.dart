@@ -407,6 +407,10 @@ class DbIsolated {
   }
 
   DbMsgResponseUserExist? checkUserExists({required int userId}) {
+    var retry = true;
+    var count = 0;
+    while(retry) {
+      try{
     _logger.fine('Checking if user_id exists in users  $userId...');
 
     final ResultSet? resultSet = db?.select(
@@ -414,9 +418,7 @@ class DbIsolated {
       userId
     ]);
 
-    int? userIdFound;
     if (resultSet != null && resultSet.isNotEmpty) {
-      final userIdFound = resultSet.first['user_id'];
       _logger.fine('found user_id $userId.');
       return DbMsgResponseUserExist(
         exists: true,
@@ -427,28 +429,58 @@ class DbIsolated {
         exists: false,
       );
     }
+    } on SqliteException catch  (exception) {
+        const operationName = "Adding Message";
+        var retry = dbErrorHandler(exception, operationName);
+        if (retry == true) {
+          _logger.info("Retry Count: ${count}");
+          if (++count == maxTries) {
+            return DbMsgResponseUserExist(exists: false, exception: exception);
+          }
+        } else {
+          return DbMsgResponseUserExist(exists: false, exception: exception);
+        }
+      }
+  }
   }
 
   DbMsgResponseAddUser addUser({required int userId, required User user}) {
-    _logger.fine('Adding new user  $userId...');
-    final sql = """
-      INSERT INTO user (user_id, first_name, last_name, username, bot, verified, scam, fake)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
-      """;
-    final stmt = db?.prepare(sql);
-    stmt?.execute([
-          userId,
-          user.first_name,
-          user.last_name,
-          user.usernames?.active_usernames?.firstOrNull!,
-          user.type is UserTypeBot,
-          user.is_verified,
-          user.is_scam,
-          user.is_fake,
-        ]);
-    stmt?.dispose();
-    _logger.fine('User $userId added');
-    return DbMsgResponseAddUser();
+    var retry = true;
+    var count = 0;
+    while(retry) {
+      try{
+        _logger.fine('Adding new user  $userId...');
+        final sql = """
+          INSERT INTO user (user_id, first_name, last_name, username, bot, verified, scam, fake)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
+          """;
+        final stmt = db?.prepare(sql);
+        stmt?.execute([
+              userId,
+              user.first_name,
+              user.last_name,
+              user.usernames?.active_usernames?.firstOrNull!,
+              user.type is UserTypeBot,
+              user.is_verified,
+              user.is_scam,
+              user.is_fake,
+            ]);
+        stmt?.dispose();
+        _logger.fine('User $userId added');
+        return DbMsgResponseAddUser();
+    } on SqliteException catch  (exception) {
+        const operationName = "Adding User";
+        var retry = dbErrorHandler(exception, operationName);
+        if (retry == true) {
+          _logger.info("Retry Count: ${count}");
+          if (++count == maxTries) {
+            return DbMsgResponseAddUser(exception: exception);
+          }
+        } else {
+          return DbMsgResponseAddUser(exception: exception);
+        }
+      }
+    }
   }
 
   List<String> sqlInit() {
@@ -707,6 +739,7 @@ class DbMsgResponseUserExist extends DbMsgResponse {
 
   DbMsgResponseUserExist({
     required this.exists,
+    super.exception
   });
 }
 
@@ -721,4 +754,6 @@ class DbMsgRequestAddUser extends DbMsgRequest {
   });
 }
 
-class DbMsgResponseAddUser extends DbMsgResponse {}
+class DbMsgResponseAddUser extends DbMsgResponse {
+  DbMsgResponseAddUser({super.exception});
+}

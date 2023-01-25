@@ -6,7 +6,6 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
 import 'package:telegram_client/wrap_id.dart';
-
 import 'log.dart';
 import 'db.dart';
 
@@ -544,6 +543,10 @@ class TelegramClientIsolated {
     var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseAddUser)
         .first;
+
+    if (response.exception != null) {
+      throw TgDbException(exception: response.exception);
+    }
     _logger.fine('[$userId] added user to user table.');
   }
 
@@ -569,7 +572,9 @@ class TelegramClientIsolated {
             .where((event) => event is DbMsgResponseUserExist)
             .first;
 
-        if (!response.exists) {
+        if (response.exception != null) {
+          throw TgDbException(exception: response.exception);
+        } else if (!response.exists) {
           var user = await _getUser(userId: userId);
           await _addUser(userId: userId, user: user);
         }
