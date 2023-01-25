@@ -24,6 +24,7 @@ class Log {
       Log._entryPoint,
       LgIsolatedSpwanMessage(
         parentSendPort: _isolateReceivePort.sendPort,
+        logLevel: _logger.level,
       ),
       debugName: runtimeType.toString(),
     );
@@ -36,8 +37,11 @@ class Log {
   }
 
   static void _entryPoint(LgIsolatedSpwanMessage initialSpawnMessage) {
+    hierarchicalLoggingEnabled = true;
+
     final lgIsolated = LogIsolated(
       parentSendPort: initialSpawnMessage.parentSendPort,
+      logLevel: initialSpawnMessage.logLevel,
     );
     lgIsolated.init();
 
@@ -57,9 +61,11 @@ class Log {
 
 class LgIsolatedSpwanMessage {
   final SendPort parentSendPort;
+  final Level logLevel;
 
   LgIsolatedSpwanMessage({
     required this.parentSendPort,
+    required this.logLevel,
   });
 }
 
@@ -73,7 +79,9 @@ class LogIsolated {
 
   LogIsolated({
     required this.parentSendPort,
+    required Level logLevel,
   }) {
+    _logger.level = logLevel;
     _logger.onRecord.listen((event) {
       if (event.object != null && event.object is LogRecord) {
         log(event.object as LogRecord);

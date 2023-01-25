@@ -52,6 +52,7 @@ class TelegramClient {
         logSendPort: _log.isolateSendPort,
         dbSendPort: _db.isolateSendPort,
         libtdjsonlcPath: libtdjsonlcPath,
+        logLevel: _logger.level,
         logLevelLibtdjson: logLevelLibTdJson,
         tdReceiveWaitTimeout: tdReceiveWaitTimeout,
         tdReceiveFrequency: tdReceiveFrequency,
@@ -73,6 +74,7 @@ class TelegramClient {
       logSendPort: tgIsolatedSpwanMessage.logSendPort,
       dbSendPort: tgIsolatedSpwanMessage.dbSendPort,
       libtdjsonlcPath: tgIsolatedSpwanMessage.libtdjsonlcPath,
+      logLevel: tgIsolatedSpwanMessage.logLevel,
       logLevelLibtdjson: tgIsolatedSpwanMessage.logLevelLibtdjson,
       tdReceiveWaitTimeout: tgIsolatedSpwanMessage.tdReceiveWaitTimeout,
       tdReceiveFrequency: tgIsolatedSpwanMessage.tdReceiveFrequency,
@@ -130,9 +132,6 @@ class TelegramClient {
     TgMsgResponseReadChatHistory response = await _isolateReceivePortBroadcast
         .where((event) => event is TgMsgResponseReadChatHistory)
         .first;
-    if (response.exception != null) {
-      throw response.exception!;
-    }
     return response;
   }
 }
@@ -142,6 +141,7 @@ class TgIsolatedSpwanMessage {
   final SendPort logSendPort;
   final SendPort dbSendPort;
   final String libtdjsonlcPath;
+  final Level logLevel;
   final Level logLevelLibtdjson;
   final double tdReceiveWaitTimeout;
   final Duration tdReceiveFrequency;
@@ -151,6 +151,7 @@ class TgIsolatedSpwanMessage {
     required this.logSendPort,
     required this.dbSendPort,
     required this.libtdjsonlcPath,
+    required this.logLevel,
     required this.logLevelLibtdjson,
     required this.tdReceiveWaitTimeout,
     required this.tdReceiveFrequency,
@@ -187,10 +188,12 @@ class TelegramClientIsolated {
     required this.logSendPort,
     required this.dbSendPort,
     required this.libtdjsonlcPath,
+    required Level logLevel,
     required Level logLevelLibtdjson,
     this.tdReceiveWaitTimeout = 0.005,
     this.tdReceiveFrequency = const Duration(milliseconds: 10),
   }) {
+    _logger.level = logLevel;
     _logger.onRecord.listen((logRecord) {
       logSendPort.send(logRecord);
     });
@@ -438,15 +441,11 @@ class TelegramClientIsolated {
     required DateTime datetimeFrom,
     required List<String> chatsNames,
   }) async {
-    try {
-      await _addChats(usernames: chatsNames);
-    } on DbException catch (ex) {
-      return TgMsgResponseReadChatHistory(ex);
-    }
+    await _addChats(usernames: chatsNames);
 
     _logger.info('reading chats history...');
 
-    for (var chatName in chatsNames) {
+    for (final chatName in chatsNames) {
       _logger.info('[$chatName] reading chat history...');
 
       try {
@@ -454,12 +453,16 @@ class TelegramClientIsolated {
           dateTimeFrom: datetimeFrom,
           chatName: chatName,
         );
-      } on TgBadRequestException catch (ex) {
+      } on TgChatNotFoundException catch (ex) {
         _logger.warning('[$chatName] $ex.');
         await _blacklistChat(
           chatName: chatName,
           reason: ex.message ?? 'Chat not found.',
         );
+      } on TgBadRequestException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on UnWrapIdxception catch (ex) {
+        _logger.severe('[$chatName] $ex.');
       } on TgFloodWaitMaxRetriesExceededException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgException catch (ex) {
@@ -482,13 +485,9 @@ class TelegramClientIsolated {
     required DateTime dateTimeFrom,
     required String chatName,
   }) async {
-    var chat = await _retrySearchPublicChat(chatName: chatName);
+    final chat = await _retrySearchPublicChat(chatName: chatName);
 
-    var chatId = WrapId.unwrapChatId(chat.id);
-    if (chatId == null) {
-      _logger.warning('[$chatName] could not unwrap ${chat.id}.');
-      return;
-    }
+    final chatId = WrapId.unwrapChatId(chat.id);
     _logger.info('[$chatName] unwrapped chat id is $chatId.');
 
     await _updateChat(
@@ -496,12 +495,50 @@ class TelegramClientIsolated {
       chat: chat,
     );
 
+    final supergroupFullInfo = await _retryGetSupergroupFullInfo(
+      chatName: chatName,
+      chatId: chatId,
+    );
+    if (supergroupFullInfo.member_count != null &&
+        supergroupFullInfo.member_count != 0) {
+      await _updateChatMembersCount(
+        chatName: chatName,
+        memberCount: supergroupFullInfo.member_count!,
+      );
+    }
+
+    final subscriptionUpdateChatOnlineMemberCount =
+        _subscribeUpdateChatOnlineMemberCount(
+      chatName: chatName,
+      chatId: chatId,
+    );
+
+    await _retryOpenChat(chatName: chatName, chatId: chatId);
+
+    // wait for UpdateChatOnlineMemberCount
+    await Future.delayed(const Duration(seconds: 1));
+
+    final chatMembersBots = await _retryGetSupergroupMembers(
+      chatName: chatName,
+      chatId: chatId,
+      supergroupMembersFilter: SupergroupMembersFilterBots(),
+    );
+    if (chatMembersBots.members != null) {
+      await _updateChatMembersBotsCount(
+        chatName: chatName,
+        memberCount: chatMembersBots.members!.length,
+      );
+    }
+
+    await subscriptionUpdateChatOnlineMemberCount.cancel();
+
+    await _retryCloseChat(chatName: chatName, chatId: chatId);
+
     var messsageIdLast = await _searchMessageIdLast(
       datetimeFrom: dateTimeFrom,
       chatName: chatName,
       chatId: chatId,
     );
-
     if (messsageIdLast == null) {
       messsageIdLast = 0;
     }
@@ -544,40 +581,37 @@ class TelegramClientIsolated {
       _logger.info('[$chatName] searching public chat... '
           'Retry [$retryCountIndex/$retryCountMax].');
 
-      var searchPublicChat = await _searchPublicChat(chatName: chatName);
+      final tdResponse = await _searchPublicChat(chatName: chatName);
 
-      if (searchPublicChat is Chat) {
+      if (tdResponse is Chat) {
         _logger.info('[$chatName] received Chat. '
             'Retry [$retryCountIndex/$retryCountMax].');
 
-        if (searchPublicChat.id == null) {
-          throw TgException('Chat.id is null');
-        } else if (searchPublicChat.type == null) {
-          throw TgException('Chat.type is null');
-        } else if (!(searchPublicChat.type is ChatTypeSupergroup)) {
-          throw TgBadRequestException('Invalid Chat.type: '
-              '${searchPublicChat.type.runtimeType}');
+        if (tdResponse.id == null) {
+          throw TgChatNotFoundException('Chat.id is null');
+        } else if (tdResponse.type == null) {
+          throw TgChatNotFoundException('Chat.type is null');
+        } else if (!(tdResponse.type is ChatTypeSupergroup)) {
+          throw TgChatNotFoundException('Invalid Chat.type: '
+              '${tdResponse.type.runtimeType}');
         }
-        return searchPublicChat;
-      } else if (searchPublicChat is Error) {
+        return tdResponse;
+      } else if (tdResponse is Error) {
         _logger.info('[$chatName] received Error. '
             'Retry [$retryCountIndex/$retryCountMax].');
 
         try {
-          _handleTdError(searchPublicChat);
+          _handleTdError(tdResponse);
         } on TgFloodWaiException catch (ex) {
           _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
           await Future.delayed(Duration(seconds: ex.waitSeconds));
           continue;
         }
       } else {
-        _logger.info('[$chatName] received ${searchPublicChat.runtimeType}. '
+        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
             'Retry [$retryCountIndex/$retryCountMax].');
 
-        throw TgException(
-          'received ${searchPublicChat.runtimeType} response '
-          'instead of Chat from td_json_client',
-        );
+        throw TgException('invalid response type ${tdResponse.runtimeType}');
       }
     }
 
@@ -590,6 +624,254 @@ class TelegramClientIsolated {
     var extra = Uuid().v1();
     _tdSend(SearchPublicChat(
       username: chatName,
+      extra: extra,
+    ));
+
+    return await _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .first;
+  }
+
+  Future<Ok> _retryOpenChat({
+    int retryCountMax = retryCountMax,
+    required String chatName,
+    required int chatId,
+  }) async {
+    var retryCountIndex = 0;
+    while (retryCountIndex < retryCountMax) {
+      retryCountIndex += 1;
+
+      _logger.info('[$chatName] opening chat... '
+          'Retry [$retryCountIndex/$retryCountMax].');
+
+      final tdResponse = await _openChat(chatId: chatId);
+
+      if (tdResponse is Ok) {
+        _logger.info('[$chatName] received Ok. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        return tdResponse;
+      } else if (tdResponse is Error) {
+        _logger.info('[$chatName] received Error. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        try {
+          _handleTdError(tdResponse);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
+          await Future.delayed(Duration(seconds: ex.waitSeconds));
+          continue;
+        }
+      } else {
+        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        throw TgException('invalid response type ${tdResponse.runtimeType}');
+      }
+    }
+
+    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
+  }
+
+  Future<dynamic> _openChat({
+    required int chatId,
+  }) async {
+    var extra = Uuid().v1();
+    _tdSend(OpenChat(
+      chat_id: WrapId.wrapChatId(chatId),
+      extra: extra,
+    ));
+
+    return await _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .first;
+  }
+
+  StreamSubscription<dynamic> _subscribeUpdateChatOnlineMemberCount({
+    required String chatName,
+    required int chatId,
+  }) {
+    return _tdStreamController.stream
+        .where((event) =>
+            event is UpdateChatOnlineMemberCount &&
+            event.chat_id == WrapId.wrapChatId(chatId))
+        .listen((event) {
+      final updateChatOnlineMemberCount = event as UpdateChatOnlineMemberCount;
+      if (updateChatOnlineMemberCount.online_member_count != null) {
+        if (updateChatOnlineMemberCount.online_member_count! > 0) {
+          _updateChatMembersOnlineCount(
+              chatName: chatName,
+              memberCount: updateChatOnlineMemberCount.online_member_count!);
+        }
+      }
+    });
+  }
+
+  Future<Ok> _retryCloseChat({
+    int retryCountMax = retryCountMax,
+    required String chatName,
+    required int chatId,
+  }) async {
+    var retryCountIndex = 0;
+    while (retryCountIndex < retryCountMax) {
+      retryCountIndex += 1;
+
+      _logger.info('[$chatName] closing chat... '
+          'Retry [$retryCountIndex/$retryCountMax].');
+
+      final tdResponse = await _closeChat(chatId: chatId);
+
+      if (tdResponse is Ok) {
+        _logger.info('[$chatName] received Chat. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        return tdResponse;
+      } else if (tdResponse is Error) {
+        _logger.info('[$chatName] received Error. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        try {
+          _handleTdError(tdResponse);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
+          await Future.delayed(Duration(seconds: ex.waitSeconds));
+          continue;
+        }
+      } else {
+        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        throw TgException('invalid response type ${tdResponse.runtimeType}');
+      }
+    }
+
+    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
+  }
+
+  Future<dynamic> _closeChat({
+    required int chatId,
+  }) async {
+    var extra = Uuid().v1();
+    _tdSend(CloseChat(
+      chat_id: WrapId.wrapChatId(chatId),
+      extra: extra,
+    ));
+
+    return await _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .first;
+  }
+
+  Future<SupergroupFullInfo> _retryGetSupergroupFullInfo({
+    int retryCountMax = retryCountMax,
+    required String chatName,
+    required int chatId,
+  }) async {
+    var retryCountIndex = 0;
+    while (retryCountIndex < retryCountMax) {
+      retryCountIndex += 1;
+
+      _logger.info('[$chatName] getting supergroup full info... '
+          'Retry [$retryCountIndex/$retryCountMax].');
+
+      final tdResponse = await _getSupergroupFullInfo(chatId: chatId);
+
+      if (tdResponse is SupergroupFullInfo) {
+        _logger.info('[$chatName] received SupergroupFullInfo. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        return tdResponse;
+      } else if (tdResponse is Error) {
+        _logger.info('[$chatName] received Error. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        try {
+          _handleTdError(tdResponse);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
+          await Future.delayed(Duration(seconds: ex.waitSeconds));
+          continue;
+        }
+      } else {
+        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        throw TgException('invalid response type ${tdResponse.runtimeType}');
+      }
+    }
+
+    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
+  }
+
+  Future<dynamic> _getSupergroupFullInfo({
+    required int chatId,
+  }) async {
+    var extra = Uuid().v1();
+    _tdSend(GetSupergroupFullInfo(
+      supergroup_id: chatId,
+      extra: extra,
+    ));
+
+    return await _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .first;
+  }
+
+  Future<ChatMembers> _retryGetSupergroupMembers({
+    int retryCountMax = retryCountMax,
+    required String chatName,
+    required int chatId,
+    SupergroupMembersFilter? supergroupMembersFilter,
+  }) async {
+    var retryCountIndex = 0;
+    while (retryCountIndex < retryCountMax) {
+      retryCountIndex += 1;
+
+      _logger.info('[$chatName] getting supergroup members info... '
+          'Retry [$retryCountIndex/$retryCountMax].');
+
+      final tdResponse = await _getSupergroupMembers(
+        chatId: chatId,
+        supergroupMembersFilter: supergroupMembersFilter,
+      );
+
+      if (tdResponse is ChatMembers) {
+        _logger.info('[$chatName] received ChatMembers. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        return tdResponse;
+      } else if (tdResponse is Error) {
+        _logger.info('[$chatName] received Error. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        try {
+          _handleTdError(tdResponse);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
+          await Future.delayed(Duration(seconds: ex.waitSeconds));
+          continue;
+        }
+      } else {
+        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        throw TgException('invalid response type ${tdResponse.runtimeType}');
+      }
+    }
+
+    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
+  }
+
+  Future<dynamic> _getSupergroupMembers({
+    required int chatId,
+    SupergroupMembersFilter? supergroupMembersFilter,
+  }) async {
+    var extra = Uuid().v1();
+    _tdSend(GetSupergroupMembers(
+      supergroup_id: chatId,
+      filter: supergroupMembersFilter,
+      offset: 0,
+      limit: 200,
       extra: extra,
     ));
 
@@ -710,13 +992,9 @@ class TelegramClientIsolated {
       replySendPort: receivePort.sendPort,
       usernames: usernames,
     ));
-    DbMsgResponseAddChats response = await receivePortBroadcast
+    await receivePortBroadcast
         .where((event) => event is DbMsgResponseAddChats)
         .first;
-
-    if (response.exception != null) {
-      throw response.exception!;
-    }
 
     _logger.info('adding chats to db... done.');
   }
@@ -737,6 +1015,61 @@ class TelegramClientIsolated {
         .first;
 
     _logger.info('[$chatName] updating chat in db... done.');
+  }
+
+  Future<void> _updateChatMembersCount({
+    required String chatName,
+    required int memberCount,
+  }) async {
+    _logger.info('[$chatName] updating chat members count in db...');
+
+    dbSendPort.send(DbMsgRequestUpdateChatMembersCount(
+      replySendPort: receivePort.sendPort,
+      username: chatName,
+      membersCount: memberCount,
+    ));
+    await receivePortBroadcast
+        .where((event) => event is DbMsgResponseUpdateChatMembersCount)
+        .first;
+
+    _logger.info('[$chatName] updating chat members count in db... done.');
+  }
+
+  Future<void> _updateChatMembersBotsCount({
+    required String chatName,
+    required int memberCount,
+  }) async {
+    _logger.info('[$chatName] updating chat members bots count in db...');
+
+    dbSendPort.send(DbMsgRequestUpdateChatMembersBotsCount(
+      replySendPort: receivePort.sendPort,
+      username: chatName,
+      membersCount: memberCount,
+    ));
+    await receivePortBroadcast
+        .where((event) => event is DbMsgResponseUpdateChatMembersBotsCount)
+        .first;
+
+    _logger.info('[$chatName] updating chat members bots count in db... done.');
+  }
+
+  Future<void> _updateChatMembersOnlineCount({
+    required String chatName,
+    required int memberCount,
+  }) async {
+    _logger.info('[$chatName] updating chat members online count in db...');
+
+    dbSendPort.send(DbMsgRequestUpdateChatMembersOnlineCount(
+      replySendPort: receivePort.sendPort,
+      username: chatName,
+      membersCount: memberCount,
+    ));
+    await receivePortBroadcast
+        .where((event) => event is DbMsgResponseUpdateChatMembersOnlineCount)
+        .first;
+
+    _logger
+        .info('[$chatName] updating chat members online count in db... done.');
   }
 
   Future<void> _blacklistChat({
@@ -782,13 +1115,18 @@ class TelegramClientIsolated {
         messageCount += 1;
       }
 
-      var messageId = WrapId.unwrapMessageId(message.id);
-      if (messageId != null) {
-        if (messageIdLast == null) {
-          messageIdLast = messageId;
-        } else if (messageId > messageIdLast) {
-          messageIdLast = messageId;
-        }
+      int messageId;
+      try {
+        messageId = WrapId.unwrapMessageId(message.id);
+      } on UnWrapIdxception catch (ex) {
+        _logger.severe(ex);
+        continue;
+      }
+
+      if (messageIdLast == null) {
+        messageIdLast = messageId;
+      } else if (messageId > messageIdLast) {
+        messageIdLast = messageId;
       }
     }
 
@@ -933,12 +1271,7 @@ class TgMsgRequestReadChatsHistory extends TgMsgRequest {
   });
 }
 
-class TgMsgResponseReadChatHistory extends TgMsgResponse {
-  Object? exception;
-  TgMsgResponseReadChatHistory([
-    this.exception,
-  ]);
-}
+class TgMsgResponseReadChatHistory extends TgMsgResponse {}
 
 class TgException implements Exception {
   final String? message;
@@ -949,6 +1282,27 @@ class TgException implements Exception {
     var report = "TgException";
     if (message != null) {
       report += ': $message';
+    }
+    return report;
+  }
+}
+
+class TgChatNotFoundException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgChatNotFoundException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = "TgChatNotFoundException";
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
     }
     return report;
   }

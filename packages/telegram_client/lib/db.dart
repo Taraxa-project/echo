@@ -41,6 +41,7 @@ class Db {
         parentSendPort: _isolateReceivePort.sendPort,
         logSendPort: _log.isolateSendPort,
         dbPath: dbPath,
+        logLevel: _logger.level,
       ),
       debugName: runtimeType.toString(),
     );
@@ -50,10 +51,13 @@ class Db {
   }
 
   static void _entryPointDB(DbIsolatedSpwanMessage initialSpawnMessage) {
+    hierarchicalLoggingEnabled = true;
+
     final DbIsolated dbIsolated = DbIsolated(
       parentSendPort: initialSpawnMessage.parentSendPort,
       logSendPort: initialSpawnMessage.logSendPort,
       dbPath: initialSpawnMessage.dbPath,
+      logLevel: initialSpawnMessage.logLevel,
     );
     dbIsolated.init();
   }
@@ -91,11 +95,13 @@ class DbIsolatedSpwanMessage {
   final SendPort parentSendPort;
   final SendPort logSendPort;
   final String dbPath;
+  final Level logLevel;
 
   DbIsolatedSpwanMessage({
     required this.parentSendPort,
     required this.logSendPort,
     required this.dbPath,
+    required this.logLevel,
   });
 }
 
@@ -115,7 +121,9 @@ class DbIsolated {
     required this.parentSendPort,
     required this.logSendPort,
     required this.dbPath,
+    required Level logLevel,
   }) {
+    _logger.level = logLevel;
     _logger.onRecord.listen((logRecord) {
       logSendPort.send(logRecord);
     });
@@ -145,7 +153,7 @@ class DbIsolated {
       } else if (message is DbMsgRequestMigrate) {
         message.replySendPort?.send(_migrate());
       } else if (message is DbMsgRequestAddChats) {
-        message.replySendPort?.send(addChats(
+        message.replySendPort?.send(_addChats(
           message.usernames,
         ));
       } else if (message is DbMsgRequestBlacklistChat) {
@@ -154,9 +162,24 @@ class DbIsolated {
           reason: message.reason,
         ));
       } else if (message is DbMsgRequestUpdateChat) {
-        message.replySendPort?.send(updateChat(
+        message.replySendPort?.send(_updateChat(
           username: message.username,
           chat: message.chat,
+        ));
+      } else if (message is DbMsgRequestUpdateChatMembersCount) {
+        message.replySendPort?.send(_updateChatMembersCount(
+          username: message.username,
+          memberCount: message.membersCount,
+        ));
+      } else if (message is DbMsgRequestUpdateChatMembersBotsCount) {
+        message.replySendPort?.send(_updateChatMembersBotsCount(
+          username: message.username,
+          memberCount: message.membersCount,
+        ));
+      } else if (message is DbMsgRequestUpdateChatMembersOnlineCount) {
+        message.replySendPort?.send(_updateChatMembersOnlineCount(
+          username: message.username,
+          memberCount: message.membersCount,
         ));
       } else if (message is DbMsgRequestSelectMaxMessageId) {
         message.replySendPort?.send(selectMaxMessageId(
@@ -201,32 +224,26 @@ class DbIsolated {
     return DbMsgResponseMigrate();
   }
 
-  DbMsgResponseAddChats addChats(List<String> usernames) {
-    try {
-      final stmt = db?.prepare(
-          'INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
+  DbMsgResponseAddChats _addChats(List<String> usernames) {
+    final stmt = db?.prepare(
+        'INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
 
-      for (var username in usernames) {
-        _logger.fine('adding chat $username...');
-        stmt?.execute([
-          username,
-          DateTime.now().toUtc().toIso8601String(),
-          DateTime.now().toUtc().toIso8601String(),
-        ]);
-        _logger.fine('added chat $username.');
-      }
-
-      stmt?.dispose();
-
-      throw DbException('Some exception');
-
-      return DbMsgResponseAddChats();
-    } on DbException catch (ex) {
-      return DbMsgResponseAddChats(ex);
+    for (var username in usernames) {
+      _logger.fine('adding chat $username...');
+      stmt?.execute([
+        username,
+        DateTime.now().toUtc().toIso8601String(),
+        DateTime.now().toUtc().toIso8601String(),
+      ]);
+      _logger.fine('added chat $username.');
     }
+
+    stmt?.dispose();
+
+    return DbMsgResponseAddChats();
   }
 
-  DbMsgResponseUpdateChat updateChat({
+  DbMsgResponseUpdateChat _updateChat({
     required String username,
     required Chat chat,
   }) {
@@ -247,6 +264,66 @@ class DbIsolated {
     stmt?.dispose();
 
     return DbMsgResponseUpdateChat();
+  }
+
+  DbMsgResponseUpdateChatMembersCount _updateChatMembersCount({
+    required String username,
+    required int memberCount,
+  }) {
+    final stmt = db?.prepare(
+        'UPDATE chat SET participants_count = ?, updated_at = ? WHERE username = ?;');
+
+    _logger.fine('updating chat $username, members count $memberCount...');
+    stmt?.execute([
+      memberCount,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('updated chat $username, members count $memberCount.');
+
+    stmt?.dispose();
+
+    return DbMsgResponseUpdateChatMembersCount();
+  }
+
+  DbMsgResponseUpdateChatMembersBotsCount _updateChatMembersBotsCount({
+    required String username,
+    required int memberCount,
+  }) {
+    final stmt = db?.prepare(
+        'UPDATE chat SET bot_count = ?, updated_at = ? WHERE username = ?;');
+
+    _logger.fine('updating chat $username, bots count $memberCount...');
+    stmt?.execute([
+      memberCount,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('updated chat $username, bots count $memberCount.');
+
+    stmt?.dispose();
+
+    return DbMsgResponseUpdateChatMembersBotsCount();
+  }
+
+  DbMsgResponseUpdateChatMembersOnlineCount _updateChatMembersOnlineCount({
+    required String username,
+    required int memberCount,
+  }) {
+    final stmt = db?.prepare(
+        'UPDATE chat SET average_online_count = ?, updated_at = ? WHERE username = ?;');
+
+    _logger.fine('updating chat $username, bots count $memberCount...');
+    stmt?.execute([
+      memberCount,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('updated chat $username, bots count $memberCount.');
+
+    stmt?.dispose();
+
+    return DbMsgResponseUpdateChatMembersOnlineCount();
   }
 
   DbMsgResponseBlacklistChat blacklistChat({
@@ -419,11 +496,7 @@ class DbMsgRequestAddChats extends DbMsgRequest {
   });
 }
 
-class DbMsgResponseAddChats extends DbMsgResponse {
-  DbException? exception;
-
-  DbMsgResponseAddChats([this.exception]);
-}
+class DbMsgResponseAddChats extends DbMsgResponse {}
 
 class DbMsgRequestBlacklistChat extends DbMsgRequest {
   final String username;
@@ -450,6 +523,45 @@ class DbMsgRequestUpdateChat extends DbMsgRequest {
 }
 
 class DbMsgResponseUpdateChat extends DbMsgResponse {}
+
+class DbMsgRequestUpdateChatMembersCount extends DbMsgRequest {
+  final String username;
+  final int membersCount;
+
+  DbMsgRequestUpdateChatMembersCount({
+    super.replySendPort,
+    required this.username,
+    required this.membersCount,
+  });
+}
+
+class DbMsgResponseUpdateChatMembersCount extends DbMsgResponse {}
+
+class DbMsgRequestUpdateChatMembersBotsCount extends DbMsgRequest {
+  final String username;
+  final int membersCount;
+
+  DbMsgRequestUpdateChatMembersBotsCount({
+    super.replySendPort,
+    required this.username,
+    required this.membersCount,
+  });
+}
+
+class DbMsgResponseUpdateChatMembersBotsCount extends DbMsgResponse {}
+
+class DbMsgRequestUpdateChatMembersOnlineCount extends DbMsgRequest {
+  final String username;
+  final int membersCount;
+
+  DbMsgRequestUpdateChatMembersOnlineCount({
+    super.replySendPort,
+    required this.username,
+    required this.membersCount,
+  });
+}
+
+class DbMsgResponseUpdateChatMembersOnlineCount extends DbMsgResponse {}
 
 class DbMsgRequestSelectMaxMessageId extends DbMsgRequest {
   final int chatId;
@@ -485,19 +597,4 @@ class DbMsgResponseAddMessage extends DbMsgResponse {
   DbMsgResponseAddMessage({
     required this.added,
   });
-}
-
-class DbException implements Exception {
-  String? message;
-  DbException([
-    this.message,
-  ]);
-
-  String toString() {
-    var report = 'DbException';
-    if (message != null) {
-      report += ': $message';
-    }
-    return report;
-  }
 }
