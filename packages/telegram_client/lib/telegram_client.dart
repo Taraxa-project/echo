@@ -316,7 +316,7 @@ class TelegramClientIsolated {
     _logger.fine('sent ${tdFunction.runtimeType}.');
   }
 
-  Future<dynamic> _tdCall({
+  Future<TdObject> _tdCall({
     required TdFunction tdFunction,
     int timeoutMilliseconds = tgTimeoutMilliseconds,
   }) async {
@@ -352,6 +352,43 @@ class TelegramClientIsolated {
     }
 
     return tdResponse;
+  }
+
+  Future<TdObject> _retryTdCall({
+    required TdFunction tdFunction,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    var retryCountIndex = 0;
+    while (retryCountIndex < retryCountMax) {
+      retryCountIndex += 1;
+
+      final tdResponse = await _tdCall(
+        tdFunction: tdFunction,
+        timeoutMilliseconds: timeoutMilliseconds,
+      );
+
+      if (tdResponse.runtimeType.toString() == tdFunction.tdReturnType) {
+        return tdResponse;
+      } else if (tdResponse is Error) {
+        try {
+          _handleTdError(tdResponse);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning('received flood wait for '
+              '${tdFunction.runtimeType.toString()}. '
+              'Retrying in ${ex.waitSeconds} seconds.');
+          await Future.delayed(Duration(seconds: ex.waitSeconds));
+          continue;
+        }
+      } else {
+        _logger.info('received invalid response type for '
+            '${tdFunction.runtimeType.toString()}: '
+            '${tdResponse.runtimeType}.');
+        throw TgException('invalid response type ${tdResponse.runtimeType}');
+      }
+    }
+
+    throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
   Future<TgMsgResponseLogin> _login({
@@ -501,15 +538,15 @@ class TelegramClientIsolated {
           chatName: chatName,
           reason: ex.message ?? 'Chat not found.',
         );
-      } on TgBadRequestException catch (ex) {
-        _logger.severe('[$chatName] $ex.');
-      } on UnWrapIdxception catch (ex) {
+      } on TgTimedOutException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgMaxRetriesExcedeedException catch (ex) {
         _logger.severe('[$chatName] $ex.');
-      } on TgErrorCodeNotHandledException catch (ex) {
+      } on TgBadRequestException catch (ex) {
+      } on UnWrapIdxception catch (ex) {
         _logger.severe('[$chatName] $ex.');
-      } on TgTimedOutException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on TgErrorCodeNotHandledException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgException catch (ex) {
         _logger.severe('[$chatName] $ex.');
@@ -529,7 +566,7 @@ class TelegramClientIsolated {
     required DateTime dateTimeFrom,
     required String chatName,
   }) async {
-    final chat = await _retrySearchPublicChat(chatName: chatName);
+    final chat = await _searchPublicChat(chatName: chatName);
 
     final chatId = WrapId.unwrapChatId(chat.id);
     _logger.info('[$chatName] unwrapped chat id is $chatId.');
@@ -539,7 +576,7 @@ class TelegramClientIsolated {
       chat: chat,
     );
 
-    final supergroupFullInfo = await _retryGetSupergroupFullInfo(
+    final supergroupFullInfo = await _getSupergroupFullInfo(
       chatName: chatName,
       chatId: chatId,
     );
@@ -559,9 +596,9 @@ class TelegramClientIsolated {
       chatId: chatId,
     );
 
-    await _retryOpenChat(chatName: chatName, chatId: chatId);
+    await _openChat(chatName: chatName, chatId: chatId);
 
-    final chatMembersBots = await _retryGetSupergroupMembers(
+    final chatMembersBots = await _getSupergroupMembers(
       chatName: chatName,
       chatId: chatId,
       supergroupMembersFilter: SupergroupMembersFilterBots(),
@@ -577,7 +614,7 @@ class TelegramClientIsolated {
 
     await subscriptionUpdateChatOnlineMemberCount.cancel();
 
-    await _retryCloseChat(chatName: chatName, chatId: chatId);
+    await _loseChat(chatName: chatName, chatId: chatId);
 
     var messsageIdLast = await _searchMessageIdLast(
       datetimeFrom: dateTimeFrom,
@@ -591,7 +628,7 @@ class TelegramClientIsolated {
     while (true) {
       var messageIdFrom = messsageIdLast! + 1;
 
-      final messages = await _retryGetChatHistory(
+      final messages = await _getChatHistory(
         chatName: chatName,
         chatId: chatId,
         messageIdFrom: messageIdFrom,
@@ -619,101 +656,194 @@ class TelegramClientIsolated {
     }
   }
 
-  Future<Chat> _retrySearchPublicChat({
+  Future<Chat> _searchPublicChat({
     required String chatName,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
     int retryCountMax = tgRetryCountMax,
   }) async {
-    var retryCountIndex = 0;
-    while (retryCountIndex < retryCountMax) {
-      retryCountIndex += 1;
+    final chat = await _retryTdCall(
+      tdFunction: SearchPublicChat(
+        username: chatName,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Chat;
 
-      _logger.info('[$chatName] searching public chat... '
-          'Retry [$retryCountIndex/$retryCountMax].');
-
-      final tdResponse = await _tdCall(
-        tdFunction: SearchPublicChat(
-          username: chatName,
-        ),
-      );
-
-      if (tdResponse is Chat) {
-        _logger.info('[$chatName] received Chat. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        if (tdResponse.id == null) {
-          throw TgChatNotFoundException('Chat.id is null');
-        } else if (tdResponse.type == null) {
-          throw TgChatNotFoundException('Chat.type is null');
-        } else if (!(tdResponse.type is ChatTypeSupergroup)) {
-          throw TgChatNotFoundException('Invalid Chat.type: '
-              '${tdResponse.type.runtimeType}');
-        }
-        return tdResponse;
-      } else if (tdResponse is Error) {
-        _logger.info('[$chatName] received Error. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        try {
-          _handleTdError(tdResponse);
-        } on TgFloodWaiException catch (ex) {
-          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
-          await Future.delayed(Duration(seconds: ex.waitSeconds));
-          continue;
-        }
-      } else {
-        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        throw TgException('invalid response type ${tdResponse.runtimeType}');
-      }
+    if (chat.id == null) {
+      throw TgChatNotFoundException('Chat.id is null');
+    } else if (chat.type == null) {
+      throw TgChatNotFoundException('Chat.type is null');
+    } else if (!(chat.type is ChatTypeSupergroup)) {
+      throw TgChatNotFoundException('Invalid Chat.type: '
+          '${chat.type.runtimeType}');
     }
 
-    throw TgMaxRetriesExcedeedException(retryCountMax);
+    return chat;
   }
 
-  Future<Ok> _retryOpenChat({
+  Future<Ok> _openChat({
     required String chatName,
     required int chatId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
     int retryCountMax = tgRetryCountMax,
   }) async {
-    var retryCountIndex = 0;
-    while (retryCountIndex < retryCountMax) {
-      retryCountIndex += 1;
+    return await _retryTdCall(
+      tdFunction: OpenChat(
+        chat_id: WrapId.wrapChatId(chatId),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Ok;
+  }
 
-      _logger.info('[$chatName] opening chat... '
-          'Retry [$retryCountIndex/$retryCountMax].');
+  Future<Ok> _loseChat({
+    required String chatName,
+    required int chatId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: CloseChat(
+        chat_id: WrapId.wrapChatId(chatId),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Ok;
+  }
 
-      final tdResponse = await _tdCall(
-        tdFunction: OpenChat(
-          chat_id: WrapId.wrapChatId(chatId),
-        ),
+  Future<SupergroupFullInfo> _getSupergroupFullInfo({
+    required String chatName,
+    required int chatId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: GetSupergroupFullInfo(
+        supergroup_id: chatId,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as SupergroupFullInfo;
+  }
+
+  Future<ChatMembers> _getSupergroupMembers({
+    required String chatName,
+    required int chatId,
+    SupergroupMembersFilter? supergroupMembersFilter,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: GetSupergroupMembers(
+        supergroup_id: chatId,
+        filter: supergroupMembersFilter,
+        offset: 0,
+        limit: 200,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as ChatMembers;
+  }
+
+  Future<int?> _searchMessageIdLast({
+    required DateTime datetimeFrom,
+    required String chatName,
+    required int chatId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    _logger.info('[$chatName] searching last message by date...');
+
+    var messageIdLast;
+
+    messageIdLast = await _searchMessageIdLastLocally(
+      dateTimeFrom: datetimeFrom,
+      chatName: chatName,
+      chatId: chatId,
+    );
+
+    if (messageIdLast == null) {
+      messageIdLast = await _searchMessageIdLastRemote(
+        datetimeFrom: datetimeFrom,
+        chatName: chatName,
+        chatId: chatId,
+        timeoutMilliseconds: timeoutMilliseconds,
+        retryCountMax: retryCountMax,
       );
-
-      if (tdResponse is Ok) {
-        _logger.info('[$chatName] received Ok. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        return tdResponse;
-      } else if (tdResponse is Error) {
-        _logger.info('[$chatName] received Error. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        try {
-          _handleTdError(tdResponse);
-        } on TgFloodWaiException catch (ex) {
-          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
-          await Future.delayed(Duration(seconds: ex.waitSeconds));
-          continue;
-        }
-      } else {
-        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        throw TgException('invalid response type ${tdResponse.runtimeType}');
-      }
     }
 
-    throw TgMaxRetriesExcedeedException(retryCountMax);
+    _logger.info('[$chatName] searching last message by date... done.');
+
+    return messageIdLast;
+  }
+
+  Future<int?> _searchMessageIdLastRemote({
+    required String chatName,
+    required int chatId,
+    required DateTime datetimeFrom,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    _logger.info('[$chatName] searching last message id remote...');
+
+    int? messageIdLast;
+    try {
+      final tdResponse = await _getChatMessageByDate(
+        chatName: chatName,
+        chatId: chatId,
+        datetimeFrom: datetimeFrom,
+        timeoutMilliseconds: timeoutMilliseconds,
+        retryCountMax: retryCountMax,
+      );
+      messageIdLast = WrapId.unwrapMessageId(tdResponse.id);
+      _logger.info('[$chatName] searching last message id remote... '
+          'found $messageIdLast.');
+    } on TgNotFoundException {
+      _logger.info('[$chatName] searching last message id remote... '
+          'not found.');
+    } on UnWrapIdxception {
+      _logger.info('[$chatName] searching last message id remote... '
+          'not found.');
+    }
+
+    return messageIdLast;
+  }
+
+  Future<Message> _getChatMessageByDate({
+    required String chatName,
+    required int chatId,
+    required DateTime datetimeFrom,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: GetChatMessageByDate(
+        chat_id: WrapId.wrapChatId(chatId),
+        date: datetimeFrom.millisecondsSinceEpoch ~/ 1000,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Message;
+  }
+
+  Future<Messages> _getChatHistory({
+    required String chatName,
+    required int chatId,
+    required int messageIdFrom,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: GetChatHistory(
+        chat_id: WrapId.wrapChatId(chatId),
+        from_message_id: WrapId.wrapMessageId(messageIdFrom),
+        offset: -99,
+        limit: 99,
+        only_local: false,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Messages;
   }
 
   StreamSubscription<dynamic> _subscribeUpdateChatOnlineMemberCount({
@@ -736,301 +866,6 @@ class TelegramClientIsolated {
         }
       }
     });
-  }
-
-  Future<Ok> _retryCloseChat({
-    required String chatName,
-    required int chatId,
-    int retryCountMax = tgRetryCountMax,
-  }) async {
-    var retryCountIndex = 0;
-    while (retryCountIndex < retryCountMax) {
-      retryCountIndex += 1;
-
-      _logger.info('[$chatName] closing chat... '
-          'Retry [$retryCountIndex/$retryCountMax].');
-
-      final tdResponse = await _tdCall(
-        tdFunction: CloseChat(
-          chat_id: WrapId.wrapChatId(chatId),
-        ),
-      );
-
-      if (tdResponse is Ok) {
-        _logger.info('[$chatName] received Chat. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        return tdResponse;
-      } else if (tdResponse is Error) {
-        _logger.info('[$chatName] received Error. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        try {
-          _handleTdError(tdResponse);
-        } on TgFloodWaiException catch (ex) {
-          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
-          await Future.delayed(Duration(seconds: ex.waitSeconds));
-          continue;
-        }
-      } else {
-        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        throw TgException('invalid response type ${tdResponse.runtimeType}');
-      }
-    }
-
-    throw TgMaxRetriesExcedeedException(retryCountMax);
-  }
-
-  Future<SupergroupFullInfo> _retryGetSupergroupFullInfo({
-    required String chatName,
-    required int chatId,
-    int retryCountMax = tgRetryCountMax,
-  }) async {
-    var retryCountIndex = 0;
-    while (retryCountIndex < retryCountMax) {
-      retryCountIndex += 1;
-
-      _logger.info('[$chatName] getting supergroup full info... '
-          'Retry [$retryCountIndex/$retryCountMax].');
-
-      final tdResponse = await _tdCall(
-        tdFunction: GetSupergroupFullInfo(
-          supergroup_id: chatId,
-        ),
-      );
-
-      if (tdResponse is SupergroupFullInfo) {
-        _logger.info('[$chatName] received SupergroupFullInfo. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        return tdResponse;
-      } else if (tdResponse is Error) {
-        _logger.info('[$chatName] received Error. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        try {
-          _handleTdError(tdResponse);
-        } on TgFloodWaiException catch (ex) {
-          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
-          await Future.delayed(Duration(seconds: ex.waitSeconds));
-          continue;
-        }
-      } else {
-        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        throw TgException('invalid response type ${tdResponse.runtimeType}');
-      }
-    }
-
-    throw TgMaxRetriesExcedeedException(retryCountMax);
-  }
-
-  Future<ChatMembers> _retryGetSupergroupMembers({
-    required String chatName,
-    required int chatId,
-    SupergroupMembersFilter? supergroupMembersFilter,
-    int retryCountMax = tgRetryCountMax,
-  }) async {
-    var retryCountIndex = 0;
-    while (retryCountIndex < retryCountMax) {
-      retryCountIndex += 1;
-
-      _logger.info('[$chatName] getting supergroup members info... '
-          'Retry [$retryCountIndex/$retryCountMax].');
-
-      final tdResponse = await _tdCall(
-        tdFunction: GetSupergroupMembers(
-          supergroup_id: chatId,
-          filter: supergroupMembersFilter,
-          offset: 0,
-          limit: 200,
-        ),
-      );
-
-      if (tdResponse is ChatMembers) {
-        _logger.info('[$chatName] received ChatMembers. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        return tdResponse;
-      } else if (tdResponse is Error) {
-        _logger.info('[$chatName] received Error. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        try {
-          _handleTdError(tdResponse);
-        } on TgFloodWaiException catch (ex) {
-          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
-          await Future.delayed(Duration(seconds: ex.waitSeconds));
-          continue;
-        }
-      } else {
-        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        throw TgException('invalid response type ${tdResponse.runtimeType}');
-      }
-    }
-
-    throw TgMaxRetriesExcedeedException(retryCountMax);
-  }
-
-  Future<int?> _searchMessageIdLast({
-    required DateTime datetimeFrom,
-    required String chatName,
-    required int chatId,
-  }) async {
-    _logger.info('[$chatName] searching last message by date...');
-
-    var messageIdLast;
-
-    messageIdLast = await _searchMessageIdLastLocally(
-      dateTimeFrom: datetimeFrom,
-      chatName: chatName,
-      chatId: chatId,
-    );
-
-    if (messageIdLast == null) {
-      messageIdLast = await _searchMessageIdLastRemote(
-        datetimeFrom: datetimeFrom,
-        chatName: chatName,
-        chatId: chatId,
-      );
-    }
-
-    _logger.info('[$chatName] searching last message by date... done.');
-
-    return messageIdLast;
-  }
-
-  Future<int?> _searchMessageIdLastRemote({
-    required String chatName,
-    required int chatId,
-    required DateTime datetimeFrom,
-    int retryCountMax = tgRetryCountMax,
-  }) async {
-    _logger.info('[$chatName] searching last message id remote...');
-
-    int? messageIdLast;
-    try {
-      final tdResponse = await _retryGetChatMessageByDate(
-        chatName: chatName,
-        chatId: chatId,
-        datetimeFrom: datetimeFrom,
-        retryCountMax: retryCountMax,
-      );
-      messageIdLast = WrapId.unwrapMessageId(tdResponse.id);
-      _logger.info('[$chatName] searching last message id remote... '
-          'found $messageIdLast.');
-    } on TgNotFoundException {
-      _logger.info('[$chatName] searching last message id remote... '
-          'not found.');
-    } on UnWrapIdxception {
-      _logger.info('[$chatName] searching last message id remote... '
-          'not found.');
-    }
-
-    return messageIdLast;
-  }
-
-  Future<Message> _retryGetChatMessageByDate({
-    required String chatName,
-    required int chatId,
-    required DateTime datetimeFrom,
-    int retryCountMax = tgRetryCountMax,
-  }) async {
-    var retryCountIndex = 0;
-    while (retryCountIndex < retryCountMax) {
-      retryCountIndex += 1;
-
-      _logger.info('[$chatName] reading last message '
-          'before ${datetimeFrom.toIso8601String()} from TG... '
-          'Retry [$retryCountIndex/$retryCountMax].');
-
-      final tdResponse = await _tdCall(
-        tdFunction: GetChatMessageByDate(
-          chat_id: WrapId.wrapChatId(chatId),
-          date: datetimeFrom.millisecondsSinceEpoch ~/ 1000,
-        ),
-      );
-
-      if (tdResponse is Message) {
-        _logger.info('[$chatName] received Message. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        return tdResponse;
-      } else if (tdResponse is Error) {
-        _logger.info('[$chatName] received Error. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        try {
-          _handleTdError(tdResponse);
-        } on TgFloodWaiException catch (ex) {
-          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
-          await Future.delayed(Duration(seconds: ex.waitSeconds));
-          continue;
-        }
-      } else {
-        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        throw TgException('invalid response type ${tdResponse.runtimeType}');
-      }
-    }
-
-    throw TgMaxRetriesExcedeedException(retryCountMax);
-  }
-
-  Future<Messages> _retryGetChatHistory({
-    required String chatName,
-    required int chatId,
-    required int messageIdFrom,
-    int retryCountMax = tgRetryCountMax,
-  }) async {
-    var retryCountIndex = 0;
-    while (retryCountIndex < retryCountMax) {
-      retryCountIndex += 1;
-
-      _logger.info('[$chatName] getting chat history from $messageIdFrom... '
-          'Retry [$retryCountIndex/$retryCountMax].');
-
-      final tdResponse = await _tdCall(
-        tdFunction: GetChatHistory(
-          chat_id: WrapId.wrapChatId(chatId),
-          from_message_id: WrapId.wrapMessageId(messageIdFrom),
-          offset: -99,
-          limit: 99,
-          only_local: false,
-        ),
-      );
-
-      if (tdResponse is Messages) {
-        _logger.info('[$chatName] received Messages. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        return tdResponse;
-      } else if (tdResponse is Error) {
-        _logger.info('[$chatName] received Error. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        try {
-          _handleTdError(tdResponse);
-        } on TgFloodWaiException catch (ex) {
-          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
-          await Future.delayed(Duration(seconds: ex.waitSeconds));
-          continue;
-        }
-      } else {
-        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
-            'Retry [$retryCountIndex/$retryCountMax].');
-
-        throw TgException('invalid response type ${tdResponse.runtimeType}');
-      }
-    }
-
-    throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
   Future<void> _addChats({
