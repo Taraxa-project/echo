@@ -97,7 +97,10 @@ class TelegramCommandMessages extends Command {
   }
 
   DateTime computeTwoWeeksAgo() {
-    return DateTime.now().subtract(const Duration(days: 14));
+    final dateTimeTwoWeeksAgo =
+        DateTime.now().toUtc().subtract(const Duration(days: 14));
+    return DateTime(dateTimeTwoWeeksAgo.year, dateTimeTwoWeeksAgo.month,
+        dateTimeTwoWeeksAgo.day);
   }
 
   Level getLogLevel() {

@@ -181,7 +181,8 @@ class TelegramClientIsolated {
   Timer? receiveTimer;
 
   static const int retryCountMax = 5;
-  static const int delaySecondsSearchPublicChat = 15;
+  static const int delaySecondsUntilNextChat = 15;
+  static const int delaySecondsUntilNextMessageBatch = 15;
 
   TelegramClientIsolated({
     required this.parentSendPort,
@@ -465,17 +466,17 @@ class TelegramClientIsolated {
         _logger.severe('[$chatName] $ex.');
       } on TgFloodWaitMaxRetriesExceededException catch (ex) {
         _logger.severe('[$chatName] $ex.');
+      } on TgErrorCodeNotHandledException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
       } on TgException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       }
 
       _logger.info('[$chatName] reading chat history... done.');
 
-      _logger.info('reading chat history... '
-          'Sleeping for $delaySecondsSearchPublicChat seconds.');
-      await Future.delayed(const Duration(
-        seconds: delaySecondsSearchPublicChat,
-      ));
+      _logger.info('reading chats history... '
+          'sleeping for $delaySecondsUntilNextChat seconds.');
+      await Future.delayed(const Duration(seconds: delaySecondsUntilNextChat));
     }
 
     return TgMsgResponseReadChatHistory();
@@ -547,15 +548,13 @@ class TelegramClientIsolated {
     while (true) {
       var messageIdFrom = messsageIdLast! + 1;
 
-      var messages = await _getChatHistory(
+      final messages = await _retryGetChatHistory(
         chatName: chatName,
         chatId: chatId,
         messageIdFrom: messageIdFrom,
       );
 
-      if (messages == null ||
-          messages.messages == null ||
-          messages.messages?.length == 0) {
+      if (messages.messages == null || messages.messages?.length == 0) {
         break;
       }
 
@@ -568,6 +567,12 @@ class TelegramClientIsolated {
       if (messsageIdLast == null) {
         break;
       }
+
+      _logger.info('[$chatName] reading messages... '
+          'sleeping for $delaySecondsUntilNextChat seconds.');
+      await Future.delayed(const Duration(
+        seconds: delaySecondsUntilNextMessageBatch,
+      ));
     }
   }
 
@@ -899,7 +904,7 @@ class TelegramClientIsolated {
     );
 
     if (messageIdLast == null) {
-      messageIdLast = await _getChatMessageByDate(
+      messageIdLast = await _searchMessageIdLastRemote(
         datetimeFrom: datetimeFrom,
         chatName: chatName,
         chatId: chatId,
@@ -911,14 +916,88 @@ class TelegramClientIsolated {
     return messageIdLast;
   }
 
-  Future<int?> _getChatMessageByDate({
-    required DateTime datetimeFrom,
+  Future<int?> _searchMessageIdLastRemote({
+    int retryCountMax = retryCountMax,
     required String chatName,
     required int chatId,
+    required DateTime datetimeFrom,
   }) async {
-    _logger.info('[$chatName] reading last message '
-        'before ${datetimeFrom.toIso8601String()} from TG...');
+    _logger.info('[$chatName] searching last message id remote...');
 
+    int? messageIdLast;
+    try {
+      final tdResponse = await _retryGetChatMessageByDate(
+        retryCountMax: retryCountMax,
+        chatName: chatName,
+        chatId: chatId,
+        datetimeFrom: datetimeFrom,
+      );
+      messageIdLast = WrapId.unwrapMessageId(tdResponse.id);
+      _logger.info('[$chatName] searching last message id remote... '
+          'found $messageIdLast.');
+    } on TgNotFoundException {
+      _logger.info('[$chatName] searching last message id remote... '
+          'not found.');
+    } on UnWrapIdxception {
+      _logger.info('[$chatName] searching last message id remote... '
+          'not found.');
+    }
+
+    return messageIdLast;
+  }
+
+  Future<Message> _retryGetChatMessageByDate({
+    int retryCountMax = retryCountMax,
+    required String chatName,
+    required int chatId,
+    required DateTime datetimeFrom,
+  }) async {
+    var retryCountIndex = 0;
+    while (retryCountIndex < retryCountMax) {
+      retryCountIndex += 1;
+
+      _logger.info('[$chatName] reading last message '
+          'before ${datetimeFrom.toIso8601String()} from TG... '
+          'Retry [$retryCountIndex/$retryCountMax].');
+
+      final tdResponse = await _getChatMessageByDate(
+        chatName: chatName,
+        chatId: chatId,
+        datetimeFrom: datetimeFrom,
+      );
+
+      if (tdResponse is Message) {
+        _logger.info('[$chatName] received Message. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        return tdResponse;
+      } else if (tdResponse is Error) {
+        _logger.info('[$chatName] received Error. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        try {
+          _handleTdError(tdResponse);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
+          await Future.delayed(Duration(seconds: ex.waitSeconds));
+          continue;
+        }
+      } else {
+        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        throw TgException('invalid response type ${tdResponse.runtimeType}');
+      }
+    }
+
+    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
+  }
+
+  Future<dynamic> _getChatMessageByDate({
+    required String chatName,
+    required int chatId,
+    required DateTime datetimeFrom,
+  }) async {
     var extra = Uuid().v1();
     _tdSend(GetChatMessageByDate(
       chat_id: WrapId.wrapChatId(chatId),
@@ -926,40 +1005,62 @@ class TelegramClientIsolated {
       extra: extra,
     ));
 
-    var response = await _tdStreamController.stream
+    return await _tdStreamController.stream
         .where((event) => event.extra == extra)
         .first;
-
-    var messageId;
-
-    if (response is Error) {
-      _logger.warning('[$chatName] reading last message by date from TG'
-          'failed with error.');
-      _logger.warning('[$chatName] $response.');
-    } else if (response is Message) {
-      if (response.id != null) {
-        _logger.info('[$chatName] found message id ${response.id}.');
-        messageId = WrapId.unwrapMessageId(response.id);
-        _logger.info('[$chatName] unwrapped message id is $messageId.');
-      } else {
-        _logger.warning('[$chatName] reading last message by date from TG '
-            'failed with no message id.');
-        _logger.warning('[$chatName] $response.');
-      }
-    }
-
-    _logger.info('[$chatName] reading last message by date from TG... done.');
-
-    return messageId;
   }
 
-  Future<Messages?> _getChatHistory({
+  Future<Messages> _retryGetChatHistory({
+    int retryCountMax = retryCountMax,
     required String chatName,
     required int chatId,
     required int messageIdFrom,
   }) async {
-    _logger.info('[$chatName] getting chat history from $messageIdFrom...');
+    var retryCountIndex = 0;
+    while (retryCountIndex < retryCountMax) {
+      retryCountIndex += 1;
 
+      _logger.info('[$chatName] getting chat history from $messageIdFrom... '
+          'Retry [$retryCountIndex/$retryCountMax].');
+
+      final tdResponse = await _getChatHistory(
+        chatName: chatName,
+        chatId: chatId,
+        messageIdFrom: messageIdFrom,
+      );
+
+      if (tdResponse is Messages) {
+        _logger.info('[$chatName] received Messages. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        return tdResponse;
+      } else if (tdResponse is Error) {
+        _logger.info('[$chatName] received Error. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        try {
+          _handleTdError(tdResponse);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning('[$chatName] retrying in ${ex.waitSeconds} seconds.');
+          await Future.delayed(Duration(seconds: ex.waitSeconds));
+          continue;
+        }
+      } else {
+        _logger.info('[$chatName] received ${tdResponse.runtimeType}. '
+            'Retry [$retryCountIndex/$retryCountMax].');
+
+        throw TgException('invalid response type ${tdResponse.runtimeType}');
+      }
+    }
+
+    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
+  }
+
+  Future<dynamic> _getChatHistory({
+    required String chatName,
+    required int chatId,
+    required int messageIdFrom,
+  }) async {
     var extra = Uuid().v1();
     _tdSend(GetChatHistory(
       chat_id: WrapId.wrapChatId(chatId),
@@ -970,20 +1071,9 @@ class TelegramClientIsolated {
       extra: extra,
     ));
 
-    var response = await _tdStreamController.stream
+    return await _tdStreamController.stream
         .where((event) => event.extra == extra)
         .first;
-
-    if (response is Error) {
-      _logger.warning('[$chatName] getting chat history '
-          'failed with error.');
-      _logger.warning('[$chatName] $response.');
-    }
-
-    _logger
-        .info('[$chatName] getting chat history from $messageIdFrom... done.');
-
-    return response;
   }
 
   Future<void> _addChats({
@@ -1192,6 +1282,11 @@ class TelegramClientIsolated {
       } else {
         throw TgFloodWaiException(floodWaitSeconds);
       }
+    } else if (error.code == 404) {
+      throw TgNotFoundException(
+        error.message,
+        error.code,
+      );
     } else if (error.code == 406) {
       throw TgNotExceptableException(
         'Handle me: '
@@ -1199,7 +1294,7 @@ class TelegramClientIsolated {
         error.code,
       );
     } else {
-      throw TgInternalException(
+      throw TgErrorCodeNotHandledException(
         error.message,
         error.code,
       );
@@ -1332,6 +1427,27 @@ class TgBadRequestException implements Exception {
   }
 }
 
+class TgNotFoundException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgNotFoundException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = "TgNotFoundException";
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
+    }
+    return report;
+  }
+}
+
 class TgNotExceptableException implements Exception {
   final String? message;
   final int? code;
@@ -1353,17 +1469,17 @@ class TgNotExceptableException implements Exception {
   }
 }
 
-class TgInternalException implements Exception {
+class TgErrorCodeNotHandledException implements Exception {
   final String? message;
   final int? code;
 
-  TgInternalException([
+  TgErrorCodeNotHandledException([
     this.message = '',
     this.code = 0,
   ]);
 
   String toString() {
-    var report = "TgInternalException";
+    var report = "TgErrorCodeNotHandledException";
     if (message != null) {
       report += ': $message';
     }
