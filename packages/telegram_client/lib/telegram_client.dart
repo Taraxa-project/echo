@@ -180,9 +180,12 @@ class TelegramClientIsolated {
   bool _isTdReceiving = false;
   Timer? receiveTimer;
 
-  static const int retryCountMax = 5;
-  static const int delaySecondsUntilNextChat = 15;
-  static const int delaySecondsUntilNextMessageBatch = 15;
+  static const int tgRetryCountMax = 5;
+  static const int tgTimeoutMilliseconds = 5 * 1000; // 5 seconds
+  static const int tgTimeoutDelayMilliseconds = 50;
+
+  static const int delayUntilNextChatSeconds = 15;
+  static const int delayUntilNextMessageBatchSeconds = 15;
 
   TelegramClientIsolated({
     required this.parentSendPort,
@@ -311,6 +314,44 @@ class TelegramClientIsolated {
     _logger.finer('sending $tdFunction...');
     _tdJsonClient.send(_tdJsonClientId, tdFunction);
     _logger.fine('sent ${tdFunction.runtimeType}.');
+  }
+
+  Future<dynamic> _tdCall({
+    required TdFunction tdFunction,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) async {
+    var tdResponse;
+
+    var extra = Uuid().v1();
+
+    var sub = _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .listen((event) {
+      tdResponse = event;
+    });
+
+    tdFunction.extra = extra;
+    _tdSend(tdFunction);
+
+    int elapsedMilliseconds = 0;
+    while (elapsedMilliseconds <= timeoutMilliseconds) {
+      if (tdResponse != null) {
+        break;
+      }
+      elapsedMilliseconds += tgTimeoutDelayMilliseconds;
+      await Future.delayed(Duration(milliseconds: tgTimeoutDelayMilliseconds));
+    }
+
+    sub.cancel();
+
+    if (tdResponse == null) {
+      throw TgTimedOutException(
+        elapsedMilliseconds,
+        tdFunction.runtimeType.toString(),
+      );
+    }
+
+    return tdResponse;
   }
 
   Future<TgMsgResponseLogin> _login({
@@ -464,9 +505,11 @@ class TelegramClientIsolated {
         _logger.severe('[$chatName] $ex.');
       } on UnWrapIdxception catch (ex) {
         _logger.severe('[$chatName] $ex.');
-      } on TgFloodWaitMaxRetriesExceededException catch (ex) {
+      } on TgMaxRetriesExcedeedException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgErrorCodeNotHandledException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on TgTimedOutException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgException catch (ex) {
         _logger.severe('[$chatName] $ex.');
@@ -475,8 +518,8 @@ class TelegramClientIsolated {
       _logger.info('[$chatName] reading chat history... done.');
 
       _logger.info('reading chats history... '
-          'sleeping for $delaySecondsUntilNextChat seconds.');
-      await Future.delayed(const Duration(seconds: delaySecondsUntilNextChat));
+          'sleeping for $delayUntilNextChatSeconds seconds.');
+      await Future.delayed(const Duration(seconds: delayUntilNextChatSeconds));
     }
 
     return TgMsgResponseReadChatHistory();
@@ -569,16 +612,16 @@ class TelegramClientIsolated {
       }
 
       _logger.info('[$chatName] reading messages... '
-          'sleeping for $delaySecondsUntilNextChat seconds.');
+          'sleeping for $delayUntilNextChatSeconds seconds.');
       await Future.delayed(const Duration(
-        seconds: delaySecondsUntilNextMessageBatch,
+        seconds: delayUntilNextMessageBatchSeconds,
       ));
     }
   }
 
   Future<Chat> _retrySearchPublicChat({
-    int retryCountMax = retryCountMax,
     required String chatName,
+    int retryCountMax = tgRetryCountMax,
   }) async {
     var retryCountIndex = 0;
     while (retryCountIndex < retryCountMax) {
@@ -587,7 +630,11 @@ class TelegramClientIsolated {
       _logger.info('[$chatName] searching public chat... '
           'Retry [$retryCountIndex/$retryCountMax].');
 
-      final tdResponse = await _searchPublicChat(chatName: chatName);
+      final tdResponse = await _tdCall(
+        tdFunction: SearchPublicChat(
+          username: chatName,
+        ),
+      );
 
       if (tdResponse is Chat) {
         _logger.info('[$chatName] received Chat. '
@@ -621,27 +668,13 @@ class TelegramClientIsolated {
       }
     }
 
-    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
-  }
-
-  Future<dynamic> _searchPublicChat({
-    required String chatName,
-  }) async {
-    var extra = Uuid().v1();
-    _tdSend(SearchPublicChat(
-      username: chatName,
-      extra: extra,
-    ));
-
-    return await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
+    throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
   Future<Ok> _retryOpenChat({
-    int retryCountMax = retryCountMax,
     required String chatName,
     required int chatId,
+    int retryCountMax = tgRetryCountMax,
   }) async {
     var retryCountIndex = 0;
     while (retryCountIndex < retryCountMax) {
@@ -650,7 +683,11 @@ class TelegramClientIsolated {
       _logger.info('[$chatName] opening chat... '
           'Retry [$retryCountIndex/$retryCountMax].');
 
-      final tdResponse = await _openChat(chatId: chatId);
+      final tdResponse = await _tdCall(
+        tdFunction: OpenChat(
+          chat_id: WrapId.wrapChatId(chatId),
+        ),
+      );
 
       if (tdResponse is Ok) {
         _logger.info('[$chatName] received Ok. '
@@ -676,21 +713,7 @@ class TelegramClientIsolated {
       }
     }
 
-    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
-  }
-
-  Future<dynamic> _openChat({
-    required int chatId,
-  }) async {
-    var extra = Uuid().v1();
-    _tdSend(OpenChat(
-      chat_id: WrapId.wrapChatId(chatId),
-      extra: extra,
-    ));
-
-    return await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
+    throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
   StreamSubscription<dynamic> _subscribeUpdateChatOnlineMemberCount({
@@ -716,9 +739,9 @@ class TelegramClientIsolated {
   }
 
   Future<Ok> _retryCloseChat({
-    int retryCountMax = retryCountMax,
     required String chatName,
     required int chatId,
+    int retryCountMax = tgRetryCountMax,
   }) async {
     var retryCountIndex = 0;
     while (retryCountIndex < retryCountMax) {
@@ -727,7 +750,11 @@ class TelegramClientIsolated {
       _logger.info('[$chatName] closing chat... '
           'Retry [$retryCountIndex/$retryCountMax].');
 
-      final tdResponse = await _closeChat(chatId: chatId);
+      final tdResponse = await _tdCall(
+        tdFunction: CloseChat(
+          chat_id: WrapId.wrapChatId(chatId),
+        ),
+      );
 
       if (tdResponse is Ok) {
         _logger.info('[$chatName] received Chat. '
@@ -753,27 +780,13 @@ class TelegramClientIsolated {
       }
     }
 
-    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
-  }
-
-  Future<dynamic> _closeChat({
-    required int chatId,
-  }) async {
-    var extra = Uuid().v1();
-    _tdSend(CloseChat(
-      chat_id: WrapId.wrapChatId(chatId),
-      extra: extra,
-    ));
-
-    return await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
+    throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
   Future<SupergroupFullInfo> _retryGetSupergroupFullInfo({
-    int retryCountMax = retryCountMax,
     required String chatName,
     required int chatId,
+    int retryCountMax = tgRetryCountMax,
   }) async {
     var retryCountIndex = 0;
     while (retryCountIndex < retryCountMax) {
@@ -782,7 +795,11 @@ class TelegramClientIsolated {
       _logger.info('[$chatName] getting supergroup full info... '
           'Retry [$retryCountIndex/$retryCountMax].');
 
-      final tdResponse = await _getSupergroupFullInfo(chatId: chatId);
+      final tdResponse = await _tdCall(
+        tdFunction: GetSupergroupFullInfo(
+          supergroup_id: chatId,
+        ),
+      );
 
       if (tdResponse is SupergroupFullInfo) {
         _logger.info('[$chatName] received SupergroupFullInfo. '
@@ -808,28 +825,14 @@ class TelegramClientIsolated {
       }
     }
 
-    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
-  }
-
-  Future<dynamic> _getSupergroupFullInfo({
-    required int chatId,
-  }) async {
-    var extra = Uuid().v1();
-    _tdSend(GetSupergroupFullInfo(
-      supergroup_id: chatId,
-      extra: extra,
-    ));
-
-    return await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
+    throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
   Future<ChatMembers> _retryGetSupergroupMembers({
-    int retryCountMax = retryCountMax,
     required String chatName,
     required int chatId,
     SupergroupMembersFilter? supergroupMembersFilter,
+    int retryCountMax = tgRetryCountMax,
   }) async {
     var retryCountIndex = 0;
     while (retryCountIndex < retryCountMax) {
@@ -838,9 +841,13 @@ class TelegramClientIsolated {
       _logger.info('[$chatName] getting supergroup members info... '
           'Retry [$retryCountIndex/$retryCountMax].');
 
-      final tdResponse = await _getSupergroupMembers(
-        chatId: chatId,
-        supergroupMembersFilter: supergroupMembersFilter,
+      final tdResponse = await _tdCall(
+        tdFunction: GetSupergroupMembers(
+          supergroup_id: chatId,
+          filter: supergroupMembersFilter,
+          offset: 0,
+          limit: 200,
+        ),
       );
 
       if (tdResponse is ChatMembers) {
@@ -867,25 +874,7 @@ class TelegramClientIsolated {
       }
     }
 
-    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
-  }
-
-  Future<dynamic> _getSupergroupMembers({
-    required int chatId,
-    SupergroupMembersFilter? supergroupMembersFilter,
-  }) async {
-    var extra = Uuid().v1();
-    _tdSend(GetSupergroupMembers(
-      supergroup_id: chatId,
-      filter: supergroupMembersFilter,
-      offset: 0,
-      limit: 200,
-      extra: extra,
-    ));
-
-    return await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
+    throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
   Future<int?> _searchMessageIdLast({
@@ -917,20 +906,20 @@ class TelegramClientIsolated {
   }
 
   Future<int?> _searchMessageIdLastRemote({
-    int retryCountMax = retryCountMax,
     required String chatName,
     required int chatId,
     required DateTime datetimeFrom,
+    int retryCountMax = tgRetryCountMax,
   }) async {
     _logger.info('[$chatName] searching last message id remote...');
 
     int? messageIdLast;
     try {
       final tdResponse = await _retryGetChatMessageByDate(
-        retryCountMax: retryCountMax,
         chatName: chatName,
         chatId: chatId,
         datetimeFrom: datetimeFrom,
+        retryCountMax: retryCountMax,
       );
       messageIdLast = WrapId.unwrapMessageId(tdResponse.id);
       _logger.info('[$chatName] searching last message id remote... '
@@ -947,10 +936,10 @@ class TelegramClientIsolated {
   }
 
   Future<Message> _retryGetChatMessageByDate({
-    int retryCountMax = retryCountMax,
     required String chatName,
     required int chatId,
     required DateTime datetimeFrom,
+    int retryCountMax = tgRetryCountMax,
   }) async {
     var retryCountIndex = 0;
     while (retryCountIndex < retryCountMax) {
@@ -960,10 +949,11 @@ class TelegramClientIsolated {
           'before ${datetimeFrom.toIso8601String()} from TG... '
           'Retry [$retryCountIndex/$retryCountMax].');
 
-      final tdResponse = await _getChatMessageByDate(
-        chatName: chatName,
-        chatId: chatId,
-        datetimeFrom: datetimeFrom,
+      final tdResponse = await _tdCall(
+        tdFunction: GetChatMessageByDate(
+          chat_id: WrapId.wrapChatId(chatId),
+          date: datetimeFrom.millisecondsSinceEpoch ~/ 1000,
+        ),
       );
 
       if (tdResponse is Message) {
@@ -990,31 +980,14 @@ class TelegramClientIsolated {
       }
     }
 
-    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
-  }
-
-  Future<dynamic> _getChatMessageByDate({
-    required String chatName,
-    required int chatId,
-    required DateTime datetimeFrom,
-  }) async {
-    var extra = Uuid().v1();
-    _tdSend(GetChatMessageByDate(
-      chat_id: WrapId.wrapChatId(chatId),
-      date: datetimeFrom.millisecondsSinceEpoch ~/ 1000,
-      extra: extra,
-    ));
-
-    return await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
+    throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
   Future<Messages> _retryGetChatHistory({
-    int retryCountMax = retryCountMax,
     required String chatName,
     required int chatId,
     required int messageIdFrom,
+    int retryCountMax = tgRetryCountMax,
   }) async {
     var retryCountIndex = 0;
     while (retryCountIndex < retryCountMax) {
@@ -1023,10 +996,14 @@ class TelegramClientIsolated {
       _logger.info('[$chatName] getting chat history from $messageIdFrom... '
           'Retry [$retryCountIndex/$retryCountMax].');
 
-      final tdResponse = await _getChatHistory(
-        chatName: chatName,
-        chatId: chatId,
-        messageIdFrom: messageIdFrom,
+      final tdResponse = await _tdCall(
+        tdFunction: GetChatHistory(
+          chat_id: WrapId.wrapChatId(chatId),
+          from_message_id: WrapId.wrapMessageId(messageIdFrom),
+          offset: -99,
+          limit: 99,
+          only_local: false,
+        ),
       );
 
       if (tdResponse is Messages) {
@@ -1053,27 +1030,7 @@ class TelegramClientIsolated {
       }
     }
 
-    throw TgFloodWaitMaxRetriesExceededException(retryCountMax);
-  }
-
-  Future<dynamic> _getChatHistory({
-    required String chatName,
-    required int chatId,
-    required int messageIdFrom,
-  }) async {
-    var extra = Uuid().v1();
-    _tdSend(GetChatHistory(
-      chat_id: WrapId.wrapChatId(chatId),
-      from_message_id: WrapId.wrapMessageId(messageIdFrom),
-      offset: -99,
-      limit: 99,
-      only_local: false,
-      extra: extra,
-    ));
-
-    return await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
+    throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
   Future<void> _addChats({
@@ -1377,7 +1334,7 @@ class TgException implements Exception {
   TgException([this.message = '']);
 
   String toString() {
-    var report = "TgException";
+    var report = 'TgException';
     if (message != null) {
       report += ': $message';
     }
@@ -1395,7 +1352,7 @@ class TgChatNotFoundException implements Exception {
   ]);
 
   String toString() {
-    var report = "TgChatNotFoundException";
+    var report = 'TgChatNotFoundException';
     if (message != null) {
       report += ': $message';
     }
@@ -1416,7 +1373,7 @@ class TgBadRequestException implements Exception {
   ]);
 
   String toString() {
-    var report = "TgBadRequestException";
+    var report = 'TgBadRequestException';
     if (message != null) {
       report += ': $message';
     }
@@ -1437,7 +1394,7 @@ class TgNotFoundException implements Exception {
   ]);
 
   String toString() {
-    var report = "TgNotFoundException";
+    var report = 'TgNotFoundException';
     if (message != null) {
       report += ': $message';
     }
@@ -1458,7 +1415,7 @@ class TgNotExceptableException implements Exception {
   ]);
 
   String toString() {
-    var report = "TgNotExceptableException";
+    var report = 'TgNotExceptableException';
     if (message != null) {
       report += ': $message';
     }
@@ -1479,7 +1436,7 @@ class TgErrorCodeNotHandledException implements Exception {
   ]);
 
   String toString() {
-    var report = "TgErrorCodeNotHandledException";
+    var report = 'TgErrorCodeNotHandledException';
     if (message != null) {
       report += ': $message';
     }
@@ -1498,18 +1455,34 @@ class TgFloodWaiException implements Exception {
   );
 
   String toString() {
-    return "TgFloodWaiException: $waitSeconds";
+    return 'TgFloodWaiException: $waitSeconds';
   }
 }
 
-class TgFloodWaitMaxRetriesExceededException implements Exception {
+class TgMaxRetriesExcedeedException implements Exception {
   final int maxRetries;
 
-  TgFloodWaitMaxRetriesExceededException(
+  TgMaxRetriesExcedeedException(
     this.maxRetries,
   );
 
   String toString() {
-    return "TgMaxRetriesExcedeedException: $maxRetries";
+    return 'TgMaxRetriesExcedeedException: $maxRetries';
+  }
+}
+
+class TgTimedOutException implements Exception {
+  final int millisenconds;
+  final String request;
+
+  TgTimedOutException(
+    this.millisenconds,
+    this.request,
+  );
+
+  String toString() {
+    return 'TgTimedOutException: '
+        'request $request timed out '
+        'after ${millisenconds / 1000} seconds.';
   }
 }
