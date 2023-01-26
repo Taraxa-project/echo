@@ -349,6 +349,15 @@ class TelegramClientIsolated {
         elapsedMilliseconds,
         tdFunction.runtimeType.toString(),
       );
+    } else if (tdResponse.runtimeType.toString() == tdFunction.tdReturnType) {
+      return tdResponse;
+    } else if (tdResponse is Error) {
+      _handleTdError(tdResponse);
+    } else {
+      _logger.info('received invalid response type for '
+          '${tdFunction.runtimeType.toString()}: '
+          '${tdResponse.runtimeType}.');
+      throw TgException('invalid response type ${tdResponse.runtimeType}');
     }
 
     return tdResponse;
@@ -363,28 +372,17 @@ class TelegramClientIsolated {
     while (retryCountIndex < retryCountMax) {
       retryCountIndex += 1;
 
-      final tdResponse = await _tdCall(
-        tdFunction: tdFunction,
-        timeoutMilliseconds: timeoutMilliseconds,
-      );
-
-      if (tdResponse.runtimeType.toString() == tdFunction.tdReturnType) {
-        return tdResponse;
-      } else if (tdResponse is Error) {
-        try {
-          _handleTdError(tdResponse);
-        } on TgFloodWaiException catch (ex) {
-          _logger.warning('received flood wait for '
-              '${tdFunction.runtimeType.toString()}. '
-              'Retrying in ${ex.waitSeconds} seconds.');
-          await Future.delayed(Duration(seconds: ex.waitSeconds));
-          continue;
-        }
-      } else {
-        _logger.info('received invalid response type for '
-            '${tdFunction.runtimeType.toString()}: '
-            '${tdResponse.runtimeType}.');
-        throw TgException('invalid response type ${tdResponse.runtimeType}');
+      try {
+        return await _tdCall(
+          tdFunction: tdFunction,
+          timeoutMilliseconds: timeoutMilliseconds,
+        );
+      } on TgFloodWaiException catch (ex) {
+        _logger.warning('received flood wait for '
+            '${tdFunction.runtimeType.toString()}. '
+            'Retrying in ${ex.waitSeconds} seconds.');
+        await Future.delayed(Duration(seconds: ex.waitSeconds));
+        continue;
       }
     }
 
@@ -543,8 +541,8 @@ class TelegramClientIsolated {
       } on TgMaxRetriesExcedeedException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgBadRequestException catch (ex) {
-      } on UnWrapIdxception catch (ex) {
         _logger.severe('[$chatName] $ex.');
+      } on UnWrapIdxception catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgErrorCodeNotHandledException catch (ex) {
         _logger.severe('[$chatName] $ex.');
