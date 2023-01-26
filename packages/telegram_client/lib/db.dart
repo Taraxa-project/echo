@@ -173,10 +173,6 @@ class DbIsolated {
         message.replySendPort?.send(addMessage(
           message: message.message,
         ));
-      } else if (message is DbMsgRequestUserExist) {
-        message.replySendPort?.send(checkUserExists(
-          userId: message.userId 
-        ));
       } else if (message is DbMsgRequestAddUser) {
         message.replySendPort?.send(addUser(
           userId: message.userId
@@ -410,44 +406,6 @@ class DbIsolated {
     }
   }
 
-  DbMsgResponseUserExist? checkUserExists({required int userId}) {
-    var retry = true;
-    var count = 0;
-    while(retry) {
-      try{
-    _logger.fine('Checking if user_id exists in users  $userId...');
-
-    final ResultSet? resultSet = db?.select(
-      'SELECT user_id FROM user WHERE user_id = ?;', [
-      userId
-    ]);
-
-    if (resultSet != null && resultSet.isNotEmpty) {
-      _logger.fine('found user_id $userId.');
-      return DbMsgResponseUserExist(
-        exists: true,
-      );
-    } else {
-      _logger.fine('did not find user_id $userId.');
-      return DbMsgResponseUserExist(
-        exists: false,
-      );
-    }
-    } on SqliteException catch  (exception) {
-        const operationName = "Adding Message";
-        var retry = dbErrorHandler(exception, operationName);
-        if (retry == true) {
-          _logger.fine("Retry Count: ${count}");
-          if (++count == maxTries) {
-            return DbMsgResponseUserExist(exists: false, exception: exception);
-          }
-        } else {
-          return DbMsgResponseUserExist(exists: false, exception: exception);
-        }
-      }
-  }
-  }
-
   DbMsgResponseAddUser addUser({required int userId}) {
     var retry = true;
     var count = 0;
@@ -645,8 +603,6 @@ class DbIsolated {
 
 }
 
-
-
 abstract class DbMsg {}
 
 abstract class DbMsgRequest extends DbMsg {
@@ -763,24 +719,6 @@ class DbMsgResponseAddMessage extends DbMsgResponse {
   });
 }
 
-class DbMsgRequestUserExist extends DbMsgRequest {
-  final int userId;
-
-  DbMsgRequestUserExist({
-    super.replySendPort,
-    required this.userId,
-  });
-}
-
-class DbMsgResponseUserExist extends DbMsgResponse {
-  final bool exists;
-
-  DbMsgResponseUserExist({
-    required this.exists,
-    super.exception
-  });
-}
-
 class DbMsgRequestAddUser extends DbMsgRequest {
   final int userId;
 
@@ -811,4 +749,3 @@ class DbMsgResponseUpdateUser extends DbMsgResponse {
 class DbMsgResponseConstraintError extends DbMsgResponseAddUser {
   DbMsgResponseConstraintError({super.exception});
 }
-
