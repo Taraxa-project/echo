@@ -534,14 +534,14 @@ class TelegramClientIsolated {
     }
   }
 
-  Future<void> _addUser({required int userId, required User user}) async {
-    dbSendPort.send(DbMsgRequestAddUser(
+  Future<void> _updateUser({required int userId, required User user}) async {
+    dbSendPort.send(DbMsgRequestUpdateUser(
           replySendPort: receivePort.sendPort,
           userId: userId,
           user: user
         ));
     var response = await receivePortBroadcast
-        .where((event) => event is DbMsgResponseAddUser)
+        .where((event) => event is DbMsgResponseUpdateUser)
         .first;
 
     if (response.exception != null) {
@@ -564,19 +564,23 @@ class TelegramClientIsolated {
       }
 
       if (userId != null){
-        dbSendPort.send(DbMsgRequestUserExist(
+         dbSendPort.send(DbMsgRequestAddUser(
           replySendPort: receivePort.sendPort,
-          userId: userId,
+          userId: userId
         ));
-        var response = await receivePortBroadcast
-            .where((event) => event is DbMsgResponseUserExist)
+        DbMsgResponseAddUser response  = await receivePortBroadcast
+            .where((event) => event is DbMsgResponseAddUser)
             .first;
-
+          
         if (response.exception != null) {
-          throw TgDbException(exception: response.exception);
-        } else if (!response.exists) {
-          var user = await _getUser(userId: userId);
-          await _addUser(userId: userId, user: user);
+          if (response is DbMsgResponseConstraintError) {
+            _logger.fine('[${userId}] already exists');
+          } else {
+            throw TgDbException(exception: response.exception);
+          }
+        } else {
+            var user = await _getUser(userId: userId);
+            await _updateUser(userId: userId, user: user);
         }
       }
     }

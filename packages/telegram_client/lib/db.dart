@@ -90,7 +90,7 @@ class Db {
     var response = await _isolateReceivePortBroadcast.where((event) => event is DbMsgResponseMigrate).first;
     
     if (response.exception != null) {
-      _logger.severe('there is an exception error in migrate: ${response.exception}');
+      _logger.info('there is an exception error in migrate: ${response.exception}');
       exit();
     }
     else {
@@ -179,6 +179,10 @@ class DbIsolated {
         ));
       } else if (message is DbMsgRequestAddUser) {
         message.replySendPort?.send(addUser(
+          userId: message.userId
+        ));
+      } else if (message is DbMsgRequestUpdateUser) {
+        message.replySendPort?.send(updateUser(
           userId: message.userId,
           user: message.user
         ));
@@ -191,7 +195,7 @@ class DbIsolated {
       _logger.fine('opening...');
       db = sqlite3.open(this.dbPath);
       _logger.fine('opened.');
-      return DbMsgResponseOpen();//exception: SqliteException(0, "testing", "['explanation', 'causing statment']"));
+      return DbMsgResponseOpen();
       } on SqliteException catch  (exception) {
         const operationName = "Open DB";
         dbErrorHandler(exception, operationName);
@@ -433,7 +437,7 @@ class DbIsolated {
         const operationName = "Adding Message";
         var retry = dbErrorHandler(exception, operationName);
         if (retry == true) {
-          _logger.info("Retry Count: ${count}");
+          _logger.fine("Retry Count: ${count}");
           if (++count == maxTries) {
             return DbMsgResponseUserExist(exists: false, exception: exception);
           }
@@ -444,26 +448,18 @@ class DbIsolated {
   }
   }
 
-  DbMsgResponseAddUser addUser({required int userId, required User user}) {
+  DbMsgResponseAddUser addUser({required int userId}) {
     var retry = true;
     var count = 0;
     while(retry) {
       try{
         _logger.fine('Adding new user  $userId...');
         final sql = """
-          INSERT INTO user (user_id, first_name, last_name, username, bot, verified, scam, fake)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
+          INSERT INTO user (user_id) VALUES (?);
           """;
         final stmt = db?.prepare(sql);
         stmt?.execute([
-              userId,
-              user.first_name,
-              user.last_name,
-              user.usernames?.active_usernames?.firstOrNull!,
-              user.type is UserTypeBot,
-              user.is_verified,
-              user.is_scam,
-              user.is_fake,
+              userId
             ]);
         stmt?.dispose();
         _logger.fine('User $userId added');
@@ -477,7 +473,49 @@ class DbIsolated {
             return DbMsgResponseAddUser(exception: exception);
           }
         } else {
-          return DbMsgResponseAddUser(exception: exception);
+          if (exception.resultCode == 19) {
+            return DbMsgResponseConstraintError(exception: exception);
+          } else {
+            return DbMsgResponseAddUser(exception: exception);
+          }
+        }
+      }
+    }
+  }
+
+  DbMsgResponseUpdateUser updateUser({required int userId, required User user}) {
+    var retry = true;
+    var count = 0;
+    while(retry) {
+      try{
+        _logger.fine('Adding new user  $userId...');
+        final sql = """
+          UPDATE user SET first_name = ?, last_name = ?, username = ?, bot = ?, verified = ?, scam = ?, fake = ? WHERE user_id = ?;
+          """; 
+        final stmt = db?.prepare(sql);
+        stmt?.execute([
+              user.first_name,
+              user.last_name,
+              user.usernames?.active_usernames?.firstOrNull!,
+              user.type is UserTypeBot,
+              user.is_verified,
+              user.is_scam,
+              user.is_fake,
+              userId
+            ]);
+        stmt?.dispose();
+        _logger.fine('User $userId added');
+        return DbMsgResponseUpdateUser();
+    } on SqliteException catch  (exception) {
+        const operationName = "Adding User";
+        var retry = dbErrorHandler(exception, operationName);
+        if (retry == true) {
+          _logger.info("Retry Count: ${count}");
+          if (++count == maxTries) {
+            return DbMsgResponseUpdateUser(exception: exception);
+          }
+        } else {
+          return DbMsgResponseUpdateUser(exception: exception);
         }
       }
     }
@@ -508,7 +546,7 @@ class DbIsolated {
      """
     CREATE TABLE IF NOT EXISTS user (
       id INTEGER NOT NULL PRIMARY KEY,
-      user_id INTEGER UNIQUE ON CONFLICT IGNORE NOT NULL,
+      user_id INTEGER UNIQUE NOT NULL,
       first_name TEXT,
       last_name TEXT,
       username TEXT,
@@ -523,7 +561,7 @@ class DbIsolated {
       message(chat_id, id);
     """,
     ];
-  }
+  } 
 
   bool dbErrorHandler(SqliteException error, String operation) {
     // return true for retry or false for exiting
@@ -534,73 +572,73 @@ class DbIsolated {
     // 266 - indicating an I/O error in the VFS layer while trying to read from a file on disk
     switch (error.resultCode) {
       case 1:
-        _logger.severe("[DB Exception within ${operation}] generic error -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] generic error -> ${error}");
         return true;
       case 2:
-        _logger.severe("[DB Exception within ${operation}] internal error -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] internal error -> ${error}");
         return false; 
       case 3:
-        _logger.severe("[DB Exception within ${operation}] internal error -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] internal error -> ${error}");
         return false;
       case 4:
-        _logger.severe("[DB Exception within ${operation}] unable to open SQLite file -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] unable to open SQLite file -> ${error}");
         return false;
       case 5:
-        _logger.severe("[DB Exception within ${operation}] SQLite Engine currently busy -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] SQLite Engine currently busy -> ${error}");
         return true;
       case 6:
-        _logger.severe("[DB Exception within ${operation}] conflict on the database connection -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] conflict on the database connection -> ${error}");
         return false;
       case 7:
-        _logger.severe("[DB Exception within ${operation}] SQLite was unable to allocate all the memory it needed for operation -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] SQLite was unable to allocate all the memory it needed for operation -> ${error}");
         return false;
       case 8:
-        _logger.severe("[DB Exception within ${operation}] SQLite readonly error, current database connection does not have write permissions -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] SQLite readonly error, current database connection does not have write permissions -> ${error}");
         return false;
       case 9:
-        _logger.severe("[DB Exception within ${operation}] operation was interrupted -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] operation was interrupted -> ${error}");
         return false;
       case 10:
-        _logger.severe("[DB Exception within ${operation}] operation could not finish because of an OS reported I/O error -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] operation could not finish because of an OS reported I/O error -> ${error}");
         return false;
       case 11:
-        _logger.severe("[DB Exception within ${operation}] database file is corrputed -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] database file is corrputed -> ${error}");
         return false;
       case 12:
-        _logger.severe("[DB Exception within ${operation}] SQLite not found -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] SQLite not found -> ${error}");
         return false;
       case 13:
-        _logger.severe("[DB Exception within ${operation}] write could not be completed, disk is full -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] write could not be completed, disk is full -> ${error}");
         return false;
       case 14:
-        _logger.severe("[DB Exception within ${operation}] API misuse -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] API misuse -> ${error}");
         return false;
       case 17:
-        _logger.severe("[DB Exception within ${operation}] API misuse -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] API misuse -> ${error}");
         return false;
       case 19:
-        _logger.severe("[DB Exception within ${operation}] SQLite database schema has changed -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] SQLite database schema has changed -> ${error}");
         return false;
       case 20:
-        _logger.severe("[DB Exception within ${operation}] SQLite datatype mismatch -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] SQLite datatype mismatch -> ${error}");
         return false;
       case 21:
-        _logger.severe("[DB Exception within ${operation}] SQLite misuse, interfaced with SQLite interface in a way that is undefined or unsupported -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] SQLite misuse, interfaced with SQLite interface in a way that is undefined or unsupported -> ${error}");
         return false;
       case 23:
-        _logger.severe("[DB Exception within ${operation}] authorization failed -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] authorization failed -> ${error}");
         return false;
       case 261:
-        _logger.severe("[DB Exception within ${operation}] SQLite could not continue with operation because it is busy recovering WAL mode db file -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] SQLite could not continue with operation because it is busy recovering WAL mode db file -> ${error}");
         return true;
       case 266:
-        _logger.severe("[DB Exception within ${operation}] I/O error in the VFS layer while trying to read from a file on disk -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] I/O error in the VFS layer while trying to read from a file on disk -> ${error}");
         return true;
       case 279:
-        _logger.severe("[DB Exception within ${operation}] lacking sufficient authorization -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] lacking sufficient authorization -> ${error}");
         return false;
       default:
-        _logger.severe("[DB Exception within ${operation}] error -> ${error}");
+        _logger.fine("[DB Exception within ${operation}] error -> ${error}");
         return false;
     }
   }
@@ -745,15 +783,32 @@ class DbMsgResponseUserExist extends DbMsgResponse {
 
 class DbMsgRequestAddUser extends DbMsgRequest {
   final int userId;
-  final User user;
 
   DbMsgRequestAddUser({
+    super.replySendPort,
+    required this.userId});
+}
+
+class DbMsgResponseAddUser extends DbMsgResponse {
+  DbMsgResponseAddUser({super.exception});
+}
+
+class DbMsgRequestUpdateUser extends DbMsgRequest {
+  final int userId;
+  final User user;
+
+  DbMsgRequestUpdateUser({
     super.replySendPort,
     required this.userId,
     required this.user
   });
 }
 
-class DbMsgResponseAddUser extends DbMsgResponse {
-  DbMsgResponseAddUser({super.exception});
+class DbMsgResponseUpdateUser extends DbMsgResponse {
+  DbMsgResponseUpdateUser({super.exception});
 }
+
+class DbMsgResponseConstraintError extends DbMsgResponseAddUser {
+  DbMsgResponseConstraintError({super.exception});
+}
+
