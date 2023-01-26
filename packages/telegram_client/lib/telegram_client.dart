@@ -135,7 +135,7 @@ class TelegramClient {
         .first;
     
     if (response.exception != null) {
-     throw response.exception! ;
+     throw TgReadChatsException(exception: response.exception!);
     }
     return response;
   }
@@ -940,4 +940,9 @@ class TgMsgResponseReadChatHistory extends TgMsgResponse {
 class TgDbException {
   SqliteException? exception;
   TgDbException({this.exception});
+}
+
+class TgReadChatsException {
+  SqliteException? exception;
+  TgReadChatsException({this.exception});
 }

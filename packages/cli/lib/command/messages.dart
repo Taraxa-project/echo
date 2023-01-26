@@ -26,36 +26,23 @@ class TelegramCommandMessages extends Command {
       log: log,
       dbPath: globalResults!['message-database-path'],
     );
-    
+
+    late final TelegramClient telegramClient;
     try {
       await db.open();
-    } on Exception catch (dbException) {
-      print("Opening Db resulted in exception: \n ${dbException}");
-      exception = true;
-    }
+      await db.migrate();
 
-    try {
-      if (!exception) {
-        await db.migrate();
-      }
-    } on Exception catch (dbException) {
-      print("Migrating Db resulted in exception: \n ${dbException}");
-      exception = true;
-    }
-
-    
-    final telegramClient = TelegramClient(
+      telegramClient = TelegramClient(
       logLevel: logLevel,
       logLevelLibTdJson: logLevelLibTdJson,
-    );
-    await telegramClient.spawn(
+      );
+      await telegramClient.spawn(
       log: log,
       db: db,
       libtdjsonlcPath: globalResults!['libtdjson-path'],
       tdReceiveWaitTimeout: 0.005,
       tdReceiveFrequency: const Duration(milliseconds: 10),
     );
-    if (!exception) {
       await telegramClient.login(
         apiId: int.parse(globalResults!['api-id']),
         apiHash: globalResults!['api-hash'],
@@ -67,22 +54,23 @@ class TelegramCommandMessages extends Command {
         readUserLastName: readUserLastName,
         readUserPassword: readUserPassword,
       );
-    }
 
-    try {
-      if (!exception) {
-        await telegramClient.readChatsHistory(
-        dateTimeFrom: computeTwoWeeksAgo(),
-        chatsNames: getChatsNames(),
-        );
-      }
-    } on Exception catch(tgException){
-      print('Read chats history resulted in Exception: \n ${tgException}');
-    }
+      await telegramClient.readChatsHistory(
+      dateTimeFrom: computeTwoWeeksAgo(),
+      chatsNames: getChatsNames(),
+      );
 
-    await telegramClient.exit();
-    await db.exit();
-    await log.exit();
+    } on DbException catch (dbException) {
+      print(dbException);
+      print(dbException.exception);
+      await db.exit();
+      await log.exit();
+    } on TgReadChatsException catch (exception) {
+      print(exception);
+      await telegramClient.exit();
+      await db.exit();
+      await log.exit();
+    }
   }
 
   List<String> getChatsNames() {
