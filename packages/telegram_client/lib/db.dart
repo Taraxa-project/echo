@@ -66,7 +66,7 @@ class Db {
     var response = await _isolateReceivePortBroadcast.where((event) => event is DbMsgResponseOpen).first;
     
     if (response.exception != null) {
-      throw DbException(exception: response.exception);
+      throw response.exception;
     }
     else {
        _logger.info('DB Opened Successfully');
@@ -90,7 +90,7 @@ class Db {
     var response = await _isolateReceivePortBroadcast.where((event) => event is DbMsgResponseMigrate).first;
     
     if (response.exception != null) {
-      throw DbException(exception: response.exception); 
+      throw response.exception; 
     }
     else {
       _logger.info('DB Migrated Successfully');
@@ -747,8 +747,4 @@ class DbMsgResponseUpdateUser extends DbMsgResponse {
 
 class DbMsgResponseConstraintError extends DbMsgResponseAddUser {
   DbMsgResponseConstraintError({super.exception});
-}
-
-class DbException extends DbMsgResponse {
-  DbException({super.exception});
 }

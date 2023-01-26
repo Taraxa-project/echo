@@ -27,7 +27,7 @@ class TelegramCommandMessages extends Command {
       dbPath: globalResults!['message-database-path'],
     );
 
-    late final TelegramClient telegramClient;
+    TelegramClient? telegramClient;
     try {
       await db.open();
       await db.migrate();
@@ -60,14 +60,10 @@ class TelegramCommandMessages extends Command {
       chatsNames: getChatsNames(),
       );
 
-    } on DbException catch (dbException) {
-      print(dbException);
-      print(dbException.exception);
-      await db.exit();
-      await log.exit();
-    } on TgReadChatsException catch (exception) {
-      print(exception);
-      await telegramClient.exit();
+    } on Exception catch (exception) {
+      print("Exception occured ${exception}");
+    } finally {
+      await telegramClient?.exit();
       await db.exit();
       await log.exit();
     }
