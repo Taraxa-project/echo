@@ -157,28 +157,28 @@ class DbIsolated {
       } else if (message is DbMsgRequestMigrate) {
         message.replySendPort?.send(_migrate());
       } else if (message is DbMsgRequestAddChats) {
-        message.replySendPort?.send(addChats(
+        message.replySendPort?.send(_addChats(
           message.usernames));
       } else if (message is DbMsgRequestUpdateChat) {
-        message.replySendPort?.send(updateChat(
+        message.replySendPort?.send(_updateChat(
           username: message.username,
           chat: message.chat,
         ));
       } else if (message is DbMsgRequestSelectMaxMessageId) {
-        message.replySendPort?.send(selectMaxMessageId(
+        message.replySendPort?.send(_selectMaxMessageId(
           chatId: message.chatId,
           dateTimeFrom: message.dateTimeFrom,
         ));
       } else if (message is DbMsgRequestAddMessage) {
-        message.replySendPort?.send(addMessage(
+        message.replySendPort?.send(_addMessage(
           message: message.message,
         ));
       } else if (message is DbMsgRequestAddUser) {
-        message.replySendPort?.send(addUser(
+        message.replySendPort?.send(_addUser(
           userId: message.userId
         ));
       } else if (message is DbMsgRequestUpdateUser) {
-        message.replySendPort?.send(updateUser(
+        message.replySendPort?.send(_updateUser(
           userId: message.userId,
           user: message.user
         ));
@@ -194,7 +194,7 @@ class DbIsolated {
       return DbMsgResponseOpen();
       } on SqliteException catch  (exception) {
         const operationName = "Open DB";
-        dbErrorHandler(exception, operationName);
+        _dbErrorHandler(exception, operationName);
         return DbMsgResponseOpen(exception: exception);
       }
   }
@@ -215,19 +215,19 @@ class DbIsolated {
   DbMsgResponseMigrate? _migrate() {
     try{
       _logger.fine('running migrations...');
-      for (final sql in sqlInit()) {
+      for (final sql in _sqlInit()) {
         db?.execute(sql);
       }
       _logger.fine('running migrations... done.');
       return DbMsgResponseMigrate();
       } on SqliteException catch  (exception) {
         const operationName = "Migrating DB";
-        dbErrorHandler(exception, operationName);
+        _dbErrorHandler(exception, operationName);
         return DbMsgResponseMigrate(exception: exception);
       }
   }
 
-  DbMsgResponseAddChats? addChats(List<String> usernames) {
+  DbMsgResponseAddChats? _addChats(List<String> usernames) {
     var retry = true;
     var count = 0;
     while(retry) {
@@ -247,7 +247,7 @@ class DbIsolated {
             return DbMsgResponseAddChats();
         } on SqliteException catch  (exception) {
           const operationName = 'Add Chats';
-          var retry = dbErrorHandler(exception, operationName);
+          var retry = _dbErrorHandler(exception, operationName);
           if (retry == true) {
             _logger.info("Retry Count: ${count}");
             if (++count == maxTries) {
@@ -260,7 +260,7 @@ class DbIsolated {
     }
   }
 
-  DbMsgResponseUpdateChat? updateChat({
+  DbMsgResponseUpdateChat? _updateChat({
     required String username,
     required Chat chat,
   }) {
@@ -287,7 +287,7 @@ class DbIsolated {
         return DbMsgResponseUpdateChat();
       } on SqliteException catch  (exception) {
         const operationName = 'Updating Chat';
-        var retry = dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, operationName);
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
@@ -300,7 +300,7 @@ class DbIsolated {
     }
   }
 
-  DbMsgResponseSelectMaxMessageId selectMaxMessageId({
+  DbMsgResponseSelectMaxMessageId _selectMaxMessageId({
     required int chatId,
     required DateTime dateTimeFrom,
   }) {
@@ -329,7 +329,7 @@ class DbIsolated {
         );
       } on SqliteException catch  (exception) {
         const operationName = 'Select Max Message Id';
-        var retry = dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, operationName);
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
@@ -343,7 +343,7 @@ class DbIsolated {
     
   }
 
-  DbMsgResponseAddMessage addMessage({
+  DbMsgResponseAddMessage _addMessage({
     required Message message,
   }) {
     if (message.chat_id == null || message.id == null || message.date == null) {
@@ -393,7 +393,7 @@ class DbIsolated {
         );
       } on SqliteException catch  (exception) {
         const operationName = "Adding Message";
-        var retry = dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, operationName);
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
@@ -406,7 +406,7 @@ class DbIsolated {
     }
   }
 
-  DbMsgResponseAddUser addUser({required int userId}) {
+  DbMsgResponseAddUser _addUser({required int userId}) {
     var retry = true;
     var count = 0;
     while(retry) {
@@ -424,7 +424,7 @@ class DbIsolated {
         return DbMsgResponseAddUser();
     } on SqliteException catch  (exception) {
         const operationName = "Adding User";
-        var retry = dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, operationName);
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
@@ -441,7 +441,7 @@ class DbIsolated {
     }
   }
 
-  DbMsgResponseUpdateUser updateUser({required int userId, required User user}) {
+  DbMsgResponseUpdateUser _updateUser({required int userId, required User user}) {
     var retry = true;
     var count = 0;
     while(retry) {
@@ -466,7 +466,7 @@ class DbIsolated {
         return DbMsgResponseUpdateUser();
     } on SqliteException catch  (exception) {
         const operationName = "Adding User";
-        var retry = dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, operationName);
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
@@ -479,7 +479,7 @@ class DbIsolated {
     }
   }
 
-  List<String> sqlInit() {
+  List<String> _sqlInit() {
     return [
       """
     CREATE TABLE IF NOT EXISTS chat (
@@ -521,7 +521,7 @@ class DbIsolated {
     ];
   } 
 
-  bool dbErrorHandler(SqliteException error, String operation) {
+  bool _dbErrorHandler(SqliteException error, String operation) {
     // return true for retry or false for exiting
     // Codes that were chosen for retry
     // 1 - SQLite generic error
