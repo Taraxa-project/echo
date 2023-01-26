@@ -359,8 +359,6 @@ class TelegramClientIsolated {
           '${tdResponse.runtimeType}.');
       throw TgException('invalid response type ${tdResponse.runtimeType}');
     }
-
-    return tdResponse;
   }
 
   Future<TdObject> _retryTdCall({
@@ -1052,7 +1050,7 @@ class TelegramClientIsolated {
         floodWaitMessage?.replaceFirst('FLOOD_WAIT_', '') ?? '');
   }
 
-  void _handleTdError(Error error) {
+  Never _handleTdError(Error error) {
     // TODO handle
     // 401 UNAUTHORIZED
     // 403 FORBIDDEN
