@@ -170,7 +170,7 @@ class DbIsolated {
           message.usernames,
         ));
       } else if (message is DbMsgRequestBlacklistChat) {
-        message.replySendPort?.send(blacklistChat(
+        message.replySendPort?.send(_blacklistChat(
           username: message.username,
           reason: message.reason,
         ));
@@ -202,12 +202,17 @@ class DbIsolated {
       } else if (message is DbMsgRequestAddMessage) {
         message.replySendPort?.send(_addMessage(
           message: message.message,
+          online_member_count: message.onlineMemberCount,
         ));
       } else if (message is DbMsgRequestAddUser) {
         message.replySendPort?.send(_addUser(userId: message.userId));
       } else if (message is DbMsgRequestUpdateUser) {
         message.replySendPort
             ?.send(_updateUser(userId: message.userId, user: message.user));
+      } else if (message is DbMsgRequestSelectChatOnlineMemberCount) {
+        message.replySendPort?.send(_selectChatOnlineMemberCount(
+          chatName: message.chatName,
+        ));
       }
     });
   }
@@ -386,7 +391,7 @@ class DbIsolated {
     return DbMsgResponseUpdateChatMembersOnlineCount();
   }
 
-  DbMsgResponseBlacklistChat blacklistChat({
+  DbMsgResponseBlacklistChat _blacklistChat({
     required String username,
     required String reason,
   }) {
@@ -450,6 +455,7 @@ class DbIsolated {
 
   DbMsgResponseAddMessage _addMessage({
     required Message message,
+    int? online_member_count,
   }) {
     if (message.chat_id == null || message.id == null || message.date == null) {
       return DbMsgResponseAddMessage(
@@ -460,11 +466,7 @@ class DbIsolated {
     var count = 0;
     while (retry) {
       try {
-        final sql = """
-        INSERT INTO message (chat_id, id, date, user_id, text, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
-        """;
-        final stmt = db?.prepare(sql);
+        final stmt = db?.prepare(_sqlInsertMessage());
 
         var userId = null;
         if (message.sender_id != null &&
@@ -481,6 +483,11 @@ class DbIsolated {
           }
         }
 
+        var reply_to_id;
+        if (message.reply_to_message_id != null) {
+          reply_to_id = WrapId.unwrapMessageId(message.reply_to_message_id);
+        }
+
         stmt?.execute([
           WrapId.unwrapChatId(message.chat_id),
           WrapId.unwrapMessageId(message.id),
@@ -489,6 +496,11 @@ class DbIsolated {
               .toIso8601String(),
           userId,
           text,
+          online_member_count,
+          message.interaction_info?.view_count,
+          message.interaction_info?.reply_info?.reply_count,
+          message.interaction_info?.forward_count,
+          reply_to_id,
           DateTime.now().toUtc().toIso8601String(),
           DateTime.now().toUtc().toIso8601String(),
         ]);
@@ -582,6 +594,52 @@ class DbIsolated {
     }
   }
 
+  DbMsgResponseSelectChatOnlineMemberCount _selectChatOnlineMemberCount({
+    required String chatName,
+  }) {
+    var retry = true;
+    var count = 0;
+    while (retry) {
+      try {
+        _logger.fine('reading member online count for $chatName...');
+
+        final ResultSet? resultSet = db?.select(
+          _sqlSelectChat(),
+          [chatName],
+        );
+
+        int? result;
+        if (resultSet != null && resultSet.isNotEmpty) {
+          result = resultSet.first['member_online_count'];
+          _logger.fine('found member online count $result for chat $chatName.');
+        } else {
+          _logger.fine('did not find member online count for chat $chatName.');
+        }
+
+        return DbMsgResponseSelectChatOnlineMemberCount(
+          onlineMemberCount: result,
+        );
+      } on SqliteException catch (exception) {
+        var retry = _dbErrorHandler(
+          exception,
+          'Select Chat Online Member Count',
+        );
+        if (retry == true) {
+          _logger.info("Retry Count: ${count}");
+          if (++count == maxTries) {
+            return DbMsgResponseSelectChatOnlineMemberCount(
+              exception: exception,
+            );
+          }
+        } else {
+          return DbMsgResponseSelectChatOnlineMemberCount(
+            exception: exception,
+          );
+        }
+      }
+    }
+  }
+
   List<String> _sqlInit() {
     return [
       """
@@ -605,6 +663,11 @@ class DbIsolated {
       date TEXT,
       user_id INTEGER,
       text TEXT,
+      member_online_count INTEGER,
+      views INTEGER,
+      replies INTEGER,
+      forwards INTEGER,
+      reply_to_id INTEGER,
       created_at TEXT,
       updated_at TEXT
     );
@@ -627,6 +690,32 @@ class DbIsolated {
       message(chat_id, id);
     """,
     ];
+  }
+
+  String _sqlInsertMessage() {
+    return '''
+INSERT INTO message (
+  chat_id, id, date, user_id, text, 
+  member_online_count, views, replies, forwards, reply_to_id, 
+  created_at, updated_at
+)
+VALUES (
+  ?, ?, ?, ?, ?,
+  ?, ?, ?, ?, ?,
+  ?, ?
+) ON CONFLICT DO NOTHING;
+    ''';
+  }
+
+  String _sqlSelectChat() {
+    return '''
+SELECT
+  *
+FROM
+  chat 
+WHERE 
+  username = ?;
+    ''';
   }
 
   bool _dbErrorHandler(SqliteException error, String operation) {
@@ -875,10 +964,12 @@ class DbMsgResponseSelectMaxMessageId extends DbMsgResponse {
 
 class DbMsgRequestAddMessage extends DbMsgRequest {
   final Message message;
+  final int? onlineMemberCount;
 
   DbMsgRequestAddMessage({
     super.replySendPort,
     required this.message,
+    required this.onlineMemberCount,
   });
 }
 
@@ -912,4 +1003,22 @@ class DbMsgResponseUpdateUser extends DbMsgResponse {
 
 class DbMsgResponseConstraintError extends DbMsgResponseAddUser {
   DbMsgResponseConstraintError({super.exception});
+}
+
+class DbMsgRequestSelectChatOnlineMemberCount extends DbMsgRequest {
+  final String chatName;
+
+  DbMsgRequestSelectChatOnlineMemberCount({
+    super.replySendPort,
+    required this.chatName,
+  });
+}
+
+class DbMsgResponseSelectChatOnlineMemberCount extends DbMsgResponse {
+  int? onlineMemberCount;
+
+  DbMsgResponseSelectChatOnlineMemberCount({
+    this.onlineMemberCount,
+    super.exception,
+  });
 }
