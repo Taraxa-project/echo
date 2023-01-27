@@ -186,11 +186,12 @@ class TelegramClientIsolated {
   Timer? receiveTimer;
 
   static const int tgRetryCountMax = 5;
-  static const int tgTimeoutMilliseconds = 5 * 1000; // 5 seconds
+  static const int tgTimeoutMilliseconds = 15 * 1000;
   static const int tgTimeoutDelayMilliseconds = 50;
 
   static const int delayUntilNextChatSeconds = 15;
   static const int delayUntilNextMessageBatchSeconds = 15;
+  static const int delayUntilNextUserSeconds = 1;
 
   TelegramClientIsolated({
     required this.parentSendPort,
@@ -582,12 +583,7 @@ class TelegramClientIsolated {
       chat: chat,
     );
 
-    var messageIdLast = await _searchMessageIdLast(
-      datetimeFrom: dateTimeFrom,
-      chatName: chatName,
-      chatId: chatId,
-    );
-
+    _logger.info('[$chatName] getting supergroup full info... ');
     final supergroupFullInfo = await _getSupergroupFullInfo(
       chatName: chatName,
       chatId: chatId,
@@ -602,14 +598,17 @@ class TelegramClientIsolated {
       );
     }
 
+    _logger.info('[$chatName] check online member count... ');
     final subscriptionUpdateChatOnlineMemberCount =
         _subscribeUpdateChatOnlineMemberCount(
       chatName: chatName,
       chatId: chatId,
     );
 
+    _logger.info('[$chatName] opening chat... ');
     await _openChat(chatName: chatName, chatId: chatId);
 
+    _logger.info('[$chatName] getting bot count... ');
     final chatMembersBots = await _getSupergroupMembers(
       chatName: chatName,
       chatId: chatId,
@@ -626,19 +625,21 @@ class TelegramClientIsolated {
 
     await subscriptionUpdateChatOnlineMemberCount.cancel();
 
-    await _loseChat(chatName: chatName, chatId: chatId);
+    _logger.info('[$chatName] closing chat... ');
+    await _closeChat(chatName: chatName, chatId: chatId);
 
-    var messsageIdLast = await _searchMessageIdLast(
+    var messageIdLast = await _searchMessageIdLast(
       datetimeFrom: dateTimeFrom,
       chatName: chatName,
       chatId: chatId,
     );
-    if (messsageIdLast == null) {
-      messsageIdLast = 0;
+    if (messageIdLast == null) {
+      messageIdLast = 0;
     }
 
     while (true) {
       var messageIdFrom = messageIdLast! + 1;
+      _logger.info('[$chatName] reading messages from $messageIdFrom... ');
 
       final messages = await _getChatHistory(
         chatName: chatName,
@@ -656,7 +657,10 @@ class TelegramClientIsolated {
         messages: messages,
       );
 
-      await _saveUsers(messages: messages);
+      await _saveUsers(
+        chatName: chatName,
+        messages: messages,
+      );
 
       if (messageIdLast == null) {
         break;
@@ -684,10 +688,10 @@ class TelegramClientIsolated {
   }
 
   Future<void> _saveUsers({
+    required String chatName,
     required Messages messages,
   }) async {
-    _logger.fine('Saving users...');
-
+    var userCount = 0;
     for (Message message in messages.messages!) {
       var userId = null;
 
@@ -710,35 +714,40 @@ class TelegramClientIsolated {
             throw TgDbException(exception: response.exception);
           }
         } else {
+          if (userCount == 0) {
+            _logger.info('[$chatName] saving users...');
+            _logger.info('[$chatName] getting users...');
+          }
+          _logger.fine('[$chatName] getting user $userId... ');
           var user = await _getUser(userId: userId);
           await _updateUser(userId: userId, user: user);
+          userCount += 1;
+
+          _logger.fine('[$chatName] getting user... '
+              'sleeping for $delayUntilNextUserSeconds seconds.');
+          await Future.delayed(
+              const Duration(seconds: delayUntilNextUserSeconds));
         }
       }
     }
+
+    if (userCount > 0) {
+      _logger.info('[$chatName] saved $userCount users.');
+    }
   }
 
-  Future<User> _getUser({required int userId}) async {
-    _logger.fine('[$userId] get info about user...');
-
-    var extra = Uuid().v1();
-    _tdSend(GetUser(client_id: _tdJsonClientId, extra: extra, user_id: userId));
-
-    var response = await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
-
-    var user;
-
-    if (response is Error) {
-      _logger.warning('[$userId] searching public chat failed with error.');
-      _logger.warning('[$userId] $response.');
-    } else if (response is User) {
-      user = response;
-    }
-
-    _logger.fine('[$userId] searching public chat... done.');
-
-    return user;
+  Future<User> _getUser({
+    required int userId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: GetUser(
+        user_id: userId,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as User;
   }
 
   Future<Chat> _searchPublicChat({
@@ -781,7 +790,7 @@ class TelegramClientIsolated {
     ) as Ok;
   }
 
-  Future<Ok> _loseChat({
+  Future<Ok> _closeChat({
     required String chatName,
     required int chatId,
     int timeoutMilliseconds = tgTimeoutMilliseconds,
@@ -967,6 +976,8 @@ class TelegramClientIsolated {
     if (response.exception != null) {
       throw TgDbException(exception: response.exception);
     }
+
+    _logger.info('added ${usernames.length} chats to db...');
   }
 
   Future<void> _updateChat({

@@ -217,7 +217,7 @@ class DbIsolated {
       _logger.fine('opening...');
       db = sqlite3.open(this.dbPath);
       _logger.fine('opened.');
-      return DbMsgResponseOpen(exception: SqliteException(0, "message"));
+      return DbMsgResponseOpen();
     } on SqliteException catch (exception) {
       const operationName = "Open DB";
       _dbErrorHandler(exception, operationName);
