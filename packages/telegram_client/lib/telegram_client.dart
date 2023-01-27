@@ -550,10 +550,15 @@ class TelegramClientIsolated {
         );
       } on TgChatNotFoundException catch (ex) {
         _logger.warning('[$chatName] $ex.');
-        await _blacklistChat(
+        try {
+          await _blacklistChat(
           chatName: chatName,
           reason: ex.message ?? 'Chat not found.',
         );
+        } on TgDbException catch (dbException) {
+          _logger.severe('[$chatName] failed to blacklist chat $dbException.');
+          return TgMsgResponseReadChatHistory(exception: dbException.exception, operationName: dbException.operationName);
+        }
       } on TgTimedOutException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgMaxRetriesExcedeedException catch (ex) {
@@ -1025,11 +1030,15 @@ class TelegramClientIsolated {
       username: chatName,
       membersCount: memberCount,
     ));
-    await receivePortBroadcast
+    var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseUpdateChatMembersCount)
         .first;
 
-    _logger.info('[$chatName] updating chat member count in db... done.');
+    if (response.exception != null) {
+      throw TgDbException(exception: response.exception, operationName: response.operationName);
+    } else {
+      _logger.info('[$chatName] updating chat member count in db... done.');
+    }  
   }
 
   Future<void> _updateChatMembersBotsCount({
@@ -1043,11 +1052,15 @@ class TelegramClientIsolated {
       username: chatName,
       membersCount: memberCount,
     ));
-    await receivePortBroadcast
+    var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseUpdateChatMembersBotsCount)
         .first;
-
-    _logger.info('[$chatName] updating chat bot count in db... done.');
+    
+    if (response.exception != null) {
+      throw TgDbException(exception: response.exception, operationName: response.operationName);
+    } else {
+      _logger.info('[$chatName] updating chat bot count in db... done.');
+    }
   }
 
   Future<void> _updateChatMembersOnlineCount({
@@ -1081,11 +1094,15 @@ class TelegramClientIsolated {
       username: chatName,
       reason: reason,
     ));
-    await receivePortBroadcast
+    var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseBlacklistChat)
         .first;
-
+      
+    if (response.exception != null){
+      throw TgDbException(exception: response.exception, operationName: response.operationName);
+    } else{
     _logger.info('[$chatName] blacklisting chat in db... done.');
+    }
   }
 
   Future<int?> _saveMessages({
@@ -1184,7 +1201,7 @@ class TelegramClientIsolated {
 
     if (response.exception != null) {
       _logger.info('[_selectOnlineMemberCount] db error occured');
-      throw TgDbException(exception: response.exception);
+      throw TgDbException(exception: response.exception, operationName: response.operationName);
     } else if (response.onlineMemberCount == null) {
       _logger.info('[$chatName] searching online member count locally... '
           'not found.');
