@@ -275,12 +275,14 @@ class TelegramClientIsolated {
   }
 
   Future<void> _exit({SendPort? replySendPort}) async {
+    await _close();
+
     _tdJsonClient.exit();
     await _tdStreamController.close();
 
     replySendPort?.send(TgMsgResponseExit());
-
     await Future.delayed(const Duration(milliseconds: 10));
+
     _logger.fine('closing tg isolate port');
     receivePort.close();
     Isolate.exit();
@@ -391,6 +393,17 @@ class TelegramClientIsolated {
     }
 
     throw TgMaxRetriesExcedeedException(retryCountMax);
+  }
+
+  Future<Ok> _close({
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: Close(),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Ok;
   }
 
   Future<TgMsgResponseLogin> _login({
