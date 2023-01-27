@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:convert';
-
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
 import 'package:echo_cli/callback/cli.dart';
@@ -26,45 +25,46 @@ class TelegramCommandMessages extends Command {
       log: log,
       dbPath: globalResults!['message-database-path'],
     );
-    await db.open();
-    await db.migrate();
 
-    final telegramClient = TelegramClient(
-      logLevel: logLevel,
-      logLevelLibTdJson: logLevelLibTdJson,
-    );
-    await telegramClient.spawn(
-      log: log,
-      db: db,
-      libtdjsonlcPath: globalResults!['libtdjson-path'],
-      tdReceiveWaitTimeout: 0.005,
-      tdReceiveFrequency: const Duration(milliseconds: 10),
-    );
-
-    await telegramClient.login(
-      apiId: int.parse(globalResults!['api-id']),
-      apiHash: globalResults!['api-hash'],
-      phoneNumber: globalResults!['phone-number'],
-      databasePath: globalResults!['database-path'],
-      readTelegramCode: readTelegramCode,
-      writeQrCodeLink: writeQrCodeLink,
-      readUserFirstName: readUserFirstName,
-      readUserLastName: readUserLastName,
-      readUserPassword: readUserPassword,
-    );
-
+    TelegramClient? telegramClient;
     try {
+      await db.open();
+      await db.migrate();
+
+      telegramClient = TelegramClient(
+        logLevel: logLevel,
+        logLevelLibTdJson: logLevelLibTdJson,
+      );
+      await telegramClient.spawn(
+        log: log,
+        db: db,
+        libtdjsonlcPath: globalResults!['libtdjson-path'],
+        tdReceiveWaitTimeout: 0.005,
+        tdReceiveFrequency: const Duration(milliseconds: 10),
+      );
+      await telegramClient.login(
+        apiId: int.parse(globalResults!['api-id']),
+        apiHash: globalResults!['api-hash'],
+        phoneNumber: globalResults!['phone-number'],
+        databasePath: globalResults!['database-path'],
+        readTelegramCode: readTelegramCode,
+        writeQrCodeLink: writeQrCodeLink,
+        readUserFirstName: readUserFirstName,
+        readUserLastName: readUserLastName,
+        readUserPassword: readUserPassword,
+      );
+
       await telegramClient.readChatsHistory(
         dateTimeFrom: computeTwoWeeksAgo(),
         chatsNames: getChatsNames(),
       );
-    } on Exception catch (ex) {
-      print(ex);
+    } on Exception catch (exception) {
+      print("Exception occured ${exception}");
+    } finally {
+      await telegramClient?.exit();
+      await db.exit();
+      await log.exit();
     }
-
-    await telegramClient.exit();
-    await db.exit();
-    await log.exit();
   }
 
   List<String> getChatsNames() {
