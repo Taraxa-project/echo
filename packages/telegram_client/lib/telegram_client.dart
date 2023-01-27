@@ -579,7 +579,7 @@ class TelegramClientIsolated {
     if (supergroupFullInfo.member_count != null &&
         supergroupFullInfo.member_count != 0) {
       _logger.info('[$chatName] member count is '
-          'is ${supergroupFullInfo.member_count}.');
+          '${supergroupFullInfo.member_count}.');
       await _updateChatMembersCount(
         chatName: chatName,
         memberCount: supergroupFullInfo.member_count!,
@@ -601,7 +601,7 @@ class TelegramClientIsolated {
     );
     if (chatMembersBots.members != null) {
       _logger.info('[$chatName] bot count is '
-          'is ${chatMembersBots.members!.length}.');
+          '${chatMembersBots.members!.length}.');
       await _updateChatMembersBotsCount(
         chatName: chatName,
         memberCount: chatMembersBots.members!.length,
@@ -855,7 +855,7 @@ class TelegramClientIsolated {
       if (updateChatOnlineMemberCount.online_member_count != null) {
         if (updateChatOnlineMemberCount.online_member_count != 0) {
           _logger.info('[$chatName] online member count is '
-              'is ${updateChatOnlineMemberCount.online_member_count}.');
+              '${updateChatOnlineMemberCount.online_member_count}.');
           _updateChatMembersOnlineCount(
               chatName: chatName,
               memberCount: updateChatOnlineMemberCount.online_member_count!);
