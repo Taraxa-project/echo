@@ -637,6 +637,8 @@ class TelegramClientIsolated {
       messageIdLast = 0;
     }
 
+    var onlineMemberCount = await _selectOnlineMemberCount(chatName: chatName);
+
     while (true) {
       var messageIdFrom = messageIdLast! + 1;
       _logger.info('[$chatName] reading messages from $messageIdFrom... ');
@@ -655,6 +657,7 @@ class TelegramClientIsolated {
         chatName: chatName,
         chatId: chatId,
         messages: messages,
+        onlineMemberCount: onlineMemberCount,
       );
 
       await _saveUsers(
@@ -1079,6 +1082,7 @@ class TelegramClientIsolated {
     required String chatName,
     required int chatId,
     required Messages messages,
+    required int? onlineMemberCount,
   }) async {
     _logger.info('[$chatName] saving messages...');
 
@@ -1090,6 +1094,7 @@ class TelegramClientIsolated {
       dbSendPort.send(DbMsgRequestAddMessage(
         replySendPort: receivePort.sendPort,
         message: message,
+        onlineMemberCount: onlineMemberCount,
       ));
       var response = await receivePortBroadcast
           .where((event) => event is DbMsgResponseAddMessage)
@@ -1151,6 +1156,35 @@ class TelegramClientIsolated {
     _logger.info('[$chatName] searching last message id locally... done.');
 
     return response.id;
+  }
+
+  Future<int?> _selectOnlineMemberCount({
+    required String chatName,
+  }) async {
+    _logger.info('[$chatName] selecting online member count locally...');
+
+    dbSendPort.send(DbMsgRequestSelectChatOnlineMemberCount(
+      replySendPort: receivePort.sendPort,
+      chatName: chatName,
+    ));
+    var response = await receivePortBroadcast
+        .where((event) => event is DbMsgResponseSelectChatOnlineMemberCount)
+        .first as DbMsgResponseSelectChatOnlineMemberCount;
+
+    if (response.exception != null) {
+      _logger.info('[_selectOnlineMemberCount] db error occured');
+      throw TgDbException(exception: response.exception);
+    } else if (response.onlineMemberCount == null) {
+      _logger.info('[$chatName] searching online member count locally... '
+          'not found.');
+    } else {
+      _logger.info('[$chatName] searching online member count locally... '
+          'found ${response.onlineMemberCount}.');
+    }
+
+    _logger.info('[$chatName] searching online member count locally... done.');
+
+    return response.onlineMemberCount;
   }
 
   int? _parseFloodWaitSeconds({String? floodWaitMessage}) {
