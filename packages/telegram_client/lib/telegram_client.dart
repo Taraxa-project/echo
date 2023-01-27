@@ -88,12 +88,9 @@ class TelegramClient {
       replySendPort: _isolateReceivePort.sendPort,
     ));
     print('send signal to kill in TG');
-    _isolateReceivePortBroadcast.listen((event) {
-      print('event in exit TG ${event}');
-    });
-    // await _isolateReceivePortBroadcast
-    //     .where((event) => event is TgMsgResponseExit)
-    //     .first;
+    await _isolateReceivePortBroadcast
+        .where((event) => event is TgMsgResponseExit)
+        .first;
     print('received response from port in TG');
     _isolateReceivePort.close();
   }

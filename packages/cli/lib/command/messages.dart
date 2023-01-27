@@ -10,9 +10,6 @@ import 'package:telegram_client/db.dart';
 class TelegramCommandMessages extends Command {
   final name = 'messages';
   final description = 'Read and save messages from the last two weeks.';
-  // late final db;
-  // late final log;
-  // late final TelegramClient? telegramClient;
 
   void run() async {
     hierarchicalLoggingEnabled = true;
@@ -26,18 +23,7 @@ class TelegramCommandMessages extends Command {
     Log? log;
     Db? db;
 
-    // Signal Handling
-      // subSigTerm = await ProcessSignal.sigint.watch().listen((signal) async {
-      //   print("signal ${signal}");
-      //   if ((signal == ProcessSignal.sigint) | (signal == ProcessSignal.sigkill)) {
-      //     print("sigint signal has been given: ${signal}");
-      //     await telegramClient?.exit();
-      //     await db?.exit();
-      //     await log?.exit();
-      //     // shutDownIsolates();
-      //     subSigTerm.cancel();
-      //   } 
-      // });
+    
     try {
       log = Log(logLevel: logLevel);
       await log.spawn();
@@ -56,6 +42,16 @@ class TelegramCommandMessages extends Command {
         logLevelLibTdJson: logLevelLibTdJson,
       );
 
+      // Signal Handling
+      await ProcessSignal.sigint.watch().listen((signal) async {
+        if ((signal == ProcessSignal.sigint) | (signal == ProcessSignal.sigkill)) {
+          print("sigint signal has been given: ${signal}");
+          await telegramClient?.exit();
+          await db?.exit();
+          await log?.exit();
+          exit(1);
+        } 
+      });
       
       
       await telegramClient.spawn(
@@ -98,15 +94,6 @@ class TelegramCommandMessages extends Command {
       await db?.exit();
       await log?.exit();
     }
-
-    
-
-    // shutDownIsolates() async {
-    //   await telegramClient?.exit();
-    //   await db?.exit();
-    //   await log?.exit();
-    // }
-    
   }
 
   // Future<void> shutDownIsolates() async {
