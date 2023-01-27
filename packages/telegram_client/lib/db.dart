@@ -889,6 +889,17 @@ class DbMsgResponseAddChats extends DbMsgResponse {
   });
 }
 
+class DbMsgRequestBlacklistChat extends DbMsgRequest {
+  final String username;
+  final String reason;
+
+  DbMsgRequestBlacklistChat({
+    super.replySendPort,
+    required this.username,
+    required this.reason,
+  });
+}
+
 class DbMsgResponseBlacklistChat extends DbMsgResponse {}
 
 class DbMsgRequestUpdateChat extends DbMsgRequest {
