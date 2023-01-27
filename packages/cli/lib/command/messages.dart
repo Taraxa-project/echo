@@ -13,7 +13,6 @@ class TelegramCommandMessages extends Command {
 
   void run() async {
     hierarchicalLoggingEnabled = true;
-    var exception = false;
 
     var logLevel = getLogLevel();
     var logLevelLibTdJson = getLogLevelLibtdjson();
@@ -33,16 +32,16 @@ class TelegramCommandMessages extends Command {
       await db.migrate();
 
       telegramClient = TelegramClient(
-      logLevel: logLevel,
-      logLevelLibTdJson: logLevelLibTdJson,
+        logLevel: logLevel,
+        logLevelLibTdJson: logLevelLibTdJson,
       );
       await telegramClient.spawn(
-      log: log,
-      db: db,
-      libtdjsonlcPath: globalResults!['libtdjson-path'],
-      tdReceiveWaitTimeout: 0.005,
-      tdReceiveFrequency: const Duration(milliseconds: 10),
-    );
+        log: log,
+        db: db,
+        libtdjsonlcPath: globalResults!['libtdjson-path'],
+        tdReceiveWaitTimeout: 0.005,
+        tdReceiveFrequency: const Duration(milliseconds: 10),
+      );
       await telegramClient.login(
         apiId: int.parse(globalResults!['api-id']),
         apiHash: globalResults!['api-hash'],
@@ -56,10 +55,9 @@ class TelegramCommandMessages extends Command {
       );
 
       await telegramClient.readChatsHistory(
-      dateTimeFrom: computeTwoWeeksAgo(),
-      chatsNames: getChatsNames(),
+        dateTimeFrom: computeTwoWeeksAgo(),
+        chatsNames: getChatsNames(),
       );
-
     } on Exception catch (exception) {
       print("Exception occured ${exception}");
     } finally {
@@ -99,7 +97,10 @@ class TelegramCommandMessages extends Command {
   }
 
   DateTime computeTwoWeeksAgo() {
-    return DateTime.now().subtract(const Duration(days: 14));
+    final dateTimeTwoWeeksAgo =
+        DateTime.now().toUtc().subtract(const Duration(days: 14));
+    return DateTime(dateTimeTwoWeeksAgo.year, dateTimeTwoWeeksAgo.month,
+        dateTimeTwoWeeksAgo.day);
   }
 
   Level getLogLevel() {
