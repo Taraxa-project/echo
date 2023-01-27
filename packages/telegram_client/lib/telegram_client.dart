@@ -83,12 +83,18 @@ class TelegramClient {
   }
 
   Future<void> exit() async {
+    print('exiting tg client');
     isolateSendPort.send(TgMsgRequestExit(
       replySendPort: _isolateReceivePort.sendPort,
     ));
-    await _isolateReceivePortBroadcast
-        .where((event) => event is TgMsgResponseExit)
-        .first;
+    print('send signal to kill in TG');
+    _isolateReceivePortBroadcast.listen((event) {
+      print('event in exit TG ${event}');
+    });
+    // await _isolateReceivePortBroadcast
+    //     .where((event) => event is TgMsgResponseExit)
+    //     .first;
+    print('received response from port in TG');
     _isolateReceivePort.close();
   }
 
@@ -135,7 +141,8 @@ class TelegramClient {
         .first;
 
     if (response.exception != null) {
-      throw response.exception!;
+      _logger.severe("Exception happened while: ${response.operationName}");
+     throw response.exception!;
     }
     return response;
   }
@@ -275,13 +282,16 @@ class TelegramClientIsolated {
   }
 
   Future<void> _exit({SendPort? replySendPort}) async {
+    print('entering _exit');
     _tdJsonClient.exit();
     await _tdStreamController.close();
-
+    print("just closed the stream in TG _exit");
     replySendPort?.send(TgMsgResponseExit());
 
     await Future.delayed(const Duration(milliseconds: 10));
     _logger.fine('closing tg isolate port');
+    print("closing port");
+
     receivePort.close();
     Isolate.exit();
   }
@@ -525,7 +535,7 @@ class TelegramClientIsolated {
     try {
       await _addChats(usernames: chatsNames);
     } on TgDbException catch (dbException) {
-      return TgMsgResponseReadChatHistory(exception: dbException.exception);
+      return TgMsgResponseReadChatHistory(exception: dbException.exception, operationName: dbException.operationName);
     }
 
     _logger.info('reading chats history...');
@@ -557,7 +567,7 @@ class TelegramClientIsolated {
       } on TgException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgDbException catch (dbException) {
-        return TgMsgResponseReadChatHistory(exception: dbException.exception);
+        return TgMsgResponseReadChatHistory(exception: dbException.exception, operationName: dbException.operationName);
       }
 
       _logger.info('[$chatName] reading chat history... done.');
@@ -685,7 +695,7 @@ class TelegramClientIsolated {
         .first;
 
     if (response.exception != null) {
-      throw TgDbException(exception: response.exception);
+      throw TgDbException(exception: response.exception, operationName: response.operationName);
     }
     _logger.fine('[$userId] added user to user table.');
   }
@@ -714,7 +724,7 @@ class TelegramClientIsolated {
           if (response is DbMsgResponseConstraintError) {
             _logger.fine('[${userId}] already exists');
           } else {
-            throw TgDbException(exception: response.exception);
+            throw TgDbException(exception: response.exception, operationName: response.operationName);
           }
         } else {
           if (userCount == 0) {
@@ -977,7 +987,7 @@ class TelegramClientIsolated {
         .first;
 
     if (response.exception != null) {
-      throw TgDbException(exception: response.exception);
+      throw TgDbException(exception: response.exception, operationName: response.operationName);
     }
 
     _logger.info('added ${usernames.length} chats to db...');
@@ -999,7 +1009,7 @@ class TelegramClientIsolated {
         .first;
 
     if (response.exception != null) {
-      throw TgDbException(exception: response.exception);
+      throw TgDbException(exception: response.exception, operationName: response.operationName);
     }
     _logger.info('[$chatName] updating chat in db... done.');
   }
@@ -1101,8 +1111,8 @@ class TelegramClientIsolated {
           .first;
 
       if (response.exception != null) {
-        throw TgDbException(exception: response.exception);
-      }
+        throw TgDbException(exception: response.exception, operationName: response.operationName);
+      } 
 
       messageCount += 1;
 
@@ -1144,8 +1154,9 @@ class TelegramClientIsolated {
 
     if (response.exception != null) {
       _logger.info('[_searchMessageIdLastLocally] db error occured');
-      throw TgDbException(exception: response.exception);
-    } else if (response.id == null) {
+      throw TgDbException(exception: response.exception, operationName: response.operationName);
+    }
+    else if (response.id == null) {
       _logger.info('[$chatName] searching last message id locally... '
           'not found.');
     } else {
@@ -1243,7 +1254,11 @@ abstract class TgMsgRequest extends TgMsg {
 
 abstract class TgMsgResponse extends TgMsg {
   final SqliteException? exception;
-  TgMsgResponse({this.exception});
+  final String? operationName;
+  TgMsgResponse({
+    this.exception,
+    this.operationName
+  });
 }
 
 class TgMsgRequestExit extends TgMsgRequest {
@@ -1303,7 +1318,7 @@ class TgMsgRequestReadChatsHistory extends TgMsgRequest {
 }
 
 class TgMsgResponseReadChatHistory extends TgMsgResponse {
-  TgMsgResponseReadChatHistory({super.exception});
+  TgMsgResponseReadChatHistory({super.exception, super.operationName});
 }
 
 class TgException implements Exception {
@@ -1467,5 +1482,6 @@ class TgTimedOutException implements Exception {
 
 class TgDbException {
   SqliteException? exception;
-  TgDbException({this.exception});
+  String? operationName;
+  TgDbException({this.exception, this.operationName});
 }

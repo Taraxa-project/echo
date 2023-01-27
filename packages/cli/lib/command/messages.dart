@@ -10,24 +10,44 @@ import 'package:telegram_client/db.dart';
 class TelegramCommandMessages extends Command {
   final name = 'messages';
   final description = 'Read and save messages from the last two weeks.';
+  // late final db;
+  // late final log;
+  // late final TelegramClient? telegramClient;
 
   void run() async {
     hierarchicalLoggingEnabled = true;
+    final runForever = parseBool(globalResults!['run-forever']);
+    var subSigTerm;
 
     var logLevel = getLogLevel();
     var logLevelLibTdJson = getLogLevelLibtdjson();
 
-    final log = Log(logLevel: logLevel);
-    await log.spawn();
+    TelegramClient? telegramClient;
+    Log? log;
+    Db? db;
 
-    final db = Db(logLevel: logLevel);
-    await db.spawn(
+    // Signal Handling
+      // subSigTerm = await ProcessSignal.sigint.watch().listen((signal) async {
+      //   print("signal ${signal}");
+      //   if ((signal == ProcessSignal.sigint) | (signal == ProcessSignal.sigkill)) {
+      //     print("sigint signal has been given: ${signal}");
+      //     await telegramClient?.exit();
+      //     await db?.exit();
+      //     await log?.exit();
+      //     // shutDownIsolates();
+      //     subSigTerm.cancel();
+      //   } 
+      // });
+    try {
+      log = Log(logLevel: logLevel);
+      await log.spawn();
+
+      db = Db(logLevel: logLevel);
+      await db.spawn(
       log: log,
       dbPath: globalResults!['message-database-path'],
-    );
+      );
 
-    TelegramClient? telegramClient;
-    try {
       await db.open();
       await db.migrate();
 
@@ -35,6 +55,9 @@ class TelegramCommandMessages extends Command {
         logLevel: logLevel,
         logLevelLibTdJson: logLevelLibTdJson,
       );
+
+      
+      
       await telegramClient.spawn(
         log: log,
         db: db,
@@ -53,19 +76,47 @@ class TelegramCommandMessages extends Command {
         readUserLastName: readUserLastName,
         readUserPassword: readUserPassword,
       );
+      if (runForever) {
+        while(true) {
+          await telegramClient.readChatsHistory(
+                dateTimeFrom: computeTwoWeeksAgo(),
+                chatsNames: getChatsNames(),
+                );
+        }
+      } else {
+        await telegramClient.readChatsHistory(
+              dateTimeFrom: computeTwoWeeksAgo(),
+              chatsNames: getChatsNames(),
+              );
+      }
 
-      await telegramClient.readChatsHistory(
-        dateTimeFrom: computeTwoWeeksAgo(),
-        chatsNames: getChatsNames(),
-      );
+      
     } on Exception catch (exception) {
       print("Exception occured ${exception}");
     } finally {
       await telegramClient?.exit();
-      await db.exit();
-      await log.exit();
+      await db?.exit();
+      await log?.exit();
     }
+
+    
+
+    // shutDownIsolates() async {
+    //   await telegramClient?.exit();
+    //   await db?.exit();
+    //   await log?.exit();
+    // }
+    
   }
+
+  // Future<void> shutDownIsolates() async {
+  //   if (telegramClient != null){
+  //     print("telegram client is null");
+  //   }
+  //     await telegramClient?.exit();
+  //     await db?.exit();
+  //     await log?.exit();
+  //   }
 
   List<String> getChatsNames() {
     var chatsNamesDecoded;
@@ -116,5 +167,13 @@ class TelegramCommandMessages extends Command {
       (level) => level.name == name.toUpperCase(),
       orElse: () => Level.WARNING,
     );
+  }
+
+  bool parseBool(boolToParse) {
+    if (boolToParse.toLowerCase() == 'true') {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
