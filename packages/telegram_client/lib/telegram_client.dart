@@ -475,27 +475,6 @@ class TelegramClientIsolated {
     throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
-  void _handleUpdateConnectionState(
-      UpdateConnectionState updateConnectionState) {
-    var state = updateConnectionState.state;
-    if (state == null) {
-      _logger.severe('connection state unknown.');
-    } else {
-      _logger.info('connection state: ${state.runtimeType}.');
-    }
-  }
-
-  Future<Ok> _close({
-    int timeoutMilliseconds = tgTimeoutMilliseconds,
-    int retryCountMax = tgRetryCountMax,
-  }) async {
-    return await _retryTdCall(
-      tdFunction: Close(),
-      timeoutMilliseconds: timeoutMilliseconds,
-      retryCountMax: retryCountMax,
-    ) as Ok;
-  }
-
   Future<TgMsgResponseLogin> _login({
     required int apiId,
     required String apiHash,
