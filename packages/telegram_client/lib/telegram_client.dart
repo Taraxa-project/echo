@@ -143,6 +143,7 @@ class TelegramClient {
         .firstWhere((element) => element is TgMsgResponseReadChatHistory)
         .onError(<StateError>(error, _) =>
             _logger.warning('readChatsHistory $error'));
+            
     if (response.exception != null) {
       _logger.severe("Exception happened while: ${response.operationName}");
      throw response.exception!;
