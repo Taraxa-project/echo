@@ -1165,7 +1165,7 @@ class TelegramClientIsolated {
       username: chatName,
       membersCount: memberCount,
     ));
-    await receivePortBroadcast
+    var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseUpdateChatMembersCount)
         .first;
 
@@ -1188,7 +1188,7 @@ class TelegramClientIsolated {
       username: chatName,
       membersCount: memberCount,
     ));
-    await receivePortBroadcast
+    var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseUpdateChatMembersBotsCount)
         .first;
 
@@ -1231,7 +1231,7 @@ class TelegramClientIsolated {
       username: chatName,
       reason: reason,
     ));
-    await receivePortBroadcast
+    var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseBlacklistChat)
         .first;
 
