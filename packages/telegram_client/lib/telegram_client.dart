@@ -20,6 +20,8 @@ class TelegramClient {
   final _logger = Logger('TelegramClient');
   final Level logLevelLibTdJson;
 
+  bool _running = false;
+
   TelegramClient({
     required Level logLevel,
     required this.logLevelLibTdJson,
@@ -34,6 +36,8 @@ class TelegramClient {
     double tdReceiveWaitTimeout = 0.005,
     Duration tdReceiveFrequency = const Duration(milliseconds: 10),
   }) async {
+    _running = true;
+
     _log = log;
     _db = db;
 
@@ -83,16 +87,18 @@ class TelegramClient {
   }
 
   Future<void> exit() async {
-    print('exiting tg client');
+    if (!_running) return;
+
     isolateSendPort.send(TgMsgRequestExit(
       replySendPort: _isolateReceivePort.sendPort,
     ));
     print('send signal to kill in TG');
     await _isolateReceivePortBroadcast
-        .where((event) => event is TgMsgResponseExit)
-        .first;
-    print('received response from port in TG');
+        .firstWhere((element) => element is TgMsgResponseExit);
+
     _isolateReceivePort.close();
+
+    _running = false;
   }
 
   Future<TgMsgResponseLogin> login({
@@ -134,9 +140,9 @@ class TelegramClient {
     ));
 
     TgMsgResponseReadChatHistory response = await _isolateReceivePortBroadcast
-        .where((event) => event is TgMsgResponseReadChatHistory)
-        .first;
-
+        .firstWhere((element) => element is TgMsgResponseReadChatHistory)
+        .onError(<StateError>(error, _) =>
+            _logger.warning('readChatsHistory $error'));
     if (response.exception != null) {
       _logger.severe("Exception happened while: ${response.operationName}");
      throw response.exception!;
@@ -251,29 +257,34 @@ class TelegramClientIsolated {
   }
 
   void _initDispatch() {
-    receivePortBroadcast.listen((message) {
+    receivePortBroadcast.listen((message) async {
       if (message is TgMsgRequestExit) {
         _logger.fine('exiting...');
-        _exit(
+        await _exit(
           replySendPort: message.replySendPort,
         );
+        print('bubu');
       } else if (message is TgMsgRequestLogin) {
-        _login(
-          apiId: message.apiId,
-          apiHash: message.apiHash,
-          phoneNumber: message.phoneNumber,
-          databasePath: message.databasePath,
-          readTelegramCode: message.readTelegramCode,
-          writeQrCodeLink: message.writeQrCodeLink,
-          readUserFirstName: message.readUserFirstName,
-          readUserLastName: message.readUserLastName,
-          readUserPassword: message.readUserPassword,
-        ).then((value) => message.replySendPort?.send(value));
+        message.replySendPort?.send(
+          await _login(
+            apiId: message.apiId,
+            apiHash: message.apiHash,
+            phoneNumber: message.phoneNumber,
+            databasePath: message.databasePath,
+            readTelegramCode: message.readTelegramCode,
+            writeQrCodeLink: message.writeQrCodeLink,
+            readUserFirstName: message.readUserFirstName,
+            readUserLastName: message.readUserLastName,
+            readUserPassword: message.readUserPassword,
+          ),
+        );
       } else if (message is TgMsgRequestReadChatsHistory) {
-        _readChatsHistory(
-          datetimeFrom: message.dateTimeFrom,
-          chatsNames: message.chatsNames,
-        ).then((value) => message.replySendPort?.send(value));
+        message.replySendPort?.send(
+          await _readChatsHistory(
+            datetimeFrom: message.dateTimeFrom,
+            chatsNames: message.chatsNames,
+          ),
+        );
       }
     });
   }
@@ -529,6 +540,10 @@ class TelegramClientIsolated {
     required DateTime datetimeFrom,
     required List<String> chatsNames,
   }) async {
+    _logger.info('reading chats history');
+    await Future.delayed(const Duration(seconds: 30));
+    return TgMsgResponseReadChatHistory();
+
     try {
       await _addChats(usernames: chatsNames);
     } on TgDbException catch (dbException) {

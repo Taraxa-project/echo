@@ -19,21 +19,29 @@ class TelegramCommandMessages extends Command {
     var logLevel = getLogLevel();
     var logLevelLibTdJson = getLogLevelLibtdjson();
 
+    final log = Log(logLevel: logLevel);
+    await log.spawn();
+
+    final db = Db(logLevel: logLevel);
+    await db.spawn(
+    log: log,
+    dbPath: globalResults!['message-database-path'],
+    );
+
     TelegramClient? telegramClient;
-    Log? log;
-    Db? db;
 
-    
+    ProcessSignal.sigint.watch().listen((signal) async {
+      if ((signal == ProcessSignal.sigint) |
+          (signal == ProcessSignal.sigkill)) {
+        print("sigint signal has been given: ${signal}");
+        await telegramClient?.exit();
+        await db.exit();
+        await log.exit();
+        exit(1);
+      }
+    });
+
     try {
-      log = Log(logLevel: logLevel);
-      await log.spawn();
-
-      db = Db(logLevel: logLevel);
-      await db.spawn(
-      log: log,
-      dbPath: globalResults!['message-database-path'],
-      );
-
       await db.open();
       await db.migrate();
 
@@ -42,18 +50,6 @@ class TelegramCommandMessages extends Command {
         logLevelLibTdJson: logLevelLibTdJson,
       );
 
-      // Signal Handling
-      await ProcessSignal.sigint.watch().listen((signal) async {
-        if ((signal == ProcessSignal.sigint) | (signal == ProcessSignal.sigkill)) {
-          print("sigint signal has been given: ${signal}");
-          await telegramClient?.exit();
-          await db?.exit();
-          await log?.exit();
-          exit(1);
-        } 
-      });
-      
-      
       await telegramClient.spawn(
         log: log,
         db: db,
@@ -91,19 +87,10 @@ class TelegramCommandMessages extends Command {
       print("Exception occured ${exception}");
     } finally {
       await telegramClient?.exit();
-      await db?.exit();
-      await log?.exit();
+      await db.exit();
+      await log.exit();
     }
   }
-
-  // Future<void> shutDownIsolates() async {
-  //   if (telegramClient != null){
-  //     print("telegram client is null");
-  //   }
-  //     await telegramClient?.exit();
-  //     await db?.exit();
-  //     await log?.exit();
-  //   }
 
   List<String> getChatsNames() {
     var chatsNamesDecoded;
