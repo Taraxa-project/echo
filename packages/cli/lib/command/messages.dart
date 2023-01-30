@@ -13,8 +13,6 @@ class TelegramCommandMessages extends Command {
 
   void run() async {
     hierarchicalLoggingEnabled = true;
-    final runForever = parseBool(globalResults!['run-forever']);
-    var subSigTerm;
 
     var logLevel = getLogLevel();
     var logLevelLibTdJson = getLogLevelLibtdjson();
@@ -24,23 +22,11 @@ class TelegramCommandMessages extends Command {
 
     final db = Db(logLevel: logLevel);
     await db.spawn(
-    log: log,
-    dbPath: globalResults!['message-database-path'],
+      log: log,
+      dbPath: globalResults!['message-database-path'],
     );
 
     TelegramClient? telegramClient;
-
-    ProcessSignal.sigint.watch().listen((signal) async {
-      if ((signal == ProcessSignal.sigint) |
-          (signal == ProcessSignal.sigkill)) {
-        print("sigint signal has been given: ${signal}");
-        await telegramClient?.exit();
-        await db.exit();
-        await log.exit();
-        exit(1);
-      }
-    });
-
     try {
       await db.open();
       await db.migrate();
@@ -49,7 +35,6 @@ class TelegramCommandMessages extends Command {
         logLevel: logLevel,
         logLevelLibTdJson: logLevelLibTdJson,
       );
-
       await telegramClient.spawn(
         log: log,
         db: db,
@@ -68,21 +53,11 @@ class TelegramCommandMessages extends Command {
         readUserLastName: readUserLastName,
         readUserPassword: readUserPassword,
       );
-      if (runForever) {
-        while(true) {
-          await telegramClient.readChatsHistory(
-                dateTimeFrom: computeTwoWeeksAgo(),
-                chatsNames: getChatsNames(),
-                );
-        }
-      } else {
-        await telegramClient.readChatsHistory(
-              dateTimeFrom: computeTwoWeeksAgo(),
-              chatsNames: getChatsNames(),
-              );
-      }
 
-      
+      await telegramClient.readChatsHistory(
+        dateTimeFrom: computeTwoWeeksAgo(),
+        chatsNames: getChatsNames(),
+      );
     } on Exception catch (exception) {
       print("Exception occured ${exception}");
     } finally {
@@ -141,13 +116,5 @@ class TelegramCommandMessages extends Command {
       (level) => level.name == name.toUpperCase(),
       orElse: () => Level.WARNING,
     );
-  }
-
-  bool parseBool(boolToParse) {
-    if (boolToParse.toLowerCase() == 'true') {
-      return true;
-    } else {
-      return false;
-    }
   }
 }

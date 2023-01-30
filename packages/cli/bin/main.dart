@@ -52,11 +52,6 @@ void main(List<String> arguments) {
       'libtdjson-loglevel',
       help: 'libtdjson log level',
       defaultsTo: 'warning',
-    )
-    ..addOption(
-      'run-forever',
-      help: 'Set this to true if you want the app to run forever',
-      defaultsTo: 'false',
     );
 
   TelegramCommandMessages telegramCommandMessages = TelegramCommandMessages();
