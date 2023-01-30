@@ -56,7 +56,7 @@ void main(List<String> arguments) {
     ..addOption(
       'run-forever',
       help: 'Set this to true if you want the app to run forever',
-      defaultsTo: 'warning',
+      defaultsTo: 'false',
     );
 
   TelegramCommandMessages telegramCommandMessages = TelegramCommandMessages();

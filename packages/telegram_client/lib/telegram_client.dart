@@ -124,8 +124,9 @@ class TelegramClient {
       readUserPassword: readUserPassword,
     ));
     return await _isolateReceivePortBroadcast
-        .where((event) => event is TgMsgResponseLogin)
-        .first;
+        .firstWhere((element) => element is TgMsgResponseLogin)
+        .onError(<StateError>(error, _) =>
+            _logger.warning('readChatsHistory $error'));
   }
 
   Future<TgMsgResponseReadChatHistory> readChatsHistory({
