@@ -340,16 +340,16 @@ class DbIsolated {
     var count = 0;
     while (retry) {
       try {
-        final stmt = db?.prepare(
-            'UPDATE chat SET member_count = ?, updated_at = ? WHERE username = ?;');
+    final stmt = db?.prepare(
+        'UPDATE chat SET member_count = ?, updated_at = ? WHERE username = ?;');
 
-        _logger.fine('updating chat $username, members count $memberCount...');
-        stmt?.execute([
-          memberCount,
-          DateTime.now().toUtc().toIso8601String(),
-          username,
-        ]);
-        _logger.fine('updated chat $username, members count $memberCount.');
+    _logger.fine('updating chat $username, members count $memberCount...');
+    stmt?.execute([
+      memberCount,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('updated chat $username, members count $memberCount.');
 
         stmt?.dispose();
         return DbMsgResponseUpdateChatMembersCount();
@@ -379,18 +379,18 @@ class DbIsolated {
     var count = 0;
     while (retry) {
       try {
-        final stmt = db?.prepare(
-            'UPDATE chat SET bot_count = ?, updated_at = ? WHERE username = ?;');
+    final stmt = db?.prepare(
+        'UPDATE chat SET bot_count = ?, updated_at = ? WHERE username = ?;');
 
-        _logger.fine('updating chat $username, bots count $memberCount...');
-        stmt?.execute([
-          memberCount,
-          DateTime.now().toUtc().toIso8601String(),
-          username,
-        ]);
-        _logger.fine('updated chat $username, bots count $memberCount.');
+    _logger.fine('updating chat $username, bots count $memberCount...');
+    stmt?.execute([
+      memberCount,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('updated chat $username, bots count $memberCount.');
 
-        stmt?.dispose();
+    stmt?.dispose();
 
         return DbMsgResponseUpdateChatMembersBotsCount();
       } on SqliteException catch (exception) {
@@ -416,6 +416,7 @@ class DbIsolated {
     required String username,
     required int memberCount,
   }) {
+
     final stmt = db?.prepare(
         'UPDATE chat SET member_online_count = ?, updated_at = ? WHERE username = ?;');
 
@@ -596,7 +597,7 @@ class DbIsolated {
       try {
         _logger.fine('Adding new user  $userId...');
         final sql = """
-          INSERT INTO user (user_id, created_at, updated_at) VALUES (?, ?, ?);
+          INSERT INTO user (user_id) VALUES (?);
           """;
         final stmt = db?.prepare(sql);
         stmt?.execute([
@@ -612,12 +613,11 @@ class DbIsolated {
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
-            return DbMsgResponseAddUser(
-                exception: exception, operationName: "Adding User");
+            return DbMsgResponseAddUser(exception: exception, operationName: "Adding User");
           }
         } else {
           if (exception.resultCode == 19) {
-            return DbMsgResponseConstraintError(exception: exception);
+            return DbMsgResponseConstraintError(exception: exception, operationName: "Adding User");
           } else {
             return DbMsgResponseAddUser(
                 exception: exception, operationName: "Adding User");
@@ -755,9 +755,7 @@ class DbIsolated {
       bot INTEGER,
       verified INTEGER,
       scam INTEGER,
-      fake INTEGER,
-      created_at TEXT,
-      updated_at TEXT
+      fake INTEGER
     );
     """,
       """
@@ -993,9 +991,7 @@ class DbMsgRequestUpdateChatMembersCount extends DbMsgRequest {
   });
 }
 
-class DbMsgResponseUpdateChatMembersCount extends DbMsgResponse {
-  DbMsgResponseUpdateChatMembersCount({super.exception, super.operationName});
-}
+class DbMsgResponseUpdateChatMembersCount extends DbMsgResponse {}
 
 class DbMsgRequestUpdateChatMembersBotsCount extends DbMsgRequest {
   final String username;
@@ -1072,7 +1068,7 @@ class DbMsgRequestAddUser extends DbMsgRequest {
 }
 
 class DbMsgResponseAddUser extends DbMsgResponse {
-  DbMsgResponseAddUser({super.exception, super.operationName});
+  DbMsgResponseAddUser({super.exception});
 }
 
 class DbMsgRequestUpdateUser extends DbMsgRequest {
@@ -1084,7 +1080,7 @@ class DbMsgRequestUpdateUser extends DbMsgRequest {
 }
 
 class DbMsgResponseUpdateUser extends DbMsgResponse {
-  DbMsgResponseUpdateUser({super.exception, super.operationName});
+  DbMsgResponseUpdateUser({super.exception});
 }
 
 class DbMsgResponseConstraintError extends DbMsgResponseAddUser {
