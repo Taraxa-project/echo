@@ -27,6 +27,18 @@ class TelegramCommandMessages extends Command {
     );
 
     TelegramClient? telegramClient;
+
+    ProcessSignal.sigint.watch().listen((signal) async {
+      if ((signal == ProcessSignal.sigint) |
+          (signal == ProcessSignal.sigkill)) {
+        print("sigint signal has been given: ${signal}");
+        await telegramClient?.exit();
+        await db.exit();
+        await log.exit();
+        exit(1);
+      }
+    });
+
     try {
       await db.open();
       await db.migrate();
