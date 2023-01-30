@@ -92,7 +92,6 @@ class TelegramClient {
     isolateSendPort.send(TgMsgRequestExit(
       replySendPort: _isolateReceivePort.sendPort,
     ));
-    print('send signal to kill in TG');
     await _isolateReceivePortBroadcast
         .firstWhere((element) => element is TgMsgResponseExit);
 
@@ -263,7 +262,6 @@ class TelegramClientIsolated {
         await _exit(
           replySendPort: message.replySendPort,
         );
-        print('bubu');
       } else if (message is TgMsgRequestLogin) {
         message.replySendPort?.send(
           await _login(
@@ -290,15 +288,12 @@ class TelegramClientIsolated {
   }
 
   Future<void> _exit({SendPort? replySendPort}) async {
-    print('entering _exit');
     _tdJsonClient.exit();
     await _tdStreamController.close();
-    print("just closed the stream in TG _exit");
     replySendPort?.send(TgMsgResponseExit());
 
     await Future.delayed(const Duration(milliseconds: 10));
     _logger.fine('closing tg isolate port');
-    print("closing port");
 
     receivePort.close();
     Isolate.exit();
