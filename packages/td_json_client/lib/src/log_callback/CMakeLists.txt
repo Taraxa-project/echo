@@ -24,6 +24,7 @@ endif (WIN32)
 ExternalProject_Add(
     tdlib
     GIT_REPOSITORY https://github.com/tdlib/td.git
+    GIT_TAG v1.8.0
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=Release
         -DOPENSSL_ROOT_DIR=/opt/homebrew/opt/openssl/

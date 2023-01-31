@@ -1,4 +1,0 @@
-services:
-  echo-cli:
-    volumes:
-      - "./:/app/"
