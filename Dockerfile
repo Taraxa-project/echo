@@ -17,14 +17,14 @@ WORKDIR /app-temp
 RUN rm -rf packages/td_json_client/build && \
  mkdir packages/td_json_client/build && \
  cd packages/td_json_client/build && \
- cmake -DCMAKE_INSTALL_PREFIX:PATH=/app-temp/packages/td_json_client/lib/src/blobs/linux /app-temp/packages/td_json_client/lib/src/log_callback && \
+ cmake -DCMAKE_INSTALL_PREFIX:PATH=/app-temp/linux_build /app-temp/packages/td_json_client/lib/src/log_callback && \
  cmake --build . --target install
 
 ### main application image ###
 FROM dart:stable
 
 # Copy tdlib binaries
-COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux /usr/local/lib/
+COPY --from=builder /app-temp/linux_build  /usr/local/lib/
 
 RUN rm -rf /app-temp
 
@@ -43,13 +43,13 @@ WORKDIR /app
 
 RUN dart pub global activate melos
 
-# issue running melos bootstrap because of a Null check operator used on a null value when subspec is loading a file, (package:pubspec/src/pubspec.dart:128:15)
 RUN melos bootstrap 
 RUN melos run get
 
 ENTRYPOINT [ "/usr/lib/dart/bin/dart", "run"]
-# # with modified libtdjson-path to be LIB_TD_JSON_PATH="/usr/local/lib/libtdjsonlc.dylib"
 
 CMD ["/app/packages/cli/bin/main.dart","login","-h","--api-id=","$API_ID", \
     "--api-hash=","$API_HASH","--phone-number=","$PHONE", \
-    "--libtdjson-path=","$PATH_TD_JSON_LIB","--libtdjson-loglevel=","$LOG_LEVEL"]
+    "--libtdjson-path=","$PATH_TD_JSON_LIB","--loglevel=", "$LOG_LEVEL","--libtdjson-loglevel=","$LIBTDJSON_LOGLEVEL", \
+    "--database-path=", "$DATABASE_PATH", "--message-database-path=", "$DATABASE_PATH/message.sqlite messages", "--chat-names=", "$CHAT_NAMES", \
+    "--run-forever=", "$RUN_FOREVER"]
