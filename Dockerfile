@@ -17,14 +17,14 @@ WORKDIR /app-temp
 RUN rm -rf packages/td_json_client/build && \
  mkdir packages/td_json_client/build && \
  cd packages/td_json_client/build && \
- cmake -DCMAKE_INSTALL_PREFIX:PATH=/app-temp/packages/td_json_client/lib/src/blobs/darwin/arm64 /app-temp/packages/td_json_client/lib/src/log_callback && \
+ cmake -DCMAKE_INSTALL_PREFIX:PATH=/app-temp/packages/td_json_client/lib/src/blobs/linux /app-temp/packages/td_json_client/lib/src/log_callback && \
  cmake --build . --target install
 
 ### main application image ###
 FROM dart:stable
 
 # Copy tdlib binaries
-COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/darwin/arm64 /usr/local/lib/
+COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux /usr/local/lib/
 
 RUN rm -rf /app-temp
 
