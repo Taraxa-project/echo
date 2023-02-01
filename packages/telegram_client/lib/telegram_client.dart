@@ -289,11 +289,13 @@ class TelegramClientIsolated {
   }
 
   Future<void> _exit({SendPort? replySendPort}) async {
+    await _close();
+
     _tdJsonClient.exit();
     await _tdStreamController.close();
     replySendPort?.send(TgMsgResponseExit());
-
     await Future.delayed(const Duration(milliseconds: 10));
+
     _logger.fine('closing tg isolate port');
 
     receivePort.close();
@@ -320,6 +322,9 @@ class TelegramClientIsolated {
       var event = _tdJsonClient.receive(waitTimeout: tdReceiveWaitTimeout);
       if (event != null) {
         _logger.finer('received ${event.runtimeType}.');
+        if (event is UpdateConnectionState) {
+          _handleUpdateConnectionState(event);
+        }
         _tdStreamController.add(event);
       }
 
@@ -369,15 +374,10 @@ class TelegramClientIsolated {
         elapsedMilliseconds,
         tdFunction.runtimeType.toString(),
       );
-    } else if (tdResponse.runtimeType.toString() == tdFunction.tdReturnType) {
-      return tdResponse;
     } else if (tdResponse is Error) {
       _handleTdError(tdResponse);
     } else {
-      _logger.info('received invalid response type for '
-          '${tdFunction.runtimeType.toString()}: '
-          '${tdResponse.runtimeType}.');
-      throw TgException('invalid response type ${tdResponse.runtimeType}');
+      return tdResponse;
     }
   }
 
@@ -407,6 +407,27 @@ class TelegramClientIsolated {
     throw TgMaxRetriesExcedeedException(retryCountMax);
   }
 
+  void _handleUpdateConnectionState(
+      UpdateConnectionState updateConnectionState) {
+    var state = updateConnectionState.state;
+    if (state == null) {
+      _logger.severe('connection state unknown.');
+    } else {
+      _logger.info('connection state: ${state.runtimeType}.');
+    }
+  }
+
+  Future<Ok> _close({
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: Close(),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Ok;
+  }
+
   Future<TgMsgResponseLogin> _login({
     required int apiId,
     required String apiHash,
@@ -423,85 +444,54 @@ class TelegramClientIsolated {
     var extra = Uuid().v1();
 
     var isAuthorized = false;
-    var isClosed = false;
-    var isError = false;
 
-    var sub = _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .listen(
-      (event) {
-        _logger.fine('login: received ${event.runtimeType}.');
-        if (event is Error) {
-          isError = true;
-          _logger.warning('login: $event');
-        } else if (event is AuthorizationState) {
-          switch (event.runtimeType) {
-            case AuthorizationStateWaitTdlibParameters:
-              _tdSend(
-                SetTdlibParameters(
-                  api_id: apiId,
-                  api_hash: apiHash,
-                  database_directory: databasePath,
-                  use_message_database: false,
-                  device_model: 'Desktop',
-                  application_version: '1.0',
-                  system_language_code: 'en',
-                  database_encryption_key: '',
-                  extra: extra,
-                ),
-              );
-              break;
-            case AuthorizationStateWaitPhoneNumber:
-              _tdSend(SetAuthenticationPhoneNumber(
-                phone_number: phoneNumber,
-                extra: extra,
-              ));
-              break;
-            case AuthorizationStateWaitCode:
-              _tdSend(CheckAuthenticationCode(
-                code: readTelegramCode(),
-                extra: extra,
-              ));
-              break;
-            case AuthorizationStateWaitOtherDeviceConfirmation:
-              writeQrCodeLink(
-                  (event as AuthorizationStateWaitOtherDeviceConfirmation)
-                          .link ??
-                      '');
-              break;
-            case AuthorizationStateWaitRegistration:
-              _tdSend(RegisterUser(
-                first_name: readUserFirstName(),
-                last_name: readUserLastName(),
-                extra: extra,
-              ));
-              break;
-            case AuthorizationStateWaitPassword:
-              _tdSend(CheckAuthenticationPassword(
-                password: readUserPassword(),
-                extra: extra,
-              ));
-              break;
-            case AuthorizationStateReady:
-              isAuthorized = true;
-              break;
-            case AuthorizationStateLoggingOut:
-              isClosed = true;
-              break;
-            case AuthorizationStateClosing:
-              isClosed = true;
-              break;
-            case AuthorizationStateClosed:
-              isClosed = true;
-              break;
-          }
-        } else if (event is Ok) {
+    var sub = _tdStreamController.stream.listen((event) async {
+      if (event is UpdateAuthorizationState) {
+        _logger
+            .info('login: received ${event.authorization_state.runtimeType}.');
+        var authorizationState = event.authorization_state;
+        if (authorizationState is AuthorizationStateWaitTdlibParameters) {
+          _setTdlibParameters(
+            apiId: apiId,
+            apiHash: apiHash,
+            databasePath: databasePath,
+          ).then((value) {
+            _logger.info('SetTdlibParameters: ok.');
+          });
+        } else if (authorizationState is AuthorizationStateWaitPhoneNumber) {
+          _setAuthenticationPhoneNumber(
+            phoneNumber: phoneNumber,
+          )..then((value) {
+              _logger.info('SetAuthenticationPhoneNumber: ok.');
+            });
+        } else if (authorizationState is AuthorizationStateWaitCode) {
+          _checkAuthenticationCode(
+            readTelegramCode: readTelegramCode,
+          ).then((value) {
+            _logger.info('CheckAuthenticationCode: ok.');
+          });
+        } else if (authorizationState
+            is AuthorizationStateWaitOtherDeviceConfirmation) {
+          writeQrCodeLink(authorizationState.link ?? '');
+        } else if (authorizationState is AuthorizationStateWaitRegistration) {
+          _registerUser(
+            readUserFirstName: readUserFirstName,
+            readUserLastName: readUserLastName,
+          ).then((value) {
+            _logger.info('RegisterUser: ok.');
+          });
+          ;
+        } else if (authorizationState is AuthorizationStateWaitPassword) {
+          _checkAuthenticationPassword(
+            readUserPassword: readUserPassword,
+          ).then((value) {
+            _logger.info('CheckAuthenticationPassword: ok.');
+          });
+        } else if (authorizationState is AuthorizationStateReady) {
           isAuthorized = true;
-        } else {
-          _logger.warning('login: other: $event');
         }
-      },
-    );
+      }
+    });
 
     _tdSend(GetAuthorizationState(
       extra: extra,
@@ -512,14 +502,6 @@ class TelegramClientIsolated {
         _logger.info('login: success.');
         break;
       }
-      if (isClosed) {
-        _logger.info('login: closed.');
-        break;
-      }
-      if (isError) {
-        _logger.info('login: error.');
-        break;
-      }
       await Future.delayed(const Duration(milliseconds: 100));
     }
 
@@ -527,8 +509,79 @@ class TelegramClientIsolated {
 
     return TgMsgResponseLogin(
       isAuthorized: isAuthorized,
-      isClosed: isClosed,
-      isError: isError,
+      isClosed: false,
+      isError: false,
+    );
+  }
+
+  Future<TdObject> _setTdlibParameters({
+    required int apiId,
+    required String apiHash,
+    required String databasePath,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) {
+    return _tdCall(
+      tdFunction: SetTdlibParameters(
+        api_id: apiId,
+        api_hash: apiHash,
+        database_directory: databasePath,
+        use_message_database: false,
+        device_model: 'Desktop',
+        application_version: '1.0',
+        system_language_code: 'en',
+        database_encryption_key: '',
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+    );
+  }
+
+  Future<TdObject> _setAuthenticationPhoneNumber({
+    required String phoneNumber,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) {
+    return _tdCall(
+      tdFunction: SetAuthenticationPhoneNumber(
+        phone_number: phoneNumber,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+    );
+  }
+
+  Future<TdObject> _checkAuthenticationCode({
+    required String Function() readTelegramCode,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) {
+    return _tdCall(
+      tdFunction: CheckAuthenticationCode(
+        code: readTelegramCode(),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+    );
+  }
+
+  Future<TdObject> _registerUser({
+    required String Function() readUserFirstName,
+    required String Function() readUserLastName,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) {
+    return _tdCall(
+      tdFunction: RegisterUser(
+        first_name: readUserFirstName(),
+        last_name: readUserLastName(),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+    );
+  }
+
+  Future<TdObject> _checkAuthenticationPassword({
+    required String Function() readUserPassword,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) {
+    return _retryTdCall(
+      tdFunction: CheckAuthenticationPassword(
+        password: readUserPassword(),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
     );
   }
 
