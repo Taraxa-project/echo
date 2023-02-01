@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build_and_push_docker_image:
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: docker:20-git
     environment:
       - IMAGE: echo
       - GOOGLE_PROJECT_ID: jovial-meridian-249123
