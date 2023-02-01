@@ -8,35 +8,32 @@ jobs:
       - GOOGLE_PROJECT_ID: jovial-meridian-249123
     steps:
       - checkout
-      # - run:
-      #     name: Prepare environment
-      #     command: |
-      #       echo "export GCP_IMAGE=gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE}" >> $BASH_ENV
-      #       echo "export TIMESTAMP=$(date +%s)" >> $BASH_ENV
-      #       sudo apt-get update
-      #       sudo apt-get install -y git tar
-      #       echo ${GOOGLE_SERVICE_ACCOUNT} > $HOME/service-account.json
-      #       echo "export GOOGLE_APPLICATION_CREDENTIALS=$HOME/service-account.json" >> $BASH_ENV
-      #       pip install build
-      # - run:
-      #     shell: /bin/bash
-      #     name: Build package and publish to repo
-      #     command: | 
-      #       make build
 
-      # - run:
-      #    name: Login into gcr
-      #    command: |
-      #       echo ${GCLOUD_SERVICE_KEY} | docker login -u _json_key --password-stdin https://gcr.io
+      - run:
+          name: Prepare environment
+          command: |
+            echo "export GCP_IMAGE=gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE}" >> $BASH_ENV
+            echo "export TIMESTAMP=$(date +%s)" >> $BASH_ENV
+            echo "export VERSION=$(git rev-parse --short HEAD)" >> $BASH_ENV
+            # sudo apt-get update
+            # sudo apt-get install -y git tar
+            # echo ${GOOGLE_SERVICE_ACCOUNT} > $HOME/service-account.json
+            # echo "export GOOGLE_APPLICATION_CREDENTIALS=$HOME/service-account.json" >> $BASH_ENV
+            # pip install build
 
-      # - setup_remote_docker:
-      #     version: 20.10.14
-      #     docker_layer_caching: true
+      - run:
+         name: Login into gcr
+         command: |
+            echo ${GCLOUD_SERVICE_KEY} | docker login -u _json_key --password-stdin https://gcr.io
 
-      # - run:
-      #     name: Build docker image
-      #     command: | 
-      #       docker build -t ${IMAGE}:${CIRCLE_BUILD_NUM} .
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+
+      - run:
+          name: Build docker image
+          command: | 
+            docker build -t ${IMAGE}:${VERSION} .
 
       # - run:
       #     name: Tag docker image
