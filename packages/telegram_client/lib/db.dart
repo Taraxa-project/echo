@@ -217,6 +217,59 @@ class DbIsolated {
     });
   }
 
+   Future<DbMsgResponse> _retryTdCall({
+    required Function dbFunction,
+    List<dynamic>? args,
+    int retryCountMax = maxTries,
+  }) async {
+    var retryCountIndex = 0;
+    while (retryCountIndex < retryCountMax) {
+      retryCountIndex += 1;
+
+      try {
+        return await _tdCall(
+          tdFunction: dbFunction,
+          args: args
+        );
+      } on SqliteException catch (exception) {
+      const operationName = "Open DB";
+      _dbErrorHandler(exception, operationName);
+      return DbMsgResponseOpen(exception: exception);
+      } on DbMsgResponseAddMessage catch (exception) {
+
+      }
+    }
+
+    throw DbMsgResponse(retryCountMax);
+  }
+
+  Future<TdObject> _tdCall({
+    required Function tdFunction,
+    List<dynamic>? args,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) async {
+    var tdResponse;
+
+    tdFunction();
+
+    if (tdResponse == null) {
+      throw TgTimedOutException(
+        elapsedMilliseconds,
+        tdFunction.runtimeType.toString(),
+      );
+    } else if (tdResponse.runtimeType.toString() == tdFunction.tdReturnType) {
+      return tdResponse;
+    } else if (tdResponse is Error) {
+      _handleTdError(tdResponse);
+    } else {
+      _logger.info('received invalid response type for '
+          '${tdFunction.runtimeType.toString()}: '
+          '${tdResponse.runtimeType}.');
+      throw TgException('invalid response type ${tdResponse.runtimeType}');
+    }
+  }
+
+
   DbMsgResponseOpen? _open() {
     try {
       _logger.fine('opening...');
