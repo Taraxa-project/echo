@@ -582,7 +582,6 @@ class TelegramClientIsolated {
     }
 
     _logger.info('reading chats history...');
-    await Future.delayed(Duration(seconds: 30));
 
     for (final chatName in chatsNames) {
       _logger.info('[$chatName] reading chat history...');
