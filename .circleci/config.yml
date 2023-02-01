@@ -18,11 +18,6 @@ jobs:
             echo "export GCP_IMAGE=gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE}" >> $BASH_ENV
             echo "export TIMESTAMP=$(date +%s)" >> $BASH_ENV
             echo "export VERSION=$(git rev-parse --short HEAD)" >> $BASH_ENV
-            # sudo apt-get update
-            # sudo apt-get install -y git tar
-            # echo ${GOOGLE_SERVICE_ACCOUNT} > $HOME/service-account.json
-            # echo "export GOOGLE_APPLICATION_CREDENTIALS=$HOME/service-account.json" >> $BASH_ENV
-            # pip install build
 
       - run:
          name: Login into gcr
@@ -34,40 +29,35 @@ jobs:
           docker_layer_caching: true
 
       - run:
-          command: |
-            env
-
-      - run:
           name: Build docker image
           command: | 
             docker build -t ${IMAGE}:${VERSION} .
 
-      # - run:
-      #     name: Tag docker image
-      #     command: | 
+      - run:
+          name: Tag docker image
+          command: | 
             
-      #       if [[ ${CIRCLE_BRANCH} == "main" ]]; then
-      #         docker tag ${IMAGE}:${CIRCLE_BUILD_NUM} ${GCP_IMAGE}:${CIRCLE_SHA1}
-      #         docker tag ${IMAGE}:${CIRCLE_BUILD_NUM} ${GCP_IMAGE}:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:7}-${TIMESTAMP}
-      #       fi
+            if [[ ${CIRCLE_BRANCH} == "main" ]]; then
+              docker tag ${IMAGE}:${CIRCLE_BUILD_NUM} ${GCP_IMAGE}:${CIRCLE_SHA1}
+              docker tag ${IMAGE}:${CIRCLE_BUILD_NUM} ${GCP_IMAGE}:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:7}-${TIMESTAMP}
+            fi
 
-      #       if [[ ! -z ${CIRCLE_TAG} ]]; then
-      #         docker tag ${IMAGE}:${CIRCLE_BUILD_NUM} ${GCP_IMAGE}:${CIRCLE_TAG}
-      #       fi
+            if [[ ! -z ${CIRCLE_TAG} ]]; then
+              docker tag ${IMAGE}:${CIRCLE_BUILD_NUM} ${GCP_IMAGE}:${CIRCLE_TAG}
+            fi
 
+      - run:
+          name: Push docker image to registry
+          command: | 
 
-      # - run:
-      #     name: Push docker image to registry
-      #     command: | 
+            if [[ ${CIRCLE_BRANCH} == "main" ]]; then
+              docker push ${GCP_IMAGE}:${CIRCLE_SHA1}
+              docker push ${GCP_IMAGE}:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:7}-${TIMESTAMP}
+            fi
 
-      #       if [[ ${CIRCLE_BRANCH} == "main" ]]; then
-      #         docker push ${GCP_IMAGE}:${CIRCLE_SHA1}
-      #         docker push ${GCP_IMAGE}:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:7}-${TIMESTAMP}
-      #       fi
-
-      #       if [[ ! -z ${CIRCLE_TAG} ]]; then
-      #         docker push ${GCP_IMAGE}:${CIRCLE_TAG}
-      #       fi
+            if [[ ! -z ${CIRCLE_TAG} ]]; then
+              docker push ${GCP_IMAGE}:${CIRCLE_TAG}
+            fi
 
 workflows:
 
