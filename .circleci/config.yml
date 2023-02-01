@@ -3,13 +3,12 @@ jobs:
   build_and_push_docker_image:
     # https://circleci.com/docs/env-vars/#alpine-linux
     shell: /bin/sh -leo pipefail
-    environment:
-      BASH_ENV: /etc/profile
     docker:
       - image: docker:20-git
     environment:
       - IMAGE: echo
       - GOOGLE_PROJECT_ID: jovial-meridian-249123
+      - BASH_ENV: /etc/profile
     steps:
       - checkout
 
