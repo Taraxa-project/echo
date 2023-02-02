@@ -224,9 +224,8 @@ class DbIsolated {
       _logger.fine('opened.');
       return DbMsgResponseOpen();
     } on SqliteException catch (exception) {
-      const operationName = "Open DB";
-      _dbErrorHandler(exception, operationName);
-      return DbMsgResponseOpen(exception: exception);
+      _dbErrorHandler(exception, "Open DB");
+      return DbMsgResponseOpen(exception: exception, operationName: "Open DB");
     }
   }
 
@@ -252,9 +251,9 @@ class DbIsolated {
       _logger.fine('running migrations... done.');
       return DbMsgResponseMigrate();
     } on SqliteException catch (exception) {
-      const operationName = "Migrating DB";
-      _dbErrorHandler(exception, operationName);
-      return DbMsgResponseMigrate(exception: exception);
+      _dbErrorHandler(exception, "Migrating DB");
+      return DbMsgResponseMigrate(
+          exception: exception, operationName: "Migrating DB");
     }
   }
 
@@ -277,15 +276,16 @@ class DbIsolated {
         }
         return DbMsgResponseAddChats();
       } on SqliteException catch (exception) {
-        const operationName = 'Add Chats';
-        var retry = _dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, 'Add Chats');
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
-            return DbMsgResponseAddChats(exception: exception);
+            return DbMsgResponseAddChats(
+                exception: exception, operationName: "Add Chats");
           }
         } else {
-          return DbMsgResponseAddChats(exception: exception);
+          return DbMsgResponseAddChats(
+              exception: exception, operationName: "Add Chats");
         }
       }
     }
@@ -317,15 +317,16 @@ class DbIsolated {
 
         return DbMsgResponseUpdateChat();
       } on SqliteException catch (exception) {
-        const operationName = 'Updating Chat';
-        var retry = _dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, 'Updating Chat');
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
-            return DbMsgResponseUpdateChat(exception: exception);
+            return DbMsgResponseUpdateChat(
+                exception: exception, operationName: 'Updating Chat');
           }
         } else {
-          return DbMsgResponseUpdateChat(exception: exception);
+          return DbMsgResponseUpdateChat(
+              exception: exception, operationName: 'Updating Chat');
         }
       }
     }
@@ -335,40 +336,80 @@ class DbIsolated {
     required String username,
     required int memberCount,
   }) {
-    final stmt = db?.prepare(
-        'UPDATE chat SET member_count = ?, updated_at = ? WHERE username = ?;');
+    var retry = true;
+    var count = 0;
+    while (retry) {
+      try {
+        final stmt = db?.prepare(
+            'UPDATE chat SET member_count = ?, updated_at = ? WHERE username = ?;');
 
-    _logger.fine('updating chat $username, members count $memberCount...');
-    stmt?.execute([
-      memberCount,
-      DateTime.now().toUtc().toIso8601String(),
-      username,
-    ]);
-    _logger.fine('updated chat $username, members count $memberCount.');
+        _logger.fine('updating chat $username, members count $memberCount...');
+        stmt?.execute([
+          memberCount,
+          DateTime.now().toUtc().toIso8601String(),
+          username,
+        ]);
+        _logger.fine('updated chat $username, members count $memberCount.');
 
-    stmt?.dispose();
-
-    return DbMsgResponseUpdateChatMembersCount();
+        stmt?.dispose();
+        return DbMsgResponseUpdateChatMembersCount();
+      } on SqliteException catch (exception) {
+        var retry = _dbErrorHandler(exception, 'Updating Chat Member Count');
+        if (retry == true) {
+          _logger.info("Retry Count: ${count}");
+          if (++count == maxTries) {
+            return DbMsgResponseUpdateChatMembersCount(
+                exception: exception,
+                operationName: 'Updating Chat Member Count');
+          }
+        } else {
+          return DbMsgResponseUpdateChatMembersCount(
+              exception: exception,
+              operationName: 'Updating Chat Member Count');
+        }
+      }
+    }
   }
 
   DbMsgResponseUpdateChatMembersBotsCount _updateChatMembersBotsCount({
     required String username,
     required int memberCount,
   }) {
-    final stmt = db?.prepare(
-        'UPDATE chat SET bot_count = ?, updated_at = ? WHERE username = ?;');
+    var retry = true;
+    var count = 0;
+    while (retry) {
+      try {
+        final stmt = db?.prepare(
+            'UPDATE chat SET bot_count = ?, updated_at = ? WHERE username = ?;');
 
-    _logger.fine('updating chat $username, bots count $memberCount...');
-    stmt?.execute([
-      memberCount,
-      DateTime.now().toUtc().toIso8601String(),
-      username,
-    ]);
-    _logger.fine('updated chat $username, bots count $memberCount.');
+        _logger.fine('updating chat $username, bots count $memberCount...');
+        stmt?.execute([
+          memberCount,
+          DateTime.now().toUtc().toIso8601String(),
+          username,
+        ]);
+        _logger.fine('updated chat $username, bots count $memberCount.');
 
-    stmt?.dispose();
+        stmt?.dispose();
 
-    return DbMsgResponseUpdateChatMembersBotsCount();
+        return DbMsgResponseUpdateChatMembersBotsCount();
+      } on SqliteException catch (exception) {
+        var retry =
+            _dbErrorHandler(exception, 'Updating Chat Member Bots Count');
+        if (retry == true) {
+          _logger.info("Retry Count: ${count}");
+          if (++count == maxTries) {
+            return DbMsgResponseUpdateChatMembersBotsCount(
+                exception: exception,
+                operationName: 'Updating Chat Member Bots Count');
+          }
+        } else {
+          return DbMsgResponseUpdateChatMembersBotsCount(
+              exception: exception,
+              operationName: 'Updating Chat Member Bots Count');
+        }
+      }
+    }
   }
 
   DbMsgResponseUpdateChatMembersOnlineCount _updateChatMembersOnlineCount({
@@ -395,20 +436,38 @@ class DbIsolated {
     required String username,
     required String reason,
   }) {
-    final stmt = db?.prepare(
-        'UPDATE chat SET blacklisted = 1, blacklist_reason = ?, updated_at = ? WHERE username = ?;');
+    var retry = true;
+    var count = 0;
+    while (retry) {
+      try {
+        final stmt = db?.prepare(
+            'UPDATE chat SET blacklisted = 1, blacklist_reason = ?, updated_at = ? WHERE username = ?;');
 
-    _logger.fine('blacklisting chat $username, reason $reason...');
-    stmt?.execute([
-      reason,
-      DateTime.now().toUtc().toIso8601String(),
-      username,
-    ]);
-    _logger.fine('blacklisted chat $username.');
+        _logger.fine('blacklisting chat $username, reason $reason...');
+        stmt?.execute([
+          reason,
+          DateTime.now().toUtc().toIso8601String(),
+          username,
+        ]);
+        _logger.fine('blacklisted chat $username.');
 
-    stmt?.dispose();
+        stmt?.dispose();
 
-    return DbMsgResponseBlacklistChat();
+        return DbMsgResponseBlacklistChat();
+      } on SqliteException catch (exception) {
+        var retry = _dbErrorHandler(exception, 'Black Listing Chat');
+        if (retry == true) {
+          _logger.info("Retry Count: ${count}");
+          if (++count == maxTries) {
+            return DbMsgResponseBlacklistChat(
+                exception: exception, operationName: 'Black Listing Chat');
+          }
+        } else {
+          return DbMsgResponseBlacklistChat(
+              exception: exception, operationName: 'Black Listing Chat');
+        }
+      }
+    }
   }
 
   DbMsgResponseSelectMaxMessageId _selectMaxMessageId({
@@ -437,17 +496,20 @@ class DbIsolated {
 
         return DbMsgResponseSelectMaxMessageId(id: id);
       } on SqliteException catch (exception) {
-        const operationName = 'Select Max Message Id';
-        var retry = _dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, 'Select Max Message Id');
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
             return DbMsgResponseSelectMaxMessageId(
-                id: null, exception: exception);
+                id: null,
+                exception: exception,
+                operationName: 'Select Max Message Id');
           }
         } else {
           return DbMsgResponseSelectMaxMessageId(
-              id: null, exception: exception);
+              id: null,
+              exception: exception,
+              operationName: 'Select Max Message Id');
         }
       }
     }
@@ -508,15 +570,20 @@ class DbIsolated {
 
         return DbMsgResponseAddMessage(added: true);
       } on SqliteException catch (exception) {
-        const operationName = "Adding Message";
-        var retry = _dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, "Adding Message");
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
-            return DbMsgResponseAddMessage(added: false, exception: exception);
+            return DbMsgResponseAddMessage(
+                added: false,
+                exception: exception,
+                operationName: "Adding Message");
           }
         } else {
-          return DbMsgResponseAddMessage(added: false, exception: exception);
+          return DbMsgResponseAddMessage(
+              added: false,
+              exception: exception,
+              operationName: "Adding Message");
         }
       }
     }
@@ -529,26 +596,31 @@ class DbIsolated {
       try {
         _logger.fine('Adding new user  $userId...');
         final sql = """
-          INSERT INTO user (user_id) VALUES (?);
+          INSERT INTO user (user_id, created_at, updated_at) VALUES (?, ?, ?);
           """;
         final stmt = db?.prepare(sql);
-        stmt?.execute([userId]);
+        stmt?.execute([
+          userId,
+          DateTime.now().toUtc().toIso8601String(),
+          DateTime.now().toUtc().toIso8601String(),
+        ]);
         stmt?.dispose();
         _logger.fine('User $userId added');
         return DbMsgResponseAddUser();
       } on SqliteException catch (exception) {
-        const operationName = "Adding User";
-        var retry = _dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, "Adding User");
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
-            return DbMsgResponseAddUser(exception: exception);
+            return DbMsgResponseAddUser(
+                exception: exception, operationName: "Adding User");
           }
         } else {
           if (exception.resultCode == 19) {
             return DbMsgResponseConstraintError(exception: exception);
           } else {
-            return DbMsgResponseAddUser(exception: exception);
+            return DbMsgResponseAddUser(
+                exception: exception, operationName: "Adding User");
           }
         }
       }
@@ -580,15 +652,16 @@ class DbIsolated {
         _logger.fine('User $userId added');
         return DbMsgResponseUpdateUser();
       } on SqliteException catch (exception) {
-        const operationName = "Adding User";
-        var retry = _dbErrorHandler(exception, operationName);
+        var retry = _dbErrorHandler(exception, "Updating User");
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
-            return DbMsgResponseUpdateUser(exception: exception);
+            return DbMsgResponseUpdateUser(
+                exception: exception, operationName: "Updating User");
           }
         } else {
-          return DbMsgResponseUpdateUser(exception: exception);
+          return DbMsgResponseUpdateUser(
+              exception: exception, operationName: "Updating User");
         }
       }
     }
@@ -628,13 +701,13 @@ class DbIsolated {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
             return DbMsgResponseSelectChatOnlineMemberCount(
-              exception: exception,
-            );
+                exception: exception,
+                operationName: 'Select Chat Online Member Count');
           }
         } else {
           return DbMsgResponseSelectChatOnlineMemberCount(
-            exception: exception,
-          );
+              exception: exception,
+              operationName: 'Select Chat Online Member Count');
         }
       }
     }
@@ -682,7 +755,9 @@ class DbIsolated {
       bot INTEGER,
       verified INTEGER,
       scam INTEGER,
-      fake INTEGER
+      fake INTEGER,
+      created_at TEXT,
+      updated_at TEXT
     );
     """,
       """
@@ -832,7 +907,8 @@ abstract class DbMsgRequest extends DbMsg {
 
 abstract class DbMsgResponse extends DbMsg {
   final SqliteException? exception;
-  DbMsgResponse({this.exception});
+  final String? operationName;
+  DbMsgResponse({this.exception, this.operationName});
 }
 
 class DbMsgRequestOpen extends DbMsgRequest {
@@ -842,9 +918,7 @@ class DbMsgRequestOpen extends DbMsgRequest {
 }
 
 class DbMsgResponseOpen extends DbMsgResponse {
-  DbMsgResponseOpen({
-    super.exception,
-  });
+  DbMsgResponseOpen({super.exception, super.operationName});
 }
 
 class DbMsgRequestExit extends DbMsgRequest {
@@ -862,7 +936,7 @@ class DbMsgRequestMigrate extends DbMsgRequest {
 }
 
 class DbMsgResponseMigrate extends DbMsgResponse {
-  DbMsgResponseMigrate({super.exception});
+  DbMsgResponseMigrate({super.exception, super.operationName});
 }
 
 class DbMsgRequestAddChats extends DbMsgRequest {
@@ -875,7 +949,7 @@ class DbMsgRequestAddChats extends DbMsgRequest {
 }
 
 class DbMsgResponseAddChats extends DbMsgResponse {
-  DbMsgResponseAddChats({super.exception});
+  DbMsgResponseAddChats({super.exception, super.operationName});
 }
 
 class DbMsgRequestBlacklistChat extends DbMsgRequest {
@@ -889,7 +963,9 @@ class DbMsgRequestBlacklistChat extends DbMsgRequest {
   });
 }
 
-class DbMsgResponseBlacklistChat extends DbMsgResponse {}
+class DbMsgResponseBlacklistChat extends DbMsgResponse {
+  DbMsgResponseBlacklistChat({super.exception, super.operationName});
+}
 
 class DbMsgRequestUpdateChat extends DbMsgRequest {
   final String username;
@@ -903,7 +979,7 @@ class DbMsgRequestUpdateChat extends DbMsgRequest {
 }
 
 class DbMsgResponseUpdateChat extends DbMsgResponse {
-  DbMsgResponseUpdateChat({super.exception});
+  DbMsgResponseUpdateChat({super.exception, super.operationName});
 }
 
 class DbMsgRequestUpdateChatMembersCount extends DbMsgRequest {
@@ -917,7 +993,9 @@ class DbMsgRequestUpdateChatMembersCount extends DbMsgRequest {
   });
 }
 
-class DbMsgResponseUpdateChatMembersCount extends DbMsgResponse {}
+class DbMsgResponseUpdateChatMembersCount extends DbMsgResponse {
+  DbMsgResponseUpdateChatMembersCount({super.exception, super.operationName});
+}
 
 class DbMsgRequestUpdateChatMembersBotsCount extends DbMsgRequest {
   final String username;
@@ -930,7 +1008,10 @@ class DbMsgRequestUpdateChatMembersBotsCount extends DbMsgRequest {
   });
 }
 
-class DbMsgResponseUpdateChatMembersBotsCount extends DbMsgResponse {}
+class DbMsgResponseUpdateChatMembersBotsCount extends DbMsgResponse {
+  DbMsgResponseUpdateChatMembersBotsCount(
+      {super.exception, super.operationName});
+}
 
 class DbMsgRequestUpdateChatMembersOnlineCount extends DbMsgRequest {
   final String username;
@@ -943,7 +1024,10 @@ class DbMsgRequestUpdateChatMembersOnlineCount extends DbMsgRequest {
   });
 }
 
-class DbMsgResponseUpdateChatMembersOnlineCount extends DbMsgResponse {}
+class DbMsgResponseUpdateChatMembersOnlineCount extends DbMsgResponse {
+  DbMsgResponseUpdateChatMembersOnlineCount(
+      {super.exception, super.operationName});
+}
 
 class DbMsgRequestSelectMaxMessageId extends DbMsgRequest {
   final int chatId;
@@ -959,7 +1043,8 @@ class DbMsgRequestSelectMaxMessageId extends DbMsgRequest {
 class DbMsgResponseSelectMaxMessageId extends DbMsgResponse {
   int? id;
 
-  DbMsgResponseSelectMaxMessageId({required this.id, super.exception});
+  DbMsgResponseSelectMaxMessageId(
+      {required this.id, super.exception, super.operationName});
 }
 
 class DbMsgRequestAddMessage extends DbMsgRequest {
@@ -976,7 +1061,8 @@ class DbMsgRequestAddMessage extends DbMsgRequest {
 class DbMsgResponseAddMessage extends DbMsgResponse {
   final bool added;
 
-  DbMsgResponseAddMessage({required this.added, super.exception});
+  DbMsgResponseAddMessage(
+      {required this.added, super.exception, super.operationName});
 }
 
 class DbMsgRequestAddUser extends DbMsgRequest {
@@ -986,7 +1072,7 @@ class DbMsgRequestAddUser extends DbMsgRequest {
 }
 
 class DbMsgResponseAddUser extends DbMsgResponse {
-  DbMsgResponseAddUser({super.exception});
+  DbMsgResponseAddUser({super.exception, super.operationName});
 }
 
 class DbMsgRequestUpdateUser extends DbMsgRequest {
@@ -998,7 +1084,7 @@ class DbMsgRequestUpdateUser extends DbMsgRequest {
 }
 
 class DbMsgResponseUpdateUser extends DbMsgResponse {
-  DbMsgResponseUpdateUser({super.exception});
+  DbMsgResponseUpdateUser({super.exception, super.operationName});
 }
 
 class DbMsgResponseConstraintError extends DbMsgResponseAddUser {
@@ -1017,8 +1103,6 @@ class DbMsgRequestSelectChatOnlineMemberCount extends DbMsgRequest {
 class DbMsgResponseSelectChatOnlineMemberCount extends DbMsgResponse {
   int? onlineMemberCount;
 
-  DbMsgResponseSelectChatOnlineMemberCount({
-    this.onlineMemberCount,
-    super.exception,
-  });
+  DbMsgResponseSelectChatOnlineMemberCount(
+      {this.onlineMemberCount, super.exception, super.operationName});
 }

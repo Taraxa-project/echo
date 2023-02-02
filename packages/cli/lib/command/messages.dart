@@ -13,6 +13,7 @@ class TelegramCommandMessages extends Command {
 
   void run() async {
     hierarchicalLoggingEnabled = true;
+    final runForever = parseBool(globalResults!['run-forever']);
 
     var logLevel = getLogLevel();
     var logLevelLibTdJson = getLogLevelLibtdjson();
@@ -27,6 +28,18 @@ class TelegramCommandMessages extends Command {
     );
 
     TelegramClient? telegramClient;
+
+    var sub = ProcessSignal.sigint.watch().listen((signal) async {
+      if ((signal == ProcessSignal.sigint) |
+          (signal == ProcessSignal.sigkill)) {
+        print("sigint signal has been given: ${signal}");
+        await telegramClient?.exit();
+        await db.exit();
+        await log.exit();
+        exit(1);
+      }
+    });
+
     try {
       await db.open();
       await db.migrate();
@@ -35,6 +48,7 @@ class TelegramCommandMessages extends Command {
         logLevel: logLevel,
         logLevelLibTdJson: logLevelLibTdJson,
       );
+
       await telegramClient.spawn(
         log: log,
         db: db,
@@ -53,17 +67,22 @@ class TelegramCommandMessages extends Command {
         readUserLastName: readUserLastName,
         readUserPassword: readUserPassword,
       );
-
-      await telegramClient.readChatsHistory(
-        dateTimeFrom: computeTwoWeeksAgo(),
-        chatsNames: getChatsNames(),
-      );
+      while (true) {
+        await telegramClient.readChatsHistory(
+          dateTimeFrom: computeTwoWeeksAgo(),
+          chatsNames: getChatsNames(),
+        );
+        if (!runForever) {
+          break;
+        }
+      }
     } on Exception catch (exception) {
       print("Exception occured ${exception}");
     } finally {
       await telegramClient?.exit();
       await db.exit();
       await log.exit();
+      sub.cancel();
     }
   }
 
@@ -116,5 +135,13 @@ class TelegramCommandMessages extends Command {
       (level) => level.name == name.toUpperCase(),
       orElse: () => Level.WARNING,
     );
+  }
+
+  bool parseBool(boolToParse) {
+    if (boolToParse.toLowerCase() == 'true') {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
