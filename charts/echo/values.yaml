@@ -94,3 +94,9 @@ persistence:
 # set to false when providing secrets externally i.e. thru SealedSecrets
 appSecret:
   create: true
+
+configEnvs:
+  ENVIRONMENT: qa
+
+secretEnvs:
+  SECRET: secret
