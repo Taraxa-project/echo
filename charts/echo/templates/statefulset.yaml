@@ -36,11 +36,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # envFrom:
-          #   - secretRef:
-          #       name: {{ include "echo.fullname" . }}
-          #   - configMapRef:
-          #       name: {{ include "echo.fullname" . }}
+          envFrom:
+            - secretRef:
+                name: {{ include "echo.fullname" . }}
+            - configMapRef:
+                name: {{ include "echo.fullname" . }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

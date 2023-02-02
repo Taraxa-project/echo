@@ -90,3 +90,7 @@ persistence:
     enabled: false
     accessMode: ReadWriteOnce
     size: 10Gi
+
+# set to false when providing secrets externally i.e. thru SealedSecrets
+appSecret:
+  create: true
