@@ -3,6 +3,7 @@ version: '3.9'
 services:
   echo-cli:
     tty: true
+    stdin_open: true
     container_name: 'echo-cli'
     build:
       context: ./
