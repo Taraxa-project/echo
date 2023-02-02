@@ -11,18 +11,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./packages/:/app/packages
-
-  sqlite3:
-    image: keinos/sqlite3:latest
-    container_name: 'sqlite-db'
-    stdin_open: true
-    tty: true
-    env_file:
-      - .env
-    volumes:
-      - "${DATABASE_PATH}:/root/db/"
-    restart: always
+      - ./:/app/
+      - "${DATABASE_PATH}:/root/db"
   
 
 
