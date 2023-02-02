@@ -1,4 +1,8 @@
 version: 2.1
+
+orbs:
+  helm-release: taraxa/helm-release@0.1.1
+
 jobs:
   build_and_push_docker_image:
     # https://circleci.com/docs/env-vars/#alpine-linux
@@ -99,3 +103,41 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
+
+  # run this workflow for branches specified below
+  build-helm-chart:
+    jobs:
+      - helm-release/chart-publish:
+          develop: true # means, that this is development release, no-verify and artifact -> ${HELMCHART_VERSION}-sha.${SHORT_GIT_HASH}
+          charts-dir: charts
+          chart-name: echo
+          chartmuseum-url: https://charts.gcp.taraxa.io
+          chartmuseum-username: HELM_REPO_USERNAME
+          chartmuseum-password: HELM_REPO_PASSWORD
+          context:
+            - CHARTSREPO
+          filters:
+            branches:
+              only: 
+              - /^chart\/.*/
+              - /^chore\/chart-.*/
+              - /^fix\/chart-.*/
+              - /^feature\/chart-.*/
+
+
+  # run this workflow for tags, like chart-vX.Y.Z
+  release-helm-chart:
+    jobs:
+      - helm-release/chart-publish:
+          charts-dir: charts
+          chart-name: echo
+          chartmuseum-url: https://charts.gcp.taraxa.io
+          chartmuseum-username: HELM_REPO_USERNAME
+          chartmuseum-password: HELM_REPO_PASSWORD
+          context:
+            - CHARTSREPO
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^chart-v\d+.\d+.\d+/
