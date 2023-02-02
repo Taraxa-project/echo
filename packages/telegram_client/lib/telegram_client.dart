@@ -468,13 +468,15 @@ class TelegramClientIsolated {
             databasePath: databasePath,
           ).then((value) {
             _logger.info('login: SetTdlibParameters done.');
+          }).catchError((error, _) {
+            exception = error;
           });
         } else if (authorizationState is AuthorizationStateWaitPhoneNumber) {
           _setAuthenticationPhoneNumber(
             phoneNumber: phoneNumber,
           ).then((value) {
             _logger.info('login: SetAuthenticationPhoneNumber done.');
-          }).catchError((error, stackTrace) {
+          }).catchError((error, _) {
             exception = error;
           });
         } else if (authorizationState is AuthorizationStateWaitCode) {
@@ -482,7 +484,7 @@ class TelegramClientIsolated {
             readTelegramCode: readTelegramCode,
           ).then((value) {
             _logger.info('login: CheckAuthenticationCode done.');
-          }).catchError((error, stackTrace) {
+          }).catchError((error, _) {
             exception = error;
           });
         } else if (authorizationState
@@ -494,7 +496,7 @@ class TelegramClientIsolated {
             readUserLastName: readUserLastName,
           ).then((value) {
             _logger.info('login: RegisterUser done.');
-          }).catchError((error, stackTrace) {
+          }).catchError((error, _) {
             exception = error;
           });
         } else if (authorizationState is AuthorizationStateWaitPassword) {
@@ -502,7 +504,7 @@ class TelegramClientIsolated {
             readUserPassword: readUserPassword,
           ).then((value) {
             _logger.info('login: CheckAuthenticationPassword done.');
-          }).catchError((error, stackTrace) {
+          }).catchError((error, _) {
             exception = error;
           });
         } else if (authorizationState is AuthorizationStateReady) {
