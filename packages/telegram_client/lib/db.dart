@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:telegram_client/log.dart';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:telegram_client/wrap_id.dart';
-
+import 'dart:mirrors';
 class Db {
   late final ReceivePort _isolateReceivePort;
   late final Stream<dynamic> _isolateReceivePortBroadcast;
@@ -162,13 +162,16 @@ class DbIsolated {
         _logger.fine('exiting...');
         _exit(replySendPort: message.replySendPort);
       } else if (message is DbMsgRequestOpen) {
-        message.replySendPort?.send(_open());
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseOpen>(
+          () => _open(),  DbMsgResponseOpen));
       } else if (message is DbMsgRequestMigrate) {
         message.replySendPort?.send(_migrate());
       } else if (message is DbMsgRequestAddChats) {
-        message.replySendPort?.send(_addChats(
-          message.usernames,
-        ));
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseAddChats>(
+          () => _addChats(message.usernames),  DbMsgResponseAddChats));
+
       } else if (message is DbMsgRequestBlacklistChat) {
         message.replySendPort?.send(_blacklistChat(
           username: message.username,
@@ -217,70 +220,50 @@ class DbIsolated {
     });
   }
 
-   Future<DbMsgResponse> _retryTdCall({
-    required Function dbFunction,
-    List<dynamic>? args,
-    int retryCountMax = maxTries,
-  }) async {
-    var retryCountIndex = 0;
-    while (retryCountIndex < retryCountMax) {
-      retryCountIndex += 1;
-
+   
+  dynamic performDbOperation<T>(
+    Function dbOperation,
+    Type returnType,
+  ) {
+    var retry = true;
+    var count = 0;
+    while (retry) {
       try {
-        return await _tdCall(
-          tdFunction: dbFunction,
-          args: args
-        );
+        return dbOperation();
       } on SqliteException catch (exception) {
-      const operationName = "Open DB";
-      _dbErrorHandler(exception, operationName);
-      return DbMsgResponseOpen(exception: exception);
-      } on DbMsgResponseAddMessage catch (exception) {
-
+        var retry = _dbErrorHandler(exception, 'Performing DB Operation');
+        if (retry == true) {
+          if (++count == maxTries) {
+            InstanceMirror instanceMirror = reflectClass(returnType).newInstance(Symbol.empty, []);
+            return instanceMirror.reflectee..exception = exception;
+          }
+        } else {
+          InstanceMirror instanceMirror = reflectClass(returnType).newInstance(Symbol.empty, []);
+          return instanceMirror.reflectee..exception = exception;
+        }
       }
     }
-
-    throw DbMsgResponse(retryCountMax);
   }
-
-  Future<TdObject> _tdCall({
-    required Function tdFunction,
-    List<dynamic>? args,
-    int timeoutMilliseconds = tgTimeoutMilliseconds,
-  }) async {
-    var tdResponse;
-
-    tdFunction();
-
-    if (tdResponse == null) {
-      throw TgTimedOutException(
-        elapsedMilliseconds,
-        tdFunction.runtimeType.toString(),
-      );
-    } else if (tdResponse.runtimeType.toString() == tdFunction.tdReturnType) {
-      return tdResponse;
-    } else if (tdResponse is Error) {
-      _handleTdError(tdResponse);
-    } else {
-      _logger.info('received invalid response type for '
-          '${tdFunction.runtimeType.toString()}: '
-          '${tdResponse.runtimeType}.');
-      throw TgException('invalid response type ${tdResponse.runtimeType}');
-    }
-  }
-
 
   DbMsgResponseOpen? _open() {
-    try {
       _logger.fine('opening...');
       db = sqlite3.open(this.dbPath);
       _logger.fine('opened.');
       return DbMsgResponseOpen();
-    } on SqliteException catch (exception) {
-      _dbErrorHandler(exception, "Open DB");
-      return DbMsgResponseOpen(exception: exception, operationName: "Open DB");
-    }
   }
+
+  // DbMsgResponseOpen? _open() {
+  //   try {
+  //     _logger.fine('opening...');
+  //     db = sqlite3.open(this.dbPath);
+  //     _logger.fine('opened.');
+  //     return DbMsgResponseOpen();
+  //   } on SqliteException catch (exception) {
+  //     const operationName = "Open DB";
+  //     _dbErrorHandler(exception, operationName);
+  //     return DbMsgResponseOpen(exception: exception);
+  //   }
+  // }
 
   Future<void> _exit({SendPort? replySendPort}) async {
     _logger.fine('closing DB...');
