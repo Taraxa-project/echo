@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}
   labels:
-    {{- include "ingester-telegram.labels" . | nindent 4 }}
+    {{- include "echo.labels" . | nindent 4 }}
 data:
   ENVIRONMENT: {{ .Values.configEnvs.ENVIRONMENT | quote }}
