@@ -115,9 +115,14 @@ class TelegramClient {
       readUserLastName: readUserLastName,
       readUserPassword: readUserPassword,
     ));
-    return await _isolateReceivePortBroadcast
+    TgMsgResponseLogin response = await _isolateReceivePortBroadcast
         .where((event) => event is TgMsgResponseLogin)
         .first;
+
+    if (response.exception != null) {
+      throw response.exception!;
+    }
+    return response;
   }
 
   Future<TgMsgResponseReadChatHistory> readChatsHistory({
@@ -188,6 +193,7 @@ class TelegramClientIsolated {
   static const int tgRetryCountMax = 5;
   static const int tgTimeoutMilliseconds = 15 * 1000;
   static const int tgTimeoutDelayMilliseconds = 50;
+  static const int delayTimeoutSeconds = 15;
 
   static const int delayUntilNextChatSeconds = 15;
   static const int delayUntilNextMessageBatchSeconds = 15;
@@ -356,7 +362,7 @@ class TelegramClientIsolated {
     sub.cancel();
 
     if (tdResponse == null) {
-      throw TgTimedOutException(
+      throw TgTimeOutException(
         elapsedMilliseconds,
         tdFunction.runtimeType.toString(),
       );
@@ -386,6 +392,12 @@ class TelegramClientIsolated {
             '${tdFunction.runtimeType.toString()}. '
             'Retrying in ${ex.waitSeconds} seconds.');
         await Future.delayed(Duration(seconds: ex.waitSeconds));
+        continue;
+      } on TgTimeOutException {
+        _logger.warning('time out for '
+            '${tdFunction.runtimeType.toString()}. '
+            'Retrying in ${delayTimeoutSeconds} seconds.');
+        await Future.delayed(Duration(seconds: delayTimeoutSeconds));
         continue;
       }
     }
@@ -427,65 +439,77 @@ class TelegramClientIsolated {
   }) async {
     _logger.info('logging in...');
 
-    var extra = Uuid().v1();
-
     var isAuthorized = false;
+    var exception;
 
-    var sub = _tdStreamController.stream.listen((event) async {
-      if (event is UpdateAuthorizationState) {
-        _logger
-            .info('login: received ${event.authorization_state.runtimeType}.');
-        var authorizationState = event.authorization_state;
-        if (authorizationState is AuthorizationStateWaitTdlibParameters) {
-          _setTdlibParameters(
-            apiId: apiId,
-            apiHash: apiHash,
-            databasePath: databasePath,
-          ).then((value) {
-            _logger.info('SetTdlibParameters: ok.');
-          });
-        } else if (authorizationState is AuthorizationStateWaitPhoneNumber) {
-          _setAuthenticationPhoneNumber(
-            phoneNumber: phoneNumber,
-          )..then((value) {
-              _logger.info('SetAuthenticationPhoneNumber: ok.');
+    var sub = _tdStreamController.stream.listen(
+      (event) {
+        if (event is UpdateAuthorizationState) {
+          _logger.info(
+              'login: received ${event.authorization_state.runtimeType}.');
+
+          var authorizationState = event.authorization_state;
+          if (authorizationState is AuthorizationStateWaitTdlibParameters) {
+            _setTdlibParameters(
+              apiId: apiId,
+              apiHash: apiHash,
+              databasePath: databasePath,
+            ).then((value) {
+              _logger.info('login: SetTdlibParameters done.');
             });
-        } else if (authorizationState is AuthorizationStateWaitCode) {
-          _checkAuthenticationCode(
-            readTelegramCode: readTelegramCode,
-          ).then((value) {
-            _logger.info('CheckAuthenticationCode: ok.');
-          });
-        } else if (authorizationState
-            is AuthorizationStateWaitOtherDeviceConfirmation) {
-          writeQrCodeLink(authorizationState.link ?? '');
-        } else if (authorizationState is AuthorizationStateWaitRegistration) {
-          _registerUser(
-            readUserFirstName: readUserFirstName,
-            readUserLastName: readUserLastName,
-          ).then((value) {
-            _logger.info('RegisterUser: ok.');
-          });
-          ;
-        } else if (authorizationState is AuthorizationStateWaitPassword) {
-          _checkAuthenticationPassword(
-            readUserPassword: readUserPassword,
-          ).then((value) {
-            _logger.info('CheckAuthenticationPassword: ok.');
-          });
-        } else if (authorizationState is AuthorizationStateReady) {
-          isAuthorized = true;
+          } else if (authorizationState is AuthorizationStateWaitPhoneNumber) {
+            _setAuthenticationPhoneNumber(
+              phoneNumber: phoneNumber,
+            ).then((value) {
+              _logger.info('login: SetAuthenticationPhoneNumber done.');
+            }).catchError((error, stackTrace) {
+              exception = error;
+            });
+          } else if (authorizationState is AuthorizationStateWaitCode) {
+            _checkAuthenticationCode(
+              readTelegramCode: readTelegramCode,
+            ).then((value) {
+              _logger.info('login: CheckAuthenticationCode done.');
+            }).catchError((error, stackTrace) {
+              exception = error;
+            });
+          } else if (authorizationState
+              is AuthorizationStateWaitOtherDeviceConfirmation) {
+            writeQrCodeLink(authorizationState.link ?? '');
+          } else if (authorizationState is AuthorizationStateWaitRegistration) {
+            _registerUser(
+              readUserFirstName: readUserFirstName,
+              readUserLastName: readUserLastName,
+            ).then((value) {
+              _logger.info('login: RegisterUser done.');
+            }).catchError((error, stackTrace) {
+              exception = error;
+            });
+          } else if (authorizationState is AuthorizationStateWaitPassword) {
+            _checkAuthenticationPassword(
+              readUserPassword: readUserPassword,
+            ).then((value) {
+              _logger.info('login: CheckAuthenticationPassword done.');
+            }).catchError((error, stackTrace) {
+              exception = error;
+            });
+          } else if (authorizationState is AuthorizationStateReady) {
+            isAuthorized = true;
+          }
         }
-      }
-    });
+      },
+    );
 
     _tdSend(GetAuthorizationState(
-      extra: extra,
+      extra: Uuid().v1(),
     ));
 
     while (true) {
       if (isAuthorized) {
         _logger.info('login: success.');
+        break;
+      }
+      if (exception != null) {
         break;
       }
       await Future.delayed(const Duration(milliseconds: 100));
@@ -495,8 +519,7 @@ class TelegramClientIsolated {
 
     return TgMsgResponseLogin(
       isAuthorized: isAuthorized,
-      isClosed: false,
-      isError: false,
+      exception: exception,
     );
   }
 
@@ -506,6 +529,7 @@ class TelegramClientIsolated {
     required String databasePath,
     int timeoutMilliseconds = tgTimeoutMilliseconds,
   }) {
+    _logger.info('login: sending SetTdlibParameters...');
     return _tdCall(
       tdFunction: SetTdlibParameters(
         api_id: apiId,
@@ -521,11 +545,12 @@ class TelegramClientIsolated {
     );
   }
 
-  Future<TdObject> _setAuthenticationPhoneNumber({
+  Future<dynamic> _setAuthenticationPhoneNumber({
     required String phoneNumber,
     int timeoutMilliseconds = tgTimeoutMilliseconds,
-  }) {
-    return _tdCall(
+  }) async {
+    _logger.info('login: sending SetAuthenticationPhoneNumber...');
+    return await _retryTdCall(
       tdFunction: SetAuthenticationPhoneNumber(
         phone_number: phoneNumber,
       ),
@@ -536,8 +561,9 @@ class TelegramClientIsolated {
   Future<TdObject> _checkAuthenticationCode({
     required String Function() readTelegramCode,
     int timeoutMilliseconds = tgTimeoutMilliseconds,
-  }) {
-    return _tdCall(
+  }) async {
+    _logger.info('login: sending CheckAuthenticationCode...');
+    return await _tdCall(
       tdFunction: CheckAuthenticationCode(
         code: readTelegramCode(),
       ),
@@ -549,8 +575,9 @@ class TelegramClientIsolated {
     required String Function() readUserFirstName,
     required String Function() readUserLastName,
     int timeoutMilliseconds = tgTimeoutMilliseconds,
-  }) {
-    return _tdCall(
+  }) async {
+    _logger.info('login: sending RegisterUser...');
+    return await _tdCall(
       tdFunction: RegisterUser(
         first_name: readUserFirstName(),
         last_name: readUserLastName(),
@@ -562,8 +589,9 @@ class TelegramClientIsolated {
   Future<TdObject> _checkAuthenticationPassword({
     required String Function() readUserPassword,
     int timeoutMilliseconds = tgTimeoutMilliseconds,
-  }) {
-    return _retryTdCall(
+  }) async {
+    _logger.info('login: sending CheckAuthenticationPassword...');
+    return await _retryTdCall(
       tdFunction: CheckAuthenticationPassword(
         password: readUserPassword(),
       ),
@@ -597,14 +625,14 @@ class TelegramClientIsolated {
           chatName: chatName,
           reason: ex.message ?? 'Chat not found.',
         );
-      } on TgTimedOutException catch (ex) {
-        _logger.severe('[$chatName] $ex.');
+      } on TgTimeOutException catch (ex) {
+        _logger.warning('[$chatName] $ex.');
       } on TgMaxRetriesExcedeedException catch (ex) {
-        _logger.severe('[$chatName] $ex.');
+        _logger.warning('[$chatName] $ex.');
       } on TgBadRequestException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on UnWrapIdxception catch (ex) {
-        _logger.severe('[$chatName] $ex.');
+        _logger.warning('[$chatName] $ex.');
       } on TgErrorCodeNotHandledException catch (ex) {
         _logger.severe('[$chatName] $ex.');
       } on TgException catch (ex) {
@@ -1295,7 +1323,7 @@ abstract class TgMsgRequest extends TgMsg {
 }
 
 abstract class TgMsgResponse extends TgMsg {
-  final SqliteException? exception;
+  final Exception? exception;
   TgMsgResponse({this.exception});
 }
 
@@ -1334,13 +1362,10 @@ class TgMsgRequestLogin extends TgMsgRequest {
 
 class TgMsgResponseLogin extends TgMsgResponse {
   bool isAuthorized = false;
-  bool isClosed = false;
-  bool isError = false;
 
   TgMsgResponseLogin({
     required this.isAuthorized,
-    required this.isClosed,
-    required this.isError,
+    super.exception,
   });
 }
 
@@ -1502,17 +1527,17 @@ class TgMaxRetriesExcedeedException implements Exception {
   }
 }
 
-class TgTimedOutException implements Exception {
+class TgTimeOutException implements Exception {
   final int millisenconds;
   final String request;
 
-  TgTimedOutException(
+  TgTimeOutException(
     this.millisenconds,
     this.request,
   );
 
   String toString() {
-    return 'TgTimedOutException: '
+    return 'TgTimeOutException: '
         'request $request timed out '
         'after ${millisenconds / 1000} seconds.';
   }
