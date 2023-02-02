@@ -81,4 +81,12 @@ tolerations: []
 
 affinity: {}
 
-persistence: {}
+persistence:
+  tdlib:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 10Gi
+  sqlite:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 10Gi
