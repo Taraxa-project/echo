@@ -71,9 +71,13 @@ appSecret:
 configEnvs:
   PATH_TD_JSON_LIB_DATA: /var/lib/tdlib
   PATH_DB_MESSAGE: /var/lib/sqlite/message.db
+  PHONE: +1123123
+  PATH_TD_JSON_LIB: /
+  LOG_LEVEL: debug
 
 secretEnvs:
-  SECRET: secret
+  API_ID: default
+  API_HASH: default
 
 args: 
   - "/app/packages/cli/bin/main.dart"

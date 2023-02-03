@@ -4,6 +4,10 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     {{- include "echo.labels" . | nindent 4 }}
-data:
+data:  
+  LOG_LEVEL: {{ .Values.configEnvs.LOG_LEVEL | quote }}
   PATH_DB_MESSAGE: {{ .Values.configEnvs.PATH_DB_MESSAGE | quote }}
   PATH_TD_JSON_LIB_DATA: {{ .Values.configEnvs.PATH_TD_JSON_LIB_DATA | quote }}
+  PATH_TD_JSON_LIB: {{ .Values.configEnvs.PATH_TD_JSON_LIB | quote }}
+  PHONE: {{ .Values.configEnvs.PHONE | quote }}
+
