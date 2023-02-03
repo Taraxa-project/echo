@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:telegram_client/log.dart';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:telegram_client/wrap_id.dart';
-import 'dart:mirrors';
+
 class Db {
   late final ReceivePort _isolateReceivePort;
   late final Stream<dynamic> _isolateReceivePortBroadcast;
@@ -789,8 +789,8 @@ abstract class DbMsgRequest extends DbMsg {
 }
 
 abstract class DbMsgResponse extends DbMsg {
-  SqliteException? exception;
-  String? operationName;
+  final SqliteException? exception;
+  final String? operationName;
   DbMsgResponse({this.exception, this.operationName});
 }
 
