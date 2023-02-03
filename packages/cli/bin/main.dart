@@ -57,6 +57,11 @@ void main(List<String> arguments) {
       'run-forever',
       help: 'Set this to true if you want the app to run forever',
       defaultsTo: 'false',
+    )
+    ..addOption(
+      'proxy',
+      help: 'Tdlib proxy uri',
+      valueHelp: 'scheme://username:password@host:port',
     );
 
   TelegramCommandMessages telegramCommandMessages = TelegramCommandMessages();
