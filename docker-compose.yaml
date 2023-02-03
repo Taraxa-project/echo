@@ -10,7 +10,7 @@ services:
     env_file:
       - env.local
     volumes:
-      - data:/data
+      - data:/data:rw
 
 volumes:
   data:
