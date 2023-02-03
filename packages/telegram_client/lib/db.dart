@@ -164,64 +164,99 @@ class DbIsolated {
       } else if (message is DbMsgRequestOpen) {
         message.replySendPort?.send(
           performDbOperation<DbMsgResponseOpen>(
-          () => _open(),  DbMsgResponseOpen));
+          () => _open(),  DbMsgResponseOpen)
+        );
       } else if (message is DbMsgRequestMigrate) {
-        message.replySendPort?.send(_migrate());
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseAddChats>(
+          () => _migrate(),  DbMsgResponseMigrate)
+          );
+
       } else if (message is DbMsgRequestAddChats) {
         message.replySendPort?.send(
           performDbOperation<DbMsgResponseAddChats>(
-          () => _addChats(message.usernames),  DbMsgResponseAddChats));
+          () => _addChats(message.usernames),  DbMsgResponseAddChats)
+          );
 
       } else if (message is DbMsgRequestBlacklistChat) {
-        message.replySendPort?.send(_blacklistChat(
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseBlacklistChat>(
+          () => _blacklistChat(
           username: message.username,
           reason: message.reason,
-        ));
+          ),  DbMsgResponseBlacklistChat)
+        );
       } else if (message is DbMsgRequestUpdateChat) {
-        message.replySendPort?.send(_updateChat(
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseUpdateChat>(
+          () => _updateChat(
           username: message.username,
           chat: message.chat,
-        ));
+          ),  DbMsgResponseUpdateChat)
+        );
       } else if (message is DbMsgRequestUpdateChatMembersCount) {
-        message.replySendPort?.send(_updateChatMembersCount(
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseUpdateChatMembersCount>(
+          () => _updateChatMembersCount(
           username: message.username,
           memberCount: message.membersCount,
-        ));
+          ),  DbMsgResponseUpdateChatMembersCount)
+        );
       } else if (message is DbMsgRequestUpdateChatMembersBotsCount) {
-        message.replySendPort?.send(_updateChatMembersBotsCount(
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseUpdateChatMembersBotsCount>(
+          () => _updateChatMembersBotsCount(
           username: message.username,
           memberCount: message.membersCount,
-        ));
+          ),  DbMsgResponseUpdateChatMembersBotsCount)
+        );
       } else if (message is DbMsgRequestUpdateChatMembersOnlineCount) {
-        message.replySendPort?.send(_updateChatMembersOnlineCount(
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseUpdateChatMembersOnlineCount>(
+          () => _updateChatMembersOnlineCount(
           username: message.username,
           memberCount: message.membersCount,
-        ));
+          ),  DbMsgResponseUpdateChatMembersOnlineCount)
+        );
       } else if (message is DbMsgRequestSelectMaxMessageId) {
-        message.replySendPort?.send(_selectMaxMessageId(
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseSelectMaxMessageId>(
+          () => _selectMaxMessageId(
           chatId: message.chatId,
           dateTimeFrom: message.dateTimeFrom,
-        ));
+          ),  DbMsgResponseSelectMaxMessageId)
+        );
       } else if (message is DbMsgRequestAddMessage) {
-        message.replySendPort?.send(_addMessage(
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseAddMessage>(
+          () => _addMessage(
           message: message.message,
           online_member_count: message.onlineMemberCount,
-        ));
+          ),  DbMsgResponseAddMessage)
+        );
       } else if (message is DbMsgRequestAddUser) {
-        message.replySendPort?.send(_addUser(userId: message.userId));
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseAddUser>(
+          () => _addUser(userId: message.userId),  DbMsgResponseAddUser)
+        );
       } else if (message is DbMsgRequestUpdateUser) {
-        message.replySendPort
-            ?.send(_updateUser(userId: message.userId, user: message.user));
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseUpdateUser>(
+          () => _updateUser(userId: message.userId, user: message.user),  DbMsgResponseUpdateUser)
+        );
       } else if (message is DbMsgRequestSelectChatOnlineMemberCount) {
-        message.replySendPort?.send(_selectChatOnlineMemberCount(
+        message.replySendPort?.send(
+          performDbOperation<DbMsgResponseSelectChatOnlineMemberCount>(
+          () => _selectChatOnlineMemberCount(
           chatName: message.chatName,
-        ));
+        ),  DbMsgResponseSelectChatOnlineMemberCount)
+        );
       }
     });
   }
 
    
-  dynamic performDbOperation<T>(
+  DbMsgResponse performDbOperation<T>(
     Function dbOperation,
     Type returnType,
   ) {
@@ -234,15 +269,20 @@ class DbIsolated {
         var retry = _dbErrorHandler(exception, 'Performing DB Operation');
         if (retry == true) {
           if (++count == maxTries) {
-            InstanceMirror instanceMirror = reflectClass(returnType).newInstance(Symbol.empty, []);
-            return instanceMirror.reflectee..exception = exception;
+            return getResponseClass(returnType, exception);
           }
         } else {
-          InstanceMirror instanceMirror = reflectClass(returnType).newInstance(Symbol.empty, []);
-          return instanceMirror.reflectee..exception = exception;
+          return getResponseClass(returnType, exception);
         }
       }
     }
+  }
+
+  DbMsgResponse getResponseClass(Type returnType, SqliteException exception) {
+      InstanceMirror instanceMirror = reflectClass(returnType).newInstance(Symbol.empty, []);
+      instanceMirror.reflectee.setException(exception);
+      var instanceToReturn = instanceMirror.reflectee;
+      return instanceToReturn;
   }
 
   DbMsgResponseOpen? _open() {
@@ -251,19 +291,6 @@ class DbIsolated {
       _logger.fine('opened.');
       return DbMsgResponseOpen();
   }
-
-  // DbMsgResponseOpen? _open() {
-  //   try {
-  //     _logger.fine('opening...');
-  //     db = sqlite3.open(this.dbPath);
-  //     _logger.fine('opened.');
-  //     return DbMsgResponseOpen();
-  //   } on SqliteException catch (exception) {
-  //     const operationName = "Open DB";
-  //     _dbErrorHandler(exception, operationName);
-  //     return DbMsgResponseOpen(exception: exception);
-  //   }
-  // }
 
   Future<void> _exit({SendPort? replySendPort}) async {
     _logger.fine('closing DB...');
@@ -312,16 +339,15 @@ class DbIsolated {
         }
         return DbMsgResponseAddChats();
       } on SqliteException catch (exception) {
-        var retry = _dbErrorHandler(exception, 'Add Chats');
+        const operationName = 'Add Chats';
+        var retry = _dbErrorHandler(exception, operationName);
         if (retry == true) {
           _logger.info("Retry Count: ${count}");
           if (++count == maxTries) {
-            return DbMsgResponseAddChats(
-                exception: exception, operationName: "Add Chats");
+            return DbMsgResponseAddChats(exception: exception);
           }
         } else {
-          return DbMsgResponseAddChats(
-              exception: exception, operationName: "Add Chats");
+          return DbMsgResponseAddChats(exception: exception);
         }
       }
     }
@@ -951,8 +977,14 @@ class DbMsgRequestOpen extends DbMsgRequest {
   });
 }
 
+// class DbMsgResponseOpen extends DbMsgResponse {
+//   DbMsgResponseOpen({super.exception});
+// }
+  // set exception(SqliteException exception) => this.exception = exception;
 class DbMsgResponseOpen extends DbMsgResponse {
-  DbMsgResponseOpen({super.exception, super.operationName});
+  DbMsgResponseOpen({
+    super.exception,
+  });
 }
 
 class DbMsgRequestExit extends DbMsgRequest {
@@ -983,7 +1015,7 @@ class DbMsgRequestAddChats extends DbMsgRequest {
 }
 
 class DbMsgResponseAddChats extends DbMsgResponse {
-  DbMsgResponseAddChats({super.exception, super.operationName});
+  DbMsgResponseAddChats({super.exception});
 }
 
 class DbMsgRequestBlacklistChat extends DbMsgRequest {
@@ -1027,7 +1059,10 @@ class DbMsgRequestUpdateChatMembersCount extends DbMsgRequest {
   });
 }
 
-class DbMsgResponseUpdateChatMembersCount extends DbMsgResponse {}
+class DbMsgResponseUpdateChatMembersCount extends DbMsgResponse {
+  DbMsgResponseUpdateChatMembersCount(
+      {super.exception, super.operationName});
+}
 
 class DbMsgRequestUpdateChatMembersBotsCount extends DbMsgRequest {
   final String username;
@@ -1104,7 +1139,7 @@ class DbMsgRequestAddUser extends DbMsgRequest {
 }
 
 class DbMsgResponseAddUser extends DbMsgResponse {
-  DbMsgResponseAddUser({super.exception});
+  DbMsgResponseAddUser({super.exception, super.operationName});
 }
 
 class DbMsgRequestUpdateUser extends DbMsgRequest {
@@ -1116,11 +1151,11 @@ class DbMsgRequestUpdateUser extends DbMsgRequest {
 }
 
 class DbMsgResponseUpdateUser extends DbMsgResponse {
-  DbMsgResponseUpdateUser({super.exception});
+  DbMsgResponseUpdateUser({super.exception, super.operationName});
 }
 
 class DbMsgResponseConstraintError extends DbMsgResponseAddUser {
-  DbMsgResponseConstraintError({super.exception});
+  DbMsgResponseConstraintError({super.exception, super.operationName});
 }
 
 class DbMsgRequestSelectChatOnlineMemberCount extends DbMsgRequest {
