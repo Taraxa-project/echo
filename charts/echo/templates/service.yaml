@@ -5,7 +5,8 @@ metadata:
   labels:
     {{- include "echo.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
+  clusterIP: None
   ports:
     - port: {{ .Values.service.port }}
       targetPort: http
