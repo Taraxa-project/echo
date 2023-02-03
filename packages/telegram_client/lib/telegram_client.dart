@@ -310,17 +310,30 @@ class TelegramClientIsolated {
       _logger.info('not using proxy.');
       return;
     }
+
+    String? username;
+    String? password;
+
+    if (proxyUri?.userInfo != null) {
+      RegExp exp = RegExp(r'(\w+)');
+      Iterable<RegExpMatch> matches = exp.allMatches(proxyUri!.userInfo);
+      if (matches.length == 2) {
+        username = matches.elementAt(0)[0];
+        password = matches.elementAt(1)[0];
+      }
+    }
+
     ProxyType? proxyType;
 
     if (proxyUri?.scheme == 'http') {
       proxyType = ProxyTypeHttp(
-        username: proxyUri?.userInfo,
-        password: proxyUri?.userInfo,
+        username: username,
+        password: password,
       );
     } else if (proxyUri?.scheme == 'socks5') {
       proxyType = ProxyTypeSocks5(
-        username: proxyUri?.userInfo,
-        password: proxyUri?.userInfo,
+        username: username,
+        password: password,
       );
     }
 

@@ -36,7 +36,7 @@ class TelegramCommandMessages extends Command {
         await telegramClient?.exit();
         await db.exit();
         await log.exit();
-        exit(1);
+        _exit();
       }
     });
 
@@ -47,6 +47,7 @@ class TelegramCommandMessages extends Command {
       telegramClient = TelegramClient(
         logLevel: logLevel,
         logLevelLibTdJson: logLevelLibTdJson,
+        proxyUri: parseProxyUri(),
       );
 
       await telegramClient.spawn(
@@ -92,27 +93,26 @@ class TelegramCommandMessages extends Command {
     try {
       chatsNamesDecoded = jsonDecode(globalResults!.command!['chats-names']);
     } on FormatException {
-      invalidInputChats();
+      _invalidInputChats();
     }
 
     if (chatsNamesDecoded.runtimeType != List || chatsNamesDecoded.isEmpty) {
-      invalidInputChats();
+      _invalidInputChats();
     }
 
     List<String> chatsNames = [];
     for (var chatNameDecoded in chatsNamesDecoded) {
       if (chatNameDecoded.runtimeType != String) {
-        invalidInputChats();
+        _invalidInputChats();
       }
       chatsNames.add(chatNameDecoded);
     }
     return chatsNames;
   }
 
-  void invalidInputChats() {
-    print("The option \"charts-names\" must be a valid "
-        "JSON encoded list of strings.");
-    exit(1);
+  Never _invalidInputChats() {
+    _exit('The option "charts-names" must be a valid '
+        'JSON encoded list of strings.');
   }
 
   DateTime computeTwoWeeksAgo() {
@@ -143,5 +143,30 @@ class TelegramCommandMessages extends Command {
     } else {
       return false;
     }
+  }
+
+  Uri? parseProxyUri() {
+    Uri? uri;
+
+    if (globalResults?['proxy'] != null) {
+      try {
+        uri = Uri.parse(globalResults?['proxy']);
+        if (['http', 'socks5'].contains(uri.scheme)) {
+          return uri;
+        } else {
+          _exit('Invalid proxy scheme ${uri.scheme}.'
+              ' Allowed values: http, socks5.');
+        }
+      } on FormatException catch (ex) {
+        _exit('Invalid proxy URI: $ex');
+      }
+    }
+
+    return uri;
+  }
+
+  Never _exit([String? message = null, code = 1]) {
+    if (message != null) print(message);
+    exit(code);
   }
 }
