@@ -14,7 +14,6 @@ class TelegramCommandMessages extends Command {
   void run() async {
     hierarchicalLoggingEnabled = true;
     final runForever = parseBool(globalResults!['run-forever']);
-    var subSigTerm;
 
     var logLevel = getLogLevel();
     var logLevelLibTdJson = getLogLevelLibtdjson();
@@ -24,13 +23,13 @@ class TelegramCommandMessages extends Command {
 
     final db = Db(logLevel: logLevel);
     await db.spawn(
-    log: log,
-    dbPath: globalResults!['message-database-path'],
+      log: log,
+      dbPath: globalResults!['message-database-path'],
     );
 
     TelegramClient? telegramClient;
 
-    ProcessSignal.sigint.watch().listen((signal) async {
+    var sub = ProcessSignal.sigint.watch().listen((signal) async {
       if ((signal == ProcessSignal.sigint) |
           (signal == ProcessSignal.sigkill)) {
         print("sigint signal has been given: ${signal}");
@@ -68,27 +67,22 @@ class TelegramCommandMessages extends Command {
         readUserLastName: readUserLastName,
         readUserPassword: readUserPassword,
       );
-      if (runForever) {
-        while(true) {
-          await telegramClient.readChatsHistory(
-                dateTimeFrom: computeTwoWeeksAgo(),
-                chatsNames: getChatsNames(),
-                );
-        }
-      } else {
+      while (true) {
         await telegramClient.readChatsHistory(
-              dateTimeFrom: computeTwoWeeksAgo(),
-              chatsNames: getChatsNames(),
-              );
+          dateTimeFrom: computeTwoWeeksAgo(),
+          chatsNames: getChatsNames(),
+        );
+        if (!runForever) {
+          break;
+        }
       }
-
-      
     } on Exception catch (exception) {
       print("Exception occured ${exception}");
     } finally {
       await telegramClient?.exit();
       await db.exit();
       await log.exit();
+      sub.cancel();
     }
   }
 
