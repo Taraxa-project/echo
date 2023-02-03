@@ -9,3 +9,10 @@ services:
       dockerfile: Dockerfile
     env_file:
       - env.local
+    volumes:
+      - tdlib-data:/var/lib/tdlib:rw
+      - sqlite-data:/var/lib/sqlite:rw
+
+volumes:
+  tdlib-data:
+  sqlite-data:
