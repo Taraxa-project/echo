@@ -792,14 +792,6 @@ abstract class DbMsgResponse extends DbMsg {
   SqliteException? exception;
   String? operationName;
   DbMsgResponse({this.exception, this.operationName});
-
-  setException(SqliteException exception) {
-    this.exception = exception;
-  }
-
-  setOperationName(String operationName) {
-    this.operationName = operationName;
-  }
 }
 
 class DbMsgRequestOpen extends DbMsgRequest {
