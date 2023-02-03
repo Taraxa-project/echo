@@ -19,12 +19,14 @@ class TelegramClient {
 
   final _logger = Logger('TelegramClient');
   final Level logLevelLibTdJson;
+  Uri? proxyUri;
 
   bool _running = false;
 
   TelegramClient({
     required Level logLevel,
     required this.logLevelLibTdJson,
+    this.proxyUri,
   }) {
     _logger.level = logLevel;
   }
@@ -60,6 +62,7 @@ class TelegramClient {
         logLevelLibtdjson: logLevelLibTdJson,
         tdReceiveWaitTimeout: tdReceiveWaitTimeout,
         tdReceiveFrequency: tdReceiveFrequency,
+        proxyUri: proxyUri,
       ),
       debugName: runtimeType.toString(),
     );
@@ -82,6 +85,7 @@ class TelegramClient {
       logLevelLibtdjson: tgIsolatedSpwanMessage.logLevelLibtdjson,
       tdReceiveWaitTimeout: tgIsolatedSpwanMessage.tdReceiveWaitTimeout,
       tdReceiveFrequency: tgIsolatedSpwanMessage.tdReceiveFrequency,
+      proxyUri: tgIsolatedSpwanMessage.proxyUri,
     );
     tgIsolated.init();
   }
@@ -164,6 +168,7 @@ class TgIsolatedSpwanMessage {
   final Level logLevelLibtdjson;
   final double tdReceiveWaitTimeout;
   final Duration tdReceiveFrequency;
+  final Uri? proxyUri;
 
   TgIsolatedSpwanMessage({
     required this.parentSendPort,
@@ -174,6 +179,7 @@ class TgIsolatedSpwanMessage {
     required this.logLevelLibtdjson,
     required this.tdReceiveWaitTimeout,
     required this.tdReceiveFrequency,
+    this.proxyUri,
   });
 }
 
@@ -196,6 +202,8 @@ class TelegramClientIsolated {
   double tdReceiveWaitTimeout = 0.005;
   Duration tdReceiveFrequency = Duration(milliseconds: 10);
 
+  Uri? proxyUri;
+
   bool _isTdReceiving = false;
   Timer? receiveTimer;
 
@@ -217,6 +225,7 @@ class TelegramClientIsolated {
     required Level logLevelLibtdjson,
     this.tdReceiveWaitTimeout = 0.005,
     this.tdReceiveFrequency = const Duration(milliseconds: 10),
+    this.proxyUri,
   }) {
     _logger.level = logLevel;
     _logger.onRecord.listen((logRecord) {
@@ -252,6 +261,7 @@ class TelegramClientIsolated {
   Future<void> init() async {
     _initPorts();
     _initDispatch();
+    await _initProxy();
   }
 
   void _initPorts() {
@@ -291,6 +301,40 @@ class TelegramClientIsolated {
         );
       }
     });
+  }
+
+  Future<void> _initProxy() async {
+    _logger.info('checking proxy...');
+
+    if (proxyUri == null) {
+      _logger.info('not using proxy.');
+      return;
+    }
+    ProxyType? proxyType;
+
+    if (proxyUri?.scheme == 'http') {
+      proxyType = ProxyTypeHttp(
+        username: proxyUri?.userInfo,
+        password: proxyUri?.userInfo,
+      );
+    } else if (proxyUri?.scheme == 'socks5') {
+      proxyType = ProxyTypeSocks5(
+        username: proxyUri?.userInfo,
+        password: proxyUri?.userInfo,
+      );
+    }
+
+    if (proxyType == null) {
+      _logger.warning('invalid proxy scheme ${proxyUri?.scheme}.'
+          ' Not using proxy.');
+      return;
+    }
+
+    await _addProxy(
+      server: proxyUri?.host,
+      port: proxyUri?.port,
+      proxyType: proxyType,
+    );
   }
 
   Future<void> _exit({SendPort? replySendPort}) async {
@@ -1061,6 +1105,27 @@ class TelegramClientIsolated {
         }
       }
     });
+  }
+
+  Future<Proxy> _addProxy({
+    String? server,
+    int? port,
+    ProxyType? proxyType,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    _logger.info('adding proxy...');
+
+    return await _retryTdCall(
+      tdFunction: AddProxy(
+        server: server,
+        port: port,
+        type: proxyType,
+        enable: true,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Proxy;
   }
 
   Future<void> _addChats({
