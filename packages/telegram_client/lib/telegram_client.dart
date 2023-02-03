@@ -683,29 +683,30 @@ class TelegramClientIsolated {
             chatName: chatName,
             reason: ex.message ?? 'Chat not found.',
           );
-        } on TgTimeOutException catch (ex) {
-          _logger.warning('[$chatName] $ex.');
-        } on TgMaxRetriesExcedeedException catch (ex) {
-          _logger.warning('[$chatName] $ex.');
-        } on TgBadRequestException catch (ex) {
-          _logger.severe('[$chatName] $ex.');
-        } on UnWrapIdxception catch (ex) {
-          _logger.warning('[$chatName] $ex.');
-        } on TgErrorCodeNotHandledException catch (ex) {
-          _logger.severe('[$chatName] $ex.');
-        } on TgException catch (ex) {
-          _logger.severe('[$chatName] $ex.');
         } on TgDbException catch (ex) {
           return TgMsgResponseReadChatHistory(exception: ex);
         }
-
-        _logger.info('[$chatName] reading chat history... done.');
-
-        _logger.info('reading chats history... '
-            'sleeping for $delayUntilNextChatSeconds seconds.');
-        await Future.delayed(
-            const Duration(seconds: delayUntilNextChatSeconds));
+      } on TgTimeOutException catch (ex) {
+        _logger.warning('[$chatName] $ex.');
+      } on TgMaxRetriesExcedeedException catch (ex) {
+        _logger.warning('[$chatName] $ex.');
+      } on TgBadRequestException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on UnWrapIdxception catch (ex) {
+        _logger.warning('[$chatName] $ex.');
+      } on TgErrorCodeNotHandledException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on TgException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on TgDbException catch (ex) {
+        return TgMsgResponseReadChatHistory(exception: ex);
       }
+
+      _logger.info('[$chatName] reading chat history... done.');
+
+      _logger.info('reading chats history... '
+          'sleeping for $delayUntilNextChatSeconds seconds.');
+      await Future.delayed(const Duration(seconds: delayUntilNextChatSeconds));
     }
     return TgMsgResponseReadChatHistory();
   }
