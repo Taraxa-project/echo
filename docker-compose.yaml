@@ -10,7 +10,9 @@ services:
     env_file:
       - env.local
     volumes:
-      - data:/data:rw
+      - tdlib-data:/var/lib/tdlib:rw
+      - sqlite-data:/var/lib/sqlite:rw
 
 volumes:
-  data:
+  tdlib-data:
+  sqliote-data:
