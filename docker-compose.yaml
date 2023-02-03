@@ -15,4 +15,4 @@ services:
 
 volumes:
   tdlib-data:
-  sqliote-data:
+  sqlite-data:
