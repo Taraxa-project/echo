@@ -49,6 +49,4 @@ RUN melos run get
 ENTRYPOINT [ "/usr/lib/dart/bin/dart", "run"]
 CMD ["/app/packages/cli/bin/main.dart","login","-h","--api-id=","$API_ID", \
     "--api-hash=","$API_HASH","--phone-number=","$PHONE", \
-    "--libtdjson-path=","$PATH_TD_JSON_LIB","--libtdjson-loglevel=","$LOG_LEVEL", \
-    "--database-path=", "$PATH_TD_JSON_LIB_DATA", \
-    "--message-database-path", "$PATH_DB_MESSAGE"]
+    "--libtdjson-path=","$PATH_TD_JSON_LIB","--libtdjson-loglevel=","$LOG_LEVEL"]
