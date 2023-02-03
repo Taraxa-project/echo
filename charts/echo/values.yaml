@@ -69,7 +69,8 @@ appSecret:
   create: true
 
 configEnvs:
-  ENVIRONMENT: qa
+  PATH_TD_JSON_LIB_DATA: /var/lib/tdlib
+  PATH_DB_MESSAGE: /var/lib/sqlite/message.db
 
 secretEnvs:
   SECRET: secret

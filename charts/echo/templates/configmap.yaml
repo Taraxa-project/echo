@@ -5,4 +5,5 @@ metadata:
   labels:
     {{- include "echo.labels" . | nindent 4 }}
 data:
-  ENVIRONMENT: {{ .Values.configEnvs.ENVIRONMENT | quote }}
+  PATH_DB_MESSAGE: {{ .Values.configEnvs.PATH_DB_MESSAGE | quote }}
+  PATH_TD_JSON_LIB_DATA: {{ .Values.configEnvs.PATH_TD_JSON_LIB_DATA | quote }}
