@@ -655,7 +655,7 @@ WHERE
     ''';
   }
 
-  bool _dbErrorHandler(SqliteException error, String? operation) {
+  bool _dbErrorHandler(SqliteException error, String operation) {
     // return true for retry or false for exiting
     // Codes that were chosen for retry
     // 1 - SQLite generic error
