@@ -517,7 +517,7 @@ class DbIsolated {
   DbMsgResponseAddUser _addUser({required int userId}) {
     _logger.fine('Adding new user  $userId...');
     final sql = """
-      INSERT INTO user (user_id) VALUES (?);
+      INSERT INTO user (user_id, created_at, updated_at) VALUES (?, ?, ?);
       """;
     final stmt = db?.prepare(sql);
     stmt?.execute([
@@ -617,7 +617,9 @@ class DbIsolated {
       bot INTEGER,
       verified INTEGER,
       scam INTEGER,
-      fake INTEGER
+      fake INTEGER,
+      created_at TEXT,
+      updated_at TEXT
     );
     """,
       """
