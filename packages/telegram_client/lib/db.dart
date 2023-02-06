@@ -162,110 +162,132 @@ class DbIsolated {
         _logger.fine('exiting...');
         _exit(replySendPort: message.replySendPort);
       } else if (message is DbMsgRequestOpen) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseOpen>(
-          () => _open(),  DbMsgResponseOpen)
-        );
+        message.replySendPort?.send(_retryDbOperation(
+          () => _open(),
+          DbMsgResponseOpen(),
+          'open db',
+        ));
       } else if (message is DbMsgRequestMigrate) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseAddChats>(
-          () => _migrate(),  DbMsgResponseMigrate)
-          );
-
+        message.replySendPort?.send(_retryDbOperation(
+          () => _migrate(),
+          DbMsgResponseMigrate(),
+          'migrate',
+        ));
       } else if (message is DbMsgRequestAddChats) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseAddChats>(
-          () => _addChats(message.usernames),  DbMsgResponseAddChats)
-          );
-
+        message.replySendPort?.send(_retryDbOperation(
+          () => _addChats(message.usernames),
+          DbMsgResponseAddChats(),
+          'add chats',
+        ));
       } else if (message is DbMsgRequestBlacklistChat) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseBlacklistChat>(
-          () => _blacklistChat(
-          username: message.username,
-          reason: message.reason,
-          ),  DbMsgResponseBlacklistChat)
-        );
+        message.replySendPort
+            ?.send(performDbOperation<DbMsgResponseBlacklistChat>(
+                () => _blacklistChat(
+                      username: message.username,
+                      reason: message.reason,
+                    ),
+                DbMsgResponseBlacklistChat));
       } else if (message is DbMsgRequestUpdateChat) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseUpdateChat>(
-          () => _updateChat(
-          username: message.username,
-          chat: message.chat,
-          ),  DbMsgResponseUpdateChat)
-        );
+        message.replySendPort?.send(performDbOperation<DbMsgResponseUpdateChat>(
+            () => _updateChat(
+                  username: message.username,
+                  chat: message.chat,
+                ),
+            DbMsgResponseUpdateChat));
       } else if (message is DbMsgRequestUpdateChatMembersCount) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseUpdateChatMembersCount>(
-          () => _updateChatMembersCount(
-          username: message.username,
-          memberCount: message.membersCount,
-          ),  DbMsgResponseUpdateChatMembersCount)
-        );
+        message.replySendPort
+            ?.send(performDbOperation<DbMsgResponseUpdateChatMembersCount>(
+                () => _updateChatMembersCount(
+                      username: message.username,
+                      memberCount: message.membersCount,
+                    ),
+                DbMsgResponseUpdateChatMembersCount));
       } else if (message is DbMsgRequestUpdateChatMembersBotsCount) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseUpdateChatMembersBotsCount>(
-          () => _updateChatMembersBotsCount(
-          username: message.username,
-          memberCount: message.membersCount,
-          ),  DbMsgResponseUpdateChatMembersBotsCount)
-        );
+        message.replySendPort
+            ?.send(performDbOperation<DbMsgResponseUpdateChatMembersBotsCount>(
+                () => _updateChatMembersBotsCount(
+                      username: message.username,
+                      memberCount: message.membersCount,
+                    ),
+                DbMsgResponseUpdateChatMembersBotsCount));
       } else if (message is DbMsgRequestUpdateChatMembersOnlineCount) {
         message.replySendPort?.send(
-          performDbOperation<DbMsgResponseUpdateChatMembersOnlineCount>(
-          () => _updateChatMembersOnlineCount(
-          username: message.username,
-          memberCount: message.membersCount,
-          ),  DbMsgResponseUpdateChatMembersOnlineCount)
-        );
+            performDbOperation<DbMsgResponseUpdateChatMembersOnlineCount>(
+                () => _updateChatMembersOnlineCount(
+                      username: message.username,
+                      memberCount: message.membersCount,
+                    ),
+                DbMsgResponseUpdateChatMembersOnlineCount));
       } else if (message is DbMsgRequestSelectMaxMessageId) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseSelectMaxMessageId>(
-          () => _selectMaxMessageId(
-          chatId: message.chatId,
-          dateTimeFrom: message.dateTimeFrom,
-          ),  DbMsgResponseSelectMaxMessageId)
-        );
+        message.replySendPort
+            ?.send(performDbOperation<DbMsgResponseSelectMaxMessageId>(
+                () => _selectMaxMessageId(
+                      chatId: message.chatId,
+                      dateTimeFrom: message.dateTimeFrom,
+                    ),
+                DbMsgResponseSelectMaxMessageId));
       } else if (message is DbMsgRequestAddMessage) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseAddMessage>(
-          () => _addMessage(
-          message: message.message,
-          online_member_count: message.onlineMemberCount,
-          ),  DbMsgResponseAddMessage)
-        );
+        message.replySendPort?.send(performDbOperation<DbMsgResponseAddMessage>(
+            () => _addMessage(
+                  message: message.message,
+                  online_member_count: message.onlineMemberCount,
+                ),
+            DbMsgResponseAddMessage));
       } else if (message is DbMsgRequestAddUser) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseAddUser>(
-          () => _addUser(userId: message.userId),  DbMsgResponseAddUser)
-        );
+        message.replySendPort?.send(performDbOperation<DbMsgResponseAddUser>(
+            () => _addUser(userId: message.userId), DbMsgResponseAddUser));
       } else if (message is DbMsgRequestUpdateUser) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseUpdateUser>(
-          () => _updateUser(userId: message.userId, user: message.user),  DbMsgResponseUpdateUser)
-        );
+        message.replySendPort?.send(performDbOperation<DbMsgResponseUpdateUser>(
+            () => _updateUser(userId: message.userId, user: message.user),
+            DbMsgResponseUpdateUser));
       } else if (message is DbMsgRequestSelectChatOnlineMemberCount) {
-        message.replySendPort?.send(
-          performDbOperation<DbMsgResponseSelectChatOnlineMemberCount>(
-          () => _selectChatOnlineMemberCount(
-          chatName: message.chatName,
-        ),  DbMsgResponseSelectChatOnlineMemberCount)
-        );
+        message.replySendPort
+            ?.send(performDbOperation<DbMsgResponseSelectChatOnlineMemberCount>(
+                () => _selectChatOnlineMemberCount(
+                      chatName: message.chatName,
+                    ),
+                DbMsgResponseSelectChatOnlineMemberCount));
       }
     });
   }
-   
-  DbMsgResponse? performDbOperation<T>(
-    Function dbOperation,
-    Type returnType
-    ) {
+
+  DbMsgResponse _retryDbOperation(
+    DbMsgResponse Function() dbOperation,
+    DbMsgResponse dbMsgResponse,
+    String operationName,
+  ) {
+    var exception;
+
+    var retryCount = 0;
+    while (retryCount < maxTries) {
+      retryCount += 1;
+
+      exception = null;
+      try {
+        return dbOperation();
+      } on SqliteException catch (ex) {
+        exception = ex;
+        if (_dbErrorHandler(ex, operationName) == false) {
+          break;
+        }
+      }
+    }
+
+    dbMsgResponse.operationName = operationName;
+    dbMsgResponse.exception = exception;
+
+    return dbMsgResponse;
+  }
+
+  DbMsgResponse? performDbOperation<T>(Function dbOperation, Type returnType) {
     var retry = true;
     var count = 0;
     while (retry) {
       try {
         return dbOperation();
       } on SqliteException catch (exception) {
-        var operationName = parseOperationName(dbOperation.runtimeType.toString());
+        var operationName =
+            parseOperationName(dbOperation.runtimeType.toString());
         var retry = _dbErrorHandler(exception, operationName);
         if (retry == true) {
           if (++count == maxTries) {
@@ -278,34 +300,48 @@ class DbIsolated {
     }
   }
 
-  DbMsgResponse? getDbResponseClass(Type returnType, SqliteException exception, String? operationName) {
+  DbMsgResponse? getDbResponseClass(
+      Type returnType, SqliteException exception, String? operationName) {
     switch (returnType) {
-    case DbMsgResponseOpen:
-      return DbMsgResponseOpen(exception: exception, operationName: operationName);
-    case DbMsgResponseMigrate: 
-      return DbMsgResponseMigrate(exception: exception, operationName: operationName);
-    case DbMsgResponseAddChats: 
-      return DbMsgResponseAddChats(exception: exception, operationName: operationName);
-    case DbMsgResponseBlacklistChat: 
-      return DbMsgResponseBlacklistChat(exception: exception, operationName: operationName);
-    case DbMsgResponseUpdateChat: 
-      return DbMsgResponseUpdateChat(exception: exception, operationName: operationName);
-    case DbMsgResponseUpdateChatMembersCount: 
-      return DbMsgResponseUpdateChatMembersCount(exception: exception, operationName: operationName);
-    case DbMsgResponseUpdateChatMembersBotsCount: 
-      return DbMsgResponseUpdateChatMembersBotsCount(exception: exception, operationName: operationName);
-    case DbMsgResponseUpdateChatMembersOnlineCount: 
-      return DbMsgResponseUpdateChatMembersOnlineCount(exception: exception, operationName: operationName);
-    case DbMsgResponseSelectMaxMessageId: 
-      return DbMsgResponseSelectMaxMessageId(id: null, exception: exception, operationName: operationName);
-    case DbMsgResponseAddMessage: 
-      return DbMsgResponseAddMessage(added: false, exception: exception, operationName: operationName);
-    case DbMsgResponseAddUser: 
-      return DbMsgResponseAddUser(exception: exception, operationName: operationName);
-    case DbMsgResponseUpdateUser: 
-      return DbMsgResponseUpdateUser(exception: exception, operationName: operationName);
-    case DbMsgResponseSelectChatOnlineMemberCount: 
-      return DbMsgResponseSelectChatOnlineMemberCount(exception: exception, operationName: operationName);
+      case DbMsgResponseOpen:
+        return DbMsgResponseOpen(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseMigrate:
+        return DbMsgResponseMigrate(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseAddChats:
+        return DbMsgResponseAddChats(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseBlacklistChat:
+        return DbMsgResponseBlacklistChat(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseUpdateChat:
+        return DbMsgResponseUpdateChat(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseUpdateChatMembersCount:
+        return DbMsgResponseUpdateChatMembersCount(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseUpdateChatMembersBotsCount:
+        return DbMsgResponseUpdateChatMembersBotsCount(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseUpdateChatMembersOnlineCount:
+        return DbMsgResponseUpdateChatMembersOnlineCount(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseSelectMaxMessageId:
+        return DbMsgResponseSelectMaxMessageId(
+            id: null, exception: exception, operationName: operationName);
+      case DbMsgResponseAddMessage:
+        return DbMsgResponseAddMessage(
+            added: false, exception: exception, operationName: operationName);
+      case DbMsgResponseAddUser:
+        return DbMsgResponseAddUser(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseUpdateUser:
+        return DbMsgResponseUpdateUser(
+            exception: exception, operationName: operationName);
+      case DbMsgResponseSelectChatOnlineMemberCount:
+        return DbMsgResponseSelectChatOnlineMemberCount(
+            exception: exception, operationName: operationName);
     }
   }
 
@@ -315,11 +351,11 @@ class DbIsolated {
     return matches.length > 0 ? matches.elementAt(0)[0] : null;
   }
 
-  DbMsgResponseOpen? _open() {
-      _logger.fine('opening...');
-      db = sqlite3.open(this.dbPath);
-      _logger.fine('opened.');
-      return DbMsgResponseOpen();
+  DbMsgResponseOpen _open() {
+    _logger.fine('opening...');
+    db = sqlite3.open(this.dbPath);
+    _logger.fine('opened.');
+    return DbMsgResponseOpen();
   }
 
   Future<void> _exit({SendPort? replySendPort}) async {
@@ -335,7 +371,7 @@ class DbIsolated {
     Isolate.exit();
   }
 
-  DbMsgResponseMigrate? _migrate() {
+  DbMsgResponseMigrate _migrate() {
     _logger.fine('running migrations...');
     for (final sql in _sqlInit()) {
       db?.execute(sql);
@@ -344,7 +380,7 @@ class DbIsolated {
     return DbMsgResponseMigrate();
   }
 
-  DbMsgResponseAddChats? _addChats(List<String> usernames) {
+  DbMsgResponseAddChats _addChats(List<String> usernames) {
     for (var username in usernames) {
       _logger.fine('adding chat $username...');
       final stmt = db?.prepare(
@@ -503,8 +539,7 @@ class DbIsolated {
     }
 
     var text = null;
-    if (message.content != null &&
-        message.content.runtimeType == MessageText) {
+    if (message.content != null && message.content.runtimeType == MessageText) {
       var formattedText = (message.content as MessageText).text;
       if (formattedText != null) {
         text = formattedText.text;
@@ -789,8 +824,8 @@ abstract class DbMsgRequest extends DbMsg {
 }
 
 abstract class DbMsgResponse extends DbMsg {
-  final SqliteException? exception;
-  final String? operationName;
+  SqliteException? exception;
+  String? operationName;
   DbMsgResponse({this.exception, this.operationName});
 }
 
@@ -877,8 +912,7 @@ class DbMsgRequestUpdateChatMembersCount extends DbMsgRequest {
 }
 
 class DbMsgResponseUpdateChatMembersCount extends DbMsgResponse {
-  DbMsgResponseUpdateChatMembersCount(
-      {super.exception, super.operationName});
+  DbMsgResponseUpdateChatMembersCount({super.exception, super.operationName});
 }
 
 class DbMsgRequestUpdateChatMembersBotsCount extends DbMsgRequest {
