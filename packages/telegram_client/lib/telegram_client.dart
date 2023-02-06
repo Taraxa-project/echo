@@ -38,8 +38,6 @@ class TelegramClient {
     double tdReceiveWaitTimeout = 0.005,
     Duration tdReceiveFrequency = const Duration(milliseconds: 10),
   }) async {
-    _running = true;
-
     _log = log;
     _db = db;
 
@@ -91,17 +89,13 @@ class TelegramClient {
   }
 
   Future<void> exit() async {
-    if (!_running) return;
-
     isolateSendPort.send(TgMsgRequestExit(
       replySendPort: _isolateReceivePort.sendPort,
     ));
     await _isolateReceivePortBroadcast
-        .firstWhere((element) => element is TgMsgResponseExit);
-
+        .where((event) => event is TgMsgResponseExit)
+        .first;
     _isolateReceivePort.close();
-
-    _running = false;
   }
 
   Future<TgMsgResponseLogin> login({
@@ -272,33 +266,29 @@ class TelegramClientIsolated {
   }
 
   void _initDispatch() {
-    receivePortBroadcast.listen((message) async {
+    receivePortBroadcast.listen((message) {
       if (message is TgMsgRequestExit) {
         _logger.fine('exiting...');
-        await _exit(
+        _exit(
           replySendPort: message.replySendPort,
         );
       } else if (message is TgMsgRequestLogin) {
-        message.replySendPort?.send(
-          await _login(
-            apiId: message.apiId,
-            apiHash: message.apiHash,
-            phoneNumber: message.phoneNumber,
-            databasePath: message.databasePath,
-            readTelegramCode: message.readTelegramCode,
-            writeQrCodeLink: message.writeQrCodeLink,
-            readUserFirstName: message.readUserFirstName,
-            readUserLastName: message.readUserLastName,
-            readUserPassword: message.readUserPassword,
-          ),
-        );
+        _login(
+          apiId: message.apiId,
+          apiHash: message.apiHash,
+          phoneNumber: message.phoneNumber,
+          databasePath: message.databasePath,
+          readTelegramCode: message.readTelegramCode,
+          writeQrCodeLink: message.writeQrCodeLink,
+          readUserFirstName: message.readUserFirstName,
+          readUserLastName: message.readUserLastName,
+          readUserPassword: message.readUserPassword,
+        ).then((value) => message.replySendPort?.send(value));
       } else if (message is TgMsgRequestReadChatsHistory) {
-        message.replySendPort?.send(
-          await _readChatsHistory(
-            datetimeFrom: message.dateTimeFrom,
-            chatsNames: message.chatsNames,
-          ),
-        );
+        _readChatsHistory(
+          datetimeFrom: message.dateTimeFrom,
+          chatsNames: message.chatsNames,
+        ).then((value) => message.replySendPort?.send(value));
       }
     });
   }
@@ -355,11 +345,11 @@ class TelegramClientIsolated {
 
     _tdJsonClient.exit();
     await _tdStreamController.close();
+
     replySendPort?.send(TgMsgResponseExit());
     await Future.delayed(const Duration(milliseconds: 100));
 
     _logger.fine('closing tg isolate port');
-
     receivePort.close();
     Isolate.exit();
   }

@@ -49,7 +49,6 @@ class TelegramCommandMessages extends Command {
         logLevelLibTdJson: logLevelLibTdJson,
         proxyUri: parseProxyUri(),
       );
-
       await telegramClient.spawn(
         log: log,
         db: db,
