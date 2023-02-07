@@ -13,7 +13,7 @@ class TelegramCommandMessages extends Command {
 
   void run() async {
     hierarchicalLoggingEnabled = true;
-    final runForever = parseBool(globalResults!['run-forever']);
+    final runForever = parseBool(globalResults!.command!['run-forever']);
 
     var logLevel = getLogLevel();
     var logLevelLibTdJson = getLogLevelLibtdjson();

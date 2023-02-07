@@ -10,32 +10,39 @@ RUN apt-get update && \
 WORKDIR /
 
 RUN rm -rf /app-temp && mkdir -p /app-temp
-COPY . /app-temp
+COPY ./packages/td_json_client/lib/src/log_callback /app-temp/packages/td_json_client/lib/src/log_callback
 
 WORKDIR /app-temp
 
-RUN rm -rf packages/td_json_client/build && \
- mkdir packages/td_json_client/build && \
- cd packages/td_json_client/build && \
- cmake -DCMAKE_INSTALL_PREFIX:PATH=/app-temp/packages/td_json_client/lib/src/blobs/linux /app-temp/packages/td_json_client/lib/src/log_callback && \
- cmake --build . --target install
+RUN \
+    rm -rf packages/td_json_client/build && \
+    mkdir packages/td_json_client/build && \
+    cd packages/td_json_client/build && \
+    rm -rf /app-temp/packages/td_json_client/lib/src/blobs/linux/* && \
+    cmake \
+        -DCMAKE_INSTALL_PREFIX:PATH=/app-temp/packages/td_json_client/lib/src/blobs/linux \
+        /app-temp/packages/td_json_client/lib/src/log_callback && \
+    cmake --build . --target install
 
 ### main application image ###
 FROM dart:stable
 
-# Copy tdlib binaries
-COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux  /usr/local/lib/
-
-RUN rm -rf /app-temp
-
 # Install packages
 RUN apt update \
     && apt install -y \
-    libc++-dev \
+    libc++-dev libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy tdlib binaries
+COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/libtdjsonlc.so  /usr/local/lib/
+COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/lib/libtdjson.so*  /usr/local/lib/
+RUN ldconfig
+
+RUN rm -rf /app-temp
+
 RUN rm -rf /app && mkdir -p /app
-COPY . /app
+COPY melos.yaml melos.yaml
+COPY ./packages /app/packages
 
 ENV PATH="/root/.pub-cache/bin:${PATH}"
 
@@ -44,12 +51,18 @@ WORKDIR /app
 RUN dart pub global activate melos
 
 RUN melos bootstrap 
-RUN melos run get
 
-ENTRYPOINT [ "/usr/lib/dart/bin/dart", "run"]
-
-CMD ["/app/packages/cli/bin/main.dart","login","-h","--api-id=","$API_ID", \
-    "--api-hash=","$API_HASH","--phone-number=","$PHONE", \
-    "--libtdjson-path=","$PATH_TD_JSON_LIB","--loglevel=", "$LOG_LEVEL","--libtdjson-loglevel=","$LIBTDJSON_LOGLEVEL", \
-    "--database-path=", "$DATABASE_PATH", "--message-database-path=", "$DATABASE_PATH/message.sqlite messages", "--chat-names=", "$CHAT_NAMES", \
-    "--run-forever=", "$RUN_FOREVER"]
+CMD ["sh", "-c", \
+    "dart /app/packages/cli/bin/main.dart \
+    --api-id $API_ID \
+    --api-hash $API_HASH \
+    --phone-number $PHONE \
+    --libtdjson-path $PATH_TD_JSON_LIB \
+    --loglevel $LOG_LEVEL \
+    --libtdjson-loglevel $LIBTDJSON_LOGLEVEL \
+    --database-path $PATH_TD_JSON_LIB_DATA \
+    --message-database-path $PATH_DB_MESSAGE \
+    $PROXY_OPTION \
+    messages \
+    --chats-names $CHATS_NAMES \
+    --run-forever $RUN_FOREVER "]

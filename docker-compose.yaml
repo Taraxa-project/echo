@@ -1,19 +1,31 @@
 version: '3.9'
 
 services:
-  echo-cli:
+  echo-cli-0:
     tty: true
     stdin_open: true
-    container_name: 'echo-cli'
+    container_name: 'echo-cli-0'
+    hostname: 'echo-cli-0'
     build:
       context: ./
       dockerfile: Dockerfile
-    env_file:
-      - .env
+    environment:
+      - API_ID=0
+      - API_HASH=0
+      - PHONE=0
+      - PATH_TD_JSON_LIB=/usr/local/lib/libtdjsonlc.so
+      - PATH_TD_JSON_LIB_DATA=/var/lib/tdlib
+      - PATH_DB_MESSAGE=/var/lib/sqlite/message.db
+      - LOG_LEVEL=info
+      - LIBTDJSON_LOGLEVEL=warning
+      - PROXY_OPTION=
+      - CHATS_NAMES="\[\]"
+      - RUN_FOREVER=false
     volumes:
       - ./:/app/
-      - "${DATABASE_PATH}:/root/db"
-  
+      - tdlib-data:/var/lib/tdlib:rw
+      - sqlite-data:/var/lib/sqlite:rw
 
-
-    
+volumes:
+   tdlib-data:
+   sqlite-data:
