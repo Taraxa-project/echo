@@ -54,22 +54,23 @@ void main(List<String> arguments) {
       defaultsTo: 'warning',
     )
     ..addOption(
-      'run-forever',
-      help: 'Set this to true if you want the app to run forever',
-      defaultsTo: 'false',
-    )
-    ..addOption(
       'proxy',
       help: 'Tdlib proxy uri',
       valueHelp: 'scheme://username:password@host:port',
     );
 
   TelegramCommandMessages telegramCommandMessages = TelegramCommandMessages();
-  telegramCommandMessages.argParser.addOption(
-    'chats-names',
-    mandatory: true,
-    help: 'A list of chat names JSON encoded.',
-  );
+  telegramCommandMessages.argParser
+    ..addOption(
+      'chats-names',
+      mandatory: true,
+      help: 'A list of chat names JSON encoded.',
+    )
+    ..addOption(
+      'run-forever',
+      help: 'Set this to true if you want the app to run forever',
+      defaultsTo: 'false',
+    );
 
   commandRunner
     ..addCommand(telegramCommandMessages)
