@@ -19,7 +19,7 @@ services:
       - LOG_LEVEL=info
       - LIBTDJSON_LOGLEVEL=warning
       - PROXY_OPTION=
-      - CHATS_NAMES="\[\]"
+      - CHATS_NAMES=[]
       - RUN_FOREVER=false
     volumes:
       - tdlib-data:/var/lib/tdlib:rw
