@@ -281,6 +281,9 @@ class DbIsolated {
         return dbOperation();
       } on SqliteException catch (ex) {
         exception = ex;
+        if (exception.resultCode == 19) {
+            return DbMsgResponseConstraintError(exception: exception);
+        } 
         if (_dbErrorHandler(ex, operationName) == false) {
           break;
         }
