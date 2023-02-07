@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:logging/logging.dart';
+import 'package:sqlite3/sqlite3.dart';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
 import 'package:telegram_client/wrap_id.dart';
-
 import 'log.dart';
 import 'db.dart';
 
@@ -19,10 +19,14 @@ class TelegramClient {
 
   final _logger = Logger('TelegramClient');
   final Level logLevelLibTdJson;
+  Uri? proxyUri;
+
+  bool _running = false;
 
   TelegramClient({
     required Level logLevel,
     required this.logLevelLibTdJson,
+    this.proxyUri,
   }) {
     _logger.level = logLevel;
   }
@@ -52,9 +56,11 @@ class TelegramClient {
         logSendPort: _log.isolateSendPort,
         dbSendPort: _db.isolateSendPort,
         libtdjsonlcPath: libtdjsonlcPath,
+        logLevel: _logger.level,
         logLevelLibtdjson: logLevelLibTdJson,
         tdReceiveWaitTimeout: tdReceiveWaitTimeout,
         tdReceiveFrequency: tdReceiveFrequency,
+        proxyUri: proxyUri,
       ),
       debugName: runtimeType.toString(),
     );
@@ -73,15 +79,19 @@ class TelegramClient {
       logSendPort: tgIsolatedSpwanMessage.logSendPort,
       dbSendPort: tgIsolatedSpwanMessage.dbSendPort,
       libtdjsonlcPath: tgIsolatedSpwanMessage.libtdjsonlcPath,
+      logLevel: tgIsolatedSpwanMessage.logLevel,
       logLevelLibtdjson: tgIsolatedSpwanMessage.logLevelLibtdjson,
       tdReceiveWaitTimeout: tgIsolatedSpwanMessage.tdReceiveWaitTimeout,
       tdReceiveFrequency: tgIsolatedSpwanMessage.tdReceiveFrequency,
+      proxyUri: tgIsolatedSpwanMessage.proxyUri,
     );
     tgIsolated.init();
   }
 
   Future<void> exit() async {
-    isolateSendPort.send(TgMsgRequestExit());
+    isolateSendPort.send(TgMsgRequestExit(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
     await _isolateReceivePortBroadcast
         .where((event) => event is TgMsgResponseExit)
         .first;
@@ -100,6 +110,7 @@ class TelegramClient {
     required String Function() readUserPassword,
   }) async {
     isolateSendPort.send(TgMsgRequestLogin(
+      replySendPort: _isolateReceivePort.sendPort,
       apiId: apiId,
       apiHash: apiHash,
       phoneNumber: phoneNumber,
@@ -110,9 +121,14 @@ class TelegramClient {
       readUserLastName: readUserLastName,
       readUserPassword: readUserPassword,
     ));
-    return await _isolateReceivePortBroadcast
-        .where((event) => event is TgMsgResponseLogin)
-        .first;
+    TgMsgResponseLogin response = await _isolateReceivePortBroadcast
+        .firstWhere((element) => element is TgMsgResponseLogin)
+        .onError(<StateError>(error, _) => _logger.warning('login $error'));
+
+    if (response.exception != null) {
+      throw response.exception!;
+    }
+    return response;
   }
 
   Future<TgMsgResponseReadChatHistory> readChatsHistory({
@@ -120,12 +136,20 @@ class TelegramClient {
     required List<String> chatsNames,
   }) async {
     isolateSendPort.send(TgMsgRequestReadChatsHistory(
+      replySendPort: _isolateReceivePort.sendPort,
       dateTimeFrom: dateTimeFrom,
       chatsNames: chatsNames,
     ));
-    return await _isolateReceivePortBroadcast
-        .where((event) => event is TgMsgResponseReadChatHistory)
-        .first;
+
+    TgMsgResponseReadChatHistory response = await _isolateReceivePortBroadcast
+        .firstWhere((element) => element is TgMsgResponseReadChatHistory)
+        .onError(<StateError>(error, _) =>
+            _logger.warning('readChatsHistory $error'));
+
+    if (response.exception != null) {
+      throw response.exception!;
+    }
+    return response;
   }
 }
 
@@ -134,18 +158,22 @@ class TgIsolatedSpwanMessage {
   final SendPort logSendPort;
   final SendPort dbSendPort;
   final String libtdjsonlcPath;
+  final Level logLevel;
   final Level logLevelLibtdjson;
   final double tdReceiveWaitTimeout;
   final Duration tdReceiveFrequency;
+  final Uri? proxyUri;
 
   TgIsolatedSpwanMessage({
     required this.parentSendPort,
     required this.logSendPort,
     required this.dbSendPort,
     required this.libtdjsonlcPath,
+    required this.logLevel,
     required this.logLevelLibtdjson,
     required this.tdReceiveWaitTimeout,
     required this.tdReceiveFrequency,
+    this.proxyUri,
   });
 }
 
@@ -168,18 +196,32 @@ class TelegramClientIsolated {
   double tdReceiveWaitTimeout = 0.005;
   Duration tdReceiveFrequency = Duration(milliseconds: 10);
 
+  Uri? proxyUri;
+
   bool _isTdReceiving = false;
   Timer? receiveTimer;
+
+  static const int tgRetryCountMax = 5;
+  static const int tgTimeoutMilliseconds = 15 * 1000;
+  static const int tgTimeoutDelayMilliseconds = 50;
+  static const int delayTimeoutSeconds = 15;
+
+  static const int delayUntilNextChatSeconds = 15;
+  static const int delayUntilNextMessageBatchSeconds = 15;
+  static const int delayUntilNextUserSeconds = 1;
 
   TelegramClientIsolated({
     required this.parentSendPort,
     required this.logSendPort,
     required this.dbSendPort,
     required this.libtdjsonlcPath,
+    required Level logLevel,
     required Level logLevelLibtdjson,
     this.tdReceiveWaitTimeout = 0.005,
     this.tdReceiveFrequency = const Duration(milliseconds: 10),
+    this.proxyUri,
   }) {
+    _logger.level = logLevel;
     _logger.onRecord.listen((logRecord) {
       logSendPort.send(logRecord);
     });
@@ -213,7 +255,7 @@ class TelegramClientIsolated {
   Future<void> init() async {
     _initPorts();
     _initDispatch();
-    await _initDb();
+    await _initProxy();
   }
 
   void _initPorts() {
@@ -223,20 +265,13 @@ class TelegramClientIsolated {
     parentSendPort.send(receivePort.sendPort);
   }
 
-  Future<void> _initDb() async {
-    dbSendPort.send(DbMsgRequestSetTgSendPort(
-      sendPort: receivePort.sendPort,
-    ));
-    await receivePortBroadcast
-        .where((event) => event is DbMsgResponseSetTgSendPort)
-        .first;
-  }
-
   void _initDispatch() {
     receivePortBroadcast.listen((message) {
       if (message is TgMsgRequestExit) {
         _logger.fine('exiting...');
-        _exit();
+        _exit(
+          replySendPort: message.replySendPort,
+        );
       } else if (message is TgMsgRequestLogin) {
         _login(
           apiId: message.apiId,
@@ -248,23 +283,73 @@ class TelegramClientIsolated {
           readUserFirstName: message.readUserFirstName,
           readUserLastName: message.readUserLastName,
           readUserPassword: message.readUserPassword,
-        ).then((value) => parentSendPort.send(value));
+        ).then((value) => message.replySendPort?.send(value));
       } else if (message is TgMsgRequestReadChatsHistory) {
         _readChatsHistory(
           datetimeFrom: message.dateTimeFrom,
           chatsNames: message.chatsNames,
-        ).then((value) => parentSendPort.send(value));
+        ).then((value) => message.replySendPort?.send(value));
       }
     });
   }
 
-  Future<void> _exit() async {
+  Future<void> _initProxy() async {
+    _logger.info('checking proxy...');
+
+    if (proxyUri == null) {
+      _logger.info('not using proxy.');
+      return;
+    }
+
+    String? username;
+    String? password;
+
+    if (proxyUri?.userInfo != null) {
+      RegExp exp = RegExp(r'(\w+)');
+      Iterable<RegExpMatch> matches = exp.allMatches(proxyUri!.userInfo);
+      if (matches.length == 2) {
+        username = matches.elementAt(0)[0];
+        password = matches.elementAt(1)[0];
+      }
+    }
+
+    ProxyType? proxyType;
+
+    if (proxyUri?.scheme == 'http') {
+      proxyType = ProxyTypeHttp(
+        username: username,
+        password: password,
+      );
+    } else if (proxyUri?.scheme == 'socks5') {
+      proxyType = ProxyTypeSocks5(
+        username: username,
+        password: password,
+      );
+    }
+
+    if (proxyType == null) {
+      _logger.warning('invalid proxy scheme ${proxyUri?.scheme}.'
+          ' Not using proxy.');
+      return;
+    }
+
+    await _addProxy(
+      server: proxyUri?.host,
+      port: proxyUri?.port,
+      proxyType: proxyType,
+    );
+  }
+
+  Future<void> _exit({SendPort? replySendPort}) async {
+    await _close();
+
     _tdJsonClient.exit();
     await _tdStreamController.close();
 
-    parentSendPort.send(TgMsgResponseExit());
-    await Future.delayed(const Duration(milliseconds: 10));
+    replySendPort?.send(TgMsgResponseExit());
+    await Future.delayed(const Duration(milliseconds: 100));
 
+    _logger.fine('closing tg isolate port');
     receivePort.close();
     Isolate.exit();
   }
@@ -289,6 +374,9 @@ class TelegramClientIsolated {
       var event = _tdJsonClient.receive(waitTimeout: tdReceiveWaitTimeout);
       if (event != null) {
         _logger.finer('received ${event.runtimeType}.');
+        if (event is UpdateConnectionState) {
+          _handleUpdateConnectionState(event);
+        }
         _tdStreamController.add(event);
       }
 
@@ -305,6 +393,99 @@ class TelegramClientIsolated {
     _logger.fine('sent ${tdFunction.runtimeType}.');
   }
 
+  Future<TdObject> _tdCall({
+    required TdFunction tdFunction,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) async {
+    var tdResponse;
+
+    var extra = Uuid().v1();
+
+    var sub = _tdStreamController.stream
+        .where((event) => event.extra == extra)
+        .listen((event) {
+      tdResponse = event;
+    });
+
+    tdFunction.extra = extra;
+    _tdSend(tdFunction);
+
+    int elapsedMilliseconds = 0;
+    while (elapsedMilliseconds <= timeoutMilliseconds) {
+      if (tdResponse != null) {
+        break;
+      }
+      elapsedMilliseconds += tgTimeoutDelayMilliseconds;
+      await Future.delayed(Duration(milliseconds: tgTimeoutDelayMilliseconds));
+    }
+
+    sub.cancel();
+
+    if (tdResponse == null) {
+      throw TgTimeOutException(
+        elapsedMilliseconds,
+        tdFunction.runtimeType.toString(),
+      );
+    } else if (tdResponse is Error) {
+      _handleTdError(tdResponse);
+    } else {
+      return tdResponse;
+    }
+  }
+
+  Future<TdObject> _retryTdCall({
+    required TdFunction tdFunction,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    var retryCountIndex = 0;
+    while (retryCountIndex < retryCountMax) {
+      retryCountIndex += 1;
+
+      try {
+        return await _tdCall(
+          tdFunction: tdFunction,
+          timeoutMilliseconds: timeoutMilliseconds,
+        );
+      } on TgFloodWaiException catch (ex) {
+        _logger.warning('received flood wait for '
+            '${tdFunction.runtimeType.toString()}. '
+            'Retrying in ${ex.waitSeconds} seconds.');
+        await Future.delayed(Duration(seconds: ex.waitSeconds));
+        continue;
+      } on TgTimeOutException {
+        _logger.warning('time out for '
+            '${tdFunction.runtimeType.toString()}. '
+            'Retrying in ${delayTimeoutSeconds} seconds.');
+        await Future.delayed(Duration(seconds: delayTimeoutSeconds));
+        continue;
+      }
+    }
+
+    throw TgMaxRetriesExcedeedException(retryCountMax);
+  }
+
+  void _handleUpdateConnectionState(
+      UpdateConnectionState updateConnectionState) {
+    var state = updateConnectionState.state;
+    if (state == null) {
+      _logger.severe('connection state unknown.');
+    } else {
+      _logger.info('connection state: ${state.runtimeType}.');
+    }
+  }
+
+  Future<Ok> _close({
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: Close(),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Ok;
+  }
+
   Future<TgMsgResponseLogin> _login({
     required int apiId,
     required String apiHash,
@@ -318,91 +499,69 @@ class TelegramClientIsolated {
   }) async {
     _logger.info('logging in...');
 
-    var extra = Uuid().v1();
-
     var isAuthorized = false;
-    var isClosed = false;
-    var isError = false;
+    var exception;
 
-    var sub = _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .listen(
-      (event) {
-        _logger.fine('login: received ${event.runtimeType}.');
-        if (event is Error) {
-          isError = true;
-          _logger.warning('login: $event');
-        } else if (event is AuthorizationState) {
-          switch (event.runtimeType) {
-            case AuthorizationStateWaitTdlibParameters:
-              _tdSend(
-                SetTdlibParameters(
-                  api_id: apiId,
-                  api_hash: apiHash,
-                  database_directory: databasePath,
-                  use_message_database: false,
-                  device_model: 'Desktop',
-                  application_version: '1.0',
-                  system_language_code: 'en',
-                  database_encryption_key: '',
-                  extra: extra,
-                ),
-              );
-              break;
-            case AuthorizationStateWaitPhoneNumber:
-              _tdSend(SetAuthenticationPhoneNumber(
-                phone_number: phoneNumber,
-                extra: extra,
-              ));
-              break;
-            case AuthorizationStateWaitCode:
-              _tdSend(CheckAuthenticationCode(
-                code: readTelegramCode(),
-                extra: extra,
-              ));
-              break;
-            case AuthorizationStateWaitOtherDeviceConfirmation:
-              writeQrCodeLink(
-                  (event as AuthorizationStateWaitOtherDeviceConfirmation)
-                          .link ??
-                      '');
-              break;
-            case AuthorizationStateWaitRegistration:
-              _tdSend(RegisterUser(
-                first_name: readUserFirstName(),
-                last_name: readUserLastName(),
-                extra: extra,
-              ));
-              break;
-            case AuthorizationStateWaitPassword:
-              _tdSend(CheckAuthenticationPassword(
-                password: readUserPassword(),
-                extra: extra,
-              ));
-              break;
-            case AuthorizationStateReady:
-              isAuthorized = true;
-              break;
-            case AuthorizationStateLoggingOut:
-              isClosed = true;
-              break;
-            case AuthorizationStateClosing:
-              isClosed = true;
-              break;
-            case AuthorizationStateClosed:
-              isClosed = true;
-              break;
-          }
-        } else if (event is Ok) {
+    var sub = _tdStreamController.stream.listen((event) {
+      if (event is UpdateAuthorizationState) {
+        _logger
+            .info('login: received ${event.authorization_state.runtimeType}.');
+
+        var authorizationState = event.authorization_state;
+        if (authorizationState is AuthorizationStateWaitTdlibParameters) {
+          _setTdlibParameters(
+            apiId: apiId,
+            apiHash: apiHash,
+            databasePath: databasePath,
+          ).then((value) {
+            _logger.info('login: SetTdlibParameters done.');
+          }).catchError((error, _) {
+            exception = error;
+          });
+        } else if (authorizationState is AuthorizationStateWaitPhoneNumber) {
+          _setAuthenticationPhoneNumber(
+            phoneNumber: phoneNumber,
+          ).then((value) {
+            _logger.info('login: SetAuthenticationPhoneNumber done.');
+          }).catchError((error, _) {
+            exception = error;
+          });
+        } else if (authorizationState is AuthorizationStateWaitCode) {
+          _checkAuthenticationCode(
+            readTelegramCode: readTelegramCode,
+          ).then((value) {
+            _logger.info('login: CheckAuthenticationCode done.');
+          }).catchError((error, _) {
+            exception = error;
+          });
+        } else if (authorizationState
+            is AuthorizationStateWaitOtherDeviceConfirmation) {
+          writeQrCodeLink(authorizationState.link ?? '');
+        } else if (authorizationState is AuthorizationStateWaitRegistration) {
+          _registerUser(
+            readUserFirstName: readUserFirstName,
+            readUserLastName: readUserLastName,
+          ).then((value) {
+            _logger.info('login: RegisterUser done.');
+          }).catchError((error, _) {
+            exception = error;
+          });
+        } else if (authorizationState is AuthorizationStateWaitPassword) {
+          _checkAuthenticationPassword(
+            readUserPassword: readUserPassword,
+          ).then((value) {
+            _logger.info('login: CheckAuthenticationPassword done.');
+          }).catchError((error, _) {
+            exception = error;
+          });
+        } else if (authorizationState is AuthorizationStateReady) {
           isAuthorized = true;
-        } else {
-          _logger.warning('login: other: $event');
         }
-      },
-    );
+      }
+    });
 
     _tdSend(GetAuthorizationState(
-      extra: extra,
+      extra: Uuid().v1(),
     ));
 
     while (true) {
@@ -410,12 +569,7 @@ class TelegramClientIsolated {
         _logger.info('login: success.');
         break;
       }
-      if (isClosed) {
-        _logger.info('login: closed.');
-        break;
-      }
-      if (isError) {
-        _logger.info('login: error.');
+      if (exception != null) {
         break;
       }
       await Future.delayed(const Duration(milliseconds: 100));
@@ -425,8 +579,83 @@ class TelegramClientIsolated {
 
     return TgMsgResponseLogin(
       isAuthorized: isAuthorized,
-      isClosed: isClosed,
-      isError: isError,
+      exception: exception,
+    );
+  }
+
+  Future<TdObject> _setTdlibParameters({
+    required int apiId,
+    required String apiHash,
+    required String databasePath,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) {
+    _logger.info('login: sending SetTdlibParameters...');
+    return _tdCall(
+      tdFunction: SetTdlibParameters(
+        api_id: apiId,
+        api_hash: apiHash,
+        database_directory: databasePath,
+        use_message_database: false,
+        device_model: 'Desktop',
+        application_version: '1.0',
+        system_language_code: 'en',
+        database_encryption_key: '',
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+    );
+  }
+
+  Future<dynamic> _setAuthenticationPhoneNumber({
+    required String phoneNumber,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) async {
+    _logger.info('login: sending SetAuthenticationPhoneNumber...');
+    return await _retryTdCall(
+      tdFunction: SetAuthenticationPhoneNumber(
+        phone_number: phoneNumber,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+    );
+  }
+
+  Future<TdObject> _checkAuthenticationCode({
+    required String Function() readTelegramCode,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) async {
+    _logger.info('login: sending CheckAuthenticationCode...');
+    return await _tdCall(
+      tdFunction: CheckAuthenticationCode(
+        code: readTelegramCode(),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+    );
+  }
+
+  Future<TdObject> _registerUser({
+    required String Function() readUserFirstName,
+    required String Function() readUserLastName,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) async {
+    _logger.info('login: sending RegisterUser...');
+    return await _tdCall(
+      tdFunction: RegisterUser(
+        first_name: readUserFirstName(),
+        last_name: readUserLastName(),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+    );
+  }
+
+  Future<TdObject> _checkAuthenticationPassword({
+    required String Function() readUserPassword,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+  }) async {
+    _logger.info('login: sending CheckAuthenticationPassword...');
+    return await _retryTdCall(
+      tdFunction: CheckAuthenticationPassword(
+        password: readUserPassword(),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
     );
   }
 
@@ -434,21 +663,54 @@ class TelegramClientIsolated {
     required DateTime datetimeFrom,
     required List<String> chatsNames,
   }) async {
-    await _addChats(usernames: chatsNames);
+    try {
+      await _addChats(usernames: chatsNames);
+    } on TgDbException catch (ex) {
+      return TgMsgResponseReadChatHistory(exception: ex);
+    }
 
     _logger.info('reading chats history...');
 
-    for (var chatName in chatsNames) {
+    for (final chatName in chatsNames) {
       _logger.info('[$chatName] reading chat history...');
 
-      await _readChatHistory(
-        dateTimeFrom: datetimeFrom,
-        chatName: chatName,
-      );
+      try {
+        await _readChatHistory(
+          dateTimeFrom: datetimeFrom,
+          chatName: chatName,
+        );
+      } on TgChatNotFoundException catch (ex) {
+        _logger.warning('[$chatName] $ex.');
+        try {
+          await _blacklistChat(
+            chatName: chatName,
+            reason: ex.message ?? 'Chat not found.',
+          );
+        } on TgDbException catch (ex) {
+          return TgMsgResponseReadChatHistory(exception: ex);
+        }
+      } on TgTimeOutException catch (ex) {
+        _logger.warning('[$chatName] $ex.');
+      } on TgMaxRetriesExcedeedException catch (ex) {
+        _logger.warning('[$chatName] $ex.');
+      } on TgBadRequestException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on UnWrapIdxception catch (ex) {
+        _logger.warning('[$chatName] $ex.');
+      } on TgErrorCodeNotHandledException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on TgException catch (ex) {
+        _logger.severe('[$chatName] $ex.');
+      } on TgDbException catch (ex) {
+        return TgMsgResponseReadChatHistory(exception: ex);
+      }
 
       _logger.info('[$chatName] reading chat history... done.');
-    }
 
+      _logger.info('reading chats history... '
+          'sleeping for $delayUntilNextChatSeconds seconds.');
+      await Future.delayed(const Duration(seconds: delayUntilNextChatSeconds));
+    }
     return TgMsgResponseReadChatHistory();
   }
 
@@ -456,23 +718,9 @@ class TelegramClientIsolated {
     required DateTime dateTimeFrom,
     required String chatName,
   }) async {
-    var chat = await _searchPublicChat(chatName: chatName);
+    final chat = await _searchPublicChat(chatName: chatName);
 
-    if (chat == null) {
-      return;
-    }
-
-    if (chat.id == null) {
-      _logger.warning('[$chatName] chat id is null.');
-      return;
-    }
-    _logger.info('[$chatName] chat id is ${chat.id}.');
-
-    var chatId = WrapId.unwrapChatId(chat.id);
-    if (chatId == null) {
-      _logger.warning('[$chatName] could not unwrap ${chat.id}.');
-      return;
-    }
+    final chatId = WrapId.unwrapChatId(chat.id);
     _logger.info('[$chatName] unwrapped chat id is $chatId.');
 
     await _updateChat(
@@ -480,92 +728,290 @@ class TelegramClientIsolated {
       chat: chat,
     );
 
-    var messsageIdLast = await _searchMessageIdLast(
-      datetimeFrom: dateTimeFrom,
+    _logger.info('[$chatName] getting supergroup full info... ');
+    final supergroupFullInfo = await _getSupergroupFullInfo(
+      chatName: chatName,
+      chatId: chatId,
+    );
+    if (supergroupFullInfo.member_count != null &&
+        supergroupFullInfo.member_count != 0) {
+      _logger.info('[$chatName] member count is '
+          '${supergroupFullInfo.member_count}.');
+      await _updateChatMembersCount(
+        chatName: chatName,
+        memberCount: supergroupFullInfo.member_count!,
+      );
+    }
+
+    _logger.info('[$chatName] check online member count... ');
+    final subscriptionUpdateChatOnlineMemberCount =
+        _subscribeUpdateChatOnlineMemberCount(
       chatName: chatName,
       chatId: chatId,
     );
 
-    if (messsageIdLast == null) {
-      messsageIdLast = 0;
+    _logger.info('[$chatName] opening chat... ');
+    await _openChat(chatName: chatName, chatId: chatId);
+
+    _logger.info('[$chatName] getting bot count... ');
+    final chatMembersBots = await _getSupergroupMembers(
+      chatName: chatName,
+      chatId: chatId,
+      supergroupMembersFilter: SupergroupMembersFilterBots(),
+    );
+    if (chatMembersBots.members != null) {
+      _logger.info('[$chatName] bot count is '
+          '${chatMembersBots.members!.length}.');
+      await _updateChatMembersBotsCount(
+        chatName: chatName,
+        memberCount: chatMembersBots.members!.length,
+      );
     }
 
-    while (true) {
-      var messageIdFrom = messsageIdLast! + 1;
+    await subscriptionUpdateChatOnlineMemberCount.cancel();
 
-      var messages = await _getChatHistory(
+    _logger.info('[$chatName] closing chat... ');
+    await _closeChat(chatName: chatName, chatId: chatId);
+
+    var messageIdLast = await _searchMessageIdLast(
+      datetimeFrom: dateTimeFrom,
+      chatName: chatName,
+      chatId: chatId,
+    );
+    if (messageIdLast == null) {
+      messageIdLast = 0;
+    }
+
+    var onlineMemberCount = await _selectOnlineMemberCount(chatName: chatName);
+
+    while (true) {
+      var messageIdFrom = messageIdLast! + 1;
+      _logger.info('[$chatName] reading messages from $messageIdFrom... ');
+
+      final messages = await _getChatHistory(
         chatName: chatName,
         chatId: chatId,
         messageIdFrom: messageIdFrom,
       );
 
-      if (messages == null ||
-          messages.messages == null ||
-          messages.messages?.length == 0) {
+      if (messages.messages == null || messages.messages?.length == 0) {
         break;
       }
 
-      messsageIdLast = await _saveMessages(
+      messageIdLast = await _saveMessages(
         chatName: chatName,
         chatId: chatId,
         messages: messages,
+        onlineMemberCount: onlineMemberCount,
       );
 
-      if (messsageIdLast == null) {
+      await _saveUsers(
+        chatName: chatName,
+        messages: messages,
+      );
+
+      if (messageIdLast == null) {
         break;
       }
+
+      _logger.info('[$chatName] reading messages... '
+          'sleeping for $delayUntilNextChatSeconds seconds.');
+      await Future.delayed(const Duration(
+        seconds: delayUntilNextMessageBatchSeconds,
+      ));
     }
   }
 
-  Future<Chat?> _searchPublicChat({
-    required String chatName,
-  }) async {
-    _logger.info('[$chatName] searching public chat...');
-
-    var extra = Uuid().v1();
-    _tdSend(SearchPublicChat(
-      username: chatName,
-      extra: extra,
-    ));
-
-    var response = await _tdStreamController.stream
-        .where((event) => event.extra == extra)
+  Future<void> _updateUser({required int userId, required User user}) async {
+    dbSendPort.send(DbMsgRequestUpdateUser(
+        replySendPort: receivePort.sendPort, userId: userId, user: user));
+    var response = await receivePortBroadcast
+        .where((event) => event is DbMsgResponseUpdateUser)
         .first;
 
-    var chat;
+    if (response.exception != null) {
+      throw TgDbException(
+          exception: response.exception, operationName: response.operationName);
+    }
+    _logger.fine('[$userId] added user to user table.');
+  }
 
-    if (response is Error) {
-      _logger.warning('[$chatName] searching public chat failed with error.');
-      _logger.warning('[$chatName] $response.');
-    } else if (response is Chat) {
-      chat = response;
+  Future<void> _saveUsers({
+    required String chatName,
+    required Messages messages,
+  }) async {
+    var userCount = 0;
+    for (Message message in messages.messages!) {
+      var userId = null;
+
+      if (message.sender_id != null &&
+          message.sender_id.runtimeType == MessageSenderUser) {
+        userId = (message.sender_id as MessageSenderUser).user_id;
+      }
+
+      if (userId != null) {
+        dbSendPort.send(DbMsgRequestAddUser(
+            replySendPort: receivePort.sendPort, userId: userId));
+        DbMsgResponseAddUser response = await receivePortBroadcast
+            .where((event) => event is DbMsgResponseAddUser)
+            .first;
+
+        if (response.exception != null) {
+          if (response is DbMsgResponseConstraintError) {
+            _logger.fine('[${userId}] already exists');
+          } else {
+            throw TgDbException(
+                exception: response.exception,
+                operationName: response.operationName);
+          }
+        } else {
+          if (userCount == 0) {
+            _logger.info('[$chatName] saving users...');
+            _logger.info('[$chatName] getting users...');
+          }
+          _logger.fine('[$chatName] getting user $userId... ');
+          var user = await _getUser(userId: userId);
+          await _updateUser(userId: userId, user: user);
+          userCount += 1;
+
+          _logger.fine('[$chatName] getting user... '
+              'sleeping for $delayUntilNextUserSeconds seconds.');
+          await Future.delayed(
+              const Duration(seconds: delayUntilNextUserSeconds));
+        }
+      }
     }
 
-    _logger.info('[$chatName] searching public chat... done.');
+    if (userCount > 0) {
+      _logger.info('[$chatName] saved $userCount users.');
+    }
+  }
+
+  Future<User> _getUser({
+    required int userId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: GetUser(
+        user_id: userId,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as User;
+  }
+
+  Future<Chat> _searchPublicChat({
+    required String chatName,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    final chat = await _retryTdCall(
+      tdFunction: SearchPublicChat(
+        username: chatName,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Chat;
+
+    if (chat.id == null) {
+      throw TgChatNotFoundException('Chat.id is null');
+    } else if (chat.type == null) {
+      throw TgChatNotFoundException('Chat.type is null');
+    } else if (!(chat.type is ChatTypeSupergroup)) {
+      throw TgChatNotFoundException('Invalid Chat.type: '
+          '${chat.type.runtimeType}');
+    }
 
     return chat;
+  }
+
+  Future<Ok> _openChat({
+    required String chatName,
+    required int chatId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: OpenChat(
+        chat_id: WrapId.wrapChatId(chatId),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Ok;
+  }
+
+  Future<Ok> _closeChat({
+    required String chatName,
+    required int chatId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: CloseChat(
+        chat_id: WrapId.wrapChatId(chatId),
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Ok;
+  }
+
+  Future<SupergroupFullInfo> _getSupergroupFullInfo({
+    required String chatName,
+    required int chatId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: GetSupergroupFullInfo(
+        supergroup_id: chatId,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as SupergroupFullInfo;
+  }
+
+  Future<ChatMembers> _getSupergroupMembers({
+    required String chatName,
+    required int chatId,
+    SupergroupMembersFilter? supergroupMembersFilter,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: GetSupergroupMembers(
+        supergroup_id: chatId,
+        filter: supergroupMembersFilter,
+        offset: 0,
+        limit: 200,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as ChatMembers;
   }
 
   Future<int?> _searchMessageIdLast({
     required DateTime datetimeFrom,
     required String chatName,
     required int chatId,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
   }) async {
     _logger.info('[$chatName] searching last message by date...');
 
-    var messageIdLast;
-
-    messageIdLast = await _searchMessageIdLastLocally(
+    var messageIdLast = await _searchMessageIdLastLocally(
       dateTimeFrom: datetimeFrom,
       chatName: chatName,
       chatId: chatId,
     );
 
     if (messageIdLast == null) {
-      messageIdLast = await _getChatMessageByDate(
+      messageIdLast = await _searchMessageIdLastRemote(
         datetimeFrom: datetimeFrom,
         chatName: chatName,
         chatId: chatId,
+        timeoutMilliseconds: timeoutMilliseconds,
+        retryCountMax: retryCountMax,
       );
     }
 
@@ -574,79 +1020,116 @@ class TelegramClientIsolated {
     return messageIdLast;
   }
 
-  Future<int?> _getChatMessageByDate({
-    required DateTime datetimeFrom,
+  Future<int?> _searchMessageIdLastRemote({
     required String chatName,
     required int chatId,
+    required DateTime datetimeFrom,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
   }) async {
-    _logger.info('[$chatName] reading last message '
-        'before ${datetimeFrom.toIso8601String()} from TG...');
+    _logger.info('[$chatName] searching last message id remote...');
 
-    var extra = Uuid().v1();
-    _tdSend(GetChatMessageByDate(
-      chat_id: WrapId.wrapChatId(chatId),
-      date: datetimeFrom.millisecondsSinceEpoch ~/ 1000,
-      extra: extra,
-    ));
-
-    var response = await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
-
-    var messageId;
-
-    if (response is Error) {
-      _logger.warning('[$chatName] reading last message by date from TG'
-          'failed with error.');
-      _logger.warning('[$chatName] $response.');
-    } else if (response is Message) {
-      if (response.id != null) {
-        _logger.info('[$chatName] found message id ${response.id}.');
-        messageId = WrapId.unwrapMessageId(response.id);
-        _logger.info('[$chatName] unwrapped message id is $messageId.');
-      } else {
-        _logger.warning('[$chatName] reading last message by date from TG '
-            'failed with no message id.');
-        _logger.warning('[$chatName] $response.');
-      }
+    int? messageIdLast;
+    try {
+      final tdResponse = await _getChatMessageByDate(
+        chatName: chatName,
+        chatId: chatId,
+        datetimeFrom: datetimeFrom,
+        timeoutMilliseconds: timeoutMilliseconds,
+        retryCountMax: retryCountMax,
+      );
+      messageIdLast = WrapId.unwrapMessageId(tdResponse.id);
+      _logger.info('[$chatName] searching last message id remote... '
+          'found $messageIdLast.');
+    } on TgNotFoundException {
+      _logger.info('[$chatName] searching last message id remote... '
+          'not found.');
+    } on UnWrapIdxception {
+      _logger.info('[$chatName] searching last message id remote... '
+          'not found.');
     }
 
-    _logger.info('[$chatName] reading last message by date from TG... done.');
-
-    return messageId;
+    return messageIdLast;
   }
 
-  Future<Messages?> _getChatHistory({
+  Future<Message> _getChatMessageByDate({
+    required String chatName,
+    required int chatId,
+    required DateTime datetimeFrom,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    return await _retryTdCall(
+      tdFunction: GetChatMessageByDate(
+        chat_id: WrapId.wrapChatId(chatId),
+        date: datetimeFrom.millisecondsSinceEpoch ~/ 1000,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Message;
+  }
+
+  Future<Messages> _getChatHistory({
     required String chatName,
     required int chatId,
     required int messageIdFrom,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
   }) async {
-    _logger.info('[$chatName] getting chat history from $messageIdFrom...');
+    return await _retryTdCall(
+      tdFunction: GetChatHistory(
+        chat_id: WrapId.wrapChatId(chatId),
+        from_message_id: WrapId.wrapMessageId(messageIdFrom),
+        offset: -99,
+        limit: 99,
+        only_local: false,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Messages;
+  }
 
-    var extra = Uuid().v1();
-    _tdSend(GetChatHistory(
-      chat_id: WrapId.wrapChatId(chatId),
-      from_message_id: WrapId.wrapMessageId(messageIdFrom),
-      offset: -99,
-      limit: 99,
-      only_local: false,
-      extra: extra,
-    ));
+  StreamSubscription<dynamic> _subscribeUpdateChatOnlineMemberCount({
+    required String chatName,
+    required int chatId,
+  }) {
+    return _tdStreamController.stream
+        .where((event) =>
+            event is UpdateChatOnlineMemberCount &&
+            event.chat_id == WrapId.wrapChatId(chatId))
+        .listen((event) {
+      final updateChatOnlineMemberCount = event as UpdateChatOnlineMemberCount;
+      if (updateChatOnlineMemberCount.online_member_count != null) {
+        if (updateChatOnlineMemberCount.online_member_count != 0) {
+          _logger.info('[$chatName] online member count is '
+              '${updateChatOnlineMemberCount.online_member_count}.');
+          _updateChatMembersOnlineCount(
+              chatName: chatName,
+              memberCount: updateChatOnlineMemberCount.online_member_count!);
+        }
+      }
+    });
+  }
 
-    var response = await _tdStreamController.stream
-        .where((event) => event.extra == extra)
-        .first;
+  Future<Proxy> _addProxy({
+    String? server,
+    int? port,
+    ProxyType? proxyType,
+    int timeoutMilliseconds = tgTimeoutMilliseconds,
+    int retryCountMax = tgRetryCountMax,
+  }) async {
+    _logger.info('adding proxy...');
 
-    if (response is Error) {
-      _logger.warning('[$chatName] getting chat history '
-          'failed with error.');
-      _logger.warning('[$chatName] $response.');
-    }
-
-    _logger
-        .info('[$chatName] getting chat history from $messageIdFrom... done.');
-
-    return response;
+    return await _retryTdCall(
+      tdFunction: AddProxy(
+        server: server,
+        port: port,
+        type: proxyType,
+        enable: true,
+      ),
+      timeoutMilliseconds: timeoutMilliseconds,
+      retryCountMax: retryCountMax,
+    ) as Proxy;
   }
 
   Future<void> _addChats({
@@ -655,13 +1138,19 @@ class TelegramClientIsolated {
     _logger.info('adding chats to db...');
 
     dbSendPort.send(DbMsgRequestAddChats(
+      replySendPort: receivePort.sendPort,
       usernames: usernames,
     ));
-    await receivePortBroadcast
+    var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseAddChats)
         .first;
 
-    _logger.info('adding chats to db... done.');
+    if (response.exception != null) {
+      throw TgDbException(
+          exception: response.exception, operationName: response.operationName);
+    }
+
+    _logger.info('added ${usernames.length} chats to db...');
   }
 
   Future<void> _updateChat({
@@ -671,20 +1160,115 @@ class TelegramClientIsolated {
     _logger.info('[$chatName] updating chat in db...');
 
     dbSendPort.send(DbMsgRequestUpdateChat(
+      replySendPort: receivePort.sendPort,
       username: chatName,
       chat: chat,
     ));
-    await receivePortBroadcast
+    var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseUpdateChat)
         .first;
 
+    if (response.exception != null) {
+      throw TgDbException(
+          exception: response.exception, operationName: response.operationName);
+    }
     _logger.info('[$chatName] updating chat in db... done.');
+  }
+
+  Future<void> _updateChatMembersCount({
+    required String chatName,
+    required int memberCount,
+  }) async {
+    _logger.info('[$chatName] updating chat member count in db...');
+
+    dbSendPort.send(DbMsgRequestUpdateChatMembersCount(
+      replySendPort: receivePort.sendPort,
+      username: chatName,
+      membersCount: memberCount,
+    ));
+    var response = await receivePortBroadcast
+        .where((event) => event is DbMsgResponseUpdateChatMembersCount)
+        .first;
+
+    if (response.exception != null) {
+      throw TgDbException(
+          exception: response.exception, operationName: response.operationName);
+    } else {
+      _logger.info('[$chatName] updating chat member count in db... done.');
+    }
+  }
+
+  Future<void> _updateChatMembersBotsCount({
+    required String chatName,
+    required int memberCount,
+  }) async {
+    _logger.info('[$chatName] updating chat bot count in db...');
+
+    dbSendPort.send(DbMsgRequestUpdateChatMembersBotsCount(
+      replySendPort: receivePort.sendPort,
+      username: chatName,
+      membersCount: memberCount,
+    ));
+    var response = await receivePortBroadcast
+        .where((event) => event is DbMsgResponseUpdateChatMembersBotsCount)
+        .first;
+
+    if (response.exception != null) {
+      throw TgDbException(
+          exception: response.exception, operationName: response.operationName);
+    } else {
+      _logger.info('[$chatName] updating chat bot count in db... done.');
+    }
+  }
+
+  Future<void> _updateChatMembersOnlineCount({
+    required String chatName,
+    required int memberCount,
+  }) async {
+    _logger.info('[$chatName] updating chat online member count in db...');
+
+    dbSendPort.send(DbMsgRequestUpdateChatMembersOnlineCount(
+      replySendPort: receivePort.sendPort,
+      username: chatName,
+      membersCount: memberCount,
+    ));
+    await receivePortBroadcast
+        .where((event) => event is DbMsgResponseUpdateChatMembersOnlineCount)
+        .first;
+
+    _logger
+        .info('[$chatName] updating chat online member count in db... done.');
+  }
+
+  Future<void> _blacklistChat({
+    required String chatName,
+    required String reason,
+  }) async {
+    _logger.info('[$chatName] blacklisting chat in db... '
+        'Reason: $reason.');
+
+    dbSendPort.send(DbMsgRequestBlacklistChat(
+      replySendPort: receivePort.sendPort,
+      username: chatName,
+      reason: reason,
+    ));
+    var response = await receivePortBroadcast
+        .where((event) => event is DbMsgResponseBlacklistChat)
+        .first;
+
+    if (response.exception != null) {
+      throw TgDbException(
+          exception: response.exception, operationName: response.operationName);
+    } else {
+      _logger.info('[$chatName] blacklisting chat in db... done.');
+    }
   }
 
   Future<int?> _saveMessages({
     required String chatName,
     required int chatId,
     required Messages messages,
+    required int? onlineMemberCount,
   }) async {
     _logger.info('[$chatName] saving messages...');
 
@@ -694,23 +1278,34 @@ class TelegramClientIsolated {
 
     for (Message message in messages.messages!) {
       dbSendPort.send(DbMsgRequestAddMessage(
+        replySendPort: receivePort.sendPort,
         message: message,
+        onlineMemberCount: onlineMemberCount,
       ));
       var response = await receivePortBroadcast
           .where((event) => event is DbMsgResponseAddMessage)
           .first;
 
-      if (response.added) {
-        messageCount += 1;
+      if (response.exception != null) {
+        throw TgDbException(
+            exception: response.exception,
+            operationName: response.operationName);
       }
 
-      var messageId = WrapId.unwrapMessageId(message.id);
-      if (messageId != null) {
-        if (messageIdLast == null) {
-          messageIdLast = messageId;
-        } else if (messageId > messageIdLast) {
-          messageIdLast = messageId;
-        }
+      messageCount += 1;
+
+      int messageId;
+      try {
+        messageId = WrapId.unwrapMessageId(message.id);
+      } on UnWrapIdxception catch (ex) {
+        _logger.severe(ex);
+        continue;
+      }
+
+      if (messageIdLast == null) {
+        messageIdLast = messageId;
+      } else if (messageId > messageIdLast) {
+        messageIdLast = messageId;
       }
     }
 
@@ -727,6 +1322,7 @@ class TelegramClientIsolated {
     _logger.info('[$chatName] searching last message id locally...');
 
     dbSendPort.send(DbMsgRequestSelectMaxMessageId(
+      replySendPort: receivePort.sendPort,
       chatId: chatId,
       dateTimeFrom: dateTimeFrom,
     ));
@@ -734,7 +1330,11 @@ class TelegramClientIsolated {
         .where((event) => event is DbMsgResponseSelectMaxMessageId)
         .first;
 
-    if (response.id == null) {
+    if (response.exception != null) {
+      _logger.info('[_searchMessageIdLastLocally] db error occured');
+      throw TgDbException(
+          exception: response.exception, operationName: response.operationName);
+    } else if (response.id == null) {
       _logger.info('[$chatName] searching last message id locally... '
           'not found.');
     } else {
@@ -746,15 +1346,101 @@ class TelegramClientIsolated {
 
     return response.id;
   }
+
+  Future<int?> _selectOnlineMemberCount({
+    required String chatName,
+  }) async {
+    _logger.info('[$chatName] selecting online member count locally...');
+
+    dbSendPort.send(DbMsgRequestSelectChatOnlineMemberCount(
+      replySendPort: receivePort.sendPort,
+      chatName: chatName,
+    ));
+    var response = await receivePortBroadcast
+        .where((event) => event is DbMsgResponseSelectChatOnlineMemberCount)
+        .first as DbMsgResponseSelectChatOnlineMemberCount;
+
+    if (response.exception != null) {
+      _logger.info('[_selectOnlineMemberCount] db error occured');
+      throw TgDbException(
+          exception: response.exception, operationName: response.operationName);
+    } else if (response.onlineMemberCount == null) {
+      _logger.info('[$chatName] searching online member count locally... '
+          'not found.');
+    } else {
+      _logger.info('[$chatName] searching online member count locally... '
+          'found ${response.onlineMemberCount}.');
+    }
+
+    _logger.info('[$chatName] searching online member count locally... done.');
+
+    return response.onlineMemberCount;
+  }
+
+  int? _parseFloodWaitSeconds({String? floodWaitMessage}) {
+    return int.tryParse(
+        floodWaitMessage?.replaceFirst('FLOOD_WAIT_', '') ?? '');
+  }
+
+  Never _handleTdError(Error error) {
+    // TODO handle
+    // 401 UNAUTHORIZED
+    // 403 FORBIDDEN
+    // 404 NOT_FOUND
+    // 500 INTERNAL
+    if (error.code == 400) {
+      throw TgBadRequestException(
+        error.message,
+        error.code,
+      );
+    } else if (error.code == 402) {
+      var floodWaitSeconds =
+          _parseFloodWaitSeconds(floodWaitMessage: error.message);
+      if (floodWaitSeconds == null) {
+        throw TgException('could not parse flood wait seconds: '
+            '${error.message}');
+      } else {
+        throw TgFloodWaiException(floodWaitSeconds);
+      }
+    } else if (error.code == 404) {
+      throw TgNotFoundException(
+        error.message,
+        error.code,
+      );
+    } else if (error.code == 406) {
+      throw TgNotExceptableException(
+        'Handle me: '
+        'https://core.telegram.org/api/errors#406-not-acceptable',
+        error.code,
+      );
+    } else {
+      throw TgErrorCodeNotHandledException(
+        error.message,
+        error.code,
+      );
+    }
+  }
 }
 
 abstract class TgMsg {}
 
-abstract class TgMsgRequest extends TgMsg {}
+abstract class TgMsgRequest extends TgMsg {
+  final SendPort? replySendPort;
+  TgMsgRequest({
+    this.replySendPort,
+  });
+}
 
-abstract class TgMsgResponse extends TgMsg {}
+abstract class TgMsgResponse extends TgMsg {
+  final Exception? exception;
+  TgMsgResponse({this.exception});
+}
 
-class TgMsgRequestExit extends TgMsgRequest {}
+class TgMsgRequestExit extends TgMsgRequest {
+  TgMsgRequestExit({
+    super.replySendPort,
+  });
+}
 
 class TgMsgResponseExit extends TgMsgResponse {}
 
@@ -770,6 +1456,7 @@ class TgMsgRequestLogin extends TgMsgRequest {
   final String Function() readUserPassword;
 
   TgMsgRequestLogin({
+    super.replySendPort,
     required this.apiId,
     required this.apiHash,
     required this.phoneNumber,
@@ -782,26 +1469,204 @@ class TgMsgRequestLogin extends TgMsgRequest {
   });
 }
 
+class TgMsgResponseLogin extends TgMsgResponse {
+  bool isAuthorized = false;
+
+  TgMsgResponseLogin({
+    required this.isAuthorized,
+    super.exception,
+  });
+}
+
 class TgMsgRequestReadChatsHistory extends TgMsgRequest {
   final DateTime dateTimeFrom;
   final List<string> chatsNames;
 
   TgMsgRequestReadChatsHistory({
+    super.replySendPort,
     required this.dateTimeFrom,
     required this.chatsNames,
   });
 }
 
-class TgMsgResponseLogin extends TgMsgResponse {
-  bool isAuthorized = false;
-  bool isClosed = false;
-  bool isError = false;
-
-  TgMsgResponseLogin({
-    required this.isAuthorized,
-    required this.isClosed,
-    required this.isError,
+class TgMsgResponseReadChatHistory extends TgMsgResponse {
+  TgMsgResponseReadChatHistory({
+    super.exception,
   });
 }
 
-class TgMsgResponseReadChatHistory extends TgMsgResponse {}
+class TgException implements Exception {
+  final String? message;
+
+  TgException([this.message = '']);
+
+  String toString() {
+    var report = 'TgException';
+    if (message != null) {
+      report += ': $message';
+    }
+    return report;
+  }
+}
+
+class TgChatNotFoundException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgChatNotFoundException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = 'TgChatNotFoundException';
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
+    }
+    return report;
+  }
+}
+
+class TgBadRequestException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgBadRequestException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = 'TgBadRequestException';
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
+    }
+    return report;
+  }
+}
+
+class TgNotFoundException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgNotFoundException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = 'TgNotFoundException';
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
+    }
+    return report;
+  }
+}
+
+class TgNotExceptableException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgNotExceptableException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = 'TgNotExceptableException';
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
+    }
+    return report;
+  }
+}
+
+class TgErrorCodeNotHandledException implements Exception {
+  final String? message;
+  final int? code;
+
+  TgErrorCodeNotHandledException([
+    this.message = '',
+    this.code = 0,
+  ]);
+
+  String toString() {
+    var report = 'TgErrorCodeNotHandledException';
+    if (message != null) {
+      report += ': $message';
+    }
+    if (code != null) {
+      report += ', code: $code';
+    }
+    return report;
+  }
+}
+
+class TgFloodWaiException implements Exception {
+  final int waitSeconds;
+
+  TgFloodWaiException(
+    this.waitSeconds,
+  );
+
+  String toString() {
+    return 'TgFloodWaiException: $waitSeconds';
+  }
+}
+
+class TgMaxRetriesExcedeedException implements Exception {
+  final int maxRetries;
+
+  TgMaxRetriesExcedeedException(
+    this.maxRetries,
+  );
+
+  String toString() {
+    return 'TgMaxRetriesExcedeedException: $maxRetries';
+  }
+}
+
+class TgTimeOutException implements Exception {
+  final int millisenconds;
+  final String request;
+
+  TgTimeOutException(
+    this.millisenconds,
+    this.request,
+  );
+
+  String toString() {
+    return 'TgTimeOutException: '
+        'request $request timed out '
+        'after ${millisenconds / 1000} seconds.';
+  }
+}
+
+class TgDbException implements Exception {
+  SqliteException? exception;
+  String? operationName;
+  TgDbException({this.exception, this.operationName});
+
+  String toString() {
+    var report = 'TgDbException';
+    if (exception != null) {
+      report += ': got $exception';
+    }
+    if (operationName != null) {
+      report += ' in operation $operationName';
+    }
+    return report;
+  }
+}
