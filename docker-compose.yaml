@@ -22,7 +22,6 @@ services:
       - CHATS_NAMES="\[\]"
       - RUN_FOREVER=false
     volumes:
-      - ./:/app/
       - tdlib-data:/var/lib/tdlib:rw
       - sqlite-data:/var/lib/sqlite:rw
 
