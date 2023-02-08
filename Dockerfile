@@ -24,6 +24,21 @@ RUN \
         /app-temp/packages/td_json_client/lib/src/log_callback && \
     cmake --build . --target install
 
+# Copy Dart application and compile as an executable
+RUN rm -rf /app && mkdir -p /app
+COPY melos.yaml melos.yaml
+COPY ./packages /app/packages
+
+ENV PATH="/root/.pub-cache/bin:${PATH}"
+
+WORKDIR /app
+
+RUN dart pub global activate melos
+
+RUN melos bootstrap 
+
+RUN dart compile exe packages/cli/bin/main.dart --output=echo
+
 ### main application image ###
 FROM dart:stable
 
@@ -38,23 +53,12 @@ COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/libtdj
 COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/lib/libtdjson.so*  /usr/local/lib/
 RUN ldconfig
 
-RUN rm -rf /app-temp
-
-RUN rm -rf /app && mkdir -p /app
-COPY melos.yaml melos.yaml
-COPY ./packages /app/packages
-
-ENV PATH="/root/.pub-cache/bin:${PATH}"
-
-WORKDIR /app
-
-RUN dart pub global activate melos
-
-RUN melos bootstrap 
+# Copy compiled executable
+COPY --from=builder /app/echo /app/echo
 
 CMD ["sh", "-c", \
-    "dart /app/packages/cli/bin/main.dart \
-    --api-id $API_ID \
+    "/app/echo \
+     --api-id $API_ID \
     --api-hash $API_HASH \
     --phone-number $PHONE \
     --libtdjson-path $PATH_TD_JSON_LIB \
