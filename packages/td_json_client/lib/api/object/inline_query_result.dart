@@ -18,11 +18,9 @@ abstract class InlineQueryResult extends TdObject {
   InlineQueryResult({super.extra, super.client_id});
 }
 
-
 /// Represents a link to an article or web page
 class InlineQueryResultArticle extends InlineQueryResult {
   String get tdType => 'inlineQueryResultArticle';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -88,7 +86,6 @@ class InlineQueryResultArticle extends InlineQueryResult {
 class InlineQueryResultContact extends InlineQueryResult {
   String get tdType => 'inlineQueryResultContact';
 
-
   /// Unique identifier of the query result
   string? id;
 
@@ -137,7 +134,6 @@ class InlineQueryResultContact extends InlineQueryResult {
 /// Represents a point on the map
 class InlineQueryResultLocation extends InlineQueryResult {
   String get tdType => 'inlineQueryResultLocation';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -194,7 +190,6 @@ class InlineQueryResultLocation extends InlineQueryResult {
 class InlineQueryResultVenue extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVenue';
 
-
   /// Unique identifier of the query result
   string? id;
 
@@ -244,7 +239,6 @@ class InlineQueryResultVenue extends InlineQueryResult {
 class InlineQueryResultGame extends InlineQueryResult {
   String get tdType => 'inlineQueryResultGame';
 
-
   /// Unique identifier of the query result
   string? id;
 
@@ -285,7 +279,6 @@ class InlineQueryResultGame extends InlineQueryResult {
 /// Represents an animation file
 class InlineQueryResultAnimation extends InlineQueryResult {
   String get tdType => 'inlineQueryResultAnimation';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -334,7 +327,6 @@ class InlineQueryResultAnimation extends InlineQueryResult {
 class InlineQueryResultAudio extends InlineQueryResult {
   String get tdType => 'inlineQueryResultAudio';
 
-
   /// Unique identifier of the query result
   string? id;
 
@@ -375,7 +367,6 @@ class InlineQueryResultAudio extends InlineQueryResult {
 /// Represents a document
 class InlineQueryResultDocument extends InlineQueryResult {
   String get tdType => 'inlineQueryResultDocument';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -429,7 +420,6 @@ class InlineQueryResultDocument extends InlineQueryResult {
 class InlineQueryResultPhoto extends InlineQueryResult {
   String get tdType => 'inlineQueryResultPhoto';
 
-
   /// Unique identifier of the query result
   string? id;
 
@@ -482,7 +472,6 @@ class InlineQueryResultPhoto extends InlineQueryResult {
 class InlineQueryResultSticker extends InlineQueryResult {
   String get tdType => 'inlineQueryResultSticker';
 
-
   /// Unique identifier of the query result
   string? id;
 
@@ -523,7 +512,6 @@ class InlineQueryResultSticker extends InlineQueryResult {
 /// Represents a video
 class InlineQueryResultVideo extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVideo';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -576,7 +564,6 @@ class InlineQueryResultVideo extends InlineQueryResult {
 /// Represents a voice note
 class InlineQueryResultVoiceNote extends InlineQueryResult {
   String get tdType => 'inlineQueryResultVoiceNote';
-
 
   /// Unique identifier of the query result
   string? id;

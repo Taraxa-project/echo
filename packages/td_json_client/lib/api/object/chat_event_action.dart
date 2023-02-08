@@ -15,13 +15,11 @@ abstract class ChatEventAction extends TdObject {
   ChatEventAction({super.extra, super.client_id});
 }
 
-
-/// A message was edited 
+/// A message was edited
 class ChatEventMessageEdited extends ChatEventAction {
   String get tdType => 'chatEventMessageEdited';
 
-
-  /// The original message before the edit 
+  /// The original message before the edit
   Message? old_message;
 
   /// The message after it was edited
@@ -60,12 +58,11 @@ class ChatEventMessageEdited extends ChatEventAction {
   }
 }
 
-/// A message was deleted 
+/// A message was deleted
 class ChatEventMessageDeleted extends ChatEventAction {
   String get tdType => 'chatEventMessageDeleted';
 
-
-  /// Deleted message 
+  /// Deleted message
   Message? message;
 
   /// True, if the message deletion can be reported via reportSupergroupAntiSpamFalsePositive
@@ -84,7 +81,8 @@ class ChatEventMessageDeleted extends ChatEventAction {
     if (map['message'] != null) {
       message = TdApiMap.fromMap(map['message']) as Message;
     }
-    can_report_anti_spam_false_positive = map['can_report_anti_spam_false_positive'];
+    can_report_anti_spam_false_positive =
+        map['can_report_anti_spam_false_positive'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -93,7 +91,8 @@ class ChatEventMessageDeleted extends ChatEventAction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'message': message?.toMap(skipNulls: skipNulls),
-      'can_report_anti_spam_false_positive': can_report_anti_spam_false_positive?.toMap(skipNulls: skipNulls),
+      'can_report_anti_spam_false_positive':
+          can_report_anti_spam_false_positive?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -102,10 +101,9 @@ class ChatEventMessageDeleted extends ChatEventAction {
   }
 }
 
-/// A message was pinned 
+/// A message was pinned
 class ChatEventMessagePinned extends ChatEventAction {
   String get tdType => 'chatEventMessagePinned';
-
 
   /// Pinned message
   Message? message;
@@ -138,10 +136,9 @@ class ChatEventMessagePinned extends ChatEventAction {
   }
 }
 
-/// A message was unpinned 
+/// A message was unpinned
 class ChatEventMessageUnpinned extends ChatEventAction {
   String get tdType => 'chatEventMessageUnpinned';
-
 
   /// Unpinned message
   Message? message;
@@ -174,10 +171,9 @@ class ChatEventMessageUnpinned extends ChatEventAction {
   }
 }
 
-/// A poll in a message was stopped 
+/// A poll in a message was stopped
 class ChatEventPollStopped extends ChatEventAction {
   String get tdType => 'chatEventPollStopped';
-
 
   /// The message with the poll
   Message? message;
@@ -214,7 +210,6 @@ class ChatEventPollStopped extends ChatEventAction {
 class ChatEventMemberJoined extends ChatEventAction {
   String get tdType => 'chatEventMemberJoined';
 
-
   ChatEventMemberJoined({
     super.extra,
     super.client_id,
@@ -238,10 +233,9 @@ class ChatEventMemberJoined extends ChatEventAction {
   }
 }
 
-/// A new member joined the chat via an invite link 
+/// A new member joined the chat via an invite link
 class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
   String get tdType => 'chatEventMemberJoinedByInviteLink';
-
 
   /// Invite link used to join the chat
   ChatInviteLink? invite_link;
@@ -274,12 +268,11 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
   }
 }
 
-/// A new member was accepted to the chat by an administrator 
+/// A new member was accepted to the chat by an administrator
 class ChatEventMemberJoinedByRequest extends ChatEventAction {
   String get tdType => 'chatEventMemberJoinedByRequest';
 
-
-  /// User identifier of the chat administrator, approved user join request 
+  /// User identifier of the chat administrator, approved user join request
   int53? approver_user_id;
 
   /// Invite link used to join the chat; may be null
@@ -316,12 +309,11 @@ class ChatEventMemberJoinedByRequest extends ChatEventAction {
   }
 }
 
-/// A new chat member was invited 
+/// A new chat member was invited
 class ChatEventMemberInvited extends ChatEventAction {
   String get tdType => 'chatEventMemberInvited';
 
-
-  /// New member user identifier 
+  /// New member user identifier
   int53? user_id;
 
   /// New member status
@@ -362,7 +354,6 @@ class ChatEventMemberInvited extends ChatEventAction {
 class ChatEventMemberLeft extends ChatEventAction {
   String get tdType => 'chatEventMemberLeft';
 
-
   ChatEventMemberLeft({
     super.extra,
     super.client_id,
@@ -386,15 +377,14 @@ class ChatEventMemberLeft extends ChatEventAction {
   }
 }
 
-/// A chat member has gained/lost administrator status, or the list of their administrator privileges has changed 
+/// A chat member has gained/lost administrator status, or the list of their administrator privileges has changed
 class ChatEventMemberPromoted extends ChatEventAction {
   String get tdType => 'chatEventMemberPromoted';
 
-
-  /// Affected chat member user identifier 
+  /// Affected chat member user identifier
   int53? user_id;
 
-  /// Previous status of the chat member 
+  /// Previous status of the chat member
   ChatMemberStatus? old_status;
 
   /// New status of the chat member
@@ -436,15 +426,14 @@ class ChatEventMemberPromoted extends ChatEventAction {
   }
 }
 
-/// A chat member was restricted/unrestricted or banned/unbanned, or the list of their restrictions has changed 
+/// A chat member was restricted/unrestricted or banned/unbanned, or the list of their restrictions has changed
 class ChatEventMemberRestricted extends ChatEventAction {
   String get tdType => 'chatEventMemberRestricted';
 
-
-  /// Affected chat member identifier 
+  /// Affected chat member identifier
   MessageSender? member_id;
 
-  /// Previous status of the chat member 
+  /// Previous status of the chat member
   ChatMemberStatus? old_status;
 
   /// New status of the chat member
@@ -488,12 +477,11 @@ class ChatEventMemberRestricted extends ChatEventAction {
   }
 }
 
-/// The chat available reactions were changed 
+/// The chat available reactions were changed
 class ChatEventAvailableReactionsChanged extends ChatEventAction {
   String get tdType => 'chatEventAvailableReactionsChanged';
 
-
-  /// Previous chat available reactions 
+  /// Previous chat available reactions
   ChatAvailableReactions? old_available_reactions;
 
   /// New chat available reactions
@@ -510,10 +498,12 @@ class ChatEventAvailableReactionsChanged extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_available_reactions'] != null) {
-      old_available_reactions = TdApiMap.fromMap(map['old_available_reactions']) as ChatAvailableReactions;
+      old_available_reactions = TdApiMap.fromMap(map['old_available_reactions'])
+          as ChatAvailableReactions;
     }
     if (map['new_available_reactions'] != null) {
-      new_available_reactions = TdApiMap.fromMap(map['new_available_reactions']) as ChatAvailableReactions;
+      new_available_reactions = TdApiMap.fromMap(map['new_available_reactions'])
+          as ChatAvailableReactions;
     }
   }
 
@@ -522,8 +512,10 @@ class ChatEventAvailableReactionsChanged extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_available_reactions': old_available_reactions?.toMap(skipNulls: skipNulls),
-      'new_available_reactions': new_available_reactions?.toMap(skipNulls: skipNulls),
+      'old_available_reactions':
+          old_available_reactions?.toMap(skipNulls: skipNulls),
+      'new_available_reactions':
+          new_available_reactions?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -532,12 +524,11 @@ class ChatEventAvailableReactionsChanged extends ChatEventAction {
   }
 }
 
-/// The chat description was changed 
+/// The chat description was changed
 class ChatEventDescriptionChanged extends ChatEventAction {
   String get tdType => 'chatEventDescriptionChanged';
 
-
-  /// Previous chat description 
+  /// Previous chat description
   string? old_description;
 
   /// New chat description
@@ -572,12 +563,11 @@ class ChatEventDescriptionChanged extends ChatEventAction {
   }
 }
 
-/// The linked chat of a supergroup was changed 
+/// The linked chat of a supergroup was changed
 class ChatEventLinkedChatChanged extends ChatEventAction {
   String get tdType => 'chatEventLinkedChatChanged';
 
-
-  /// Previous supergroup linked chat identifier 
+  /// Previous supergroup linked chat identifier
   int53? old_linked_chat_id;
 
   /// New supergroup linked chat identifier
@@ -612,12 +602,11 @@ class ChatEventLinkedChatChanged extends ChatEventAction {
   }
 }
 
-/// The supergroup location was changed 
+/// The supergroup location was changed
 class ChatEventLocationChanged extends ChatEventAction {
   String get tdType => 'chatEventLocationChanged';
 
-
-  /// Previous location; may be null 
+  /// Previous location; may be null
   ChatLocation? old_location;
 
   /// New location; may be null
@@ -656,12 +645,11 @@ class ChatEventLocationChanged extends ChatEventAction {
   }
 }
 
-/// The message auto-delete timer was changed 
+/// The message auto-delete timer was changed
 class ChatEventMessageAutoDeleteTimeChanged extends ChatEventAction {
   String get tdType => 'chatEventMessageAutoDeleteTimeChanged';
 
-
-  /// Previous value of message_auto_delete_time 
+  /// Previous value of message_auto_delete_time
   int32? old_message_auto_delete_time;
 
   /// New value of message_auto_delete_time
@@ -686,8 +674,10 @@ class ChatEventMessageAutoDeleteTimeChanged extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_message_auto_delete_time': old_message_auto_delete_time?.toMap(skipNulls: skipNulls),
-      'new_message_auto_delete_time': new_message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'old_message_auto_delete_time':
+          old_message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'new_message_auto_delete_time':
+          new_message_auto_delete_time?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -696,12 +686,11 @@ class ChatEventMessageAutoDeleteTimeChanged extends ChatEventAction {
   }
 }
 
-/// The chat permissions was changed 
+/// The chat permissions was changed
 class ChatEventPermissionsChanged extends ChatEventAction {
   String get tdType => 'chatEventPermissionsChanged';
 
-
-  /// Previous chat permissions 
+  /// Previous chat permissions
   ChatPermissions? old_permissions;
 
   /// New chat permissions
@@ -718,10 +707,12 @@ class ChatEventPermissionsChanged extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_permissions'] != null) {
-      old_permissions = TdApiMap.fromMap(map['old_permissions']) as ChatPermissions;
+      old_permissions =
+          TdApiMap.fromMap(map['old_permissions']) as ChatPermissions;
     }
     if (map['new_permissions'] != null) {
-      new_permissions = TdApiMap.fromMap(map['new_permissions']) as ChatPermissions;
+      new_permissions =
+          TdApiMap.fromMap(map['new_permissions']) as ChatPermissions;
     }
   }
 
@@ -740,12 +731,11 @@ class ChatEventPermissionsChanged extends ChatEventAction {
   }
 }
 
-/// The chat photo was changed 
+/// The chat photo was changed
 class ChatEventPhotoChanged extends ChatEventAction {
   String get tdType => 'chatEventPhotoChanged';
 
-
-  /// Previous chat photo value; may be null 
+  /// Previous chat photo value; may be null
   ChatPhoto? old_photo;
 
   /// New chat photo value; may be null
@@ -784,12 +774,11 @@ class ChatEventPhotoChanged extends ChatEventAction {
   }
 }
 
-/// The slow_mode_delay setting of a supergroup was changed 
+/// The slow_mode_delay setting of a supergroup was changed
 class ChatEventSlowModeDelayChanged extends ChatEventAction {
   String get tdType => 'chatEventSlowModeDelayChanged';
 
-
-  /// Previous value of slow_mode_delay, in seconds 
+  /// Previous value of slow_mode_delay, in seconds
   int32? old_slow_mode_delay;
 
   /// New value of slow_mode_delay, in seconds
@@ -824,12 +813,11 @@ class ChatEventSlowModeDelayChanged extends ChatEventAction {
   }
 }
 
-/// The supergroup sticker set was changed 
+/// The supergroup sticker set was changed
 class ChatEventStickerSetChanged extends ChatEventAction {
   String get tdType => 'chatEventStickerSetChanged';
 
-
-  /// Previous identifier of the chat sticker set; 0 if none 
+  /// Previous identifier of the chat sticker set; 0 if none
   int64? old_sticker_set_id;
 
   /// New identifier of the chat sticker set; 0 if none
@@ -864,12 +852,11 @@ class ChatEventStickerSetChanged extends ChatEventAction {
   }
 }
 
-/// The chat title was changed 
+/// The chat title was changed
 class ChatEventTitleChanged extends ChatEventAction {
   String get tdType => 'chatEventTitleChanged';
 
-
-  /// Previous chat title 
+  /// Previous chat title
   string? old_title;
 
   /// New chat title
@@ -904,12 +891,11 @@ class ChatEventTitleChanged extends ChatEventAction {
   }
 }
 
-/// The chat editable username was changed 
+/// The chat editable username was changed
 class ChatEventUsernameChanged extends ChatEventAction {
   String get tdType => 'chatEventUsernameChanged';
 
-
-  /// Previous chat username 
+  /// Previous chat username
   string? old_username;
 
   /// New chat username
@@ -944,12 +930,11 @@ class ChatEventUsernameChanged extends ChatEventAction {
   }
 }
 
-/// The chat active usernames were changed 
+/// The chat active usernames were changed
 class ChatEventActiveUsernamesChanged extends ChatEventAction {
   String get tdType => 'chatEventActiveUsernamesChanged';
 
-
-  /// Previous list of active usernames 
+  /// Previous list of active usernames
   vector<string>? old_usernames;
 
   /// New list of active usernames
@@ -994,10 +979,9 @@ class ChatEventActiveUsernamesChanged extends ChatEventAction {
   }
 }
 
-/// The has_protected_content setting of a channel was toggled 
+/// The has_protected_content setting of a channel was toggled
 class ChatEventHasProtectedContentToggled extends ChatEventAction {
   String get tdType => 'chatEventHasProtectedContentToggled';
-
 
   /// New value of has_protected_content
   Bool? has_protected_content;
@@ -1019,7 +1003,8 @@ class ChatEventHasProtectedContentToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'has_protected_content': has_protected_content?.toMap(skipNulls: skipNulls),
+      'has_protected_content':
+          has_protected_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1028,10 +1013,9 @@ class ChatEventHasProtectedContentToggled extends ChatEventAction {
   }
 }
 
-/// The can_invite_users permission of a supergroup chat was toggled 
+/// The can_invite_users permission of a supergroup chat was toggled
 class ChatEventInvitesToggled extends ChatEventAction {
   String get tdType => 'chatEventInvitesToggled';
-
 
   /// New value of can_invite_users permission
   Bool? can_invite_users;
@@ -1062,10 +1046,9 @@ class ChatEventInvitesToggled extends ChatEventAction {
   }
 }
 
-/// The is_all_history_available setting of a supergroup was toggled 
+/// The is_all_history_available setting of a supergroup was toggled
 class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
   String get tdType => 'chatEventIsAllHistoryAvailableToggled';
-
 
   /// New value of is_all_history_available
   Bool? is_all_history_available;
@@ -1087,7 +1070,8 @@ class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'is_all_history_available': is_all_history_available?.toMap(skipNulls: skipNulls),
+      'is_all_history_available':
+          is_all_history_available?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1096,10 +1080,9 @@ class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
   }
 }
 
-/// The has_aggressive_anti_spam_enabled setting of a supergroup was toggled 
+/// The has_aggressive_anti_spam_enabled setting of a supergroup was toggled
 class ChatEventHasAggressiveAntiSpamEnabledToggled extends ChatEventAction {
   String get tdType => 'chatEventHasAggressiveAntiSpamEnabledToggled';
-
 
   /// New value of has_aggressive_anti_spam_enabled
   Bool? has_aggressive_anti_spam_enabled;
@@ -1110,7 +1093,8 @@ class ChatEventHasAggressiveAntiSpamEnabledToggled extends ChatEventAction {
     this.has_aggressive_anti_spam_enabled,
   });
 
-  ChatEventHasAggressiveAntiSpamEnabledToggled.fromMap(Map<String, dynamic> map) {
+  ChatEventHasAggressiveAntiSpamEnabledToggled.fromMap(
+      Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     has_aggressive_anti_spam_enabled = map['has_aggressive_anti_spam_enabled'];
@@ -1121,7 +1105,8 @@ class ChatEventHasAggressiveAntiSpamEnabledToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'has_aggressive_anti_spam_enabled': has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
+      'has_aggressive_anti_spam_enabled':
+          has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1130,10 +1115,9 @@ class ChatEventHasAggressiveAntiSpamEnabledToggled extends ChatEventAction {
   }
 }
 
-/// The sign_messages setting of a channel was toggled 
+/// The sign_messages setting of a channel was toggled
 class ChatEventSignMessagesToggled extends ChatEventAction {
   String get tdType => 'chatEventSignMessagesToggled';
-
 
   /// New value of sign_messages
   Bool? sign_messages;
@@ -1164,12 +1148,11 @@ class ChatEventSignMessagesToggled extends ChatEventAction {
   }
 }
 
-/// A chat invite link was edited 
+/// A chat invite link was edited
 class ChatEventInviteLinkEdited extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkEdited';
 
-
-  /// Previous information about the invite link 
+  /// Previous information about the invite link
   ChatInviteLink? old_invite_link;
 
   /// New information about the invite link
@@ -1186,10 +1169,12 @@ class ChatEventInviteLinkEdited extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_invite_link'] != null) {
-      old_invite_link = TdApiMap.fromMap(map['old_invite_link']) as ChatInviteLink;
+      old_invite_link =
+          TdApiMap.fromMap(map['old_invite_link']) as ChatInviteLink;
     }
     if (map['new_invite_link'] != null) {
-      new_invite_link = TdApiMap.fromMap(map['new_invite_link']) as ChatInviteLink;
+      new_invite_link =
+          TdApiMap.fromMap(map['new_invite_link']) as ChatInviteLink;
     }
   }
 
@@ -1208,10 +1193,9 @@ class ChatEventInviteLinkEdited extends ChatEventAction {
   }
 }
 
-/// A chat invite link was revoked 
+/// A chat invite link was revoked
 class ChatEventInviteLinkRevoked extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkRevoked';
-
 
   /// The invite link
   ChatInviteLink? invite_link;
@@ -1244,10 +1228,9 @@ class ChatEventInviteLinkRevoked extends ChatEventAction {
   }
 }
 
-/// A revoked chat invite link was deleted 
+/// A revoked chat invite link was deleted
 class ChatEventInviteLinkDeleted extends ChatEventAction {
   String get tdType => 'chatEventInviteLinkDeleted';
-
 
   /// The invite link
   ChatInviteLink? invite_link;
@@ -1280,10 +1263,9 @@ class ChatEventInviteLinkDeleted extends ChatEventAction {
   }
 }
 
-/// A video chat was created 
+/// A video chat was created
 class ChatEventVideoChatCreated extends ChatEventAction {
   String get tdType => 'chatEventVideoChatCreated';
-
 
   /// Identifier of the video chat. The video chat can be received through the method getGroupCall
   int32? group_call_id;
@@ -1314,10 +1296,9 @@ class ChatEventVideoChatCreated extends ChatEventAction {
   }
 }
 
-/// A video chat was ended 
+/// A video chat was ended
 class ChatEventVideoChatEnded extends ChatEventAction {
   String get tdType => 'chatEventVideoChatEnded';
-
 
   /// Identifier of the video chat. The video chat can be received through the method getGroupCall
   int32? group_call_id;
@@ -1348,10 +1329,9 @@ class ChatEventVideoChatEnded extends ChatEventAction {
   }
 }
 
-/// The mute_new_participants setting of a video chat was toggled 
+/// The mute_new_participants setting of a video chat was toggled
 class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
   String get tdType => 'chatEventVideoChatMuteNewParticipantsToggled';
-
 
   /// New value of the mute_new_participants setting
   Bool? mute_new_participants;
@@ -1362,7 +1342,8 @@ class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
     this.mute_new_participants,
   });
 
-  ChatEventVideoChatMuteNewParticipantsToggled.fromMap(Map<String, dynamic> map) {
+  ChatEventVideoChatMuteNewParticipantsToggled.fromMap(
+      Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     mute_new_participants = map['mute_new_participants'];
@@ -1373,7 +1354,8 @@ class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'mute_new_participants': mute_new_participants?.toMap(skipNulls: skipNulls),
+      'mute_new_participants':
+          mute_new_participants?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1382,12 +1364,11 @@ class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
   }
 }
 
-/// A video chat participant was muted or unmuted 
+/// A video chat participant was muted or unmuted
 class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
   String get tdType => 'chatEventVideoChatParticipantIsMutedToggled';
 
-
-  /// Identifier of the affected group call participant 
+  /// Identifier of the affected group call participant
   MessageSender? participant_id;
 
   /// New value of is_muted
@@ -1400,7 +1381,8 @@ class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
     this.is_muted,
   });
 
-  ChatEventVideoChatParticipantIsMutedToggled.fromMap(Map<String, dynamic> map) {
+  ChatEventVideoChatParticipantIsMutedToggled.fromMap(
+      Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['participant_id'] != null) {
@@ -1424,12 +1406,11 @@ class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
   }
 }
 
-/// A video chat participant volume level was changed 
+/// A video chat participant volume level was changed
 class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
   String get tdType => 'chatEventVideoChatParticipantVolumeLevelChanged';
 
-
-  /// Identifier of the affected group call participant 
+  /// Identifier of the affected group call participant
   MessageSender? participant_id;
 
   /// New value of volume_level; 1-20000 in hundreds of percents
@@ -1442,7 +1423,8 @@ class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
     this.volume_level,
   });
 
-  ChatEventVideoChatParticipantVolumeLevelChanged.fromMap(Map<String, dynamic> map) {
+  ChatEventVideoChatParticipantVolumeLevelChanged.fromMap(
+      Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['participant_id'] != null) {
@@ -1466,10 +1448,9 @@ class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
   }
 }
 
-/// The is_forum setting of a channel was toggled 
+/// The is_forum setting of a channel was toggled
 class ChatEventIsForumToggled extends ChatEventAction {
   String get tdType => 'chatEventIsForumToggled';
-
 
   /// New value of is_forum
   Bool? is_forum;
@@ -1500,10 +1481,9 @@ class ChatEventIsForumToggled extends ChatEventAction {
   }
 }
 
-/// A new forum topic was created 
+/// A new forum topic was created
 class ChatEventForumTopicCreated extends ChatEventAction {
   String get tdType => 'chatEventForumTopicCreated';
-
 
   /// Information about the topic
   ForumTopicInfo? topic_info;
@@ -1536,12 +1516,11 @@ class ChatEventForumTopicCreated extends ChatEventAction {
   }
 }
 
-/// A forum topic was edited 
+/// A forum topic was edited
 class ChatEventForumTopicEdited extends ChatEventAction {
   String get tdType => 'chatEventForumTopicEdited';
 
-
-  /// Old information about the topic 
+  /// Old information about the topic
   ForumTopicInfo? old_topic_info;
 
   /// New information about the topic
@@ -1558,10 +1537,12 @@ class ChatEventForumTopicEdited extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_topic_info'] != null) {
-      old_topic_info = TdApiMap.fromMap(map['old_topic_info']) as ForumTopicInfo;
+      old_topic_info =
+          TdApiMap.fromMap(map['old_topic_info']) as ForumTopicInfo;
     }
     if (map['new_topic_info'] != null) {
-      new_topic_info = TdApiMap.fromMap(map['new_topic_info']) as ForumTopicInfo;
+      new_topic_info =
+          TdApiMap.fromMap(map['new_topic_info']) as ForumTopicInfo;
     }
   }
 
@@ -1580,10 +1561,9 @@ class ChatEventForumTopicEdited extends ChatEventAction {
   }
 }
 
-/// A forum topic was closed or reopened 
+/// A forum topic was closed or reopened
 class ChatEventForumTopicToggleIsClosed extends ChatEventAction {
   String get tdType => 'chatEventForumTopicToggleIsClosed';
-
 
   /// New information about the topic
   ForumTopicInfo? topic_info;
@@ -1616,10 +1596,9 @@ class ChatEventForumTopicToggleIsClosed extends ChatEventAction {
   }
 }
 
-/// The General forum topic was hidden or unhidden 
+/// The General forum topic was hidden or unhidden
 class ChatEventForumTopicToggleIsHidden extends ChatEventAction {
   String get tdType => 'chatEventForumTopicToggleIsHidden';
-
 
   /// New information about the topic
   ForumTopicInfo? topic_info;
@@ -1652,10 +1631,9 @@ class ChatEventForumTopicToggleIsHidden extends ChatEventAction {
   }
 }
 
-/// A forum topic was deleted 
+/// A forum topic was deleted
 class ChatEventForumTopicDeleted extends ChatEventAction {
   String get tdType => 'chatEventForumTopicDeleted';
-
 
   /// Information about the topic
   ForumTopicInfo? topic_info;
@@ -1688,12 +1666,11 @@ class ChatEventForumTopicDeleted extends ChatEventAction {
   }
 }
 
-/// A pinned forum topic was changed 
+/// A pinned forum topic was changed
 class ChatEventForumTopicPinned extends ChatEventAction {
   String get tdType => 'chatEventForumTopicPinned';
 
-
-  /// Information about the old pinned topic; may be null 
+  /// Information about the old pinned topic; may be null
   ForumTopicInfo? old_topic_info;
 
   /// Information about the new pinned topic; may be null
@@ -1710,10 +1687,12 @@ class ChatEventForumTopicPinned extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_topic_info'] != null) {
-      old_topic_info = TdApiMap.fromMap(map['old_topic_info']) as ForumTopicInfo;
+      old_topic_info =
+          TdApiMap.fromMap(map['old_topic_info']) as ForumTopicInfo;
     }
     if (map['new_topic_info'] != null) {
-      new_topic_info = TdApiMap.fromMap(map['new_topic_info']) as ForumTopicInfo;
+      new_topic_info =
+          TdApiMap.fromMap(map['new_topic_info']) as ForumTopicInfo;
     }
   }
 

@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Sends data received from a keyboardButtonTypeWebApp Web App to a bot
 class SendWebAppData extends TdFunction {
   String get tdType => 'sendWebAppData';
   String get tdReturnType => 'Ok';
-
 
   /// Identifier of the target bot
   int53? bot_user_id;

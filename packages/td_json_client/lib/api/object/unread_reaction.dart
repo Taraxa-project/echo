@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reaction_type.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
-
 /// Contains information about an unread reaction to a message
 class UnreadReaction extends TdObject {
   String get tdType => 'unreadReaction';
-
 
   /// Type of the reaction
   ReactionType? type;

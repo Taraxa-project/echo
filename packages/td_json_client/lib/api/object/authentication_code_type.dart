@@ -5,11 +5,9 @@ abstract class AuthenticationCodeType extends TdObject {
   AuthenticationCodeType({super.extra, super.client_id});
 }
 
-
 /// An authentication code is delivered via a private Telegram message, which can be viewed from another active session
 class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeTelegramMessage';
-
 
   /// Length of the code
   int32? length;
@@ -44,7 +42,6 @@ class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
 class AuthenticationCodeTypeSms extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeSms';
 
-
   /// Length of the code
   int32? length;
 
@@ -77,7 +74,6 @@ class AuthenticationCodeTypeSms extends AuthenticationCodeType {
 /// An authentication code is delivered via a phone call to the specified phone number
 class AuthenticationCodeTypeCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeCall';
-
 
   /// Length of the code
   int32? length;
@@ -112,7 +108,6 @@ class AuthenticationCodeTypeCall extends AuthenticationCodeType {
 class AuthenticationCodeTypeFlashCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeFlashCall';
 
-
   /// Pattern of the phone number from which the call will be made
   string? pattern;
 
@@ -145,7 +140,6 @@ class AuthenticationCodeTypeFlashCall extends AuthenticationCodeType {
 /// An authentication code is delivered by an immediately canceled call to the specified phone number. The last digits of the phone number that calls are the code that must be entered manually by the user
 class AuthenticationCodeTypeMissedCall extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeMissedCall';
-
 
   /// Prefix of the phone number from which the call will be made
   string? phone_number_prefix;
@@ -185,7 +179,6 @@ class AuthenticationCodeTypeMissedCall extends AuthenticationCodeType {
 /// An authentication code is delivered to https://fragment.com. The user must be logged in there via a wallet owning the phone number's NFT
 class AuthenticationCodeTypeFragment extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeFragment';
-
 
   /// URL to open to receive the code
   string? url;

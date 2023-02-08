@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/speech_recognition_result.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Describes a voice note. The voice note must be encoded with the Opus codec, and stored inside an OGG container. Voice notes can have only a single audio channel
 class VoiceNote extends TdObject {
   String get tdType => 'voiceNote';
-
 
   /// Duration of the voice note, in seconds; as defined by the sender
   int32? duration;
@@ -41,7 +39,9 @@ class VoiceNote extends TdObject {
     waveform = map['waveform'];
     mime_type = map['mime_type'];
     if (map['speech_recognition_result'] != null) {
-      speech_recognition_result = TdApiMap.fromMap(map['speech_recognition_result']) as SpeechRecognitionResult;
+      speech_recognition_result =
+          TdApiMap.fromMap(map['speech_recognition_result'])
+              as SpeechRecognitionResult;
     }
     if (map['voice'] != null) {
       voice = TdApiMap.fromMap(map['voice']) as File;
@@ -56,7 +56,8 @@ class VoiceNote extends TdObject {
       'duration': duration?.toMap(skipNulls: skipNulls),
       'waveform': waveform?.toMap(skipNulls: skipNulls),
       'mime_type': mime_type?.toMap(skipNulls: skipNulls),
-      'speech_recognition_result': speech_recognition_result?.toMap(skipNulls: skipNulls),
+      'speech_recognition_result':
+          speech_recognition_result?.toMap(skipNulls: skipNulls),
       'voice': voice?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

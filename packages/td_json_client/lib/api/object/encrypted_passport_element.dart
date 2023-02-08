@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_element_type.dart';
 import 'package:td_json_client/api/object/dated_file.dart';
 
-
 /// Contains information about an encrypted Telegram Passport element; for bots only
 class EncryptedPassportElement extends TdObject {
   String get tdType => 'encryptedPassportElement';
-
 
   /// Type of Telegram Passport element
   PassportElementType? type;

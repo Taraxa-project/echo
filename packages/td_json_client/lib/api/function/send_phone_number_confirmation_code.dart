@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/phone_number_authentication_settings.dart';
 
-
 /// Sends phone number confirmation code to handle links of the type internalLinkTypePhoneNumberConfirmation
 class SendPhoneNumberConfirmationCode extends TdFunction {
   String get tdType => 'sendPhoneNumberConfirmationCode';
   String get tdReturnType => 'AuthenticationCodeInfo';
-
 
   /// Hash value from the link
   string? hash;
@@ -32,7 +30,8 @@ class SendPhoneNumberConfirmationCode extends TdFunction {
     hash = map['hash'];
     phone_number = map['phone_number'];
     if (map['settings'] != null) {
-      settings = TdApiMap.fromMap(map['settings']) as PhoneNumberAuthenticationSettings;
+      settings = TdApiMap.fromMap(map['settings'])
+          as PhoneNumberAuthenticationSettings;
     }
   }
 

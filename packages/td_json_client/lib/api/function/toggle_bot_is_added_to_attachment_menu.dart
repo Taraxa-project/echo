@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Adds or removes a bot to attachment menu. Bot can be added to attachment menu, only if userTypeBot.can_be_added_to_attachment_menu == true
 class ToggleBotIsAddedToAttachmentMenu extends TdFunction {
   String get tdType => 'toggleBotIsAddedToAttachmentMenu';
   String get tdReturnType => 'Ok';
-
 
   /// Bot's user identifier
   int53? bot_user_id;

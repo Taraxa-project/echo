@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/country_info.dart';
 
-
 /// Contains information about a phone number
 class PhoneNumberInfo extends TdObject {
   String get tdType => 'phoneNumberInfo';
-
 
   /// Information about the country to which the phone number belongs; may be null
   CountryInfo? country;
@@ -47,7 +45,8 @@ class PhoneNumberInfo extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'country': country?.toMap(skipNulls: skipNulls),
       'country_calling_code': country_calling_code?.toMap(skipNulls: skipNulls),
-      'formatted_phone_number': formatted_phone_number?.toMap(skipNulls: skipNulls),
+      'formatted_phone_number':
+          formatted_phone_number?.toMap(skipNulls: skipNulls),
       'is_anonymous': is_anonymous?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

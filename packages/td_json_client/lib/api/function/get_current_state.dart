@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Returns all updates needed to restore current TDLib state, i.e. all actual updateAuthorizationState/updateUser/updateNewChat and others. This is especially useful if TDLib is run in a separate process. Can be called before initialization
 class GetCurrentState extends TdFunction {
   String get tdType => 'getCurrentState';
   String get tdReturnType => 'Updates';
-
 
   GetCurrentState({
     super.extra,

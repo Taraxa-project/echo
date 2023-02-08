@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Describes an animated or custom representation of an emoji
 class AnimatedEmoji extends TdObject {
   String get tdType => 'animatedEmoji';
-
 
   /// Sticker for the emoji; may be null if yet unknown for a custom emoji. If the sticker is a custom emoji, it can have arbitrary format different from stickerFormatTgs
   Sticker? sticker;

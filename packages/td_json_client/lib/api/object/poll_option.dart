@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Describes one answer option of a poll
 class PollOption extends TdObject {
   String get tdType => 'pollOption';
-
 
   /// Option text; 1-100 characters
   string? text;

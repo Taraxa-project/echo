@@ -3,13 +3,11 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/usernames.dart';
 import 'package:td_json_client/api/object/chat_member_status.dart';
 
-
 /// Represents a supergroup or channel with zero or more members (subscribers in the case of channels). From the point of view of the system, a channel is a special kind of a supergroup:
 /// only administrators can post and see the list of members, and posts from all administrators use the name and photo of the channel instead of individual names and profile photos.
 /// Unlike supergroups, channels can have an unlimited number of subscribers
 class Supergroup extends TdObject {
   String get tdType => 'supergroup';
-
 
   /// Supergroup or channel identifier
   int53? id;
@@ -129,7 +127,8 @@ class Supergroup extends TdObject {
       'has_linked_chat': has_linked_chat?.toMap(skipNulls: skipNulls),
       'has_location': has_location?.toMap(skipNulls: skipNulls),
       'sign_messages': sign_messages?.toMap(skipNulls: skipNulls),
-      'join_to_send_messages': join_to_send_messages?.toMap(skipNulls: skipNulls),
+      'join_to_send_messages':
+          join_to_send_messages?.toMap(skipNulls: skipNulls),
       'join_by_request': join_by_request?.toMap(skipNulls: skipNulls),
       'is_slow_mode_enabled': is_slow_mode_enabled?.toMap(skipNulls: skipNulls),
       'is_channel': is_channel?.toMap(skipNulls: skipNulls),

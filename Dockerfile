@@ -45,7 +45,7 @@ FROM dart:stable
 # Install packages
 RUN apt update \
     && apt install -y \
-    libc++-dev libsqlite3-dev \
+    libc++-dev libsqlite3-dev procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy tdlib binaries
@@ -53,20 +53,9 @@ COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/libtdj
 COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/lib/libtdjson.so*  /usr/local/lib/
 RUN ldconfig
 
+COPY --from=builder /app/packages/cli/bin/main.sh /app/
+
 # Copy compiled executable
 COPY --from=builder /app/echo /app/echo
 
-CMD ["sh", "-c", \
-    "/app/echo \
-     --api-id $API_ID \
-    --api-hash $API_HASH \
-    --phone-number $PHONE \
-    --libtdjson-path $PATH_TD_JSON_LIB \
-    --loglevel $LOG_LEVEL \
-    --libtdjson-loglevel $LIBTDJSON_LOGLEVEL \
-    --database-path $PATH_TD_JSON_LIB_DATA \
-    --message-database-path $PATH_DB_MESSAGE \
-    $PROXY_OPTION \
-    messages \
-    --chats-names $CHATS_NAMES \
-    --run-forever $RUN_FOREVER "]
+CMD ["sh", "-c", "/app/main.sh"]

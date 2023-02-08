@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Updates the game score of the specified user in the game; for bots only
 class SetGameScore extends TdFunction {
   String get tdType => 'setGameScore';
   String get tdReturnType => 'Message';
-
 
   /// The chat to which the message with the game belongs
   int53? chat_id;

@@ -1,12 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Requests QR code authentication by scanning a QR code on another logged in device. Works only when the current authorization state is authorizationStateWaitPhoneNumber,
 /// or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
 class RequestQrCodeAuthentication extends TdFunction {
   String get tdType => 'requestQrCodeAuthentication';
   String get tdReturnType => 'Ok';
-
 
   /// List of user identifiers of other users currently using the application
   vector<int53>? other_user_ids;

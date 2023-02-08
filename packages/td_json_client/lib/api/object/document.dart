@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Describes a document of any type
 class Document extends TdObject {
   String get tdType => 'document';
-
 
   /// Original name of the file; as defined by the sender
   string? file_name;

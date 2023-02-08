@@ -6,11 +6,9 @@ import 'package:td_json_client/api/object/closed_vector_path.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Describes a sticker
 class Sticker extends TdObject {
   String get tdType => 'sticker';
-
 
   /// The identifier of the sticker set to which the sticker belongs; 0 if none
   int64? set_id;

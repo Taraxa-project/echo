@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/attachment_menu_bot_color.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Represents a bot, which can be added to attachment menu
 class AttachmentMenuBot extends TdObject {
   String get tdType => 'attachmentMenuBot';
-
 
   /// User identifier of the bot added to attachment menu
   int53? bot_user_id;
@@ -95,7 +93,8 @@ class AttachmentMenuBot extends TdObject {
     request_write_access = map['request_write_access'];
     name = map['name'];
     if (map['name_color'] != null) {
-      name_color = TdApiMap.fromMap(map['name_color']) as AttachmentMenuBotColor;
+      name_color =
+          TdApiMap.fromMap(map['name_color']) as AttachmentMenuBotColor;
     }
     if (map['default_icon'] != null) {
       default_icon = TdApiMap.fromMap(map['default_icon']) as File;
@@ -113,10 +112,12 @@ class AttachmentMenuBot extends TdObject {
       macos_icon = TdApiMap.fromMap(map['macos_icon']) as File;
     }
     if (map['icon_color'] != null) {
-      icon_color = TdApiMap.fromMap(map['icon_color']) as AttachmentMenuBotColor;
+      icon_color =
+          TdApiMap.fromMap(map['icon_color']) as AttachmentMenuBotColor;
     }
     if (map['web_app_placeholder'] != null) {
-      web_app_placeholder = TdApiMap.fromMap(map['web_app_placeholder']) as File;
+      web_app_placeholder =
+          TdApiMap.fromMap(map['web_app_placeholder']) as File;
     }
   }
 
@@ -130,7 +131,8 @@ class AttachmentMenuBot extends TdObject {
       'supports_user_chats': supports_user_chats?.toMap(skipNulls: skipNulls),
       'supports_bot_chats': supports_bot_chats?.toMap(skipNulls: skipNulls),
       'supports_group_chats': supports_group_chats?.toMap(skipNulls: skipNulls),
-      'supports_channel_chats': supports_channel_chats?.toMap(skipNulls: skipNulls),
+      'supports_channel_chats':
+          supports_channel_chats?.toMap(skipNulls: skipNulls),
       'supports_settings': supports_settings?.toMap(skipNulls: skipNulls),
       'request_write_access': request_write_access?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),

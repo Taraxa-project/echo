@@ -1,12 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Returns an HTTP URL which can be used to automatically authorize the user on a website after clicking an inline button of type inlineKeyboardButtonTypeLoginUrl.
 /// Use the method getLoginUrlInfo to find whether a prior user confirmation is needed. If an error is returned, then the button must be handled as an ordinary URL button
 class GetLoginUrl extends TdFunction {
   String get tdType => 'getLoginUrl';
   String get tdReturnType => 'HttpUrl';
-
 
   /// Chat identifier of the message with the button
   int53? chat_id;

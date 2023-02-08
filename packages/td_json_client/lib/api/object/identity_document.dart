@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/date.dart';
 import 'package:td_json_client/api/object/dated_file.dart';
 
-
 /// An identity document
 class IdentityDocument extends TdObject {
   String get tdType => 'identityDocument';
-
 
   /// Document number; 1-24 characters
   string? number;

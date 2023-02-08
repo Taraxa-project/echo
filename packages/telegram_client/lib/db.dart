@@ -181,86 +181,79 @@ class DbIsolated {
         ));
       } else if (message is DbMsgRequestBlacklistChat) {
         message.replySendPort?.send(_retryDbOperation(
-          () => _blacklistChat(
-          username: message.username,
-          reason: message.reason),
-          DbMsgResponseBlacklistChat(),
-          'blacklist chat'
-          ));
+            () => _blacklistChat(
+                username: message.username, reason: message.reason),
+            DbMsgResponseBlacklistChat(),
+            'blacklist chat'));
       } else if (message is DbMsgRequestUpdateChat) {
         message.replySendPort?.send(_retryDbOperation(
-          () => _updateChat(
-          username: message.username,
-          chat: message.chat,
-          ),
-          DbMsgResponseUpdateChat(),
-          "update chat"
-          ));
+            () => _updateChat(
+                  username: message.username,
+                  chat: message.chat,
+                ),
+            DbMsgResponseUpdateChat(),
+            "update chat"));
       } else if (message is DbMsgRequestUpdateChatMembersCount) {
         message.replySendPort?.send(_retryDbOperation(
-          () => _updateChatMembersCount(
-          username: message.username,
-          memberCount: message.membersCount,
-          ),
-          DbMsgResponseUpdateChatMembersCount(),
-          "update chat members count"
-          ));
+            () => _updateChatMembersCount(
+                  username: message.username,
+                  memberCount: message.membersCount,
+                ),
+            DbMsgResponseUpdateChatMembersCount(),
+            "update chat members count"));
       } else if (message is DbMsgRequestUpdateChatMembersBotsCount) {
         message.replySendPort?.send(_retryDbOperation(
-          () => _updateChatMembersBotsCount(
-          username: message.username,
-          memberCount: message.membersCount,
-          ),
-          DbMsgResponseUpdateChatMembersBotsCount(),
-          "update chat members bots count"
-          ));
+            () => _updateChatMembersBotsCount(
+                  username: message.username,
+                  memberCount: message.membersCount,
+                ),
+            DbMsgResponseUpdateChatMembersBotsCount(),
+            "update chat members bots count"));
       } else if (message is DbMsgRequestUpdateChatMembersOnlineCount) {
         message.replySendPort?.send(_retryDbOperation(
-          () => _updateChatMembersOnlineCount(
-          username: message.username,
-          memberCount: message.membersCount,
-          ),
-          DbMsgResponseUpdateChatMembersOnlineCount(),
-          "update chat members online count"
-          ));
+            () => _updateChatMembersOnlineCount(
+                  username: message.username,
+                  memberCount: message.membersCount,
+                ),
+            DbMsgResponseUpdateChatMembersOnlineCount(),
+            "update chat members online count"));
       } else if (message is DbMsgRequestSelectMaxMessageId) {
         message.replySendPort?.send(_retryDbOperation(
           () => _selectMaxMessageId(
-          chatId: message.chatId,
-          dateTimeFrom: message.dateTimeFrom,
+            chatId: message.chatId,
+            dateTimeFrom: message.dateTimeFrom,
           ),
           DbMsgResponseSelectMaxMessageId(id: null),
           "select max message id",
-          ));
-      }
-       else if (message is DbMsgRequestAddMessage) {
+        ));
+      } else if (message is DbMsgRequestAddMessage) {
         message.replySendPort?.send(_retryDbOperation(
           () => _addMessage(
-          message: message.message,
-          online_member_count: message.onlineMemberCount),
+              message: message.message,
+              online_member_count: message.onlineMemberCount),
           DbMsgResponseAddMessage(added: false),
           "add message",
-          ));
+        ));
       } else if (message is DbMsgRequestAddUser) {
         message.replySendPort?.send(_retryDbOperation(
           () => _addUser(userId: message.userId),
           DbMsgResponseAddUser(),
           "add user",
-          ));
+        ));
       } else if (message is DbMsgRequestUpdateUser) {
         message.replySendPort?.send(_retryDbOperation(
           () => _updateUser(userId: message.userId, user: message.user),
           DbMsgResponseUpdateUser(),
           "update user",
-          ));
+        ));
       } else if (message is DbMsgRequestSelectChatOnlineMemberCount) {
         message.replySendPort?.send(_retryDbOperation(
           () => _selectChatOnlineMemberCount(
-          chatName: message.chatName,
+            chatName: message.chatName,
           ),
           DbMsgResponseSelectChatOnlineMemberCount(),
           "select chat online member count",
-          ));
+        ));
       }
     });
   }
@@ -282,8 +275,8 @@ class DbIsolated {
       } on SqliteException catch (ex) {
         exception = ex;
         if (exception.resultCode == 19) {
-            return DbMsgResponseConstraintError(exception: exception);
-        } 
+          return DbMsgResponseConstraintError(exception: exception);
+        }
         if (_dbErrorHandler(ex, operationName) == false) {
           break;
         }
@@ -297,10 +290,10 @@ class DbIsolated {
   }
 
   DbMsgResponseOpen _open() {
-      _logger.fine('opening...');
-      db = sqlite3.open(this.dbPath);
-      _logger.fine('opened.');
-      return DbMsgResponseOpen();
+    _logger.fine('opening...');
+    db = sqlite3.open(this.dbPath);
+    _logger.fine('opened.');
+    return DbMsgResponseOpen();
   }
 
   Future<void> _exit({SendPort? replySendPort}) async {

@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_invite_link_member.dart';
 
-
 /// Returns chat members joined a chat via an invite link. Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for other links
 class GetChatInviteLinkMembers extends TdFunction {
   String get tdType => 'getChatInviteLinkMembers';
   String get tdReturnType => 'ChatInviteLinkMembers';
-
 
   /// Chat identifier
   int53? chat_id;
@@ -36,7 +34,8 @@ class GetChatInviteLinkMembers extends TdFunction {
     chat_id = map['chat_id'];
     invite_link = map['invite_link'];
     if (map['offset_member'] != null) {
-      offset_member = TdApiMap.fromMap(map['offset_member']) as ChatInviteLinkMember;
+      offset_member =
+          TdApiMap.fromMap(map['offset_member']) as ChatInviteLinkMember;
     }
     limit = map['limit'];
   }

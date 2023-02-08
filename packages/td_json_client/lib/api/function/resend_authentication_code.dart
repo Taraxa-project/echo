@@ -1,12 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Resends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitCode, the next_code_type of the result is not null and the server-specified timeout has passed,
 /// or when the current authorization state is authorizationStateWaitEmailCode
 class ResendAuthenticationCode extends TdFunction {
   String get tdType => 'resendAuthenticationCode';
   String get tdReturnType => 'Ok';
-
 
   ResendAuthenticationCode({
     super.extra,

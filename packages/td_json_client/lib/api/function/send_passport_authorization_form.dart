@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/passport_element_type.dart';
 
-
 /// Sends a Telegram Passport authorization form, effectively sharing data with the service. This method must be called after getPassportAuthorizationFormAvailableElements if some previously available elements are going to be reused
 class SendPassportAuthorizationForm extends TdFunction {
   String get tdType => 'sendPassportAuthorizationForm';
   String get tdReturnType => 'Ok';
-
 
   /// Authorization form identifier
   int32? authorization_form_id;
@@ -41,7 +39,8 @@ class SendPassportAuthorizationForm extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'authorization_form_id': authorization_form_id?.toMap(skipNulls: skipNulls),
+      'authorization_form_id':
+          authorization_form_id?.toMap(skipNulls: skipNulls),
       'types': types?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

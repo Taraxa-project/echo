@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Describes a video file
 class Video extends TdObject {
   String get tdType => 'video';
-
 
   /// Duration of the video, in seconds; as defined by the sender
   int32? duration;

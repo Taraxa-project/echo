@@ -6,11 +6,9 @@ import 'package:td_json_client/api/object/sticker_format.dart';
 import 'package:td_json_client/api/object/sticker_type.dart';
 import 'package:td_json_client/api/object/sticker.dart';
 
-
 /// Represents short information about a sticker set
 class StickerSetInfo extends TdObject {
   String get tdType => 'stickerSetInfo';
-
 
   /// Identifier of the sticker set
   int64? id;
@@ -82,7 +80,8 @@ class StickerSetInfo extends TdObject {
       thumbnail_outline = [];
       for (var someValue in map['thumbnail_outline']) {
         if (someValue != null) {
-          thumbnail_outline?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
+          thumbnail_outline
+              ?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
         }
       }
     }

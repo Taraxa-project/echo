@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/file.dart';
 import 'package:td_json_client/api/object/minithumbnail.dart';
 
-
 /// Describes a user profile photo
 class ProfilePhoto extends TdObject {
   String get tdType => 'profilePhoto';
-
 
   /// Photo identifier; 0 for an empty photo. Can be used to find a photo in a list of user profile photos
   int64? id;

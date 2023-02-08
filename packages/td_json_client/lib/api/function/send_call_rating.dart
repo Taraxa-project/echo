@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/call_problem.dart';
 
-
 /// Sends a call rating
 class SendCallRating extends TdFunction {
   String get tdType => 'sendCallRating';
   String get tdReturnType => 'Ok';
-
 
   /// Call identifier
   int32? call_id;

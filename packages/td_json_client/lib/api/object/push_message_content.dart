@@ -14,11 +14,9 @@ abstract class PushMessageContent extends TdObject {
   PushMessageContent({super.extra, super.client_id});
 }
 
-
-/// A general message with hidden content 
+/// A general message with hidden content
 class PushMessageContentHidden extends PushMessageContent {
   String get tdType => 'pushMessageContentHidden';
-
 
   /// True, if the message is a pinned message with the specified content
   Bool? is_pinned;
@@ -49,15 +47,14 @@ class PushMessageContentHidden extends PushMessageContent {
   }
 }
 
-/// An animation message (GIF-style). 
+/// An animation message (GIF-style).
 class PushMessageContentAnimation extends PushMessageContent {
   String get tdType => 'pushMessageContentAnimation';
 
-
-  /// Message content; may be null 
+  /// Message content; may be null
   Animation? animation;
 
-  /// Animation caption 
+  /// Animation caption
   string? caption;
 
   /// True, if the message is a pinned message with the specified content
@@ -97,12 +94,11 @@ class PushMessageContentAnimation extends PushMessageContent {
   }
 }
 
-/// An audio message 
+/// An audio message
 class PushMessageContentAudio extends PushMessageContent {
   String get tdType => 'pushMessageContentAudio';
 
-
-  /// Message content; may be null 
+  /// Message content; may be null
   Audio? audio;
 
   /// True, if the message is a pinned message with the specified content
@@ -139,12 +135,11 @@ class PushMessageContentAudio extends PushMessageContent {
   }
 }
 
-/// A message with a user contact 
+/// A message with a user contact
 class PushMessageContentContact extends PushMessageContent {
   String get tdType => 'pushMessageContentContact';
 
-
-  /// Contact's name 
+  /// Contact's name
   string? name;
 
   /// True, if the message is a pinned message with the specified content
@@ -183,7 +178,6 @@ class PushMessageContentContact extends PushMessageContent {
 class PushMessageContentContactRegistered extends PushMessageContent {
   String get tdType => 'pushMessageContentContactRegistered';
 
-
   PushMessageContentContactRegistered({
     super.extra,
     super.client_id,
@@ -207,12 +201,11 @@ class PushMessageContentContactRegistered extends PushMessageContent {
   }
 }
 
-/// A document message (a general file) 
+/// A document message (a general file)
 class PushMessageContentDocument extends PushMessageContent {
   String get tdType => 'pushMessageContentDocument';
 
-
-  /// Message content; may be null 
+  /// Message content; may be null
   Document? document;
 
   /// True, if the message is a pinned message with the specified content
@@ -249,12 +242,11 @@ class PushMessageContentDocument extends PushMessageContent {
   }
 }
 
-/// A message with a game 
+/// A message with a game
 class PushMessageContentGame extends PushMessageContent {
   String get tdType => 'pushMessageContentGame';
 
-
-  /// Game title, empty for pinned game message 
+  /// Game title, empty for pinned game message
   string? title;
 
   /// True, if the message is a pinned message with the specified content
@@ -289,15 +281,14 @@ class PushMessageContentGame extends PushMessageContent {
   }
 }
 
-/// A new high score was achieved in a game 
+/// A new high score was achieved in a game
 class PushMessageContentGameScore extends PushMessageContent {
   String get tdType => 'pushMessageContentGameScore';
 
-
-  /// Game title, empty for pinned message 
+  /// Game title, empty for pinned message
   string? title;
 
-  /// New score, 0 for pinned message 
+  /// New score, 0 for pinned message
   int32? score;
 
   /// True, if the message is a pinned message with the specified content
@@ -335,12 +326,11 @@ class PushMessageContentGameScore extends PushMessageContent {
   }
 }
 
-/// A message with an invoice from a bot 
+/// A message with an invoice from a bot
 class PushMessageContentInvoice extends PushMessageContent {
   String get tdType => 'pushMessageContentInvoice';
 
-
-  /// Product price 
+  /// Product price
   string? price;
 
   /// True, if the message is a pinned message with the specified content
@@ -375,12 +365,11 @@ class PushMessageContentInvoice extends PushMessageContent {
   }
 }
 
-/// A message with a location 
+/// A message with a location
 class PushMessageContentLocation extends PushMessageContent {
   String get tdType => 'pushMessageContentLocation';
 
-
-  /// True, if the location is live 
+  /// True, if the location is live
   Bool? is_live;
 
   /// True, if the message is a pinned message with the specified content
@@ -418,7 +407,6 @@ class PushMessageContentLocation extends PushMessageContent {
 /// A photo message
 class PushMessageContentPhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentPhoto';
-
 
   /// Message content; may be null
   Photo? photo;
@@ -473,7 +461,6 @@ class PushMessageContentPhoto extends PushMessageContent {
 class PushMessageContentPoll extends PushMessageContent {
   String get tdType => 'pushMessageContentPoll';
 
-
   /// Poll question
   string? question;
 
@@ -519,7 +506,6 @@ class PushMessageContentPoll extends PushMessageContent {
 class PushMessageContentScreenshotTaken extends PushMessageContent {
   String get tdType => 'pushMessageContentScreenshotTaken';
 
-
   PushMessageContentScreenshotTaken({
     super.extra,
     super.client_id,
@@ -546,7 +532,6 @@ class PushMessageContentScreenshotTaken extends PushMessageContent {
 /// A message with a sticker
 class PushMessageContentSticker extends PushMessageContent {
   String get tdType => 'pushMessageContentSticker';
-
 
   /// Message content; may be null
   Sticker? sticker;
@@ -591,12 +576,11 @@ class PushMessageContentSticker extends PushMessageContent {
   }
 }
 
-/// A text message 
+/// A text message
 class PushMessageContentText extends PushMessageContent {
   String get tdType => 'pushMessageContentText';
 
-
-  /// Message text 
+  /// Message text
   string? text;
 
   /// True, if the message is a pinned message with the specified content
@@ -634,7 +618,6 @@ class PushMessageContentText extends PushMessageContent {
 /// A video message
 class PushMessageContentVideo extends PushMessageContent {
   String get tdType => 'pushMessageContentVideo';
-
 
   /// Message content; may be null
   Video? video;
@@ -685,12 +668,11 @@ class PushMessageContentVideo extends PushMessageContent {
   }
 }
 
-/// A video note message 
+/// A video note message
 class PushMessageContentVideoNote extends PushMessageContent {
   String get tdType => 'pushMessageContentVideoNote';
 
-
-  /// Message content; may be null 
+  /// Message content; may be null
   VideoNote? video_note;
 
   /// True, if the message is a pinned message with the specified content
@@ -727,12 +709,11 @@ class PushMessageContentVideoNote extends PushMessageContent {
   }
 }
 
-/// A voice note message 
+/// A voice note message
 class PushMessageContentVoiceNote extends PushMessageContent {
   String get tdType => 'pushMessageContentVoiceNote';
 
-
-  /// Message content; may be null 
+  /// Message content; may be null
   VoiceNote? voice_note;
 
   /// True, if the message is a pinned message with the specified content
@@ -773,7 +754,6 @@ class PushMessageContentVoiceNote extends PushMessageContent {
 class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
   String get tdType => 'pushMessageContentBasicGroupChatCreate';
 
-
   PushMessageContentBasicGroupChatCreate({
     super.extra,
     super.client_id,
@@ -800,7 +780,6 @@ class PushMessageContentBasicGroupChatCreate extends PushMessageContent {
 /// New chat members were invited to a group
 class PushMessageContentChatAddMembers extends PushMessageContent {
   String get tdType => 'pushMessageContentChatAddMembers';
-
 
   /// Name of the added member
   string? member_name;
@@ -847,7 +826,6 @@ class PushMessageContentChatAddMembers extends PushMessageContent {
 class PushMessageContentChatChangePhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentChatChangePhoto';
 
-
   PushMessageContentChatChangePhoto({
     super.extra,
     super.client_id,
@@ -871,10 +849,9 @@ class PushMessageContentChatChangePhoto extends PushMessageContent {
   }
 }
 
-/// A chat title was edited 
+/// A chat title was edited
 class PushMessageContentChatChangeTitle extends PushMessageContent {
   String get tdType => 'pushMessageContentChatChangeTitle';
-
 
   /// New chat title
   string? title;
@@ -905,10 +882,9 @@ class PushMessageContentChatChangeTitle extends PushMessageContent {
   }
 }
 
-/// A chat theme was edited 
+/// A chat theme was edited
 class PushMessageContentChatSetTheme extends PushMessageContent {
   String get tdType => 'pushMessageContentChatSetTheme';
-
 
   /// If non-empty, name of a new theme, set for the chat. Otherwise, the chat theme was reset to the default one
   string? theme_name;
@@ -942,7 +918,6 @@ class PushMessageContentChatSetTheme extends PushMessageContent {
 /// A chat member was deleted
 class PushMessageContentChatDeleteMember extends PushMessageContent {
   String get tdType => 'pushMessageContentChatDeleteMember';
-
 
   /// Name of the deleted member
   string? member_name;
@@ -989,7 +964,6 @@ class PushMessageContentChatDeleteMember extends PushMessageContent {
 class PushMessageContentChatJoinByLink extends PushMessageContent {
   String get tdType => 'pushMessageContentChatJoinByLink';
 
-
   PushMessageContentChatJoinByLink({
     super.extra,
     super.client_id,
@@ -1017,7 +991,6 @@ class PushMessageContentChatJoinByLink extends PushMessageContent {
 class PushMessageContentChatJoinByRequest extends PushMessageContent {
   String get tdType => 'pushMessageContentChatJoinByRequest';
 
-
   PushMessageContentChatJoinByRequest({
     super.extra,
     super.client_id,
@@ -1041,10 +1014,9 @@ class PushMessageContentChatJoinByRequest extends PushMessageContent {
   }
 }
 
-/// A new recurrent payment was made by the current user 
+/// A new recurrent payment was made by the current user
 class PushMessageContentRecurringPayment extends PushMessageContent {
   String get tdType => 'pushMessageContentRecurringPayment';
-
 
   /// The paid amount
   string? amount;
@@ -1079,7 +1051,6 @@ class PushMessageContentRecurringPayment extends PushMessageContent {
 class PushMessageContentSuggestProfilePhoto extends PushMessageContent {
   String get tdType => 'pushMessageContentSuggestProfilePhoto';
 
-
   PushMessageContentSuggestProfilePhoto({
     super.extra,
     super.client_id,
@@ -1103,10 +1074,9 @@ class PushMessageContentSuggestProfilePhoto extends PushMessageContent {
   }
 }
 
-/// A forwarded messages 
+/// A forwarded messages
 class PushMessageContentMessageForwards extends PushMessageContent {
   String get tdType => 'pushMessageContentMessageForwards';
-
 
   /// Number of forwarded messages
   int32? total_count;
@@ -1140,7 +1110,6 @@ class PushMessageContentMessageForwards extends PushMessageContent {
 /// A media album
 class PushMessageContentMediaAlbum extends PushMessageContent {
   String get tdType => 'pushMessageContentMediaAlbum';
-
 
   /// Number of messages in the album
   int32? total_count;

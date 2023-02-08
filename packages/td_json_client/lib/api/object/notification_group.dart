@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/notification_group_type.dart';
 import 'package:td_json_client/api/object/notification.dart';
 
-
 /// Describes a group of notifications
 class NotificationGroup extends TdObject {
   String get tdType => 'notificationGroup';
-
 
   /// Unique persistent auto-incremented from 1 identifier of the notification group
   int32? id;

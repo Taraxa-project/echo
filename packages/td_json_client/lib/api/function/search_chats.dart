@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Searches for the specified query in the title and username of already known chats, this is an offline request. Returns chats in the order seen in the main chat list
 class SearchChats extends TdFunction {
   String get tdType => 'searchChats';
   String get tdReturnType => 'Chats';
-
 
   /// Query to search for. If the query is empty, returns up to 50 recently found chats
   string? query;

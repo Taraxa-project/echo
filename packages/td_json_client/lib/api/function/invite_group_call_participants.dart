@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Invites users to an active group call. Sends a service message of type messageInviteToGroupCall for video chats
 class InviteGroupCallParticipants extends TdFunction {
   String get tdType => 'inviteGroupCallParticipants';
   String get tdReturnType => 'Ok';
-
 
   /// Group call identifier
   int32? group_call_id;

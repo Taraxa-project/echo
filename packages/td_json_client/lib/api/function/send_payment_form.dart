@@ -3,12 +3,10 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_invoice.dart';
 import 'package:td_json_client/api/object/input_credentials.dart';
 
-
 /// Sends a filled-out payment form to the bot for final verification
 class SendPaymentForm extends TdFunction {
   String get tdType => 'sendPaymentForm';
   String get tdReturnType => 'PaymentResult';
-
 
   /// The invoice
   InputInvoice? input_invoice;

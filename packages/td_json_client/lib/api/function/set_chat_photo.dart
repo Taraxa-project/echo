@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_chat_photo.dart';
 
-
 /// Changes the photo of a chat. Supported only for basic groups, supergroups and channels. Requires can_change_info administrator right
 class SetChatPhoto extends TdFunction {
   String get tdType => 'setChatPhoto';
   String get tdReturnType => 'Ok';
-
 
   /// Chat identifier
   int53? chat_id;

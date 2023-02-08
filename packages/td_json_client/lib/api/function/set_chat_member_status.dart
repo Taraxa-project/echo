@@ -3,12 +3,10 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/chat_member_status.dart';
 
-
 /// Changes the status of a chat member, needs appropriate privileges. This function is currently not suitable for transferring chat ownership; use transferChatOwnership instead. Use addChatMember or banChatMember if some additional parameters needs to be passed
 class SetChatMemberStatus extends TdFunction {
   String get tdType => 'setChatMemberStatus';
   String get tdReturnType => 'Ok';
-
 
   /// Chat identifier
   int53? chat_id;

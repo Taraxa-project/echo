@@ -2,13 +2,11 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/text_entity.dart';
 
-
-/// A text with some entities 
+/// A text with some entities
 class FormattedText extends TdObject {
   String get tdType => 'formattedText';
 
-
-  /// The text 
+  /// The text
   string? text;
 
   /// Entities contained in the text. Entities can be nested, but must not mutually intersect with each other.

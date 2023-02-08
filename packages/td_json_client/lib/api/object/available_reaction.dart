@@ -2,13 +2,11 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reaction_type.dart';
 
-
-/// Represents an available reaction 
+/// Represents an available reaction
 class AvailableReaction extends TdObject {
   String get tdType => 'availableReaction';
 
-
-  /// Type of the reaction 
+  /// Type of the reaction
   ReactionType? type;
 
   /// True, if Telegram Premium is needed to send the reaction

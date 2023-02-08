@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Describes an address
 class Address extends TdObject {
   String get tdType => 'address';
-
 
   /// A two-letter ISO 3166-1 alpha-2 country code
   string? country_code;

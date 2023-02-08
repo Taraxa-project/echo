@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Changes the 2-step verification password for the current user. If a new recovery email address is specified, then the change will not be applied until the new recovery email address is confirmed
 class SetPassword extends TdFunction {
   String get tdType => 'setPassword';
   String get tdReturnType => 'PasswordState';
-
 
   /// Previous 2-step verification password of the user
   string? old_password;
@@ -50,8 +48,10 @@ class SetPassword extends TdFunction {
       'old_password': old_password?.toMap(skipNulls: skipNulls),
       'new_password': new_password?.toMap(skipNulls: skipNulls),
       'new_hint': new_hint?.toMap(skipNulls: skipNulls),
-      'set_recovery_email_address': set_recovery_email_address?.toMap(skipNulls: skipNulls),
-      'new_recovery_email_address': new_recovery_email_address?.toMap(skipNulls: skipNulls),
+      'set_recovery_email_address':
+          set_recovery_email_address?.toMap(skipNulls: skipNulls),
+      'new_recovery_email_address':
+          new_recovery_email_address?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

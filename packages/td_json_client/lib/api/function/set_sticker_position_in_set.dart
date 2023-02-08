@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
-
 /// Changes the position of a sticker in the set to which it belongs; for bots only. The sticker set must have been created by the bot
 class SetStickerPositionInSet extends TdFunction {
   String get tdType => 'setStickerPositionInSet';
   String get tdReturnType => 'Ok';
-
 
   /// Sticker
   InputFile? sticker;

@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Represents a filter of user chats
 class ChatFilter extends TdObject {
   String get tdType => 'chatFilter';
-
 
   /// The title of the filter; 1-12 characters without line feeds
   string? title;

@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/address.dart';
 
-
 /// Order information
 class OrderInfo extends TdObject {
   String get tdType => 'orderInfo';
-
 
   /// Name of the user
   string? name;

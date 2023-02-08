@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Contains approximate storage usage statistics, excluding files of unknown file type
 class StorageStatisticsFast extends TdObject {
   String get tdType => 'storageStatisticsFast';
-
 
   /// Approximate total size of files, in bytes
   int53? files_size;
@@ -49,7 +47,8 @@ class StorageStatisticsFast extends TdObject {
       'files_size': files_size?.toMap(skipNulls: skipNulls),
       'file_count': file_count?.toMap(skipNulls: skipNulls),
       'database_size': database_size?.toMap(skipNulls: skipNulls),
-      'language_pack_database_size': language_pack_database_size?.toMap(skipNulls: skipNulls),
+      'language_pack_database_size':
+          language_pack_database_size?.toMap(skipNulls: skipNulls),
       'log_size': log_size?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

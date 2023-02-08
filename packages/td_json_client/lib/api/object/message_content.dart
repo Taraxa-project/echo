@@ -32,13 +32,11 @@ abstract class MessageContent extends TdObject {
   MessageContent({super.extra, super.client_id});
 }
 
-
-/// A text message 
+/// A text message
 class MessageText extends MessageContent {
   String get tdType => 'messageText';
 
-
-  /// Text of the message 
+  /// Text of the message
   FormattedText? text;
 
   /// A preview of the web page that's mentioned in the text; may be null
@@ -80,7 +78,6 @@ class MessageText extends MessageContent {
 /// An animation message (GIF-style).
 class MessageAnimation extends MessageContent {
   String get tdType => 'messageAnimation';
-
 
   /// The animation description
   Animation? animation;
@@ -133,12 +130,11 @@ class MessageAnimation extends MessageContent {
   }
 }
 
-/// An audio message 
+/// An audio message
 class MessageAudio extends MessageContent {
   String get tdType => 'messageAudio';
 
-
-  /// The audio description 
+  /// The audio description
   Audio? audio;
 
   /// Audio caption
@@ -177,12 +173,11 @@ class MessageAudio extends MessageContent {
   }
 }
 
-/// A document message (general file) 
+/// A document message (general file)
 class MessageDocument extends MessageContent {
   String get tdType => 'messageDocument';
 
-
-  /// The document description 
+  /// The document description
   Document? document;
 
   /// Document caption
@@ -224,7 +219,6 @@ class MessageDocument extends MessageContent {
 /// A photo message
 class MessagePhoto extends MessageContent {
   String get tdType => 'messagePhoto';
-
 
   /// The photo
   Photo? photo;
@@ -281,7 +275,6 @@ class MessagePhoto extends MessageContent {
 class MessageExpiredPhoto extends MessageContent {
   String get tdType => 'messageExpiredPhoto';
 
-
   MessageExpiredPhoto({
     super.extra,
     super.client_id,
@@ -305,12 +298,11 @@ class MessageExpiredPhoto extends MessageContent {
   }
 }
 
-/// A sticker message 
+/// A sticker message
 class MessageSticker extends MessageContent {
   String get tdType => 'messageSticker';
 
-
-  /// The sticker description 
+  /// The sticker description
   Sticker? sticker;
 
   /// True, if premium animation of the sticker must be played
@@ -350,7 +342,6 @@ class MessageSticker extends MessageContent {
 /// A video message
 class MessageVideo extends MessageContent {
   String get tdType => 'messageVideo';
-
 
   /// The video description
   Video? video;
@@ -407,7 +398,6 @@ class MessageVideo extends MessageContent {
 class MessageExpiredVideo extends MessageContent {
   String get tdType => 'messageExpiredVideo';
 
-
   MessageExpiredVideo({
     super.extra,
     super.client_id,
@@ -431,15 +421,14 @@ class MessageExpiredVideo extends MessageContent {
   }
 }
 
-/// A video note message 
+/// A video note message
 class MessageVideoNote extends MessageContent {
   String get tdType => 'messageVideoNote';
 
-
-  /// The video note description 
+  /// The video note description
   VideoNote? video_note;
 
-  /// True, if at least one of the recipients has viewed the video note 
+  /// True, if at least one of the recipients has viewed the video note
   Bool? is_viewed;
 
   /// True, if the video note thumbnail must be blurred and the video note must be shown only while tapped
@@ -479,15 +468,14 @@ class MessageVideoNote extends MessageContent {
   }
 }
 
-/// A voice note message 
+/// A voice note message
 class MessageVoiceNote extends MessageContent {
   String get tdType => 'messageVoiceNote';
 
-
-  /// The voice note description 
+  /// The voice note description
   VoiceNote? voice_note;
 
-  /// Voice note caption 
+  /// Voice note caption
   FormattedText? caption;
 
   /// True, if at least one of the recipients has listened to the voice note
@@ -532,7 +520,6 @@ class MessageVoiceNote extends MessageContent {
 /// A message with a location
 class MessageLocation extends MessageContent {
   String get tdType => 'messageLocation';
-
 
   /// The location description
   Location? location;
@@ -580,7 +567,8 @@ class MessageLocation extends MessageContent {
       'live_period': live_period?.toMap(skipNulls: skipNulls),
       'expires_in': expires_in?.toMap(skipNulls: skipNulls),
       'heading': heading?.toMap(skipNulls: skipNulls),
-      'proximity_alert_radius': proximity_alert_radius?.toMap(skipNulls: skipNulls),
+      'proximity_alert_radius':
+          proximity_alert_radius?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -589,10 +577,9 @@ class MessageLocation extends MessageContent {
   }
 }
 
-/// A message with information about a venue 
+/// A message with information about a venue
 class MessageVenue extends MessageContent {
   String get tdType => 'messageVenue';
-
 
   /// The venue description
   Venue? venue;
@@ -625,10 +612,9 @@ class MessageVenue extends MessageContent {
   }
 }
 
-/// A message with a user contact 
+/// A message with a user contact
 class MessageContact extends MessageContent {
   String get tdType => 'messageContact';
-
 
   /// The contact description
   Contact? contact;
@@ -661,12 +647,11 @@ class MessageContact extends MessageContent {
   }
 }
 
-/// A message with an animated emoji 
+/// A message with an animated emoji
 class MessageAnimatedEmoji extends MessageContent {
   String get tdType => 'messageAnimatedEmoji';
 
-
-  /// The animated emoji 
+  /// The animated emoji
   AnimatedEmoji? animated_emoji;
 
   /// The corresponding emoji
@@ -706,7 +691,6 @@ class MessageAnimatedEmoji extends MessageContent {
 /// A dice message. The dice value is randomly generated by the server
 class MessageDice extends MessageContent {
   String get tdType => 'messageDice';
-
 
   /// The animated stickers with the initial dice animation; may be null if unknown. updateMessageContent will be sent when the sticker became known
   DiceStickers? initial_state;
@@ -756,7 +740,8 @@ class MessageDice extends MessageContent {
       'final_state': final_state?.toMap(skipNulls: skipNulls),
       'emoji': emoji?.toMap(skipNulls: skipNulls),
       'value': value?.toMap(skipNulls: skipNulls),
-      'success_animation_frame_number': success_animation_frame_number?.toMap(skipNulls: skipNulls),
+      'success_animation_frame_number':
+          success_animation_frame_number?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -765,10 +750,9 @@ class MessageDice extends MessageContent {
   }
 }
 
-/// A message with a game 
+/// A message with a game
 class MessageGame extends MessageContent {
   String get tdType => 'messageGame';
-
 
   /// The game description
   Game? game;
@@ -801,10 +785,9 @@ class MessageGame extends MessageContent {
   }
 }
 
-/// A message with a poll 
+/// A message with a poll
 class MessagePoll extends MessageContent {
   String get tdType => 'messagePoll';
-
 
   /// The poll description
   Poll? poll;
@@ -840,7 +823,6 @@ class MessagePoll extends MessageContent {
 /// A message with an invoice from a bot
 class MessageInvoice extends MessageContent {
   String get tdType => 'messageInvoice';
-
 
   /// Product title
   string? title;
@@ -903,7 +885,8 @@ class MessageInvoice extends MessageContent {
     need_shipping_address = map['need_shipping_address'];
     receipt_message_id = map['receipt_message_id'];
     if (map['extended_media'] != null) {
-      extended_media = TdApiMap.fromMap(map['extended_media']) as MessageExtendedMedia;
+      extended_media =
+          TdApiMap.fromMap(map['extended_media']) as MessageExtendedMedia;
     }
   }
 
@@ -919,7 +902,8 @@ class MessageInvoice extends MessageContent {
       'total_amount': total_amount?.toMap(skipNulls: skipNulls),
       'start_parameter': start_parameter?.toMap(skipNulls: skipNulls),
       'is_test': is_test?.toMap(skipNulls: skipNulls),
-      'need_shipping_address': need_shipping_address?.toMap(skipNulls: skipNulls),
+      'need_shipping_address':
+          need_shipping_address?.toMap(skipNulls: skipNulls),
       'receipt_message_id': receipt_message_id?.toMap(skipNulls: skipNulls),
       'extended_media': extended_media?.toMap(skipNulls: skipNulls),
     };
@@ -930,15 +914,14 @@ class MessageInvoice extends MessageContent {
   }
 }
 
-/// A message with information about an ended call 
+/// A message with information about an ended call
 class MessageCall extends MessageContent {
   String get tdType => 'messageCall';
 
-
-  /// True, if the call was a video call 
+  /// True, if the call was a video call
   Bool? is_video;
 
-  /// Reason why the call was discarded 
+  /// Reason why the call was discarded
   CallDiscardReason? discard_reason;
 
   /// Call duration, in seconds
@@ -957,7 +940,8 @@ class MessageCall extends MessageContent {
     client_id = map['@client_id'];
     is_video = map['is_video'];
     if (map['discard_reason'] != null) {
-      discard_reason = TdApiMap.fromMap(map['discard_reason']) as CallDiscardReason;
+      discard_reason =
+          TdApiMap.fromMap(map['discard_reason']) as CallDiscardReason;
     }
     duration = map['duration'];
   }
@@ -978,12 +962,11 @@ class MessageCall extends MessageContent {
   }
 }
 
-/// A new video chat was scheduled 
+/// A new video chat was scheduled
 class MessageVideoChatScheduled extends MessageContent {
   String get tdType => 'messageVideoChatScheduled';
 
-
-  /// Identifier of the video chat. The video chat can be received through the method getGroupCall 
+  /// Identifier of the video chat. The video chat can be received through the method getGroupCall
   int32? group_call_id;
 
   /// Point in time (Unix timestamp) when the group call is supposed to be started by an administrator
@@ -1018,10 +1001,9 @@ class MessageVideoChatScheduled extends MessageContent {
   }
 }
 
-/// A newly created video chat 
+/// A newly created video chat
 class MessageVideoChatStarted extends MessageContent {
   String get tdType => 'messageVideoChatStarted';
-
 
   /// Identifier of the video chat. The video chat can be received through the method getGroupCall
   int32? group_call_id;
@@ -1052,10 +1034,9 @@ class MessageVideoChatStarted extends MessageContent {
   }
 }
 
-/// A message with information about an ended video chat 
+/// A message with information about an ended video chat
 class MessageVideoChatEnded extends MessageContent {
   String get tdType => 'messageVideoChatEnded';
-
 
   /// Call duration, in seconds
   int32? duration;
@@ -1086,12 +1067,11 @@ class MessageVideoChatEnded extends MessageContent {
   }
 }
 
-/// A message with information about an invite to a video chat 
+/// A message with information about an invite to a video chat
 class MessageInviteVideoChatParticipants extends MessageContent {
   String get tdType => 'messageInviteVideoChatParticipants';
 
-
-  /// Identifier of the video chat. The video chat can be received through the method getGroupCall 
+  /// Identifier of the video chat. The video chat can be received through the method getGroupCall
   int32? group_call_id;
 
   /// Invited user identifiers
@@ -1131,12 +1111,11 @@ class MessageInviteVideoChatParticipants extends MessageContent {
   }
 }
 
-/// A newly created basic group 
+/// A newly created basic group
 class MessageBasicGroupChatCreate extends MessageContent {
   String get tdType => 'messageBasicGroupChatCreate';
 
-
-  /// Title of the basic group 
+  /// Title of the basic group
   string? title;
 
   /// User identifiers of members in the basic group
@@ -1176,10 +1155,9 @@ class MessageBasicGroupChatCreate extends MessageContent {
   }
 }
 
-/// A newly created supergroup or channel 
+/// A newly created supergroup or channel
 class MessageSupergroupChatCreate extends MessageContent {
   String get tdType => 'messageSupergroupChatCreate';
-
 
   /// Title of the supergroup or channel
   string? title;
@@ -1210,10 +1188,9 @@ class MessageSupergroupChatCreate extends MessageContent {
   }
 }
 
-/// An updated chat title 
+/// An updated chat title
 class MessageChatChangeTitle extends MessageContent {
   String get tdType => 'messageChatChangeTitle';
-
 
   /// New chat title
   string? title;
@@ -1244,10 +1221,9 @@ class MessageChatChangeTitle extends MessageContent {
   }
 }
 
-/// An updated chat photo 
+/// An updated chat photo
 class MessageChatChangePhoto extends MessageContent {
   String get tdType => 'messageChatChangePhoto';
-
 
   /// New chat photo
   ChatPhoto? photo;
@@ -1284,7 +1260,6 @@ class MessageChatChangePhoto extends MessageContent {
 class MessageChatDeletePhoto extends MessageContent {
   String get tdType => 'messageChatDeletePhoto';
 
-
   MessageChatDeletePhoto({
     super.extra,
     super.client_id,
@@ -1308,10 +1283,9 @@ class MessageChatDeletePhoto extends MessageContent {
   }
 }
 
-/// New chat members were added 
+/// New chat members were added
 class MessageChatAddMembers extends MessageContent {
   String get tdType => 'messageChatAddMembers';
-
 
   /// User identifiers of the new members
   vector<int53>? member_user_ids;
@@ -1351,7 +1325,6 @@ class MessageChatAddMembers extends MessageContent {
 class MessageChatJoinByLink extends MessageContent {
   String get tdType => 'messageChatJoinByLink';
 
-
   MessageChatJoinByLink({
     super.extra,
     super.client_id,
@@ -1379,7 +1352,6 @@ class MessageChatJoinByLink extends MessageContent {
 class MessageChatJoinByRequest extends MessageContent {
   String get tdType => 'messageChatJoinByRequest';
 
-
   MessageChatJoinByRequest({
     super.extra,
     super.client_id,
@@ -1403,10 +1375,9 @@ class MessageChatJoinByRequest extends MessageContent {
   }
 }
 
-/// A chat member was deleted 
+/// A chat member was deleted
 class MessageChatDeleteMember extends MessageContent {
   String get tdType => 'messageChatDeleteMember';
-
 
   /// User identifier of the deleted chat member
   int53? user_id;
@@ -1437,10 +1408,9 @@ class MessageChatDeleteMember extends MessageContent {
   }
 }
 
-/// A basic group was upgraded to a supergroup and was deactivated as the result 
+/// A basic group was upgraded to a supergroup and was deactivated as the result
 class MessageChatUpgradeTo extends MessageContent {
   String get tdType => 'messageChatUpgradeTo';
-
 
   /// Identifier of the supergroup to which the basic group was upgraded
   int53? supergroup_id;
@@ -1471,12 +1441,11 @@ class MessageChatUpgradeTo extends MessageContent {
   }
 }
 
-/// A supergroup has been created from a basic group 
+/// A supergroup has been created from a basic group
 class MessageChatUpgradeFrom extends MessageContent {
   String get tdType => 'messageChatUpgradeFrom';
 
-
-  /// Title of the newly created supergroup 
+  /// Title of the newly created supergroup
   string? title;
 
   /// The identifier of the original basic group
@@ -1511,10 +1480,9 @@ class MessageChatUpgradeFrom extends MessageContent {
   }
 }
 
-/// A message has been pinned 
+/// A message has been pinned
 class MessagePinMessage extends MessageContent {
   String get tdType => 'messagePinMessage';
-
 
   /// Identifier of the pinned message, can be an identifier of a deleted message or 0
   int53? message_id;
@@ -1549,7 +1517,6 @@ class MessagePinMessage extends MessageContent {
 class MessageScreenshotTaken extends MessageContent {
   String get tdType => 'messageScreenshotTaken';
 
-
   MessageScreenshotTaken({
     super.extra,
     super.client_id,
@@ -1573,10 +1540,9 @@ class MessageScreenshotTaken extends MessageContent {
   }
 }
 
-/// A theme in the chat has been changed 
+/// A theme in the chat has been changed
 class MessageChatSetTheme extends MessageContent {
   String get tdType => 'messageChatSetTheme';
-
 
   /// If non-empty, name of a new theme, set for the chat. Otherwise, chat theme was reset to the default one
   string? theme_name;
@@ -1607,12 +1573,11 @@ class MessageChatSetTheme extends MessageContent {
   }
 }
 
-/// The auto-delete or self-destruct timer for messages in the chat has been changed 
+/// The auto-delete or self-destruct timer for messages in the chat has been changed
 class MessageChatSetMessageAutoDeleteTime extends MessageContent {
   String get tdType => 'messageChatSetMessageAutoDeleteTime';
 
-
-  /// New value auto-delete or self-destruct time, in seconds; 0 if disabled 
+  /// New value auto-delete or self-destruct time, in seconds; 0 if disabled
   int32? message_auto_delete_time;
 
   /// If not 0, a user identifier, which default setting was automatically applied
@@ -1637,7 +1602,8 @@ class MessageChatSetMessageAutoDeleteTime extends MessageContent {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time':
+          message_auto_delete_time?.toMap(skipNulls: skipNulls),
       'from_user_id': from_user_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -1647,12 +1613,11 @@ class MessageChatSetMessageAutoDeleteTime extends MessageContent {
   }
 }
 
-/// A forum topic has been created 
+/// A forum topic has been created
 class MessageForumTopicCreated extends MessageContent {
   String get tdType => 'messageForumTopicCreated';
 
-
-  /// Name of the topic 
+  /// Name of the topic
   string? name;
 
   /// Icon of the topic
@@ -1693,7 +1658,6 @@ class MessageForumTopicCreated extends MessageContent {
 class MessageForumTopicEdited extends MessageContent {
   String get tdType => 'messageForumTopicEdited';
 
-
   /// If non-empty, the new name of the topic
   string? name;
 
@@ -1725,7 +1689,8 @@ class MessageForumTopicEdited extends MessageContent {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),
-      'edit_icon_custom_emoji_id': edit_icon_custom_emoji_id?.toMap(skipNulls: skipNulls),
+      'edit_icon_custom_emoji_id':
+          edit_icon_custom_emoji_id?.toMap(skipNulls: skipNulls),
       'icon_custom_emoji_id': icon_custom_emoji_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -1735,10 +1700,9 @@ class MessageForumTopicEdited extends MessageContent {
   }
 }
 
-/// A forum topic has been closed or opened 
+/// A forum topic has been closed or opened
 class MessageForumTopicIsClosedToggled extends MessageContent {
   String get tdType => 'messageForumTopicIsClosedToggled';
-
 
   /// True, if the topic was closed; otherwise, the topic was reopened
   Bool? is_closed;
@@ -1769,10 +1733,9 @@ class MessageForumTopicIsClosedToggled extends MessageContent {
   }
 }
 
-/// A General forum topic has been hidden or unhidden 
+/// A General forum topic has been hidden or unhidden
 class MessageForumTopicIsHiddenToggled extends MessageContent {
   String get tdType => 'messageForumTopicIsHiddenToggled';
-
 
   /// True, if the topic was hidden; otherwise, the topic was unhidden
   Bool? is_hidden;
@@ -1803,10 +1766,9 @@ class MessageForumTopicIsHiddenToggled extends MessageContent {
   }
 }
 
-/// A profile photo was suggested to a user in a private chat 
+/// A profile photo was suggested to a user in a private chat
 class MessageSuggestProfilePhoto extends MessageContent {
   String get tdType => 'messageSuggestProfilePhoto';
-
 
   /// The suggested chat photo. Use the method setProfilePhoto with inputChatPhotoPrevious to apply the photo
   ChatPhoto? photo;
@@ -1839,10 +1801,9 @@ class MessageSuggestProfilePhoto extends MessageContent {
   }
 }
 
-/// A non-standard action has happened in the chat 
+/// A non-standard action has happened in the chat
 class MessageCustomServiceAction extends MessageContent {
   String get tdType => 'messageCustomServiceAction';
-
 
   /// Message text to be shown in the chat
   string? text;
@@ -1873,15 +1834,14 @@ class MessageCustomServiceAction extends MessageContent {
   }
 }
 
-/// A new high score was achieved in a game 
+/// A new high score was achieved in a game
 class MessageGameScore extends MessageContent {
   String get tdType => 'messageGameScore';
 
-
-  /// Identifier of the message with the game, can be an identifier of a deleted message 
+  /// Identifier of the message with the game, can be an identifier of a deleted message
   int53? game_message_id;
 
-  /// Identifier of the game; may be different from the games presented in the message with the game 
+  /// Identifier of the game; may be different from the games presented in the message with the game
   int64? game_id;
 
   /// New score
@@ -1922,7 +1882,6 @@ class MessageGameScore extends MessageContent {
 /// A payment has been completed
 class MessagePaymentSuccessful extends MessageContent {
   String get tdType => 'messagePaymentSuccessful';
-
 
   /// Identifier of the chat, containing the corresponding invoice message
   int53? invoice_chat_id;
@@ -1993,7 +1952,6 @@ class MessagePaymentSuccessful extends MessageContent {
 class MessagePaymentSuccessfulBot extends MessageContent {
   String get tdType => 'messagePaymentSuccessfulBot';
 
-
   /// Currency for price of the product
   string? currency;
 
@@ -2063,8 +2021,10 @@ class MessagePaymentSuccessfulBot extends MessageContent {
       'invoice_payload': invoice_payload?.toMap(skipNulls: skipNulls),
       'shipping_option_id': shipping_option_id?.toMap(skipNulls: skipNulls),
       'order_info': order_info?.toMap(skipNulls: skipNulls),
-      'telegram_payment_charge_id': telegram_payment_charge_id?.toMap(skipNulls: skipNulls),
-      'provider_payment_charge_id': provider_payment_charge_id?.toMap(skipNulls: skipNulls),
+      'telegram_payment_charge_id':
+          telegram_payment_charge_id?.toMap(skipNulls: skipNulls),
+      'provider_payment_charge_id':
+          provider_payment_charge_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -2076,7 +2036,6 @@ class MessagePaymentSuccessfulBot extends MessageContent {
 /// Telegram Premium was gifted to the user
 class MessageGiftedPremium extends MessageContent {
   String get tdType => 'messageGiftedPremium';
-
 
   /// Currency for the paid amount
   string? currency;
@@ -2131,7 +2090,6 @@ class MessageGiftedPremium extends MessageContent {
 class MessageContactRegistered extends MessageContent {
   String get tdType => 'messageContactRegistered';
 
-
   MessageContactRegistered({
     super.extra,
     super.client_id,
@@ -2155,10 +2113,9 @@ class MessageContactRegistered extends MessageContent {
   }
 }
 
-/// The current user has connected a website by logging in using Telegram Login Widget on it 
+/// The current user has connected a website by logging in using Telegram Login Widget on it
 class MessageWebsiteConnected extends MessageContent {
   String get tdType => 'messageWebsiteConnected';
-
 
   /// Domain name of the connected website
   string? domain_name;
@@ -2193,7 +2150,6 @@ class MessageWebsiteConnected extends MessageContent {
 class MessageBotWriteAccessAllowed extends MessageContent {
   String get tdType => 'messageBotWriteAccessAllowed';
 
-
   MessageBotWriteAccessAllowed({
     super.extra,
     super.client_id,
@@ -2217,10 +2173,9 @@ class MessageBotWriteAccessAllowed extends MessageContent {
   }
 }
 
-/// Data from a Web App has been sent to a bot 
+/// Data from a Web App has been sent to a bot
 class MessageWebAppDataSent extends MessageContent {
   String get tdType => 'messageWebAppDataSent';
-
 
   /// Text of the keyboardButtonTypeWebApp button, which opened the Web App
   string? button_text;
@@ -2251,12 +2206,11 @@ class MessageWebAppDataSent extends MessageContent {
   }
 }
 
-/// Data from a Web App has been received; for bots only 
+/// Data from a Web App has been received; for bots only
 class MessageWebAppDataReceived extends MessageContent {
   String get tdType => 'messageWebAppDataReceived';
 
-
-  /// Text of the keyboardButtonTypeWebApp button, which opened the Web App 
+  /// Text of the keyboardButtonTypeWebApp button, which opened the Web App
   string? button_text;
 
   /// Received data
@@ -2291,10 +2245,9 @@ class MessageWebAppDataReceived extends MessageContent {
   }
 }
 
-/// Telegram Passport data has been sent to a bot 
+/// Telegram Passport data has been sent to a bot
 class MessagePassportDataSent extends MessageContent {
   String get tdType => 'messagePassportDataSent';
-
 
   /// List of Telegram Passport element types sent
   vector<PassportElementType>? types;
@@ -2332,12 +2285,11 @@ class MessagePassportDataSent extends MessageContent {
   }
 }
 
-/// Telegram Passport data has been received; for bots only 
+/// Telegram Passport data has been received; for bots only
 class MessagePassportDataReceived extends MessageContent {
   String get tdType => 'messagePassportDataReceived';
 
-
-  /// List of received Telegram Passport elements 
+  /// List of received Telegram Passport elements
   vector<EncryptedPassportElement>? elements;
 
   /// Encrypted data credentials
@@ -2357,12 +2309,14 @@ class MessagePassportDataReceived extends MessageContent {
       elements = [];
       for (var someValue in map['elements']) {
         if (someValue != null) {
-          elements?.add(TdApiMap.fromMap(someValue) as EncryptedPassportElement);
+          elements
+              ?.add(TdApiMap.fromMap(someValue) as EncryptedPassportElement);
         }
       }
     }
     if (map['credentials'] != null) {
-      credentials = TdApiMap.fromMap(map['credentials']) as EncryptedCredentials;
+      credentials =
+          TdApiMap.fromMap(map['credentials']) as EncryptedCredentials;
     }
   }
 
@@ -2381,15 +2335,14 @@ class MessagePassportDataReceived extends MessageContent {
   }
 }
 
-/// A user in the chat came within proximity alert range 
+/// A user in the chat came within proximity alert range
 class MessageProximityAlertTriggered extends MessageContent {
   String get tdType => 'messageProximityAlertTriggered';
 
-
-  /// The identifier of a user or chat that triggered the proximity alert 
+  /// The identifier of a user or chat that triggered the proximity alert
   MessageSender? traveler_id;
 
-  /// The identifier of a user or chat that subscribed for the proximity alert 
+  /// The identifier of a user or chat that subscribed for the proximity alert
   MessageSender? watcher_id;
 
   /// The distance between the users
@@ -2434,7 +2387,6 @@ class MessageProximityAlertTriggered extends MessageContent {
 /// Message content that is not supported in the current TDLib version
 class MessageUnsupported extends MessageContent {
   String get tdType => 'messageUnsupported';
-
 
   MessageUnsupported({
     super.extra,

@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Changes the discussion group of a channel chat; requires can_change_info administrator right in the channel if it is specified
 class SetChatDiscussionGroup extends TdFunction {
   String get tdType => 'setChatDiscussionGroup';
   String get tdReturnType => 'Ok';
-
 
   /// Identifier of the channel chat. Pass 0 to remove a link from the supergroup passed in the second argument to a linked channel chat (requires can_pin_messages rights in the supergroup)
   int53? chat_id;

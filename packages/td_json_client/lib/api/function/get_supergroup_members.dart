@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/supergroup_members_filter.dart';
 
-
 /// Returns information about members or banned users in a supergroup or channel. Can be used only if supergroupFullInfo.can_get_members == true; additionally, administrator privileges may be required for some filters
 class GetSupergroupMembers extends TdFunction {
   String get tdType => 'getSupergroupMembers';
   String get tdReturnType => 'ChatMembers';
-
 
   /// Identifier of the supergroup or channel
   int53? supergroup_id;

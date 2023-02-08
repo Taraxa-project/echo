@@ -9,11 +9,9 @@ import 'package:td_json_client/api/object/unread_reaction.dart';
 import 'package:td_json_client/api/object/message_content.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 
-
 /// Describes a message
 class Message extends TdObject {
   String get tdType => 'message';
-
 
   /// Message identifier; unique for the chat to which the message belongs
   int53? id;
@@ -185,10 +183,12 @@ class Message extends TdObject {
     }
     chat_id = map['chat_id'];
     if (map['sending_state'] != null) {
-      sending_state = TdApiMap.fromMap(map['sending_state']) as MessageSendingState;
+      sending_state =
+          TdApiMap.fromMap(map['sending_state']) as MessageSendingState;
     }
     if (map['scheduling_state'] != null) {
-      scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
+      scheduling_state =
+          TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
     }
     is_outgoing = map['is_outgoing'];
     is_pinned = map['is_pinned'];
@@ -210,10 +210,12 @@ class Message extends TdObject {
     date = map['date'];
     edit_date = map['edit_date'];
     if (map['forward_info'] != null) {
-      forward_info = TdApiMap.fromMap(map['forward_info']) as MessageForwardInfo;
+      forward_info =
+          TdApiMap.fromMap(map['forward_info']) as MessageForwardInfo;
     }
     if (map['interaction_info'] != null) {
-      interaction_info = TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
+      interaction_info =
+          TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
     }
     if (map['unread_reactions'] != null) {
       unread_reactions = [];
@@ -256,18 +258,25 @@ class Message extends TdObject {
       'can_be_edited': can_be_edited?.toMap(skipNulls: skipNulls),
       'can_be_forwarded': can_be_forwarded?.toMap(skipNulls: skipNulls),
       'can_be_saved': can_be_saved?.toMap(skipNulls: skipNulls),
-      'can_be_deleted_only_for_self': can_be_deleted_only_for_self?.toMap(skipNulls: skipNulls),
-      'can_be_deleted_for_all_users': can_be_deleted_for_all_users?.toMap(skipNulls: skipNulls),
-      'can_get_added_reactions': can_get_added_reactions?.toMap(skipNulls: skipNulls),
+      'can_be_deleted_only_for_self':
+          can_be_deleted_only_for_self?.toMap(skipNulls: skipNulls),
+      'can_be_deleted_for_all_users':
+          can_be_deleted_for_all_users?.toMap(skipNulls: skipNulls),
+      'can_get_added_reactions':
+          can_get_added_reactions?.toMap(skipNulls: skipNulls),
       'can_get_statistics': can_get_statistics?.toMap(skipNulls: skipNulls),
-      'can_get_message_thread': can_get_message_thread?.toMap(skipNulls: skipNulls),
+      'can_get_message_thread':
+          can_get_message_thread?.toMap(skipNulls: skipNulls),
       'can_get_viewers': can_get_viewers?.toMap(skipNulls: skipNulls),
-      'can_get_media_timestamp_links': can_get_media_timestamp_links?.toMap(skipNulls: skipNulls),
+      'can_get_media_timestamp_links':
+          can_get_media_timestamp_links?.toMap(skipNulls: skipNulls),
       'can_report_reactions': can_report_reactions?.toMap(skipNulls: skipNulls),
-      'has_timestamped_media': has_timestamped_media?.toMap(skipNulls: skipNulls),
+      'has_timestamped_media':
+          has_timestamped_media?.toMap(skipNulls: skipNulls),
       'is_channel_post': is_channel_post?.toMap(skipNulls: skipNulls),
       'is_topic_message': is_topic_message?.toMap(skipNulls: skipNulls),
-      'contains_unread_mention': contains_unread_mention?.toMap(skipNulls: skipNulls),
+      'contains_unread_mention':
+          contains_unread_mention?.toMap(skipNulls: skipNulls),
       'date': date?.toMap(skipNulls: skipNulls),
       'edit_date': edit_date?.toMap(skipNulls: skipNulls),
       'forward_info': forward_info?.toMap(skipNulls: skipNulls),

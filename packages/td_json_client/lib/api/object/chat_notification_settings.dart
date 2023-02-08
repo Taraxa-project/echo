@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Contains information about notification settings for a chat or a froum topic
 class ChatNotificationSettings extends TdObject {
   String get tdType => 'chatNotificationSettings';
-
 
   /// If true, mute_for is ignored and the value for the relevant type of chat or the forum chat is used instead
   Bool? use_default_mute_for;
@@ -60,9 +58,12 @@ class ChatNotificationSettings extends TdObject {
     sound_id = map['sound_id'];
     use_default_show_preview = map['use_default_show_preview'];
     show_preview = map['show_preview'];
-    use_default_disable_pinned_message_notifications = map['use_default_disable_pinned_message_notifications'];
-    disable_pinned_message_notifications = map['disable_pinned_message_notifications'];
-    use_default_disable_mention_notifications = map['use_default_disable_mention_notifications'];
+    use_default_disable_pinned_message_notifications =
+        map['use_default_disable_pinned_message_notifications'];
+    disable_pinned_message_notifications =
+        map['disable_pinned_message_notifications'];
+    use_default_disable_mention_notifications =
+        map['use_default_disable_mention_notifications'];
     disable_mention_notifications = map['disable_mention_notifications'];
   }
 
@@ -75,12 +76,19 @@ class ChatNotificationSettings extends TdObject {
       'mute_for': mute_for?.toMap(skipNulls: skipNulls),
       'use_default_sound': use_default_sound?.toMap(skipNulls: skipNulls),
       'sound_id': sound_id?.toMap(skipNulls: skipNulls),
-      'use_default_show_preview': use_default_show_preview?.toMap(skipNulls: skipNulls),
+      'use_default_show_preview':
+          use_default_show_preview?.toMap(skipNulls: skipNulls),
       'show_preview': show_preview?.toMap(skipNulls: skipNulls),
-      'use_default_disable_pinned_message_notifications': use_default_disable_pinned_message_notifications?.toMap(skipNulls: skipNulls),
-      'disable_pinned_message_notifications': disable_pinned_message_notifications?.toMap(skipNulls: skipNulls),
-      'use_default_disable_mention_notifications': use_default_disable_mention_notifications?.toMap(skipNulls: skipNulls),
-      'disable_mention_notifications': disable_mention_notifications?.toMap(skipNulls: skipNulls),
+      'use_default_disable_pinned_message_notifications':
+          use_default_disable_pinned_message_notifications?.toMap(
+              skipNulls: skipNulls),
+      'disable_pinned_message_notifications':
+          disable_pinned_message_notifications?.toMap(skipNulls: skipNulls),
+      'use_default_disable_mention_notifications':
+          use_default_disable_mention_notifications?.toMap(
+              skipNulls: skipNulls),
+      'disable_mention_notifications':
+          disable_mention_notifications?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

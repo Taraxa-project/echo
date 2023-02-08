@@ -5,11 +5,9 @@ abstract class PublicChatType extends TdObject {
   PublicChatType({super.extra, super.client_id});
 }
 
-
 /// The chat is public, because it has an active username
 class PublicChatTypeHasUsername extends PublicChatType {
   String get tdType => 'publicChatTypeHasUsername';
-
 
   PublicChatTypeHasUsername({
     super.extra,
@@ -37,7 +35,6 @@ class PublicChatTypeHasUsername extends PublicChatType {
 /// The chat is public, because it is a location-based supergroup
 class PublicChatTypeIsLocationBased extends PublicChatType {
   String get tdType => 'publicChatTypeIsLocationBased';
-
 
   PublicChatTypeIsLocationBased({
     super.extra,

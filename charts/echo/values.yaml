@@ -1,0 +1,109 @@
+replicaCount: 1
+
+image:
+  repository: gcr.io/jovial-meridian-249123/echo
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+persistence:
+  tdlib:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 10Gi
+  sqlite:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 10Gi
+
+# set to false when providing secrets externally i.e. thru SealedSecrets
+appSecret:
+  create: true
+
+configEnvs:
+  PATH_TD_JSON_LIB: /usr/local/lib/libtdjsonlc.so
+  PATH_TD_JSON_LIB_DATA: /var/lib/tdlib
+  PATH_DB_MESSAGE: /var/lib/sqlite/message.db
+  LOG_LEVEL: info
+  LIBTDJSON_LOGLEVEL: warning
+  RUN_FOREVER: true
+
+  CHATS_NAMES_0: "[]"
+  CHATS_NAMES_1: "[]"
+  CHATS_NAMES_2: "[]"
+  CHATS_NAMES_3: "[]"
+  CHATS_NAMES_4: "[]"
+
+
+secretEnvs:
+  API_ID_0: "0"
+  API_ID_1: "0"
+  API_ID_2: "0"
+  API_ID_3: "0"
+  API_ID_4: "0"
+
+  API_HASH_0: "0"
+  API_HASH_1: "0"
+  API_HASH_2: "0"
+  API_HASH_3: "0"
+  API_HASH_4: "0"
+
+  PHONE_0: "0"
+  PHONE_1: "0"
+  PHONE_2: "0"
+  PHONE_3: "0"
+  PHONE_4: "0"
+
+  PROXY_OPTION_0: ""
+  PROXY_OPTION_1: ""
+  PROXY_OPTION_2: ""
+  PROXY_OPTION_3: ""
+  PROXY_OPTION_4: ""

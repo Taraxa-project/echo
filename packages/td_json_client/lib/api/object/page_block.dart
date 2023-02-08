@@ -18,11 +18,9 @@ abstract class PageBlock extends TdObject {
   PageBlock({super.extra, super.client_id});
 }
 
-
-/// The title of a page 
+/// The title of a page
 class PageBlockTitle extends PageBlock {
   String get tdType => 'pageBlockTitle';
-
 
   /// Title
   RichText? title;
@@ -55,10 +53,9 @@ class PageBlockTitle extends PageBlock {
   }
 }
 
-/// The subtitle of a page 
+/// The subtitle of a page
 class PageBlockSubtitle extends PageBlock {
   String get tdType => 'pageBlockSubtitle';
-
 
   /// Subtitle
   RichText? subtitle;
@@ -91,12 +88,11 @@ class PageBlockSubtitle extends PageBlock {
   }
 }
 
-/// The author and publishing date of a page 
+/// The author and publishing date of a page
 class PageBlockAuthorDate extends PageBlock {
   String get tdType => 'pageBlockAuthorDate';
 
-
-  /// Author 
+  /// Author
   RichText? author;
 
   /// Point in time (Unix timestamp) when the article was published; 0 if unknown
@@ -133,10 +129,9 @@ class PageBlockAuthorDate extends PageBlock {
   }
 }
 
-/// A header 
+/// A header
 class PageBlockHeader extends PageBlock {
   String get tdType => 'pageBlockHeader';
-
 
   /// Header
   RichText? header;
@@ -169,10 +164,9 @@ class PageBlockHeader extends PageBlock {
   }
 }
 
-/// A subheader 
+/// A subheader
 class PageBlockSubheader extends PageBlock {
   String get tdType => 'pageBlockSubheader';
-
 
   /// Subheader
   RichText? subheader;
@@ -205,10 +199,9 @@ class PageBlockSubheader extends PageBlock {
   }
 }
 
-/// A kicker 
+/// A kicker
 class PageBlockKicker extends PageBlock {
   String get tdType => 'pageBlockKicker';
-
 
   /// Kicker
   RichText? kicker;
@@ -241,10 +234,9 @@ class PageBlockKicker extends PageBlock {
   }
 }
 
-/// A text paragraph 
+/// A text paragraph
 class PageBlockParagraph extends PageBlock {
   String get tdType => 'pageBlockParagraph';
-
 
   /// Paragraph text
   RichText? text;
@@ -277,12 +269,11 @@ class PageBlockParagraph extends PageBlock {
   }
 }
 
-/// A preformatted text paragraph 
+/// A preformatted text paragraph
 class PageBlockPreformatted extends PageBlock {
   String get tdType => 'pageBlockPreformatted';
 
-
-  /// Paragraph text 
+  /// Paragraph text
   RichText? text;
 
   /// Programming language for which the text needs to be formatted
@@ -319,10 +310,9 @@ class PageBlockPreformatted extends PageBlock {
   }
 }
 
-/// The footer of a page 
+/// The footer of a page
 class PageBlockFooter extends PageBlock {
   String get tdType => 'pageBlockFooter';
-
 
   /// Footer
   RichText? footer;
@@ -359,7 +349,6 @@ class PageBlockFooter extends PageBlock {
 class PageBlockDivider extends PageBlock {
   String get tdType => 'pageBlockDivider';
 
-
   PageBlockDivider({
     super.extra,
     super.client_id,
@@ -383,10 +372,9 @@ class PageBlockDivider extends PageBlock {
   }
 }
 
-/// An invisible anchor on a page, which can be used in a URL to open the page from the specified anchor 
+/// An invisible anchor on a page, which can be used in a URL to open the page from the specified anchor
 class PageBlockAnchor extends PageBlock {
   String get tdType => 'pageBlockAnchor';
-
 
   /// Name of the anchor
   string? name;
@@ -417,10 +405,9 @@ class PageBlockAnchor extends PageBlock {
   }
 }
 
-/// A list of data blocks 
+/// A list of data blocks
 class PageBlockList extends PageBlock {
   String get tdType => 'pageBlockList';
-
 
   /// The items of the list
   vector<PageBlockListItem>? items;
@@ -461,7 +448,6 @@ class PageBlockList extends PageBlock {
 /// A block quote
 class PageBlockBlockQuote extends PageBlock {
   String get tdType => 'pageBlockBlockQuote';
-
 
   /// Quote text
   RichText? text;
@@ -506,7 +492,6 @@ class PageBlockBlockQuote extends PageBlock {
 class PageBlockPullQuote extends PageBlock {
   String get tdType => 'pageBlockPullQuote';
 
-
   /// Quote text
   RichText? text;
 
@@ -549,7 +534,6 @@ class PageBlockPullQuote extends PageBlock {
 /// An animation
 class PageBlockAnimation extends PageBlock {
   String get tdType => 'pageBlockAnimation';
-
 
   /// Animation file; may be null
   Animation? animation;
@@ -600,7 +584,6 @@ class PageBlockAnimation extends PageBlock {
 class PageBlockAudio extends PageBlock {
   String get tdType => 'pageBlockAudio';
 
-
   /// Audio file; may be null
   Audio? audio;
 
@@ -643,7 +626,6 @@ class PageBlockAudio extends PageBlock {
 /// A photo
 class PageBlockPhoto extends PageBlock {
   String get tdType => 'pageBlockPhoto';
-
 
   /// Photo file; may be null
   Photo? photo;
@@ -693,7 +675,6 @@ class PageBlockPhoto extends PageBlock {
 /// A video
 class PageBlockVideo extends PageBlock {
   String get tdType => 'pageBlockVideo';
-
 
   /// Video file; may be null
   Video? video;
@@ -750,7 +731,6 @@ class PageBlockVideo extends PageBlock {
 class PageBlockVoiceNote extends PageBlock {
   String get tdType => 'pageBlockVoiceNote';
 
-
   /// Voice note; may be null
   VoiceNote? voice_note;
 
@@ -794,7 +774,6 @@ class PageBlockVoiceNote extends PageBlock {
 class PageBlockCover extends PageBlock {
   String get tdType => 'pageBlockCover';
 
-
   /// Cover
   PageBlock? cover;
 
@@ -827,7 +806,6 @@ class PageBlockCover extends PageBlock {
 /// An embedded web page
 class PageBlockEmbedded extends PageBlock {
   String get tdType => 'pageBlockEmbedded';
-
 
   /// Web page URL, if available
   string? url;
@@ -908,7 +886,6 @@ class PageBlockEmbedded extends PageBlock {
 class PageBlockEmbeddedPost extends PageBlock {
   String get tdType => 'pageBlockEmbeddedPost';
 
-
   /// Web page URL
   string? url;
 
@@ -981,7 +958,6 @@ class PageBlockEmbeddedPost extends PageBlock {
 class PageBlockCollage extends PageBlock {
   String get tdType => 'pageBlockCollage';
 
-
   /// Collage item contents
   vector<PageBlock>? page_blocks;
 
@@ -1027,7 +1003,6 @@ class PageBlockCollage extends PageBlock {
 /// A slideshow
 class PageBlockSlideshow extends PageBlock {
   String get tdType => 'pageBlockSlideshow';
-
 
   /// Slideshow item contents
   vector<PageBlock>? page_blocks;
@@ -1075,7 +1050,6 @@ class PageBlockSlideshow extends PageBlock {
 class PageBlockChatLink extends PageBlock {
   String get tdType => 'pageBlockChatLink';
 
-
   /// Chat title
   string? title;
 
@@ -1122,7 +1096,6 @@ class PageBlockChatLink extends PageBlock {
 /// A table
 class PageBlockTable extends PageBlock {
   String get tdType => 'pageBlockTable';
-
 
   /// Table caption
   RichText? caption;
@@ -1188,7 +1161,6 @@ class PageBlockTable extends PageBlock {
 class PageBlockDetails extends PageBlock {
   String get tdType => 'pageBlockDetails';
 
-
   /// Always visible heading for the block
   RichText? header;
 
@@ -1241,7 +1213,6 @@ class PageBlockDetails extends PageBlock {
 class PageBlockRelatedArticles extends PageBlock {
   String get tdType => 'pageBlockRelatedArticles';
 
-
   /// Block header
   RichText? header;
 
@@ -1289,7 +1260,6 @@ class PageBlockRelatedArticles extends PageBlock {
 /// A map
 class PageBlockMap extends PageBlock {
   String get tdType => 'pageBlockMap';
-
 
   /// Location of the map center
   Location? location;

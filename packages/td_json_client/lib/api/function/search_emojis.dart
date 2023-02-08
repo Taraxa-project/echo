@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Searches for emojis by keywords. Supported only if the file database is enabled
 class SearchEmojis extends TdFunction {
   String get tdType => 'searchEmojis';
   String get tdReturnType => 'Emojis';
-
 
   /// Text to search for
   string? text;

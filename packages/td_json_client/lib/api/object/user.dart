@@ -6,11 +6,9 @@ import 'package:td_json_client/api/object/profile_photo.dart';
 import 'package:td_json_client/api/object/emoji_status.dart';
 import 'package:td_json_client/api/object/user_type.dart';
 
-
 /// Represents a user
 class User extends TdObject {
   String get tdType => 'user';
-
 
   /// User identifier
   int53? id;
@@ -156,7 +154,8 @@ class User extends TdObject {
       'have_access': have_access?.toMap(skipNulls: skipNulls),
       'type': type?.toMap(skipNulls: skipNulls),
       'language_code': language_code?.toMap(skipNulls: skipNulls),
-      'added_to_attachment_menu': added_to_attachment_menu?.toMap(skipNulls: skipNulls),
+      'added_to_attachment_menu':
+          added_to_attachment_menu?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

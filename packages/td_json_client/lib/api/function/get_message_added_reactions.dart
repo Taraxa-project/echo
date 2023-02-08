@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reaction_type.dart';
 
-
 /// Returns reactions added for a message, along with their sender
 class GetMessageAddedReactions extends TdFunction {
   String get tdType => 'getMessageAddedReactions';
   String get tdReturnType => 'AddedReactions';
-
 
   /// Identifier of the chat to which the message belongs
   int53? chat_id;

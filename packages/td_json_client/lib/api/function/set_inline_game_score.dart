@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Updates the game score of the specified user in a game; for bots only
 class SetInlineGameScore extends TdFunction {
   String get tdType => 'setInlineGameScore';
   String get tdReturnType => 'Ok';
-
 
   /// Inline message identifier
   string? inline_message_id;

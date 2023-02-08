@@ -5,11 +5,9 @@ abstract class PremiumFeature extends TdObject {
   PremiumFeature({super.extra, super.client_id});
 }
 
-
 /// Increased limits
 class PremiumFeatureIncreasedLimits extends PremiumFeature {
   String get tdType => 'premiumFeatureIncreasedLimits';
-
 
   PremiumFeatureIncreasedLimits({
     super.extra,
@@ -38,7 +36,6 @@ class PremiumFeatureIncreasedLimits extends PremiumFeature {
 class PremiumFeatureIncreasedUploadFileSize extends PremiumFeature {
   String get tdType => 'premiumFeatureIncreasedUploadFileSize';
 
-
   PremiumFeatureIncreasedUploadFileSize({
     super.extra,
     super.client_id,
@@ -65,7 +62,6 @@ class PremiumFeatureIncreasedUploadFileSize extends PremiumFeature {
 /// Improved download speed
 class PremiumFeatureImprovedDownloadSpeed extends PremiumFeature {
   String get tdType => 'premiumFeatureImprovedDownloadSpeed';
-
 
   PremiumFeatureImprovedDownloadSpeed({
     super.extra,
@@ -94,7 +90,6 @@ class PremiumFeatureImprovedDownloadSpeed extends PremiumFeature {
 class PremiumFeatureVoiceRecognition extends PremiumFeature {
   String get tdType => 'premiumFeatureVoiceRecognition';
 
-
   PremiumFeatureVoiceRecognition({
     super.extra,
     super.client_id,
@@ -121,7 +116,6 @@ class PremiumFeatureVoiceRecognition extends PremiumFeature {
 /// Disabled ads
 class PremiumFeatureDisabledAds extends PremiumFeature {
   String get tdType => 'premiumFeatureDisabledAds';
-
 
   PremiumFeatureDisabledAds({
     super.extra,
@@ -150,7 +144,6 @@ class PremiumFeatureDisabledAds extends PremiumFeature {
 class PremiumFeatureUniqueReactions extends PremiumFeature {
   String get tdType => 'premiumFeatureUniqueReactions';
 
-
   PremiumFeatureUniqueReactions({
     super.extra,
     super.client_id,
@@ -177,7 +170,6 @@ class PremiumFeatureUniqueReactions extends PremiumFeature {
 /// Allowed to use premium stickers with unique effects
 class PremiumFeatureUniqueStickers extends PremiumFeature {
   String get tdType => 'premiumFeatureUniqueStickers';
-
 
   PremiumFeatureUniqueStickers({
     super.extra,
@@ -206,7 +198,6 @@ class PremiumFeatureUniqueStickers extends PremiumFeature {
 class PremiumFeatureCustomEmoji extends PremiumFeature {
   String get tdType => 'premiumFeatureCustomEmoji';
 
-
   PremiumFeatureCustomEmoji({
     super.extra,
     super.client_id,
@@ -233,7 +224,6 @@ class PremiumFeatureCustomEmoji extends PremiumFeature {
 /// Ability to change position of the main chat list, archive and mute all new chats from non-contacts, and completely disable notifications about the user's contacts joined Telegram
 class PremiumFeatureAdvancedChatManagement extends PremiumFeature {
   String get tdType => 'premiumFeatureAdvancedChatManagement';
-
 
   PremiumFeatureAdvancedChatManagement({
     super.extra,
@@ -262,7 +252,6 @@ class PremiumFeatureAdvancedChatManagement extends PremiumFeature {
 class PremiumFeatureProfileBadge extends PremiumFeature {
   String get tdType => 'premiumFeatureProfileBadge';
 
-
   PremiumFeatureProfileBadge({
     super.extra,
     super.client_id,
@@ -289,7 +278,6 @@ class PremiumFeatureProfileBadge extends PremiumFeature {
 /// A emoji status shown along with the user's name
 class PremiumFeatureEmojiStatus extends PremiumFeature {
   String get tdType => 'premiumFeatureEmojiStatus';
-
 
   PremiumFeatureEmojiStatus({
     super.extra,
@@ -318,7 +306,6 @@ class PremiumFeatureEmojiStatus extends PremiumFeature {
 class PremiumFeatureAnimatedProfilePhoto extends PremiumFeature {
   String get tdType => 'premiumFeatureAnimatedProfilePhoto';
 
-
   PremiumFeatureAnimatedProfilePhoto({
     super.extra,
     super.client_id,
@@ -346,7 +333,6 @@ class PremiumFeatureAnimatedProfilePhoto extends PremiumFeature {
 class PremiumFeatureForumTopicIcon extends PremiumFeature {
   String get tdType => 'premiumFeatureForumTopicIcon';
 
-
   PremiumFeatureForumTopicIcon({
     super.extra,
     super.client_id,
@@ -373,7 +359,6 @@ class PremiumFeatureForumTopicIcon extends PremiumFeature {
 /// Allowed to set a premium appllication icons
 class PremiumFeatureAppIcons extends PremiumFeature {
   String get tdType => 'premiumFeatureAppIcons';
-
 
   PremiumFeatureAppIcons({
     super.extra,

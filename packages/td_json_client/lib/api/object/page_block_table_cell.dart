@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/rich_text.dart';
 import 'package:td_json_client/api/object/page_block_horizontal_alignment.dart';
 import 'package:td_json_client/api/object/page_block_vertical_alignment.dart';
 
-
 /// Represents a cell of a table
 class PageBlockTableCell extends TdObject {
   String get tdType => 'pageBlockTableCell';
-
 
   /// Cell text; may be null. If the text is null, then the cell must be invisible
   RichText? text;

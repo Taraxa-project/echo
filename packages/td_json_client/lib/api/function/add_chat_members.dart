@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Adds multiple new members to a chat. Currently, this method is only available for supergroups and channels. This method can't be used to join a chat. Members can't be added to a channel if it has more than 200 members
 class AddChatMembers extends TdFunction {
   String get tdType => 'addChatMembers';
   String get tdReturnType => 'Ok';
-
 
   /// Chat identifier
   int53? chat_id;

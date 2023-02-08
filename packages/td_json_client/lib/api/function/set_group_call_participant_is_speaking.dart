@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Informs TDLib that speaking state of a participant of an active group has changed
 class SetGroupCallParticipantIsSpeaking extends TdFunction {
   String get tdType => 'setGroupCallParticipantIsSpeaking';
   String get tdReturnType => 'Ok';
-
 
   /// Group call identifier
   int32? group_call_id;

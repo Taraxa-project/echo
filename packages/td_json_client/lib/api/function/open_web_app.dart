@@ -2,13 +2,11 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/theme_parameters.dart';
 
-
 /// Informs TDLib that a Web App is being opened from attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button.
 /// For each bot, a confirmation alert about data sent to the bot must be shown once
 class OpenWebApp extends TdFunction {
   String get tdType => 'openWebApp';
   String get tdReturnType => 'WebAppInfo';
-
 
   /// Identifier of the chat in which the Web App is opened
   int53? chat_id;

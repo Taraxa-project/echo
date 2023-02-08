@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/contact.dart';
 
-
 /// Adds a user to the contact list or edits an existing contact by their user identifier
 class AddContact extends TdFunction {
   String get tdType => 'addContact';
   String get tdReturnType => 'Ok';
-
 
   /// The contact to add or edit; phone number may be empty and needs to be specified only if known, vCard is ignored
   Contact? contact;

@@ -5,13 +5,11 @@ abstract class CallServerType extends TdObject {
   CallServerType({super.extra, super.client_id});
 }
 
-
-/// A Telegram call reflector 
+/// A Telegram call reflector
 class CallServerTypeTelegramReflector extends CallServerType {
   String get tdType => 'callServerTypeTelegramReflector';
 
-
-  /// A peer tag to be used with the reflector 
+  /// A peer tag to be used with the reflector
   bytes? peer_tag;
 
   /// True, if the server uses TCP instead of UDP
@@ -49,7 +47,6 @@ class CallServerTypeTelegramReflector extends CallServerType {
 /// A WebRTC server
 class CallServerTypeWebrtc extends CallServerType {
   String get tdType => 'callServerTypeWebrtc';
-
 
   /// Username to be used for authentication
   string? username;

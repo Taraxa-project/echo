@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Deletes all messages between the specified dates in a chat. Supported only for private chats and basic groups. Messages sent in the last 30 seconds will not be deleted
 class DeleteChatMessagesByDate extends TdFunction {
   String get tdType => 'deleteChatMessagesByDate';
   String get tdReturnType => 'Ok';
-
 
   /// Chat identifier
   int53? chat_id;

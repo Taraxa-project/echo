@@ -3,13 +3,11 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reaction_type.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
-
-/// Represents a reaction applied to a message 
+/// Represents a reaction applied to a message
 class AddedReaction extends TdObject {
   String get tdType => 'addedReaction';
 
-
-  /// Type of the reaction 
+  /// Type of the reaction
   ReactionType? type;
 
   /// Identifier of the chat member, applied the reaction

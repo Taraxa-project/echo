@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/date.dart';
 
-
 /// Contains the user's personal details
 class PersonalDetails extends TdObject {
   String get tdType => 'personalDetails';
-
 
   /// First name of the user written in English; 1-255 characters
   string? first_name;
@@ -84,7 +82,8 @@ class PersonalDetails extends TdObject {
       'birthdate': birthdate?.toMap(skipNulls: skipNulls),
       'gender': gender?.toMap(skipNulls: skipNulls),
       'country_code': country_code?.toMap(skipNulls: skipNulls),
-      'residence_country_code': residence_country_code?.toMap(skipNulls: skipNulls),
+      'residence_country_code':
+          residence_country_code?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

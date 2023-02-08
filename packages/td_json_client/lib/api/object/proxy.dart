@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/proxy_type.dart';
 
-
 /// Contains information about a proxy server
 class Proxy extends TdObject {
   String get tdType => 'proxy';
-
 
   /// Unique identifier of the proxy
   int32? id;

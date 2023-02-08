@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/session_type.dart';
 
-
 /// Contains information about one session in a Telegram application used by the current user. Sessions must be shown to the user in the returned order
 class Session extends TdObject {
   String get tdType => 'session';
-
 
   /// Session identifier
   int64? id;
@@ -118,13 +116,15 @@ class Session extends TdObject {
       'id': id?.toMap(skipNulls: skipNulls),
       'is_current': is_current?.toMap(skipNulls: skipNulls),
       'is_password_pending': is_password_pending?.toMap(skipNulls: skipNulls),
-      'can_accept_secret_chats': can_accept_secret_chats?.toMap(skipNulls: skipNulls),
+      'can_accept_secret_chats':
+          can_accept_secret_chats?.toMap(skipNulls: skipNulls),
       'can_accept_calls': can_accept_calls?.toMap(skipNulls: skipNulls),
       'type': type?.toMap(skipNulls: skipNulls),
       'api_id': api_id?.toMap(skipNulls: skipNulls),
       'application_name': application_name?.toMap(skipNulls: skipNulls),
       'application_version': application_version?.toMap(skipNulls: skipNulls),
-      'is_official_application': is_official_application?.toMap(skipNulls: skipNulls),
+      'is_official_application':
+          is_official_application?.toMap(skipNulls: skipNulls),
       'device_model': device_model?.toMap(skipNulls: skipNulls),
       'platform': platform?.toMap(skipNulls: skipNulls),
       'system_version': system_version?.toMap(skipNulls: skipNulls),

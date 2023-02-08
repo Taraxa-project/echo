@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/premium_feature.dart';
 import 'package:td_json_client/api/object/premium_limit.dart';
 import 'package:td_json_client/api/object/internal_link_type.dart';
 
-
 /// Contains information about features, available to Premium users
 class PremiumFeatures extends TdObject {
   String get tdType => 'premiumFeatures';
-
 
   /// The list of available features
   vector<PremiumFeature>? features;

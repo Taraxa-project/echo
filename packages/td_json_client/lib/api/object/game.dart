@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/formatted_text.dart';
 import 'package:td_json_client/api/object/photo.dart';
 import 'package:td_json_client/api/object/animation.dart';
 
-
 /// Describes a game
 class Game extends TdObject {
   String get tdType => 'game';
-
 
   /// Unique game identifier
   int64? id;

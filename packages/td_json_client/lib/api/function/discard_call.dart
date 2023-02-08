@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Discards a call
 class DiscardCall extends TdFunction {
   String get tdType => 'discardCall';
   String get tdReturnType => 'Ok';
-
 
   /// Call identifier
   int32? call_id;

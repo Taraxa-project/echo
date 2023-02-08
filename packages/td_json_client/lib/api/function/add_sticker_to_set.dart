@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_sticker.dart';
 
-
 /// Adds a new sticker to a set; for bots only. Returns the sticker set
 class AddStickerToSet extends TdFunction {
   String get tdType => 'addStickerToSet';
   String get tdReturnType => 'StickerSet';
-
 
   /// Sticker set owner
   int53? user_id;

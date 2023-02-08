@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/search_messages_filter.dart';
 
-
 /// Returns approximate number of messages of the specified type in the chat
 class GetChatMessageCount extends TdFunction {
   String get tdType => 'getChatMessageCount';
   String get tdReturnType => 'Count';
-
 
   /// Identifier of the chat in which to count messages
   int53? chat_id;

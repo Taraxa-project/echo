@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/photo.dart';
 
-
 /// Contains information about a related article
 class PageBlockRelatedArticle extends TdObject {
   String get tdType => 'pageBlockRelatedArticle';
-
 
   /// Related article URL
   string? url;

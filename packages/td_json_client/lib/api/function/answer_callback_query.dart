@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Sets the result of a callback query; for bots only
 class AnswerCallbackQuery extends TdFunction {
   String get tdType => 'answerCallbackQuery';
   String get tdReturnType => 'Ok';
-
 
   /// Identifier of the callback query
   int64? callback_query_id;

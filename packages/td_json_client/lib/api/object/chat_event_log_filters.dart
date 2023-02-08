@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Represents a set of filters used to obtain a chat event log
 class ChatEventLogFilters extends TdObject {
   String get tdType => 'chatEventLogFilters';
-
 
   /// True, if message edits need to be returned
   Bool? message_edits;

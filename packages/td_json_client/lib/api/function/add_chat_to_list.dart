@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 
-
 /// Adds a chat to a chat list. A chat can't be simultaneously in Main and Archive chat lists, so it is automatically removed from another one if needed
 class AddChatToList extends TdFunction {
   String get tdType => 'addChatToList';
   String get tdReturnType => 'Ok';
-
 
   /// Chat identifier
   int53? chat_id;

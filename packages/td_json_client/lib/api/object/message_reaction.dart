@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reaction_type.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 
-
 /// Contains information about a reaction to a message
 class MessageReaction extends TdObject {
   String get tdType => 'messageReaction';
-
 
   /// Type of the reaction
   ReactionType? type;

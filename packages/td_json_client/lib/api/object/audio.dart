@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Describes an audio file. Audio is usually in MP3 or M4A format
 class Audio extends TdObject {
   String get tdType => 'audio';
-
 
   /// Duration of the audio, in seconds; as defined by the sender
   int32? duration;
@@ -60,10 +58,12 @@ class Audio extends TdObject {
     file_name = map['file_name'];
     mime_type = map['mime_type'];
     if (map['album_cover_minithumbnail'] != null) {
-      album_cover_minithumbnail = TdApiMap.fromMap(map['album_cover_minithumbnail']) as Minithumbnail;
+      album_cover_minithumbnail =
+          TdApiMap.fromMap(map['album_cover_minithumbnail']) as Minithumbnail;
     }
     if (map['album_cover_thumbnail'] != null) {
-      album_cover_thumbnail = TdApiMap.fromMap(map['album_cover_thumbnail']) as Thumbnail;
+      album_cover_thumbnail =
+          TdApiMap.fromMap(map['album_cover_thumbnail']) as Thumbnail;
     }
     if (map['external_album_covers'] != null) {
       external_album_covers = [];
@@ -88,9 +88,12 @@ class Audio extends TdObject {
       'performer': performer?.toMap(skipNulls: skipNulls),
       'file_name': file_name?.toMap(skipNulls: skipNulls),
       'mime_type': mime_type?.toMap(skipNulls: skipNulls),
-      'album_cover_minithumbnail': album_cover_minithumbnail?.toMap(skipNulls: skipNulls),
-      'album_cover_thumbnail': album_cover_thumbnail?.toMap(skipNulls: skipNulls),
-      'external_album_covers': external_album_covers?.toMap(skipNulls: skipNulls),
+      'album_cover_minithumbnail':
+          album_cover_minithumbnail?.toMap(skipNulls: skipNulls),
+      'album_cover_thumbnail':
+          album_cover_thumbnail?.toMap(skipNulls: skipNulls),
+      'external_album_covers':
+          external_album_covers?.toMap(skipNulls: skipNulls),
       'audio': audio?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

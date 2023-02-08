@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/store_payment_purpose.dart';
 
-
 /// Informs server about a purchase through Google Play. For official applications only
 class AssignGooglePlayTransaction extends TdFunction {
   String get tdType => 'assignGooglePlayTransaction';
   String get tdReturnType => 'Ok';
-
 
   /// Application package name
   string? package_name;

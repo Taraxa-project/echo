@@ -5,11 +5,9 @@ abstract class TextEntityType extends TdObject {
   TextEntityType({super.extra, super.client_id});
 }
 
-
 /// A mention of a user, a supergroup, or a channel by their username
 class TextEntityTypeMention extends TextEntityType {
   String get tdType => 'textEntityTypeMention';
-
 
   TextEntityTypeMention({
     super.extra,
@@ -38,7 +36,6 @@ class TextEntityTypeMention extends TextEntityType {
 class TextEntityTypeHashtag extends TextEntityType {
   String get tdType => 'textEntityTypeHashtag';
 
-
   TextEntityTypeHashtag({
     super.extra,
     super.client_id,
@@ -65,7 +62,6 @@ class TextEntityTypeHashtag extends TextEntityType {
 /// A cashtag text, beginning with "$" and consisting of capital English letters (e.g., "$USD")
 class TextEntityTypeCashtag extends TextEntityType {
   String get tdType => 'textEntityTypeCashtag';
-
 
   TextEntityTypeCashtag({
     super.extra,
@@ -94,7 +90,6 @@ class TextEntityTypeCashtag extends TextEntityType {
 class TextEntityTypeBotCommand extends TextEntityType {
   String get tdType => 'textEntityTypeBotCommand';
 
-
   TextEntityTypeBotCommand({
     super.extra,
     super.client_id,
@@ -121,7 +116,6 @@ class TextEntityTypeBotCommand extends TextEntityType {
 /// An HTTP URL
 class TextEntityTypeUrl extends TextEntityType {
   String get tdType => 'textEntityTypeUrl';
-
 
   TextEntityTypeUrl({
     super.extra,
@@ -150,7 +144,6 @@ class TextEntityTypeUrl extends TextEntityType {
 class TextEntityTypeEmailAddress extends TextEntityType {
   String get tdType => 'textEntityTypeEmailAddress';
 
-
   TextEntityTypeEmailAddress({
     super.extra,
     super.client_id,
@@ -177,7 +170,6 @@ class TextEntityTypeEmailAddress extends TextEntityType {
 /// A phone number
 class TextEntityTypePhoneNumber extends TextEntityType {
   String get tdType => 'textEntityTypePhoneNumber';
-
 
   TextEntityTypePhoneNumber({
     super.extra,
@@ -206,7 +198,6 @@ class TextEntityTypePhoneNumber extends TextEntityType {
 class TextEntityTypeBankCardNumber extends TextEntityType {
   String get tdType => 'textEntityTypeBankCardNumber';
 
-
   TextEntityTypeBankCardNumber({
     super.extra,
     super.client_id,
@@ -233,7 +224,6 @@ class TextEntityTypeBankCardNumber extends TextEntityType {
 /// A bold text
 class TextEntityTypeBold extends TextEntityType {
   String get tdType => 'textEntityTypeBold';
-
 
   TextEntityTypeBold({
     super.extra,
@@ -262,7 +252,6 @@ class TextEntityTypeBold extends TextEntityType {
 class TextEntityTypeItalic extends TextEntityType {
   String get tdType => 'textEntityTypeItalic';
 
-
   TextEntityTypeItalic({
     super.extra,
     super.client_id,
@@ -289,7 +278,6 @@ class TextEntityTypeItalic extends TextEntityType {
 /// An underlined text
 class TextEntityTypeUnderline extends TextEntityType {
   String get tdType => 'textEntityTypeUnderline';
-
 
   TextEntityTypeUnderline({
     super.extra,
@@ -318,7 +306,6 @@ class TextEntityTypeUnderline extends TextEntityType {
 class TextEntityTypeStrikethrough extends TextEntityType {
   String get tdType => 'textEntityTypeStrikethrough';
 
-
   TextEntityTypeStrikethrough({
     super.extra,
     super.client_id,
@@ -345,7 +332,6 @@ class TextEntityTypeStrikethrough extends TextEntityType {
 /// A spoiler text
 class TextEntityTypeSpoiler extends TextEntityType {
   String get tdType => 'textEntityTypeSpoiler';
-
 
   TextEntityTypeSpoiler({
     super.extra,
@@ -374,7 +360,6 @@ class TextEntityTypeSpoiler extends TextEntityType {
 class TextEntityTypeCode extends TextEntityType {
   String get tdType => 'textEntityTypeCode';
 
-
   TextEntityTypeCode({
     super.extra,
     super.client_id,
@@ -402,7 +387,6 @@ class TextEntityTypeCode extends TextEntityType {
 class TextEntityTypePre extends TextEntityType {
   String get tdType => 'textEntityTypePre';
 
-
   TextEntityTypePre({
     super.extra,
     super.client_id,
@@ -426,10 +410,9 @@ class TextEntityTypePre extends TextEntityType {
   }
 }
 
-/// Text that must be formatted as if inside pre, and code HTML tags 
+/// Text that must be formatted as if inside pre, and code HTML tags
 class TextEntityTypePreCode extends TextEntityType {
   String get tdType => 'textEntityTypePreCode';
-
 
   /// Programming language of the code; as defined by the sender
   string? language;
@@ -460,10 +443,9 @@ class TextEntityTypePreCode extends TextEntityType {
   }
 }
 
-/// A text description shown instead of a raw URL 
+/// A text description shown instead of a raw URL
 class TextEntityTypeTextUrl extends TextEntityType {
   String get tdType => 'textEntityTypeTextUrl';
-
 
   /// HTTP or tg:// URL to be opened when the link is clicked
   string? url;
@@ -494,10 +476,9 @@ class TextEntityTypeTextUrl extends TextEntityType {
   }
 }
 
-/// A text shows instead of a raw mention of the user (e.g., when the user has no username) 
+/// A text shows instead of a raw mention of the user (e.g., when the user has no username)
 class TextEntityTypeMentionName extends TextEntityType {
   String get tdType => 'textEntityTypeMentionName';
-
 
   /// Identifier of the mentioned user
   int53? user_id;
@@ -528,10 +509,9 @@ class TextEntityTypeMentionName extends TextEntityType {
   }
 }
 
-/// A custom emoji. The text behind a custom emoji must be an emoji. Only premium users can use premium custom emoji 
+/// A custom emoji. The text behind a custom emoji must be an emoji. Only premium users can use premium custom emoji
 class TextEntityTypeCustomEmoji extends TextEntityType {
   String get tdType => 'textEntityTypeCustomEmoji';
-
 
   /// Unique identifier of the custom emoji
   int64? custom_emoji_id;
@@ -562,10 +542,9 @@ class TextEntityTypeCustomEmoji extends TextEntityType {
   }
 }
 
-/// A media timestamp 
+/// A media timestamp
 class TextEntityTypeMediaTimestamp extends TextEntityType {
   String get tdType => 'textEntityTypeMediaTimestamp';
-
 
   /// Timestamp from which a video/audio/video note/voice note playing must start, in seconds. The media can be in the content or the web page preview of the current message, or in the same places in the replied message
   int32? media_timestamp;

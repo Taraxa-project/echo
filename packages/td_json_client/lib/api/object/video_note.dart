@@ -5,11 +5,9 @@ import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/speech_recognition_result.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Describes a video note. The video must be equal in width and height, cropped to a circle, and stored in MPEG4 format
 class VideoNote extends TdObject {
   String get tdType => 'videoNote';
-
 
   /// Duration of the video, in seconds; as defined by the sender
   int32? duration;
@@ -57,7 +55,9 @@ class VideoNote extends TdObject {
       thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
     }
     if (map['speech_recognition_result'] != null) {
-      speech_recognition_result = TdApiMap.fromMap(map['speech_recognition_result']) as SpeechRecognitionResult;
+      speech_recognition_result =
+          TdApiMap.fromMap(map['speech_recognition_result'])
+              as SpeechRecognitionResult;
     }
     if (map['video'] != null) {
       video = TdApiMap.fromMap(map['video']) as File;
@@ -74,7 +74,8 @@ class VideoNote extends TdObject {
       'length': length?.toMap(skipNulls: skipNulls),
       'minithumbnail': minithumbnail?.toMap(skipNulls: skipNulls),
       'thumbnail': thumbnail?.toMap(skipNulls: skipNulls),
-      'speech_recognition_result': speech_recognition_result?.toMap(skipNulls: skipNulls),
+      'speech_recognition_result':
+          speech_recognition_result?.toMap(skipNulls: skipNulls),
       'video': video?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

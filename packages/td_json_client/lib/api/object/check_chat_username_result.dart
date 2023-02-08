@@ -5,11 +5,9 @@ abstract class CheckChatUsernameResult extends TdObject {
   CheckChatUsernameResult({super.extra, super.client_id});
 }
 
-
 /// The username can be set
 class CheckChatUsernameResultOk extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultOk';
-
 
   CheckChatUsernameResultOk({
     super.extra,
@@ -38,7 +36,6 @@ class CheckChatUsernameResultOk extends CheckChatUsernameResult {
 class CheckChatUsernameResultUsernameInvalid extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernameInvalid';
 
-
   CheckChatUsernameResultUsernameInvalid({
     super.extra,
     super.client_id,
@@ -66,7 +63,6 @@ class CheckChatUsernameResultUsernameInvalid extends CheckChatUsernameResult {
 class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernameOccupied';
 
-
   CheckChatUsernameResultUsernameOccupied({
     super.extra,
     super.client_id,
@@ -91,9 +87,9 @@ class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
 }
 
 /// The username can be purchased at fragment.com
-class CheckChatUsernameResultUsernamePurchasable extends CheckChatUsernameResult {
+class CheckChatUsernameResultUsernamePurchasable
+    extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernamePurchasable';
-
 
   CheckChatUsernameResultUsernamePurchasable({
     super.extra,
@@ -119,9 +115,9 @@ class CheckChatUsernameResultUsernamePurchasable extends CheckChatUsernameResult
 }
 
 /// The user has too many chats with username, one of them must be made private first
-class CheckChatUsernameResultPublicChatsTooMany extends CheckChatUsernameResult {
+class CheckChatUsernameResultPublicChatsTooMany
+    extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicChatsTooMany';
-
 
   CheckChatUsernameResultPublicChatsTooMany({
     super.extra,
@@ -147,16 +143,17 @@ class CheckChatUsernameResultPublicChatsTooMany extends CheckChatUsernameResult 
 }
 
 /// The user can't be a member of a public supergroup
-class CheckChatUsernameResultPublicGroupsUnavailable extends CheckChatUsernameResult {
+class CheckChatUsernameResultPublicGroupsUnavailable
+    extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicGroupsUnavailable';
-
 
   CheckChatUsernameResultPublicGroupsUnavailable({
     super.extra,
     super.client_id,
   });
 
-  CheckChatUsernameResultPublicGroupsUnavailable.fromMap(Map<String, dynamic> map) {
+  CheckChatUsernameResultPublicGroupsUnavailable.fromMap(
+      Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

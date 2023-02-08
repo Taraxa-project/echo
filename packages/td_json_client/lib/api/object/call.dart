@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/call_state.dart';
 
-
 /// Describes a call
 class Call extends TdObject {
   String get tdType => 'call';
-
 
   /// Call identifier, not persistent
   int32? id;

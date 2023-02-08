@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/group_call_video_source_group.dart';
 
-
 /// Contains information about a group call participant's video channel
 class GroupCallParticipantVideoInfo extends TdObject {
   String get tdType => 'groupCallParticipantVideoInfo';
-
 
   /// List of synchronization source groups of the video
   vector<GroupCallVideoSourceGroup>? source_groups;
@@ -32,7 +30,8 @@ class GroupCallParticipantVideoInfo extends TdObject {
       source_groups = [];
       for (var someValue in map['source_groups']) {
         if (someValue != null) {
-          source_groups?.add(TdApiMap.fromMap(someValue) as GroupCallVideoSourceGroup);
+          source_groups
+              ?.add(TdApiMap.fromMap(someValue) as GroupCallVideoSourceGroup);
         }
       }
     }

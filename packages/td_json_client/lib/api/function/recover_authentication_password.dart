@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Recovers the 2-step verification password with a password recovery code sent to an email address that was previously set up. Works only when the current authorization state is authorizationStateWaitPassword
 class RecoverAuthenticationPassword extends TdFunction {
   String get tdType => 'recoverAuthenticationPassword';
   String get tdReturnType => 'Ok';
-
 
   /// Recovery code to check
   string? recovery_code;

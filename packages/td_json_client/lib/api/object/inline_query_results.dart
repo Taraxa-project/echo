@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/inline_query_result.dart';
 
-
 /// Represents the results of the inline query. Use sendInlineQueryResultMessage to send the result of the query
 class InlineQueryResults extends TdObject {
   String get tdType => 'inlineQueryResults';
-
 
   /// Unique identifier of the inline query
   int64? inline_query_id;

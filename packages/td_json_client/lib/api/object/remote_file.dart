@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Represents a remote file
 class RemoteFile extends TdObject {
   String get tdType => 'remoteFile';
-
 
   /// Remote file identifier; may be empty. Can be used by the current user across application restarts or even from other devices. Uniquely identifies a file, but a file can have a lot of different valid identifiers.
   /// If the ID starts with "http://" or "https://", it represents the HTTP URL of the file. TDLib is currently unable to download files if only their URL is known.
@@ -52,7 +50,8 @@ class RemoteFile extends TdObject {
       'id': id?.toMap(skipNulls: skipNulls),
       'unique_id': unique_id?.toMap(skipNulls: skipNulls),
       'is_uploading_active': is_uploading_active?.toMap(skipNulls: skipNulls),
-      'is_uploading_completed': is_uploading_completed?.toMap(skipNulls: skipNulls),
+      'is_uploading_completed':
+          is_uploading_completed?.toMap(skipNulls: skipNulls),
       'uploaded_size': uploaded_size?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

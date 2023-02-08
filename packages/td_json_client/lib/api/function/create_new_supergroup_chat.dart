@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_location.dart';
 
-
 /// Creates a new supergroup or channel and sends a corresponding messageSupergroupChatCreate. Returns the newly created chat
 class CreateNewSupergroupChat extends TdFunction {
   String get tdType => 'createNewSupergroupChat';
   String get tdReturnType => 'Chat';
-
 
   /// Title of the new chat; 1-128 characters
   string? title;
@@ -59,7 +57,8 @@ class CreateNewSupergroupChat extends TdFunction {
       'is_channel': is_channel?.toMap(skipNulls: skipNulls),
       'description': description?.toMap(skipNulls: skipNulls),
       'location': location?.toMap(skipNulls: skipNulls),
-      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time':
+          message_auto_delete_time?.toMap(skipNulls: skipNulls),
       'for_import': for_import?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

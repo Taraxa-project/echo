@@ -15,11 +15,9 @@ abstract class InputMessageContent extends TdObject {
   InputMessageContent({super.extra, super.client_id});
 }
 
-
 /// A text message
 class InputMessageText extends InputMessageContent {
   String get tdType => 'inputMessageText';
-
 
   /// Formatted text to be sent; 1-getOption("message_text_length_max") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
   FormattedText? text;
@@ -54,7 +52,8 @@ class InputMessageText extends InputMessageContent {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'text': text?.toMap(skipNulls: skipNulls),
-      'disable_web_page_preview': disable_web_page_preview?.toMap(skipNulls: skipNulls),
+      'disable_web_page_preview':
+          disable_web_page_preview?.toMap(skipNulls: skipNulls),
       'clear_draft': clear_draft?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -67,7 +66,6 @@ class InputMessageText extends InputMessageContent {
 /// An animation message (GIF-style).
 class InputMessageAnimation extends InputMessageContent {
   String get tdType => 'inputMessageAnimation';
-
 
   /// Animation file to be sent
   InputFile? animation;
@@ -137,7 +135,8 @@ class InputMessageAnimation extends InputMessageContent {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'animation': animation?.toMap(skipNulls: skipNulls),
       'thumbnail': thumbnail?.toMap(skipNulls: skipNulls),
-      'added_sticker_file_ids': added_sticker_file_ids?.toMap(skipNulls: skipNulls),
+      'added_sticker_file_ids':
+          added_sticker_file_ids?.toMap(skipNulls: skipNulls),
       'duration': duration?.toMap(skipNulls: skipNulls),
       'width': width?.toMap(skipNulls: skipNulls),
       'height': height?.toMap(skipNulls: skipNulls),
@@ -154,7 +153,6 @@ class InputMessageAnimation extends InputMessageContent {
 /// An audio message
 class InputMessageAudio extends InputMessageContent {
   String get tdType => 'inputMessageAudio';
-
 
   /// Audio file to be sent
   InputFile? audio;
@@ -192,7 +190,8 @@ class InputMessageAudio extends InputMessageContent {
       audio = TdApiMap.fromMap(map['audio']) as InputFile;
     }
     if (map['album_cover_thumbnail'] != null) {
-      album_cover_thumbnail = TdApiMap.fromMap(map['album_cover_thumbnail']) as InputThumbnail;
+      album_cover_thumbnail =
+          TdApiMap.fromMap(map['album_cover_thumbnail']) as InputThumbnail;
     }
     duration = map['duration'];
     title = map['title'];
@@ -208,7 +207,8 @@ class InputMessageAudio extends InputMessageContent {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'audio': audio?.toMap(skipNulls: skipNulls),
-      'album_cover_thumbnail': album_cover_thumbnail?.toMap(skipNulls: skipNulls),
+      'album_cover_thumbnail':
+          album_cover_thumbnail?.toMap(skipNulls: skipNulls),
       'duration': duration?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
       'performer': performer?.toMap(skipNulls: skipNulls),
@@ -224,7 +224,6 @@ class InputMessageAudio extends InputMessageContent {
 /// A document message (general file)
 class InputMessageDocument extends InputMessageContent {
   String get tdType => 'inputMessageDocument';
-
 
   /// Document to be sent
   InputFile? document;
@@ -269,7 +268,8 @@ class InputMessageDocument extends InputMessageContent {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'document': document?.toMap(skipNulls: skipNulls),
       'thumbnail': thumbnail?.toMap(skipNulls: skipNulls),
-      'disable_content_type_detection': disable_content_type_detection?.toMap(skipNulls: skipNulls),
+      'disable_content_type_detection':
+          disable_content_type_detection?.toMap(skipNulls: skipNulls),
       'caption': caption?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -282,7 +282,6 @@ class InputMessageDocument extends InputMessageContent {
 /// A photo message
 class InputMessagePhoto extends InputMessageContent {
   String get tdType => 'inputMessagePhoto';
-
 
   /// Photo to send. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20
   InputFile? photo;
@@ -352,7 +351,8 @@ class InputMessagePhoto extends InputMessageContent {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'photo': photo?.toMap(skipNulls: skipNulls),
       'thumbnail': thumbnail?.toMap(skipNulls: skipNulls),
-      'added_sticker_file_ids': added_sticker_file_ids?.toMap(skipNulls: skipNulls),
+      'added_sticker_file_ids':
+          added_sticker_file_ids?.toMap(skipNulls: skipNulls),
       'width': width?.toMap(skipNulls: skipNulls),
       'height': height?.toMap(skipNulls: skipNulls),
       'caption': caption?.toMap(skipNulls: skipNulls),
@@ -369,7 +369,6 @@ class InputMessagePhoto extends InputMessageContent {
 /// A sticker message
 class InputMessageSticker extends InputMessageContent {
   String get tdType => 'inputMessageSticker';
-
 
   /// Sticker to be sent
   InputFile? sticker;
@@ -431,7 +430,6 @@ class InputMessageSticker extends InputMessageContent {
 /// A video message
 class InputMessageVideo extends InputMessageContent {
   String get tdType => 'inputMessageVideo';
-
 
   /// Video to be sent
   InputFile? video;
@@ -511,7 +509,8 @@ class InputMessageVideo extends InputMessageContent {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'video': video?.toMap(skipNulls: skipNulls),
       'thumbnail': thumbnail?.toMap(skipNulls: skipNulls),
-      'added_sticker_file_ids': added_sticker_file_ids?.toMap(skipNulls: skipNulls),
+      'added_sticker_file_ids':
+          added_sticker_file_ids?.toMap(skipNulls: skipNulls),
       'duration': duration?.toMap(skipNulls: skipNulls),
       'width': width?.toMap(skipNulls: skipNulls),
       'height': height?.toMap(skipNulls: skipNulls),
@@ -530,7 +529,6 @@ class InputMessageVideo extends InputMessageContent {
 /// A video note message
 class InputMessageVideoNote extends InputMessageContent {
   String get tdType => 'inputMessageVideoNote';
-
 
   /// Video note to be sent
   InputFile? video_note;
@@ -587,7 +585,6 @@ class InputMessageVideoNote extends InputMessageContent {
 class InputMessageVoiceNote extends InputMessageContent {
   String get tdType => 'inputMessageVoiceNote';
 
-
   /// Voice note to be sent
   InputFile? voice_note;
 
@@ -643,7 +640,6 @@ class InputMessageVoiceNote extends InputMessageContent {
 class InputMessageLocation extends InputMessageContent {
   String get tdType => 'inputMessageLocation';
 
-
   /// Location to be sent
   Location? location;
 
@@ -684,7 +680,8 @@ class InputMessageLocation extends InputMessageContent {
       'location': location?.toMap(skipNulls: skipNulls),
       'live_period': live_period?.toMap(skipNulls: skipNulls),
       'heading': heading?.toMap(skipNulls: skipNulls),
-      'proximity_alert_radius': proximity_alert_radius?.toMap(skipNulls: skipNulls),
+      'proximity_alert_radius':
+          proximity_alert_radius?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -693,10 +690,9 @@ class InputMessageLocation extends InputMessageContent {
   }
 }
 
-/// A message with information about a venue 
+/// A message with information about a venue
 class InputMessageVenue extends InputMessageContent {
   String get tdType => 'inputMessageVenue';
-
 
   /// Venue to send
   Venue? venue;
@@ -729,10 +725,9 @@ class InputMessageVenue extends InputMessageContent {
   }
 }
 
-/// A message containing a user contact 
+/// A message containing a user contact
 class InputMessageContact extends InputMessageContent {
   String get tdType => 'inputMessageContact';
-
 
   /// Contact to send
   Contact? contact;
@@ -765,12 +760,11 @@ class InputMessageContact extends InputMessageContent {
   }
 }
 
-/// A dice message 
+/// A dice message
 class InputMessageDice extends InputMessageContent {
   String get tdType => 'inputMessageDice';
 
-
-  /// Emoji on which the dice throw animation is based 
+  /// Emoji on which the dice throw animation is based
   string? emoji;
 
   /// True, if the chat message draft must be deleted
@@ -805,12 +799,11 @@ class InputMessageDice extends InputMessageContent {
   }
 }
 
-/// A message with a game; not supported for channels or secret chats 
+/// A message with a game; not supported for channels or secret chats
 class InputMessageGame extends InputMessageContent {
   String get tdType => 'inputMessageGame';
 
-
-  /// User identifier of the bot that owns the game 
+  /// User identifier of the bot that owns the game
   int53? bot_user_id;
 
   /// Short name of the game
@@ -848,7 +841,6 @@ class InputMessageGame extends InputMessageContent {
 /// A message with an invoice; can be used only by bots
 class InputMessageInvoice extends InputMessageContent {
   String get tdType => 'inputMessageInvoice';
-
 
   /// Invoice
   Invoice? invoice;
@@ -937,7 +929,8 @@ class InputMessageInvoice extends InputMessageContent {
       'provider_token': provider_token?.toMap(skipNulls: skipNulls),
       'provider_data': provider_data?.toMap(skipNulls: skipNulls),
       'start_parameter': start_parameter?.toMap(skipNulls: skipNulls),
-      'extended_media_content': extended_media_content?.toMap(skipNulls: skipNulls),
+      'extended_media_content':
+          extended_media_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -949,7 +942,6 @@ class InputMessageInvoice extends InputMessageContent {
 /// A message with a poll. Polls can't be sent to secret chats. Polls can be sent only to a private chat with a bot
 class InputMessagePoll extends InputMessageContent {
   String get tdType => 'inputMessagePoll';
-
 
   /// Poll question; 1-255 characters (up to 300 characters for bots)
   string? question;
@@ -1027,7 +1019,6 @@ class InputMessagePoll extends InputMessageContent {
 class InputMessageForwarded extends InputMessageContent {
   String get tdType => 'inputMessageForwarded';
 
-
   /// Identifier for the chat this forwarded message came from
   int53? from_chat_id;
 
@@ -1056,7 +1047,8 @@ class InputMessageForwarded extends InputMessageContent {
     message_id = map['message_id'];
     in_game_share = map['in_game_share'];
     if (map['copy_options'] != null) {
-      copy_options = TdApiMap.fromMap(map['copy_options']) as MessageCopyOptions;
+      copy_options =
+          TdApiMap.fromMap(map['copy_options']) as MessageCopyOptions;
     }
   }
 

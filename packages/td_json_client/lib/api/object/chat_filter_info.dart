@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Contains basic information about a chat filter
 class ChatFilterInfo extends TdObject {
   String get tdType => 'chatFilterInfo';
-
 
   /// Unique chat filter identifier
   int32? id;

@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/call_server_type.dart';
 
-
 /// Describes a server for relaying call data
 class CallServer extends TdObject {
   String get tdType => 'callServer';
-
 
   /// Server identifier
   int64? id;

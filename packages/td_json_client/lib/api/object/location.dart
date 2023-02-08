@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Describes a location on planet Earth
 class Location extends TdObject {
   String get tdType => 'location';
-
 
   /// Latitude of the location in degrees; as defined by the sender
   double? latitude;

@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Describes a user contact
 class Contact extends TdObject {
   String get tdType => 'contact';
-
 
   /// Phone number of the user
   string? phone_number;

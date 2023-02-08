@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/secret_chat_state.dart';
 
-
 /// Represents a secret chat
 class SecretChat extends TdObject {
   String get tdType => 'secretChat';
-
 
   /// Secret chat identifier
   int32? id;

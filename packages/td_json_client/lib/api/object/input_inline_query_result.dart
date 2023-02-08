@@ -11,11 +11,9 @@ abstract class InputInlineQueryResult extends TdObject {
   InputInlineQueryResult({super.extra, super.client_id});
 }
 
-
 /// Represents a link to an animated GIF or an animated (i.e., without sound) H.264/MPEG-4 AVC video
 class InputInlineQueryResultAnimation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAnimation';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -82,7 +80,8 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -101,7 +100,8 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
       'video_width': video_width?.toMap(skipNulls: skipNulls),
       'video_height': video_height?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -113,7 +113,6 @@ class InputInlineQueryResultAnimation extends InputInlineQueryResult {
 /// Represents a link to an article or web page
 class InputInlineQueryResultArticle extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultArticle';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -174,7 +173,8 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -192,7 +192,8 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
       'thumbnail_width': thumbnail_width?.toMap(skipNulls: skipNulls),
       'thumbnail_height': thumbnail_height?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -204,7 +205,6 @@ class InputInlineQueryResultArticle extends InputInlineQueryResult {
 /// Represents a link to an MP3 audio file
 class InputInlineQueryResultAudio extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultAudio';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -251,7 +251,8 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -266,7 +267,8 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
       'audio_url': audio_url?.toMap(skipNulls: skipNulls),
       'audio_duration': audio_duration?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -278,7 +280,6 @@ class InputInlineQueryResultAudio extends InputInlineQueryResult {
 /// Represents a user contact
 class InputInlineQueryResultContact extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultContact';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -327,7 +328,8 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -342,7 +344,8 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
       'thumbnail_width': thumbnail_width?.toMap(skipNulls: skipNulls),
       'thumbnail_height': thumbnail_height?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -354,7 +357,6 @@ class InputInlineQueryResultContact extends InputInlineQueryResult {
 /// Represents a link to a file
 class InputInlineQueryResultDocument extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultDocument';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -415,7 +417,8 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -433,7 +436,8 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
       'thumbnail_width': thumbnail_width?.toMap(skipNulls: skipNulls),
       'thumbnail_height': thumbnail_height?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -445,7 +449,6 @@ class InputInlineQueryResultDocument extends InputInlineQueryResult {
 /// Represents a game
 class InputInlineQueryResultGame extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultGame';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -493,7 +496,6 @@ class InputInlineQueryResultGame extends InputInlineQueryResult {
 /// Represents a point on the map
 class InputInlineQueryResultLocation extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultLocation';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -552,7 +554,8 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -569,7 +572,8 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
       'thumbnail_width': thumbnail_width?.toMap(skipNulls: skipNulls),
       'thumbnail_height': thumbnail_height?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -581,7 +585,6 @@ class InputInlineQueryResultLocation extends InputInlineQueryResult {
 /// Represents link to a JPEG image
 class InputInlineQueryResultPhoto extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultPhoto';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -637,7 +640,8 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -654,7 +658,8 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
       'photo_width': photo_width?.toMap(skipNulls: skipNulls),
       'photo_height': photo_height?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -666,7 +671,6 @@ class InputInlineQueryResultPhoto extends InputInlineQueryResult {
 /// Represents a link to a WEBP, TGS, or WEBM sticker
 class InputInlineQueryResultSticker extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultSticker';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -713,7 +717,8 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -728,7 +733,8 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
       'sticker_width': sticker_width?.toMap(skipNulls: skipNulls),
       'sticker_height': sticker_height?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -740,7 +746,6 @@ class InputInlineQueryResultSticker extends InputInlineQueryResult {
 /// Represents information about a venue
 class InputInlineQueryResultVenue extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVenue';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -789,7 +794,8 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -804,7 +810,8 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
       'thumbnail_width': thumbnail_width?.toMap(skipNulls: skipNulls),
       'thumbnail_height': thumbnail_height?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -816,7 +823,6 @@ class InputInlineQueryResultVenue extends InputInlineQueryResult {
 /// Represents a link to a page containing an embedded video player or a video file
 class InputInlineQueryResultVideo extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVideo';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -882,7 +888,8 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -901,7 +908,8 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
       'video_height': video_height?.toMap(skipNulls: skipNulls),
       'video_duration': video_duration?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -913,7 +921,6 @@ class InputInlineQueryResultVideo extends InputInlineQueryResult {
 /// Represents a link to an opus-encoded audio file within an OGG container, single channel audio
 class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
   String get tdType => 'inputInlineQueryResultVoiceNote';
-
 
   /// Unique identifier of the query result
   string? id;
@@ -955,7 +962,8 @@ class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content =
+          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -969,7 +977,8 @@ class InputInlineQueryResultVoiceNote extends InputInlineQueryResult {
       'voice_note_url': voice_note_url?.toMap(skipNulls: skipNulls),
       'voice_note_duration': voice_note_duration?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content':
+          input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

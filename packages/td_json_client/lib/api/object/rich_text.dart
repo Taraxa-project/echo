@@ -7,11 +7,9 @@ abstract class RichText extends TdObject {
   RichText({super.extra, super.client_id});
 }
 
-
-/// A plain text 
+/// A plain text
 class RichTextPlain extends RichText {
   String get tdType => 'richTextPlain';
-
 
   /// Text
   string? text;
@@ -42,10 +40,9 @@ class RichTextPlain extends RichText {
   }
 }
 
-/// A bold rich text 
+/// A bold rich text
 class RichTextBold extends RichText {
   String get tdType => 'richTextBold';
-
 
   /// Text
   RichText? text;
@@ -76,10 +73,9 @@ class RichTextBold extends RichText {
   }
 }
 
-/// An italicized rich text 
+/// An italicized rich text
 class RichTextItalic extends RichText {
   String get tdType => 'richTextItalic';
-
 
   /// Text
   RichText? text;
@@ -110,10 +106,9 @@ class RichTextItalic extends RichText {
   }
 }
 
-/// An underlined rich text 
+/// An underlined rich text
 class RichTextUnderline extends RichText {
   String get tdType => 'richTextUnderline';
-
 
   /// Text
   RichText? text;
@@ -144,10 +139,9 @@ class RichTextUnderline extends RichText {
   }
 }
 
-/// A strikethrough rich text 
+/// A strikethrough rich text
 class RichTextStrikethrough extends RichText {
   String get tdType => 'richTextStrikethrough';
-
 
   /// Text
   RichText? text;
@@ -178,10 +172,9 @@ class RichTextStrikethrough extends RichText {
   }
 }
 
-/// A fixed-width rich text 
+/// A fixed-width rich text
 class RichTextFixed extends RichText {
   String get tdType => 'richTextFixed';
-
 
   /// Text
   RichText? text;
@@ -212,15 +205,14 @@ class RichTextFixed extends RichText {
   }
 }
 
-/// A rich text URL link 
+/// A rich text URL link
 class RichTextUrl extends RichText {
   String get tdType => 'richTextUrl';
 
-
-  /// Text 
+  /// Text
   RichText? text;
 
-  /// URL 
+  /// URL
   string? url;
 
   /// True, if the URL has cached instant view server-side
@@ -258,12 +250,11 @@ class RichTextUrl extends RichText {
   }
 }
 
-/// A rich text email link 
+/// A rich text email link
 class RichTextEmailAddress extends RichText {
   String get tdType => 'richTextEmailAddress';
 
-
-  /// Text 
+  /// Text
   RichText? text;
 
   /// Email address
@@ -298,10 +289,9 @@ class RichTextEmailAddress extends RichText {
   }
 }
 
-/// A subscript rich text 
+/// A subscript rich text
 class RichTextSubscript extends RichText {
   String get tdType => 'richTextSubscript';
-
 
   /// Text
   RichText? text;
@@ -332,10 +322,9 @@ class RichTextSubscript extends RichText {
   }
 }
 
-/// A superscript rich text 
+/// A superscript rich text
 class RichTextSuperscript extends RichText {
   String get tdType => 'richTextSuperscript';
-
 
   /// Text
   RichText? text;
@@ -366,10 +355,9 @@ class RichTextSuperscript extends RichText {
   }
 }
 
-/// A marked rich text 
+/// A marked rich text
 class RichTextMarked extends RichText {
   String get tdType => 'richTextMarked';
-
 
   /// Text
   RichText? text;
@@ -400,12 +388,11 @@ class RichTextMarked extends RichText {
   }
 }
 
-/// A rich text phone number 
+/// A rich text phone number
 class RichTextPhoneNumber extends RichText {
   String get tdType => 'richTextPhoneNumber';
 
-
-  /// Text 
+  /// Text
   RichText? text;
 
   /// Phone number
@@ -443,7 +430,6 @@ class RichTextPhoneNumber extends RichText {
 /// A small image inside the text
 class RichTextIcon extends RichText {
   String get tdType => 'richTextIcon';
-
 
   /// The image represented as a document. The image can be in GIF, JPEG or PNG format
   Document? document;
@@ -488,15 +474,14 @@ class RichTextIcon extends RichText {
   }
 }
 
-/// A reference to a richTexts object on the same web page 
+/// A reference to a richTexts object on the same web page
 class RichTextReference extends RichText {
   String get tdType => 'richTextReference';
 
-
-  /// The text 
+  /// The text
   RichText? text;
 
-  /// The name of a richTextAnchor object, which is the first element of the target richTexts object 
+  /// The name of a richTextAnchor object, which is the first element of the target richTexts object
   string? anchor_name;
 
   /// An HTTP URL, opening the reference
@@ -534,10 +519,9 @@ class RichTextReference extends RichText {
   }
 }
 
-/// An anchor 
+/// An anchor
 class RichTextAnchor extends RichText {
   String get tdType => 'richTextAnchor';
-
 
   /// Anchor name
   string? name;
@@ -568,15 +552,14 @@ class RichTextAnchor extends RichText {
   }
 }
 
-/// A link to an anchor on the same web page 
+/// A link to an anchor on the same web page
 class RichTextAnchorLink extends RichText {
   String get tdType => 'richTextAnchorLink';
 
-
-  /// The link text 
+  /// The link text
   RichText? text;
 
-  /// The anchor name. If the name is empty, the link must bring back to top 
+  /// The anchor name. If the name is empty, the link must bring back to top
   string? anchor_name;
 
   /// An HTTP URL, opening the anchor
@@ -614,10 +597,9 @@ class RichTextAnchorLink extends RichText {
   }
 }
 
-/// A concatenation of rich texts 
+/// A concatenation of rich texts
 class RichTexts extends RichText {
   String get tdType => 'richTexts';
-
 
   /// Texts
   vector<RichText>? texts;

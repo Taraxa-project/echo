@@ -10,11 +10,9 @@ import 'package:td_json_client/api/object/video.dart';
 import 'package:td_json_client/api/object/video_note.dart';
 import 'package:td_json_client/api/object/voice_note.dart';
 
-
 /// Describes a web page preview
 class WebPage extends TdObject {
   String get tdType => 'webPage';
-
 
   /// Original URL of the link
   string? url;

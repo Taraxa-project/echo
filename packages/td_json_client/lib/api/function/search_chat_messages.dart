@@ -3,14 +3,12 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/search_messages_filter.dart';
 
-
 /// Searches for messages with given words in the chat. Returns the results in reverse chronological order, i.e. in order of decreasing message_id. Cannot be used in secret chats with a non-empty query
 /// (searchSecretMessages must be used instead), or without an enabled message database. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit.
 /// A combination of query, sender_id, filter and message_thread_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
 class SearchChatMessages extends TdFunction {
   String get tdType => 'searchChatMessages';
   String get tdReturnType => 'FoundChatMessages';
-
 
   /// Identifier of the chat in which to search messages
   int53? chat_id;

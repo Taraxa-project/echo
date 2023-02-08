@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_send_options.dart';
 
-
 /// Forwards previously sent messages. Returns the forwarded messages in the same order as the message identifiers passed in message_ids. If a message can't be forwarded, null will be returned instead of the message
 class ForwardMessages extends TdFunction {
   String get tdType => 'forwardMessages';
   String get tdReturnType => 'Messages';
-
 
   /// Identifier of the chat to which to forward messages
   int53? chat_id;

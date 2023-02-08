@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/date.dart';
 import 'package:td_json_client/api/object/input_file.dart';
 
-
 /// An identity document to be saved to Telegram Passport
 class InputIdentityDocument extends TdObject {
   String get tdType => 'inputIdentityDocument';
-
 
   /// Document number; 1-24 characters
   string? number;

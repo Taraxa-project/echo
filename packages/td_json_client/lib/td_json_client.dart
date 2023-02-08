@@ -1,5 +1,5 @@
 /// Dart Telegram client using TDLib
-/// 
+///
 /// Building TDLib and TDLibLC
 /// mkdir build
 /// cd build

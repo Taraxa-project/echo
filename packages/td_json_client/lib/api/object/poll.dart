@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/poll_option.dart';
 import 'package:td_json_client/api/object/poll_type.dart';
 
-
 /// Describes a poll
 class Poll extends TdObject {
   String get tdType => 'poll';
-
 
   /// Unique poll identifier
   int64? id;
@@ -92,7 +90,8 @@ class Poll extends TdObject {
       'question': question?.toMap(skipNulls: skipNulls),
       'options': options?.toMap(skipNulls: skipNulls),
       'total_voter_count': total_voter_count?.toMap(skipNulls: skipNulls),
-      'recent_voter_user_ids': recent_voter_user_ids?.toMap(skipNulls: skipNulls),
+      'recent_voter_user_ids':
+          recent_voter_user_ids?.toMap(skipNulls: skipNulls),
       'is_anonymous': is_anonymous?.toMap(skipNulls: skipNulls),
       'type': type?.toMap(skipNulls: skipNulls),
       'open_period': open_period?.toMap(skipNulls: skipNulls),

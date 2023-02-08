@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/minithumbnail.dart';
 import 'package:td_json_client/api/object/thumbnail.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Describes an animation file. The animation must be encoded in GIF or MPEG4 format
 class Animation extends TdObject {
   String get tdType => 'animation';
-
 
   /// Duration of the animation, in seconds; as defined by the sender
   int32? duration;

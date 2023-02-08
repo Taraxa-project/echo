@@ -1,0 +1,143 @@
+version: 2.1
+
+orbs:
+  helm-release: taraxa/helm-release@0.1.1
+
+jobs:
+  build_and_push_docker_image:
+    # https://circleci.com/docs/env-vars/#alpine-linux
+    shell: /bin/sh -leo pipefail
+    docker:
+      - image: docker:20-git
+    environment:
+      - IMAGE: echo
+      - GOOGLE_PROJECT_ID: jovial-meridian-249123
+      - BASH_ENV: /etc/profile
+    steps:
+      - checkout
+
+      - run:
+          name: Prepare environment
+          command: |
+            echo "export GCP_IMAGE=gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE}" >> $BASH_ENV
+            echo "export TIMESTAMP=$(date +%s)" >> $BASH_ENV
+            echo "export VERSION=$(git rev-parse --short HEAD)" >> $BASH_ENV
+
+      - run:
+         name: Login into gcr
+         command: |
+            echo ${GCLOUD_SERVICE_KEY} | docker login -u _json_key --password-stdin https://gcr.io
+
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+
+      - run:
+          name: Build docker image
+          command: | 
+            docker build -t ${IMAGE}:${VERSION} .
+
+      - run:
+          name: Tag docker image
+          command: | 
+            
+            if [[ ${CIRCLE_BRANCH} == "main" ]]; then
+              docker tag ${IMAGE}:${VERSION} ${GCP_IMAGE}:${CIRCLE_SHA1}
+              docker tag ${IMAGE}:${VERSION} ${GCP_IMAGE}:${VERSION}
+              docker tag ${IMAGE}:${VERSION} ${GCP_IMAGE}:${CIRCLE_BRANCH}-${VERSION}-${TIMESTAMP}
+            fi
+
+            if [[ ${CIRCLE_BRANCH} == "develop" ]]; then
+              docker tag ${IMAGE}:${VERSION} ${GCP_IMAGE}:${CIRCLE_BRANCH}-${CIRCLE_SHA1}
+              docker tag ${IMAGE}:${VERSION} ${GCP_IMAGE}:${CIRCLE_BRANCH}-${VERSION}
+              docker tag ${IMAGE}:${VERSION} ${GCP_IMAGE}:${CIRCLE_BRANCH}-${VERSION}-${TIMESTAMP}
+            fi
+
+            if [[ ! -z ${CIRCLE_TAG} ]]; then
+              docker tag ${IMAGE}:${VERSION} ${GCP_IMAGE}:${CIRCLE_TAG}
+            fi
+
+      - run:
+          name: Push docker image to registry
+          command: | 
+
+            if [[ ${CIRCLE_BRANCH} == "main" ]]; then
+              docker push ${GCP_IMAGE}:${CIRCLE_SHA1}
+              docker push ${GCP_IMAGE}:${VERSION}
+              docker push ${GCP_IMAGE}:${CIRCLE_BRANCH}-${VERSION}-${TIMESTAMP}
+            fi
+
+            if [[ ${CIRCLE_BRANCH} == "develop" ]]; then
+              docker push ${GCP_IMAGE}:${CIRCLE_BRANCH}-${CIRCLE_SHA1}
+              docker push ${GCP_IMAGE}:${CIRCLE_BRANCH}-${VERSION}
+              docker push ${GCP_IMAGE}:${CIRCLE_BRANCH}-${VERSION}-${TIMESTAMP}
+            fi
+
+            if [[ ! -z ${CIRCLE_TAG} ]]; then
+              docker push ${GCP_IMAGE}:${CIRCLE_TAG}
+            fi
+
+workflows:
+
+  build-and-push-docker-image:
+    jobs:
+      - build_and_push_docker_image:
+          context:
+            - GCR
+          filters:
+            branches:
+               only:
+                - main
+                - develop
+                - chore/circleci
+            tags:
+              ignore: /.*/
+
+  release-docker-image-tag:
+    jobs:
+      - build_and_push_docker_image:
+          context:
+            - GCR
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+
+  # run this workflow for branches specified below
+  build-helm-chart:
+    jobs:
+      - helm-release/chart-publish:
+          develop: true # means, that this is development release, no-verify and artifact -> ${HELMCHART_VERSION}-sha.${SHORT_GIT_HASH}
+          charts-dir: charts
+          chart-name: echo
+          chartmuseum-url: https://charts.gcp.taraxa.io
+          chartmuseum-username: HELM_REPO_USERNAME
+          chartmuseum-password: HELM_REPO_PASSWORD
+          context:
+            - CHARTSREPO
+          filters:
+            branches:
+              only: 
+              - /^chart\/.*/
+              - /^chore\/chart-.*/
+              - /^fix\/chart-.*/
+              - /^feature\/chart-.*/
+
+
+  # run this workflow for tags, like chart-vX.Y.Z
+  release-helm-chart:
+    jobs:
+      - helm-release/chart-publish:
+          charts-dir: charts
+          chart-name: echo
+          chartmuseum-url: https://charts.gcp.taraxa.io
+          chartmuseum-username: HELM_REPO_USERNAME
+          chartmuseum-password: HELM_REPO_PASSWORD
+          context:
+            - CHARTSREPO
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^chart-v\d+.\d+.\d+/

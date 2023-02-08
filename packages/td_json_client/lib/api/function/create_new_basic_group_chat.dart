@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Creates a new basic group and sends a corresponding messageBasicGroupChatCreate. Returns the newly created chat
 class CreateNewBasicGroupChat extends TdFunction {
   String get tdType => 'createNewBasicGroupChat';
   String get tdReturnType => 'Chat';
-
 
   /// Identifiers of users to be added to the basic group
   vector<int53>? user_ids;
@@ -44,7 +42,8 @@ class CreateNewBasicGroupChat extends TdFunction {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'user_ids': user_ids?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
-      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time':
+          message_auto_delete_time?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

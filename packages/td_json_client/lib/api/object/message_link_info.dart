@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message.dart';
 
-
 /// Contains information about a link to a message or a forum topic in a chat
 class MessageLinkInfo extends TdObject {
   String get tdType => 'messageLinkInfo';
-
 
   /// True, if the link is a public link for a message or a forum topic in a chat
   Bool? is_public;

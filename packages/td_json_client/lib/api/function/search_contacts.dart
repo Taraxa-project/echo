@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Searches for the specified query in the first names, last names and usernames of the known user contacts
 class SearchContacts extends TdFunction {
   String get tdType => 'searchContacts';
   String get tdReturnType => 'Users';
-
 
   /// Query to search for; may be empty to return all contacts
   string? query;

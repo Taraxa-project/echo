@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_event_log_filters.dart';
 
-
 /// Returns a list of service actions taken by chat members and administrators in the last 48 hours. Available only for supergroups and channels. Requires administrator rights. Returns results in reverse chronological order (i.e., in order of decreasing event_id)
 class GetChatEventLog extends TdFunction {
   String get tdType => 'getChatEventLog';
   String get tdReturnType => 'ChatEvents';
-
 
   /// Chat identifier
   int53? chat_id;

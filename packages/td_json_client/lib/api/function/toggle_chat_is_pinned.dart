@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 
-
 /// Changes the pinned state of a chat. There can be up to getOption("pinned_chat_count_max")/getOption("pinned_archived_chat_count_max") pinned non-secret chats and the same number of secret chats in the main/archive chat list. The limit can be increased with Telegram Premium
 class ToggleChatIsPinned extends TdFunction {
   String get tdType => 'toggleChatIsPinned';
   String get tdReturnType => 'Ok';
-
 
   /// Chat list in which to change the pinned state of the chat
   ChatList? chat_list;

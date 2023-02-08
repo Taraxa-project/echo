@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/location.dart';
 
-
 /// Returns information about a file with a map thumbnail in PNG format. Only map thumbnail files with size less than 1MB can be downloaded
 class GetMapThumbnailFile extends TdFunction {
   String get tdType => 'getMapThumbnailFile';
   String get tdReturnType => 'File';
-
 
   /// Location of the map center
   Location? location;

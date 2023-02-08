@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/available_reaction.dart';
 
-
 /// Represents a list of reactions that can be added to a message
 class AvailableReactions extends TdObject {
   String get tdType => 'availableReactions';
-
 
   /// List of reactions to be shown at the top
   vector<AvailableReaction>? top_reactions;
@@ -44,7 +42,8 @@ class AvailableReactions extends TdObject {
       recent_reactions = [];
       for (var someValue in map['recent_reactions']) {
         if (someValue != null) {
-          recent_reactions?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
+          recent_reactions
+              ?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
         }
       }
     }
@@ -52,7 +51,8 @@ class AvailableReactions extends TdObject {
       popular_reactions = [];
       for (var someValue in map['popular_reactions']) {
         if (someValue != null) {
-          popular_reactions?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
+          popular_reactions
+              ?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
         }
       }
     }

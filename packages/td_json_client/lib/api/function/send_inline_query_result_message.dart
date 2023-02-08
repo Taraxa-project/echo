@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_send_options.dart';
 
-
 /// Sends the result of an inline query as a message. Returns the sent message. Always clears a chat draft message
 class SendInlineQueryResultMessage extends TdFunction {
   String get tdType => 'sendInlineQueryResultMessage';
   String get tdReturnType => 'Message';
-
 
   /// Target chat
   int53? chat_id;

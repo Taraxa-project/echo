@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/theme_parameters.dart';
 
-
 /// Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp button is pressed
 class GetWebAppUrl extends TdFunction {
   String get tdType => 'getWebAppUrl';
   String get tdReturnType => 'HttpUrl';
-
 
   /// Identifier of the target bot
   int53? bot_user_id;

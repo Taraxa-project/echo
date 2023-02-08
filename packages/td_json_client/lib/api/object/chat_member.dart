@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/chat_member_status.dart';
 
-
 /// Describes a user or a chat as a member of another chat
 class ChatMember extends TdObject {
   String get tdType => 'chatMember';
-
 
   /// Identifier of the chat member. Currently, other chats can be only Left or Banned. Only supergroups and channels can have other chats as Left or Banned members and these chats must be supergroups or channels
   MessageSender? member_id;

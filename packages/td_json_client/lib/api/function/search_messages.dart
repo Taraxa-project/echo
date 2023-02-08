@@ -3,13 +3,11 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/chat_list.dart';
 import 'package:td_json_client/api/object/search_messages_filter.dart';
 
-
 /// Searches for messages in all chats except secret chats. Returns the results in reverse chronological order (i.e., in order of decreasing (date, chat_id, message_id)).
 /// For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 class SearchMessages extends TdFunction {
   String get tdType => 'searchMessages';
   String get tdReturnType => 'FoundMessages';
-
 
   /// Chat list in which to search messages; pass null to search in all chats regardless of their chat list. Only Main and Archive chat lists are supported
   ChatList? chat_list;

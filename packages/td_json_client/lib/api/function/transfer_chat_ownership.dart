@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Changes the owner of a chat. The current user must be a current owner of the chat. Use the method canTransferOwnership to check whether the ownership can be transferred from the current session. Available only for supergroups and channel chats
 class TransferChatOwnership extends TdFunction {
   String get tdType => 'transferChatOwnership';
   String get tdReturnType => 'Ok';
-
 
   /// Chat identifier
   int53? chat_id;

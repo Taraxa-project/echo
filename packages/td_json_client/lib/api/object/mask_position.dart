@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/mask_point.dart';
 
-
 /// Position on a photo where a mask is placed
 class MaskPosition extends TdObject {
   String get tdType => 'maskPosition';
-
 
   /// Part of the face, relative to which the mask is placed
   MaskPoint? point;

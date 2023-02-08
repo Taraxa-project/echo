@@ -10,11 +10,9 @@ abstract class InternalLinkType extends TdObject {
   InternalLinkType({super.extra, super.client_id});
 }
 
-
 /// The link is a link to the active sessions section of the application. Use getActiveSessions to handle the link
 class InternalLinkTypeActiveSessions extends InternalLinkType {
   String get tdType => 'internalLinkTypeActiveSessions';
-
 
   InternalLinkTypeActiveSessions({
     super.extra,
@@ -45,7 +43,6 @@ class InternalLinkTypeActiveSessions extends InternalLinkType {
 /// If the attachment menu bot can't be used in the opened chat, show an error to the user. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL
 class InternalLinkTypeAttachmentMenuBot extends InternalLinkType {
   String get tdType => 'internalLinkTypeAttachmentMenuBot';
-
 
   /// Target chat to be opened
   TargetChat? target_chat;
@@ -90,10 +87,9 @@ class InternalLinkTypeAttachmentMenuBot extends InternalLinkType {
   }
 }
 
-/// The link contains an authentication code. Call checkAuthenticationCode with the code if the current authorization state is authorizationStateWaitCode 
+/// The link contains an authentication code. Call checkAuthenticationCode with the code if the current authorization state is authorizationStateWaitCode
 class InternalLinkTypeAuthenticationCode extends InternalLinkType {
   String get tdType => 'internalLinkTypeAuthenticationCode';
-
 
   /// The authentication code
   string? code;
@@ -124,10 +120,9 @@ class InternalLinkTypeAuthenticationCode extends InternalLinkType {
   }
 }
 
-/// The link is a link to a background. Call searchBackground with the given background name to process the link 
+/// The link is a link to a background. Call searchBackground with the given background name to process the link
 class InternalLinkTypeBackground extends InternalLinkType {
   String get tdType => 'internalLinkTypeBackground';
-
 
   /// Name of the background
   string? background_name;
@@ -162,7 +157,6 @@ class InternalLinkTypeBackground extends InternalLinkType {
 /// and then call sendBotStartMessage with the given start parameter after the button is pressed
 class InternalLinkTypeBotStart extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStart';
-
 
   /// Username of the bot
   string? bot_username;
@@ -214,7 +208,6 @@ class InternalLinkTypeBotStart extends InternalLinkType {
 class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotStartInGroup';
 
-
   /// Username of the bot
   string? bot_username;
 
@@ -238,7 +231,8 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
     bot_username = map['bot_username'];
     start_parameter = map['start_parameter'];
     if (map['administrator_rights'] != null) {
-      administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
+      administrator_rights = TdApiMap.fromMap(map['administrator_rights'])
+          as ChatAdministratorRights;
     }
   }
 
@@ -264,7 +258,6 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
 class InternalLinkTypeBotAddToChannel extends InternalLinkType {
   String get tdType => 'internalLinkTypeBotAddToChannel';
 
-
   /// Username of the bot
   string? bot_username;
 
@@ -283,7 +276,8 @@ class InternalLinkTypeBotAddToChannel extends InternalLinkType {
     client_id = map['@client_id'];
     bot_username = map['bot_username'];
     if (map['administrator_rights'] != null) {
-      administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
+      administrator_rights = TdApiMap.fromMap(map['administrator_rights'])
+          as ChatAdministratorRights;
     }
   }
 
@@ -305,7 +299,6 @@ class InternalLinkTypeBotAddToChannel extends InternalLinkType {
 /// The link is a link to the change phone number section of the app
 class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
   String get tdType => 'internalLinkTypeChangePhoneNumber';
-
 
   InternalLinkTypeChangePhoneNumber({
     super.extra,
@@ -330,10 +323,9 @@ class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
   }
 }
 
-/// The link is a chat invite link. Call checkChatInviteLink with the given invite link to process the link 
+/// The link is a chat invite link. Call checkChatInviteLink with the given invite link to process the link
 class InternalLinkTypeChatInvite extends InternalLinkType {
   String get tdType => 'internalLinkTypeChatInvite';
-
 
   /// Internal representation of the invite link
   string? invite_link;
@@ -365,16 +357,17 @@ class InternalLinkTypeChatInvite extends InternalLinkType {
 }
 
 /// The link is a link to the default message auto-delete timer settings section of the app settings
-class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings extends InternalLinkType {
+class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings
+    extends InternalLinkType {
   String get tdType => 'internalLinkTypeDefaultMessageAutoDeleteTimerSettings';
-
 
   InternalLinkTypeDefaultMessageAutoDeleteTimerSettings({
     super.extra,
     super.client_id,
   });
 
-  InternalLinkTypeDefaultMessageAutoDeleteTimerSettings.fromMap(Map<String, dynamic> map) {
+  InternalLinkTypeDefaultMessageAutoDeleteTimerSettings.fromMap(
+      Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }
@@ -395,7 +388,6 @@ class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings extends InternalLink
 /// The link is a link to the edit profile section of the app settings
 class InternalLinkTypeEditProfileSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeEditProfileSettings';
-
 
   InternalLinkTypeEditProfileSettings({
     super.extra,
@@ -424,7 +416,6 @@ class InternalLinkTypeEditProfileSettings extends InternalLinkType {
 class InternalLinkTypeFilterSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeFilterSettings';
 
-
   InternalLinkTypeFilterSettings({
     super.extra,
     super.client_id,
@@ -451,7 +442,6 @@ class InternalLinkTypeFilterSettings extends InternalLinkType {
 /// The link is a link to a game. Call searchPublicChat with the given bot username, check that the user is a bot, ask the current user to select a chat to send the game, and then call sendMessage with inputMessageGame
 class InternalLinkTypeGame extends InternalLinkType {
   String get tdType => 'internalLinkTypeGame';
-
 
   /// Username of the bot that owns the game
   string? bot_username;
@@ -488,12 +478,11 @@ class InternalLinkTypeGame extends InternalLinkType {
   }
 }
 
-/// The link must be opened in an Instant View. Call getWebPageInstantView with the given URL to process the link 
+/// The link must be opened in an Instant View. Call getWebPageInstantView with the given URL to process the link
 class InternalLinkTypeInstantView extends InternalLinkType {
   String get tdType => 'internalLinkTypeInstantView';
 
-
-  /// URL to be passed to getWebPageInstantView 
+  /// URL to be passed to getWebPageInstantView
   string? url;
 
   /// An URL to open if getWebPageInstantView fails
@@ -528,10 +517,9 @@ class InternalLinkTypeInstantView extends InternalLinkType {
   }
 }
 
-/// The link is a link to an invoice. Call getPaymentForm with the given invoice name to process the link 
+/// The link is a link to an invoice. Call getPaymentForm with the given invoice name to process the link
 class InternalLinkTypeInvoice extends InternalLinkType {
   String get tdType => 'internalLinkTypeInvoice';
-
 
   /// Name of the invoice
   string? invoice_name;
@@ -562,10 +550,9 @@ class InternalLinkTypeInvoice extends InternalLinkType {
   }
 }
 
-/// The link is a link to a language pack. Call getLanguagePackInfo with the given language pack identifier to process the link 
+/// The link is a link to a language pack. Call getLanguagePackInfo with the given language pack identifier to process the link
 class InternalLinkTypeLanguagePack extends InternalLinkType {
   String get tdType => 'internalLinkTypeLanguagePack';
-
 
   /// Language pack identifier
   string? language_pack_id;
@@ -600,7 +587,6 @@ class InternalLinkTypeLanguagePack extends InternalLinkType {
 class InternalLinkTypeLanguageSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeLanguageSettings';
 
-
   InternalLinkTypeLanguageSettings({
     super.extra,
     super.client_id,
@@ -624,10 +610,9 @@ class InternalLinkTypeLanguageSettings extends InternalLinkType {
   }
 }
 
-/// The link is a link to a Telegram message or a forum topic. Call getMessageLinkInfo with the given URL to process the link 
+/// The link is a link to a Telegram message or a forum topic. Call getMessageLinkInfo with the given URL to process the link
 class InternalLinkTypeMessage extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessage';
-
 
   /// URL to be passed to getMessageLinkInfo
   string? url;
@@ -661,7 +646,6 @@ class InternalLinkTypeMessage extends InternalLinkType {
 /// The link contains a message draft text. A share screen needs to be shown to the user, then the chosen chat must be opened and the text is added to the input field
 class InternalLinkTypeMessageDraft extends InternalLinkType {
   String get tdType => 'internalLinkTypeMessageDraft';
-
 
   /// Message draft text
   FormattedText? text;
@@ -703,7 +687,6 @@ class InternalLinkTypeMessageDraft extends InternalLinkType {
 /// The link contains a request of Telegram passport data. Call getPassportAuthorizationForm with the given parameters to process the link if the link was received from outside of the application; otherwise, ignore it
 class InternalLinkTypePassportDataRequest extends InternalLinkType {
   String get tdType => 'internalLinkTypePassportDataRequest';
-
 
   /// User identifier of the service's bot
   int53? bot_user_id;
@@ -763,7 +746,6 @@ class InternalLinkTypePassportDataRequest extends InternalLinkType {
 class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
   String get tdType => 'internalLinkTypePhoneNumberConfirmation';
 
-
   /// Hash value from the link
   string? hash;
 
@@ -799,10 +781,9 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
   }
 }
 
-/// The link is a link to the Premium features screen of the applcation from which the user can subscribe to Telegram Premium. Call getPremiumFeatures with the given referrer to process the link 
+/// The link is a link to the Premium features screen of the applcation from which the user can subscribe to Telegram Premium. Call getPremiumFeatures with the given referrer to process the link
 class InternalLinkTypePremiumFeatures extends InternalLinkType {
   String get tdType => 'internalLinkTypePremiumFeatures';
-
 
   /// Referrer specified in the link
   string? referrer;
@@ -837,7 +818,6 @@ class InternalLinkTypePremiumFeatures extends InternalLinkType {
 class InternalLinkTypePrivacyAndSecuritySettings extends InternalLinkType {
   String get tdType => 'internalLinkTypePrivacyAndSecuritySettings';
 
-
   InternalLinkTypePrivacyAndSecuritySettings({
     super.extra,
     super.client_id,
@@ -864,7 +844,6 @@ class InternalLinkTypePrivacyAndSecuritySettings extends InternalLinkType {
 /// The link is a link to a proxy. Call addProxy with the given parameters to process the link and add the proxy
 class InternalLinkTypeProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeProxy';
-
 
   /// Proxy server IP address
   string? server;
@@ -909,10 +888,9 @@ class InternalLinkTypeProxy extends InternalLinkType {
   }
 }
 
-/// The link is a link to a chat by its username. Call searchPublicChat with the given chat username to process the link 
+/// The link is a link to a chat by its username. Call searchPublicChat with the given chat username to process the link
 class InternalLinkTypePublicChat extends InternalLinkType {
   String get tdType => 'internalLinkTypePublicChat';
-
 
   /// Username of the chat
   string? chat_username;
@@ -948,7 +926,6 @@ class InternalLinkTypePublicChat extends InternalLinkType {
 class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
   String get tdType => 'internalLinkTypeQrCodeAuthentication';
 
-
   InternalLinkTypeQrCodeAuthentication({
     super.extra,
     super.client_id,
@@ -975,7 +952,6 @@ class InternalLinkTypeQrCodeAuthentication extends InternalLinkType {
 /// The link forces restore of App Store purchases when opened. For official iOS application only
 class InternalLinkTypeRestorePurchases extends InternalLinkType {
   String get tdType => 'internalLinkTypeRestorePurchases';
-
 
   InternalLinkTypeRestorePurchases({
     super.extra,
@@ -1004,7 +980,6 @@ class InternalLinkTypeRestorePurchases extends InternalLinkType {
 class InternalLinkTypeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeSettings';
 
-
   InternalLinkTypeSettings({
     super.extra,
     super.client_id,
@@ -1031,7 +1006,6 @@ class InternalLinkTypeSettings extends InternalLinkType {
 /// The link is a link to a sticker set. Call searchStickerSet with the given sticker set name to process the link and show the sticker set
 class InternalLinkTypeStickerSet extends InternalLinkType {
   String get tdType => 'internalLinkTypeStickerSet';
-
 
   /// Name of the sticker set
   string? sticker_set_name;
@@ -1068,10 +1042,9 @@ class InternalLinkTypeStickerSet extends InternalLinkType {
   }
 }
 
-/// The link is a link to a theme. TDLib has no theme support yet 
+/// The link is a link to a theme. TDLib has no theme support yet
 class InternalLinkTypeTheme extends InternalLinkType {
   String get tdType => 'internalLinkTypeTheme';
-
 
   /// Name of the theme
   string? theme_name;
@@ -1106,7 +1079,6 @@ class InternalLinkTypeTheme extends InternalLinkType {
 class InternalLinkTypeThemeSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeThemeSettings';
 
-
   InternalLinkTypeThemeSettings({
     super.extra,
     super.client_id,
@@ -1130,10 +1102,9 @@ class InternalLinkTypeThemeSettings extends InternalLinkType {
   }
 }
 
-/// The link is an unknown tg: link. Call getDeepLinkInfo to process the link 
+/// The link is an unknown tg: link. Call getDeepLinkInfo to process the link
 class InternalLinkTypeUnknownDeepLink extends InternalLinkType {
   String get tdType => 'internalLinkTypeUnknownDeepLink';
-
 
   /// Link to be passed to getDeepLinkInfo
   string? link;
@@ -1168,7 +1139,6 @@ class InternalLinkTypeUnknownDeepLink extends InternalLinkType {
 class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
   String get tdType => 'internalLinkTypeUnsupportedProxy';
 
-
   InternalLinkTypeUnsupportedProxy({
     super.extra,
     super.client_id,
@@ -1192,10 +1162,9 @@ class InternalLinkTypeUnsupportedProxy extends InternalLinkType {
   }
 }
 
-/// The link is a link to a user by its phone number. Call searchUserByPhoneNumber with the given phone number to process the link 
+/// The link is a link to a user by its phone number. Call searchUserByPhoneNumber with the given phone number to process the link
 class InternalLinkTypeUserPhoneNumber extends InternalLinkType {
   String get tdType => 'internalLinkTypeUserPhoneNumber';
-
 
   /// Phone number of the user
   string? phone_number;
@@ -1226,10 +1195,9 @@ class InternalLinkTypeUserPhoneNumber extends InternalLinkType {
   }
 }
 
-/// The link is a link to a user by a temporary token. Call searchUserByToken with the given token to process the link 
+/// The link is a link to a user by a temporary token. Call searchUserByToken with the given token to process the link
 class InternalLinkTypeUserToken extends InternalLinkType {
   String get tdType => 'internalLinkTypeUserToken';
-
 
   /// The token
   string? token;
@@ -1263,7 +1231,6 @@ class InternalLinkTypeUserToken extends InternalLinkType {
 /// The link is a link to a video chat. Call searchPublicChat with the given chat username, and then joinGroupCall with the given invite hash to process the link
 class InternalLinkTypeVideoChat extends InternalLinkType {
   String get tdType => 'internalLinkTypeVideoChat';
-
 
   /// Username of the chat with the video chat
   string? chat_username;

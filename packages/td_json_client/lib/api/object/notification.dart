@@ -2,11 +2,9 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/notification_type.dart';
 
-
 /// Contains information about a notification
 class Notification extends TdObject {
   String get tdType => 'notification';
-
 
   /// Unique persistent identifier of this notification
   int32? id;

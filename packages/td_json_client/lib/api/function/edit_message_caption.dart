@@ -3,12 +3,10 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/reply_markup.dart';
 import 'package:td_json_client/api/object/formatted_text.dart';
 
-
 /// Edits the message content caption. Returns the edited message after the edit is completed on the server side
 class EditMessageCaption extends TdFunction {
   String get tdType => 'editMessageCaption';
   String get tdReturnType => 'Message';
-
 
   /// The chat the message belongs to
   int53? chat_id;

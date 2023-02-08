@@ -2,14 +2,12 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/input_chat_photo.dart';
 
-
-/// Changes a profile photo for the current user 
+/// Changes a profile photo for the current user
 class SetProfilePhoto extends TdFunction {
   String get tdType => 'setProfilePhoto';
   String get tdReturnType => 'Ok';
 
-
-  /// Profile photo to set 
+  /// Profile photo to set
   InputChatPhoto? photo;
 
   /// Pass true to set a public photo, which will be visible even the main photo is hidden by privacy settings

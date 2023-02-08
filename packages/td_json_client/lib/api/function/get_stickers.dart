@@ -2,12 +2,10 @@ import 'package:td_json_client/api/base.dart';
 import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/sticker_type.dart';
 
-
 /// Returns stickers from the installed sticker sets that correspond to a given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned
 class GetStickers extends TdFunction {
   String get tdType => 'getStickers';
   String get tdReturnType => 'Stickers';
-
 
   /// Type of the stickers to return
   StickerType? sticker_type;

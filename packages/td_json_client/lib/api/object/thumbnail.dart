@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/thumbnail_format.dart';
 import 'package:td_json_client/api/object/file.dart';
 
-
 /// Represents a thumbnail
 class Thumbnail extends TdObject {
   String get tdType => 'thumbnail';
-
 
   /// Thumbnail format
   ThumbnailFormat? format;

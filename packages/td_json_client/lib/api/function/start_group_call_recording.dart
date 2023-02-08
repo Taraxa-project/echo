@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Starts recording of an active group call. Requires groupCall.can_be_managed group call flag
 class StartGroupCallRecording extends TdFunction {
   String get tdType => 'startGroupCallRecording';
   String get tdReturnType => 'Ok';
-
 
   /// Group call identifier
   int32? group_call_id;
@@ -45,7 +43,8 @@ class StartGroupCallRecording extends TdFunction {
       'group_call_id': group_call_id?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
       'record_video': record_video?.toMap(skipNulls: skipNulls),
-      'use_portrait_orientation': use_portrait_orientation?.toMap(skipNulls: skipNulls),
+      'use_portrait_orientation':
+          use_portrait_orientation?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

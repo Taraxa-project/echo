@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/chat_invite_link_info.dart';
 import 'package:td_json_client/api/object/internal_link_type.dart';
 import 'package:td_json_client/api/object/message_content.dart';
 
-
 /// Describes a sponsored message
 class SponsoredMessage extends TdObject {
   String get tdType => 'sponsoredMessage';
-
 
   /// Message identifier; unique for the chat to which the sponsored message belongs among both ordinary and sponsored messages
   int53? message_id;
@@ -50,7 +48,8 @@ class SponsoredMessage extends TdObject {
     is_recommended = map['is_recommended'];
     sponsor_chat_id = map['sponsor_chat_id'];
     if (map['sponsor_chat_info'] != null) {
-      sponsor_chat_info = TdApiMap.fromMap(map['sponsor_chat_info']) as ChatInviteLinkInfo;
+      sponsor_chat_info =
+          TdApiMap.fromMap(map['sponsor_chat_info']) as ChatInviteLinkInfo;
     }
     show_chat_photo = map['show_chat_photo'];
     if (map['link'] != null) {

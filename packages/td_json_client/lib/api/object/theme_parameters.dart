@@ -1,10 +1,8 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Contains parameters of the application theme
 class ThemeParameters extends TdObject {
   String get tdType => 'themeParameters';
-
 
   /// A color of the background in the RGB24 format
   int32? background_color;
@@ -57,7 +55,8 @@ class ThemeParameters extends TdObject {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'background_color': background_color?.toMap(skipNulls: skipNulls),
-      'secondary_background_color': secondary_background_color?.toMap(skipNulls: skipNulls),
+      'secondary_background_color':
+          secondary_background_color?.toMap(skipNulls: skipNulls),
       'text_color': text_color?.toMap(skipNulls: skipNulls),
       'hint_color': hint_color?.toMap(skipNulls: skipNulls),
       'link_color': link_color?.toMap(skipNulls: skipNulls),

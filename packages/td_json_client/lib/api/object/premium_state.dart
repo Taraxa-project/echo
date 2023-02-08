@@ -4,11 +4,9 @@ import 'package:td_json_client/api/object/formatted_text.dart';
 import 'package:td_json_client/api/object/premium_payment_option.dart';
 import 'package:td_json_client/api/object/premium_feature_promotion_animation.dart';
 
-
 /// Contains state of Telegram Premium subscription and promotion videos for Premium features
 class PremiumState extends TdObject {
   String get tdType => 'premiumState';
-
 
   /// Text description of the state of the current Premium subscription; may be empty if the current user has no Telegram Premium subscription
   FormattedText? state;
@@ -37,7 +35,8 @@ class PremiumState extends TdObject {
       payment_options = [];
       for (var someValue in map['payment_options']) {
         if (someValue != null) {
-          payment_options?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
+          payment_options
+              ?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
         }
       }
     }
@@ -45,7 +44,8 @@ class PremiumState extends TdObject {
       animations = [];
       for (var someValue in map['animations']) {
         if (someValue != null) {
-          animations?.add(TdApiMap.fromMap(someValue) as PremiumFeaturePromotionAnimation);
+          animations?.add(
+              TdApiMap.fromMap(someValue) as PremiumFeaturePromotionAnimation);
         }
       }
     }

@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Deletes all messages in the chat. Use chat.can_be_deleted_only_for_self and chat.can_be_deleted_for_all_users fields to find whether and how the method can be applied to the chat
 class DeleteChatHistory extends TdFunction {
   String get tdType => 'deleteChatHistory';
   String get tdReturnType => 'Ok';
-
 
   /// Chat identifier
   int53? chat_id;
@@ -38,7 +36,8 @@ class DeleteChatHistory extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'remove_from_chat_list': remove_from_chat_list?.toMap(skipNulls: skipNulls),
+      'remove_from_chat_list':
+          remove_from_chat_list?.toMap(skipNulls: skipNulls),
       'revoke': revoke?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

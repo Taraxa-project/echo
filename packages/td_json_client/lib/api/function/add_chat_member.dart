@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Adds a new member to a chat. Members can't be added to private or secret chats
 class AddChatMember extends TdFunction {
   String get tdType => 'addChatMember';
   String get tdReturnType => 'Ok';
-
 
   /// Chat identifier
   int53? chat_id;

@@ -3,11 +3,9 @@ import 'package:td_json_client/api/map.dart';
 import 'package:td_json_client/api/object/message_sender.dart';
 import 'package:td_json_client/api/object/chat_event_action.dart';
 
-
 /// Represents a chat event
 class ChatEvent extends TdObject {
   String get tdType => 'chatEvent';
-
 
   /// Chat event identifier
   int64? id;

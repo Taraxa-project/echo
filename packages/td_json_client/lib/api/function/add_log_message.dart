@@ -1,11 +1,9 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Adds a message to TDLib internal log. Can be called synchronously
 class AddLogMessage extends TdFunction {
   String get tdType => 'addLogMessage';
   String get tdReturnType => 'Ok';
-
 
   /// The minimum verbosity level needed for the message to be logged; 0-1023
   int32? verbosity_level;

@@ -1,12 +1,10 @@
 import 'package:td_json_client/api/base.dart';
 
-
 /// Returns messages in a chat. The messages are returned in a reverse chronological order (i.e., in order of decreasing message_id).
 /// For optimal performance, the number of returned messages is chosen by TDLib. This is an offline request if only_local is true
 class GetChatHistory extends TdFunction {
   String get tdType => 'getChatHistory';
   String get tdReturnType => 'Messages';
-
 
   /// Chat identifier
   int53? chat_id;
