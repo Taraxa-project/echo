@@ -1,5 +1,5 @@
 import 'dart:isolate';
-
+import 'package:collection/collection.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:logging/logging.dart';
 import 'package:telegram_client/log.dart';
@@ -41,6 +41,7 @@ class Db {
         parentSendPort: _isolateReceivePort.sendPort,
         logSendPort: _log.isolateSendPort,
         dbPath: dbPath,
+        logLevel: _logger.level,
       ),
       debugName: runtimeType.toString(),
     );
@@ -50,23 +51,37 @@ class Db {
   }
 
   static void _entryPointDB(DbIsolatedSpwanMessage initialSpawnMessage) {
+    hierarchicalLoggingEnabled = true;
+
     final DbIsolated dbIsolated = DbIsolated(
       parentSendPort: initialSpawnMessage.parentSendPort,
       logSendPort: initialSpawnMessage.logSendPort,
       dbPath: initialSpawnMessage.dbPath,
+      logLevel: initialSpawnMessage.logLevel,
     );
     dbIsolated.init();
   }
 
   Future<void> open() async {
-    isolateSendPort.send(DbMsgRequestOpen());
-    await _isolateReceivePortBroadcast
+    isolateSendPort.send(DbMsgRequestOpen(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
+
+    var response = await _isolateReceivePortBroadcast
         .where((event) => event is DbMsgResponseOpen)
         .first;
+
+    if (response.exception != null) {
+      throw response.exception;
+    } else {
+      _logger.info('DB Opened Successfully');
+    }
   }
 
   Future<void> exit() async {
-    isolateSendPort.send(DbMsgRequestExit());
+    isolateSendPort.send(DbMsgRequestExit(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
     await _isolateReceivePortBroadcast
         .where((event) => event is DbMsgResponseExit)
         .first;
@@ -74,10 +89,18 @@ class Db {
   }
 
   Future<void> migrate() async {
-    isolateSendPort.send(DbMsgRequestMigrate());
-    await _isolateReceivePortBroadcast
+    isolateSendPort.send(DbMsgRequestMigrate(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
+    var response = await _isolateReceivePortBroadcast
         .where((event) => event is DbMsgResponseMigrate)
         .first;
+
+    if (response.exception != null) {
+      throw response.exception;
+    } else {
+      _logger.info('DB Migrated Successfully');
+    }
   }
 }
 
@@ -85,11 +108,13 @@ class DbIsolatedSpwanMessage {
   final SendPort parentSendPort;
   final SendPort logSendPort;
   final String dbPath;
+  final Level logLevel;
 
   DbIsolatedSpwanMessage({
     required this.parentSendPort,
     required this.logSendPort,
     required this.dbPath,
+    required this.logLevel,
   });
 }
 
@@ -98,7 +123,6 @@ class DbIsolated {
 
   final SendPort parentSendPort;
   final SendPort logSendPort;
-  SendPort? tgSendPort;
 
   late final ReceivePort receivePort;
   late final Stream<dynamic> receivePortBroadcast;
@@ -106,11 +130,15 @@ class DbIsolated {
   final String dbPath;
   Database? db;
 
+  static const maxTries = 3;
+
   DbIsolated({
     required this.parentSendPort,
     required this.logSendPort,
     required this.dbPath,
+    required Level logLevel,
   }) {
+    _logger.level = logLevel;
     _logger.onRecord.listen((logRecord) {
       logSendPort.send(logRecord);
     });
@@ -128,93 +156,185 @@ class DbIsolated {
     parentSendPort.send(receivePort.sendPort);
   }
 
-  void _initDispatch() {
+  Future<void> _initDispatch() async {
     receivePortBroadcast.listen((message) {
       if (message is DbMsgRequestExit) {
         _logger.fine('exiting...');
-        _exit();
+        _exit(replySendPort: message.replySendPort);
       } else if (message is DbMsgRequestOpen) {
-        parentSendPort.send(_open());
+        message.replySendPort?.send(_retryDbOperation(
+          () => _open(),
+          DbMsgResponseOpen(),
+          'open db',
+        ));
       } else if (message is DbMsgRequestMigrate) {
-        parentSendPort.send(_migrate());
+        message.replySendPort?.send(_retryDbOperation(
+          () => _migrate(),
+          DbMsgResponseMigrate(),
+          'migrate',
+        ));
       } else if (message is DbMsgRequestAddChats) {
-        tgSendPort?.send(addChats(
-          message.usernames,
+        message.replySendPort?.send(_retryDbOperation(
+          () => _addChats(message.usernames),
+          DbMsgResponseAddChats(),
+          'add chats',
         ));
+      } else if (message is DbMsgRequestBlacklistChat) {
+        message.replySendPort?.send(_retryDbOperation(
+            () => _blacklistChat(
+                username: message.username, reason: message.reason),
+            DbMsgResponseBlacklistChat(),
+            'blacklist chat'));
       } else if (message is DbMsgRequestUpdateChat) {
-        tgSendPort?.send(updateChat(
-          username: message.username,
-          chat: message.chat,
-        ));
+        message.replySendPort?.send(_retryDbOperation(
+            () => _updateChat(
+                  username: message.username,
+                  chat: message.chat,
+                ),
+            DbMsgResponseUpdateChat(),
+            "update chat"));
+      } else if (message is DbMsgRequestUpdateChatMembersCount) {
+        message.replySendPort?.send(_retryDbOperation(
+            () => _updateChatMembersCount(
+                  username: message.username,
+                  memberCount: message.membersCount,
+                ),
+            DbMsgResponseUpdateChatMembersCount(),
+            "update chat members count"));
+      } else if (message is DbMsgRequestUpdateChatMembersBotsCount) {
+        message.replySendPort?.send(_retryDbOperation(
+            () => _updateChatMembersBotsCount(
+                  username: message.username,
+                  memberCount: message.membersCount,
+                ),
+            DbMsgResponseUpdateChatMembersBotsCount(),
+            "update chat members bots count"));
+      } else if (message is DbMsgRequestUpdateChatMembersOnlineCount) {
+        message.replySendPort?.send(_retryDbOperation(
+            () => _updateChatMembersOnlineCount(
+                  username: message.username,
+                  memberCount: message.membersCount,
+                ),
+            DbMsgResponseUpdateChatMembersOnlineCount(),
+            "update chat members online count"));
       } else if (message is DbMsgRequestSelectMaxMessageId) {
-        tgSendPort?.send(selectMaxMessageId(
-          chatId: message.chatId,
-          dateTimeFrom: message.dateTimeFrom,
+        message.replySendPort?.send(_retryDbOperation(
+          () => _selectMaxMessageId(
+            chatId: message.chatId,
+            dateTimeFrom: message.dateTimeFrom,
+          ),
+          DbMsgResponseSelectMaxMessageId(id: null),
+          "select max message id",
         ));
       } else if (message is DbMsgRequestAddMessage) {
-        tgSendPort?.send(addMessage(
-          message: message.message,
+        message.replySendPort?.send(_retryDbOperation(
+          () => _addMessage(
+              message: message.message,
+              online_member_count: message.onlineMemberCount),
+          DbMsgResponseAddMessage(added: false),
+          "add message",
         ));
-      } else if (message is DbMsgRequestSetTgSendPort) {
-        setTgSendPort(message.sendPort);
+      } else if (message is DbMsgRequestAddUser) {
+        message.replySendPort?.send(_retryDbOperation(
+          () => _addUser(userId: message.userId),
+          DbMsgResponseAddUser(),
+          "add user",
+        ));
+      } else if (message is DbMsgRequestUpdateUser) {
+        message.replySendPort?.send(_retryDbOperation(
+          () => _updateUser(userId: message.userId, user: message.user),
+          DbMsgResponseUpdateUser(),
+          "update user",
+        ));
+      } else if (message is DbMsgRequestSelectChatOnlineMemberCount) {
+        message.replySendPort?.send(_retryDbOperation(
+          () => _selectChatOnlineMemberCount(
+            chatName: message.chatName,
+          ),
+          DbMsgResponseSelectChatOnlineMemberCount(),
+          "select chat online member count",
+        ));
       }
     });
   }
 
-  void setTgSendPort(SendPort sendPort) {
-    tgSendPort = sendPort;
-    tgSendPort?.send(DbMsgResponseSetTgSendPort());
+  DbMsgResponse _retryDbOperation(
+    DbMsgResponse Function() dbOperation,
+    DbMsgResponse dbMsgResponse,
+    String operationName,
+  ) {
+    var exception;
+
+    var retryCount = 0;
+    while (retryCount < maxTries) {
+      retryCount += 1;
+
+      exception = null;
+      try {
+        return dbOperation();
+      } on SqliteException catch (ex) {
+        exception = ex;
+        if (exception.resultCode == 19) {
+          return DbMsgResponseConstraintError(exception: exception);
+        }
+        if (_dbErrorHandler(ex, operationName) == false) {
+          break;
+        }
+      }
+    }
+
+    dbMsgResponse.operationName = operationName;
+    dbMsgResponse.exception = exception;
+
+    return dbMsgResponse;
   }
 
   DbMsgResponseOpen _open() {
     _logger.fine('opening...');
     db = sqlite3.open(this.dbPath);
     _logger.fine('opened.');
-
     return DbMsgResponseOpen();
   }
 
-  Future<void> _exit() async {
-    _logger.fine('closing...');
+  Future<void> _exit({SendPort? replySendPort}) async {
+    _logger.fine('closing DB...');
     db?.dispose();
     _logger.fine('closed.');
 
-    parentSendPort.send(DbMsgResponseExit());
-    await Future.delayed(const Duration(milliseconds: 10));
+    replySendPort?.send(DbMsgResponseExit());
 
+    await Future.delayed(const Duration(milliseconds: 10));
+    _logger.fine('closing DB port');
     receivePort.close();
     Isolate.exit();
   }
 
   DbMsgResponseMigrate _migrate() {
     _logger.fine('running migrations...');
-    for (final sql in sqlInit()) {
+    for (final sql in _sqlInit()) {
       db?.execute(sql);
     }
     _logger.fine('running migrations... done.');
     return DbMsgResponseMigrate();
   }
 
-  DbMsgResponseAddChats addChats(List<String> usernames) {
-    final stmt = db?.prepare(
-        'INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
-
+  DbMsgResponseAddChats _addChats(List<String> usernames) {
     for (var username in usernames) {
       _logger.fine('adding chat $username...');
+      final stmt = db?.prepare(
+          'INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
       stmt?.execute([
         username,
         DateTime.now().toUtc().toIso8601String(),
         DateTime.now().toUtc().toIso8601String(),
       ]);
       _logger.fine('added chat $username.');
+      stmt?.dispose();
     }
-
-    stmt?.dispose();
-
     return DbMsgResponseAddChats();
   }
 
-  DbMsgResponseUpdateChat updateChat({
+  DbMsgResponseUpdateChat _updateChat({
     required String username,
     required Chat chat,
   }) {
@@ -237,7 +357,86 @@ class DbIsolated {
     return DbMsgResponseUpdateChat();
   }
 
-  DbMsgResponseSelectMaxMessageId selectMaxMessageId({
+  DbMsgResponseUpdateChatMembersCount _updateChatMembersCount({
+    required String username,
+    required int memberCount,
+  }) {
+    final stmt = db?.prepare(
+        'UPDATE chat SET member_count = ?, updated_at = ? WHERE username = ?;');
+
+    _logger.fine('updating chat $username, members count $memberCount...');
+    stmt?.execute([
+      memberCount,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('updated chat $username, members count $memberCount.');
+
+    stmt?.dispose();
+    return DbMsgResponseUpdateChatMembersCount();
+  }
+
+  DbMsgResponseUpdateChatMembersBotsCount _updateChatMembersBotsCount({
+    required String username,
+    required int memberCount,
+  }) {
+    final stmt = db?.prepare(
+        'UPDATE chat SET bot_count = ?, updated_at = ? WHERE username = ?;');
+
+    _logger.fine('updating chat $username, bots count $memberCount...');
+    stmt?.execute([
+      memberCount,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('updated chat $username, bots count $memberCount.');
+
+    stmt?.dispose();
+
+    return DbMsgResponseUpdateChatMembersBotsCount();
+  }
+
+  DbMsgResponseUpdateChatMembersOnlineCount _updateChatMembersOnlineCount({
+    required String username,
+    required int memberCount,
+  }) {
+    final stmt = db?.prepare(
+        'UPDATE chat SET member_online_count = ?, updated_at = ? WHERE username = ?;');
+
+    _logger.fine('updating chat $username, bots count $memberCount...');
+    stmt?.execute([
+      memberCount,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('updated chat $username, bots count $memberCount.');
+
+    stmt?.dispose();
+
+    return DbMsgResponseUpdateChatMembersOnlineCount();
+  }
+
+  DbMsgResponseBlacklistChat _blacklistChat({
+    required String username,
+    required String reason,
+  }) {
+    final stmt = db?.prepare(
+        'UPDATE chat SET blacklisted = 1, blacklist_reason = ?, updated_at = ? WHERE username = ?;');
+
+    _logger.fine('blacklisting chat $username, reason $reason...');
+    stmt?.execute([
+      reason,
+      DateTime.now().toUtc().toIso8601String(),
+      username,
+    ]);
+    _logger.fine('blacklisted chat $username.');
+
+    stmt?.dispose();
+
+    return DbMsgResponseBlacklistChat();
+  }
+
+  DbMsgResponseSelectMaxMessageId _selectMaxMessageId({
     required int chatId,
     required DateTime dateTimeFrom,
   }) {
@@ -257,24 +456,19 @@ class DbIsolated {
       _logger.fine('did not find last message id for chat $chatId.');
     }
 
-    return DbMsgResponseSelectMaxMessageId(
-      id: id,
-    );
+    return DbMsgResponseSelectMaxMessageId(id: id);
   }
 
-  DbMsgResponseAddMessage addMessage({
+  DbMsgResponseAddMessage _addMessage({
     required Message message,
+    int? online_member_count,
   }) {
     if (message.chat_id == null || message.id == null || message.date == null) {
       return DbMsgResponseAddMessage(
         added: false,
       );
     }
-    final sql = """
-      INSERT INTO message (chat_id, id, date, user_id, text, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT DO NOTHING;
-      """;
-    final stmt = db?.prepare(sql);
+    final stmt = db?.prepare(_sqlInsertMessage());
 
     var userId = null;
     if (message.sender_id != null &&
@@ -290,6 +484,11 @@ class DbIsolated {
       }
     }
 
+    var reply_to_id;
+    if (message.reply_to_message_id != null) {
+      reply_to_id = WrapId.unwrapMessageId(message.reply_to_message_id);
+    }
+
     stmt?.execute([
       WrapId.unwrapChatId(message.chat_id),
       WrapId.unwrapMessageId(message.id),
@@ -298,23 +497,92 @@ class DbIsolated {
           .toIso8601String(),
       userId,
       text,
+      online_member_count,
+      message.interaction_info?.view_count,
+      message.interaction_info?.reply_info?.reply_count,
+      message.interaction_info?.forward_count,
+      reply_to_id,
       DateTime.now().toUtc().toIso8601String(),
       DateTime.now().toUtc().toIso8601String(),
     ]);
     stmt?.dispose();
 
-    return DbMsgResponseAddMessage(
-      added: true,
+    return DbMsgResponseAddMessage(added: true);
+  }
+
+  DbMsgResponseAddUser _addUser({required int userId}) {
+    _logger.fine('Adding new user  $userId...');
+    final sql = """
+      INSERT INTO user (user_id, created_at, updated_at) VALUES (?, ?, ?);
+      """;
+    final stmt = db?.prepare(sql);
+    stmt?.execute([
+      userId,
+      DateTime.now().toUtc().toIso8601String(),
+      DateTime.now().toUtc().toIso8601String(),
+    ]);
+    stmt?.dispose();
+    _logger.fine('User $userId added');
+    return DbMsgResponseAddUser();
+  }
+
+  DbMsgResponseUpdateUser _updateUser(
+      {required int userId, required User user}) {
+    _logger.fine('Adding new user  $userId...');
+    final sql = """
+      UPDATE user SET first_name = ?, last_name = ?, username = ?, bot = ?, verified = ?, scam = ?, fake = ? WHERE user_id = ?;
+      """;
+    final stmt = db?.prepare(sql);
+    stmt?.execute([
+      user.first_name,
+      user.last_name,
+      user.usernames?.active_usernames?.firstOrNull!,
+      user.type is UserTypeBot,
+      user.is_verified,
+      user.is_scam,
+      user.is_fake,
+      userId
+    ]);
+    stmt?.dispose();
+    _logger.fine('User $userId added');
+    return DbMsgResponseUpdateUser();
+  }
+
+  DbMsgResponseSelectChatOnlineMemberCount _selectChatOnlineMemberCount({
+    required String chatName,
+  }) {
+    _logger.fine('reading member online count for $chatName...');
+
+    final ResultSet? resultSet = db?.select(
+      _sqlSelectChat(),
+      [chatName],
+    );
+
+    int? result;
+    if (resultSet != null && resultSet.isNotEmpty) {
+      result = resultSet.first['member_online_count'];
+      _logger.fine('found member online count $result for chat $chatName.');
+    } else {
+      _logger.fine('did not find member online count for chat $chatName.');
+    }
+
+    return DbMsgResponseSelectChatOnlineMemberCount(
+      onlineMemberCount: result,
     );
   }
 
-  List<String> sqlInit() {
+  List<String> _sqlInit() {
     return [
       """
     CREATE TABLE IF NOT EXISTS chat (
       username TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
       id INTEGER,
       title TEXT,
+      member_count INTEGER, 
+      member_online_count INTEGER,
+      bot_count INTEGER,
+      blacklisted INTEGER DEFAULT 0, /* 0 - false; 1 - true; */
+      blacklist_reason TEXT,
       created_at TEXT,
       updated_at TEXT
     );
@@ -326,6 +594,26 @@ class DbIsolated {
       date TEXT,
       user_id INTEGER,
       text TEXT,
+      member_online_count INTEGER,
+      views INTEGER,
+      replies INTEGER,
+      forwards INTEGER,
+      reply_to_id INTEGER,
+      created_at TEXT,
+      updated_at TEXT
+    );
+    """,
+      """
+    CREATE TABLE IF NOT EXISTS user (
+      id INTEGER NOT NULL PRIMARY KEY,
+      user_id INTEGER UNIQUE NOT NULL,
+      first_name TEXT,
+      last_name TEXT,
+      username TEXT,
+      bot INTEGER,
+      verified INTEGER,
+      scam INTEGER,
+      fake INTEGER,
       created_at TEXT,
       updated_at TEXT
     );
@@ -336,88 +624,343 @@ class DbIsolated {
     """,
     ];
   }
+
+  String _sqlInsertMessage() {
+    return '''
+INSERT INTO message (
+  chat_id, id, date, user_id, text, 
+  member_online_count, views, replies, forwards, reply_to_id, 
+  created_at, updated_at
+)
+VALUES (
+  ?, ?, ?, ?, ?,
+  ?, ?, ?, ?, ?,
+  ?, ?
+) ON CONFLICT DO NOTHING;
+    ''';
+  }
+
+  String _sqlSelectChat() {
+    return '''
+SELECT
+  *
+FROM
+  chat 
+WHERE 
+  username = ?;
+    ''';
+  }
+
+  bool _dbErrorHandler(SqliteException error, String operation) {
+    // return true for retry or false for exiting
+    // Codes that were chosen for retry
+    // 1 - SQLite generic error
+    // 5 - SQLite engine currently busy
+    // 261 - indicates that an operation could not continue because another process is busy recovering a WAL mode database file
+    // 266 - indicating an I/O error in the VFS layer while trying to read from a file on disk
+    switch (error.resultCode) {
+      case 1:
+        _logger.fine(
+            "[DB Exception within ${operation}] generic error -> ${error}");
+        return true;
+      case 2:
+        _logger.fine(
+            "[DB Exception within ${operation}] internal error -> ${error}");
+        return false;
+      case 3:
+        _logger.fine(
+            "[DB Exception within ${operation}] internal error -> ${error}");
+        return false;
+      case 4:
+        _logger.fine(
+            "[DB Exception within ${operation}] unable to open SQLite file -> ${error}");
+        return false;
+      case 5:
+        _logger.fine(
+            "[DB Exception within ${operation}] SQLite Engine currently busy -> ${error}");
+        return true;
+      case 6:
+        _logger.fine(
+            "[DB Exception within ${operation}] conflict on the database connection -> ${error}");
+        return false;
+      case 7:
+        _logger.fine(
+            "[DB Exception within ${operation}] SQLite was unable to allocate all the memory it needed for operation -> ${error}");
+        return false;
+      case 8:
+        _logger.fine(
+            "[DB Exception within ${operation}] SQLite readonly error, current database connection does not have write permissions -> ${error}");
+        return false;
+      case 9:
+        _logger.fine(
+            "[DB Exception within ${operation}] operation was interrupted -> ${error}");
+        return false;
+      case 10:
+        _logger.fine(
+            "[DB Exception within ${operation}] operation could not finish because of an OS reported I/O error -> ${error}");
+        return false;
+      case 11:
+        _logger.fine(
+            "[DB Exception within ${operation}] database file is corrputed -> ${error}");
+        return false;
+      case 12:
+        _logger.fine(
+            "[DB Exception within ${operation}] SQLite not found -> ${error}");
+        return false;
+      case 13:
+        _logger.fine(
+            "[DB Exception within ${operation}] write could not be completed, disk is full -> ${error}");
+        return false;
+      case 14:
+        _logger
+            .fine("[DB Exception within ${operation}] API misuse -> ${error}");
+        return false;
+      case 17:
+        _logger
+            .fine("[DB Exception within ${operation}] API misuse -> ${error}");
+        return false;
+      case 19:
+        _logger.fine(
+            "[DB Exception within ${operation}] SQLite database schema has changed -> ${error}");
+        return false;
+      case 20:
+        _logger.fine(
+            "[DB Exception within ${operation}] SQLite datatype mismatch -> ${error}");
+        return false;
+      case 21:
+        _logger.fine(
+            "[DB Exception within ${operation}] SQLite misuse, interfaced with SQLite interface in a way that is undefined or unsupported -> ${error}");
+        return false;
+      case 23:
+        _logger.fine(
+            "[DB Exception within ${operation}] authorization failed -> ${error}");
+        return false;
+      case 261:
+        _logger.fine(
+            "[DB Exception within ${operation}] SQLite could not continue with operation because it is busy recovering WAL mode db file -> ${error}");
+        return true;
+      case 266:
+        _logger.fine(
+            "[DB Exception within ${operation}] I/O error in the VFS layer while trying to read from a file on disk -> ${error}");
+        return true;
+      case 279:
+        _logger.fine(
+            "[DB Exception within ${operation}] lacking sufficient authorization -> ${error}");
+        return false;
+      default:
+        _logger.fine("[DB Exception within ${operation}] error -> ${error}");
+        return false;
+    }
+  }
 }
 
 abstract class DbMsg {}
 
-abstract class DbMsgRequest extends DbMsg {}
+abstract class DbMsgRequest extends DbMsg {
+  final SendPort? replySendPort;
+  DbMsgRequest({
+    this.replySendPort,
+  });
+}
 
-abstract class DbMsgResponse extends DbMsg {}
+abstract class DbMsgResponse extends DbMsg {
+  SqliteException? exception;
+  String? operationName;
+  DbMsgResponse({this.exception, this.operationName});
+}
 
-class DbMsgRequestOpen extends DbMsgRequest {}
+class DbMsgRequestOpen extends DbMsgRequest {
+  DbMsgRequestOpen({
+    super.replySendPort,
+  });
+}
 
-class DbMsgResponseOpen extends DbMsgResponse {}
+class DbMsgResponseOpen extends DbMsgResponse {
+  DbMsgResponseOpen({super.exception, super.operationName});
+}
 
-class DbMsgRequestExit extends DbMsgRequest {}
+class DbMsgRequestExit extends DbMsgRequest {
+  DbMsgRequestExit({
+    super.replySendPort,
+  });
+}
 
 class DbMsgResponseExit extends DbMsgResponse {}
 
-class DbMsgRequestMigrate extends DbMsgRequest {}
+class DbMsgRequestMigrate extends DbMsgRequest {
+  DbMsgRequestMigrate({
+    super.replySendPort,
+  });
+}
 
-class DbMsgResponseMigrate extends DbMsgResponse {}
+class DbMsgResponseMigrate extends DbMsgResponse {
+  DbMsgResponseMigrate({super.exception, super.operationName});
+}
 
 class DbMsgRequestAddChats extends DbMsgRequest {
   final List<String> usernames;
 
   DbMsgRequestAddChats({
+    super.replySendPort,
     required this.usernames,
   });
 }
 
-class DbMsgResponseAddChats extends DbMsgResponse {}
+class DbMsgResponseAddChats extends DbMsgResponse {
+  DbMsgResponseAddChats({super.exception, super.operationName});
+}
+
+class DbMsgRequestBlacklistChat extends DbMsgRequest {
+  final String username;
+  final String reason;
+
+  DbMsgRequestBlacklistChat({
+    super.replySendPort,
+    required this.username,
+    required this.reason,
+  });
+}
+
+class DbMsgResponseBlacklistChat extends DbMsgResponse {
+  DbMsgResponseBlacklistChat({super.exception, super.operationName});
+}
 
 class DbMsgRequestUpdateChat extends DbMsgRequest {
   final String username;
   final Chat chat;
 
   DbMsgRequestUpdateChat({
+    super.replySendPort,
     required this.username,
     required this.chat,
   });
 }
 
-class DbMsgResponseUpdateChat extends DbMsgResponse {}
+class DbMsgResponseUpdateChat extends DbMsgResponse {
+  DbMsgResponseUpdateChat({super.exception, super.operationName});
+}
+
+class DbMsgRequestUpdateChatMembersCount extends DbMsgRequest {
+  final String username;
+  final int membersCount;
+
+  DbMsgRequestUpdateChatMembersCount({
+    super.replySendPort,
+    required this.username,
+    required this.membersCount,
+  });
+}
+
+class DbMsgResponseUpdateChatMembersCount extends DbMsgResponse {
+  DbMsgResponseUpdateChatMembersCount({super.exception, super.operationName});
+}
+
+class DbMsgRequestUpdateChatMembersBotsCount extends DbMsgRequest {
+  final String username;
+  final int membersCount;
+
+  DbMsgRequestUpdateChatMembersBotsCount({
+    super.replySendPort,
+    required this.username,
+    required this.membersCount,
+  });
+}
+
+class DbMsgResponseUpdateChatMembersBotsCount extends DbMsgResponse {
+  DbMsgResponseUpdateChatMembersBotsCount(
+      {super.exception, super.operationName});
+}
+
+class DbMsgRequestUpdateChatMembersOnlineCount extends DbMsgRequest {
+  final String username;
+  final int membersCount;
+
+  DbMsgRequestUpdateChatMembersOnlineCount({
+    super.replySendPort,
+    required this.username,
+    required this.membersCount,
+  });
+}
+
+class DbMsgResponseUpdateChatMembersOnlineCount extends DbMsgResponse {
+  DbMsgResponseUpdateChatMembersOnlineCount(
+      {super.exception, super.operationName});
+}
 
 class DbMsgRequestSelectMaxMessageId extends DbMsgRequest {
   final int chatId;
   final DateTime dateTimeFrom;
 
   DbMsgRequestSelectMaxMessageId({
+    super.replySendPort,
     required this.chatId,
     required this.dateTimeFrom,
   }) {}
 }
 
 class DbMsgResponseSelectMaxMessageId extends DbMsgResponse {
-  final int? id;
+  int? id;
 
-  DbMsgResponseSelectMaxMessageId({
-    required this.id,
-  });
+  DbMsgResponseSelectMaxMessageId(
+      {required this.id, super.exception, super.operationName});
 }
 
 class DbMsgRequestAddMessage extends DbMsgRequest {
   final Message message;
+  final int? onlineMemberCount;
 
   DbMsgRequestAddMessage({
+    super.replySendPort,
     required this.message,
+    required this.onlineMemberCount,
   });
 }
 
 class DbMsgResponseAddMessage extends DbMsgResponse {
   final bool added;
 
-  DbMsgResponseAddMessage({
-    required this.added,
+  DbMsgResponseAddMessage(
+      {required this.added, super.exception, super.operationName});
+}
+
+class DbMsgRequestAddUser extends DbMsgRequest {
+  final int userId;
+
+  DbMsgRequestAddUser({super.replySendPort, required this.userId});
+}
+
+class DbMsgResponseAddUser extends DbMsgResponse {
+  DbMsgResponseAddUser({super.exception, super.operationName});
+}
+
+class DbMsgRequestUpdateUser extends DbMsgRequest {
+  final int userId;
+  final User user;
+
+  DbMsgRequestUpdateUser(
+      {super.replySendPort, required this.userId, required this.user});
+}
+
+class DbMsgResponseUpdateUser extends DbMsgResponse {
+  DbMsgResponseUpdateUser({super.exception, super.operationName});
+}
+
+class DbMsgResponseConstraintError extends DbMsgResponseAddUser {
+  DbMsgResponseConstraintError({super.exception, super.operationName});
+}
+
+class DbMsgRequestSelectChatOnlineMemberCount extends DbMsgRequest {
+  final String chatName;
+
+  DbMsgRequestSelectChatOnlineMemberCount({
+    super.replySendPort,
+    required this.chatName,
   });
 }
 
-class DbMsgRequestSetTgSendPort extends DbMsgRequest {
-  final SendPort sendPort;
+class DbMsgResponseSelectChatOnlineMemberCount extends DbMsgResponse {
+  int? onlineMemberCount;
 
-  DbMsgRequestSetTgSendPort({
-    required this.sendPort,
-  });
+  DbMsgResponseSelectChatOnlineMemberCount(
+      {this.onlineMemberCount, super.exception, super.operationName});
 }
-
-class DbMsgResponseSetTgSendPort extends DbMsgResponse {}

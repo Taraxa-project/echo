@@ -24,6 +24,7 @@ class Log {
       Log._entryPoint,
       LgIsolatedSpwanMessage(
         parentSendPort: _isolateReceivePort.sendPort,
+        logLevel: _logger.level,
       ),
       debugName: runtimeType.toString(),
     );
@@ -36,8 +37,11 @@ class Log {
   }
 
   static void _entryPoint(LgIsolatedSpwanMessage initialSpawnMessage) {
+    hierarchicalLoggingEnabled = true;
+
     final lgIsolated = LogIsolated(
       parentSendPort: initialSpawnMessage.parentSendPort,
+      logLevel: initialSpawnMessage.logLevel,
     );
     lgIsolated.init();
 
@@ -45,7 +49,9 @@ class Log {
   }
 
   Future<void> exit() async {
-    isolateSendPort.send(LgMsgRequestExit());
+    isolateSendPort.send(LgMsgRequestExit(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
     await _isolateReceivePortBroadcast
         .where((event) => event is LgMsgResponseExit)
         .first;
@@ -55,9 +61,11 @@ class Log {
 
 class LgIsolatedSpwanMessage {
   final SendPort parentSendPort;
+  final Level logLevel;
 
   LgIsolatedSpwanMessage({
     required this.parentSendPort,
+    required this.logLevel,
   });
 }
 
@@ -71,7 +79,9 @@ class LogIsolated {
 
   LogIsolated({
     required this.parentSendPort,
+    required Level logLevel,
   }) {
+    _logger.level = logLevel;
     _logger.onRecord.listen((event) {
       if (event.object != null && event.object is LogRecord) {
         log(event.object as LogRecord);
@@ -97,15 +107,18 @@ class LogIsolated {
     receivePort.listen((message) {
       if (message is LgMsgRequestExit) {
         _logger.fine('exiting...');
-        _exit();
+        _exit(
+          replySendPort: message.replySendPort,
+        );
       } else if (message is LogRecord) {
         logExternal(message);
       }
     });
   }
 
-  Future<void> _exit() async {
-    parentSendPort.send(LgMsgResponseExit());
+  Future<void> _exit({SendPort? replySendPort}) async {
+    replySendPort?.send(LgMsgResponseExit());
+
     await Future.delayed(const Duration(milliseconds: 10));
 
     receivePort.close();
@@ -123,10 +136,19 @@ class LogIsolated {
 
 abstract class LgMsg {}
 
-abstract class DbMsgRequest extends LgMsg {}
+abstract class LgMsgRequest extends LgMsg {
+  final SendPort? replySendPort;
+  LgMsgRequest({
+    this.replySendPort,
+  });
+}
 
-abstract class DbMsgResponse extends LgMsg {}
+abstract class LgMsgResponse extends LgMsg {}
 
-class LgMsgRequestExit extends DbMsgRequest {}
+class LgMsgRequestExit extends LgMsgRequest {
+  LgMsgRequestExit({
+    super.replySendPort,
+  });
+}
 
-class LgMsgResponseExit extends DbMsgResponse {}
+class LgMsgResponseExit extends LgMsgResponse {}

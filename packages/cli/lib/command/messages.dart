@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:convert';
-
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
 import 'package:echo_cli/callback/cli.dart';
@@ -14,6 +13,7 @@ class TelegramCommandMessages extends Command {
 
   void run() async {
     hierarchicalLoggingEnabled = true;
+    final runForever = parseBool(globalResults!.command!['run-forever']);
 
     var logLevel = getLogLevel();
     var logLevelLibTdJson = getLogLevelLibtdjson();
@@ -26,41 +26,64 @@ class TelegramCommandMessages extends Command {
       log: log,
       dbPath: globalResults!['message-database-path'],
     );
-    await db.open();
-    await db.migrate();
 
-    final telegramClient = TelegramClient(
-      logLevel: logLevel,
-      logLevelLibTdJson: logLevelLibTdJson,
-    );
-    await telegramClient.spawn(
-      log: log,
-      db: db,
-      libtdjsonlcPath: globalResults!['libtdjson-path'],
-      tdReceiveWaitTimeout: 0.005,
-      tdReceiveFrequency: const Duration(milliseconds: 10),
-    );
+    TelegramClient? telegramClient;
 
-    await telegramClient.login(
-      apiId: int.parse(globalResults!['api-id']),
-      apiHash: globalResults!['api-hash'],
-      phoneNumber: globalResults!['phone-number'],
-      databasePath: globalResults!['database-path'],
-      readTelegramCode: readTelegramCode,
-      writeQrCodeLink: writeQrCodeLink,
-      readUserFirstName: readUserFirstName,
-      readUserLastName: readUserLastName,
-      readUserPassword: readUserPassword,
-    );
+    var sub = ProcessSignal.sigint.watch().listen((signal) async {
+      if ((signal == ProcessSignal.sigint) |
+          (signal == ProcessSignal.sigkill)) {
+        print("sigint signal has been given: ${signal}");
+        await telegramClient?.exit();
+        await db.exit();
+        await log.exit();
+        _exit();
+      }
+    });
 
-    await telegramClient.readChatsHistory(
-      dateTimeFrom: computeTwoWeeksAgo(),
-      chatsNames: getChatsNames(),
-    );
+    try {
+      await db.open();
+      await db.migrate();
 
-    await telegramClient.exit();
-    await db.exit();
-    await log.exit();
+      telegramClient = TelegramClient(
+        logLevel: logLevel,
+        logLevelLibTdJson: logLevelLibTdJson,
+        proxyUri: parseProxyUri(),
+      );
+      await telegramClient.spawn(
+        log: log,
+        db: db,
+        libtdjsonlcPath: globalResults!['libtdjson-path'],
+        tdReceiveWaitTimeout: 0.005,
+        tdReceiveFrequency: const Duration(milliseconds: 10),
+      );
+      await telegramClient.login(
+        apiId: int.parse(globalResults!['api-id']),
+        apiHash: globalResults!['api-hash'],
+        phoneNumber: globalResults!['phone-number'],
+        databasePath: globalResults!['database-path'],
+        readTelegramCode: readTelegramCode,
+        writeQrCodeLink: writeQrCodeLink,
+        readUserFirstName: readUserFirstName,
+        readUserLastName: readUserLastName,
+        readUserPassword: readUserPassword,
+      );
+      while (true) {
+        await telegramClient.readChatsHistory(
+          dateTimeFrom: computeTwoWeeksAgo(),
+          chatsNames: getChatsNames(),
+        );
+        if (!runForever) {
+          break;
+        }
+      }
+    } on Exception catch (exception) {
+      print("Exception occured ${exception}");
+    } finally {
+      await telegramClient?.exit();
+      await db.exit();
+      await log.exit();
+      sub.cancel();
+    }
   }
 
   List<String> getChatsNames() {
@@ -69,31 +92,33 @@ class TelegramCommandMessages extends Command {
     try {
       chatsNamesDecoded = jsonDecode(globalResults!.command!['chats-names']);
     } on FormatException {
-      invalidInputChats();
+      _invalidInputChats();
     }
 
     if (chatsNamesDecoded.runtimeType != List || chatsNamesDecoded.isEmpty) {
-      invalidInputChats();
+      _invalidInputChats();
     }
 
     List<String> chatsNames = [];
     for (var chatNameDecoded in chatsNamesDecoded) {
       if (chatNameDecoded.runtimeType != String) {
-        invalidInputChats();
+        _invalidInputChats();
       }
       chatsNames.add(chatNameDecoded);
     }
     return chatsNames;
   }
 
-  void invalidInputChats() {
-    print("The option \"charts-names\" must be a valid "
-        "JSON encoded list of strings.");
-    exit(1);
+  Never _invalidInputChats() {
+    _exit('The option "charts-names" must be a valid '
+        'JSON encoded list of strings.');
   }
 
   DateTime computeTwoWeeksAgo() {
-    return DateTime.now().subtract(const Duration(days: 14));
+    final dateTimeTwoWeeksAgo =
+        DateTime.now().toUtc().subtract(const Duration(days: 14));
+    return DateTime(dateTimeTwoWeeksAgo.year, dateTimeTwoWeeksAgo.month,
+        dateTimeTwoWeeksAgo.day);
   }
 
   Level getLogLevel() {
@@ -109,5 +134,38 @@ class TelegramCommandMessages extends Command {
       (level) => level.name == name.toUpperCase(),
       orElse: () => Level.WARNING,
     );
+  }
+
+  bool parseBool(boolToParse) {
+    if (boolToParse.toLowerCase() == 'true') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Uri? parseProxyUri() {
+    Uri? uri;
+
+    if (globalResults?['proxy'] != null) {
+      try {
+        uri = Uri.parse(globalResults?['proxy']);
+        if (['http', 'socks5'].contains(uri.scheme)) {
+          return uri;
+        } else {
+          _exit('Invalid proxy scheme ${uri.scheme}.'
+              ' Allowed values: http, socks5.');
+        }
+      } on FormatException catch (ex) {
+        _exit('Invalid proxy URI: $ex');
+      }
+    }
+
+    return uri;
+  }
+
+  Never _exit([String? message = null, code = 1]) {
+    if (message != null) print(message);
+    exit(code);
   }
 }
