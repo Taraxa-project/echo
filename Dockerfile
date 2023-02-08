@@ -53,7 +53,9 @@ COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/libtdj
 COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/lib/libtdjson.so*  /usr/local/lib/
 RUN ldconfig
 
+COPY --from=builder /app/packages/cli/bin/main.sh /app/
+
 # Copy compiled executable
 COPY --from=builder /app/echo /app/echo
 
-CMD ["sh", "-c", "/app/packages/cli/bin/main.sh"]
+CMD ["sh", "-c", "/app/main.sh"]
