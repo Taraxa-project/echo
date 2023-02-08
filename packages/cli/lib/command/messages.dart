@@ -75,9 +75,12 @@ class TelegramCommandMessages extends Command {
             dateTimeFrom: computeTwoWeeksAgo(),
             chatsNames: getChatsNames(),
           );
+
           if (!runForever) {
             break;
           }
+          print('Sleeping for 5 minutes.');
+          await Future.delayed(const Duration(minutes: 5));
         }
       } on Exception catch (exception) {
         print('${exception}');
@@ -89,8 +92,8 @@ class TelegramCommandMessages extends Command {
       }
 
       if (runForever) {
-        print('Sleeping for 60 seconds.');
-        await Future.delayed(const Duration(seconds: 60));
+        print('Sleeping for 5 minutes.');
+        await Future.delayed(const Duration(minutes: 5));
       } else {
         break;
       }
@@ -99,7 +102,7 @@ class TelegramCommandMessages extends Command {
 
   List<String> getChatsNames() {
     var chatsNamesDecoded;
-    print(globalResults!.command!['chats-names']);
+
     try {
       chatsNamesDecoded = jsonDecode(globalResults!.command!['chats-names']);
     } on FormatException {
