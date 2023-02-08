@@ -30,7 +30,7 @@ FROM dart:stable
 # Install packages
 RUN apt update \
     && apt install -y \
-    libc++-dev libsqlite3-dev \
+    libc++-dev libsqlite3-dev procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy tdlib binaries
@@ -52,17 +52,4 @@ RUN dart pub global activate melos
 
 RUN melos bootstrap 
 
-CMD ["sh", "-c", \
-    "dart /app/packages/cli/bin/main.dart \
-    --api-id $API_ID \
-    --api-hash $API_HASH \
-    --phone-number $PHONE \
-    --libtdjson-path $PATH_TD_JSON_LIB \
-    --loglevel $LOG_LEVEL \
-    --libtdjson-loglevel $LIBTDJSON_LOGLEVEL \
-    --database-path $PATH_TD_JSON_LIB_DATA \
-    --message-database-path $PATH_DB_MESSAGE \
-    $PROXY_OPTION \
-    messages \
-    --chats-names $CHATS_NAMES \
-    --run-forever $RUN_FOREVER "]
+CMD ["sh", "-c", "/app/packages/cli/bin/main.sh"]

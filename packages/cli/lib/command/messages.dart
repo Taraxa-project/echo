@@ -13,82 +13,93 @@ class TelegramCommandMessages extends Command {
 
   void run() async {
     hierarchicalLoggingEnabled = true;
+
     final runForever = parseBool(globalResults!.command!['run-forever']);
+    final proxyUri = parseProxyUri();
 
-    var logLevel = getLogLevel();
-    var logLevelLibTdJson = getLogLevelLibtdjson();
+    final logLevel = getLogLevel();
+    final logLevelLibTdJson = getLogLevelLibtdjson();
 
-    final log = Log(logLevel: logLevel);
-    await log.spawn();
+    while (true) {
+      final log = Log(logLevel: logLevel);
+      await log.spawn();
 
-    final db = Db(logLevel: logLevel);
-    await db.spawn(
-      log: log,
-      dbPath: globalResults!['message-database-path'],
-    );
+      final db = Db(logLevel: logLevel);
+      await db.spawn(
+        log: log,
+        dbPath: globalResults!['message-database-path'],
+      );
 
-    TelegramClient? telegramClient;
+      TelegramClient? telegramClient;
 
-    var sub = ProcessSignal.sigint.watch().listen((signal) async {
-      if ((signal == ProcessSignal.sigint) |
-          (signal == ProcessSignal.sigkill)) {
-        print("sigint signal has been given: ${signal}");
+      var sub = ProcessSignal.sigint.watch().listen((signal) async {
+        if ((signal == ProcessSignal.sigint) |
+            (signal == ProcessSignal.sigkill)) {
+          print("sigint signal has been given: ${signal}");
+          await telegramClient?.exit();
+          await db.exit();
+          await log.exit();
+          _exit();
+        }
+      });
+
+      try {
+        await db.open();
+        await db.migrate();
+
+        telegramClient = TelegramClient(
+          logLevel: logLevel,
+          logLevelLibTdJson: logLevelLibTdJson,
+          proxyUri: proxyUri,
+        );
+        await telegramClient.spawn(
+          log: log,
+          db: db,
+          libtdjsonlcPath: globalResults!['libtdjson-path'],
+          tdReceiveWaitTimeout: 0.005,
+          tdReceiveFrequency: const Duration(milliseconds: 10),
+        );
+        await telegramClient.login(
+          apiId: int.parse(globalResults!['api-id']),
+          apiHash: globalResults!['api-hash'],
+          phoneNumber: globalResults!['phone-number'],
+          databasePath: globalResults!['database-path'],
+          readTelegramCode: readTelegramCode,
+          writeQrCodeLink: writeQrCodeLink,
+          readUserFirstName: readUserFirstName,
+          readUserLastName: readUserLastName,
+          readUserPassword: readUserPassword,
+        );
+        while (true) {
+          await telegramClient.readChatsHistory(
+            dateTimeFrom: computeTwoWeeksAgo(),
+            chatsNames: getChatsNames(),
+          );
+          if (!runForever) {
+            break;
+          }
+        }
+      } on Exception catch (exception) {
+        print('${exception}');
+      } finally {
         await telegramClient?.exit();
         await db.exit();
         await log.exit();
-        _exit();
+        sub.cancel();
       }
-    });
 
-    try {
-      await db.open();
-      await db.migrate();
-
-      telegramClient = TelegramClient(
-        logLevel: logLevel,
-        logLevelLibTdJson: logLevelLibTdJson,
-        proxyUri: parseProxyUri(),
-      );
-      await telegramClient.spawn(
-        log: log,
-        db: db,
-        libtdjsonlcPath: globalResults!['libtdjson-path'],
-        tdReceiveWaitTimeout: 0.005,
-        tdReceiveFrequency: const Duration(milliseconds: 10),
-      );
-      await telegramClient.login(
-        apiId: int.parse(globalResults!['api-id']),
-        apiHash: globalResults!['api-hash'],
-        phoneNumber: globalResults!['phone-number'],
-        databasePath: globalResults!['database-path'],
-        readTelegramCode: readTelegramCode,
-        writeQrCodeLink: writeQrCodeLink,
-        readUserFirstName: readUserFirstName,
-        readUserLastName: readUserLastName,
-        readUserPassword: readUserPassword,
-      );
-      while (true) {
-        await telegramClient.readChatsHistory(
-          dateTimeFrom: computeTwoWeeksAgo(),
-          chatsNames: getChatsNames(),
-        );
-        if (!runForever) {
-          break;
-        }
+      if (runForever) {
+        print('Sleeping for 60 seconds.');
+        await Future.delayed(const Duration(seconds: 60));
+      } else {
+        break;
       }
-    } on Exception catch (exception) {
-      print("Exception occured ${exception}");
-    } finally {
-      await telegramClient?.exit();
-      await db.exit();
-      await log.exit();
-      sub.cancel();
     }
   }
 
   List<String> getChatsNames() {
     var chatsNamesDecoded;
-
+    print(globalResults!.command!['chats-names']);
     try {
       chatsNamesDecoded = jsonDecode(globalResults!.command!['chats-names']);
     } on FormatException {
@@ -110,7 +121,7 @@ class TelegramCommandMessages extends Command {
   }
 
   Never _invalidInputChats() {
-    _exit('The option "charts-names" must be a valid '
+    _exit('The option "chats-names" must be a valid '
         'JSON encoded list of strings.');
   }
 

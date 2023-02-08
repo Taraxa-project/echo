@@ -5,9 +5,15 @@ metadata:
   labels:
     {{- include "echo.labels" . | nindent 4 }}
 data:  
-  LOG_LEVEL: {{ .Values.configEnvs.LOG_LEVEL | quote }}
-  PATH_DB_MESSAGE: {{ .Values.configEnvs.PATH_DB_MESSAGE | quote }}
-  PATH_TD_JSON_LIB_DATA: {{ .Values.configEnvs.PATH_TD_JSON_LIB_DATA | quote }}
   PATH_TD_JSON_LIB: {{ .Values.configEnvs.PATH_TD_JSON_LIB | quote }}
-  PHONE: {{ .Values.configEnvs.PHONE | quote }}
-
+  PATH_TD_JSON_LIB_DATA: {{ .Values.configEnvs.PATH_TD_JSON_LIB_DATA | quote }}
+  PATH_DB_MESSAGE: {{ .Values.configEnvs.PATH_DB_MESSAGE | quote }}
+  LOG_LEVEL: {{ .Values.configEnvs.LOG_LEVEL | quote }}
+  LIBTDJSON_LOGLEVEL: {{ .Values.configEnvs.LIBTDJSON_LOGLEVEL | quote }}
+  RUN_FOREVER: {{ .Values.configEnvs.RUN_FOREVER | quote }}
+  
+  CHATS_NAMES_0: {{ .Values.configEnvs.CHATS_NAMES_0 | quote }}
+  CHATS_NAMES_1: {{ .Values.configEnvs.CHATS_NAMES_1 | quote }}
+  CHATS_NAMES_2: {{ .Values.configEnvs.CHATS_NAMES_2 | quote }}
+  CHATS_NAMES_3: {{ .Values.configEnvs.CHATS_NAMES_3 | quote }}
+  CHATS_NAMES_4: {{ .Values.configEnvs.CHATS_NAMES_4 | quote }}
