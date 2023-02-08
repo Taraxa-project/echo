@@ -24,22 +24,7 @@ RUN \
         /app-temp/packages/td_json_client/lib/src/log_callback && \
     cmake --build . --target install
 
-### main application image ###
-FROM dart:stable
-
-# Install packages
-RUN apt update \
-    && apt install -y \
-    libc++-dev libsqlite3-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy tdlib binaries
-COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/libtdjsonlc.so  /usr/local/lib/
-COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/lib/libtdjson.so*  /usr/local/lib/
-RUN ldconfig
-
-RUN rm -rf /app-temp
-
+# Copy Dart application and compile as an executable
 RUN rm -rf /app && mkdir -p /app
 COPY melos.yaml melos.yaml
 COPY ./packages /app/packages
@@ -52,17 +37,25 @@ RUN dart pub global activate melos
 
 RUN melos bootstrap 
 
-CMD ["sh", "-c", \
-    "dart /app/packages/cli/bin/main.dart \
-    --api-id $API_ID \
-    --api-hash $API_HASH \
-    --phone-number $PHONE \
-    --libtdjson-path $PATH_TD_JSON_LIB \
-    --loglevel $LOG_LEVEL \
-    --libtdjson-loglevel $LIBTDJSON_LOGLEVEL \
-    --database-path $PATH_TD_JSON_LIB_DATA \
-    --message-database-path $PATH_DB_MESSAGE \
-    $PROXY_OPTION \
-    messages \
-    --chats-names $CHATS_NAMES \
-    --run-forever $RUN_FOREVER "]
+RUN dart compile exe packages/cli/bin/main.dart --output=echo
+
+### main application image ###
+FROM dart:stable
+
+# Install packages
+RUN apt update \
+    && apt install -y \
+    libc++-dev libsqlite3-dev procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy tdlib binaries
+COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/libtdjsonlc.so  /usr/local/lib/
+COPY --from=builder /app-temp/packages/td_json_client/lib/src/blobs/linux/lib/libtdjson.so*  /usr/local/lib/
+RUN ldconfig
+
+COPY --from=builder /app/packages/cli/bin/main.sh /app/
+
+# Copy compiled executable
+COPY --from=builder /app/echo /app/echo
+
+CMD ["sh", "-c", "/app/main.sh"]

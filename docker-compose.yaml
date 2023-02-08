@@ -10,17 +10,18 @@ services:
       context: ./
       dockerfile: Dockerfile
     environment:
-      - API_ID=0
-      - API_HASH=0
-      - PHONE=0
       - PATH_TD_JSON_LIB=/usr/local/lib/libtdjsonlc.so
       - PATH_TD_JSON_LIB_DATA=/var/lib/tdlib
       - PATH_DB_MESSAGE=/var/lib/sqlite/message.db
       - LOG_LEVEL=info
       - LIBTDJSON_LOGLEVEL=warning
-      - PROXY_OPTION=
-      - CHATS_NAMES=[]
       - RUN_FOREVER=false
+
+      - API_ID_0=0
+      - API_HASH_0=0
+      - PHONE_0=0
+      - PROXY_OPTION_0=
+      - CHATS_NAMES_0=[]
     volumes:
       - tdlib-data:/var/lib/tdlib:rw
       - sqlite-data:/var/lib/sqlite:rw

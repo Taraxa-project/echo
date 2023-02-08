@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "echo.fullname" . }}
+  labels:
+    {{- include "echo.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "echo.fullname" . }}
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "echo.selectorLabels" . | nindent 6 }}
+      module: sla
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "echo.selectorLabels" . | nindent 8 }}
+        module: sla
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "echo.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.args }}
+          args: {{ tpl (toYaml .Values.args) . | nindent 12 }}
+          {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ include "echo.fullname" . }}
+            - configMapRef:
+                name: {{ include "echo.fullname" . }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- if .Values.persistence.tdlib.enabled }}
+            - name: tdlib-data
+              mountPath: /var/lib/tdlib
+            {{- end }}
+            {{- if .Values.persistence.sqlite.enabled }}
+            - name: sqlite-data
+              mountPath: /var/lib/sqlite
+            {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+{{- if .Values.persistence.sqlite.enabled }}
+  - metadata:
+      name: sqlite-data
+      annotations:
+        {{- if .Values.persistence.sqlite.annotations}}
+        {{- toYaml .Values.persistence.sqlite.annotations | nindent 4 }}
+        {{- end }}
+    spec:
+      accessModes:
+        - {{ .Values.persistence.sqlite.accessMode | quote }}
+    {{- if .Values.persistence.sqlite.storageClass }}
+    {{- if (eq "-" .Values.persistence.sqlite.storageClass) }}
+      storageClassName: ""
+    {{- else }}
+      storageClassName: "{{ .Values.persistence.sqlite.storageClass }}"
+    {{- end }}
+    {{- end }}
+      resources:
+        requests:
+          storage: "{{ .Values.persistence.sqlite.size }}"
+{{- end }}
+{{- if .Values.persistence.tdlib.enabled }}
+  - metadata:
+      name: tdlib-data
+      annotations:
+        {{- if .Values.persistence.tdlib.annotations}}
+        {{- toYaml .Values.persistence.tdlib.annotations | nindent 4 }}
+        {{- end }}
+    spec:
+      accessModes:
+        - {{ .Values.persistence.tdlib.accessMode | quote }}
+    {{- if .Values.persistence.tdlib.storageClass }}
+    {{- if (eq "-" .Values.persistence.tdlib.storageClass) }}
+      storageClassName: ""
+    {{- else }}
+      storageClassName: "{{ .Values.persistence.tdlib.storageClass }}"
+    {{- end }}
+    {{- end }}
+      resources:
+        requests:
+          storage: "{{ .Values.persistence.tdlib.size }}"
+{{- end }}
