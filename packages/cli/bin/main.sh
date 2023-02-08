@@ -20,7 +20,7 @@ PROXY_OPTION=${!PROXY_OPTION_VAR_NAME}
 CHATS_NAMES_VAR_NAME="CHATS_NAMES_$HOSTNAME_INDEX"
 CHATS_NAMES=${!CHATS_NAMES_VAR_NAME}
 
-dart /app/packages/cli/bin/main.dart \
+/app/echo \
     --api-id $API_ID \
     --api-hash $API_HASH \
     --phone-number $PHONE \
