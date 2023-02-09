@@ -6,7 +6,7 @@ metadata:
     {{- include "echo.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "echo.fullname" . }}
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       {{- include "echo.selectorLabels" . | nindent 6 }}
