@@ -906,13 +906,18 @@ class TelegramClientIsolated {
     int timeoutMilliseconds = tgTimeoutMilliseconds,
     int retryCountMax = tgRetryCountMax,
   }) async {
-    final chat = await _retryTdCall(
-      tdFunction: SearchPublicChat(
-        username: chatName,
-      ),
-      timeoutMilliseconds: timeoutMilliseconds,
-      retryCountMax: retryCountMax,
-    ) as Chat;
+    Chat chat;
+    try {
+      chat = await _retryTdCall(
+        tdFunction: SearchPublicChat(
+          username: chatName,
+        ),
+        timeoutMilliseconds: timeoutMilliseconds,
+        retryCountMax: retryCountMax,
+      ) as Chat;
+    } on TgBadRequestException catch (ex) {
+      throw TgChatNotFoundException(ex.toString());
+    }
 
     if (chat.id == null) {
       throw TgChatNotFoundException('Chat.id is null');
