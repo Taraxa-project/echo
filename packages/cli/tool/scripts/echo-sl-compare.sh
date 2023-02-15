@@ -90,6 +90,19 @@ CREATE TABLE IF NOT EXISTS user_sl (
     fake boolean
 );"
 
+    ./sqlite-tools-osx/sqlite3 $pod/echo-sl-compare.sqlite "
+CREATE UNIQUE INDEX IF NOT EXISTS idx_chat_echo_chat_id ON chat_echo (id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_chat_sl_chat_id ON chat_sl (chat_id);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_echo_id ON user_echo (id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_sl_id ON user_sl (user_id);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_message_echo_chat_id_id ON message_echo (chat_id, id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_message_sl_chat_id_message_id ON message_sl (chat_id, message_id);
+CREATE INDEX IF NOT EXISTS idx_message_echo_date ON message_echo (date);
+CREATE INDEX IF NOT EXISTS idx_message_sl_date ON message_sl (date);
+"
+
     echo "
 CREATE TABLE IF NOT EXISTS
     chat_export 
