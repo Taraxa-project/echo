@@ -44,6 +44,11 @@ void main(List<String> arguments) {
       defaultsTo: 'message.sqlite',
     )
     ..addOption(
+      'table-dump-path',
+      help: 'table dump path',
+      defaultsTo: '.',
+    )
+    ..addOption(
       'loglevel',
       help: 'Log level',
       defaultsTo: 'warning',
@@ -65,6 +70,11 @@ void main(List<String> arguments) {
       'chats-names',
       mandatory: true,
       help: 'A list of chat names JSON encoded.',
+    )
+    ..addOption(
+      'ipfs-cron-schedule',
+      help: 'Cron format for scheduling the export to IPFS',
+      defaultsTo: '0 8 * * *',
     )
     ..addOption(
       'run-forever',
