@@ -36,6 +36,11 @@ class IpfsExporter {
     required Log log,
     required Db db,
     required String tableDumpPath,
+    required String ipfsScheme,
+    required String ipfsHost,
+    required String ipfsPort,
+    String? ipfsUsername,
+    String? ipfsPassword,
   }) async {
     _log = log;
     _db = db;
@@ -57,6 +62,11 @@ class IpfsExporter {
         cronFormat: cronFormat,
         schedule: schedule,
         tableDumpPath: tableDumpPath,
+        ipfsScheme: ipfsScheme,
+        ipfsHost: ipfsHost,
+        ipfsPort: ipfsPort,
+        ipfsUsername: ipfsUsername,
+        ipfsPassword: ipfsPassword,
       ),
       debugName: runtimeType.toString(),
     );
@@ -81,6 +91,11 @@ class IpfsExporter {
       cronFormat: initialSpawnMessage.cronFormat,
       schedule: initialSpawnMessage.schedule,
       tableDumpPath: initialSpawnMessage.tableDumpPath,
+      ipfsScheme: initialSpawnMessage.ipfsScheme,
+      ipfsHost: initialSpawnMessage.ipfsHost,
+      ipfsPort: initialSpawnMessage.ipfsPort,
+      ipfsUsername: initialSpawnMessage.ipfsUsername,
+      ipfsPassword: initialSpawnMessage.ipfsPassword,
     );
     lgIsolated.init();
 
@@ -106,6 +121,11 @@ class IpfsExporterIsolatedSpwanMessage {
   String cronFormat;
   final Schedule schedule;
   final String tableDumpPath;
+  final String ipfsScheme;
+  final String ipfsHost;
+  final String ipfsPort;
+  String? ipfsUsername;
+  String? ipfsPassword;
 
   IpfsExporterIsolatedSpwanMessage({
     required this.parentSendPort,
@@ -115,6 +135,11 @@ class IpfsExporterIsolatedSpwanMessage {
     required this.cronFormat,
     required this.schedule,
     required this.tableDumpPath,
+    required this.ipfsScheme,
+    required this.ipfsHost,
+    required this.ipfsPort,
+    this.ipfsUsername,
+    this.ipfsPassword,
   });
 }
 
@@ -132,12 +157,16 @@ class IpfsExporterIsolated {
   Schedule schedule;
   String tableDumpPath;
 
+  String ipfsScheme;
+  String ipfsHost;
+  String ipfsPort;
+  String? ipfsUsername;
+  String? ipfsPassword;
+
   final _cron = Cron();
 
-  static const String ipfs_uri = '127.0.0.1:5001';
-  static const String ipfs_dir = '/echo_telegram';
-  static const String file_ext_data = 'csv';
-  static const String file_ext_hash = 'hash';
+  static const String fileExtData = 'json_lines';
+  static const String fileExtHash = 'hash';
 
   IpfsExporterIsolated({
     required this.parentSendPort,
@@ -147,6 +176,11 @@ class IpfsExporterIsolated {
     required this.cronFormat,
     required this.schedule,
     required this.tableDumpPath,
+    required this.ipfsScheme,
+    required this.ipfsHost,
+    required this.ipfsPort,
+    this.ipfsUsername,
+    this.ipfsPassword,
   }) {
     _logger.level = logLevel;
     _logger.onRecord.listen((logRecord) {
@@ -206,6 +240,7 @@ class IpfsExporterIsolated {
     dbSendPort.send(DbMsgRequestDumpTables(
       replySendPort: receivePort.sendPort,
       dumpPath: tableDumpPath,
+      dumpExt: fileExtData,
     ));
     var response = await receivePortBroadcast
         .where((event) => event is DbMsgResponseDumpTables)
@@ -220,49 +255,86 @@ class IpfsExporterIsolated {
 
   Future<void> _writeFilesToIpfs() async {
     _logger.info('uploading files to ipfs...');
+
     final client = http.Client();
 
-    for (var fileName in ['chat', 'message', 'user']) {
-      var uriWrite = Uri.http(
-        ipfs_uri,
-        '/api/v0/files/write',
-        {
-          'arg': '$ipfs_dir/$fileName.$file_ext_data',
-          'parents': 'true',
-          'create': 'true',
-        },
+    var ipfsUri;
+    if (ipfsScheme == 'https') {
+      ipfsUri = Uri.https(
+        '$ipfsHost:$ipfsPort',
+        '/api/v0/add',
       );
-      var requestWrite = http.MultipartRequest('POST', uriWrite);
+    } else {
+      ipfsUri = Uri.http(
+        '$ipfsHost:$ipfsPort',
+        '/api/v0/add',
+      );
+    }
+
+    for (var fileName in ['chat', 'message', 'user']) {
+      var requestIpfsAdd = http.MultipartRequest(
+        'POST',
+        ipfsUri,
+      );
+
+      if (ipfsUsername != null && ipfsPassword != null) {
+        var basicAuth =
+            base64.encode(utf8.encode('$ipfsUsername:$ipfsPassword'));
+        requestIpfsAdd.headers['Authorization'] = 'Basic $basicAuth';
+      }
+
       var multipartFile = await http.MultipartFile.fromPath(
         'data',
-        p.join(tableDumpPath, '$fileName.$file_ext_data'),
+        p.join(tableDumpPath, '$fileName.$fileExtData'),
       );
-      requestWrite.files.add(multipartFile);
-      await client.send(requestWrite);
+      requestIpfsAdd.files.add(multipartFile);
 
-      var uriStat = Uri.http(
-        ipfs_uri,
-        '/api/v0/files/stat',
-        {
-          'arg': '$ipfs_dir/$fileName.$file_ext_data',
-        },
-      );
-      var requestStat = http.Request('POST', uriStat);
+      var responseIpfsAdd = await client.send(requestIpfsAdd);
+      var responseBodyIpfsAdd = await responseIpfsAdd.stream.bytesToString();
 
-      var responseStat = await client.send(requestStat);
-      var responseBodyStat = await responseStat.stream.bytesToString();
-      var responseBodyStatDecoded = jsonDecode(responseBodyStat);
+      if (responseIpfsAdd.statusCode != 200) {
+        _logger.severe('ipfs add error: '
+            'code=${responseIpfsAdd.statusCode} '
+            'body=${responseBodyIpfsAdd}.');
+        continue;
+      }
 
-      var fileHash =
-          new File(p.join(tableDumpPath, '$fileName.$file_ext_hash'));
+      var responseBodyIpfsAddDecoded;
+      try {
+        responseBodyIpfsAddDecoded = jsonDecode(responseBodyIpfsAdd);
+      } on FormatException catch (ex) {
+        _logger.severe(ex);
+        continue;
+      }
+
+      if (responseBodyIpfsAddDecoded is! Map) {
+        _logger.severe('ipfs add error: '
+            'reponse body is not a Map '
+            'body=${responseBodyIpfsAdd}.');
+        continue;
+      }
+
+      if (!responseBodyIpfsAddDecoded.containsKey('Hash')) {
+        _logger.severe('ipfs add error: '
+            'reponse body without the Hash key '
+            'body=${responseBodyIpfsAdd}.');
+        continue;
+      }
+
+      var hash = responseBodyIpfsAddDecoded['Hash'];
+      _logger.info('uploaded $fileName with hash $hash.');
+
+      var fileHash = new File(p.join(tableDumpPath, '$fileName.$fileExtHash'));
       fileHash.createSync();
 
       final sink = fileHash.openWrite(mode: FileMode.write);
-      sink.write(responseBodyStatDecoded['Hash']);
+      sink.write(hash);
       sink.write('\n');
 
       await sink.flush();
       await sink.close();
+
+      _logger.info('wrote hash to $fileName.$fileExtHash.');
     }
 
     client.close();

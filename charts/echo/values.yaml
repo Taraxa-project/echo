@@ -74,7 +74,10 @@ configEnvs:
   PATH_DB_MESSAGE: /var/lib/sqlite/message.db
   LOG_LEVEL: info
   LIBTDJSON_LOGLEVEL: warning
+ 
   RUN_FOREVER: true
+  TABLE_DUMP_PATH: /var/lib/sqlite
+  IPFS_CRON_SCHEDULE: "0 8 * * *"
 
   CHATS_NAMES_0: "[]"
   CHATS_NAMES_1: "[]"
@@ -82,8 +85,13 @@ configEnvs:
   CHATS_NAMES_3: "[]"
   CHATS_NAMES_4: "[]"
 
-
 secretEnvs:
+  IPFS_SCHEME: http
+  IPFS_HOST: localhost
+  IPFS_PORT: "5001"
+  IPFS_USERNAME:
+  IPFS_PASSWORD:
+
   API_ID_0: "0"
   API_ID_1: "0"
   API_ID_2: "0"

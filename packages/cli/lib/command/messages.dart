@@ -42,7 +42,12 @@ class TelegramCommandMessages extends Command {
       await ipfsExporter.spawn(
         log: log,
         db: db,
-        tableDumpPath: globalResults!['table-dump-path'],
+        tableDumpPath: globalResults!.command!['table-dump-path'],
+        ipfsScheme: globalResults!.command!['ipfs-scheme'],
+        ipfsHost: globalResults!.command!['ipfs-host'],
+        ipfsPort: globalResults!.command!['ipfs-port'],
+        ipfsUsername: globalResults!.command?['ipfs-username'],
+        ipfsPassword: globalResults!.command?['ipfs-password'],
       );
 
       TelegramClient? telegramClient;

@@ -1,5 +1,6 @@
 import 'dart:isolate';
 import 'dart:io' as io;
+import 'dart:convert';
 import 'package:path/path.dart' as p;
 
 import 'package:collection/collection.dart';
@@ -261,6 +262,7 @@ class DbIsolated {
         message.replySendPort?.send(_retryDbOperation(
           () => _dumpTables(
             dumpPath: message.dumpPath,
+            fileExtData: message.dumpExt,
           ),
           DbMsgResponseDumpTables(),
           'dump table locally',
@@ -584,6 +586,7 @@ class DbIsolated {
 
   DbMsgResponseDumpTables _dumpTables({
     required String dumpPath,
+    required String fileExtData,
   }) {
     PreparedStatement? stmt;
     ResultSet? rs;
@@ -591,19 +594,19 @@ class DbIsolated {
     stmt = db?.prepare(_sqlSelectChatsForDump());
     rs = stmt?.select();
     if (rs != null) {
-      _dumpResultSet(rs, dumpPath, 'chat.csv');
+      _dumpResultSet(rs, dumpPath, 'chat.$fileExtData');
     }
 
     stmt = db?.prepare(_sqlSelectMessagesForDump());
     rs = stmt?.select();
     if (rs != null) {
-      _dumpResultSet(rs, dumpPath, 'message.csv');
+      _dumpResultSet(rs, dumpPath, 'message.$fileExtData');
     }
 
     stmt = db?.prepare(_sqlSelectUsersForDump());
     rs = stmt?.select();
     if (rs != null) {
-      _dumpResultSet(rs, dumpPath, 'user.csv');
+      _dumpResultSet(rs, dumpPath, 'user.$fileExtData');
     }
 
     stmt?.dispose();
@@ -621,10 +624,11 @@ class DbIsolated {
 
     final sink = file.openWrite(mode: io.FileMode.write);
 
+    sink.write(jsonEncode(rs.columnNames));
+    sink.write('\n');
+
     for (var row in rs) {
-      for (var value in row.values) {
-        sink.write('$value \t');
-      }
+      sink.write(jsonEncode(row.values));
       sink.write('\n');
     }
 
@@ -1055,10 +1059,12 @@ class DbMsgResponseSelectChatOnlineMemberCount extends DbMsgResponse {
 
 class DbMsgRequestDumpTables extends DbMsgRequest {
   final String dumpPath;
+  final String dumpExt;
 
   DbMsgRequestDumpTables({
     super.replySendPort,
     required this.dumpPath,
+    required this.dumpExt,
   });
 }
 
