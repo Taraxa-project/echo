@@ -67,6 +67,39 @@ void main(List<String> arguments) {
       help: 'A list of chat names JSON encoded.',
     )
     ..addOption(
+      'table-dump-path',
+      help: 'table dump path',
+      defaultsTo: '.',
+    )
+    ..addOption(
+      'ipfs-cron-schedule',
+      help: 'Cron format for scheduling the export to IPFS',
+      defaultsTo: '0 8 * * *',
+    )
+    ..addOption(
+      'ipfs-scheme',
+      help: 'Ipfs API scheme',
+      defaultsTo: 'http',
+    )
+    ..addOption(
+      'ipfs-host',
+      help: 'Ipfs API host',
+      defaultsTo: 'localhost',
+    )
+    ..addOption(
+      'ipfs-port',
+      help: 'Ipfs API port',
+      defaultsTo: '5001',
+    )
+    ..addOption(
+      'ipfs-username',
+      help: 'Ipfs API username for basic authentication',
+    )
+    ..addOption(
+      'ipfs-password',
+      help: 'Ipfs API password for basic authentication',
+    )
+    ..addOption(
       'run-forever',
       help: 'Set this to true if you want the app to run forever',
       defaultsTo: 'false',

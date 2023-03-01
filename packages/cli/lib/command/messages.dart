@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'dart:convert';
+
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
+import 'package:cron/cron.dart';
 import 'package:echo_cli/callback/cli.dart';
 import 'package:telegram_client/telegram_client.dart';
 import 'package:telegram_client/log.dart';
 import 'package:telegram_client/db.dart';
+import 'package:telegram_client/ipfs_exporter.dart';
 
 class TelegramCommandMessages extends Command {
   final name = 'messages';
@@ -16,6 +19,7 @@ class TelegramCommandMessages extends Command {
 
     final runForever = parseBool(globalResults!.command!['run-forever']);
     final proxyUri = parseProxyUri();
+    final schedule = parseIpfsCronSchedule();
 
     final logLevel = getLogLevel();
     final logLevelLibTdJson = getLogLevelLibtdjson();
@@ -30,6 +34,22 @@ class TelegramCommandMessages extends Command {
         dbPath: globalResults!['message-database-path'],
       );
 
+      final ipfsExporter = IpfsExporter(
+        logLevel: logLevel,
+        cronFormat: globalResults!.command!['ipfs-cron-schedule'],
+        schedule: schedule,
+      );
+      await ipfsExporter.spawn(
+        log: log,
+        db: db,
+        tableDumpPath: globalResults!.command!['table-dump-path'],
+        ipfsScheme: globalResults!.command!['ipfs-scheme'],
+        ipfsHost: globalResults!.command!['ipfs-host'],
+        ipfsPort: globalResults!.command!['ipfs-port'],
+        ipfsUsername: globalResults!.command?['ipfs-username'],
+        ipfsPassword: globalResults!.command?['ipfs-password'],
+      );
+
       TelegramClient? telegramClient;
 
       var sub = ProcessSignal.sigint.watch().listen((signal) async {
@@ -37,6 +57,7 @@ class TelegramCommandMessages extends Command {
             (signal == ProcessSignal.sigkill)) {
           print("sigint signal has been given: ${signal}");
           await telegramClient?.exit();
+          await ipfsExporter.exit();
           await db.exit();
           await log.exit();
           _exit();
@@ -86,6 +107,7 @@ class TelegramCommandMessages extends Command {
         print('${exception}');
       } finally {
         await telegramClient?.exit();
+        await ipfsExporter.exit();
         await db.exit();
         await log.exit();
         sub.cancel();
@@ -176,6 +198,14 @@ class TelegramCommandMessages extends Command {
     }
 
     return uri;
+  }
+
+  Schedule parseIpfsCronSchedule() {
+    try {
+      return Schedule.parse(globalResults!.command!['ipfs-cron-schedule']);
+    } on ScheduleParseException catch (ex) {
+      _exit('Invalid ipsf-cron-schedule: $ex');
+    }
   }
 
   Never _exit([String? message = null, code = 1]) {

@@ -3,9 +3,10 @@ import 'dart:isolate';
 
 import 'package:logging/logging.dart';
 import 'package:sqlite3/sqlite3.dart';
-import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
 import 'package:telegram_client/wrap_id.dart';
+import 'package:td_json_client/td_json_client.dart';
+
 import 'log.dart';
 import 'db.dart';
 
@@ -20,8 +21,6 @@ class TelegramClient {
   final _logger = Logger('TelegramClient');
   final Level logLevelLibTdJson;
   Uri? proxyUri;
-
-  bool _running = false;
 
   TelegramClient({
     required Level logLevel,

@@ -10,7 +10,10 @@ data:
   PATH_DB_MESSAGE: {{ .Values.configEnvs.PATH_DB_MESSAGE | quote }}
   LOG_LEVEL: {{ .Values.configEnvs.LOG_LEVEL | quote }}
   LIBTDJSON_LOGLEVEL: {{ .Values.configEnvs.LIBTDJSON_LOGLEVEL | quote }}
+  
+  IPFS_CRON_SCHEDULE: {{ .Values.configEnvs.IPFS_CRON_SCHEDULE | quote }}
   RUN_FOREVER: {{ .Values.configEnvs.RUN_FOREVER | quote }}
+  TABLE_DUMP_PATH: {{ .Values.configEnvs.TABLE_DUMP_PATH | quote }}
   
   CHATS_NAMES_0: {{ .Values.configEnvs.CHATS_NAMES_0 | quote }}
   CHATS_NAMES_1: {{ .Values.configEnvs.CHATS_NAMES_1 | quote }}

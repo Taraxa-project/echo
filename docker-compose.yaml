@@ -15,7 +15,15 @@ services:
       - PATH_DB_MESSAGE=/var/lib/sqlite/message.db
       - LOG_LEVEL=info
       - LIBTDJSON_LOGLEVEL=warning
-      - RUN_FOREVER=false
+
+      - RUN_FOREVER=true
+
+      - TABLE_DUMP_PATH=/var/lib/sqlite
+
+      - IPFS_CRON_SCHEDULE=0 8 * * *
+      - IPFS_SCHEME=http
+      - IPFS_HOST=localhost
+      - IPFS_PORT=5001
 
       - API_ID_0=0
       - API_HASH_0=0
