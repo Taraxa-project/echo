@@ -20,6 +20,7 @@ PROXY_OPTION=${!PROXY_OPTION_VAR_NAME}
 CHATS_NAMES_VAR_NAME="CHATS_NAMES_$HOSTNAME_INDEX"
 CHATS_NAMES=${!CHATS_NAMES_VAR_NAME}
 
+echo "
 /app/echo \
     --api-id $API_ID \
     --api-hash $API_HASH \
@@ -32,4 +33,33 @@ CHATS_NAMES=${!CHATS_NAMES_VAR_NAME}
     $PROXY_OPTION \
     messages \
     --chats-names $CHATS_NAMES \
-    --run-forever $RUN_FOREVER
+    --run-forever $RUN_FOREVER \
+    --table-dump-path $TABLE_DUMP_PATH \
+    --ipfs-cron-schedule $IPFS_CRON_SCHEDULE \
+    --ipfs-scheme $IPFS_SCHEME \
+    --ipfs-host $IPFS_HOST \
+    --ipfs-port $IPFS_PORT \
+    $IPFS_USERNAME \
+    $IPFS_PASSWORD 
+"
+
+/app/echo \
+    --api-id $API_ID \
+    --api-hash $API_HASH \
+    --phone-number $PHONE \
+    --libtdjson-path $PATH_TD_JSON_LIB \
+    --loglevel $LOG_LEVEL \
+    --libtdjson-loglevel $LIBTDJSON_LOGLEVEL \
+    --database-path $PATH_TD_JSON_LIB_DATA \
+    --message-database-path $PATH_DB_MESSAGE \
+    $PROXY_OPTION \
+    messages \
+    --chats-names $CHATS_NAMES \
+    --run-forever $RUN_FOREVER \
+    --table-dump-path $TABLE_DUMP_PATH \
+    --ipfs-cron-schedule "$IPFS_CRON_SCHEDULE" \
+    --ipfs-scheme $IPFS_SCHEME \
+    --ipfs-host $IPFS_HOST \
+    --ipfs-port $IPFS_PORT \
+    $IPFS_USERNAME \
+    $IPFS_PASSWORD 

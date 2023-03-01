@@ -3,9 +3,10 @@ import 'dart:isolate';
 
 import 'package:logging/logging.dart';
 import 'package:sqlite3/sqlite3.dart';
-import 'package:td_json_client/td_json_client.dart';
 import 'package:uuid/uuid.dart';
 import 'package:telegram_client/wrap_id.dart';
+import 'package:td_json_client/td_json_client.dart';
+
 import 'log.dart';
 import 'db.dart';
 
@@ -20,8 +21,6 @@ class TelegramClient {
   final _logger = Logger('TelegramClient');
   final Level logLevelLibTdJson;
   Uri? proxyUri;
-
-  bool _running = false;
 
   TelegramClient({
     required Level logLevel,
@@ -906,13 +905,18 @@ class TelegramClientIsolated {
     int timeoutMilliseconds = tgTimeoutMilliseconds,
     int retryCountMax = tgRetryCountMax,
   }) async {
-    final chat = await _retryTdCall(
-      tdFunction: SearchPublicChat(
-        username: chatName,
-      ),
-      timeoutMilliseconds: timeoutMilliseconds,
-      retryCountMax: retryCountMax,
-    ) as Chat;
+    Chat chat;
+    try {
+      chat = await _retryTdCall(
+        tdFunction: SearchPublicChat(
+          username: chatName,
+        ),
+        timeoutMilliseconds: timeoutMilliseconds,
+        retryCountMax: retryCountMax,
+      ) as Chat;
+    } on TgBadRequestException catch (ex) {
+      throw TgChatNotFoundException(ex.toString());
+    }
 
     if (chat.id == null) {
       throw TgChatNotFoundException('Chat.id is null');

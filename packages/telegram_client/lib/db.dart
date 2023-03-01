@@ -1,4 +1,8 @@
 import 'dart:isolate';
+import 'dart:io' as io;
+import 'dart:convert';
+import 'package:path/path.dart' as p;
+
 import 'package:collection/collection.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:logging/logging.dart';
@@ -253,6 +257,15 @@ class DbIsolated {
           ),
           DbMsgResponseSelectChatOnlineMemberCount(),
           "select chat online member count",
+        ));
+      } else if (message is DbMsgRequestDumpTables) {
+        message.replySendPort?.send(_retryDbOperation(
+          () => _dumpTables(
+            dumpPath: message.dumpPath,
+            fileExtData: message.dumpExt,
+          ),
+          DbMsgResponseDumpTables(),
+          'dump table locally',
         ));
       }
     });
@@ -571,6 +584,58 @@ class DbIsolated {
     );
   }
 
+  DbMsgResponseDumpTables _dumpTables({
+    required String dumpPath,
+    required String fileExtData,
+  }) {
+    PreparedStatement? stmt;
+    ResultSet? rs;
+
+    stmt = db?.prepare(_sqlSelectChatsForDump());
+    rs = stmt?.select();
+    if (rs != null) {
+      _dumpResultSet(rs, dumpPath, 'chat.$fileExtData');
+    }
+
+    stmt = db?.prepare(_sqlSelectMessagesForDump());
+    rs = stmt?.select();
+    if (rs != null) {
+      _dumpResultSet(rs, dumpPath, 'message.$fileExtData');
+    }
+
+    stmt = db?.prepare(_sqlSelectUsersForDump());
+    rs = stmt?.select();
+    if (rs != null) {
+      _dumpResultSet(rs, dumpPath, 'user.$fileExtData');
+    }
+
+    stmt?.dispose();
+
+    return DbMsgResponseDumpTables();
+  }
+
+  Future<void> _dumpResultSet(
+    ResultSet rs,
+    String dumpPath,
+    String fileName,
+  ) async {
+    final file = new io.File(p.join(dumpPath, fileName));
+    file.createSync();
+
+    final sink = file.openWrite(mode: io.FileMode.write);
+
+    sink.write(jsonEncode(rs.columnNames));
+    sink.write('\n');
+
+    for (var row in rs) {
+      sink.write(jsonEncode(row.values));
+      sink.write('\n');
+    }
+
+    await sink.flush();
+    await sink.close();
+  }
+
   List<String> _sqlInit() {
     return [
       """
@@ -649,6 +714,33 @@ FROM
 WHERE 
   username = ?;
     ''';
+  }
+
+  String _sqlSelectChatsForDump() {
+    return '''
+SELECT
+  *
+FROM
+  chat;
+''';
+  }
+
+  String _sqlSelectMessagesForDump() {
+    return '''
+SELECT
+  *
+FROM
+  message
+''';
+  }
+
+  String _sqlSelectUsersForDump() {
+    return '''
+SELECT
+  *
+FROM
+  user;
+''';
   }
 
   bool _dbErrorHandler(SqliteException error, String operation) {
@@ -963,4 +1055,22 @@ class DbMsgResponseSelectChatOnlineMemberCount extends DbMsgResponse {
 
   DbMsgResponseSelectChatOnlineMemberCount(
       {this.onlineMemberCount, super.exception, super.operationName});
+}
+
+class DbMsgRequestDumpTables extends DbMsgRequest {
+  final String dumpPath;
+  final String dumpExt;
+
+  DbMsgRequestDumpTables({
+    super.replySendPort,
+    required this.dumpPath,
+    required this.dumpExt,
+  });
+}
+
+class DbMsgResponseDumpTables extends DbMsgResponse {
+  DbMsgResponseDumpTables({
+    super.exception,
+    super.operationName,
+  });
 }
