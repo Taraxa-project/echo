@@ -814,7 +814,7 @@ class TelegramClientIsolated {
       }
 
       _logger.info('[$chatName] reading messages... '
-          'sleeping for $delayUntilNextChatSeconds seconds.');
+          'sleeping for $delayUntilNextMessageBatchSeconds seconds.');
       await Future.delayed(const Duration(
         seconds: delayUntilNextMessageBatchSeconds,
       ));
