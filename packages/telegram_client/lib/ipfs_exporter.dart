@@ -230,7 +230,7 @@ class IpfsExporterIsolated {
 
   Future<void> _export() async {
     await _writeFilesLocally();
-    await Future.delayed(Duration(seconds: 10));
+    await Future.delayed(Duration(minutes: 15));
     await _writeFilesToIpfs();
   }
 
