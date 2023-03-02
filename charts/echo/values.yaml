@@ -89,8 +89,8 @@ secretEnvs:
   IPFS_SCHEME: http
   IPFS_HOST: localhost
   IPFS_PORT: "5001"
-  IPFS_USERNAME:
-  IPFS_PASSWORD:
+  IPFS_USERNAME: ""
+  IPFS_PASSWORD: ""
 
   API_ID_0: "0"
   API_ID_1: "0"
