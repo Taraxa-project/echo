@@ -3,13 +3,16 @@ import { Signer } from "ethers";
 import { expect } from "chai";
 
 import { IngesterRegistry } from "../typechain-types/contracts/IngesterRegistry";
-// import ECDSA from '@openzeppelin/contracts/utils/cryptography';
+// import { ECDSA } from '@openzeppelin/contracts/utils/cryptography';
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import * as abi from 'ethereumjs-abi';
+import * as ethUtil from 'ethereumjs-util';
 
 describe("IngesterRegistry", function () {
-  let owner: Signer;
-  let admin: Signer;
-  let user1: Signer;
-  let user2: Signer;
+  let owner: SignerWithAddress;
+  let admin: SignerWithAddress;
+  let user1: SignerWithAddress;
+  let user2: SignerWithAddress;
   let contract: IngesterRegistry;
 
   beforeEach(async function () {
@@ -18,6 +21,7 @@ describe("IngesterRegistry", function () {
     const ingesterRegistryFactory = await ethers.getContractFactory("IngesterRegistry", owner);
     contract = await ingesterRegistryFactory.deploy();
     await contract.deployed();
+
   });
 
   describe("addGroup", function () {
@@ -87,31 +91,46 @@ describe("IngesterRegistry", function () {
 
   describe("registerIngestor", function () {
     it("should register a new ingestor", async function () {
-        const walletAddress = await user1.getAddress();
+        console.log("🚀 ~ file: IngestorRegistry.ts:129 ~ user1:", user1)
+        const walletAddress = user1.address;
         const nodeIngestor = user2;
-        const nodeIngestorAddress = await user2.getAddress();
+        const nodeIngestorAddress = user2.address;
 
-        const amount = 999;
         const message = 'hello';
         const nonce = 123;
 
-        let hash: any = await contract._hash(walletAddress, amount, nonce);
-        console.log("🚀 ~ file: IngestorRegistry.ts:104 ~ hash:", hash)
+        let hash = await contract._hash(nodeIngestorAddress, message, nonce);
 
         const sig = await nodeIngestor.signMessage(ethers.utils.arrayify(hash));
-        const signer = await contract.recover(hash, sig);
+        const ethHash = await contract.getEthSignedMessageHash(hash);
 
-        console.log("🚀 ~ file: IngestorRegistry.ts:107 ~ signer:", signer)
-        console.log('wallet address', walletAddress);
-        console.log('node ingestor address', nodeIngestorAddress);
+        const signer = await contract.recover(ethHash, sig);
+
+        expect(contract.registerIngestor(nodeIngestorAddress, message, nonce, sig))
+        .to.emit(contract, "IngestorRegistered")
+        .withArgs(walletAddress,nodeIngestorAddress);
 
         expect(signer == nodeIngestorAddress).to.equal(true);
-
-
     });
 
+    it("should fail registering a new ingestor when sig is incorrect", async function () {
+        const walletAddress = user1.address;
+        const nodeIngestor = user2;
+        const nodeIngestorAddress = user2.address;
+
+        const message = 'hello';
+        const incorrectMessage = 'bye';
+        const nonce = 123;
+
+        let hash = await contract._hash(nodeIngestorAddress, message, nonce);
+
+        const sig = await nodeIngestor.signMessage(ethers.utils.arrayify(hash));
+        const ethHash = await contract.getEthSignedMessageHash(hash);
+
+        expect(contract.registerIngestor(nodeIngestorAddress, incorrectMessage, nonce, sig)).to.be.revertedWith("Claim: Invalid signature.");
+    });
    
-    });
+  });
 
     
 });

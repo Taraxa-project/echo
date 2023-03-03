@@ -40,6 +40,7 @@ contract IngesterRegistry is Ownable {
     mapping(string => bool) public _groups;
 
 
+
     //Events
     event HashWritten(address indexed ingester, bytes32 indexed hash);
     event GroupAdded(string groupUsername);
@@ -69,30 +70,51 @@ contract IngesterRegistry is Ownable {
     //Ingester Node Registration Flow
 
     function registerIngestor(
-        address walletAddress,
         address ingestorAddress,
-        uint256 amount,
+        string memory message,
         uint256 nonce,
         bytes memory sig
-        ) external returns (bool) {
-        require(_ingestors[walletAddress].verified == true, "ingestor already registered");
-        bytes32 hash = _hash(walletAddress, amount, nonce);
+        ) external {
+        bytes32 messageHash = _hash(ingestorAddress, message, nonce);
 
-        require(ECDSA.recover(hash, sig) == ingestorAddress, "Claim: Invalid signature");
+        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+
+        require(ECDSA.recover(ethSignedMessageHash, sig) == ingestorAddress, "Claim: Invalid signature.");
 
         Ingester memory ingester = Ingester(ingestorAddress, true);
 
-        _ingestors[walletAddress] = ingester;
-        emit IngestorRegistered(walletAddress, ingestorAddress);
-        return true;
+        _ingestors[msg.sender] = ingester;
+        emit IngestorRegistered(msg.sender, ingestorAddress);
     }
 
-    function _hash(address _address, uint256 _value, uint256 _nonce) public pure returns (bytes32) {
+    function _hash(address _address, string memory _value, uint256 _nonce) public pure returns (bytes32) {
         return keccak256(abi.encodePacked(_address, _value, _nonce));
     }
 
-    function recover(bytes32 hash, bytes memory sig) public pure returns (address){
-        return ECDSA.recover(hash, sig);
+    function recover(bytes32 messageHash, bytes memory sig) public pure returns (address){
+        return ECDSA.recover(messageHash, sig);
+    }
+
+    function getMessageHash(
+        address _to,
+        uint _amount,
+        string memory _message,
+        uint _nonce
+    ) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(_to, _amount, _message, _nonce));
+    }
+
+    function getEthSignedMessageHash(
+        bytes32 _messageHash
+    ) public pure returns (bytes32) {
+        /*
+        Signature is produced by signing a keccak256 hash with the following format:
+        "\x19Ethereum Signed Message\n" + len(msg) + msg
+        */
+        return
+            keccak256(
+                abi.encodePacked("\x19Ethereum Signed Message:\n32", _messageHash)
+            );
     }
 
 }
