@@ -19,7 +19,7 @@ contract IngesterRegistry is Ownable {
     }
 
     modifier onlyRegistered() {
-        require(_ingestors[msg.sender], "IngesterRegistry: Ingester is not registered");
+        require(_ingestors[msg.sender].verified, "IngesterRegistry: Ingester is not registered");
         _;
     }
 
@@ -31,7 +31,12 @@ contract IngesterRegistry is Ownable {
         bool verified;
     }
 
-    mapping(address => bool) public _ingestors;
+    struct Ingester {
+        address ingesterAddress;
+        bool verified;
+    }
+
+    mapping(address => Ingester) public _ingestors;
     mapping(string => bool) public _groups;
 
 
@@ -63,25 +68,31 @@ contract IngesterRegistry is Ownable {
 
     //Ingester Node Registration Flow
 
-    // function registerIngestor(address walletAddress, bytes memory proof) public returns (bool) {
-    //     bytes32 hash = keccak256(abi.encodePacked(walletAddress));
-    //     address signer = ECDSA.recover(hash, proof);
-    //     require(signer == msg.sender, "Invalid proof.");
+    function registerIngestor(
+        address walletAddress,
+        address ingestorAddress,
+        uint256 amount,
+        uint256 nonce,
+        bytes memory sig
+        ) external returns (bool) {
+        require(_ingestors[walletAddress].verified == true, "ingestor already registered");
+        bytes32 hash = _hash(walletAddress, amount, nonce);
 
-    //     _ingestors[walletAddress] = true;
-    //     emit IngestorRegistered(walletAddress);
-    //     return true;
-    // }
+        require(ECDSA.recover(hash, sig) == ingestorAddress, "Claim: Invalid signature");
 
-    function registerIngestor(address walletAddress, address ingestorAddress, bytes memory proof) public returns (bool) {
-        require(_ingestors[ingestorAddress] == true, "ingestor already registered");
-        bytes32 hash = keccak256(abi.encodePacked(ingestorAddress));
-        address signer = ECDSA.recover(hash, proof);
-        require(signer == walletAddress, "Invalid proof.");
+        Ingester memory ingester = Ingester(ingestorAddress, true);
 
-        _ingestors[ingestorAddress] = true;
+        _ingestors[walletAddress] = ingester;
         emit IngestorRegistered(walletAddress, ingestorAddress);
         return true;
+    }
+
+    function _hash(address _address, uint256 _value, uint256 _nonce) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(_address, _value, _nonce));
+    }
+
+    function recover(bytes32 hash, bytes memory sig) public pure returns (address){
+        return ECDSA.recover(hash, sig);
     }
 
 }
