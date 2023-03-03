@@ -14,6 +14,8 @@ describe("IngesterRegistry", function () {
   let user1: SignerWithAddress;
   let user2: SignerWithAddress;
   let contract: IngesterRegistry;
+  const groupName1 = "test-group-1";
+  const groupName2 = "test-group-2";
 
   beforeEach(async function () {
     [owner, admin, user1, user2] = await ethers.getSigners();
@@ -26,49 +28,69 @@ describe("IngesterRegistry", function () {
 
   describe("addGroup", function () {
     it("should add a new group", async function () {
-      const groupName = "test-group";
-
-      await expect(contract.addGroup(groupName))
+      await expect(contract.addGroup(groupName1))
         .to.emit(contract, "GroupAdded")
-        .withArgs(groupName);
+        .withArgs(groupName1);
 
-      const isAdded = await contract._groups(groupName);
+      const isAdded = await contract._groups(groupName1);
       expect(isAdded).to.be.true;
     });
 
     it("should revert when adding an existing group", async function () {
-      const groupName = "test-group";
+      await contract.addGroup(groupName1);
 
-      await contract.addGroup(groupName);
+      await expect(contract.addGroup(groupName1)).to.be.revertedWith("Group already exists.");
 
-      await expect(contract.addGroup(groupName)).to.be.revertedWith("Group already exists.");
-
-      const isAdded = await contract._groups(groupName);
+      const isAdded = await contract._groups(groupName1);
       expect(isAdded).to.be.true;
     });
   });
 
   describe("removeGroup", function () {
     it("should remove an existing group", async function () {
-      const groupName = "test-group";
+      await contract.addGroup(groupName1);
 
-      await contract.addGroup(groupName);
-
-      await expect(contract.removeGroup(groupName))
+      await expect(contract.removeGroup(groupName1))
         .to.emit(contract, "GroupRemoved")
-        .withArgs(groupName);
+        .withArgs(groupName1);
     
-      const isAdded = await contract._groups(groupName);
+      const isAdded = await contract._groups(groupName1);
       expect(isAdded).to.be.false;
     });
 
     it("should revert when removing a non-existing group", async function () {
-      const groupName = "test-group";
+      await expect(contract.removeGroup(groupName1)).to.be.revertedWith("Group does not exist.");
 
-      await expect(contract.removeGroup(groupName)).to.be.revertedWith("Group does not exist.");
-
-      const isAdded = await contract._groups(groupName);
+      const isAdded = await contract._groups(groupName1);
       expect(isAdded).to.be.false;
+    });
+
+    it("should remove group from list of groups when removing an existing group", async function () {
+        await contract.addGroup(groupName1);
+        await contract.addGroup(groupName2);
+
+        
+        await expect(contract.removeGroup(groupName1))
+          .to.emit(contract, "GroupRemoved")
+          .withArgs(groupName1);
+      
+        const groupList = await contract.listGroups();
+        expect(groupList).to.be.an('array').that.includes(groupName2);
+      });
+  });
+
+  describe("listGroups", function () {
+    it("should return an array of group names", async function () {
+        await contract.addGroup(groupName1);
+        await contract.addGroup(groupName2);
+
+        const groupList = await contract.listGroups();
+        expect(groupList).to.be.an('array').that.includes(groupName1, groupName2);
+    });
+
+    it("should return an empty array if there are no groups", async function () {
+        const groupList = await contract.listGroups();
+        expect(groupList).to.be.an('array').that.is.empty;
     });
   });
 
@@ -91,7 +113,6 @@ describe("IngesterRegistry", function () {
 
   describe("registerIngestor", function () {
     it("should register a new ingestor", async function () {
-        console.log("🚀 ~ file: IngestorRegistry.ts:129 ~ user1:", user1)
         const walletAddress = user1.address;
         const nodeIngestor = user2;
         const nodeIngestorAddress = user2.address;
@@ -99,7 +120,7 @@ describe("IngesterRegistry", function () {
         const message = 'hello';
         const nonce = 123;
 
-        let hash = await contract._hash(nodeIngestorAddress, message, nonce);
+        let hash = await contract._hash(walletAddress, message, nonce);
 
         const sig = await nodeIngestor.signMessage(ethers.utils.arrayify(hash));
         const ethHash = await contract.getEthSignedMessageHash(hash);
@@ -122,7 +143,7 @@ describe("IngesterRegistry", function () {
         const incorrectMessage = 'bye';
         const nonce = 123;
 
-        let hash = await contract._hash(nodeIngestorAddress, message, nonce);
+        let hash = await contract._hash(walletAddress, message, nonce);
 
         const sig = await nodeIngestor.signMessage(ethers.utils.arrayify(hash));
         const ethHash = await contract.getEthSignedMessageHash(hash);
@@ -131,6 +152,69 @@ describe("IngesterRegistry", function () {
     });
    
   });
+
+  describe("get_ingester_groups", function () {
+    let walletAddress1: SignerWithAddress;
+    let nodeIngestor1: SignerWithAddress;
+    let walletAddress2: SignerWithAddress;
+    let nodeIngestor2: SignerWithAddress;
+
+    before(async function () {
+        
+        [owner, admin, walletAddress1, nodeIngestor1, walletAddress2, nodeIngestor2] = await ethers.getSigners();
+    
+        const message = 'hello';
+        const nonce = 123;
+        
+        //Verify ingester1
+        let hash = await contract._hash(walletAddress1.address, message, nonce);
+        const sig = await nodeIngestor1.signMessage(ethers.utils.arrayify(hash));
+        const ethHash = await contract.getEthSignedMessageHash(hash);
+        await contract.registerIngestor(nodeIngestor1.address, message, nonce, sig);
+
+        // //Verify ingester2
+        // let hash2 = await contract._hash(walletAddress2.address, message, nonce);
+        // const sig2 = await nodeIngestor2.signMessage(ethers.utils.arrayify(hash2));
+        // const ethHash2 = await contract.getEthSignedMessageHash(sig2);
+        // await contract.registerIngestor(nodeIngestor2.address, message, nonce, sig2);
+
+    
+      });
+
+    it("should assign a group to a registered ingester", async function () {
+      const groupsBefore = await contract.getIngesterGroups(nodeIngestor1.address);
+  
+      const groupsAfter = await contract.getIngesterGroups(nodeIngestor1.address);
+      expect(groupsAfter.length).to.equal(groupsBefore.length + 1);
+    });
+  
+    it("should assign different groups to different ingesters", async function () {
+      const groups1 = await contract.getIngesterGroups(nodeIngestor1.address);
+      const groups2 = await contract.getIngesterGroups(nodeIngestor2.address);
+  
+      expect(groups1.length).to.equal(1);
+      expect(groups2.length).to.equal(1);
+      expect(groups1[0]).to.not.equal(groups2[0]);
+    });
+  
+    // it("should not assign a group to an unregistered ingester", async function () {
+    //   const ingester = user1;
+    //   const ingesterAddress = await ingester.getAddress();
+  
+    //   await expect(contract.getIngesterGroups(ingesterAddress)).to.be.revertedWith("Ingester is not registered");
+    // });
+  
+    it("should not assign a group to an ingester not owned by the caller", async function () {
+      await expect(contract.connect(nodeIngestor1).getIngesterGroups(nodeIngestor2.address)).to.be.revertedWith("Only ingester can perform this action.");
+    });
+  
+    it("should not assign a group to an ingester that already has a group assigned", async function () {
+      await contract.getIngesterGroups(nodeIngestor1.address);
+  
+      await expect(contract.getIngesterGroups(nodeIngestor1.address)).to.be.revertedWith("Ingester already has a group assigned");
+    });
+  });
+
 
     
 });
