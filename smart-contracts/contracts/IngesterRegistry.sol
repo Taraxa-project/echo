@@ -168,7 +168,7 @@ contract IngesterRegistry is Ownable {
             );
     }
 
-    function getIngesterGroups(address ingesterAddress) external returns (string[] memory) {
+    function getIngesterGroups(address ingesterAddress) external {
         require(_ingestors[ingesterAddress].controllerAddress == msg.sender, "Only registered ingester controller can perform this action.");
 
         uint256 numIngesters = _registeredIngestors.length;
@@ -186,7 +186,6 @@ contract IngesterRegistry is Ownable {
         for (uint256 i = 0; i < groupsPerIngester; i++) {
             if (_unassignedGroups.length == 0) {
                 revert('All groups have been assigned.');
-                break;
             }
             string memory group = _unassignedGroups[_unassignedGroups.length -1];
             _unassignedGroups.pop();

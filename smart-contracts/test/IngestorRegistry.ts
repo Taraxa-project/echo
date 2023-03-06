@@ -1,12 +1,8 @@
 import { ethers } from "hardhat";
-import { Signer } from "ethers";
 import { expect } from "chai";
 
 import { IngesterRegistry } from "../typechain-types/contracts/IngesterRegistry";
-// import { ECDSA } from '@openzeppelin/contracts/utils/cryptography';
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import * as abi from 'ethereumjs-abi';
-import * as ethUtil from 'ethereumjs-util';
 
 describe("IngesterRegistry", function () {
   let owner: SignerWithAddress;
@@ -246,4 +242,79 @@ describe("IngesterRegistry", function () {
         }
     });
   });
+
+  describe('Add IPFS Hashes', function () {
+    let ingesterRegistry;
+    let walletAddress1: SignerWithAddress;
+    let nodeIngestor1: SignerWithAddress;
+    let walletAddress2: SignerWithAddress;
+    let nodeIngestor2: SignerWithAddress;
+    let usersHash: string;
+    let chatsHash: string;
+    let messagesHash: string;
+  
+    beforeEach(async function () {
+        
+        [owner, admin, walletAddress1, nodeIngestor1, walletAddress2, nodeIngestor2] = await ethers.getSigners();
+        
+        //Verify ingester1
+        let hash = await contract._hash(walletAddress1.address, message, nonce);
+        const sig = await nodeIngestor1.signMessage(ethers.utils.arrayify(hash));
+        await contract.connect(walletAddress1).registerIngestor(nodeIngestor1.address, message, nonce, sig);
+
+        //Verify ingester2
+        let hash2 = await contract._hash(walletAddress2.address, message, nonce);
+        const sig2 = await nodeIngestor2.signMessage(ethers.utils.arrayify(hash2));
+        await contract.connect(walletAddress2).registerIngestor(nodeIngestor2.address, message, nonce, sig2);
+
+        usersHash = 'QmXx6gTFHa6mudUhKjFkNVak1q8exg68oMsCmzePJX9fKu';
+        chatsHash = 'QmS7V1ASYYkKj7V4d4QF4JZ9XKj5L5PY5pCVS5GPy7fQQn';
+        messagesHash = 'QmQe4R6UjQ6TDMDVbBopabKK46PGjKMYpHJ3qf8WdYY6gC';
+    });
+  
+    it('should revert if called by an unregistered controller', async function () {
+        await expect(
+            contract.connect(admin).addIpfsHash(
+                nodeIngestor1.address,
+                usersHash,
+                chatsHash,
+                messagesHash
+            )
+        ).to.be.revertedWith('Only registered ingester controller can perform this action.');
+    });
+
+    it('should add the IPFS hashes to the registry and emit events', async function () {
+        const txAddIpfsHash = await contract.connect(walletAddress1).addIpfsHash(
+            nodeIngestor1.address,
+            usersHash,
+            chatsHash,
+            messagesHash
+        );
+        
+        const ipfsHashes = await contract.getIpfsHashes(nodeIngestor1.address);
+        //Check storage values through ipfsHash getter
+        expect(ipfsHashes.length).to.equal(3);
+        expect(ipfsHashes[0].ipfsHash).to.equal(usersHash);
+        expect(ipfsHashes[0].typeOfHash).to.equal(0); // TYPE.USERS
+        expect(ipfsHashes[1].ipfsHash).to.equal(chatsHash);
+        expect(ipfsHashes[1].typeOfHash).to.equal(1); // TYPE.CHATS
+        expect(ipfsHashes[2].ipfsHash).to.equal(messagesHash);
+        expect(ipfsHashes[2].typeOfHash).to.equal(2); // TYPE.MESSAGES
+    });
+
+    it('should emit events when add the IPFS hashes to the registry ', async function () {
+        const txAddIpfsHash = await contract.connect(walletAddress1).addIpfsHash(
+            nodeIngestor1.address,
+            usersHash,
+            chatsHash,
+            messagesHash
+        );
+        
+        //Check for emitted events
+        expect(txAddIpfsHash).to.emit(contract, "IpfsHashAdded").withArgs(nodeIngestor1.address, usersHash, 0);
+        expect(txAddIpfsHash).to.emit(contract, "IpfsHashAdded").withArgs(nodeIngestor1.address, chatsHash, 1);
+        expect(txAddIpfsHash).to.emit(contract, "IpfsHashAdded").withArgs(nodeIngestor1.address, messagesHash, 2);
+    });
+  });
+
 });
