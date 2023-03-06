@@ -1,8 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "hardhat/console.sol";
+pragma abicoder v2;
+
 
 contract IngesterRegistry is Ownable {
 
@@ -32,14 +36,18 @@ contract IngesterRegistry is Ownable {
     }
 
     struct Ingester {
-        address ingesterAddress;
+        address controllerAddress;
         bool verified;
         string[] assignedGroups;
     }
 
+
+
     mapping(address => Ingester) public _ingestors;
     mapping(string => bool) public _groups;
     string[] public _groupKeys;
+    string[] public _unassignedGroups;
+    mapping(string => bool) public _unassignedGroupsMap;
     address[] public _registeredIngestors;
 
     //Events
@@ -47,10 +55,10 @@ contract IngesterRegistry is Ownable {
     event GroupAdded(string groupUsername);
     event GroupRemoved(string groupUsername);
     event IngestorRegistered(address indexed walletAddress, address indexed ingestorAddress);
+    event IngestorRegisteredGroups(address indexed ingestorAddress, string[] assignedGroups);
 
 
     //Functions
-    //Admin Flow
     function transferOwnership(address newOwner) public onlyAdmin override {
         super.transferOwnership(newOwner);
     }
@@ -59,26 +67,39 @@ contract IngesterRegistry is Ownable {
         require(!_groups[groupUsername], "Group already exists.");
         _groups[groupUsername] = true;
         _groupKeys.push(groupUsername);
+        _unassignedGroups.push(groupUsername);
+        _unassignedGroupsMap[groupUsername] = true;
         emit GroupAdded(groupUsername);
     }
 
     function removeGroup(string memory groupUsername) public onlyAdmin {
         require(_groups[groupUsername], "Group does not exist.");
+        _removeUnassignedGroup(groupUsername);
+        _unassignedGroupsMap[groupUsername] = true;
         _groups[groupUsername] = false;
         _removeKey(groupUsername);
         emit GroupRemoved(groupUsername);
     }
 
-    function listGroups() public view returns (string[] memory) {
+    function getGroups() public view returns (string[] memory) {
         return _groupKeys;
     }
 
-    function listIngestors() public view returns(address[] memory){
+    function getIngesters() public view returns(address[] memory){
         return _registeredIngestors;
     }
 
     function ingestorCount() public view returns(uint){
         return _registeredIngestors.length;
+    }
+
+    function getUnassignedGroups() public view returns(string[] memory){
+        return _unassignedGroups;
+    }
+
+    function getIngester(address ingesterAddr) public view returns (Ingester memory ingester){
+        ingester = _ingestors[ingesterAddr];
+        return ingester;
     }
 
     function _removeKey(string memory key) private {
@@ -91,24 +112,38 @@ contract IngesterRegistry is Ownable {
         }
     }
 
-    //Ingester Node Registration Flow
+    function _removeUnassignedGroup(string memory group) private {
+        require(_groups[group], "Group does not exist.");
+
+        // Remove the group from the list of unassigned groups
+        for (uint256 i =0; i < _unassignedGroups.length; i++) {
+            if (keccak256(bytes(_unassignedGroups[i])) == keccak256(bytes(group))) {
+                _unassignedGroups[i] = _unassignedGroups[_unassignedGroups.length - 1];
+                _unassignedGroups.pop();
+                break;
+            }
+        }
+    }
+
     function registerIngestor(
-        address ingestorAddress,
+        address ingesterAddress,
         string memory message,
         uint256 nonce,
         bytes memory sig
         ) external {
-        bytes32 messageHash = _hash(ingestorAddress, message, nonce);
+        require(_ingestors[ingesterAddress].controllerAddress != msg.sender, "Ingestor already registered.");
+
+        bytes32 messageHash = _hash(msg.sender, message, nonce);
 
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
 
-        require(ECDSA.recover(ethSignedMessageHash, sig) == ingestorAddress, "Claim: Invalid signature.");
+        require(ECDSA.recover(ethSignedMessageHash, sig) == ingesterAddress);
 
-        Ingester memory ingester = Ingester(ingestorAddress, true, new string[](0));
+        Ingester memory ingester = Ingester(msg.sender, true, new string[](0));
 
-        _ingestors[msg.sender] = ingester;
-        _registeredIngestors.push(ingestorAddress);
-        emit IngestorRegistered(msg.sender, ingestorAddress);
+        _ingestors[ingesterAddress] = ingester;
+        _registeredIngestors.push(ingesterAddress);
+        emit IngestorRegistered(ingesterAddress, msg.sender);
     }
 
     function _hash(address _address, string memory _value, uint256 _nonce) public pure returns (bytes32) {
@@ -117,15 +152,6 @@ contract IngesterRegistry is Ownable {
 
     function recover(bytes32 messageHash, bytes memory sig) public pure returns (address){
         return ECDSA.recover(messageHash, sig);
-    }
-
-    function getMessageHash(
-        address _to,
-        uint _amount,
-        string memory _message,
-        uint _nonce
-    ) public pure returns (bytes32) {
-        return keccak256(abi.encodePacked(_to, _amount, _message, _nonce));
     }
 
     function getEthSignedMessageHash(
@@ -141,78 +167,31 @@ contract IngesterRegistry is Ownable {
             );
     }
 
-    //this version may be more gas efficient by maintaining an upside down mapping _ingestorByGroup
-    // function get_ingester_groups(address ingesterAddress) public view returns (string memory) {
-    //     require(_ingestors[ingesterAddress].verified, "Ingester is not registered");
-    //     require(_ingestors[ingesterAddress].ingesterAddress == msg.sender, "Only ingester can perform this action.");
-        
-    //     uint256 numGroups = _groupKeys.length;
-    //     uint256 numIngestors = ingestorCount();
-    //     //generates a pseudorandom index into the array of groups, based on the current timestamp and the msg.sender address.
-    //     //results in a value between - and numGroups - 1
-    //     uint256 groupIndex = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender))) % numGroups;
-    //     string memory groupKey = _groupKeys[groupIndex];
+    function getIngesterGroups(address ingesterAddress) external returns (string[] memory) {
+        require(_ingestors[ingesterAddress].controllerAddress == msg.sender, "Only registered ingester controller can perform this action.");
 
-    //     for (uint256 i = 0; i < numIngestors; i++) {
-    //         uint256 currentIndex = (groupIndex + i) % numGroups;
-    //         string memory currentGroup = _groupKeys[currentIndex];
-    //         address currentIngestor = _ingestorsByGroup[currentGroup];
-    //         if (currentIngestor == address(0)) {
-    //             // no ingester assigned to this group yet
-    //             _ingestorsByGroup[currentGroup] = ingesterAddress;
-    //             _ingestors[ingesterAddress].assignedGroup = currentGroup;
-    //             return currentGroup;
-    //         } else if (currentIngestor == ingesterAddress) {
-    //             // ingester already assigned to this group
-    //             return currentGroup;
-    //         }
-    //     }
-    //     // should never get here
-    //     revert("Failed to assign group to ingester");
-    // }
-
-    function getIngesterGroups(address ingesterAddress) public view returns (string[] memory) {
-        require(_ingestors[ingesterAddress].verified, "Ingester is not registered");
-        require(_ingestors[ingesterAddress].ingesterAddress == msg.sender, "Only ingester can perform this action.");
-
+        uint256 numIngesters = _registeredIngestors.length;
         uint256 numGroups = _groupKeys.length;
-        string[] memory assignedGroups = new string[](numGroups);
-        uint256 assignedCount = 0;
 
-        for (uint256 i = 0; i < numGroups; i++) {
-            string memory currentGroup = _groupKeys[i];
-            bool groupAssigned = false;
+        // calculate the number of groups per ingester
+        uint256 groupsPerIngester = numGroups / numIngesters;
 
-            // Check whether the current group is already assigned to an ingester
-            for (uint256 j = 0; j < _registeredIngestors.length; j++) {
-                Ingester storage ingester = _ingestors[_registeredIngestors[j]];
-                for (uint256 k = 0; k < ingester.assignedGroups.length; k++) {
-                    if (keccak256(bytes(ingester.assignedGroups[k])) == keccak256(bytes(currentGroup))) {
-                        groupAssigned = true;
-                        break;
-                    }
-                }
-                if (groupAssigned) {
-                    break;
-                }
-            }
-
-            // Assign the current group to the current ingester if it's not already assigned
-            if (!groupAssigned) {
-                assignedGroups[assignedCount] = currentGroup;
-                assignedCount++;
-                if (assignedCount >= numGroups / ingestorCount()) {
-                    break; // Exit the loop if the maximum number of groups per ingester is reached
-                }
-            }
+        // If there are more ingesters than groups, assign each ingester to one group
+        if (groupsPerIngester == 0) {
+            groupsPerIngester = 1;
         }
 
-        // Trim the assignedGroups array to remove any empty elements at the end
-        string[] memory result = new string[](assignedCount);
-        for (uint256 i = 0; i < assignedCount; i++) {
-            result[i] = assignedGroups[i];
+        // assign unassigned groups to the current ingester
+        for (uint256 i = 0; i < groupsPerIngester; i++) {
+            if (_unassignedGroups.length == 0) {
+                revert('All groups have been assigned.');
+                break;
+            }
+            string memory group = _unassignedGroups[_unassignedGroups.length -1];
+            _unassignedGroups.pop();
+            _unassignedGroupsMap[group] = false;
+            _ingestors[ingesterAddress].assignedGroups.push(group);
         }
-
-        return result;  
+        emit IngestorRegisteredGroups(ingesterAddress, _ingestors[ingesterAddress].assignedGroups);
     }
 }
