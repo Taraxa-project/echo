@@ -27,12 +27,11 @@ contract IngesterRegistry is Ownable {
         _;
     }
 
+    enum TYPE{USERS, CHATS, MESSAGES}
 
-    //Change the bytes32 mapping with a ipfsHash structure
-    struct ipfsHash {
-        bytes32 ipfsHash;
-        uint256 timestamp;
-        bool verified;
+    struct IpfsHash {
+        string ipfsHash;
+        TYPE typeOfHash;
     }
 
     struct Ingester {
@@ -41,22 +40,20 @@ contract IngesterRegistry is Ownable {
         string[] assignedGroups;
     }
 
-
-
     mapping(address => Ingester) public _ingestors;
     mapping(string => bool) public _groups;
     string[] public _groupKeys;
     string[] public _unassignedGroups;
     mapping(string => bool) public _unassignedGroupsMap;
     address[] public _registeredIngestors;
+    mapping(address => IpfsHash[]) public _ipfsHashes;
 
     //Events
-    event HashWritten(address indexed ingester, bytes32 indexed hash);
     event GroupAdded(string groupUsername);
     event GroupRemoved(string groupUsername);
     event IngestorRegistered(address indexed walletAddress, address indexed ingestorAddress);
     event IngestorRegisteredGroups(address indexed ingestorAddress, string[] assignedGroups);
-
+    event IpfsHashAdded(address indexed ingestorAddress, string ipfsHash, TYPE typeOfHash);
 
     //Functions
     function transferOwnership(address newOwner) public onlyAdmin override {
@@ -100,6 +97,10 @@ contract IngesterRegistry is Ownable {
     function getIngester(address ingesterAddr) public view returns (Ingester memory ingester){
         ingester = _ingestors[ingesterAddr];
         return ingester;
+    }
+
+    function getIpfsHashes(address ingesterAddress) public view returns(IpfsHash[] memory ipfsHashes) {
+        return _ipfsHashes[ingesterAddress];
     }
 
     function _removeKey(string memory key) private {
@@ -193,5 +194,23 @@ contract IngesterRegistry is Ownable {
             _ingestors[ingesterAddress].assignedGroups.push(group);
         }
         emit IngestorRegisteredGroups(ingesterAddress, _ingestors[ingesterAddress].assignedGroups);
+    }
+
+    function addIpfsHash(address ingesterAddress, string memory usersHash, string memory chatsHash, string memory messagesHash ) external {
+        require(_ingestors[ingesterAddress].controllerAddress == msg.sender, "Only registered ingester controller can perform this action.");
+
+        delete _ipfsHashes[ingesterAddress];
+
+        IpfsHash memory ipfsHashUsers = IpfsHash(usersHash, TYPE.USERS);
+        _ipfsHashes[ingesterAddress].push(ipfsHashUsers);
+        emit IpfsHashAdded(ingesterAddress, usersHash, TYPE.USERS);
+
+        IpfsHash memory ipfsHashChats= IpfsHash(chatsHash, TYPE.CHATS);
+        _ipfsHashes[ingesterAddress].push(ipfsHashChats);
+        emit IpfsHashAdded(ingesterAddress, chatsHash, TYPE.CHATS);
+
+        IpfsHash memory ipfsHashMessages = IpfsHash(messagesHash, TYPE.MESSAGES);
+        _ipfsHashes[ingesterAddress].push(ipfsHashMessages);
+        emit IpfsHashAdded(ingesterAddress, messagesHash, TYPE.MESSAGES);
     }
 }
