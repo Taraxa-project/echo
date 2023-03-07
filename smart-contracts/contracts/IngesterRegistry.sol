@@ -3,27 +3,28 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
 import "hardhat/console.sol";
-pragma abicoder v2;
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 
 
-contract IngesterRegistry is Ownable {
+contract IngesterRegistry is Ownable, AccessControlEnumerable {
 
-    address public admin;
+    bytes32 public constant INGESTER_ROLE = keccak256("INGESTER_ROLE");
+
 
     constructor() {
-        admin = msg.sender;
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+
     }
     
     //modifiers
     modifier onlyAdmin() {
-        require(msg.sender == admin, "Only admin can perform this action.");
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Only admin can perform this action.");
         _;
     }
 
     modifier onlyRegistered() {
-        require(_ingestors[msg.sender].verified, "IngesterRegistry: Ingester is not registered");
+        require(hasRole(INGESTER_ROLE, msg.sender), "Caller is not a registered ingester");
         _;
     }
 
@@ -41,11 +42,12 @@ contract IngesterRegistry is Ownable {
     }
 
     mapping(address => Ingester) public _ingestors;
+    address[] public _registeredIngestors;
+    mapping(address => address) public _registeredControllertoIngester;
     mapping(string => bool) public _groups;
     string[] public _groupKeys;
     string[] public _unassignedGroups;
     mapping(string => bool) public _unassignedGroupsMap;
-    address[] public _registeredIngestors;
     mapping(address => IpfsHash[]) public _ipfsHashes;
 
     //Events
@@ -144,6 +146,10 @@ contract IngesterRegistry is Ownable {
 
         _ingestors[ingesterAddress] = ingester;
         _registeredIngestors.push(ingesterAddress);
+        _registeredControllertoIngester[msg.sender] = ingesterAddress;
+
+        _grantRole(INGESTER_ROLE, msg.sender);
+
         emit IngestorRegistered(ingesterAddress, msg.sender);
     }
 
@@ -168,7 +174,8 @@ contract IngesterRegistry is Ownable {
             );
     }
 
-    function getIngesterGroups(address ingesterAddress) external {
+    function getIngesterGroups() external onlyRegistered {
+        address ingesterAddress = _registeredControllertoIngester[msg.sender];
         require(_ingestors[ingesterAddress].controllerAddress == msg.sender, "Only registered ingester controller can perform this action.");
 
         uint256 numIngesters = _registeredIngestors.length;
@@ -195,7 +202,8 @@ contract IngesterRegistry is Ownable {
         emit IngestorRegisteredGroups(ingesterAddress, _ingestors[ingesterAddress].assignedGroups);
     }
 
-    function addIpfsHash(address ingesterAddress, string memory usersHash, string memory chatsHash, string memory messagesHash ) external {
+    function addIpfsHash(string memory usersHash, string memory chatsHash, string memory messagesHash ) external onlyRegistered {
+        address ingesterAddress = _registeredControllertoIngester[msg.sender];
         require(_ingestors[ingesterAddress].controllerAddress == msg.sender, "Only registered ingester controller can perform this action.");
 
         delete _ipfsHashes[ingesterAddress];

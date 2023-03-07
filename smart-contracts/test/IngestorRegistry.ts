@@ -1,5 +1,6 @@
 import { ethers } from "hardhat";
 import { expect } from "chai";
+import { BigNumber } from "ethers";
 
 import { IngesterRegistry } from "../typechain-types/contracts/IngesterRegistry";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
@@ -111,6 +112,19 @@ describe("IngesterRegistry", function () {
     
         expect(await contract.owner()).to.equal(await owner.getAddress());
     });
+
+    it("should allocate admin role to contract creater", async function () {
+        const DEFAULT_ADMIN_ROLE = await contract.DEFAULT_ADMIN_ROLE();
+
+        const adminCount = await contract.getRoleMemberCount(DEFAULT_ADMIN_ROLE);
+        const adminCountNum =  BigNumber.from(adminCount).toNumber()
+        const adminMember = [];
+        for (let i = 0; i < adminCountNum; ++i) {
+            adminMember.push(await contract.getRoleMember(DEFAULT_ADMIN_ROLE, i));
+        }
+       
+        expect(adminMember[0] == owner.address);
+    });
   });
 
   describe("registerIngestor", function () {
@@ -148,6 +162,30 @@ describe("IngesterRegistry", function () {
 
         expect(contract.connect(nodeIngestor).registerIngestor(nodeIngestorAddress, incorrectMessage, nonce, sig)).to.be.revertedWith("Claim: Invalid signature.");
     });
+
+    it("should create an ingester role when registering", async function () {
+        //Register an ingester
+        const walletController = user1;
+        const walletAddress = user1.address;
+        const nodeIngestor = user2;
+        const nodeIngestorAddress = user2.address;
+
+        let hash = await contract._hash(walletAddress, message, nonce);
+
+        const sig = await nodeIngestor.signMessage(ethers.utils.arrayify(hash));
+
+        await contract.connect(walletController).registerIngestor(nodeIngestorAddress, message, nonce, sig);
+        
+        //Fetch Ingester Role addresses
+        const INGESTER_ROLE = await contract.INGESTER_ROLE();
+        const ingesterCount = await contract.getRoleMemberCount(INGESTER_ROLE);
+        const ingesterCountNum =  BigNumber.from(ingesterCount).toNumber()
+        const memberIngesters = [];
+        for (let i = 0; i < ingesterCountNum; ++i) {
+            memberIngesters.push(await contract.getRoleMember(INGESTER_ROLE, i));
+        }
+        expect(walletAddress == memberIngesters[0]);
+        });
    
   });
 
@@ -188,7 +226,7 @@ describe("IngesterRegistry", function () {
 
     it("should assign a group(s) to a registered ingester and emit an event", async function () {
  
-        expect(await contract.connect(walletAddress1).getIngesterGroups(nodeIngestor1.address)).to.emit(contract, "IngestorRegisteredGroups");
+        expect(await contract.connect(walletAddress1).getIngesterGroups()).to.emit(contract, "IngestorRegisteredGroups");
         let ingesterResponse = await contract.getIngester(nodeIngestor1.address);
         let assignedGroupsIngester = ingesterResponse['assignedGroups'];
 
@@ -197,12 +235,12 @@ describe("IngesterRegistry", function () {
   
     it("should assign different groups to different ingesters", async function () {
         // get groups for ingester1
-        await contract.connect(walletAddress1).getIngesterGroups(nodeIngestor1.address);
+        await contract.connect(walletAddress1).getIngesterGroups();
         let ingesterResponse = await contract.getIngester(nodeIngestor1.address);
         let assignedGroupsIngester1 = ingesterResponse['assignedGroups'];
 
         // get groups for ingester2
-        await contract.connect(walletAddress2).getIngesterGroups(nodeIngestor2.address);
+        await contract.connect(walletAddress2).getIngesterGroups();
         let ingesterResponse2 = await contract.getIngester(nodeIngestor2.address);
         let assignedGroupsIngester2 = ingesterResponse2['assignedGroups'];
         
@@ -214,11 +252,11 @@ describe("IngesterRegistry", function () {
     });
   
     it("should not assign a group to an unregistered ingester", async function () {
-      expect(contract.connect(user1).getIngesterGroups(user2.address)).to.be.revertedWith("Ingester is not registered");
+      expect(contract.connect(user1).getIngesterGroups()).to.be.revertedWith("Ingester is not registered");
     });
   
     it("should not assign a group to an ingester not owned by the caller", async function () {
-      expect(contract.connect(nodeIngestor1).getIngesterGroups(nodeIngestor2.address)).to.be.revertedWith("Only registered ingester controller can perform this action.");
+      expect(contract.connect(nodeIngestor1).getIngesterGroups()).to.be.revertedWith("Only registered ingester controller can perform this action.");
     });
   
     it("should revert if all groups have been assigned", async function () {
@@ -234,10 +272,10 @@ describe("IngesterRegistry", function () {
             
             // Check for when unassignedGroups is empty for revert
             if (unassignedGroups.length == 0) {
-                expect(contract.connect(walletAddress).getIngesterGroups(nodeIngestor.address)).to.be.revertedWith('All groups have been assigned.');
+                expect(contract.connect(walletAddress).getIngesterGroups()).to.be.revertedWith('All groups have been assigned.');
                 break;
             } else {
-                expect(contract.connect(walletAddress).getIngesterGroups(nodeIngestor.address)).to.emit(contract, "IngestorRegisteredGroups");
+                expect(contract.connect(walletAddress).getIngesterGroups()).to.emit(contract, "IngestorRegisteredGroups");
             }
         }
     });
@@ -273,9 +311,9 @@ describe("IngesterRegistry", function () {
     });
   
     it('should revert if called by an unregistered controller', async function () {
-        await expect(
-            contract.connect(admin).addIpfsHash(
-                nodeIngestor1.address,
+        
+        expect(
+            contract.connect(nodeIngestor1).addIpfsHash(
                 usersHash,
                 chatsHash,
                 messagesHash
@@ -285,7 +323,6 @@ describe("IngesterRegistry", function () {
 
     it('should add the IPFS hashes to the registry and emit events', async function () {
         const txAddIpfsHash = await contract.connect(walletAddress1).addIpfsHash(
-            nodeIngestor1.address,
             usersHash,
             chatsHash,
             messagesHash
@@ -304,7 +341,6 @@ describe("IngesterRegistry", function () {
 
     it('should emit events when add the IPFS hashes to the registry ', async function () {
         const txAddIpfsHash = await contract.connect(walletAddress1).addIpfsHash(
-            nodeIngestor1.address,
             usersHash,
             chatsHash,
             messagesHash
