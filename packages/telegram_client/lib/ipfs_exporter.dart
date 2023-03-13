@@ -8,33 +8,21 @@ import 'package:logging/logging.dart';
 import 'package:cron/cron.dart';
 import 'package:path/path.dart' as p;
 
-import 'log.dart';
 import 'db.dart';
 
 class IpfsExporter {
   late final ReceivePort _isolateReceivePort;
   late final Stream<dynamic> _isolateReceivePortBroadcast;
-  late final SendPort isolateSendPort;
+  late SendPort isolateSendPort;
 
   final _logger = Logger('IpfsExporter');
 
-  late final Log _log;
-  late final Db _db;
-
-  String cronFormat;
-  Schedule schedule;
-
-  IpfsExporter({
-    required Level logLevel,
-    required this.cronFormat,
-    required this.schedule,
-  }) {
-    _logger.level = logLevel;
-  }
-
   Future<void> spawn({
-    required Log log,
-    required Db db,
+    required Level logLevel,
+    required SendPort logSendPort,
+    required SendPort dbSendPort,
+    required String cronFormat,
+    required Schedule schedule,
     required String tableDumpPath,
     required String ipfsScheme,
     required String ipfsHost,
@@ -42,11 +30,9 @@ class IpfsExporter {
     String? ipfsUsername,
     String? ipfsPassword,
   }) async {
-    _log = log;
-    _db = db;
-
+    _logger.level = logLevel;
     _logger.onRecord.listen((event) {
-      _log.isolateSendPort.send(event);
+      logSendPort.send(event);
     });
 
     _isolateReceivePort = ReceivePort();
@@ -56,8 +42,8 @@ class IpfsExporter {
       IpfsExporter._entryPoint,
       IpfsExporterIsolatedSpwanMessage(
         parentSendPort: _isolateReceivePort.sendPort,
-        logSendPort: _log.isolateSendPort,
-        dbSendPort: _db.isolateSendPort,
+        logSendPort: logSendPort,
+        dbSendPort: dbSendPort,
         logLevel: _logger.level,
         cronFormat: cronFormat,
         schedule: schedule,
@@ -107,8 +93,7 @@ class IpfsExporter {
       replySendPort: _isolateReceivePort.sendPort,
     ));
     await _isolateReceivePortBroadcast
-        .where((event) => event is IpfsExporterRequestExit)
-        .first;
+        .firstWhere((event) => event is IpfsExporterRequestExit);
     _isolateReceivePort.close();
   }
 }

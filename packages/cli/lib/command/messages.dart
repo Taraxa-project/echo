@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
@@ -14,34 +15,38 @@ class TelegramCommandMessages extends Command {
   final name = 'messages';
   final description = 'Read and save messages from the last two weeks.';
 
+  final Log _log = Log();
+  final Db _db = Db();
+  final IpfsExporter _ipfsExporter = IpfsExporter();
+  final TelegramClient _telegramClient = TelegramClient();
+
+  late final bool _runForever;
+  late final Level _logLevel;
+  late final Level _logLevelLibTdJson;
+  late final StreamSubscription _subSignalHandler;
+
   void run() async {
-    hierarchicalLoggingEnabled = true;
+    _init();
 
-    final runForever = parseBool(globalResults!.command!['run-forever']);
-    final proxyUri = parseProxyUri();
-    final schedule = parseIpfsCronSchedule();
+    try {
+      await _log.spawn(
+        logLevel: _logLevel,
+      );
 
-    final logLevel = getLogLevel();
-    final logLevelLibTdJson = getLogLevelLibtdjson();
-
-    while (true) {
-      final log = Log(logLevel: logLevel);
-      await log.spawn();
-
-      final db = Db(logLevel: logLevel);
-      await db.spawn(
-        log: log,
+      await _db.spawn(
+        logLevel: _logLevel,
+        logSendPort: _log.isolateSendPort,
         dbPath: globalResults!['message-database-path'],
       );
+      await _db.open();
+      await _db.migrate();
 
-      final ipfsExporter = IpfsExporter(
-        logLevel: logLevel,
+      await _ipfsExporter.spawn(
+        logLevel: _logLevel,
         cronFormat: globalResults!.command!['ipfs-cron-schedule'],
-        schedule: schedule,
-      );
-      await ipfsExporter.spawn(
-        log: log,
-        db: db,
+        schedule: parseIpfsCronSchedule(),
+        logSendPort: _log.isolateSendPort,
+        dbSendPort: _db.isolateSendPort,
         tableDumpPath: globalResults!.command!['table-dump-path'],
         ipfsScheme: globalResults!.command!['ipfs-scheme'],
         ipfsHost: globalResults!.command!['ipfs-host'],
@@ -50,76 +55,75 @@ class TelegramCommandMessages extends Command {
         ipfsPassword: globalResults!.command?['ipfs-password'],
       );
 
-      TelegramClient? telegramClient;
+      await _telegramClient.spawn(
+        logLevel: _logLevel,
+        logLevelLibTdJson: _logLevelLibTdJson,
+        proxyUri: parseProxyUri(),
+        logSendPort: _log.isolateSendPort,
+        dbSendPort: _db.isolateSendPort,
+        libtdjsonlcPath: globalResults!['libtdjson-path'],
+        tdReceiveWaitTimeout: 0.005,
+        tdReceiveFrequency: const Duration(milliseconds: 10),
+      );
 
-      var sub = ProcessSignal.sigint.watch().listen((signal) async {
-        if ((signal == ProcessSignal.sigint) |
-            (signal == ProcessSignal.sigkill)) {
-          print("sigint signal has been given: ${signal}");
-          await telegramClient?.exit();
-          await ipfsExporter.exit();
-          await db.exit();
-          await log.exit();
-          _exit();
+      await _telegramClient.login(
+        apiId: int.parse(globalResults!['api-id']),
+        apiHash: globalResults!['api-hash'],
+        phoneNumber: globalResults!['phone-number'],
+        databasePath: globalResults!['database-path'],
+        readTelegramCode: readTelegramCode,
+        writeQrCodeLink: writeQrCodeLink,
+        readUserFirstName: readUserFirstName,
+        readUserLastName: readUserLastName,
+        readUserPassword: readUserPassword,
+      );
+
+      while (true) {
+        await _telegramClient.readChatsHistory(
+          dateTimeFrom: computeTwoWeeksAgo(),
+          chatsNames: getChatsNames(),
+        );
+
+        if (!_runForever) {
+          break;
         }
-      });
 
-      try {
-        await db.open();
-        await db.migrate();
-
-        telegramClient = TelegramClient(
-          logLevel: logLevel,
-          logLevelLibTdJson: logLevelLibTdJson,
-          proxyUri: proxyUri,
-        );
-        await telegramClient.spawn(
-          log: log,
-          db: db,
-          libtdjsonlcPath: globalResults!['libtdjson-path'],
-          tdReceiveWaitTimeout: 0.005,
-          tdReceiveFrequency: const Duration(milliseconds: 10),
-        );
-        await telegramClient.login(
-          apiId: int.parse(globalResults!['api-id']),
-          apiHash: globalResults!['api-hash'],
-          phoneNumber: globalResults!['phone-number'],
-          databasePath: globalResults!['database-path'],
-          readTelegramCode: readTelegramCode,
-          writeQrCodeLink: writeQrCodeLink,
-          readUserFirstName: readUserFirstName,
-          readUserLastName: readUserLastName,
-          readUserPassword: readUserPassword,
-        );
-        while (true) {
-          await telegramClient.readChatsHistory(
-            dateTimeFrom: computeTwoWeeksAgo(),
-            chatsNames: getChatsNames(),
-          );
-
-          if (!runForever) {
-            break;
-          }
-          print('Sleeping for 5 minutes.');
-          await Future.delayed(const Duration(minutes: 5));
-        }
-      } on Exception catch (exception) {
-        print('${exception}');
-      } finally {
-        await telegramClient?.exit();
-        await ipfsExporter.exit();
-        await db.exit();
-        await log.exit();
-        sub.cancel();
-      }
-
-      if (runForever) {
         print('Sleeping for 5 minutes.');
         await Future.delayed(const Duration(minutes: 5));
-      } else {
-        break;
       }
+    } on Exception catch (exception) {
+      print(exception);
+    } finally {
+      await _exitIsolates();
+      await _subSignalHandler.cancel();
     }
+  }
+
+  void _init() {
+    hierarchicalLoggingEnabled = true;
+
+    _runForever = parseBool(globalResults!.command!['run-forever']);
+    _logLevel = getLogLevel();
+    _logLevelLibTdJson = getLogLevelLibtdjson();
+
+    _initSignalHandler();
+  }
+
+  void _initSignalHandler() {
+    _subSignalHandler = ProcessSignal.sigint.watch().listen((signal) async {
+      if ((signal == ProcessSignal.sigint) |
+          (signal == ProcessSignal.sigkill)) {
+        await _exitIsolates();
+        _exit();
+      }
+    });
+  }
+
+  Future<void> _exitIsolates() async {
+    await _telegramClient.exit();
+    await _ipfsExporter.exit();
+    await _db.exit();
+    await _log.exit();
   }
 
   List<String> getChatsNames() {
