@@ -205,9 +205,9 @@ class TelegramClientIsolated {
   static const int tgTimeoutDelayMilliseconds = 50;
   static const int delayTimeoutSeconds = 15;
 
-  static const int delayUntilNextChatSeconds = 15;
-  static const int delayUntilNextMessageBatchSeconds = 15;
-  static const int delayUntilNextUserSeconds = 1;
+  static const int delayUntilNextChatSeconds = 300;
+  static const int delayUntilNextMessageBatchSeconds = 30;
+  static const int delayUntilNextUserSeconds = 5;
 
   TelegramClientIsolated({
     required this.parentSendPort,
@@ -814,7 +814,7 @@ class TelegramClientIsolated {
       }
 
       _logger.info('[$chatName] reading messages... '
-          'sleeping for $delayUntilNextChatSeconds seconds.');
+          'sleeping for $delayUntilNextMessageBatchSeconds seconds.');
       await Future.delayed(const Duration(
         seconds: delayUntilNextMessageBatchSeconds,
       ));
@@ -1397,7 +1397,7 @@ class TelegramClientIsolated {
         error.message,
         error.code,
       );
-    } else if (error.code == 402) {
+    } else if (error.code == 420) {
       var floodWaitSeconds =
           _parseFloodWaitSeconds(floodWaitMessage: error.message);
       if (floodWaitSeconds == null) {
@@ -1406,6 +1406,8 @@ class TelegramClientIsolated {
       } else {
         throw TgFloodWaiException(floodWaitSeconds);
       }
+    } else if (error.code == 429) {
+      throw TgFloodWaiException(60 * 60);
     } else if (error.code == 404) {
       throw TgNotFoundException(
         error.message,

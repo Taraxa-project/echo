@@ -35,5 +35,5 @@ services:
       - sqlite-data:/var/lib/sqlite:rw
 
 volumes:
-   tdlib-data:
-   sqlite-data:
+  tdlib-data:
+  sqlite-data:
