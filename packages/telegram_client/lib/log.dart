@@ -6,22 +6,22 @@ import 'package:logging/logging.dart';
 class Log {
   late final ReceivePort _isolateReceivePort;
   late final Stream<dynamic> _isolateReceivePortBroadcast;
-  late final SendPort isolateSendPort;
+  late SendPort isolateSendPort;
 
   final _logger = Logger('Log');
 
-  Log({
-    required Level logLevel,
-  }) {
-    _logger.level = logLevel;
-  }
-
-  Future<void> spawn() async {
+  Log() {
     _isolateReceivePort = ReceivePort();
     _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
+  }
+
+  Future<void> spawn({
+    required Level logLevel,
+  }) async {
+    _logger.level = logLevel;
 
     await Isolate.spawn(
-      Log._entryPoint,
+      _entryPoint,
       LgIsolatedSpwanMessage(
         parentSendPort: _isolateReceivePort.sendPort,
         logLevel: _logger.level,
@@ -53,8 +53,7 @@ class Log {
       replySendPort: _isolateReceivePort.sendPort,
     ));
     await _isolateReceivePortBroadcast
-        .where((event) => event is LgMsgResponseExit)
-        .first;
+        .firstWhere((element) => element is LgMsgResponseExit);
     _isolateReceivePort.close();
   }
 }
