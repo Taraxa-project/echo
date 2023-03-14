@@ -6,44 +6,37 @@ import 'package:path/path.dart' as p;
 import 'package:collection/collection.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:logging/logging.dart';
-import 'package:telegram_client/log.dart';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:telegram_client/wrap_id.dart';
 
 class Db {
   late final ReceivePort _isolateReceivePort;
   late final Stream<dynamic> _isolateReceivePortBroadcast;
-  late final SendPort isolateSendPort;
-
-  late final Log _log;
+  late SendPort isolateSendPort;
 
   final _logger = Logger('Db');
 
-  Db({
-    required Level logLevel,
-  }) {
-    _logger.level = logLevel;
+  Db() {
+    _isolateReceivePort = ReceivePort();
+    _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
   }
 
   Future<void> spawn({
-    required Log log,
     required String dbPath,
+    required Level logLevel,
+    required SendPort logSendPort,
   }) async {
-    _log = log;
-
+    _logger.level = logLevel;
     _logger.onRecord.listen((event) {
-      _log.isolateSendPort.send(event);
+      logSendPort.send(event);
     });
-
-    _isolateReceivePort = ReceivePort();
-    _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
 
     _logger.fine('spawning DbIsolated...');
     await Isolate.spawn(
       Db._entryPointDB,
       DbIsolatedSpwanMessage(
         parentSendPort: _isolateReceivePort.sendPort,
-        logSendPort: _log.isolateSendPort,
+        logSendPort: logSendPort,
         dbPath: dbPath,
         logLevel: _logger.level,
       ),
@@ -66,6 +59,15 @@ class Db {
     dbIsolated.init();
   }
 
+  Future<void> exit() async {
+    isolateSendPort.send(DbMsgRequestExit(
+      replySendPort: _isolateReceivePort.sendPort,
+    ));
+    await _isolateReceivePortBroadcast
+        .firstWhere((event) => event is DbMsgResponseExit);
+    _isolateReceivePort.close();
+  }
+
   Future<void> open() async {
     isolateSendPort.send(DbMsgRequestOpen(
       replySendPort: _isolateReceivePort.sendPort,
@@ -80,16 +82,6 @@ class Db {
     } else {
       _logger.info('DB Opened Successfully');
     }
-  }
-
-  Future<void> exit() async {
-    isolateSendPort.send(DbMsgRequestExit(
-      replySendPort: _isolateReceivePort.sendPort,
-    ));
-    await _isolateReceivePortBroadcast
-        .where((event) => event is DbMsgResponseExit)
-        .first;
-    _isolateReceivePort.close();
   }
 
   Future<void> migrate() async {
@@ -334,8 +326,7 @@ class DbIsolated {
   DbMsgResponseAddChats _addChats(List<String> usernames) {
     for (var username in usernames) {
       _logger.fine('adding chat $username...');
-      final stmt = db?.prepare(
-          'INSERT INTO chat (username, created_at, updated_at) VALUES (?, ?, ?)');
+      final stmt = db?.prepare(_sqlInsertChat);
       stmt?.execute([
         username,
         DateTime.now().toUtc().toIso8601String(),
@@ -351,8 +342,7 @@ class DbIsolated {
     required String username,
     required Chat chat,
   }) {
-    final stmt = db?.prepare(
-        'UPDATE chat SET id = ?, title = ?, updated_at = ? WHERE username = ?;');
+    final stmt = db?.prepare(_sqlUpdateChat);
 
     var id = WrapId.unwrapChatId(chat.id);
     _logger.fine('updating chat $username, id $id...');
@@ -374,8 +364,7 @@ class DbIsolated {
     required String username,
     required int memberCount,
   }) {
-    final stmt = db?.prepare(
-        'UPDATE chat SET member_count = ?, updated_at = ? WHERE username = ?;');
+    final stmt = db?.prepare(_sqlUpdateChatMemberCount);
 
     _logger.fine('updating chat $username, members count $memberCount...');
     stmt?.execute([
@@ -393,8 +382,7 @@ class DbIsolated {
     required String username,
     required int memberCount,
   }) {
-    final stmt = db?.prepare(
-        'UPDATE chat SET bot_count = ?, updated_at = ? WHERE username = ?;');
+    final stmt = db?.prepare(_sqlUpdateChatBotCount);
 
     _logger.fine('updating chat $username, bots count $memberCount...');
     stmt?.execute([
@@ -413,8 +401,7 @@ class DbIsolated {
     required String username,
     required int memberCount,
   }) {
-    final stmt = db?.prepare(
-        'UPDATE chat SET member_online_count = ?, updated_at = ? WHERE username = ?;');
+    final stmt = db?.prepare(_sqlUpdateChatMemberOnlineCount);
 
     _logger.fine('updating chat $username, bots count $memberCount...');
     stmt?.execute([
@@ -433,8 +420,7 @@ class DbIsolated {
     required String username,
     required String reason,
   }) {
-    final stmt = db?.prepare(
-        'UPDATE chat SET blacklisted = 1, blacklist_reason = ?, updated_at = ? WHERE username = ?;');
+    final stmt = db?.prepare(_sqlBlacklistChat);
 
     _logger.fine('blacklisting chat $username, reason $reason...');
     stmt?.execute([
@@ -456,10 +442,12 @@ class DbIsolated {
     _logger.fine('reading last message id for $chatId...');
 
     final ResultSet? resultSet = db?.select(
-        'SELECT max(id) id FROM message WHERE chat_id = ? AND date >= ?;', [
-      chatId,
-      dateTimeFrom.toIso8601String(),
-    ]);
+      _sqlSelectMaxMessageId,
+      [
+        chatId,
+        dateTimeFrom.toIso8601String(),
+      ],
+    );
 
     int? id;
     if (resultSet != null && resultSet.isNotEmpty) {
@@ -481,7 +469,7 @@ class DbIsolated {
         added: false,
       );
     }
-    final stmt = db?.prepare(_sqlInsertMessage());
+    final stmt = db?.prepare(_sqlInsertMessage);
 
     var userId = null;
     if (message.sender_id != null &&
@@ -525,10 +513,7 @@ class DbIsolated {
 
   DbMsgResponseAddUser _addUser({required int userId}) {
     _logger.fine('Adding new user  $userId...');
-    final sql = """
-      INSERT INTO user (user_id, created_at, updated_at) VALUES (?, ?, ?);
-      """;
-    final stmt = db?.prepare(sql);
+    final stmt = db?.prepare(_sqlInsertUser);
     stmt?.execute([
       userId,
       DateTime.now().toUtc().toIso8601String(),
@@ -542,10 +527,7 @@ class DbIsolated {
   DbMsgResponseUpdateUser _updateUser(
       {required int userId, required User user}) {
     _logger.fine('Adding new user  $userId...');
-    final sql = """
-      UPDATE user SET first_name = ?, last_name = ?, username = ?, bot = ?, verified = ?, scam = ?, fake = ? WHERE user_id = ?;
-      """;
-    final stmt = db?.prepare(sql);
+    final stmt = db?.prepare(_sqlUpdateUser);
     stmt?.execute([
       user.first_name,
       user.last_name,
@@ -567,7 +549,7 @@ class DbIsolated {
     _logger.fine('reading member online count for $chatName...');
 
     final ResultSet? resultSet = db?.select(
-      _sqlSelectChat(),
+      _sqlSelectChat,
       [chatName],
     );
 
@@ -591,19 +573,19 @@ class DbIsolated {
     PreparedStatement? stmt;
     ResultSet? rs;
 
-    stmt = db?.prepare(_sqlSelectChatsForDump());
+    stmt = db?.prepare(_sqlSelectChatsForDump);
     rs = stmt?.select();
     if (rs != null) {
       _dumpResultSet(rs, dumpPath, 'chat.$fileExtData');
     }
 
-    stmt = db?.prepare(_sqlSelectMessagesForDump());
+    stmt = db?.prepare(_sqlSelectMessagesForDump);
     rs = stmt?.select();
     if (rs != null) {
       _dumpResultSet(rs, dumpPath, 'message.$fileExtData');
     }
 
-    stmt = db?.prepare(_sqlSelectUsersForDump());
+    stmt = db?.prepare(_sqlSelectUsersForDump);
     rs = stmt?.select();
     if (rs != null) {
       _dumpResultSet(rs, dumpPath, 'user.$fileExtData');
@@ -638,60 +620,67 @@ class DbIsolated {
 
   List<String> _sqlInit() {
     return [
-      """
-    CREATE TABLE IF NOT EXISTS chat (
-      username TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
-      id INTEGER,
-      title TEXT,
-      member_count INTEGER, 
-      member_online_count INTEGER,
-      bot_count INTEGER,
-      blacklisted INTEGER DEFAULT 0, /* 0 - false; 1 - true; */
-      blacklist_reason TEXT,
-      created_at TEXT,
-      updated_at TEXT
-    );
-    """,
-      """
-    CREATE TABLE IF NOT EXISTS message (
-      chat_id INTEGER NOT NULL,
-      id INTEGER NOT NULL,
-      date TEXT,
-      user_id INTEGER,
-      text TEXT,
-      member_online_count INTEGER,
-      views INTEGER,
-      replies INTEGER,
-      forwards INTEGER,
-      reply_to_id INTEGER,
-      created_at TEXT,
-      updated_at TEXT
-    );
-    """,
-      """
-    CREATE TABLE IF NOT EXISTS user (
-      id INTEGER NOT NULL PRIMARY KEY,
-      user_id INTEGER UNIQUE NOT NULL,
-      first_name TEXT,
-      last_name TEXT,
-      username TEXT,
-      bot INTEGER,
-      verified INTEGER,
-      scam INTEGER,
-      fake INTEGER,
-      created_at TEXT,
-      updated_at TEXT
-    );
-    """,
-      """
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_message_chat_id_message_id ON
-      message(chat_id, id);
-    """,
+      _sqlCreateChatTable,
+      _sqlCreateTableMessage,
+      _sqlCreateTableUser,
+      _sqlCreateIndexMessageChatIdMessageId,
     ];
   }
 
-  String _sqlInsertMessage() {
-    return '''
+  static const _sqlCreateChatTable = '''
+CREATE TABLE IF NOT EXISTS chat (
+  username TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
+  id INTEGER,
+  title TEXT,
+  member_count INTEGER, 
+  member_online_count INTEGER,
+  bot_count INTEGER,
+  blacklisted INTEGER DEFAULT 0, /* 0 - false; 1 - true; */
+  blacklist_reason TEXT,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+
+  static const _sqlCreateTableMessage = '''
+CREATE TABLE IF NOT EXISTS message (
+  chat_id INTEGER NOT NULL,
+  id INTEGER NOT NULL,
+  date TEXT,
+  user_id INTEGER,
+  text TEXT,
+  member_online_count INTEGER,
+  views INTEGER,
+  replies INTEGER,
+  forwards INTEGER,
+  reply_to_id INTEGER,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+
+  static const _sqlCreateTableUser = '''
+CREATE TABLE IF NOT EXISTS user (
+  id INTEGER NOT NULL PRIMARY KEY,
+  user_id INTEGER UNIQUE NOT NULL,
+  first_name TEXT,
+  last_name TEXT,
+  username TEXT,
+  bot INTEGER,
+  verified INTEGER,
+  scam INTEGER,
+  fake INTEGER,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+
+  static const _sqlCreateIndexMessageChatIdMessageId = '''
+CREATE UNIQUE INDEX IF NOT EXISTS idx_message_chat_id_message_id ON
+  message(chat_id, id);
+''';
+
+  static const _sqlInsertMessage = '''
 INSERT INTO message (
   chat_id, id, date, user_id, text, 
   member_online_count, views, replies, forwards, reply_to_id, 
@@ -702,46 +691,111 @@ VALUES (
   ?, ?, ?, ?, ?,
   ?, ?
 ) ON CONFLICT DO NOTHING;
-    ''';
-  }
+''';
 
-  String _sqlSelectChat() {
-    return '''
+  static const _sqlSelectChat = '''
 SELECT
   *
 FROM
   chat 
 WHERE 
   username = ?;
-    ''';
-  }
+''';
 
-  String _sqlSelectChatsForDump() {
-    return '''
+  static const _sqlSelectChatsForDump = '''
 SELECT
   *
 FROM
   chat;
 ''';
-  }
 
-  String _sqlSelectMessagesForDump() {
-    return '''
+  static const _sqlSelectMessagesForDump = '''
 SELECT
   *
 FROM
   message
 ''';
-  }
 
-  String _sqlSelectUsersForDump() {
-    return '''
+  static const _sqlSelectUsersForDump = '''
 SELECT
   *
 FROM
   user;
 ''';
-  }
+
+  static const _sqlInsertChat = '''
+INSERT INTO
+  chat (username, created_at, updated_at)
+VALUES (?, ?, ?);
+''';
+
+  static const _sqlUpdateChat = '''
+UPDATE 
+  chat
+SET
+  id = ?, title = ?, updated_at = ?
+WHERE
+  username = ?;
+''';
+
+  static const _sqlUpdateChatMemberCount = '''
+UPDATE
+  chat
+SET
+  member_count = ?, updated_at = ?
+WHERE
+  username = ?;
+''';
+
+  static const _sqlUpdateChatBotCount = '''
+UPDATE
+  chat
+SET
+  bot_count = ?, updated_at = ?
+WHERE username = ?;
+''';
+
+  static const _sqlUpdateChatMemberOnlineCount = '''
+UPDATE
+  chat
+SET
+  member_online_count = ?, updated_at = ?
+WHERE username = ?;
+''';
+
+  static const _sqlBlacklistChat = '''
+UPDATE
+  chat
+SET
+  blacklisted = 1, blacklist_reason = ?, updated_at = ?
+WHERE username = ?;
+''';
+
+  static const _sqlSelectMaxMessageId = '''
+SELECT
+  max(id) id
+FROM
+  message
+WHERE
+  chat_id = ?
+  AND date >= ?;
+''';
+
+  static const _sqlInsertUser = '''
+INSERT INTO
+  user (user_id, created_at, updated_at)
+VALUES (?, ?, ?);
+''';
+
+  static const _sqlUpdateUser = '''
+UPDATE
+  user
+SET
+  first_name = ?, last_name = ?, username = ?,
+  bot = ?, verified = ?, scam = ?, fake = ?
+WHERE
+  user_id = ?;
+''';
 
   bool _dbErrorHandler(SqliteException error, String operation) {
     // return true for retry or false for exiting

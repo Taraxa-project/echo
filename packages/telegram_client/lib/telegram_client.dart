@@ -7,41 +7,28 @@ import 'package:uuid/uuid.dart';
 import 'package:telegram_client/wrap_id.dart';
 import 'package:td_json_client/td_json_client.dart';
 
-import 'log.dart';
 import 'db.dart';
 
 class TelegramClient {
   late final ReceivePort _isolateReceivePort;
   late final Stream<dynamic> _isolateReceivePortBroadcast;
-  late final SendPort isolateSendPort;
-
-  late final Log _log;
-  late final Db _db;
+  late SendPort isolateSendPort;
 
   final _logger = Logger('TelegramClient');
-  final Level logLevelLibTdJson;
-  Uri? proxyUri;
-
-  TelegramClient({
-    required Level logLevel,
-    required this.logLevelLibTdJson,
-    this.proxyUri,
-  }) {
-    _logger.level = logLevel;
-  }
 
   Future<void> spawn({
-    required Log log,
-    required Db db,
+    required Level logLevel,
+    required Level logLevelLibTdJson,
+    Uri? proxyUri,
+    required SendPort logSendPort,
+    required SendPort dbSendPort,
     required String libtdjsonlcPath,
     double tdReceiveWaitTimeout = 0.005,
     Duration tdReceiveFrequency = const Duration(milliseconds: 10),
   }) async {
-    _log = log;
-    _db = db;
-
+    _logger.level = logLevel;
     _logger.onRecord.listen((event) {
-      _log.isolateSendPort.send(event);
+      logSendPort.send(event);
     });
 
     _isolateReceivePort = ReceivePort();
@@ -52,8 +39,8 @@ class TelegramClient {
       TelegramClient._entryPoint,
       TgIsolatedSpwanMessage(
         parentSendPort: _isolateReceivePort.sendPort,
-        logSendPort: _log.isolateSendPort,
-        dbSendPort: _db.isolateSendPort,
+        logSendPort: logSendPort,
+        dbSendPort: dbSendPort,
         libtdjsonlcPath: libtdjsonlcPath,
         logLevel: _logger.level,
         logLevelLibtdjson: logLevelLibTdJson,
@@ -92,8 +79,7 @@ class TelegramClient {
       replySendPort: _isolateReceivePort.sendPort,
     ));
     await _isolateReceivePortBroadcast
-        .where((event) => event is TgMsgResponseExit)
-        .first;
+        .firstWhere((event) => event is TgMsgResponseExit);
     _isolateReceivePort.close();
   }
 
