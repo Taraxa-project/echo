@@ -21,6 +21,7 @@ RUN \
 # Copy Dart application and compile as an executable
 WORKDIR /app
 COPY melos.yaml melos.yaml
+COPY pubspec.yaml pubspec.yaml
 COPY ./packages /app/packages
 
 ENV PATH="/root/.pub-cache/bin:${PATH}"
