@@ -3,7 +3,93 @@ import { Contract } from '@ethersproject/contracts';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
-import { group } from 'console';
+
+interface Ingester {
+  ingesterAddress: string;
+  verified: boolean;
+  assignedGroups: number[];
+}
+
+interface Group {
+  isAdded: boolean;
+  ingesterAddresses: string[];
+}
+
+interface Groups {
+  [groupId: number]: Group;
+}
+
+function calcUnassignedGroups(groups: number[], ingesters: Ingester[]): number[] {
+  const assignedGroups = ingesters.reduce((groups, ingester) => groups.concat(ingester.assignedGroups), []);
+  const unassignedGroups = groups.filter(group => !assignedGroups.includes(group));
+  return unassignedGroups;
+}
+
+function distributeGroupsToIngesters(groups: Groups, ingesters: Ingester[], maxIngesterPerGroup: number): [Ingester[], Groups]  {
+  const numIngesters = ingesters.length;
+  const groupIds = Object.keys(groups).map(Number);
+  console.log("🚀 groups size", groupIds.length)
+  console.log('ingesters size', ingesters.length);
+
+  const unassignedGroups = calcUnassignedGroups(groupIds, ingesters);
+  console.log("🚀 ~ file: IngesterRegistry.ts:596 ~ distributeGroupsToIngesters ~ unassignedGroups:", unassignedGroups)
+
+  if (unassignedGroups.length === 0) {
+    return [ingesters,groups ];
+  }
+
+  const targetGroupsPerIngester = Math.ceil((groupIds.length * maxIngesterPerGroup) / numIngesters);
+
+  for (const group of unassignedGroups) {
+        // Find the ingesters that have the fewest assigned groups
+        const sortedIngesters = ingesters.sort((a, b) => a.assignedGroups.length - b.assignedGroups.length);
+        const availableIngesters = sortedIngesters.filter(ingester => ingester.assignedGroups.length <= targetGroupsPerIngester);
+        if (availableIngesters.length === 0) {
+          // If there are no available ingesters, move on to the next group
+          continue;
+        }
+    
+        // Assign the group to an ingester
+        for(const ingester of ingesters) {
+          if (ingester.ingesterAddress == availableIngesters[0].ingesterAddress) {
+            ingester.assignedGroups = [...ingester.assignedGroups, group]
+          }
+        }
+        // Add the ingester to the group's assignment list
+        groups[group].ingesterAddresses = [...groups[group].ingesterAddresses, availableIngesters[0].ingesterAddress];
+  }
+
+  // Assign remaining groups to ingesters in an evenly fashion
+  for (const [groupId, groupDetails] of Object.entries(groups)) {
+    // if group is already at max capacity continue
+    const groupIdNum = parseInt(groupId, 10);
+    if (groups[groupIdNum].ingesterAddresses.length >= maxIngesterPerGroup) {
+      console.log(`this group ${groupId} already has the 3 ingesters assigned to it`);
+      continue;
+    }
+
+    // Find the ingesters that have the fewest assigned groups
+    const sortedIngesters = ingesters.sort((a, b) => a.assignedGroups.length - b.assignedGroups.length);
+    const availableIngesters = sortedIngesters.filter(ingester => !ingester.assignedGroups.includes(groupIdNum) && ingester.assignedGroups.length < targetGroupsPerIngester);
+
+    if (availableIngesters.length === 0) {
+      // If there are no available ingesters, move on to the next group
+      continue;
+    }
+
+    // // Assign the group to an ingester
+    for (const availableIngester of availableIngesters) {
+      // Add the ingester to the group's assignment list
+      if (groups[groupIdNum].ingesterAddresses.length < maxIngesterPerGroup) {
+        groups[groupIdNum].ingesterAddresses.push(availableIngester.ingesterAddress);
+        availableIngester.assignedGroups.push(groupIdNum);
+      }
+    }
+  }
+
+  return [ingesters, groups];
+
+}
 
 describe('IngesterRegistry', function () {
   let contract: Contract;
@@ -368,7 +454,7 @@ describe('IngesterRegistry', function () {
         expect(contract.connect(controller2).getIngesterGroups(ingester4.address, [1,2])).to.revertedWith("Could not assign group as it exceeded the max number of ingester per group: [1,2]");
     });
 
-    it("should distribute the allocation of groups evenly using the distribution algorithm", async function () {
+    it("should distribute the allocation of groups evenly using the distribution algorithm using fake data", async function () {
 
       //Algo for distribution
       // we have 100 groups and 5 ingesters and no allocation
@@ -376,146 +462,57 @@ describe('IngesterRegistry', function () {
       let maxNumberIngesterPerGroup = await contract._maxNumberIngesterPerGroup();
       console.log("🚀 ~ file: IngesterRegistry.ts:372 ~ maxNumberIngesterPerGroup:", maxNumberIngesterPerGroup);
 
-      let groupCount = BigNumber.from(await contract._groupCount()).toNumber();
-      let ingesterCount = BigNumber.from(await contract._ingesterCount()).toNumber();
-      console.log("🚀 ~ file: IngesterRegistry.ts:374 ~ _ingesterCount:", ingesterCount);
-      let groupsPerIngester = groupCount / ingesterCount;
-
-
       let ingester1Data = await contract.getIngester(ingester1.address);
       let ingester2Data = await contract.getIngester(ingester2.address);
       let ingester3Data = await contract.getIngester(ingester3.address);
       let ingester4Data = await contract.getIngester(ingester4.address);
       let ingester5Data = await contract.getIngester(ingester5.address);
 
-      let Ingester1: Ingester = { ingesterAddress: ingester1.address, assignedGroups: ingester1Data['assignedGroups']}
-      let Ingester2: Ingester = { ingesterAddress: ingester2.address, assignedGroups: ingester1Data['assignedGroups']}
-      let Ingester3: Ingester = { ingesterAddress: ingester3.address, assignedGroups: ingester1Data['assignedGroups']}
-      let Ingester4: Ingester = { ingesterAddress: ingester4.address, assignedGroups: ingester1Data['assignedGroups']}
-      let Ingester5: Ingester = { ingesterAddress: ingester5.address, assignedGroups: ingester1Data['assignedGroups']}
+      let Ingester1: Ingester = { ingesterAddress: ingester1.address, verified:true, assignedGroups: ingester1Data['assignedGroups']}
+      let Ingester2: Ingester = { ingesterAddress: ingester2.address, verified:true, assignedGroups: ingester1Data['assignedGroups']}
+      let Ingester3: Ingester = { ingesterAddress: ingester3.address, verified:true, assignedGroups: ingester1Data['assignedGroups']}
+      let Ingester4: Ingester = { ingesterAddress: ingester4.address, verified:true, assignedGroups: ingester1Data['assignedGroups']}
+      let Ingester5: Ingester = { ingesterAddress: ingester5.address, verified:true, assignedGroups: ingester1Data['assignedGroups']}
 
       let ingesters = [Ingester1, Ingester2, Ingester3, Ingester4, Ingester5];
 
-      interface Ingester {
-        ingesterAddress: string;
-        assignedGroups: number[];
-      }
-      
-      interface Group {
-        isAdded: boolean;
-        assignedIngesters: string[];
-      }
-      
-      interface Groups {
-        [groupId: number]: Group;
-      }
-
-      function calcUnassignedGroups(groups: number[], ingesters: Ingester[]): number[] {
-        const assignedGroups = ingesters.reduce((groups, ingester) => groups.concat(ingester.assignedGroups), []);
-        const unassignedGroups = groups.filter(group => !assignedGroups.includes(group));
-        return unassignedGroups;
-      }
-      
       const groupsExample: Groups = {
-        1: { isAdded: true, assignedIngesters: ['0x123'] },
-        2: { isAdded: true, assignedIngesters: ['0x123'] },
-        3: { isAdded: true, assignedIngesters: [] },
-        4: { isAdded: true, assignedIngesters: ['0x456'] },
-        5: { isAdded: true, assignedIngesters: ['0x456'] },
-        6: { isAdded: true, assignedIngesters: [] },
-        7: { isAdded: true, assignedIngesters: ['0x789', '0xabc'] },
-        8: { isAdded: true, assignedIngesters: ['0x789', '0xabc'] },
-        9: { isAdded: true, assignedIngesters: ['0x789', '0xabc'] },
-        10: { isAdded: true, assignedIngesters: [] },
-        11: { isAdded: true, assignedIngesters: [] },
-        12: { isAdded: true, assignedIngesters: [] },
-        13: { isAdded: true, assignedIngesters: ['0xdef'] },
-        14: { isAdded: true, assignedIngesters: ['0xdef'] },
-        15: { isAdded: true, assignedIngesters: ['0xdef'] },
-        16: { isAdded: true, assignedIngesters: [] },
-        17: { isAdded: true, assignedIngesters: [] },
-        18: { isAdded: true, assignedIngesters: [] },
-        19: { isAdded: true, assignedIngesters: [] },
-        20: { isAdded: true, assignedIngesters: [] },
-        21: { isAdded: true, assignedIngesters: [] },
-        22: { isAdded: true, assignedIngesters: [] },
-        23: { isAdded: true, assignedIngesters: [] }
+        1: { isAdded: true, ingesterAddresses: ['0x123'] },
+        2: { isAdded: true, ingesterAddresses: ['0x123'] },
+        3: { isAdded: true, ingesterAddresses: [] },
+        4: { isAdded: true, ingesterAddresses: ['0x456'] },
+        5: { isAdded: true, ingesterAddresses: ['0x456'] },
+        6: { isAdded: true, ingesterAddresses: [] },
+        7: { isAdded: true, ingesterAddresses: ['0x789', '0xabc'] },
+        8: { isAdded: true, ingesterAddresses: ['0x789', '0xabc'] },
+        9: { isAdded: true, ingesterAddresses: ['0x789', '0xabc'] },
+        10: { isAdded: true, ingesterAddresses: [] },
+        11: { isAdded: true, ingesterAddresses: [] },
+        12: { isAdded: true, ingesterAddresses: [] },
+        13: { isAdded: true, ingesterAddresses: ['0xdef'] },
+        14: { isAdded: true, ingesterAddresses: ['0xdef'] },
+        15: { isAdded: true, ingesterAddresses: ['0xdef'] },
+        16: { isAdded: true, ingesterAddresses: [] },
+        17: { isAdded: true, ingesterAddresses: [] },
+        18: { isAdded: true, ingesterAddresses: [] },
+        19: { isAdded: true, ingesterAddresses: [] },
+        20: { isAdded: true, ingesterAddresses: [] },
+        21: { isAdded: true, ingesterAddresses: [] },
+        22: { isAdded: true, ingesterAddresses: [] },
+        23: { isAdded: true, ingesterAddresses: [] }
       }
       
 
       const ingestersExample: Ingester[] = [
-        { ingesterAddress: '0x123', assignedGroups: [1,2] },
-        { ingesterAddress: '0x789', assignedGroups: [7,8,9] },
-        { ingesterAddress: '0xabc', assignedGroups: [7,8,9] },
-        { ingesterAddress: '0x456', assignedGroups: [4,5] },
-        { ingesterAddress: '0xdef', assignedGroups: [13,14,15] },
+        { ingesterAddress: '0x123', verified: true, assignedGroups: [1,2] },
+        { ingesterAddress: '0x789', verified: true, assignedGroups: [7,8,9] },
+        { ingesterAddress: '0xabc', verified: true, assignedGroups: [7,8,9] },
+        { ingesterAddress: '0x456', verified: true, assignedGroups: [4,5] },
+        { ingesterAddress: '0xdef', verified: true, assignedGroups: [13,14,15] },
       ];
-
-      function distributeGroupsToIngesters(groups: Groups, ingesters: Ingester[]): [Ingester[], Groups]  {
-        const numIngesters = ingesters.length;
-        const groupIds = Object.keys(groups).map(Number);
-        console.log("🚀 groups size", groupIds.length)
-        console.log('ingesters size', ingesters.length);
-
-        const unassignedGroups = calcUnassignedGroups(groupIds, ingesters);
-
-        if (unassignedGroups.length === 0) {
-          return [ingesters,groupAssignments ];
-        }
-      
-        const targetGroupsPerIngester = Math.ceil((groupIds.length * maxIngesterPerGroup) / numIngesters);
-        const numExtraGroups = groupIds.length % numIngesters;
-      
-
-        for (const group of unassignedGroups) {
-              // Find the ingesters that have the fewest assigned groups
-              const sortedIngesters = ingesters.sort((a, b) => a.assignedGroups.length - b.assignedGroups.length);
-              const availableIngesters = sortedIngesters.filter(ingester => ingester.assignedGroups.length <= targetGroupsPerIngester);
-              if (availableIngesters.length === 0) {
-                // If there are no available ingesters, move on to the next group
-                continue;
-              }
-          
-              // Assign the group to an ingester
-              availableIngesters[0].assignedGroups.push(group);
-              // Add the ingester to the group's assignment list
-              groups[group].assignedIngesters.push(availableIngesters[0].ingesterAddress);
-        }
-
-        // Assign remaining groups to ingesters in an evenly fashion
-        for (const [groupId, groupDetails] of Object.entries(groups)) {
-          // if group is already at max capacity continue
-          const groupIdNum = parseInt(groupId, 10);
-          if (groups[groupIdNum].assignedIngesters.length >= maxIngesterPerGroup) {
-            console.log(`this group ${groupId} already has the 3 ingesters assigned to it`);
-            continue;
-          }
-
-          // Find the ingesters that have the fewest assigned groups
-          const sortedIngesters = ingesters.sort((a, b) => a.assignedGroups.length - b.assignedGroups.length);
-          const availableIngesters = sortedIngesters.filter(ingester => !ingester.assignedGroups.includes(groupIdNum) && ingester.assignedGroups.length < targetGroupsPerIngester);
-
-          if (availableIngesters.length === 0) {
-            // If there are no available ingesters, move on to the next group
-            continue;
-          }
-      
-          // // Assign the group to an ingester
-          for (const availableIngester of availableIngesters) {
-            // Add the ingester to the group's assignment list
-            if (groups[groupIdNum].assignedIngesters.length < maxIngesterPerGroup) {
-              groups[groupIdNum].assignedIngesters.push(availableIngester.ingesterAddress);
-              availableIngester.assignedGroups.push(groupIdNum);
-            }
-          }
-        }
-      
-        return [ingesters, groups];
-
-      }
       
       // Distribute the groups to the ingesters
-      const [ingesterAssignments, groupAssignments ] = distributeGroupsToIngesters(groupsExample, ingestersExample);
+      const [ingesterAssignments, groupAssignments ] = distributeGroupsToIngesters(groupsExample, ingestersExample, maxIngesterPerGroup);
       console.log('Group assignments:', JSON.stringify(groupAssignments, null, 2));
       console.log('ingesterAssignments assignments:', JSON.stringify(ingesterAssignments, null, 2));
 
@@ -533,9 +530,59 @@ describe('IngesterRegistry', function () {
       }
 
       for (const [groupId, groupDetails] of Object.entries(groupAssignments)) {
-        expect(groupDetails.assignedIngesters.length <= maxIngesterPerGroup)
+        expect(groupDetails.ingesterAddresses.length <= maxIngesterPerGroup)
       }
   });
+
+  it("should distribute the allocation of groups evenly using the distribution algorithm using contract data ( 100 groups, 5 ingesters)", async function () {
+
+    let maxNumberIngesterPerGroup = await contract._maxNumberIngesterPerGroup();
+    console.log("🚀 ~ file: IngesterRegistry.ts:372 ~ maxNumberIngesterPerGroup:", maxNumberIngesterPerGroup);
+
+    let groupCount = BigNumber.from(await contract._groupCount()).toNumber();
+    console.log("🚀 ~ file: IngesterRegistry.ts:553 ~ groupCount:", groupCount)
+    let ingesterCount = BigNumber.from(await contract._ingesterCount()).toNumber();
+    console.log("🚀 ~ file: IngesterRegistry.ts:374 ~ _ingesterCount:", ingesterCount);
+    let groupsPerIngester = groupCount / ingesterCount;
+
+    let groups: Groups = [];
+    for (let i = 0; i < groupCount; i++) {
+      let groupContract: Group = await contract.getGroup(1);
+      groups[i] = {isAdded: groupContract['isAdded'], ingesterAddresses: groupContract['ingesterAddresses']};
+    }
+
+    let ingesterSigners = [ingester1, ingester2, ingester3, ingester4, ingester5];
+    // let ingester: Ingester;
+    let ingesters: Ingester[] = [];
+    for (const ingester of ingesterSigners) {
+      let ingesterData = await contract.getIngester(ingester.address);
+      let Ingester: Ingester = { ingesterAddress: ingester.address, verified: ingesterData['verified'], assignedGroups: ingesterData['assignedGroups']}
+      ingesters.push(Ingester);
+    }
+
+    // Distribute the groups to the ingesters
+    const [ingesterAssignments, groupAssignments ] = distributeGroupsToIngesters(groups, ingesters, maxIngesterPerGroup);
+    console.log('Group assignments:', JSON.stringify(groupAssignments, null, 2));
+    console.log('ingesterAssignments assignments:', JSON.stringify(ingesterAssignments, null, 2));
+
+    //Calculate metrics to check if the results are in line with the constraints
+    const numIngesters = ingesters.length;
+    const groupIds = Object.keys(groups).map(Number);
+    const targetGroupsPerIngester = Math.ceil((groupIds.length * maxIngesterPerGroup) / numIngesters);
+    for (const ingester of ingesterAssignments) {
+      //Check that assignedGroups for ingesters to not excceed the targetGroupsPerIngester per ingester
+      expect(ingester.assignedGroups.length <= (targetGroupsPerIngester)).to.be.true;
+      
+      // Check for duplicates
+      const set = new Set(ingester.assignedGroups);
+      expect(set.size === ingester.assignedGroups.length);
+      
+    }
+    //Check that all groups allocations to not exceed the maxIngesterPerGroup constraint
+    for (const [groupId, groupDetails] of Object.entries(groupAssignments)) {
+      expect(groupDetails.ingesterAddresses.length <= maxIngesterPerGroup)
+    }
+    });
   });
 
   describe('Add IPFS Hashes', function () {

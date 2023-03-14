@@ -9,6 +9,7 @@ contract IngesterRegistration is IIngesterRegistration, IngesterRegistryAccessCo
 
     mapping(address => IIngesterRegistration.Ingester[]) public _ingesters;
     mapping(address => IIngesterRegistration.IngesterToController) public _registeredIngesterToController;
+    uint public _ingesterCount;
 
     // Functions
     function getIngester(address ingesterAddress) public view returns (IIngesterRegistration.Ingester memory) {
@@ -60,6 +61,8 @@ contract IngesterRegistration is IIngesterRegistration, IngesterRegistryAccessCo
 
         _grantRole(INGESTER_ROLE, msg.sender);
 
+        _ingesterCount++;
+
         emit IIngesterRegistration.IngesterRegistered(msg.sender, ingesterAddress);
     }
 
@@ -78,6 +81,8 @@ contract IngesterRegistration is IIngesterRegistration, IngesterRegistryAccessCo
             renounceRole("INGESTER_ROLE", originCaller);
         }
 
+        _ingesterCount--;
+        
         emit IIngesterRegistration.IngesterUnRegistered(originCaller, ingesterAddress);
         return _ingesters[originCaller][ingesterIndex].assignedGroups;
     }

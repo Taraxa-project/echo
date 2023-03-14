@@ -64,7 +64,7 @@ contract IngesterOrchestrator is IngesterRegistryAccessControl, IngesterRegistra
         }
     }
 
-     function removingGroupFromIngesters(uint groupId, address[] memory ingesterAddresses) internal {
+    function removingGroupFromIngesters(uint groupId, address[] memory ingesterAddresses) internal {
         for (uint i = 0; i < ingesterAddresses.length; i++) {
             address controllerAddress = _registeredIngesterToController[ingesterAddresses[i]].controllerAddress;
             uint ingesterIndex = _registeredIngesterToController[ingesterAddresses[i]].ingesterIndex;
