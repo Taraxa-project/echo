@@ -1390,10 +1390,10 @@ class TelegramClientIsolated {
         throw TgException('could not parse flood wait seconds: '
             '${error.message}');
       } else {
-        throw TgFloodWaiException(floodWaitSeconds);
+        throw TgFloodWaiException(floodWaitSeconds * 2);
       }
     } else if (error.code == 429) {
-      throw TgFloodWaiException(60 * 60);
+      throw TgFloodWaiException(60 * 60 * 24);
     } else if (error.code == 404) {
       throw TgNotFoundException(
         error.message,
