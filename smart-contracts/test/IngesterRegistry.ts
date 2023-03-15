@@ -7,7 +7,7 @@ import { BigNumber } from 'ethers';
 interface Ingester {
   ingesterAddress: string;
   verified: boolean;
-  assignedGroups: number[];
+  assignedGroups: string[];
 }
 
 interface Group {
@@ -16,10 +16,10 @@ interface Group {
 }
 
 interface Groups {
-  [groupId: number]: Group;
+  [groupUsername: string]: Group;
 }
 
-function calcUnassignedGroups(groups: number[], ingesters: Ingester[]): number[] {
+function calcUnassignedGroups(groups: string[], ingesters: Ingester[]): string[] {
   const assignedGroups = ingesters.reduce((groups, ingester) => groups.concat(ingester.assignedGroups), []);
   const unassignedGroups = groups.filter(group => !assignedGroups.includes(group));
   return unassignedGroups;
@@ -27,7 +27,7 @@ function calcUnassignedGroups(groups: number[], ingesters: Ingester[]): number[]
 
 function distributeGroupsToIngesters(groups: Groups, ingesters: Ingester[], maxIngesterPerGroup: number): [Ingester[], Groups]  {
   const numIngesters = ingesters.length;
-  const groupIds = Object.keys(groups).map(Number);
+  const groupIds = Object.keys(groups);
   console.log("🚀 groups size", groupIds.length)
   console.log('ingesters size', ingesters.length);
 
@@ -62,15 +62,14 @@ function distributeGroupsToIngesters(groups: Groups, ingesters: Ingester[], maxI
   // Assign remaining groups to ingesters in an evenly fashion
   for (const [groupId, groupDetails] of Object.entries(groups)) {
     // if group is already at max capacity continue
-    const groupIdNum = parseInt(groupId, 10);
-    if (groups[groupIdNum].ingesterAddresses.length >= maxIngesterPerGroup) {
+    if (groups[groupId].ingesterAddresses.length >= maxIngesterPerGroup) {
       console.log(`this group ${groupId} already has the 3 ingesters assigned to it`);
       continue;
     }
 
     // Find the ingesters that have the fewest assigned groups
     const sortedIngesters = ingesters.sort((a, b) => a.assignedGroups.length - b.assignedGroups.length);
-    const availableIngesters = sortedIngesters.filter(ingester => !ingester.assignedGroups.includes(groupIdNum) && ingester.assignedGroups.length < targetGroupsPerIngester);
+    const availableIngesters = sortedIngesters.filter(ingester => !ingester.assignedGroups.includes(groupId) && ingester.assignedGroups.length < targetGroupsPerIngester);
 
     if (availableIngesters.length === 0) {
       // If there are no available ingesters, move on to the next group
@@ -80,9 +79,9 @@ function distributeGroupsToIngesters(groups: Groups, ingesters: Ingester[], maxI
     // // Assign the group to an ingester
     for (const availableIngester of availableIngesters) {
       // Add the ingester to the group's assignment list
-      if (groups[groupIdNum].ingesterAddresses.length < maxIngesterPerGroup) {
-        groups[groupIdNum].ingesterAddresses.push(availableIngester.ingesterAddress);
-        availableIngester.assignedGroups.push(groupIdNum);
+      if (groups[groupId].ingesterAddresses.length < maxIngesterPerGroup) {
+        groups[groupId].ingesterAddresses.push(availableIngester.ingesterAddress);
+        availableIngester.assignedGroups.push(groupId);
       }
     }
   }
@@ -145,7 +144,7 @@ describe('IngesterRegistry', function () {
 
   describe('addGroup', function () {
     it('should allow the admin to add a new group', async function () {
-      const groupId = 1;
+      const groupId = 'group_username1';
       const tx = await contract.addGroup(groupId);
       await tx.wait();
 
@@ -155,7 +154,7 @@ describe('IngesterRegistry', function () {
     });
 
     it('should not allow a non-admin to add a new group', async function () {
-      const groupId = 2;
+      const groupId = 'group_username2';
       expect(contract.connect(ingester1).addGroup(groupId)).to.be.revertedWith('Only admin can perform this action.');
 
       const group = await contract.getGroup(groupId);
@@ -165,7 +164,7 @@ describe('IngesterRegistry', function () {
     });
 
     it('should not allow adding a group that already exists', async function () {
-      const groupId = 1;
+      const groupId = 'group_username1';
       await contract.addGroup(groupId);
       await expect(contract.addGroup(groupId)).to.be.revertedWith('Group already exists.');
 
@@ -179,44 +178,34 @@ describe('IngesterRegistry', function () {
     const numGroups = 10;
     beforeEach(async function () {
         for (let i = 1; i < numGroups; i++) {
-            const group = await contract.getGroup(i);
-            await contract.connect(owner).addGroup(i);
+            await contract.connect(owner).addGroup(`group_username${i}`);
         }
     });
 
     it("should remove an existing group", async function () {
-      await contract.removeGroup(1);
+      await contract.removeGroup(`group_username1`);
 
-      const group = await contract.getGroup(1);
+      const group = await contract.getGroup(`group_username1`);
 
       expect(group.isAdded).to.be.false;
       expect(group.ingesterAddresses.length).to.equal(0);
     });
 
     it("should not allow a group to be removed more than once", async function () {
-      await contract.removeGroup(1);
+      await contract.removeGroup(`group_username1`);
 
-      await expect(contract.removeGroup(1)).to.be.revertedWith(
+      await expect(contract.removeGroup(`group_username1`)).to.be.revertedWith(
         "Group does not exist."
       );
     });
 
     it("should emit a GroupRemoved event", async function () {
-      expect(contract.removeGroup(1)).to.emit(contract, "GroupRemoved").withArgs(1);
+      expect(contract.removeGroup(`group_username1`)).to.emit(contract, "GroupRemoved").withArgs(1);
     });
 
-    it("should return the correct group when querying getGroup", async function () {
-        const group = await contract.getGroup(1);
-  
-        expect(group.isAdded).to.be.true;
-        expect(group.ingesterAddresses.length).to.equal(0);
-      });
   });   
   
   describe("registerIngester", function () {
-
-    
-
     it("should register a new ingester", async function () {
         const controller = ingester2;
 
@@ -340,14 +329,14 @@ describe('IngesterRegistry', function () {
 
   describe("get_ingester_groups", function () {
     const numGroups = 100;
-    let  addedGroups: number[] = [];
+    let  addedGroups: string[] = [];
     const maxIngesterPerGroup = 3;
 
     beforeEach(async function () {
         
         for (let i = 1; i < numGroups; i++) {
-            await contract.connect(owner).addGroup(i);
-            addedGroups.push(i);
+            await contract.connect(owner).addGroup(`group_username${i}`);
+            addedGroups.push(`group_username${i}`);
         }
         //add some Groups to smart contract
 
@@ -391,7 +380,7 @@ describe('IngesterRegistry', function () {
     });
 
     it("should assign a group(s) to a registered ingester and emit an event", async function () {
-        expect(await contract.connect(controller).getIngesterGroups(ingester1.address, [1,2])).to.emit(contract, "IngesterRegisteredGroups").withArgs(ingester1.address, [1,2]);
+        expect(await contract.connect(controller).getIngesterGroups(ingester1.address, [`group_username1`,`group_username2`])).to.emit(contract, "IngesterRegisteredGroups").withArgs(ingester1.address, [1,2]);
         let ingesterResponse = await contract.getIngester(ingester1.address);
         let assignedGroupsIngester = ingesterResponse['assignedGroups'];
 
@@ -400,12 +389,12 @@ describe('IngesterRegistry', function () {
   
     it("should assign different groups to different ingesters when assigning it different groups", async function () {
         // get groups for ingester1
-        await contract.connect(controller).getIngesterGroups(ingester1.address, [1,2]);
+        await contract.connect(controller).getIngesterGroups(ingester1.address, [`group_username1`,`group_username2`]);
         let ingesterResponse = await contract.getIngester(ingester1.address);
         let assignedGroupsIngester1 = ingesterResponse['assignedGroups'];
 
         // get groups for ingester2
-        await contract.connect(controller).getIngesterGroups(ingester2.address, [3,4]);
+        await contract.connect(controller).getIngesterGroups(ingester2.address, [`group_username3`,`group_username4`]);
         let ingesterResponse2 = await contract.getIngester(ingester2.address);
         let assignedGroupsIngester2 = ingesterResponse2['assignedGroups'];
         
@@ -418,47 +407,43 @@ describe('IngesterRegistry', function () {
 
     it("should assign different groups to different ingesters when assigning the same groups", async function () {
         // get groups for ingester1
-        await contract.connect(controller).getIngesterGroups(ingester1.address, [1,2]);
+        await contract.connect(controller).getIngesterGroups(ingester1.address, [`group_username1`,`group_username2`]);
         let ingesterResponse = await contract.getIngester(ingester1.address);
         let assignedGroupsIngester1 = ingesterResponse['assignedGroups'];
 
         // get groups for ingester2
-        await contract.connect(controller).getIngesterGroups(ingester2.address, [1,2]);
+        await contract.connect(controller).getIngesterGroups(ingester2.address, [`group_username1`,`group_username2`]);
         let ingesterResponse2 = await contract.getIngester(ingester2.address);
         let assignedGroupsIngester2 = ingesterResponse2['assignedGroups'];
-        assignedGroupsIngester1 = assignedGroupsIngester1.map((bn) => bn.toNumber());
-        assignedGroupsIngester2 = assignedGroupsIngester2.map((bn) => {return bn.toNumber()})
         //check if there is no duplicates between the two responses
         const uniqueGroups = assignedGroupsIngester1.filter(item => assignedGroupsIngester2.includes(item));
-        expect(assignedGroupsIngester1).include.members([1,2]);
-        expect(assignedGroupsIngester2).include.members([1,2]);
+        expect(assignedGroupsIngester1).include.members([`group_username1`,`group_username2`]);
+        expect(assignedGroupsIngester2).include.members([`group_username1`,`group_username2`]);
     });
 
     it("should not exceed maxGroupPerIngester parameter when assigning the same groups to ingesters", async function () {
         // get groups for ingester1
-        await contract.connect(controller).getIngesterGroups(ingester1.address, [1,2]);
+        await contract.connect(controller).getIngesterGroups(ingester1.address, [`group_username1`,`group_username2`]);
         let ingesterResponse = await contract.getIngester(ingester1.address);
         let assignedGroupsIngester1 = ingesterResponse['assignedGroups'];
 
         // get groups for ingester2
-        await contract.connect(controller).getIngesterGroups(ingester2.address, [1,2]);
+        await contract.connect(controller).getIngesterGroups(ingester2.address, [`group_username1`,`group_username2`]);
         let ingesterResponse2 = await contract.getIngester(ingester2.address);
         let assignedGroupsIngester2 = ingesterResponse2['assignedGroups'];
 
         // get groups for ingester3
-        await contract.connect(controller2).getIngesterGroups(ingester3.address, [1,2]);
+        await contract.connect(controller2).getIngesterGroups(ingester3.address, [`group_username1`,`group_username2`]);
         let ingesterResponse3 = await contract.getIngester(ingester3.address);
         let assignedGroupsIngester3 = ingesterResponse3['assignedGroups'];
 
         // get groups for ingester4 -> this should fail as the max is set to 3 groups per ingester
-        expect(contract.connect(controller2).getIngesterGroups(ingester4.address, [1,2])).to.revertedWith("Could not assign group as it exceeded the max number of ingester per group: [1,2]");
+        expect(contract.connect(controller2).getIngesterGroups(ingester4.address, [`group_username1`,`group_username2`])).to.revertedWith("Could not assign group as it exceeded the max number of ingester per group: [1,2]");
     });
 
     it("should distribute the allocation of groups evenly using the distribution algorithm using fake data", async function () {
 
       //Algo for distribution
-      // we have 100 groups and 5 ingesters and no allocation
-      // Let's first start with querying the amount of groups and the amount of ingesters. Collect their assignedGroups as well
       let maxNumberIngesterPerGroup = await contract._maxNumberIngesterPerGroup();
       console.log("🚀 ~ file: IngesterRegistry.ts:372 ~ maxNumberIngesterPerGroup:", maxNumberIngesterPerGroup);
 
@@ -477,38 +462,39 @@ describe('IngesterRegistry', function () {
       let ingesters = [Ingester1, Ingester2, Ingester3, Ingester4, Ingester5];
 
       const groupsExample: Groups = {
-        1: { isAdded: true, ingesterAddresses: ['0x123'] },
-        2: { isAdded: true, ingesterAddresses: ['0x123'] },
-        3: { isAdded: true, ingesterAddresses: [] },
-        4: { isAdded: true, ingesterAddresses: ['0x456'] },
-        5: { isAdded: true, ingesterAddresses: ['0x456'] },
-        6: { isAdded: true, ingesterAddresses: [] },
-        7: { isAdded: true, ingesterAddresses: ['0x789', '0xabc'] },
-        8: { isAdded: true, ingesterAddresses: ['0x789', '0xabc'] },
-        9: { isAdded: true, ingesterAddresses: ['0x789', '0xabc'] },
-        10: { isAdded: true, ingesterAddresses: [] },
-        11: { isAdded: true, ingesterAddresses: [] },
-        12: { isAdded: true, ingesterAddresses: [] },
-        13: { isAdded: true, ingesterAddresses: ['0xdef'] },
-        14: { isAdded: true, ingesterAddresses: ['0xdef'] },
-        15: { isAdded: true, ingesterAddresses: ['0xdef'] },
-        16: { isAdded: true, ingesterAddresses: [] },
-        17: { isAdded: true, ingesterAddresses: [] },
-        18: { isAdded: true, ingesterAddresses: [] },
-        19: { isAdded: true, ingesterAddresses: [] },
-        20: { isAdded: true, ingesterAddresses: [] },
-        21: { isAdded: true, ingesterAddresses: [] },
-        22: { isAdded: true, ingesterAddresses: [] },
-        23: { isAdded: true, ingesterAddresses: [] }
+        "group_username1": { isAdded: true, ingesterAddresses: ['0x123'] },
+        "group_username2": { isAdded: true, ingesterAddresses: ['0x123'] },
+        "group_username3": { isAdded: true, ingesterAddresses: [] },
+        "group_username4": { isAdded: true, ingesterAddresses: ['0x456'] },
+        "group_username5": { isAdded: true, ingesterAddresses: ['0x456'] },
+        "group_username6": { isAdded: true, ingesterAddresses: [] },
+        "group_username7": { isAdded: true, ingesterAddresses: ['0x789', '0xabc'] },
+        "group_username8": { isAdded: true, ingesterAddresses: ['0x789', '0xabc'] },
+        "group_username9": { isAdded: true, ingesterAddresses: ['0x789', '0xabc'] },
+        "group_username10": { isAdded: true, ingesterAddresses: [] },
+        "group_username11": { isAdded: true, ingesterAddresses: [] },
+        "group_username12": { isAdded: true, ingesterAddresses: [] },
+        "group_username13": { isAdded: true, ingesterAddresses: ['0xdef'] },
+        "group_username14": { isAdded: true, ingesterAddresses: ['0xdef'] },
+        "group_username15": { isAdded: true, ingesterAddresses: ['0xdef'] },
+        "group_username16": { isAdded: true, ingesterAddresses: [] },
+        "group_username17": { isAdded: true, ingesterAddresses: [] },
+        "group_username18": { isAdded: true, ingesterAddresses: [] },
+        "group_username19": { isAdded: true, ingesterAddresses: [] },
+        "group_username20": { isAdded: true, ingesterAddresses: [] },
+        "group_username21": { isAdded: true, ingesterAddresses: [] },
+        "group_username22": { isAdded: true, ingesterAddresses: [] },
+        "group_username23": { isAdded: true, ingesterAddresses: [] }
       }
+      
       
 
       const ingestersExample: Ingester[] = [
-        { ingesterAddress: '0x123', verified: true, assignedGroups: [1,2] },
-        { ingesterAddress: '0x789', verified: true, assignedGroups: [7,8,9] },
-        { ingesterAddress: '0xabc', verified: true, assignedGroups: [7,8,9] },
-        { ingesterAddress: '0x456', verified: true, assignedGroups: [4,5] },
-        { ingesterAddress: '0xdef', verified: true, assignedGroups: [13,14,15] },
+        { ingesterAddress: '0x123', verified: true, assignedGroups: ["group_username1","group_username2"] },
+        { ingesterAddress: '0x789', verified: true, assignedGroups: ["group_username7","group_username8","group_username9"] },
+        { ingesterAddress: '0xabc', verified: true, assignedGroups: ["group_username7","group_username8","group_username9"]},
+        { ingesterAddress: '0x456', verified: true, assignedGroups: ["group_username4","group_username5"] },
+        { ingesterAddress: '0xdef', verified: true, assignedGroups: ["group_username13","group_username14","group_username15"] },
       ];
       
       // Distribute the groups to the ingesters
@@ -518,7 +504,7 @@ describe('IngesterRegistry', function () {
 
       //Calculate metrics to check if the results are in line with the constraints
       const numIngesters = ingesters.length;
-      const groupIds = Object.keys(groupsExample).map(Number);
+      const groupIds = Object.keys(groupsExample);
       const targetGroupsPerIngester = Math.ceil((groupIds.length * maxIngesterPerGroup) / numIngesters);
       for (const ingester of ingesterAssignments) {
         expect(ingester.assignedGroups.length <= (targetGroupsPerIngester)).to.be.true;
@@ -543,16 +529,14 @@ describe('IngesterRegistry', function () {
     console.log("🚀 ~ file: IngesterRegistry.ts:553 ~ groupCount:", groupCount)
     let ingesterCount = BigNumber.from(await contract._ingesterCount()).toNumber();
     console.log("🚀 ~ file: IngesterRegistry.ts:374 ~ _ingesterCount:", ingesterCount);
-    let groupsPerIngester = groupCount / ingesterCount;
 
-    let groups: Groups = [];
+    let groups: Groups = {};
     for (let i = 0; i < groupCount; i++) {
-      let groupContract: Group = await contract.getGroup(1);
+      let groupContract: Group = await contract.getGroup(`group_username${i}`);
       groups[i] = {isAdded: groupContract['isAdded'], ingesterAddresses: groupContract['ingesterAddresses']};
     }
 
     let ingesterSigners = [ingester1, ingester2, ingester3, ingester4, ingester5];
-    // let ingester: Ingester;
     let ingesters: Ingester[] = [];
     for (const ingester of ingesterSigners) {
       let ingesterData = await contract.getIngester(ingester.address);
@@ -567,7 +551,7 @@ describe('IngesterRegistry', function () {
 
     //Calculate metrics to check if the results are in line with the constraints
     const numIngesters = ingesters.length;
-    const groupIds = Object.keys(groups).map(Number);
+    const groupIds = Object.keys(groups);
     const targetGroupsPerIngester = Math.ceil((groupIds.length * maxIngesterPerGroup) / numIngesters);
     for (const ingester of ingesterAssignments) {
       //Check that assignedGroups for ingesters to not excceed the targetGroupsPerIngester per ingester

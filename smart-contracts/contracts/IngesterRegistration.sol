@@ -53,7 +53,7 @@ contract IngesterRegistration is IIngesterRegistration, IngesterRegistryAccessCo
 
         require(ECDSA.recover(ethSignedMessageHash, sig) == ingesterAddress, "Invalid signature.");
 
-        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, new uint[](0));
+        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, new string[](0));
 
         _ingesters[msg.sender].push(ingester);
         _registeredIngesterToController[ingesterAddress].controllerAddress = msg.sender;
@@ -66,7 +66,7 @@ contract IngesterRegistration is IIngesterRegistration, IngesterRegistryAccessCo
         emit IIngesterRegistration.IngesterRegistered(msg.sender, ingesterAddress);
     }
 
-    function unRegisteringIngester(address ingesterAddress, address originCaller) public onlyRegistered returns (uint256[] memory assignedGroups) {
+    function unRegisteringIngester(address ingesterAddress, address originCaller) public onlyRegistered returns (string[] memory assignedGroups) {
         require(_registeredIngesterToController[ingesterAddress].controllerAddress == msg.sender, "Ingestor is not registered with this controller address.");
 
         _registeredIngesterToController[ingesterAddress].controllerAddress = address(0);

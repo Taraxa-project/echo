@@ -6,7 +6,7 @@ interface IIngesterRegistration {
     struct Ingester {
         address ingesterAddress;
         bool verified;
-        uint256[] assignedGroups;
+        string[] assignedGroups;
     }
     struct IngesterToController {
         address controllerAddress;

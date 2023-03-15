@@ -14,31 +14,31 @@ contract IngesterOrchestrator is IngesterRegistryAccessControl, IngesterRegistra
         _maxNumberIngesterPerGroup = maxNumberIngesterPerGroup;
     }
 
-    mapping(uint => IIngesterOrchestrator.GroupToIngesterWithIndex) private _groups;
+    mapping(string => IIngesterOrchestrator.GroupToIngesterWithIndex) private _groups;
     
 
     uint16 public _maxNumberIngesterPerGroup;
     uint public _groupCount;
 
-    function addGroup(uint groupId) public onlyAdmin {
-        require(!_groups[groupId].isAdded, "Group already exists.");
-        IIngesterOrchestrator.GroupToIngesterWithIndex storage _defaultGroupToIngesterWithIndex = _groups[groupId];
+    function addGroup(string memory groupUsername) public onlyAdmin {
+        require(!_groups[groupUsername].isAdded, "Group already exists.");
+        IIngesterOrchestrator.GroupToIngesterWithIndex storage _defaultGroupToIngesterWithIndex = _groups[groupUsername];
         _defaultGroupToIngesterWithIndex.isAdded = true;
         _groupCount++;
-        emit IIngesterOrchestrator.GroupAdded(groupId);
+        emit IIngesterOrchestrator.GroupAdded(groupUsername);
     }
 
-    function removeGroup(uint groupId) public onlyAdmin {
-        require(_groups[groupId].isAdded, "Group does not exist.");
-        address[] memory ingesterAddresses = _groups[groupId].ingesterAddresses;
-        removingGroupFromIngesters(groupId, ingesterAddresses); //gas intensive
-        _groups[groupId].isAdded = false;
+    function removeGroup(string memory groupUsername) public onlyAdmin {
+        require(_groups[groupUsername].isAdded, "Group does not exist.");
+        address[] memory ingesterAddresses = _groups[groupUsername].ingesterAddresses;
+        removingGroupFromIngesters(groupUsername, ingesterAddresses); //gas intensive
+        _groups[groupUsername].isAdded = false;
         _groupCount--;
-        emit IIngesterOrchestrator.GroupRemoved(groupId);
+        emit IIngesterOrchestrator.GroupRemoved(groupUsername);
     }
 
-    function getGroup(uint groupId) public view returns (GroupToIngester memory) {
-        IIngesterOrchestrator.GroupToIngester memory group = IIngesterOrchestrator.GroupToIngester(_groups[groupId].isAdded, _groups[groupId].ingesterAddresses);
+    function getGroup(string memory groupUsername) public view returns (GroupToIngester memory) {
+        IIngesterOrchestrator.GroupToIngester memory group = IIngesterOrchestrator.GroupToIngester(_groups[groupUsername].isAdded, _groups[groupUsername].ingesterAddresses);
         return group;
     }
 
@@ -47,7 +47,7 @@ contract IngesterOrchestrator is IngesterRegistryAccessControl, IngesterRegistra
     }
 
    
-    function removingIngesterFromGroups(uint[] memory groups, address ingesterAddress) public onlyRegistered {
+    function removingIngesterFromGroups(string[] memory groups, address ingesterAddress) public onlyRegistered {
         for (uint i = 0; i < groups.length; i++) {
             // These arrays are capped by the _maxNumberIngesterPerGroup
             for (uint j = 0; j < _groups[groups[i]].ingesterAddresses.length; j++) {
@@ -64,20 +64,20 @@ contract IngesterOrchestrator is IngesterRegistryAccessControl, IngesterRegistra
         }
     }
 
-    function removingGroupFromIngesters(uint groupId, address[] memory ingesterAddresses) internal {
+    function removingGroupFromIngesters(string memory groupUsername, address[] memory ingesterAddresses) internal {
         for (uint i = 0; i < ingesterAddresses.length; i++) {
             address controllerAddress = _registeredIngesterToController[ingesterAddresses[i]].controllerAddress;
             uint ingesterIndex = _registeredIngesterToController[ingesterAddresses[i]].ingesterIndex;
-            uint assignedGroupsIngesterIndex = _groups[groupId].assignedGroupsIngesterIndex[ingesterAddresses[i]];
+            uint assignedGroupsIngesterIndex = _groups[groupUsername].assignedGroupsIngesterIndex[ingesterAddresses[i]];
 
             delete _ingesters[controllerAddress][ingesterIndex].assignedGroups[assignedGroupsIngesterIndex];
-            emit IIngesterOrchestrator.GroupRemovedFromIngester(ingesterAddresses[i], groupId);
+            emit IIngesterOrchestrator.GroupRemovedFromIngester(ingesterAddresses[i], groupUsername);
         }
     }
 
     //TODO: Modify this function to continually adjust the assignedGroups of ingesters
     // Goal of having each group being monitored by 3 different ingester. This would require a much more complex impl
-    function getIngesterGroups(address ingesterAddress, uint[] memory groups) external onlyRegistered {
+    function getIngesterGroups(address ingesterAddress, string[] memory groups) external onlyRegistered {
         require(_registeredIngesterToController[ingesterAddress].controllerAddress == msg.sender, "Only registered ingester controller can perform this action.");
         uint ingesterIndex = _registeredIngesterToController[ingesterAddress].ingesterIndex; // grab the ingesterIndex to avoid iteration
         for (uint256 i = 0; i < groups.length; i++) {
@@ -92,7 +92,6 @@ contract IngesterOrchestrator is IngesterRegistryAccessControl, IngesterRegistra
                 _groups[groups[i]].assignedGroupsIngesterIndex[ingesterAddress] = _currentAssignedGroupeIngesterIndex; // save the assignedGroup index to save iterating later
             } else {
                 revert(string(abi.encodePacked("Could not assign group as it exceeded the max number of ingester per group: ", groups[i])));
-                // revert("Could not assign group as it exceeded the max number of ingester per group: ", groups[i]);
             }
         }
 
@@ -100,7 +99,7 @@ contract IngesterOrchestrator is IngesterRegistryAccessControl, IngesterRegistra
     }
 
     function unRegisterIngester(address ingesterAddress) external onlyRegistered {
-        uint256[] memory assignedGroups = super.unRegisteringIngester(ingesterAddress, msg.sender);
+        string[] memory assignedGroups = super.unRegisteringIngester(ingesterAddress, msg.sender);
         removingIngesterFromGroups(assignedGroups, ingesterAddress);
     }
 
