@@ -195,6 +195,9 @@ class TelegramClientIsolated {
   static const int delayUntilNextMessageBatchSeconds = 30;
   static const int delayUntilNextUserSeconds = 5;
 
+  static const int delayParseErrorSeconds = 60 * 60 * 24;
+  static const int delayFloodWaitMultiplier = 2;
+
   TelegramClientIsolated({
     required this.parentSendPort,
     required this.logSendPort,
@@ -1367,9 +1370,16 @@ class TelegramClientIsolated {
     return response.onlineMemberCount;
   }
 
-  int? _parseFloodWaitSeconds({String? floodWaitMessage}) {
-    return int.tryParse(
-        floodWaitMessage?.replaceFirst('FLOOD_WAIT_', '') ?? '');
+  int? _parseFloodWaitSeconds(String? message) {
+    return _parseSeconds(message, 'FLOOD_WAIT_');
+  }
+
+  int? _parseTooManyRequestsSeconds(String? message) {
+    return _parseSeconds(message, 'Too Many Requests: retry after ');
+  }
+
+  int? _parseSeconds(String? message, String replace) {
+    return int.tryParse(message?.replaceFirst(replace, '') ?? '');
   }
 
   Never _handleTdError(Error error) {
@@ -1384,16 +1394,25 @@ class TelegramClientIsolated {
         error.code,
       );
     } else if (error.code == 420) {
-      var floodWaitSeconds =
-          _parseFloodWaitSeconds(floodWaitMessage: error.message);
+      var floodWaitSeconds = _parseFloodWaitSeconds(error.message);
       if (floodWaitSeconds == null) {
-        throw TgException('could not parse flood wait seconds: '
-            '${error.message}');
+        _logger.warning('could not parse flood wait seconds: '
+            '${error.message}. '
+            'Using default: $delayParseErrorSeconds seconds.');
+        throw TgFloodWaiException(delayParseErrorSeconds);
       } else {
-        throw TgFloodWaiException(floodWaitSeconds * 2);
+        throw TgFloodWaiException(floodWaitSeconds * delayFloodWaitMultiplier);
       }
     } else if (error.code == 429) {
-      throw TgFloodWaiException(60 * 60 * 24);
+      var floodWaitSeconds = _parseTooManyRequestsSeconds(error.message);
+      if (floodWaitSeconds == null) {
+        _logger.warning('could not parse too many requests wait seconds: '
+            '${error.message}. '
+            'Using default: $delayParseErrorSeconds seconds.');
+        throw TgFloodWaiException(delayParseErrorSeconds);
+      } else {
+        throw TgFloodWaiException(floodWaitSeconds * delayFloodWaitMultiplier);
+      }
     } else if (error.code == 404) {
       throw TgNotFoundException(
         error.message,
