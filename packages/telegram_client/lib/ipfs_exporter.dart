@@ -153,6 +153,9 @@ class IpfsExporterIsolated {
   static const String fileExtData = 'json_lines';
   static const String fileExtHash = 'hash';
 
+  static const int ipfsRequestRetryCountMax = 5;
+  static const int ipfsRequestRetryDelaySeconds = 30;
+
   IpfsExporterIsolated({
     required this.parentSendPort,
     required this.logSendPort,
@@ -256,75 +259,125 @@ class IpfsExporterIsolated {
       );
     }
 
-    for (var fileName in ['chat', 'message', 'user']) {
-      var requestIpfsAdd = http.MultipartRequest(
-        'POST',
-        ipfsUri,
-      );
+    for (var dataName in ['chat', 'message', 'user']) {
+      _logger.info('uploading $dataName to IPFS...');
 
-      if (ipfsUsername != null && ipfsPassword != null) {
-        var basicAuth =
-            base64.encode(utf8.encode('$ipfsUsername:$ipfsPassword'));
-        requestIpfsAdd.headers['Authorization'] = 'Basic $basicAuth';
-      }
-
-      var multipartFile = await http.MultipartFile.fromPath(
-        'data',
-        p.join(tableDumpPath, '$fileName.$fileExtData'),
-      );
-      requestIpfsAdd.files.add(multipartFile);
-
-      var responseIpfsAdd = await client.send(requestIpfsAdd);
-      var responseBodyIpfsAdd = await responseIpfsAdd.stream.bytesToString();
-
-      if (responseIpfsAdd.statusCode != 200) {
-        _logger.severe('ipfs add error: '
-            'code=${responseIpfsAdd.statusCode} '
-            'body=${responseBodyIpfsAdd}.');
+      var hash = await _ipfsAdd(client, ipfsUri, dataName);
+      if (hash == null) {
         continue;
       }
+      _logger.info('uploading $dataName to IPFS... done. Hash: $hash.');
 
-      var responseBodyIpfsAddDecoded;
-      try {
-        responseBodyIpfsAddDecoded = jsonDecode(responseBodyIpfsAdd);
-      } on FormatException catch (ex) {
-        _logger.severe(ex);
-        continue;
-      }
-
-      if (responseBodyIpfsAddDecoded is! Map) {
-        _logger.severe('ipfs add error: '
-            'reponse body is not a Map '
-            'body=${responseBodyIpfsAdd}.');
-        continue;
-      }
-
-      if (!responseBodyIpfsAddDecoded.containsKey('Hash')) {
-        _logger.severe('ipfs add error: '
-            'reponse body without the Hash key '
-            'body=${responseBodyIpfsAdd}.');
-        continue;
-      }
-
-      var hash = responseBodyIpfsAddDecoded['Hash'];
-      _logger.info('uploaded $fileName with hash $hash.');
-
-      var fileHash = new File(p.join(tableDumpPath, '$fileName.$fileExtHash'));
-      fileHash.createSync();
-
-      final sink = fileHash.openWrite(mode: FileMode.write);
-      sink.write(hash);
-      sink.write('\n');
-
-      await sink.flush();
-      await sink.close();
-
-      _logger.info('wrote hash to $fileName.$fileExtHash.');
+      _logger.info('writing hash to $dataName.$fileExtHash...');
+      await _writeHash(dataName, hash);
+      _logger.info('wroting hash to $dataName.$fileExtHash... done.');
     }
 
     client.close();
 
     _logger.info('uploading files to ipfs... done.');
+  }
+
+  Future<String?> _ipfsAdd(
+    http.Client httpClient,
+    Uri ipfsUri,
+    String dataName,
+  ) async {
+    var responseBodyIpfsAdd = await _ipfsAddRetry(
+      httpClient,
+      ipfsUri,
+      dataName,
+    );
+    if (responseBodyIpfsAdd == null) {
+      return null;
+    }
+
+    var responseBodyIpfsAddDecoded;
+    try {
+      responseBodyIpfsAddDecoded = jsonDecode(responseBodyIpfsAdd);
+    } on FormatException catch (ex) {
+      _logger.warning(ex);
+      return null;
+    }
+
+    if (responseBodyIpfsAddDecoded is! Map) {
+      _logger.warning('ipfs add error: '
+          'reponse body is not a Map '
+          'body=${responseBodyIpfsAdd}.');
+      return null;
+    }
+
+    if (!responseBodyIpfsAddDecoded.containsKey('Hash')) {
+      _logger.warning('ipfs add error: '
+          'reponse body without the Hash key '
+          'body=${responseBodyIpfsAdd}.');
+      return null;
+    }
+
+    return responseBodyIpfsAddDecoded['Hash'];
+  }
+
+  Future<String?> _ipfsAddRetry(
+    http.Client httpClient,
+    Uri ipfsUri,
+    String dataName,
+  ) async {
+    var requestIpfsAdd = http.MultipartRequest(
+      'POST',
+      ipfsUri,
+    );
+
+    if (ipfsUsername != null && ipfsPassword != null) {
+      var basicAuth = base64.encode(utf8.encode('$ipfsUsername:$ipfsPassword'));
+      requestIpfsAdd.headers['Authorization'] = 'Basic $basicAuth';
+    }
+
+    var multipartFile = await http.MultipartFile.fromPath(
+      'data',
+      p.join(tableDumpPath, '$dataName.$fileExtData'),
+    );
+    requestIpfsAdd.files.add(multipartFile);
+
+    var ipfsRequestRetryCountIndex = 1;
+
+    while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
+      _logger.info('uploading $dataName to IPFS...'
+          ' Retry $ipfsRequestRetryCountIndex/$ipfsRequestRetryCountMax.');
+
+      var responseIpfsAdd = await httpClient.send(requestIpfsAdd);
+      var responseBodyIpfsAdd = await responseIpfsAdd.stream.bytesToString();
+
+      if (responseIpfsAdd.statusCode == 200) {
+        return responseBodyIpfsAdd;
+      }
+
+      _logger.warning('ipfs add error: '
+          'code=${responseIpfsAdd.statusCode} '
+          'body=${responseBodyIpfsAdd}.');
+
+      _logger.info('ipfs add: '
+          'retrying in $ipfsRequestRetryDelaySeconds seconds.');
+      await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+
+      ipfsRequestRetryCountIndex += 1;
+    }
+
+    return null;
+  }
+
+  Future<void> _writeHash(
+    String dataName,
+    String hash,
+  ) async {
+    var fileHash = new File(p.join(tableDumpPath, '$dataName.$fileExtHash'));
+    fileHash.createSync();
+
+    final sink = fileHash.openWrite(mode: FileMode.write);
+    sink.write(hash);
+    sink.write('\n');
+
+    await sink.flush();
+    await sink.close();
   }
 }
 
