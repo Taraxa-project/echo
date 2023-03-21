@@ -36,7 +36,7 @@ class Db extends Isolated {
   }
 
   Future<void> initDispatch() async {
-    receivePortBroadcast.listen((message) {
+    receivePortBroadcast.listen((message) async {
       if (message is IsolateMsgRequestExit) {
         logger.fine('exiting...');
         exit(message.replySendPort);
@@ -134,11 +134,13 @@ class Db extends Isolated {
           "select chat online member count",
         ));
       } else if (message is DbMsgRequestDumpTables) {
-        message.replySendPort?.send(_retryDbOperation(
-          () => _dumpTables(
-            dumpPath: message.dumpPath,
-            fileExtData: message.dumpExt,
-          ),
+        message.replySendPort?.send(await _retryDbOperationAsync(
+          () async {
+            return await _dumpTables(
+              dumpPath: message.dumpPath,
+              fileExtData: message.dumpExt,
+            );
+          },
           DbMsgResponseDumpTables(),
           'dump table locally',
         ));
@@ -160,6 +162,37 @@ class Db extends Isolated {
       exception = null;
       try {
         return dbOperation();
+      } on SqliteException catch (ex) {
+        exception = ex;
+        if (exception.resultCode == 19) {
+          return DbMsgResponseConstraintError(exception: exception);
+        }
+        if (_dbErrorHandler(ex, operationName) == false) {
+          break;
+        }
+      }
+    }
+
+    DbMsgResponse.operationName = operationName;
+    DbMsgResponse.exception = exception;
+
+    return DbMsgResponse;
+  }
+
+  Future<DbMsgResponse> _retryDbOperationAsync(
+    Future<DbMsgResponse> Function() dbOperation,
+    DbMsgResponse DbMsgResponse,
+    String operationName,
+  ) async {
+    var exception;
+
+    var retryCount = 0;
+    while (retryCount < maxTries) {
+      retryCount += 1;
+
+      exception = null;
+      try {
+        return await dbOperation();
       } on SqliteException catch (ex) {
         exception = ex;
         if (exception.resultCode == 19) {
@@ -449,29 +482,29 @@ class Db extends Isolated {
     );
   }
 
-  DbMsgResponseDumpTables _dumpTables({
+  Future<DbMsgResponseDumpTables> _dumpTables({
     required String dumpPath,
     required String fileExtData,
-  }) {
+  }) async {
     PreparedStatement? stmt;
     ResultSet? rs;
 
     stmt = db?.prepare(_sqlSelectChatsForDump);
     rs = stmt?.select();
     if (rs != null) {
-      _dumpResultSet(rs, dumpPath, 'chat.$fileExtData');
+      await _dumpResultSet(rs, dumpPath, 'chat.$fileExtData');
     }
 
     stmt = db?.prepare(_sqlSelectMessagesForDump);
     rs = stmt?.select();
     if (rs != null) {
-      _dumpResultSet(rs, dumpPath, 'message.$fileExtData');
+      await _dumpResultSet(rs, dumpPath, 'message.$fileExtData');
     }
 
     stmt = db?.prepare(_sqlSelectUsersForDump);
     rs = stmt?.select();
     if (rs != null) {
-      _dumpResultSet(rs, dumpPath, 'user.$fileExtData');
+      await _dumpResultSet(rs, dumpPath, 'user.$fileExtData');
     }
 
     stmt?.dispose();
