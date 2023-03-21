@@ -33,6 +33,7 @@ class IpfsExporter extends Isolated {
 
   static const int ipfsRequestRetryCountMax = 5;
   static const int ipfsRequestRetryDelaySeconds = 30;
+  static const int ipfsRequestTimeoutSeconds = 60;
 
   bool _exportInProgress = false;
 
@@ -220,7 +221,7 @@ class IpfsExporter extends Isolated {
       try {
         responseIpfsAdd = await httpClient
             .send(requestIpfsAdd)
-            .timeout(const Duration(seconds: 30));
+            .timeout(const Duration(seconds: ipfsRequestTimeoutSeconds));
       } on Exception catch (ex) {
         logger.warning(ex);
         logger.info('ipfs add: '
