@@ -6,6 +6,8 @@ import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
 import 'package:cron/cron.dart';
 import 'package:echo_cli/callback/cli.dart';
+
+import 'package:telegram_client/isolate.dart';
 import 'package:telegram_client/telegram_client.dart';
 import 'package:telegram_client/log.dart';
 import 'package:telegram_client/db.dart';
@@ -15,10 +17,10 @@ class TelegramCommandMessages extends Command {
   final name = 'messages';
   final description = 'Read and save messages from the last two weeks.';
 
-  final Log _log = Log();
-  final Db _db = Db();
-  final IpfsExporter _ipfsExporter = IpfsExporter();
-  final TelegramClient _telegramClient = TelegramClient();
+  final Isolater _log = Isolater();
+  final Isolater _db = Isolater();
+  final Isolater _ipfsExporter = Isolater();
+  final TelegramClientIsolater _telegramClient = TelegramClientIsolater();
 
   late final bool _runForever;
   late final Level _logLevel;
@@ -29,41 +31,49 @@ class TelegramCommandMessages extends Command {
     _init();
 
     try {
-      await _log.spawn(
-        logLevel: _logLevel,
+      await _log.spawn_(
+        Log(logLevel: _logLevel),
+        debugName: 'LogIsolater',
       );
 
-      await _db.spawn(
-        logLevel: _logLevel,
-        logSendPort: _log.isolateSendPort,
-        dbPath: globalResults!['message-database-path'],
-      );
-      await _db.open();
-      await _db.migrate();
-
-      await _ipfsExporter.spawn(
-        logLevel: _logLevel,
-        cronFormat: globalResults!.command!['ipfs-cron-schedule'],
-        schedule: parseIpfsCronSchedule(),
-        logSendPort: _log.isolateSendPort,
-        dbSendPort: _db.isolateSendPort,
-        tableDumpPath: globalResults!.command!['table-dump-path'],
-        ipfsScheme: globalResults!.command!['ipfs-scheme'],
-        ipfsHost: globalResults!.command!['ipfs-host'],
-        ipfsPort: globalResults!.command!['ipfs-port'],
-        ipfsUsername: globalResults!.command?['ipfs-username'],
-        ipfsPassword: globalResults!.command?['ipfs-password'],
+      await _db.spawn_(
+        Db(
+          logLevel: _logLevel,
+          logSendPort: _log.isolateSendPort,
+          dbPath: globalResults!['message-database-path'],
+        ),
+        debugName: 'DbIsolater',
       );
 
-      await _telegramClient.spawn(
-        logLevel: _logLevel,
-        logLevelLibTdJson: _logLevelLibTdJson,
-        proxyUri: parseProxyUri(),
-        logSendPort: _log.isolateSendPort,
-        dbSendPort: _db.isolateSendPort,
-        libtdjsonlcPath: globalResults!['libtdjson-path'],
-        tdReceiveWaitTimeout: 0.005,
-        tdReceiveFrequency: const Duration(milliseconds: 10),
+      await _ipfsExporter.spawn_(
+        IpfsExporter(
+          logLevel: _logLevel,
+          logSendPort: _log.isolateSendPort,
+          cronFormat: globalResults!.command!['ipfs-cron-schedule'],
+          schedule: parseIpfsCronSchedule(),
+          dbSendPort: _db.isolateSendPort,
+          tableDumpPath: globalResults!.command!['table-dump-path'],
+          ipfsScheme: globalResults!.command!['ipfs-scheme'],
+          ipfsHost: globalResults!.command!['ipfs-host'],
+          ipfsPort: globalResults!.command!['ipfs-port'],
+          ipfsUsername: globalResults!.command?['ipfs-username'],
+          ipfsPassword: globalResults!.command?['ipfs-password'],
+        ),
+        debugName: 'IpfsExporterIsolater',
+      );
+
+      await _telegramClient.spawn_(
+        TelegramClient(
+          logLevel: _logLevel,
+          logLevelLibTdJson: _logLevelLibTdJson,
+          proxyUri: parseProxyUri(),
+          logSendPort: _log.isolateSendPort,
+          dbSendPort: _db.isolateSendPort,
+          libtdjsonlcPath: globalResults!['libtdjson-path'],
+          tdReceiveWaitTimeout: 0.005,
+          tdReceiveFrequency: const Duration(milliseconds: 10),
+        ),
+        debugName: 'TelegramClientIsolater',
       );
 
       await _telegramClient.login(
@@ -120,8 +130,8 @@ class TelegramCommandMessages extends Command {
   }
 
   Future<void> _exitIsolates() async {
-    await _telegramClient.exit();
-    await _ipfsExporter.exit();
+    // await _telegramClient.exit();
+    // await _ipfsExporter.exit();
     await _db.exit();
     await _log.exit();
   }

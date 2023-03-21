@@ -8,135 +8,13 @@ import 'package:logging/logging.dart';
 import 'package:cron/cron.dart';
 import 'package:path/path.dart' as p;
 
+import 'isolate.dart';
 import 'db.dart';
 
-class IpfsExporter {
-  late final ReceivePort _isolateReceivePort;
-  late final Stream<dynamic> _isolateReceivePortBroadcast;
-  late SendPort isolateSendPort;
+class IpfsExporter extends Isolated {
+  SendPort? logSendPort;
 
-  final _logger = Logger('IpfsExporter');
-
-  Future<void> spawn({
-    required Level logLevel,
-    required SendPort logSendPort,
-    required SendPort dbSendPort,
-    required String cronFormat,
-    required Schedule schedule,
-    required String tableDumpPath,
-    required String ipfsScheme,
-    required String ipfsHost,
-    required String ipfsPort,
-    String? ipfsUsername,
-    String? ipfsPassword,
-  }) async {
-    _logger.level = logLevel;
-    _logger.onRecord.listen((event) {
-      logSendPort.send(event);
-    });
-
-    _isolateReceivePort = ReceivePort();
-    _isolateReceivePortBroadcast = _isolateReceivePort.asBroadcastStream();
-
-    await Isolate.spawn(
-      IpfsExporter._entryPoint,
-      IpfsExporterIsolatedSpwanMessage(
-        parentSendPort: _isolateReceivePort.sendPort,
-        logSendPort: logSendPort,
-        dbSendPort: dbSendPort,
-        logLevel: _logger.level,
-        cronFormat: cronFormat,
-        schedule: schedule,
-        tableDumpPath: tableDumpPath,
-        ipfsScheme: ipfsScheme,
-        ipfsHost: ipfsHost,
-        ipfsPort: ipfsPort,
-        ipfsUsername: ipfsUsername,
-        ipfsPassword: ipfsPassword,
-      ),
-      debugName: runtimeType.toString(),
-    );
-    _logger.fine('spawned.');
-
-    isolateSendPort = await _isolateReceivePortBroadcast.first;
-
-    _logger.onRecord.listen((event) {
-      isolateSendPort.send(event);
-    });
-  }
-
-  static void _entryPoint(
-      IpfsExporterIsolatedSpwanMessage initialSpawnMessage) {
-    hierarchicalLoggingEnabled = true;
-
-    final lgIsolated = IpfsExporterIsolated(
-      parentSendPort: initialSpawnMessage.parentSendPort,
-      logSendPort: initialSpawnMessage.logSendPort,
-      dbSendPort: initialSpawnMessage.dbSendPort,
-      logLevel: initialSpawnMessage.logLevel,
-      cronFormat: initialSpawnMessage.cronFormat,
-      schedule: initialSpawnMessage.schedule,
-      tableDumpPath: initialSpawnMessage.tableDumpPath,
-      ipfsScheme: initialSpawnMessage.ipfsScheme,
-      ipfsHost: initialSpawnMessage.ipfsHost,
-      ipfsPort: initialSpawnMessage.ipfsPort,
-      ipfsUsername: initialSpawnMessage.ipfsUsername,
-      ipfsPassword: initialSpawnMessage.ipfsPassword,
-    );
-    lgIsolated.init();
-
-    lgIsolated._logger.fine('spawned.');
-  }
-
-  Future<void> exit() async {
-    isolateSendPort.send(IpfsExporterRequestExit(
-      replySendPort: _isolateReceivePort.sendPort,
-    ));
-    await _isolateReceivePortBroadcast
-        .firstWhere((event) => event is IpfsExporterRequestExit);
-    _isolateReceivePort.close();
-  }
-}
-
-class IpfsExporterIsolatedSpwanMessage {
-  final SendPort parentSendPort;
-  final SendPort logSendPort;
   final SendPort dbSendPort;
-  final Level logLevel;
-  String cronFormat;
-  final Schedule schedule;
-  final String tableDumpPath;
-  final String ipfsScheme;
-  final String ipfsHost;
-  final String ipfsPort;
-  String? ipfsUsername;
-  String? ipfsPassword;
-
-  IpfsExporterIsolatedSpwanMessage({
-    required this.parentSendPort,
-    required this.logSendPort,
-    required this.dbSendPort,
-    required this.logLevel,
-    required this.cronFormat,
-    required this.schedule,
-    required this.tableDumpPath,
-    required this.ipfsScheme,
-    required this.ipfsHost,
-    required this.ipfsPort,
-    this.ipfsUsername,
-    this.ipfsPassword,
-  });
-}
-
-class IpfsExporterIsolated {
-  final _logger = Logger('IpfsExporter');
-
-  final SendPort parentSendPort;
-  final SendPort logSendPort;
-  final SendPort dbSendPort;
-
-  late final ReceivePort receivePort;
-  late final Stream<dynamic> receivePortBroadcast;
 
   String cronFormat;
   Schedule schedule;
@@ -156,9 +34,8 @@ class IpfsExporterIsolated {
   static const int ipfsRequestRetryCountMax = 5;
   static const int ipfsRequestRetryDelaySeconds = 30;
 
-  IpfsExporterIsolated({
-    required this.parentSendPort,
-    required this.logSendPort,
+  IpfsExporter({
+    this.logSendPort,
     required this.dbSendPort,
     required Level logLevel,
     required this.cronFormat,
@@ -170,45 +47,34 @@ class IpfsExporterIsolated {
     this.ipfsUsername,
     this.ipfsPassword,
   }) {
-    _logger.level = logLevel;
-    _logger.onRecord.listen((logRecord) {
-      logSendPort.send(logRecord);
+    logger.onRecord.listen((logRecord) {
+      logSendPort?.send(logRecord);
     });
   }
 
-  void init() {
-    _initPorts();
-    _initDispatch();
+  void init(SendPort parentSendPort) {
+    super.init(parentSendPort);
     _initSchedule();
   }
 
-  void _initPorts() {
-    receivePort = ReceivePort();
-    receivePortBroadcast = receivePort.asBroadcastStream();
-
-    parentSendPort.send(receivePort.sendPort);
-  }
-
-  void _initDispatch() {
+  void initDispatch() {
     receivePortBroadcast.listen((message) {
-      if (message is IpfsExporterRequestExit) {
-        _logger.fine('exiting...');
-        _exit(
-          replySendPort: message.replySendPort,
-        );
+      if (message is IsolateMsgRequestExit) {
+        logger.fine('exiting...');
+        exit(message.replySendPort);
       }
     });
   }
 
   void _initSchedule() {
-    _logger.info('scheduled export to IPFS at: $cronFormat');
+    logger.info('scheduled export to IPFS at: $cronFormat');
     _cron.schedule(schedule, _export);
   }
 
-  Future<void> _exit({SendPort? replySendPort}) async {
+  Future<void> exit(SendPort? replySendPort) async {
     _cron.close();
 
-    replySendPort?.send(IpfsExporterResponseExit());
+    replySendPort?.send(IsolateMsgResponseExit());
 
     await Future.delayed(const Duration(milliseconds: 10));
 
@@ -223,7 +89,7 @@ class IpfsExporterIsolated {
   }
 
   Future<void> _writeFilesLocally() async {
-    _logger.info('writing files locally...');
+    logger.info('writing files locally...');
 
     dbSendPort.send(DbMsgRequestDumpTables(
       replySendPort: receivePort.sendPort,
@@ -235,14 +101,14 @@ class IpfsExporterIsolated {
         .first;
 
     if (response.exception != null) {
-      _logger.severe(response.exception!);
+      logger.severe(response.exception!);
     } else {
-      _logger.info('writing files locally... done.');
+      logger.info('writing files locally... done.');
     }
   }
 
   Future<void> _writeFilesToIpfs() async {
-    _logger.info('uploading files to ipfs...');
+    logger.info('uploading files to ipfs...');
 
     final client = http.Client();
 
@@ -260,22 +126,22 @@ class IpfsExporterIsolated {
     }
 
     for (var dataName in ['chat', 'message', 'user']) {
-      _logger.info('uploading $dataName to IPFS...');
+      logger.info('uploading $dataName to IPFS...');
 
       var hash = await _ipfsAdd(client, ipfsUri, dataName);
       if (hash == null) {
         continue;
       }
-      _logger.info('uploading $dataName to IPFS... done. Hash: $hash.');
+      logger.info('uploading $dataName to IPFS... done. Hash: $hash.');
 
-      _logger.info('writing hash to $dataName.$fileExtHash...');
+      logger.info('writing hash to $dataName.$fileExtHash...');
       await _writeHash(dataName, hash);
-      _logger.info('wroting hash to $dataName.$fileExtHash... done.');
+      logger.info('wroting hash to $dataName.$fileExtHash... done.');
     }
 
     client.close();
 
-    _logger.info('uploading files to ipfs... done.');
+    logger.info('uploading files to ipfs... done.');
   }
 
   Future<String?> _ipfsAdd(
@@ -296,19 +162,19 @@ class IpfsExporterIsolated {
     try {
       responseBodyIpfsAddDecoded = jsonDecode(responseBodyIpfsAdd);
     } on FormatException catch (ex) {
-      _logger.warning(ex);
+      logger.warning(ex);
       return null;
     }
 
     if (responseBodyIpfsAddDecoded is! Map) {
-      _logger.warning('ipfs add error: '
+      logger.warning('ipfs add error: '
           'reponse body is not a Map '
           'body=${responseBodyIpfsAdd}.');
       return null;
     }
 
     if (!responseBodyIpfsAddDecoded.containsKey('Hash')) {
-      _logger.warning('ipfs add error: '
+      logger.warning('ipfs add error: '
           'reponse body without the Hash key '
           'body=${responseBodyIpfsAdd}.');
       return null;
@@ -341,7 +207,7 @@ class IpfsExporterIsolated {
     var ipfsRequestRetryCountIndex = 1;
 
     while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
-      _logger.info('uploading $dataName to IPFS...'
+      logger.info('uploading $dataName to IPFS...'
           ' Retry $ipfsRequestRetryCountIndex/$ipfsRequestRetryCountMax.');
 
       var responseIpfsAdd = await httpClient.send(requestIpfsAdd);
@@ -351,11 +217,11 @@ class IpfsExporterIsolated {
         return responseBodyIpfsAdd;
       }
 
-      _logger.warning('ipfs add error: '
+      logger.warning('ipfs add error: '
           'code=${responseIpfsAdd.statusCode} '
           'body=${responseBodyIpfsAdd}.');
 
-      _logger.info('ipfs add: '
+      logger.info('ipfs add: '
           'retrying in $ipfsRequestRetryDelaySeconds seconds.');
       await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
 
@@ -380,22 +246,3 @@ class IpfsExporterIsolated {
     await sink.close();
   }
 }
-
-abstract class IpfsExporterMsg {}
-
-abstract class IpfsExporterMsgRequest extends IpfsExporterMsg {
-  final SendPort? replySendPort;
-  IpfsExporterMsgRequest({
-    this.replySendPort,
-  });
-}
-
-abstract class IpfsExporterMsgResponse extends IpfsExporterMsg {}
-
-class IpfsExporterRequestExit extends IpfsExporterMsgRequest {
-  IpfsExporterRequestExit({
-    super.replySendPort,
-  });
-}
-
-class IpfsExporterResponseExit extends IpfsExporterMsgResponse {}
