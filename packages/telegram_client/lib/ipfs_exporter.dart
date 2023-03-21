@@ -34,6 +34,8 @@ class IpfsExporter extends Isolated {
   static const int ipfsRequestRetryCountMax = 5;
   static const int ipfsRequestRetryDelaySeconds = 30;
 
+  bool _exportInProgress = false;
+
   IpfsExporter({
     this.logSendPort,
     required this.dbSendPort,
@@ -83,9 +85,12 @@ class IpfsExporter extends Isolated {
   }
 
   Future<void> _export() async {
+    if (_exportInProgress) return;
+
+    _exportInProgress = true;
     await _writeFilesLocally();
-    await Future.delayed(Duration(minutes: 15));
     await _writeFilesToIpfs();
+    _exportInProgress = false;
   }
 
   Future<void> _writeFilesLocally() async {
@@ -188,29 +193,43 @@ class IpfsExporter extends Isolated {
     Uri ipfsUri,
     String dataName,
   ) async {
-    var requestIpfsAdd = http.MultipartRequest(
-      'POST',
-      ipfsUri,
-    );
-
-    if (ipfsUsername != null && ipfsPassword != null) {
-      var basicAuth = base64.encode(utf8.encode('$ipfsUsername:$ipfsPassword'));
-      requestIpfsAdd.headers['Authorization'] = 'Basic $basicAuth';
-    }
-
-    var multipartFile = await http.MultipartFile.fromPath(
-      'data',
-      p.join(tableDumpPath, '$dataName.$fileExtData'),
-    );
-    requestIpfsAdd.files.add(multipartFile);
-
     var ipfsRequestRetryCountIndex = 1;
 
     while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
+      var requestIpfsAdd = http.MultipartRequest(
+        'POST',
+        ipfsUri,
+      );
+
+      if (ipfsUsername != null && ipfsPassword != null) {
+        var basicAuth =
+            base64.encode(utf8.encode('$ipfsUsername:$ipfsPassword'));
+        requestIpfsAdd.headers['Authorization'] = 'Basic $basicAuth';
+      }
+
+      var multipartFile = await http.MultipartFile.fromPath(
+        'data',
+        p.join(tableDumpPath, '$dataName.$fileExtData'),
+      );
+      requestIpfsAdd.files.add(multipartFile);
+
       logger.info('uploading $dataName to IPFS...'
           ' Retry $ipfsRequestRetryCountIndex/$ipfsRequestRetryCountMax.');
 
-      var responseIpfsAdd = await httpClient.send(requestIpfsAdd);
+      var responseIpfsAdd;
+      try {
+        responseIpfsAdd = await httpClient
+            .send(requestIpfsAdd)
+            .timeout(const Duration(seconds: 30));
+      } on Exception catch (ex) {
+        logger.warning(ex);
+        logger.info('ipfs add: '
+            'retrying in $ipfsRequestRetryDelaySeconds seconds.');
+        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+        ipfsRequestRetryCountIndex += 1;
+        continue;
+      }
+
       var responseBodyIpfsAdd = await responseIpfsAdd.stream.bytesToString();
 
       if (responseIpfsAdd.statusCode == 200) {
