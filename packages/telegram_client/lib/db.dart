@@ -1,13 +1,14 @@
 import 'dart:isolate';
 import 'dart:io' as io;
 import 'dart:convert';
-import 'package:path/path.dart' as p;
 
+import 'package:path/path.dart' as p;
 import 'package:collection/collection.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:logging/logging.dart';
 import 'package:td_json_client/td_json_client.dart';
 import 'package:telegram_client/wrap_id.dart';
+import 'package:uuid/uuid.dart';
 
 import 'isolate.dart';
 
@@ -18,6 +19,8 @@ class Db extends Isolated {
   Database? db;
 
   static const maxTries = 3;
+
+  String? appId;
 
   Db({
     Level? super.logLevel,
@@ -143,6 +146,12 @@ class Db extends Isolated {
           },
           DbMsgResponseDumpTables(),
           'dump table locally',
+        ));
+      } else if (message is DbMsgRequestAppId) {
+        message.replySendPort?.send(_retryDbOperation(
+          () => _appId(),
+          DbMsgResponseAppId(),
+          "select chat online member count",
         ));
       }
     });
@@ -486,25 +495,27 @@ class Db extends Isolated {
     required String dumpPath,
     required String fileExtData,
   }) async {
+    _appId();
+
     PreparedStatement? stmt;
     ResultSet? rs;
 
     stmt = db?.prepare(_sqlSelectChatsForDump);
     rs = stmt?.select();
     if (rs != null) {
-      await _dumpResultSet(rs, dumpPath, 'chat.$fileExtData');
+      await _dumpResultSet(rs, dumpPath, _fileName('chat', fileExtData));
     }
 
     stmt = db?.prepare(_sqlSelectMessagesForDump);
     rs = stmt?.select();
     if (rs != null) {
-      await _dumpResultSet(rs, dumpPath, 'message.$fileExtData');
+      await _dumpResultSet(rs, dumpPath, _fileName('message', fileExtData));
     }
 
     stmt = db?.prepare(_sqlSelectUsersForDump);
     rs = stmt?.select();
     if (rs != null) {
-      await _dumpResultSet(rs, dumpPath, 'user.$fileExtData');
+      await _dumpResultSet(rs, dumpPath, _fileName('user', fileExtData));
     }
 
     stmt?.dispose();
@@ -534,13 +545,50 @@ class Db extends Isolated {
     await sink.close();
   }
 
+  DbMsgResponseAppId _appId() {
+    if (appId != null) {
+      return DbMsgResponseAppId(appId: appId);
+    }
+
+    logger.fine('reading app id...');
+
+    final ResultSet? resultSet = db?.select(_sqlSelectApp);
+    if (resultSet != null && resultSet.isNotEmpty) {
+      appId = resultSet.first['id'];
+      logger.fine('reading app id... found $appId.');
+    } else {
+      logger.fine('reading app id... not found. Generating new app id...');
+
+      var newAppId = Uuid().v4();
+
+      final stmt = db?.prepare(_sqlInsertApp);
+      stmt?.execute([
+        newAppId,
+        DateTime.now().toUtc().toIso8601String(),
+        DateTime.now().toUtc().toIso8601String(),
+      ]);
+      logger.fine('New app id $newAppId saved.');
+      stmt?.dispose();
+
+      appId = newAppId;
+    }
+
+    logger.fine('reading app id... done.');
+    return DbMsgResponseAppId(appId: appId);
+  }
+
   List<String> _sqlInit() {
     return [
       _sqlCreateChatTable,
       _sqlCreateTableMessage,
       _sqlCreateTableUser,
       _sqlCreateIndexMessageChatIdMessageId,
+      _sqlCreateAppTable,
     ];
+  }
+
+  String _fileName(String dataName, String fileExtData) {
+    return '$dataName-$appId.$fileExtData';
   }
 
   static const _sqlCreateChatTable = '''
@@ -586,6 +634,14 @@ CREATE TABLE IF NOT EXISTS user (
   verified INTEGER,
   scam INTEGER,
   fake INTEGER,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+
+  static const _sqlCreateAppTable = '''
+CREATE TABLE IF NOT EXISTS app (
+  id TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
   created_at TEXT,
   updated_at TEXT
 );
@@ -711,6 +767,20 @@ SET
   bot = ?, verified = ?, scam = ?, fake = ?
 WHERE
   user_id = ?;
+''';
+
+  static const _sqlSelectApp = '''
+SELECT
+  *
+FROM
+  app
+LIMIT 1;
+''';
+
+  static const _sqlInsertApp = '''
+INSERT INTO
+  app (id, created_at, updated_at)
+VALUES (?, ?, ?);
 ''';
 
   bool _dbErrorHandler(SqliteException error, String operation) {
@@ -1011,4 +1081,13 @@ class DbMsgResponseDumpTables extends DbMsgResponse {
     super.exception,
     super.operationName,
   });
+}
+
+class DbMsgRequestAppId extends DbMsgRequest {
+  DbMsgRequestAppId({super.replySendPort});
+}
+
+class DbMsgResponseAppId extends DbMsgResponse {
+  String? appId;
+  DbMsgResponseAppId({super.exception, super.operationName, this.appId});
 }
