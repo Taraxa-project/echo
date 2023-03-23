@@ -130,8 +130,8 @@ class TelegramCommandMessages extends Command {
   }
 
   Future<void> _exitIsolates() async {
-    // await _telegramClient.exit();
-    // await _ipfsExporter.exit();
+    await _telegramClient.exit();
+    await _ipfsExporter.exit();
     await _db.exit();
     await _log.exit();
   }
