@@ -230,7 +230,7 @@ class TelegramClient extends Isolated {
     _tdJsonClient.exit();
     await _tdStreamController.close();
 
-    replySendPort?.send(IsolateMsgRequestExit());
+    replySendPort?.send(IsolateMsgResponseExit());
     await Future.delayed(const Duration(milliseconds: 100));
 
     logger.fine('closing tg isolate port');

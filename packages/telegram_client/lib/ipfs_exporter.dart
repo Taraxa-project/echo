@@ -75,7 +75,7 @@ class IpfsExporter extends Isolated {
   }
 
   Future<void> exit(SendPort? replySendPort) async {
-    _cron.close();
+    await _cron.close();
 
     replySendPort?.send(IsolateMsgResponseExit());
 
