@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:isolate';
@@ -30,7 +29,7 @@ class IpfsExporter extends Isolated {
   final _cron = Cron();
 
   static const dataNames = ['chat', 'message', 'user'];
-  static const dataNamesTruncate = ['chat'];
+  static const dataNamesUploadFull = ['chat'];
 
   static const ipfsUriPathFileWrite = '/api/v0/files/write';
   static const ipfsUriPathFileStat = '/api/v0/files/stat';
@@ -161,27 +160,41 @@ class IpfsExporter extends Isolated {
     final client = http.Client();
 
     for (var dataName in dataNames) {
+      int offset = 0;
+      bool truncate = true;
+
+      if (!dataNamesUploadFull.contains(dataName)) {
+        truncate = false;
+
+        logger.info('reading stats for $dataName from IPFS...');
+        var stats = await _ipfsFileStatRetry(client, dataName);
+        if (stats != null && stats.containsKey('Size')) {
+          offset = stats['Size'];
+        }
+      }
+
       logger.info('writing $dataName to IPFS...');
 
-      Map<String, dynamic> ipfsQueryParameters = {};
-      if (dataNamesTruncate.contains(dataName)) {
-        ipfsQueryParameters['truncate'] = true;
-      }
-      var _ipfsFileWriteResult = await _ipfsFileWriteRetry(client, dataName);
+      var _ipfsFileWriteResult =
+          await _ipfsFileWriteRetry(client, dataName, offset, truncate);
       if (_ipfsFileWriteResult == null) {
         continue;
+      } else if (_ipfsFileWriteResult == false) {
+        logger.info('writing $dataName to IPFS... done. No new records.');
+      } else {
+        logger.info('writing $dataName to IPFS... done.');
       }
-      logger.info('writing $dataName to IPFS... done.');
 
-      if (!dataNamesTruncate.contains(dataName)) {
+      if (!dataNamesUploadFull.contains(dataName)) {
         await _uploadSuccess(dataName);
       }
 
       logger.info('reading stats for $dataName from IPFS...');
-      var hash = await _ipfsFileStatRetry(client, dataName);
-      if (hash == null) {
-        continue;
-      }
+      var stats = await _ipfsFileStatRetry(client, dataName);
+
+      var hash = stats?['Hash'];
+      if (hash == null) continue;
+
       logger.info('reading stats for $dataName from IPFS... done.'
           ' Hash: $hash.');
 
@@ -196,13 +209,25 @@ class IpfsExporter extends Isolated {
   }
 
   Future<bool?> _ipfsFileWriteRetry(
-      http.Client httpClient, String dataName) async {
+    http.Client httpClient,
+    String dataName, [
+    int offset = 0,
+    bool truncate = true,
+  ]) async {
     var fileName = _fileName(dataName);
 
-    Map<String, dynamic> ipfsQueryParameters = {'arg': fileName};
-    if (dataNamesTruncate.contains(dataName)) {
-      ipfsQueryParameters['truncate'] = true;
+    final file = new File(p.join(tableDumpPath, fileName));
+    if (!file.existsSync()) {
+      return false;
     }
+
+    Map<String, dynamic> ipfsQueryParameters = {
+      'arg': '/echo/$fileName',
+      'create': 'true',
+      'parents': 'true',
+      'truncate': truncate.toString(),
+      'offset': offset.toString(),
+    };
     var ipfsUri = _buildIpfsUri(ipfsUriPathFileWrite, ipfsQueryParameters);
 
     var ipfsRequestRetryCountIndex = 0;
@@ -210,7 +235,7 @@ class IpfsExporter extends Isolated {
       ipfsRequestRetryCountIndex += 1;
 
       var logRetryIndex =
-          '$ipfsRequestRetryCountIndex / $ipfsRequestRetryCountMax';
+          '$ipfsRequestRetryCountIndex/$ipfsRequestRetryCountMax';
 
       var ipfsRequest = http.MultipartRequest('POST', ipfsUri);
       ipfsRequest = _ipfsRequestAddAuth(ipfsRequest);
@@ -257,11 +282,11 @@ class IpfsExporter extends Isolated {
     return null;
   }
 
-  Future<String?> _ipfsFileStatRetry(
+  Future<Map<dynamic, dynamic>?> _ipfsFileStatRetry(
       http.Client httpClient, String dataName) async {
     var fileName = _fileName(dataName);
 
-    Map<String, dynamic> ipfsQueryParameters = {'arg': fileName};
+    Map<String, dynamic> ipfsQueryParameters = {'arg': '/echo/$fileName'};
     var ipfsUri = _buildIpfsUri(ipfsUriPathFileStat, ipfsQueryParameters);
 
     var ipfsRequestRetryCountIndex = 0;
@@ -269,7 +294,7 @@ class IpfsExporter extends Isolated {
       ipfsRequestRetryCountIndex += 1;
 
       var logRetryIndex =
-          '$ipfsRequestRetryCountIndex / $ipfsRequestRetryCountMax';
+          '$ipfsRequestRetryCountIndex/$ipfsRequestRetryCountMax';
 
       var ipfsRequest = http.Request('POST', ipfsUri);
       ipfsRequest = _ipfsRequestAddAuth(ipfsRequest);
@@ -292,17 +317,6 @@ class IpfsExporter extends Isolated {
 
       var ipfsResponseBody = await ipfsResponse.stream.bytesToString();
 
-      if (ipfsResponse.statusCode != 200) {
-        logger.warning('[$logRetryIndex] ipfs stat $dataName...'
-            ' code=${ipfsResponse.statusCode}'
-            ' body=${ipfsResponseBody}.');
-
-        logger.info('[$logRetryIndex] ipfs stat $dataName...'
-            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
-        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-        continue;
-      }
-
       var ipfsResponseBodyDecoded;
       try {
         ipfsResponseBodyDecoded = jsonDecode(ipfsResponseBody);
@@ -315,7 +329,25 @@ class IpfsExporter extends Isolated {
         continue;
       }
 
-      if (ipfsResponseBodyDecoded is! HashMap ||
+      if (ipfsResponse.statusCode == 500 &&
+          ipfsResponseBodyDecoded?['Message'] == 'file does not exist') {
+        logger.info('[$logRetryIndex] ipfs stat $dataName...'
+            ' file not found');
+        return null;
+      }
+
+      if (ipfsResponse.statusCode != 200) {
+        logger.warning('[$logRetryIndex] ipfs stat $dataName...'
+            ' code=${ipfsResponse.statusCode}'
+            ' body=${ipfsResponseBody}.');
+
+        logger.info('[$logRetryIndex] ipfs stat $dataName...'
+            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
+        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+        continue;
+      }
+
+      if (ipfsResponseBodyDecoded is! Map ||
           !ipfsResponseBodyDecoded.containsKey('Hash')) {
         logger.warning('[$logRetryIndex] ipfs stat $dataName...'
             ' invalid response (expected hash)'
@@ -329,7 +361,7 @@ class IpfsExporter extends Isolated {
       }
 
       logger.info('[$logRetryIndex] ipfs stat $dataName... done.');
-      return ipfsResponseBodyDecoded['Hash'];
+      return ipfsResponseBodyDecoded;
     }
 
     return null;

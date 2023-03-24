@@ -521,31 +521,47 @@ class Db extends Isolated {
     ResultSet? rs;
     Row row;
 
+    logger.info('exporting chats...');
     stmt = db?.prepare(_sqlSelectChatsForDump);
     rs = stmt?.select();
-    if (rs != null) {
+    if (rs != null && rs.isNotEmpty) {
       await _dumpResultSet(rs, dumpPath, _fileName('chat', fileExtData));
     }
+    logger.info('exporting chats... done: ${rs?.length ?? 0} records.');
 
+    var lastUploadeMessageId = _lastUploadedId('message');
+    logger.info('exporting messages from $lastUploadeMessageId...');
     stmt = db?.prepare(_sqlSelectMessagesForDump);
-    rs = stmt?.select([_lastUploadedId('message')]);
+    rs = stmt?.select([lastUploadeMessageId]);
     if (rs != null && rs.isNotEmpty) {
-      await _dumpResultSet(rs, dumpPath, _fileName('message', fileExtData));
+      await _dumpResultSet(rs, dumpPath, _fileName('message', fileExtData),
+          lastUploadeMessageId == 0);
 
       row = rs.last;
       stmt = db?.prepare(_sqlUpdateExportLastExportedId);
-      stmt?.execute([row['row_id'], 'message']);
+      stmt?.execute([row['rowid'], 'message']);
+    } else {
+      _deleteExportFile(dumpPath, _fileName('message', fileExtData));
     }
+    logger.info('exporting message from $lastUploadeMessageId... done:'
+        ' ${rs?.length ?? 0} records.');
 
+    var lastUploadeUserId = _lastUploadedId('user');
+    logger.info('exporting users from $lastUploadeUserId...');
     stmt = db?.prepare(_sqlSelectUsersForDump);
-    rs = stmt?.select([_lastUploadedId('user')]);
+    rs = stmt?.select([lastUploadeUserId]);
     if (rs != null && rs.isNotEmpty) {
-      await _dumpResultSet(rs, dumpPath, _fileName('user', fileExtData));
+      await _dumpResultSet(
+          rs, dumpPath, _fileName('user', fileExtData), lastUploadeUserId == 0);
 
       row = rs.last;
       stmt = db?.prepare(_sqlUpdateExportLastExportedId);
-      stmt?.execute([row['row_id'], 'user']);
+      stmt?.execute([row['rowid'], 'user']);
+    } else {
+      _deleteExportFile(dumpPath, _fileName('user', fileExtData));
     }
+    logger.info('exporting users from $lastUploadeUserId... done:'
+        ' ${rs?.length ?? 0} records.');
 
     stmt?.dispose();
 
@@ -554,7 +570,7 @@ class Db extends Isolated {
 
   DbMsgResponseUploadSucces _uploadSuccess(String dataName) {
     var stmt = db?.prepare(_sqlUpdateExportLastUploadedId);
-    stmt?.execute(['dataname']);
+    stmt?.execute([dataName]);
 
     stmt?.dispose();
 
@@ -565,26 +581,25 @@ class Db extends Isolated {
     int id = 0;
 
     Row? row;
-    row = db?.select(_sqlSelectExport, ['message']).firstOrNull;
+    row = db?.select(_sqlSelectExport, [tableName]).firstOrNull;
     if (row != null) {
-      id = int.tryParse(row['last_uploaded_id']) ?? 0;
+      id = row['last_uploaded_id'] ?? 0;
     }
 
     return id;
   }
 
-  Future<void> _dumpResultSet(
-    ResultSet rs,
-    String dumpPath,
-    String fileName,
-  ) async {
+  Future<void> _dumpResultSet(ResultSet rs, String dumpPath, String fileName,
+      [bool addColumnNames = true]) async {
     final file = new io.File(p.join(dumpPath, fileName));
     file.createSync();
 
     final sink = file.openWrite(mode: io.FileMode.write);
 
-    sink.write(jsonEncode(rs.columnNames));
-    sink.write('\n');
+    if (addColumnNames) {
+      sink.write(jsonEncode(rs.columnNames));
+      sink.write('\n');
+    }
 
     for (var row in rs) {
       sink.write(jsonEncode(row.values));
@@ -593,6 +608,16 @@ class Db extends Isolated {
 
     await sink.flush();
     await sink.close();
+  }
+
+  Future<void> _deleteExportFile(
+    String dumpPath,
+    String fileName,
+  ) async {
+    final file = new io.File(p.join(dumpPath, fileName));
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
   }
 
   DbMsgResponseAppId _appId() {
@@ -748,7 +773,7 @@ SELECT
 FROM
   chat a
 ORDER BY
-  a.row_id ASC;
+  a.rowid ASC;
 ''';
 
   static const _sqlSelectExport = '''
@@ -781,19 +806,19 @@ WHERE
   static const _sqlSelectMessagesForDump = '''
 SELECT
   a.*,
-  a.row_id
+  a.rowid
 FROM
   message a
 WHERE
-  a.row_id > ?
+  a.rowid > ?
 ORDER BY
-  a.row_id ASC;
+  a.rowid ASC;
 ''';
 
   static const _sqlSelectUsersForDump = '''
 SELECT
   a.*,
-  a.id row_id
+  a.id rowid
 FROM
   user a
 WHERE
