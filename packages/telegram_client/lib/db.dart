@@ -151,7 +151,13 @@ class Db extends Isolated {
         message.replySendPort?.send(_retryDbOperation(
           () => _appId(),
           DbMsgResponseAppId(),
-          "select chat online member count",
+          "select app id",
+        ));
+      } else if (message is DbMsgRequestUploadSucces) {
+        message.replySendPort?.send(_retryDbOperation(
+          () => _uploadSuccess(message.dataName),
+          DbMsgResponseUploadSucces(),
+          "upload succes",
         ));
       }
     });
@@ -244,6 +250,20 @@ class Db extends Isolated {
     for (final sql in _sqlInit()) {
       db?.execute(sql);
     }
+    db?.execute(_sqlInitExportTable, [
+      'message',
+      0,
+      0,
+      DateTime.now().toUtc().toIso8601String(),
+      DateTime.now().toUtc().toIso8601String(),
+    ]);
+    db?.execute(_sqlInitExportTable, [
+      'user',
+      0,
+      0,
+      DateTime.now().toUtc().toIso8601String(),
+      DateTime.now().toUtc().toIso8601String(),
+    ]);
     logger.fine('running migrations... done.');
     return DbMsgResponseMigrate();
   }
@@ -499,6 +519,7 @@ class Db extends Isolated {
 
     PreparedStatement? stmt;
     ResultSet? rs;
+    Row row;
 
     stmt = db?.prepare(_sqlSelectChatsForDump);
     rs = stmt?.select();
@@ -507,20 +528,49 @@ class Db extends Isolated {
     }
 
     stmt = db?.prepare(_sqlSelectMessagesForDump);
-    rs = stmt?.select();
-    if (rs != null) {
+    rs = stmt?.select([_lastUploadedId('message')]);
+    if (rs != null && rs.isNotEmpty) {
       await _dumpResultSet(rs, dumpPath, _fileName('message', fileExtData));
+
+      row = rs.last;
+      stmt = db?.prepare(_sqlUpdateExportLastExportedId);
+      stmt?.execute([row['row_id'], 'message']);
     }
 
     stmt = db?.prepare(_sqlSelectUsersForDump);
-    rs = stmt?.select();
-    if (rs != null) {
+    rs = stmt?.select([_lastUploadedId('user')]);
+    if (rs != null && rs.isNotEmpty) {
       await _dumpResultSet(rs, dumpPath, _fileName('user', fileExtData));
+
+      row = rs.last;
+      stmt = db?.prepare(_sqlUpdateExportLastExportedId);
+      stmt?.execute([row['row_id'], 'user']);
     }
 
     stmt?.dispose();
 
     return DbMsgResponseDumpTables();
+  }
+
+  DbMsgResponseUploadSucces _uploadSuccess(String dataName) {
+    var stmt = db?.prepare(_sqlUpdateExportLastUploadedId);
+    stmt?.execute(['dataname']);
+
+    stmt?.dispose();
+
+    return DbMsgResponseUploadSucces();
+  }
+
+  int _lastUploadedId(String tableName) {
+    int id = 0;
+
+    Row? row;
+    row = db?.select(_sqlSelectExport, ['message']).firstOrNull;
+    if (row != null) {
+      id = int.tryParse(row['last_uploaded_id']) ?? 0;
+    }
+
+    return id;
   }
 
   Future<void> _dumpResultSet(
@@ -584,6 +634,7 @@ class Db extends Isolated {
       _sqlCreateTableUser,
       _sqlCreateIndexMessageChatIdMessageId,
       _sqlCreateAppTable,
+      _sqlCreateExportTable,
     ];
   }
 
@@ -647,6 +698,23 @@ CREATE TABLE IF NOT EXISTS app (
 );
 ''';
 
+  static const _sqlCreateExportTable = '''
+CREATE TABLE IF NOT EXISTS export (
+  table_name TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
+  last_exported_id INTEGER,
+  last_uploaded_id INTEGER,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+
+  static const _sqlInitExportTable = '''
+INSERT INTO export
+  (table_name, last_exported_id, last_uploaded_id, created_at, updated_at)
+VALUES
+  (?, ?, ?, ?, ?);
+''';
+
   static const _sqlCreateIndexMessageChatIdMessageId = '''
 CREATE UNIQUE INDEX IF NOT EXISTS idx_message_chat_id_message_id ON
   message(chat_id, id);
@@ -676,23 +744,62 @@ WHERE
 
   static const _sqlSelectChatsForDump = '''
 SELECT
-  *
+  a.*
 FROM
-  chat;
+  chat a
+ORDER BY
+  a.row_id ASC;
+''';
+
+  static const _sqlSelectExport = '''
+SELECT
+  a.*
+FROM
+  export a
+WHERE
+  a.table_name = ?;
+''';
+
+  static const _sqlUpdateExportLastExportedId = '''
+UPDATE
+  export
+SET
+  last_exported_id = ?
+WHERE
+  table_name = ?;
+''';
+
+  static const _sqlUpdateExportLastUploadedId = '''
+UPDATE
+  export
+SET
+  last_uploaded_id = last_exported_id
+WHERE
+  table_name = ?;
 ''';
 
   static const _sqlSelectMessagesForDump = '''
 SELECT
-  *
+  a.*,
+  a.row_id
 FROM
-  message
+  message a
+WHERE
+  a.row_id > ?
+ORDER BY
+  a.row_id ASC;
 ''';
 
   static const _sqlSelectUsersForDump = '''
 SELECT
-  *
+  a.*,
+  a.id row_id
 FROM
-  user;
+  user a
+WHERE
+  a.id > ?
+ORDER BY
+  a.id ASC;
 ''';
 
   static const _sqlInsertChat = '''
@@ -1090,4 +1197,13 @@ class DbMsgRequestAppId extends DbMsgRequest {
 class DbMsgResponseAppId extends DbMsgResponse {
   String? appId;
   DbMsgResponseAppId({super.exception, super.operationName, this.appId});
+}
+
+class DbMsgRequestUploadSucces extends DbMsgRequest {
+  String dataName;
+  DbMsgRequestUploadSucces({super.replySendPort, required this.dataName});
+}
+
+class DbMsgResponseUploadSucces extends DbMsgResponse {
+  DbMsgResponseUploadSucces({super.exception, super.operationName});
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:isolate';
@@ -140,6 +141,20 @@ class IpfsExporter extends Isolated {
     }
   }
 
+  Future<void> _uploadSuccess(String dataName) async {
+    dbSendPort.send(DbMsgRequestUploadSucces(
+      replySendPort: receivePort.sendPort,
+      dataName: dataName,
+    ));
+    var response = await receivePortBroadcast
+        .where((event) => event is DbMsgResponseUploadSucces)
+        .first;
+
+    if (response.exception != null) {
+      logger.severe(response.exception!);
+    }
+  }
+
   Future<void> _writeFilesToIpfs() async {
     logger.info('uploading files to ipfs...');
 
@@ -157,6 +172,10 @@ class IpfsExporter extends Isolated {
         continue;
       }
       logger.info('writing $dataName to IPFS... done.');
+
+      if (!dataNamesTruncate.contains(dataName)) {
+        await _uploadSuccess(dataName);
+      }
 
       logger.info('reading stats for $dataName from IPFS...');
       var hash = await _ipfsFileStatRetry(client, dataName);
@@ -186,8 +205,10 @@ class IpfsExporter extends Isolated {
     }
     var ipfsUri = _buildIpfsUri(ipfsUriPathFileWrite, ipfsQueryParameters);
 
-    var ipfsRequestRetryCountIndex = 1;
-    while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
+    var ipfsRequestRetryCountIndex = 0;
+    while (ipfsRequestRetryCountIndex < ipfsRequestRetryCountMax) {
+      ipfsRequestRetryCountIndex += 1;
+
       var logRetryIndex =
           '$ipfsRequestRetryCountIndex / $ipfsRequestRetryCountMax';
 
@@ -231,8 +252,6 @@ class IpfsExporter extends Isolated {
       logger.info('[$logRetryIndex] ipfs write $dataName...'
           ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
       await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-
-      ipfsRequestRetryCountIndex += 1;
     }
 
     return null;
@@ -240,11 +259,15 @@ class IpfsExporter extends Isolated {
 
   Future<String?> _ipfsFileStatRetry(
       http.Client httpClient, String dataName) async {
-    var ipfsUri = _buildIpfsUri(ipfsUriPathFileStat);
+    var fileName = _fileName(dataName);
 
-    var ipfsRequestRetryCountIndex = 1;
+    Map<String, dynamic> ipfsQueryParameters = {'arg': fileName};
+    var ipfsUri = _buildIpfsUri(ipfsUriPathFileStat, ipfsQueryParameters);
 
-    while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
+    var ipfsRequestRetryCountIndex = 0;
+    while (ipfsRequestRetryCountIndex < ipfsRequestRetryCountMax) {
+      ipfsRequestRetryCountIndex += 1;
+
       var logRetryIndex =
           '$ipfsRequestRetryCountIndex / $ipfsRequestRetryCountMax';
 
@@ -264,26 +287,49 @@ class IpfsExporter extends Isolated {
         logger.info('[$logRetryIndex] ipfs stat $dataName...'
             ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
         await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-        ipfsRequestRetryCountIndex += 1;
         continue;
       }
 
       var ipfsResponseBody = await ipfsResponse.stream.bytesToString();
 
-      if (ipfsResponse.statusCode == 200) {
-        logger.info('[$logRetryIndex] ipfs stat $dataName... done.');
-        return ipfsResponseBody['Hash'];
+      if (ipfsResponse.statusCode != 200) {
+        logger.warning('[$logRetryIndex] ipfs stat $dataName...'
+            ' code=${ipfsResponse.statusCode}'
+            ' body=${ipfsResponseBody}.');
+
+        logger.info('[$logRetryIndex] ipfs stat $dataName...'
+            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
+        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+        continue;
       }
 
-      logger.warning('[$logRetryIndex] ipfs stat $dataName...'
-          ' code=${ipfsResponse.statusCode}'
-          ' body=${ipfsResponseBody}.');
+      var ipfsResponseBodyDecoded;
+      try {
+        ipfsResponseBodyDecoded = jsonDecode(ipfsResponseBody);
+      } on FormatException catch (ex) {
+        logger.warning(ex);
 
-      logger.info('[$logRetryIndex] ipfs stat $dataName...'
-          ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
-      await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+        logger.info('[$logRetryIndex] ipfs stat $dataName...'
+            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
+        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+        continue;
+      }
 
-      ipfsRequestRetryCountIndex += 1;
+      if (ipfsResponseBodyDecoded is! HashMap ||
+          !ipfsResponseBodyDecoded.containsKey('Hash')) {
+        logger.warning('[$logRetryIndex] ipfs stat $dataName...'
+            ' invalid response (expected hash)'
+            ' code=${ipfsResponse.statusCode}'
+            ' body=${ipfsResponseBody}.');
+
+        logger.info('[$logRetryIndex] ipfs stat $dataName...'
+            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
+        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+        continue;
+      }
+
+      logger.info('[$logRetryIndex] ipfs stat $dataName... done.');
+      return ipfsResponseBodyDecoded['Hash'];
     }
 
     return null;
