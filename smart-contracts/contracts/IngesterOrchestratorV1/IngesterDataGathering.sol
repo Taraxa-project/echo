@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.14;
 
-import "./interfaces/IIngesterDataGathering.sol";
+import "../interfaces/IngesterOrchestratorV1/IIngesterDataGathering.sol";
 import "./IngesterRegistryAccessControl.sol";
 
 contract IngesterDataGathering is  IngesterRegistryAccessControl, IIngesterDataGathering {

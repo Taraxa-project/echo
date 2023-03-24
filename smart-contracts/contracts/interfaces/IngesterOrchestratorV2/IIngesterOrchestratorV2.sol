@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.14;
 
-interface IIngesterOrchestrator {
+interface IIngesterOrchestratorV2 {
     
     struct GroupToIngesterWithIndex{
         bool isAdded;
         address[] ingesterAddresses;
         mapping(address => uint) assignedGroupsIngesterIndex;
+        uint groupUsernameIndex;
     }
 
     struct GroupToIngester{
         bool isAdded;
         address[] ingesterAddresses;
+        uint groupUsernameIndex;
     }
 
     // Events
@@ -23,16 +25,13 @@ interface IIngesterOrchestrator {
     event IngesterRegisteredGroups(address indexed ingesterAddress, string[] assignedGroups);
 
     // Functions
-    // function transferContractOwnership(address newOwner) external;
     function addGroup(string memory groupUsername) external;
     function removeGroup(string memory groupUsername) external;
     function getGroup(string memory groupUsername) external view returns (GroupToIngester memory);
-    function setMaxNumberIngesterPerGroup(uint16 maxNumberIngesterPerGroup) external;
+    function setMaxNumberIngesterPerGroup(uint256 maxNumberIngesterPerGroup) external;
     function unRegisterIngester(address ingesterAddress) external;
-    function getIngesterGroups(address ingesterAddress, string[] memory groups) external;
-    
-    // function removingIngesterFromGroups(uint[] memory groups, address ingesterAddress) public;
-    // function removingGroupFromIngesters(uint groupId, address[] memory ingesterAddresses) external;
-   
+    // function getIngesterGroups(address ingesterAddress, string[] memory groups) external;
+    // function reinitializeGroupsBatch(string[] memory groupUsernames) external;
+    // function reinitializeIngestersBatch(address[] memory ingesterAddresses) external;
 }
 
