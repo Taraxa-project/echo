@@ -247,7 +247,7 @@ describe("IngesterOrchestratorV2", () => {
 
     it("should remove an existing group", async () => {
         await contract.connect(owner).addGroup("group1");
-        await contract.connect(owner).removeGroup("group1");
+        expect(await contract.connect(owner).removeGroup("group1")).to.emit(contract, "GroupRemoved").withArgs("group1");
         const group = await contract.getGroup("group1");
         expect(group.isAdded).to.be.false;
     });
@@ -303,7 +303,6 @@ describe("IngesterOrchestratorV2", () => {
     });
 
     it("should re-adjust groups when ingester is removed", async () => {
-        const groupsToRemove = 100;
         let ingesterCount = await contract._ingesterCount();
         let maxGroupsPerIngesterBeforeUnregistering = Math.ceil(numGroups / ingesterCount);
 
@@ -319,8 +318,6 @@ describe("IngesterOrchestratorV2", () => {
         for (let i=0; i<ingesterCount; i++) {
             contractIngesters.push(await contract._ingesterAddresses(i));
         }
-        let ingesterAddresses = ingesters.map(ingester => ingester.address);
-        // console.log("🚀 ~ file: IngesterRegistryV2.ts:329 ~ it ~ ingesterAddresses:", ingesterAddresses)
 
         let ingesterToRemove = await contract.getIngester(ingesters[0].address);
         let ingesterRemovedAssignedGroups: string[] = ingesterToRemove.assignedGroups;
@@ -339,8 +336,6 @@ describe("IngesterOrchestratorV2", () => {
         expect(maxGroupsPerIngesterAfterUnregistering > maxGroupsPerIngesterBeforeUnregistering);
 
         let totalAssignedGroups: string[] = []
-        // let ingesterAddresses = ingesters.map(ingester => ingester.address);
-        // console.log("🚀 ~ file: IngesterRegistryV2.ts:329 ~ it ~ ingesterAddresses:", ingesterAddresses)
         let remainingIngesters: SignerWithAddress[] = ingesters.slice(1);
         for (let j = 0; j < remainingIngesters.length; j++) {
             let ingester = await contract.getIngester(remainingIngesters[j].address);
@@ -348,11 +343,12 @@ describe("IngesterOrchestratorV2", () => {
             expect(ingester.assignedGroups.length > maxGroupsPerIngesterBeforeUnregistering);
             expect(ingester.assignedGroups.length < maxGroupsPerIngesterAfterUnregistering);
         }
+
         //make sure that the removed assigned groups have been re-allocated to the existing ingesters
-        const included = ingesterRemovedAssignedGroups.every(removedGroup => {
+        const allGroupsAreReallocated = ingesterRemovedAssignedGroups.every(removedGroup => {
             return totalAssignedGroups.includes(removedGroup)
         })
-        expect(included).to.be.true;
+        expect(allGroupsAreReallocated).to.be.true;
     });
 
     it("should allocate new groups when available to newly registered ingester", async () => {
@@ -367,11 +363,12 @@ describe("IngesterOrchestratorV2", () => {
             expect(group.ingesterAddresses.length <= maxIngesterPerGroup)
         }
 
+        // use last available account as new test ingester to be registered
         let hash2 = await contract._hash(accounts[accounts.length -1].address, message, nonce);
         const sig2 = await accounts[accounts.length - 1].signMessage(ethers.utils.arrayify(hash2));
         await contract.connect(accounts[accounts.length - 2]).registerIngester(accounts[accounts.length - 1].address, message, nonce, sig2);
 
-        
+        // check all new incoming groups get allocated to the new ingester
         for (let i = numGroups; i < numGroups + 10; i++) {
             await contract.connect(owner).addGroup(`group${i}`);
             const group = await contract.getGroup(`group${i}`);
@@ -381,11 +378,7 @@ describe("IngesterOrchestratorV2", () => {
 
             let newIngester = await contract.getIngester(accounts[accounts.length -1].address);
             expect(newIngester.assignedGroups).to.include(`group${i}`);
-        
         }
     });
     });
-
-
-  // Add more test cases as needed
 });
