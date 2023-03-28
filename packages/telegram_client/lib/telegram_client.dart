@@ -166,7 +166,8 @@ class TelegramClient extends Isolated {
     loggerLibTdJson.onRecord.listen((event) {
       logSendPort?.send(event);
     });
-    _tdJsonClient.setupLogs(loggerTdJsonClient, loggerLibTdJson);
+    _tdJsonClient.logger = loggerTdJsonClient;
+    _tdJsonClient.loggerTdLib = loggerLibTdJson;
 
     logger.fine('created client id $_tdJsonClientId.');
     logger.fine('initialization finished.');
