@@ -2,15 +2,22 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.14",
+  solidity: {
+    version: "0.8.14",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200 // Adjust this value to a lower number to trade off bytecode size for gas efficiency
+      }
+    }
+  },
   mocha: {
     timeout: 5000000
   },
   gasReporter: {
-    enabled:true,
-    // outputFile: "gas-report.txt",
-    // noColors: false
+    enabled:true
   },
+  
   networks: {
     hardhat: {
         accounts: {
@@ -22,7 +29,6 @@ const config: HardhatUserConfig = {
         },
       },
     }
-  
 };
 
 export default config;

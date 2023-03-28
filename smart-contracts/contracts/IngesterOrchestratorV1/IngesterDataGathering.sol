@@ -33,7 +33,7 @@ contract IngesterDataGathering is  IngesterRegistryAccessControl, IIngesterDataG
      * @notice Gets the IPFS hashes for a registered ingester.
      * @dev Can be called by anyone.
      * @param ingesterAddress The address of the registered ingester.
-     * @return The IPFS hashes of the ingester's data.
+     * @return ipfsHashes The IPFS struct of the ingester's data hashes.
      */
     function getIpfsHashes(address ingesterAddress) public view returns(IpfsHash memory ipfsHashes) { // IpfsHash which interface would this belong to 
         return _ipfsHashes[ingesterAddress];

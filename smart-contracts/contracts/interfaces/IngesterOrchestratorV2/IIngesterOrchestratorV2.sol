@@ -24,14 +24,13 @@ interface IIngesterOrchestratorV2 {
     event IngesterRemovedFromGroup(address indexed ingesterAddress, string indexed groupId);
     event IngesterRegisteredGroups(address indexed ingesterAddress, string[] assignedGroups);
 
+    event SetNewMaxIngesterPerGroup(uint256 maxNumberIngesterPerGroup);
+
     // Functions
     function addGroup(string memory groupUsername) external;
     function removeGroup(string memory groupUsername) external;
     function getGroup(string memory groupUsername) external view returns (GroupToIngester memory);
     function setMaxNumberIngesterPerGroup(uint256 maxNumberIngesterPerGroup) external;
     function unRegisterIngester(address ingesterAddress) external;
-    // function getIngesterGroups(address ingesterAddress, string[] memory groups) external;
-    // function reinitializeGroupsBatch(string[] memory groupUsernames) external;
-    // function reinitializeIngestersBatch(address[] memory ingesterAddresses) external;
 }
 

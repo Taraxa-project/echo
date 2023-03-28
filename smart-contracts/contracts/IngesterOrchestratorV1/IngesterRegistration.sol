@@ -26,10 +26,12 @@ contract IngesterRegistration is IIngesterRegistration, IngesterRegistryAccessCo
     }
 
     /**
-    * @notice Retrieves the ingester information for a given ingester address.
-    * @dev Requires the ingester to be registered with a controller address.
-    * @param ingesterAddress The address of the ingester to be retrieved.
-    * @return Ingester memory structure containing the ingester's data.
+    @notice Calculates the keccak256 hash of the given input parameters.
+    @dev This function is used for generating the message hash for signature verification.
+    @param _address The address used for hashing.
+    @param _value The string value used for hashing.
+    @param _nonce The nonce used for hashing.
+    @return The keccak256 hash of the input parameters.
     */
     function _hash(address _address, string memory _value, uint256 _nonce) public pure override returns (bytes32) {
         return keccak256(abi.encodePacked(_address, _value, _nonce));
@@ -47,12 +49,10 @@ contract IngesterRegistration is IIngesterRegistration, IngesterRegistryAccessCo
     }
 
     /**
-    * @notice Registers an ingester with a controller address.
-    * @dev Requires a valid signature and ensures the ingester is not already registered.
-    * @param ingesterAddress The address of the ingester to be registered.
-    * @param message The message used for signature verification.
-    * @param nonce The nonce used for signature verification.
-    * @param sig The signature provided by the ingester.
+    @notice Calculates the Ethereum signed message hash of the given message hash.
+    @dev This function is used for converting the message hash into a format that is used for signature verification in Ethereum.
+    @param _messageHash The message hash to be converted into an Ethereum signed message hash.
+    @return The Ethereum signed message hash of the given message hash.
     */
     function getEthSignedMessageHash(
         bytes32 _messageHash
@@ -108,7 +108,7 @@ contract IngesterRegistration is IIngesterRegistration, IngesterRegistryAccessCo
     * @dev Requires the caller to have the registered ingester role and be the controller of the ingester.
     * @param ingesterAddress The address of the ingester to be unregistered.
     * @param originCaller The original caller address to unregister the ingester.
-    * @return groups An array of strings containing the assigned groups of the unregistered ingester.
+    * @return assignedGroups An array of strings containing the assigned groups of the unregistered ingester.
     */
     function unRegisteringIngester(address ingesterAddress, address originCaller) public onlyRegistered returns (string[] memory assignedGroups) {
         require(_registeredIngesterToController[ingesterAddress].controllerAddress == msg.sender, "Ingestor is not registered with this controller address.");

@@ -9,11 +9,11 @@ import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
  * @dev This contract manages access control and ownership for the Ingester Registry.
  * It extends the Ownable and AccessControlEnumerable contracts from the OpenZeppelin library.
  */
-contract IngesterRegistryAccessControlV2 is Ownable, AccessControlEnumerable {
+contract IngesterRegistryAccessControl is Ownable, AccessControlEnumerable {
     bytes32 public constant INGESTER_ROLE = keccak256("INGESTER_ROLE"); 
 
     /**
-     * @notice Constructor for IngesterRegistryAccessControlV2 contract.
+     * @notice Constructor for IngesterRegistryAccessControl contract.
      * @dev Sets the DEFAULT_ADMIN_ROLE to the contract deployer.
      */
     constructor() {

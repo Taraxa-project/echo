@@ -20,7 +20,7 @@ contract IngesterRegistrationV2 is IIngesterRegistrationV2, IngesterRegistryAcce
     /**
      * @notice Retrieves the ingester details based on the given address.
      * @param ingesterAddress The address of the ingester.
-     * @return The Ingester struct containing ingester details.
+     * @return Ingester The Ingester struct containing ingester details.
      */
     function getIngester(address ingesterAddress) public view returns (IIngesterRegistrationV2.Ingester memory) {
         require(_registeredIngesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
@@ -29,12 +29,14 @@ contract IngesterRegistrationV2 is IIngesterRegistrationV2, IngesterRegistryAcce
     }
 
     /**
-    * @notice Retrieves the ingester information for a given ingester address.
-    * @dev Requires the ingester to be registered with a controller address.
-    * @param ingesterAddress The address of the ingester to be retrieved.
-    * @return Ingester memory structure containing the ingester's data.
+    @notice Calculates the keccak256 hash of the given input parameters.
+    @dev This function is used for generating the message hash for signature verification.
+    @param _address The address used for hashing.
+    @param _value The string value used for hashing.
+    @param _nonce The nonce used for hashing.
+    @return hash The keccak256 hash of the input parameters.
     */
-    function _hash(address _address, string memory _value, uint256 _nonce) public pure override returns (bytes32) {
+    function _hash(address _address, string calldata _value, uint256 _nonce) public pure override returns (bytes32) {
         return keccak256(abi.encodePacked(_address, _value, _nonce));
     }
 
@@ -43,23 +45,21 @@ contract IngesterRegistrationV2 is IIngesterRegistrationV2, IngesterRegistryAcce
     * @dev Utilizes ECDSA to recover the address.
     * @param messageHash The signed message hash.
     * @param sig The signature provided by the signer.
-    * @return The recovered address of the signer.
+    * @return address The recovered address of the signer.
     */
-    function recover(bytes32 messageHash, bytes memory sig) public pure override returns (address){
+    function recover(bytes32 messageHash, bytes calldata sig) internal pure returns (address){
         return ECDSA.recover(messageHash, sig);
     }
 
     /**
-    * @notice Registers an ingester with a controller address.
-    * @dev Requires a valid signature and ensures the ingester is not already registered.
-    * @param ingesterAddress The address of the ingester to be registered.
-    * @param message The message used for signature verification.
-    * @param nonce The nonce used for signature verification.
-    * @param sig The signature provided by the ingester.
+    @notice Calculates the Ethereum signed message hash of the given message hash.
+    @dev This function is used for converting the message hash into a format that is used for signature verification in Ethereum.
+    @param _messageHash The message hash to be converted into an Ethereum signed message hash.
+    @return hash The Ethereum signed message hash of the given message hash.
     */
     function getEthSignedMessageHash(
         bytes32 _messageHash
-    ) public pure override returns (bytes32) {
+    ) internal pure returns (bytes32) {
         /*
         Signature is produced by signing a keccak256 hash with the following format:
         "\x19Ethereum Signed Message\n" + len(msg) + msg
@@ -80,9 +80,9 @@ contract IngesterRegistrationV2 is IIngesterRegistrationV2, IngesterRegistryAcce
     */
     function registerIngester(
         address ingesterAddress,
-        string memory message,
+        string calldata message,
         uint256 nonce,
-        bytes memory sig
+        bytes calldata sig
     ) external override {
         // require(_ingesters[msg.sender][_registeredIngesterToController[ingesterAddress].ingesterIndex].verified != true, "Ingestor already verified.");
         require(_registeredIngesterToController[ingesterAddress].controllerAddress != msg.sender, "Ingestor already registered.");
@@ -121,7 +121,7 @@ contract IngesterRegistrationV2 is IIngesterRegistrationV2, IngesterRegistryAcce
         _registeredIngesterToController[ingesterAddress].controllerAddress = address(0);
         uint ingesterIndex = _registeredIngesterToController[ingesterAddress].ingesterIndex;
         string[] memory assignedGroups = _ingesters[originCaller][ingesterIndex].assignedGroups;
-        
+
         delete _ingesterAddresses[_registeredIngesterToController[ingesterAddress].ingesterAddressesIndex];
         delete _ingesters[originCaller][ingesterIndex]; 
 

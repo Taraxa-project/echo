@@ -6,9 +6,12 @@ import "../interfaces/IngesterOrchestratorV2/IIngesterOrchestratorV2.sol";
 import "./IngesterRegistrationV2.sol";
 import "./IngesterRegistryAccessControlV2.sol";
 import "./IngesterDataGatheringV2.sol";
-import "hardhat/console.sol";
 
-contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegistrationV2 , IIngesterOrchestratorV2{ //, IngesterDataGatheringV2 {
+/**
+ * @title IngesterOrchestratorV2
+ * @dev This contract handles the registration, verification, and storage of ingesters.
+ */
+contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegistrationV2 , IIngesterOrchestratorV2, IngesterDataGatheringV2 {
 
     constructor(uint256 maxNumberIngesterPerGroup) IngesterRegistryAccessControlV2(){
         _maxNumberIngesterPerGroup = maxNumberIngesterPerGroup;
@@ -24,12 +27,11 @@ contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegi
     * @dev Emits a GroupAdded event upon successful addition of the group.
     * @param groupUsername The unique identifier (username) of the group to be added.
     */
-    function addGroup(string memory groupUsername) public onlyAdmin {
+    function addGroup(string calldata groupUsername) public onlyAdmin {
         require(!_groups[groupUsername].isAdded, "Group already exists.");
-        IIngesterOrchestratorV2.GroupToIngesterWithIndex storage _defaultGroupToIngesterWithIndex = _groups[groupUsername];
         _groupUsernames.push(groupUsername);
-        _defaultGroupToIngesterWithIndex.isAdded = true;
-        _defaultGroupToIngesterWithIndex.groupUsernameIndex = _groupUsernames.length -1;
+        _groups[groupUsername].isAdded = true;
+        _groups[groupUsername].groupUsernameIndex = _groupUsernames.length -1;
         ++_groupCount;
         distributeGroup(groupUsername);
         emit IIngesterOrchestratorV2.GroupAdded(groupUsername);
@@ -40,7 +42,7 @@ contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegi
     * @dev Emits a GroupRemoved event upon successful removal of the group.
     * @param groupUsername The unique identifier (username) of the group to be removed.
     */
-    function removeGroup(string memory groupUsername) public onlyAdmin {
+    function removeGroup(string calldata groupUsername) public onlyAdmin {
         require(_groups[groupUsername].isAdded, "Group does not exist.");
         address[] memory ingesterAddresses = _groups[groupUsername].ingesterAddresses;
         removingGroupFromIngesters(groupUsername, ingesterAddresses); //gas intensive
@@ -59,7 +61,6 @@ contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegi
     function distributeGroup(string memory groupUsername) internal {
         //make sure it rounds up in this operation to allow for adding new groups when remainder > 0
         uint256 maxGroupsPerIngester = (_groupCount + _ingesterCount - 1) / _ingesterCount;
-        // console.log("distributing group", groupUsername);
         for (uint256 i = 0; i < _ingesterAddresses.length; ++i) {
             // if it's not a deleted element of the array, then it must be a valid ingester
             if (_registeredIngesterToController[_ingesterAddresses[i]].controllerAddress == address(0)) {
@@ -75,7 +76,6 @@ contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegi
                     //update _groups storage to include the new ingester and the respective group index in the ingesters storage
                     _groups[groupUsername].ingesterAddresses.push(_ingesterAddresses[i]);
                     _groups[groupUsername].assignedGroupsIngesterIndex[_ingesterAddresses[i]] = _ingesters[controllerAddress][ingesterIndex].assignedGroups.length - 1;
-                    // console.log('group actually added', groupUsername);
                     break;
                 }
             }
@@ -87,14 +87,13 @@ contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegi
     * @param groupUsername The unique identifier (username) of the group to be queried.
     * @return GroupToIngester A struct containing information about the group.
     */
-    function getGroup(string memory groupUsername) public view returns (GroupToIngester memory) {
+    function getGroup(string calldata groupUsername) public view returns (GroupToIngester memory) {
         IIngesterOrchestratorV2.GroupToIngester memory group = IIngesterOrchestratorV2.GroupToIngester(
             _groups[groupUsername].isAdded,
             _groups[groupUsername].ingesterAddresses, 
             _groups[groupUsername].groupUsernameIndex
         );
         return group;
-       
     }
 
     /**
@@ -104,6 +103,7 @@ contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegi
     */
     function setMaxNumberIngesterPerGroup(uint256 maxNumberIngesterPerGroup) external onlyAdmin {
         _maxNumberIngesterPerGroup = maxNumberIngesterPerGroup;
+        emit IIngesterOrchestratorV2.SetNewMaxIngesterPerGroup(maxNumberIngesterPerGroup);
     }
 
    
@@ -116,11 +116,11 @@ contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegi
     function removingIngesterFromGroups(string[] memory groups, address ingesterAddress) internal {
         for (uint256 i = 0; i < groups.length; ++i) {
             // These arrays are capped by the _maxNumberIngesterPerGroup
-            for (uint256 j = 0; j < _groups[groups[i]].ingesterAddresses.length; j++) {
+            uint256 amountOfIngestersPerGroup = _groups[groups[i]].ingesterAddresses.length;
+            for (uint256 j = 0; j < amountOfIngestersPerGroup; j++) {
                 if(_groups[groups[i]].ingesterAddresses[j] == ingesterAddress ) {
-
                     //delete ingesterAddress from _groups and readjust array length so _maxNumberIngesterPerGroup check remains truthful
-                    for (uint256 z = j; z < _groups[groups[i]].ingesterAddresses.length-1; ++z) {
+                    for (uint256 z = j; z < amountOfIngestersPerGroup - 1; ++z) {
                         _groups[groups[i]].ingesterAddresses[z] = _groups[groups[i]].ingesterAddresses[z+1];
                     }
                     _groups[groups[i]].ingesterAddresses.pop();
@@ -137,7 +137,7 @@ contract IngesterOrchestratorV2 is IngesterRegistryAccessControlV2, IngesterRegi
     * @param groupUsername The unique identifier (username) of the group to be removed from the ingesters.
     * @param ingesterAddresses An array of addresses of the ingesters assigned to the group.
     */
-    function removingGroupFromIngesters(string memory groupUsername, address[] memory ingesterAddresses) public  {
+    function removingGroupFromIngesters(string calldata groupUsername, address[] memory ingesterAddresses) public  {
         for (uint256 i = 0; i < ingesterAddresses.length; ++i) {
             address controllerAddress = _registeredIngesterToController[ingesterAddresses[i]].controllerAddress;
             uint256 ingesterIndex = _registeredIngesterToController[ingesterAddresses[i]].ingesterIndex;

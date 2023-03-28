@@ -18,8 +18,8 @@ interface IIngesterRegistrationV2 {
     event IngesterUnRegistered(address indexed controllerAddress, address indexed ingesterAddress);
 
     function _hash(address _address, string memory _value, uint256 _nonce) external pure returns (bytes32);
-    function recover(bytes32 messageHash, bytes memory sig) external pure returns (address);
-    function getEthSignedMessageHash(bytes32 _messageHash) external pure returns (bytes32);
+    // function recover(bytes32 messageHash, bytes memory sig) external pure returns (address);
+    // function getEthSignedMessageHash(bytes32 _messageHash) external pure returns (bytes32);
     function registerIngester(
         address ingesterAddress,
         string memory message,
