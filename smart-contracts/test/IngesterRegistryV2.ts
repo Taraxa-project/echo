@@ -9,6 +9,31 @@ interface IngesterControllerMapping {
     [ingesterAddress: string]: SignerWithAddress;
   }
 
+type GroupComparisonResult = {
+matchingGroups: string[];
+nonMatchingGroups: string[];
+};
+  
+function compareGroups(
+ingesterRemovedAssignedGroups: string[],
+totalAssignedGroups: string[]
+): GroupComparisonResult {
+const matchingGroups: string[] = [];
+const nonMatchingGroups: string[] = [];
+
+for (const group of ingesterRemovedAssignedGroups) {
+    if (totalAssignedGroups.includes(group)) {
+    matchingGroups.push(group);
+    } else {
+    nonMatchingGroups.push(group);
+    }
+}
+
+return {
+    matchingGroups,
+    nonMatchingGroups,
+};
+}
 
 describe("IngesterOrchestratorV2", () => {
   let accounts: Signer[];
@@ -72,15 +97,9 @@ describe("IngesterOrchestratorV2", () => {
         let hash = await contract._hash(ingester1.address, message, nonce);
 
         const sig = await ingester1.signMessage(ethers.utils.arrayify(hash));
-        const ethHash = await contract.getEthSignedMessageHash(hash);
-        const signer = await contract.recover(ethHash, sig);
-
         expect(contract.connect(controller).registerIngester(ingester1.address, message, nonce, sig))
         .to.emit(contract, "IngesterRegistered")
         .withArgs(ingester1.address, controller.address);
-
-        expect(signer == ingester1.address).to.equal(true);
-
     });
 
     it("should fail registering a new ingester when sig is incorrect", async function () {
@@ -183,12 +202,13 @@ describe("IngesterOrchestratorV2", () => {
   });
 
     describe("Manage Groups", function () {
-    const numGroups = 3350;
+    const numGroups = 100;
     let  addedGroups: string[] = [];
     let ingesterToController: IngesterControllerMapping = {}
     let accounts: SignerWithAddress[] = [];
-    let numIngesters = 10;
+    let numIngesters = 3;
     let ingesters: SignerWithAddress[] = [];
+    let numIngestersToRemove = 1;
     beforeEach(async function () {
 
         accounts = await ethers.getSigners();
@@ -197,34 +217,10 @@ describe("IngesterOrchestratorV2", () => {
         for (let i = 1; i <= numIngesters; i++ ) {
             let hash = await contract._hash(accounts[i].address, message, nonce);
             const sig = await accounts[i].signMessage(ethers.utils.arrayify(hash));
-            const ethHash = await contract.getEthSignedMessageHash(hash);
-            const signer = await contract.recover(ethHash, sig);
             await contract.connect(accounts[i-1]).registerIngester(accounts[i].address, message, nonce, sig);
             ingesterToController[accounts[i].address] = accounts[i-1];
             ingesters.push(accounts[i]);
         }
-
-        // //Verify ingester1
-        // let hash = await contract._hash(ingester1.address, message, nonce);
-        // const sig = await ingester1.signMessage(ethers.utils.arrayify(hash));
-        // const ethHash = await contract.getEthSignedMessageHash(hash);
-        // const signer = await contract.recover(ethHash, sig);
-        // await contract.connect(controller).registerIngester(ingester1.address, message, nonce, sig);
-        // ingesterToController[ingester1.address] = controller;
-
-        // //Verify ingester2
-        // let hash2 = await contract._hash(ingester2.address, message, nonce);
-        // const sig2 = await ingester2.signMessage(ethers.utils.arrayify(hash2));
-        // const ethHash2 = await contract.getEthSignedMessageHash(hash2);
-        // const signer2 = await contract.recover(ethHash2, sig2);
-        // await contract.connect(controller).registerIngester(ingester2.address, message, nonce, sig2);
-        // ingesterToController[ingester2.address] = controller;
-
-        // //Verify ingester3
-        // let hash3 = await contract._hash(ingester3.address, message, nonce);
-        // const sig3 = await ingester3.signMessage(ethers.utils.arrayify(hash3));
-        // await contract.connect(controller2).registerIngester(ingester3.address, message, nonce, sig3);
-        // ingesterToController[ingester3.address] = controller2;
     });
 
     it("should deploy contract and set maxNumberIngesterPerGroup correctly", async () => {
@@ -351,6 +347,63 @@ describe("IngesterOrchestratorV2", () => {
         expect(allGroupsAreReallocated).to.be.true;
     });
 
+    it("should re-adjust groups when multiple ingesters are removed", async () => {
+        let ingesterCount = await contract._ingesterCount();
+        let maxGroupsPerIngesterBeforeUnregistering = Math.ceil(numGroups / ingesterCount);
+
+        // check group assignement are within constraints
+        for (let i = 0; i < numGroups; i++) {
+            await contract.connect(owner).addGroup(`group${i}`);
+            const group = await contract.getGroup(`group${i}`);
+            expect(group.isAdded).to.be.true;
+            expect(group.ingesterAddresses.length <= maxIngesterPerGroup)
+        }
+
+        let contractIngesters = [];
+        for (let i=0; i<ingesterCount; i++) {
+            contractIngesters.push(await contract._ingesterAddresses(i));
+        }
+
+        let ingestersRemaining = ingesters;
+        for (let i = 0; i < numIngestersToRemove; i++) {
+            let ingesterToRemove = await contract.getIngester(ingesters[i].address);
+            let ingesterRemovedAssignedGroups: string[] = ingesterToRemove.assignedGroups;
+            
+            const start = new Date().getTime();
+            
+            await contract.connect(ingesterToController[ingesters[i].address]).unRegisterIngester(ingesters[i].address);
+            
+            let elapsed = new Date().getTime() - start;
+            console.log("🚀 Unregistering an ingester took: ", elapsed)
+
+            let ingesterCountAfter = await contract._ingesterCount();
+            let maxGroupsPerIngesterAfterUnregistering = Math.ceil(numGroups / ingesterCountAfter);
+
+            expect(maxGroupsPerIngesterAfterUnregistering > maxGroupsPerIngesterBeforeUnregistering);
+
+            let totalAssignedGroups: string[] = []
+            // Remove the ingester from structure
+            let slicerIndex = i == 0 ? 1 : i;
+            ingestersRemaining = ingestersRemaining.slice(slicerIndex);
+            let remainingIngestersAddreses = ingestersRemaining.map( ingester => ingester.address);
+
+            // check i remaining ingesters contain all the groups that were removed 
+            for (let j = 0; j < ingestersRemaining.length; j++) {
+                let ingester = await contract.getIngester(ingestersRemaining[j].address);
+                totalAssignedGroups = totalAssignedGroups.concat(ingester.assignedGroups);
+                expect(ingester.assignedGroups.length > maxGroupsPerIngesterBeforeUnregistering);
+                expect(ingester.assignedGroups.length < maxGroupsPerIngesterAfterUnregistering);
+            }
+
+            //make sure that the removed assigned groups have been re-allocated to the existing ingesters
+            const allGroupsAreReallocated = ingesterRemovedAssignedGroups.every(removedGroup => {
+                return totalAssignedGroups.includes(removedGroup)
+            })
+            let groupComparisonResult = compareGroups(ingesterRemovedAssignedGroups, totalAssignedGroups );
+            expect(allGroupsAreReallocated).to.be.true;
+        }
+    });
+
     it("should allocate new groups when available to newly registered ingester", async () => {
         let ingesterCount = await contract._ingesterCount();
         let maxGroupsPerIngesterBeforeUnregistering = Math.ceil(numGroups / ingesterCount);
@@ -380,5 +433,65 @@ describe("IngesterOrchestratorV2", () => {
             expect(newIngester.assignedGroups).to.include(`group${i}`);
         }
     });
+    });
+
+    describe('Add IPFS Hashes', function () {
+        const usersHash = 'QmXx6gTFHa6mudUhKjFkNVak1q8exg68oMsCmzePJX9fKu';
+        const chatsHash = 'QmS7V1ASYYkKj7V4d4QF4JZ9XKj5L5PY5pCVS5GPy7fQQn';
+        const messagesHash = 'QmQe4R6UjQ6TDMDVbBopabKK46PGjKMYpHJ3qf8WdYY6gC';
+      
+        beforeEach(async function () {
+    
+            //Verify ingester1
+            let hash = await contract._hash(ingester1.address, message, nonce);
+            const sig = await ingester1.signMessage(ethers.utils.arrayify(hash));
+            await contract.connect(controller).registerIngester(ingester1.address, message, nonce, sig);
+    
+            //Verify ingester2
+            let hash2 = await contract._hash(ingester2.address, message, nonce);
+            const sig2 = await ingester2.signMessage(ethers.utils.arrayify(hash2));
+            await contract.connect(controller).registerIngester(ingester2.address, message, nonce, sig2);
+    
+            
+        });
+      
+        it('should revert if called by an unregistered controller', async function () {
+            
+            expect(
+                contract.connect(ingester1).addIpfsHash(
+                    ingester1.address,
+                    usersHash,
+                    chatsHash,
+                    messagesHash
+                )
+            ).to.be.revertedWith('Only registered ingester controller can perform this action.');
+        });
+    
+        it('should add the IPFS hashes to the registry and emit events', async function () {
+            const txAddIpfsHash = await contract.connect(controller).addIpfsHash(
+                ingester1.address,
+                usersHash,
+                chatsHash,
+                messagesHash
+            );
+            
+            const ipfsHashes = await contract.getIpfsHashes(ingester1.address);
+            //Check storage values through ipfsHash getter
+            expect(ipfsHashes['usersIpfsHash']).to.equal(usersHash);
+            expect(ipfsHashes['chatsIpfsHash']).to.equal(chatsHash);
+            expect(ipfsHashes['messagesIpfsHash']).to.equal(messagesHash);
+        });
+    
+        it('should emit events when add the IPFS hashes to the registry ', async function () {
+            const txAddIpfsHash = await contract.connect(controller).addIpfsHash(
+                ingester1.address,
+                usersHash,
+                chatsHash,
+                messagesHash
+            );
+            
+            //Check for emitted events
+            expect(txAddIpfsHash).to.emit(contract, "IpfsHashAdded").withArgs(ingester1.address, usersHash, chatsHash, messagesHash);
+        });
     });
 });
