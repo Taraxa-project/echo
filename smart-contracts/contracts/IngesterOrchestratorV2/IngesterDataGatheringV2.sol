@@ -29,7 +29,6 @@ contract IngesterDataGatheringV2 is
         string memory chatsHash,
         string memory messagesHash
     ) external onlyRegistered {
-        // make struct with all the different type of hashes
         IIngesterDataGatheringV2.IpfsHash
             memory ipfsHashUsers = IIngesterDataGatheringV2.IpfsHash(
                 usersHash,
@@ -54,7 +53,6 @@ contract IngesterDataGatheringV2 is
     function getIpfsHashes(
         address ingesterAddress
     ) public view returns (IpfsHash memory ipfsHashes) {
-        // IpfsHash which interface would this belong to
         return _ipfsHashes[ingesterAddress];
     }
 }
