@@ -259,7 +259,6 @@ class IpfsExporter extends Isolated {
         logger.info('[$logRetryIndex] ipfs write $dataName...'
             ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
         await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-        ipfsRequestRetryCountIndex += 1;
         continue;
       }
 
