@@ -42,6 +42,72 @@
 
   <div id="dartdoc-main-content" class="main-content">
       
+<section class="desc markdown">
+  <h2 id="telegram-client-for-tdlib-json-interface">Telegram client for TDLib JSON interface</h2>
+<p><strong>td_json_client</strong> is a Dart library that provides binding for the TDLib JSON interface via FFI.
+It comes with a simple Telegram client and classes for the Telegram API (version 1.8.10).</p>
+<p>Because you cannot invoke native callback outside an isolate this library wraps TDLib (libtdjson)
+into antoher library (libtdjsonlc). The libtdjson logs are sent to the Dart thread via a SendPort.</p>
+<h2 id="example">Example</h2>
+<p>See <code>example/example.dart</code></p>
+<pre class="language-dart"><code class="language-dart">import 'package:logging/logging.dart';
+import 'package:td_json_client/td_json_client.dart';
+import 'package:td_json_client/td_api.dart';
+
+void main() async {
+  final _tdJsonClient = TdJsonClient(libtdjsonlcPath: 'path/to/libtdjsonlc');
+  final _tdJsonClientId = _tdJsonClient.create_client_id();
+
+  hierarchicalLoggingEnabled = true;
+
+  final loggerTdJsonClient = Logger('TdJsonClient');
+  loggerTdJsonClient.level = Level.ALL;
+  loggerTdJsonClient.onRecord.listen((event) {
+    print(event);
+  });
+  _tdJsonClient.logger = loggerTdJsonClient;
+
+  final loggerLibTdJson = Logger('LibTdJson');
+  loggerLibTdJson.level = Level.WARNING;
+  loggerLibTdJson.onRecord.listen((event) {
+    print(event);
+  });
+  _tdJsonClient.loggerTdLib = loggerLibTdJson;
+
+  _tdJsonClient.send(_tdJsonClientId, GetAuthorizationState());
+  while (true) {
+    var event = _tdJsonClient.receive(waitTimeout: 10);
+
+    if (event is UpdateAuthorizationState) {
+      if (event.authorization_state is AuthorizationStateWaitTdlibParameters) {
+        _tdJsonClient.send(
+            _tdJsonClientId,
+            SetTdlibParameters(
+              api_hash: 'your_api_hash',
+              // ...
+            ));
+      } else if (event.authorization_state
+          is AuthorizationStateWaitPhoneNumber) {
+        _tdJsonClient.send(
+            _tdJsonClientId,
+            SetAuthenticationPhoneNumber(
+              phone_number: 'your_phone_number',
+            ));
+      }
+      // ...
+    }
+
+    await Future.delayed(const Duration(milliseconds: 50));
+  }
+}
+</code></pre>
+<h2 id="build-libtdjson-and-libtdjsonlc">Build libtdjson and libtdjsonlc</h2>
+<pre class="language-sh"><code class="language-sh">mkdir -p build/out &amp;&amp; \
+cd build &amp;&amp; \
+cmake -DCMAKE_INSTALL_PREFIX:PATH=`pwd`/out ../lib/src/log_callback
+cmake --build . --target install
+</code></pre>
+</section>
 
 
       <section class="summary">
