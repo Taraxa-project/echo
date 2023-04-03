@@ -32,8 +32,7 @@ class InputPassportElementError extends TdObject {
     }
     message = map['message'];
     if (map['source'] != null) {
-      source =
-          TdApiMap.fromMap(map['source']) as InputPassportElementErrorSource;
+      source = TdApiMap.fromMap(map['source']) as InputPassportElementErrorSource;
     }
   }
 

@@ -89,8 +89,7 @@ class ChatAdministratorRights extends TdObject {
       'can_pin_messages': can_pin_messages?.toMap(skipNulls: skipNulls),
       'can_manage_topics': can_manage_topics?.toMap(skipNulls: skipNulls),
       'can_promote_members': can_promote_members?.toMap(skipNulls: skipNulls),
-      'can_manage_video_chats':
-          can_manage_video_chats?.toMap(skipNulls: skipNulls),
+      'can_manage_video_chats': can_manage_video_chats?.toMap(skipNulls: skipNulls),
       'is_anonymous': is_anonymous?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

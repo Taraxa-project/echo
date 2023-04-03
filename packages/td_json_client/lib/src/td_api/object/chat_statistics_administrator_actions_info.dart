@@ -40,11 +40,9 @@ class ChatStatisticsAdministratorActionsInfo extends TdObject {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'user_id': user_id?.toMap(skipNulls: skipNulls),
-      'deleted_message_count':
-          deleted_message_count?.toMap(skipNulls: skipNulls),
+      'deleted_message_count': deleted_message_count?.toMap(skipNulls: skipNulls),
       'banned_user_count': banned_user_count?.toMap(skipNulls: skipNulls),
-      'restricted_user_count':
-          restricted_user_count?.toMap(skipNulls: skipNulls),
+      'restricted_user_count': restricted_user_count?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

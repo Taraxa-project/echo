@@ -223,8 +223,7 @@ class CallStateDiscarded extends CallState {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'reason': reason?.toMap(skipNulls: skipNulls),
       'need_rating': need_rating?.toMap(skipNulls: skipNulls),
-      'need_debug_information':
-          need_debug_information?.toMap(skipNulls: skipNulls),
+      'need_debug_information': need_debug_information?.toMap(skipNulls: skipNulls),
       'need_log': need_log?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

@@ -45,10 +45,8 @@ class PassportSuitableElement extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'type': type?.toMap(skipNulls: skipNulls),
       'is_selfie_required': is_selfie_required?.toMap(skipNulls: skipNulls),
-      'is_translation_required':
-          is_translation_required?.toMap(skipNulls: skipNulls),
-      'is_native_name_required':
-          is_native_name_required?.toMap(skipNulls: skipNulls),
+      'is_translation_required': is_translation_required?.toMap(skipNulls: skipNulls),
+      'is_native_name_required': is_native_name_required?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

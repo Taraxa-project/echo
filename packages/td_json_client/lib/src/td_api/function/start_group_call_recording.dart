@@ -43,8 +43,7 @@ class StartGroupCallRecording extends TdFunction {
       'group_call_id': group_call_id?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
       'record_video': record_video?.toMap(skipNulls: skipNulls),
-      'use_portrait_orientation':
-          use_portrait_orientation?.toMap(skipNulls: skipNulls),
+      'use_portrait_orientation': use_portrait_orientation?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -42,8 +42,7 @@ class CreateNewBasicGroupChat extends TdFunction {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'user_ids': user_ids?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
-      'message_auto_delete_time':
-          message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

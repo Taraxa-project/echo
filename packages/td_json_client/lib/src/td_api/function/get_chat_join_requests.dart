@@ -39,8 +39,7 @@ class GetChatJoinRequests extends TdFunction {
     invite_link = map['invite_link'];
     query = map['query'];
     if (map['offset_request'] != null) {
-      offset_request =
-          TdApiMap.fromMap(map['offset_request']) as ChatJoinRequest;
+      offset_request = TdApiMap.fromMap(map['offset_request']) as ChatJoinRequest;
     }
     limit = map['limit'];
   }

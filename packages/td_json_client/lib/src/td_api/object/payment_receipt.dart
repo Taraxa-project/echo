@@ -78,8 +78,7 @@ class PaymentReceipt extends TdObject {
       order_info = TdApiMap.fromMap(map['order_info']) as OrderInfo;
     }
     if (map['shipping_option'] != null) {
-      shipping_option =
-          TdApiMap.fromMap(map['shipping_option']) as ShippingOption;
+      shipping_option = TdApiMap.fromMap(map['shipping_option']) as ShippingOption;
     }
     credentials_title = map['credentials_title'];
     tip_amount = map['tip_amount'];
@@ -95,8 +94,7 @@ class PaymentReceipt extends TdObject {
       'photo': photo?.toMap(skipNulls: skipNulls),
       'date': date?.toMap(skipNulls: skipNulls),
       'seller_bot_user_id': seller_bot_user_id?.toMap(skipNulls: skipNulls),
-      'payment_provider_user_id':
-          payment_provider_user_id?.toMap(skipNulls: skipNulls),
+      'payment_provider_user_id': payment_provider_user_id?.toMap(skipNulls: skipNulls),
       'invoice': invoice?.toMap(skipNulls: skipNulls),
       'order_info': order_info?.toMap(skipNulls: skipNulls),
       'shipping_option': shipping_option?.toMap(skipNulls: skipNulls),

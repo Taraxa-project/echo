@@ -343,9 +343,9 @@ import 'package:{{# package }}{{ value }}{{/ package }}/src/td_api/td_api_map.da
 {{# imports }}
 {{ value }}
 {{/ imports }}
-
 {{# classes }}
 {{# isAbstract }}
+
 {{# comments}}
 /// {{ text }}
 {{/ comments}}
@@ -353,8 +353,8 @@ abstract class {{ className }} extends {{ extendsClassName }} {
   {{ className }}({super.extra, super.client_id});
 }
 {{/ isAbstract }}
-
 {{^ isAbstract}}
+
 {{# comments}}
 /// {{ text }}
 {{/ comments}}
@@ -364,7 +364,6 @@ class {{ className }} extends {{ extendsClassName }} {
   {{# isFunction }}
   String get tdReturnType => '{{ returnType }}';
   {{/ isFunction }}
-
   {{! class members }}
   {{# members }}
 
@@ -478,7 +477,6 @@ class TdApiMap {
 ''';
 
   static String get exportTemplate => '''
-
 export 'src/td_api/td.dart';
 export 'src/td_api/td_api_map.dart';
 
@@ -515,7 +513,7 @@ class Td {
       'tdType': ReCase(className).camelCase,
       'returnType': returnType,
       'members': members.map((e) => e.toMap()),
-      'comments': comments.map((e) => {'text': e})
+      'comments': comments.map((e) => {'text': e.trim()})
     };
     return map;
   }
@@ -547,7 +545,7 @@ class TdMember {
       'isVector': isVector,
       'isContainer': isContainer,
       'subName': subName,
-      'comments': comments.map((e) => {'text': e})
+      'comments': comments.map((e) => {'text': e.trim()})
     };
   }
 }

@@ -31,8 +31,7 @@ class ToggleChatDefaultDisableNotification extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'default_disable_notification':
-          default_disable_notification?.toMap(skipNulls: skipNulls),
+      'default_disable_notification': default_disable_notification?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

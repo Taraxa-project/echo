@@ -14,8 +14,7 @@ class SuggestedActionEnableArchiveAndMuteNewChats extends SuggestedAction {
     super.client_id,
   });
 
-  SuggestedActionEnableArchiveAndMuteNewChats.fromMap(
-      Map<String, dynamic> map) {
+  SuggestedActionEnableArchiveAndMuteNewChats.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

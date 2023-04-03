@@ -40,8 +40,7 @@ class GetArchivedStickerSets extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'sticker_type': sticker_type?.toMap(skipNulls: skipNulls),
-      'offset_sticker_set_id':
-          offset_sticker_set_id?.toMap(skipNulls: skipNulls),
+      'offset_sticker_set_id': offset_sticker_set_id?.toMap(skipNulls: skipNulls),
       'limit': limit?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

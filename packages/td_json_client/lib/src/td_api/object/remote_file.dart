@@ -50,8 +50,7 @@ class RemoteFile extends TdObject {
       'id': id?.toMap(skipNulls: skipNulls),
       'unique_id': unique_id?.toMap(skipNulls: skipNulls),
       'is_uploading_active': is_uploading_active?.toMap(skipNulls: skipNulls),
-      'is_uploading_completed':
-          is_uploading_completed?.toMap(skipNulls: skipNulls),
+      'is_uploading_completed': is_uploading_completed?.toMap(skipNulls: skipNulls),
       'uploaded_size': uploaded_size?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

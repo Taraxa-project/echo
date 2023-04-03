@@ -29,8 +29,7 @@ class EmailAddressAuthenticationCodeInfo extends TdObject {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'email_address_pattern':
-          email_address_pattern?.toMap(skipNulls: skipNulls),
+      'email_address_pattern': email_address_pattern?.toMap(skipNulls: skipNulls),
       'length': length?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

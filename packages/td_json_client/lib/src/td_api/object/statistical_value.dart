@@ -36,8 +36,7 @@ class StatisticalValue extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'value': value?.toMap(skipNulls: skipNulls),
       'previous_value': previous_value?.toMap(skipNulls: skipNulls),
-      'growth_rate_percentage':
-          growth_rate_percentage?.toMap(skipNulls: skipNulls),
+      'growth_rate_percentage': growth_rate_percentage?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

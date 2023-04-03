@@ -82,8 +82,7 @@ class PersonalDetails extends TdObject {
       'birthdate': birthdate?.toMap(skipNulls: skipNulls),
       'gender': gender?.toMap(skipNulls: skipNulls),
       'country_code': country_code?.toMap(skipNulls: skipNulls),
-      'residence_country_code':
-          residence_country_code?.toMap(skipNulls: skipNulls),
+      'residence_country_code': residence_country_code?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

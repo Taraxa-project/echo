@@ -231,8 +231,7 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
     bot_username = map['bot_username'];
     start_parameter = map['start_parameter'];
     if (map['administrator_rights'] != null) {
-      administrator_rights = TdApiMap.fromMap(map['administrator_rights'])
-          as ChatAdministratorRights;
+      administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
     }
   }
 
@@ -276,8 +275,7 @@ class InternalLinkTypeBotAddToChannel extends InternalLinkType {
     client_id = map['@client_id'];
     bot_username = map['bot_username'];
     if (map['administrator_rights'] != null) {
-      administrator_rights = TdApiMap.fromMap(map['administrator_rights'])
-          as ChatAdministratorRights;
+      administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
     }
   }
 
@@ -357,8 +355,7 @@ class InternalLinkTypeChatInvite extends InternalLinkType {
 }
 
 /// The link is a link to the default message auto-delete timer settings section of the app settings
-class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings
-    extends InternalLinkType {
+class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings extends InternalLinkType {
   String get tdType => 'internalLinkTypeDefaultMessageAutoDeleteTimerSettings';
 
   InternalLinkTypeDefaultMessageAutoDeleteTimerSettings({
@@ -366,8 +363,7 @@ class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings
     super.client_id,
   });
 
-  InternalLinkTypeDefaultMessageAutoDeleteTimerSettings.fromMap(
-      Map<String, dynamic> map) {
+  InternalLinkTypeDefaultMessageAutoDeleteTimerSettings.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

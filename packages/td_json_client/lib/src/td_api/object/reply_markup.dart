@@ -71,8 +71,7 @@ class ReplyMarkupForceReply extends ReplyMarkup {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'is_personal': is_personal?.toMap(skipNulls: skipNulls),
-      'input_field_placeholder':
-          input_field_placeholder?.toMap(skipNulls: skipNulls),
+      'input_field_placeholder': input_field_placeholder?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -146,8 +145,7 @@ class ReplyMarkupShowKeyboard extends ReplyMarkup {
       'resize_keyboard': resize_keyboard?.toMap(skipNulls: skipNulls),
       'one_time': one_time?.toMap(skipNulls: skipNulls),
       'is_personal': is_personal?.toMap(skipNulls: skipNulls),
-      'input_field_placeholder':
-          input_field_placeholder?.toMap(skipNulls: skipNulls),
+      'input_field_placeholder': input_field_placeholder?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -56,10 +56,8 @@ class ForumTopics extends TdObject {
       'total_count': total_count?.toMap(skipNulls: skipNulls),
       'topics': topics?.toMap(skipNulls: skipNulls),
       'next_offset_date': next_offset_date?.toMap(skipNulls: skipNulls),
-      'next_offset_message_id':
-          next_offset_message_id?.toMap(skipNulls: skipNulls),
-      'next_offset_message_thread_id':
-          next_offset_message_thread_id?.toMap(skipNulls: skipNulls),
+      'next_offset_message_id': next_offset_message_id?.toMap(skipNulls: skipNulls),
+      'next_offset_message_thread_id': next_offset_message_thread_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

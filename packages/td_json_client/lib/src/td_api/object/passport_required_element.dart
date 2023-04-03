@@ -22,8 +22,7 @@ class PassportRequiredElement extends TdObject {
       suitable_elements = [];
       for (var someValue in map['suitable_elements']) {
         if (someValue != null) {
-          suitable_elements
-              ?.add(TdApiMap.fromMap(someValue) as PassportSuitableElement);
+          suitable_elements?.add(TdApiMap.fromMap(someValue) as PassportSuitableElement);
         }
       }
     }

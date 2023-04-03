@@ -36,8 +36,7 @@ class ReorderChatFilters extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_filter_ids': chat_filter_ids?.toMap(skipNulls: skipNulls),
-      'main_chat_list_position':
-          main_chat_list_position?.toMap(skipNulls: skipNulls),
+      'main_chat_list_position': main_chat_list_position?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

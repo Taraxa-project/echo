@@ -39,8 +39,7 @@ class SendPassportAuthorizationForm extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'authorization_form_id':
-          authorization_form_id?.toMap(skipNulls: skipNulls),
+      'authorization_form_id': authorization_form_id?.toMap(skipNulls: skipNulls),
       'types': types?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

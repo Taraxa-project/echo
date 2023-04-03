@@ -109,14 +109,11 @@ class UserTypeBot extends UserType {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'can_join_groups': can_join_groups?.toMap(skipNulls: skipNulls),
-      'can_read_all_group_messages':
-          can_read_all_group_messages?.toMap(skipNulls: skipNulls),
+      'can_read_all_group_messages': can_read_all_group_messages?.toMap(skipNulls: skipNulls),
       'is_inline': is_inline?.toMap(skipNulls: skipNulls),
-      'inline_query_placeholder':
-          inline_query_placeholder?.toMap(skipNulls: skipNulls),
+      'inline_query_placeholder': inline_query_placeholder?.toMap(skipNulls: skipNulls),
       'need_location': need_location?.toMap(skipNulls: skipNulls),
-      'can_be_added_to_attachment_menu':
-          can_be_added_to_attachment_menu?.toMap(skipNulls: skipNulls),
+      'can_be_added_to_attachment_menu': can_be_added_to_attachment_menu?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

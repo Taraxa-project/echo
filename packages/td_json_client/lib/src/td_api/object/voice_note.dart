@@ -39,9 +39,7 @@ class VoiceNote extends TdObject {
     waveform = map['waveform'];
     mime_type = map['mime_type'];
     if (map['speech_recognition_result'] != null) {
-      speech_recognition_result =
-          TdApiMap.fromMap(map['speech_recognition_result'])
-              as SpeechRecognitionResult;
+      speech_recognition_result = TdApiMap.fromMap(map['speech_recognition_result']) as SpeechRecognitionResult;
     }
     if (map['voice'] != null) {
       voice = TdApiMap.fromMap(map['voice']) as File;
@@ -56,8 +54,7 @@ class VoiceNote extends TdObject {
       'duration': duration?.toMap(skipNulls: skipNulls),
       'waveform': waveform?.toMap(skipNulls: skipNulls),
       'mime_type': mime_type?.toMap(skipNulls: skipNulls),
-      'speech_recognition_result':
-          speech_recognition_result?.toMap(skipNulls: skipNulls),
+      'speech_recognition_result': speech_recognition_result?.toMap(skipNulls: skipNulls),
       'voice': voice?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

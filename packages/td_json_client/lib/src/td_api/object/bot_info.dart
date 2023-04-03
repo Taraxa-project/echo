@@ -69,14 +69,10 @@ class BotInfo extends TdObject {
       }
     }
     if (map['default_group_administrator_rights'] != null) {
-      default_group_administrator_rights =
-          TdApiMap.fromMap(map['default_group_administrator_rights'])
-              as ChatAdministratorRights;
+      default_group_administrator_rights = TdApiMap.fromMap(map['default_group_administrator_rights']) as ChatAdministratorRights;
     }
     if (map['default_channel_administrator_rights'] != null) {
-      default_channel_administrator_rights =
-          TdApiMap.fromMap(map['default_channel_administrator_rights'])
-              as ChatAdministratorRights;
+      default_channel_administrator_rights = TdApiMap.fromMap(map['default_channel_administrator_rights']) as ChatAdministratorRights;
     }
   }
 
@@ -91,10 +87,8 @@ class BotInfo extends TdObject {
       'animation': animation?.toMap(skipNulls: skipNulls),
       'menu_button': menu_button?.toMap(skipNulls: skipNulls),
       'commands': commands?.toMap(skipNulls: skipNulls),
-      'default_group_administrator_rights':
-          default_group_administrator_rights?.toMap(skipNulls: skipNulls),
-      'default_channel_administrator_rights':
-          default_channel_administrator_rights?.toMap(skipNulls: skipNulls),
+      'default_group_administrator_rights': default_group_administrator_rights?.toMap(skipNulls: skipNulls),
+      'default_channel_administrator_rights': default_channel_administrator_rights?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

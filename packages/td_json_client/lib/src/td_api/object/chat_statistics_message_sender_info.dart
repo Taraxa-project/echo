@@ -36,8 +36,7 @@ class ChatStatisticsMessageSenderInfo extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'user_id': user_id?.toMap(skipNulls: skipNulls),
       'sent_message_count': sent_message_count?.toMap(skipNulls: skipNulls),
-      'average_character_count':
-          average_character_count?.toMap(skipNulls: skipNulls),
+      'average_character_count': average_character_count?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

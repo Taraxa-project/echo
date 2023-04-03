@@ -20,9 +20,7 @@ class SetDefaultMessageAutoDeleteTime extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['message_auto_delete_time'] != null) {
-      message_auto_delete_time =
-          TdApiMap.fromMap(map['message_auto_delete_time'])
-              as MessageAutoDeleteTime;
+      message_auto_delete_time = TdApiMap.fromMap(map['message_auto_delete_time']) as MessageAutoDeleteTime;
     }
   }
 
@@ -31,8 +29,7 @@ class SetDefaultMessageAutoDeleteTime extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'message_auto_delete_time':
-          message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

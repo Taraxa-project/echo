@@ -103,11 +103,9 @@ class SetTdlibParameters extends TdFunction {
       'use_test_dc': use_test_dc?.toMap(skipNulls: skipNulls),
       'database_directory': database_directory?.toMap(skipNulls: skipNulls),
       'files_directory': files_directory?.toMap(skipNulls: skipNulls),
-      'database_encryption_key':
-          database_encryption_key?.toMap(skipNulls: skipNulls),
+      'database_encryption_key': database_encryption_key?.toMap(skipNulls: skipNulls),
       'use_file_database': use_file_database?.toMap(skipNulls: skipNulls),
-      'use_chat_info_database':
-          use_chat_info_database?.toMap(skipNulls: skipNulls),
+      'use_chat_info_database': use_chat_info_database?.toMap(skipNulls: skipNulls),
       'use_message_database': use_message_database?.toMap(skipNulls: skipNulls),
       'use_secret_chats': use_secret_chats?.toMap(skipNulls: skipNulls),
       'api_id': api_id?.toMap(skipNulls: skipNulls),
@@ -116,8 +114,7 @@ class SetTdlibParameters extends TdFunction {
       'device_model': device_model?.toMap(skipNulls: skipNulls),
       'system_version': system_version?.toMap(skipNulls: skipNulls),
       'application_version': application_version?.toMap(skipNulls: skipNulls),
-      'enable_storage_optimizer':
-          enable_storage_optimizer?.toMap(skipNulls: skipNulls),
+      'enable_storage_optimizer': enable_storage_optimizer?.toMap(skipNulls: skipNulls),
       'ignore_file_names': ignore_file_names?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

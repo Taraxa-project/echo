@@ -114,8 +114,7 @@ class GroupCall extends TdObject {
       recent_speakers = [];
       for (var someValue in map['recent_speakers']) {
         if (someValue != null) {
-          recent_speakers
-              ?.add(TdApiMap.fromMap(someValue) as GroupCallRecentSpeaker);
+          recent_speakers?.add(TdApiMap.fromMap(someValue) as GroupCallRecentSpeaker);
         }
       }
     }
@@ -137,8 +136,7 @@ class GroupCall extends TdObject {
       'id': id?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
       'scheduled_start_date': scheduled_start_date?.toMap(skipNulls: skipNulls),
-      'enabled_start_notification':
-          enabled_start_notification?.toMap(skipNulls: skipNulls),
+      'enabled_start_notification': enabled_start_notification?.toMap(skipNulls: skipNulls),
       'is_active': is_active?.toMap(skipNulls: skipNulls),
       'is_rtmp_stream': is_rtmp_stream?.toMap(skipNulls: skipNulls),
       'is_joined': is_joined?.toMap(skipNulls: skipNulls),
@@ -146,16 +144,13 @@ class GroupCall extends TdObject {
       'can_be_managed': can_be_managed?.toMap(skipNulls: skipNulls),
       'participant_count': participant_count?.toMap(skipNulls: skipNulls),
       'has_hidden_listeners': has_hidden_listeners?.toMap(skipNulls: skipNulls),
-      'loaded_all_participants':
-          loaded_all_participants?.toMap(skipNulls: skipNulls),
+      'loaded_all_participants': loaded_all_participants?.toMap(skipNulls: skipNulls),
       'recent_speakers': recent_speakers?.toMap(skipNulls: skipNulls),
       'is_my_video_enabled': is_my_video_enabled?.toMap(skipNulls: skipNulls),
       'is_my_video_paused': is_my_video_paused?.toMap(skipNulls: skipNulls),
       'can_enable_video': can_enable_video?.toMap(skipNulls: skipNulls),
-      'mute_new_participants':
-          mute_new_participants?.toMap(skipNulls: skipNulls),
-      'can_toggle_mute_new_participants':
-          can_toggle_mute_new_participants?.toMap(skipNulls: skipNulls),
+      'mute_new_participants': mute_new_participants?.toMap(skipNulls: skipNulls),
+      'can_toggle_mute_new_participants': can_toggle_mute_new_participants?.toMap(skipNulls: skipNulls),
       'record_duration': record_duration?.toMap(skipNulls: skipNulls),
       'is_video_recorded': is_video_recorded?.toMap(skipNulls: skipNulls),
       'duration': duration?.toMap(skipNulls: skipNulls),

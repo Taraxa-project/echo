@@ -48,8 +48,7 @@ class SponsoredMessage extends TdObject {
     is_recommended = map['is_recommended'];
     sponsor_chat_id = map['sponsor_chat_id'];
     if (map['sponsor_chat_info'] != null) {
-      sponsor_chat_info =
-          TdApiMap.fromMap(map['sponsor_chat_info']) as ChatInviteLinkInfo;
+      sponsor_chat_info = TdApiMap.fromMap(map['sponsor_chat_info']) as ChatInviteLinkInfo;
     }
     show_chat_photo = map['show_chat_photo'];
     if (map['link'] != null) {

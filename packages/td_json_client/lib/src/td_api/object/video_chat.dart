@@ -29,8 +29,7 @@ class VideoChat extends TdObject {
     group_call_id = map['group_call_id'];
     has_participants = map['has_participants'];
     if (map['default_participant_id'] != null) {
-      default_participant_id =
-          TdApiMap.fromMap(map['default_participant_id']) as MessageSender;
+      default_participant_id = TdApiMap.fromMap(map['default_participant_id']) as MessageSender;
     }
   }
 
@@ -41,8 +40,7 @@ class VideoChat extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'group_call_id': group_call_id?.toMap(skipNulls: skipNulls),
       'has_participants': has_participants?.toMap(skipNulls: skipNulls),
-      'default_participant_id':
-          default_participant_id?.toMap(skipNulls: skipNulls),
+      'default_participant_id': default_participant_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

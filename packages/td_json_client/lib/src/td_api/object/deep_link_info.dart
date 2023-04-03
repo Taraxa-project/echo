@@ -34,8 +34,7 @@ class DeepLinkInfo extends TdObject {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'text': text?.toMap(skipNulls: skipNulls),
-      'need_update_application':
-          need_update_application?.toMap(skipNulls: skipNulls),
+      'need_update_application': need_update_application?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

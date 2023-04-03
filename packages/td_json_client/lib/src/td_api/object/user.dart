@@ -154,8 +154,7 @@ class User extends TdObject {
       'have_access': have_access?.toMap(skipNulls: skipNulls),
       'type': type?.toMap(skipNulls: skipNulls),
       'language_code': language_code?.toMap(skipNulls: skipNulls),
-      'added_to_attachment_menu':
-          added_to_attachment_menu?.toMap(skipNulls: skipNulls),
+      'added_to_attachment_menu': added_to_attachment_menu?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

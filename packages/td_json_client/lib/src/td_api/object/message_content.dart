@@ -567,8 +567,7 @@ class MessageLocation extends MessageContent {
       'live_period': live_period?.toMap(skipNulls: skipNulls),
       'expires_in': expires_in?.toMap(skipNulls: skipNulls),
       'heading': heading?.toMap(skipNulls: skipNulls),
-      'proximity_alert_radius':
-          proximity_alert_radius?.toMap(skipNulls: skipNulls),
+      'proximity_alert_radius': proximity_alert_radius?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -740,8 +739,7 @@ class MessageDice extends MessageContent {
       'final_state': final_state?.toMap(skipNulls: skipNulls),
       'emoji': emoji?.toMap(skipNulls: skipNulls),
       'value': value?.toMap(skipNulls: skipNulls),
-      'success_animation_frame_number':
-          success_animation_frame_number?.toMap(skipNulls: skipNulls),
+      'success_animation_frame_number': success_animation_frame_number?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -885,8 +883,7 @@ class MessageInvoice extends MessageContent {
     need_shipping_address = map['need_shipping_address'];
     receipt_message_id = map['receipt_message_id'];
     if (map['extended_media'] != null) {
-      extended_media =
-          TdApiMap.fromMap(map['extended_media']) as MessageExtendedMedia;
+      extended_media = TdApiMap.fromMap(map['extended_media']) as MessageExtendedMedia;
     }
   }
 
@@ -902,8 +899,7 @@ class MessageInvoice extends MessageContent {
       'total_amount': total_amount?.toMap(skipNulls: skipNulls),
       'start_parameter': start_parameter?.toMap(skipNulls: skipNulls),
       'is_test': is_test?.toMap(skipNulls: skipNulls),
-      'need_shipping_address':
-          need_shipping_address?.toMap(skipNulls: skipNulls),
+      'need_shipping_address': need_shipping_address?.toMap(skipNulls: skipNulls),
       'receipt_message_id': receipt_message_id?.toMap(skipNulls: skipNulls),
       'extended_media': extended_media?.toMap(skipNulls: skipNulls),
     };
@@ -940,8 +936,7 @@ class MessageCall extends MessageContent {
     client_id = map['@client_id'];
     is_video = map['is_video'];
     if (map['discard_reason'] != null) {
-      discard_reason =
-          TdApiMap.fromMap(map['discard_reason']) as CallDiscardReason;
+      discard_reason = TdApiMap.fromMap(map['discard_reason']) as CallDiscardReason;
     }
     duration = map['duration'];
   }
@@ -1602,8 +1597,7 @@ class MessageChatSetMessageAutoDeleteTime extends MessageContent {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'message_auto_delete_time':
-          message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
       'from_user_id': from_user_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -1689,8 +1683,7 @@ class MessageForumTopicEdited extends MessageContent {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),
-      'edit_icon_custom_emoji_id':
-          edit_icon_custom_emoji_id?.toMap(skipNulls: skipNulls),
+      'edit_icon_custom_emoji_id': edit_icon_custom_emoji_id?.toMap(skipNulls: skipNulls),
       'icon_custom_emoji_id': icon_custom_emoji_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -2021,10 +2014,8 @@ class MessagePaymentSuccessfulBot extends MessageContent {
       'invoice_payload': invoice_payload?.toMap(skipNulls: skipNulls),
       'shipping_option_id': shipping_option_id?.toMap(skipNulls: skipNulls),
       'order_info': order_info?.toMap(skipNulls: skipNulls),
-      'telegram_payment_charge_id':
-          telegram_payment_charge_id?.toMap(skipNulls: skipNulls),
-      'provider_payment_charge_id':
-          provider_payment_charge_id?.toMap(skipNulls: skipNulls),
+      'telegram_payment_charge_id': telegram_payment_charge_id?.toMap(skipNulls: skipNulls),
+      'provider_payment_charge_id': provider_payment_charge_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -2309,14 +2300,12 @@ class MessagePassportDataReceived extends MessageContent {
       elements = [];
       for (var someValue in map['elements']) {
         if (someValue != null) {
-          elements
-              ?.add(TdApiMap.fromMap(someValue) as EncryptedPassportElement);
+          elements?.add(TdApiMap.fromMap(someValue) as EncryptedPassportElement);
         }
       }
     }
     if (map['credentials'] != null) {
-      credentials =
-          TdApiMap.fromMap(map['credentials']) as EncryptedCredentials;
+      credentials = TdApiMap.fromMap(map['credentials']) as EncryptedCredentials;
     }
   }
 

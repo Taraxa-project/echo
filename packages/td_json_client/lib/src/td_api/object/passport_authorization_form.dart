@@ -31,8 +31,7 @@ class PassportAuthorizationForm extends TdObject {
       required_elements = [];
       for (var someValue in map['required_elements']) {
         if (someValue != null) {
-          required_elements
-              ?.add(TdApiMap.fromMap(someValue) as PassportRequiredElement);
+          required_elements?.add(TdApiMap.fromMap(someValue) as PassportRequiredElement);
         }
       }
     }

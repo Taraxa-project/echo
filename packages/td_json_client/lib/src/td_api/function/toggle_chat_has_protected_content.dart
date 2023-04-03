@@ -31,8 +31,7 @@ class ToggleChatHasProtectedContent extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'has_protected_content':
-          has_protected_content?.toMap(skipNulls: skipNulls),
+      'has_protected_content': has_protected_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

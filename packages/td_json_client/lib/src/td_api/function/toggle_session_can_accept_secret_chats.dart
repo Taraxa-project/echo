@@ -31,8 +31,7 @@ class ToggleSessionCanAcceptSecretChats extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'session_id': session_id?.toMap(skipNulls: skipNulls),
-      'can_accept_secret_chats':
-          can_accept_secret_chats?.toMap(skipNulls: skipNulls),
+      'can_accept_secret_chats': can_accept_secret_chats?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

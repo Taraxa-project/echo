@@ -65,13 +65,10 @@ class ChatPermissions extends TdObject {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'can_send_messages': can_send_messages?.toMap(skipNulls: skipNulls),
-      'can_send_media_messages':
-          can_send_media_messages?.toMap(skipNulls: skipNulls),
+      'can_send_media_messages': can_send_media_messages?.toMap(skipNulls: skipNulls),
       'can_send_polls': can_send_polls?.toMap(skipNulls: skipNulls),
-      'can_send_other_messages':
-          can_send_other_messages?.toMap(skipNulls: skipNulls),
-      'can_add_web_page_previews':
-          can_add_web_page_previews?.toMap(skipNulls: skipNulls),
+      'can_send_other_messages': can_send_other_messages?.toMap(skipNulls: skipNulls),
+      'can_add_web_page_previews': can_add_web_page_previews?.toMap(skipNulls: skipNulls),
       'can_change_info': can_change_info?.toMap(skipNulls: skipNulls),
       'can_invite_users': can_invite_users?.toMap(skipNulls: skipNulls),
       'can_pin_messages': can_pin_messages?.toMap(skipNulls: skipNulls),

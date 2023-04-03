@@ -37,8 +37,7 @@ class StorageStatisticsByChat extends TdObject {
       by_file_type = [];
       for (var someValue in map['by_file_type']) {
         if (someValue != null) {
-          by_file_type
-              ?.add(TdApiMap.fromMap(someValue) as StorageStatisticsByFileType);
+          by_file_type?.add(TdApiMap.fromMap(someValue) as StorageStatisticsByFileType);
         }
       }
     }

@@ -40,8 +40,7 @@ class ThemeSettings extends TdObject {
       background = TdApiMap.fromMap(map['background']) as Background;
     }
     if (map['outgoing_message_fill'] != null) {
-      outgoing_message_fill =
-          TdApiMap.fromMap(map['outgoing_message_fill']) as BackgroundFill;
+      outgoing_message_fill = TdApiMap.fromMap(map['outgoing_message_fill']) as BackgroundFill;
     }
     animate_outgoing_message_fill = map['animate_outgoing_message_fill'];
     outgoing_message_accent_color = map['outgoing_message_accent_color'];
@@ -54,12 +53,9 @@ class ThemeSettings extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'accent_color': accent_color?.toMap(skipNulls: skipNulls),
       'background': background?.toMap(skipNulls: skipNulls),
-      'outgoing_message_fill':
-          outgoing_message_fill?.toMap(skipNulls: skipNulls),
-      'animate_outgoing_message_fill':
-          animate_outgoing_message_fill?.toMap(skipNulls: skipNulls),
-      'outgoing_message_accent_color':
-          outgoing_message_accent_color?.toMap(skipNulls: skipNulls),
+      'outgoing_message_fill': outgoing_message_fill?.toMap(skipNulls: skipNulls),
+      'animate_outgoing_message_fill': animate_outgoing_message_fill?.toMap(skipNulls: skipNulls),
+      'outgoing_message_accent_color': outgoing_message_accent_color?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

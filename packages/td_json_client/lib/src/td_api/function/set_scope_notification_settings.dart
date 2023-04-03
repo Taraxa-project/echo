@@ -28,8 +28,7 @@ class SetScopeNotificationSettings extends TdFunction {
       scope = TdApiMap.fromMap(map['scope']) as NotificationSettingsScope;
     }
     if (map['notification_settings'] != null) {
-      notification_settings = TdApiMap.fromMap(map['notification_settings'])
-          as ScopeNotificationSettings;
+      notification_settings = TdApiMap.fromMap(map['notification_settings']) as ScopeNotificationSettings;
     }
   }
 
@@ -39,8 +38,7 @@ class SetScopeNotificationSettings extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'scope': scope?.toMap(skipNulls: skipNulls),
-      'notification_settings':
-          notification_settings?.toMap(skipNulls: skipNulls),
+      'notification_settings': notification_settings?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

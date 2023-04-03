@@ -67,8 +67,7 @@ class EmojiReaction extends TdObject {
       select_animation = TdApiMap.fromMap(map['select_animation']) as Sticker;
     }
     if (map['activate_animation'] != null) {
-      activate_animation =
-          TdApiMap.fromMap(map['activate_animation']) as Sticker;
+      activate_animation = TdApiMap.fromMap(map['activate_animation']) as Sticker;
     }
     if (map['effect_animation'] != null) {
       effect_animation = TdApiMap.fromMap(map['effect_animation']) as Sticker;

@@ -35,8 +35,7 @@ class PremiumState extends TdObject {
       payment_options = [];
       for (var someValue in map['payment_options']) {
         if (someValue != null) {
-          payment_options
-              ?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
+          payment_options?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
         }
       }
     }
@@ -44,8 +43,7 @@ class PremiumState extends TdObject {
       animations = [];
       for (var someValue in map['animations']) {
         if (someValue != null) {
-          animations?.add(
-              TdApiMap.fromMap(someValue) as PremiumFeaturePromotionAnimation);
+          animations?.add(TdApiMap.fromMap(someValue) as PremiumFeaturePromotionAnimation);
         }
       }
     }

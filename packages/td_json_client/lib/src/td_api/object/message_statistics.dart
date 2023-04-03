@@ -19,9 +19,7 @@ class MessageStatistics extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['message_interaction_graph'] != null) {
-      message_interaction_graph =
-          TdApiMap.fromMap(map['message_interaction_graph'])
-              as StatisticalGraph;
+      message_interaction_graph = TdApiMap.fromMap(map['message_interaction_graph']) as StatisticalGraph;
     }
   }
 
@@ -30,8 +28,7 @@ class MessageStatistics extends TdObject {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'message_interaction_graph':
-          message_interaction_graph?.toMap(skipNulls: skipNulls),
+      'message_interaction_graph': message_interaction_graph?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

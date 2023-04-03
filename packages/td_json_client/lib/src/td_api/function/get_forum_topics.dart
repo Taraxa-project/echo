@@ -54,8 +54,7 @@ class GetForumTopics extends TdFunction {
       'query': query?.toMap(skipNulls: skipNulls),
       'offset_date': offset_date?.toMap(skipNulls: skipNulls),
       'offset_message_id': offset_message_id?.toMap(skipNulls: skipNulls),
-      'offset_message_thread_id':
-          offset_message_thread_id?.toMap(skipNulls: skipNulls),
+      'offset_message_thread_id': offset_message_thread_id?.toMap(skipNulls: skipNulls),
       'limit': limit?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

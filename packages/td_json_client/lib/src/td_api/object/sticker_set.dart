@@ -81,8 +81,7 @@ class StickerSet extends TdObject {
       thumbnail_outline = [];
       for (var someValue in map['thumbnail_outline']) {
         if (someValue != null) {
-          thumbnail_outline
-              ?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
+          thumbnail_outline?.add(TdApiMap.fromMap(someValue) as ClosedVectorPath);
         }
       }
     }

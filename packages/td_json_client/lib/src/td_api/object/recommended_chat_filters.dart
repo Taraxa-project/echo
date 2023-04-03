@@ -22,8 +22,7 @@ class RecommendedChatFilters extends TdObject {
       chat_filters = [];
       for (var someValue in map['chat_filters']) {
         if (someValue != null) {
-          chat_filters
-              ?.add(TdApiMap.fromMap(someValue) as RecommendedChatFilter);
+          chat_filters?.add(TdApiMap.fromMap(someValue) as RecommendedChatFilter);
         }
       }
     }

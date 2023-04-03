@@ -22,8 +22,7 @@ class ChatInviteLinkCounts extends TdObject {
       invite_link_counts = [];
       for (var someValue in map['invite_link_counts']) {
         if (someValue != null) {
-          invite_link_counts
-              ?.add(TdApiMap.fromMap(someValue) as ChatInviteLinkCount);
+          invite_link_counts?.add(TdApiMap.fromMap(someValue) as ChatInviteLinkCount);
         }
       }
     }

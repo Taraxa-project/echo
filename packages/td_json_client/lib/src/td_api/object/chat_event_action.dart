@@ -81,8 +81,7 @@ class ChatEventMessageDeleted extends ChatEventAction {
     if (map['message'] != null) {
       message = TdApiMap.fromMap(map['message']) as Message;
     }
-    can_report_anti_spam_false_positive =
-        map['can_report_anti_spam_false_positive'];
+    can_report_anti_spam_false_positive = map['can_report_anti_spam_false_positive'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -91,8 +90,7 @@ class ChatEventMessageDeleted extends ChatEventAction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'message': message?.toMap(skipNulls: skipNulls),
-      'can_report_anti_spam_false_positive':
-          can_report_anti_spam_false_positive?.toMap(skipNulls: skipNulls),
+      'can_report_anti_spam_false_positive': can_report_anti_spam_false_positive?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -498,12 +496,10 @@ class ChatEventAvailableReactionsChanged extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_available_reactions'] != null) {
-      old_available_reactions = TdApiMap.fromMap(map['old_available_reactions'])
-          as ChatAvailableReactions;
+      old_available_reactions = TdApiMap.fromMap(map['old_available_reactions']) as ChatAvailableReactions;
     }
     if (map['new_available_reactions'] != null) {
-      new_available_reactions = TdApiMap.fromMap(map['new_available_reactions'])
-          as ChatAvailableReactions;
+      new_available_reactions = TdApiMap.fromMap(map['new_available_reactions']) as ChatAvailableReactions;
     }
   }
 
@@ -512,10 +508,8 @@ class ChatEventAvailableReactionsChanged extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_available_reactions':
-          old_available_reactions?.toMap(skipNulls: skipNulls),
-      'new_available_reactions':
-          new_available_reactions?.toMap(skipNulls: skipNulls),
+      'old_available_reactions': old_available_reactions?.toMap(skipNulls: skipNulls),
+      'new_available_reactions': new_available_reactions?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -674,10 +668,8 @@ class ChatEventMessageAutoDeleteTimeChanged extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'old_message_auto_delete_time':
-          old_message_auto_delete_time?.toMap(skipNulls: skipNulls),
-      'new_message_auto_delete_time':
-          new_message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'old_message_auto_delete_time': old_message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'new_message_auto_delete_time': new_message_auto_delete_time?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -707,12 +699,10 @@ class ChatEventPermissionsChanged extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_permissions'] != null) {
-      old_permissions =
-          TdApiMap.fromMap(map['old_permissions']) as ChatPermissions;
+      old_permissions = TdApiMap.fromMap(map['old_permissions']) as ChatPermissions;
     }
     if (map['new_permissions'] != null) {
-      new_permissions =
-          TdApiMap.fromMap(map['new_permissions']) as ChatPermissions;
+      new_permissions = TdApiMap.fromMap(map['new_permissions']) as ChatPermissions;
     }
   }
 
@@ -1003,8 +993,7 @@ class ChatEventHasProtectedContentToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'has_protected_content':
-          has_protected_content?.toMap(skipNulls: skipNulls),
+      'has_protected_content': has_protected_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1070,8 +1059,7 @@ class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'is_all_history_available':
-          is_all_history_available?.toMap(skipNulls: skipNulls),
+      'is_all_history_available': is_all_history_available?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1093,8 +1081,7 @@ class ChatEventHasAggressiveAntiSpamEnabledToggled extends ChatEventAction {
     this.has_aggressive_anti_spam_enabled,
   });
 
-  ChatEventHasAggressiveAntiSpamEnabledToggled.fromMap(
-      Map<String, dynamic> map) {
+  ChatEventHasAggressiveAntiSpamEnabledToggled.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     has_aggressive_anti_spam_enabled = map['has_aggressive_anti_spam_enabled'];
@@ -1105,8 +1092,7 @@ class ChatEventHasAggressiveAntiSpamEnabledToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'has_aggressive_anti_spam_enabled':
-          has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
+      'has_aggressive_anti_spam_enabled': has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1169,12 +1155,10 @@ class ChatEventInviteLinkEdited extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_invite_link'] != null) {
-      old_invite_link =
-          TdApiMap.fromMap(map['old_invite_link']) as ChatInviteLink;
+      old_invite_link = TdApiMap.fromMap(map['old_invite_link']) as ChatInviteLink;
     }
     if (map['new_invite_link'] != null) {
-      new_invite_link =
-          TdApiMap.fromMap(map['new_invite_link']) as ChatInviteLink;
+      new_invite_link = TdApiMap.fromMap(map['new_invite_link']) as ChatInviteLink;
     }
   }
 
@@ -1342,8 +1326,7 @@ class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
     this.mute_new_participants,
   });
 
-  ChatEventVideoChatMuteNewParticipantsToggled.fromMap(
-      Map<String, dynamic> map) {
+  ChatEventVideoChatMuteNewParticipantsToggled.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     mute_new_participants = map['mute_new_participants'];
@@ -1354,8 +1337,7 @@ class ChatEventVideoChatMuteNewParticipantsToggled extends ChatEventAction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'mute_new_participants':
-          mute_new_participants?.toMap(skipNulls: skipNulls),
+      'mute_new_participants': mute_new_participants?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1381,8 +1363,7 @@ class ChatEventVideoChatParticipantIsMutedToggled extends ChatEventAction {
     this.is_muted,
   });
 
-  ChatEventVideoChatParticipantIsMutedToggled.fromMap(
-      Map<String, dynamic> map) {
+  ChatEventVideoChatParticipantIsMutedToggled.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['participant_id'] != null) {
@@ -1423,8 +1404,7 @@ class ChatEventVideoChatParticipantVolumeLevelChanged extends ChatEventAction {
     this.volume_level,
   });
 
-  ChatEventVideoChatParticipantVolumeLevelChanged.fromMap(
-      Map<String, dynamic> map) {
+  ChatEventVideoChatParticipantVolumeLevelChanged.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['participant_id'] != null) {
@@ -1537,12 +1517,10 @@ class ChatEventForumTopicEdited extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_topic_info'] != null) {
-      old_topic_info =
-          TdApiMap.fromMap(map['old_topic_info']) as ForumTopicInfo;
+      old_topic_info = TdApiMap.fromMap(map['old_topic_info']) as ForumTopicInfo;
     }
     if (map['new_topic_info'] != null) {
-      new_topic_info =
-          TdApiMap.fromMap(map['new_topic_info']) as ForumTopicInfo;
+      new_topic_info = TdApiMap.fromMap(map['new_topic_info']) as ForumTopicInfo;
     }
   }
 
@@ -1687,12 +1665,10 @@ class ChatEventForumTopicPinned extends ChatEventAction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['old_topic_info'] != null) {
-      old_topic_info =
-          TdApiMap.fromMap(map['old_topic_info']) as ForumTopicInfo;
+      old_topic_info = TdApiMap.fromMap(map['old_topic_info']) as ForumTopicInfo;
     }
     if (map['new_topic_info'] != null) {
-      new_topic_info =
-          TdApiMap.fromMap(map['new_topic_info']) as ForumTopicInfo;
+      new_topic_info = TdApiMap.fromMap(map['new_topic_info']) as ForumTopicInfo;
     }
   }
 

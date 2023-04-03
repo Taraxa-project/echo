@@ -133,11 +133,9 @@ class AuthorizationStateWaitEmailCode extends AuthorizationState {
     allow_apple_id = map['allow_apple_id'];
     allow_google_id = map['allow_google_id'];
     if (map['code_info'] != null) {
-      code_info = TdApiMap.fromMap(map['code_info'])
-          as EmailAddressAuthenticationCodeInfo;
+      code_info = TdApiMap.fromMap(map['code_info']) as EmailAddressAuthenticationCodeInfo;
     }
-    next_phone_number_authorization_date =
-        map['next_phone_number_authorization_date'];
+    next_phone_number_authorization_date = map['next_phone_number_authorization_date'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -148,8 +146,7 @@ class AuthorizationStateWaitEmailCode extends AuthorizationState {
       'allow_apple_id': allow_apple_id?.toMap(skipNulls: skipNulls),
       'allow_google_id': allow_google_id?.toMap(skipNulls: skipNulls),
       'code_info': code_info?.toMap(skipNulls: skipNulls),
-      'next_phone_number_authorization_date':
-          next_phone_number_authorization_date?.toMap(skipNulls: skipNulls),
+      'next_phone_number_authorization_date': next_phone_number_authorization_date?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -206,8 +203,7 @@ class AuthorizationStateWaitOtherDeviceConfirmation extends AuthorizationState {
     this.link,
   });
 
-  AuthorizationStateWaitOtherDeviceConfirmation.fromMap(
-      Map<String, dynamic> map) {
+  AuthorizationStateWaitOtherDeviceConfirmation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     link = map['link'];
@@ -244,8 +240,7 @@ class AuthorizationStateWaitRegistration extends AuthorizationState {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['terms_of_service'] != null) {
-      terms_of_service =
-          TdApiMap.fromMap(map['terms_of_service']) as TermsOfService;
+      terms_of_service = TdApiMap.fromMap(map['terms_of_service']) as TermsOfService;
     }
   }
 
@@ -299,10 +294,8 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'password_hint': password_hint?.toMap(skipNulls: skipNulls),
-      'has_recovery_email_address':
-          has_recovery_email_address?.toMap(skipNulls: skipNulls),
-      'recovery_email_address_pattern':
-          recovery_email_address_pattern?.toMap(skipNulls: skipNulls),
+      'has_recovery_email_address': has_recovery_email_address?.toMap(skipNulls: skipNulls),
+      'recovery_email_address_pattern': recovery_email_address_pattern?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -55,10 +55,8 @@ class MessageReplyInfo extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'reply_count': reply_count?.toMap(skipNulls: skipNulls),
       'recent_replier_ids': recent_replier_ids?.toMap(skipNulls: skipNulls),
-      'last_read_inbox_message_id':
-          last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
-      'last_read_outbox_message_id':
-          last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
+      'last_read_inbox_message_id': last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
+      'last_read_outbox_message_id': last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
       'last_message_id': last_message_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

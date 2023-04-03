@@ -20,9 +20,7 @@ class SetDefaultGroupAdministratorRights extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['default_group_administrator_rights'] != null) {
-      default_group_administrator_rights =
-          TdApiMap.fromMap(map['default_group_administrator_rights'])
-              as ChatAdministratorRights;
+      default_group_administrator_rights = TdApiMap.fromMap(map['default_group_administrator_rights']) as ChatAdministratorRights;
     }
   }
 
@@ -31,8 +29,7 @@ class SetDefaultGroupAdministratorRights extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'default_group_administrator_rights':
-          default_group_administrator_rights?.toMap(skipNulls: skipNulls),
+      'default_group_administrator_rights': default_group_administrator_rights?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

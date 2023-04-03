@@ -87,8 +87,7 @@ class CheckChatUsernameResultUsernameOccupied extends CheckChatUsernameResult {
 }
 
 /// The username can be purchased at fragment.com
-class CheckChatUsernameResultUsernamePurchasable
-    extends CheckChatUsernameResult {
+class CheckChatUsernameResultUsernamePurchasable extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultUsernamePurchasable';
 
   CheckChatUsernameResultUsernamePurchasable({
@@ -115,8 +114,7 @@ class CheckChatUsernameResultUsernamePurchasable
 }
 
 /// The user has too many chats with username, one of them must be made private first
-class CheckChatUsernameResultPublicChatsTooMany
-    extends CheckChatUsernameResult {
+class CheckChatUsernameResultPublicChatsTooMany extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicChatsTooMany';
 
   CheckChatUsernameResultPublicChatsTooMany({
@@ -143,8 +141,7 @@ class CheckChatUsernameResultPublicChatsTooMany
 }
 
 /// The user can't be a member of a public supergroup
-class CheckChatUsernameResultPublicGroupsUnavailable
-    extends CheckChatUsernameResult {
+class CheckChatUsernameResultPublicGroupsUnavailable extends CheckChatUsernameResult {
   String get tdType => 'checkChatUsernameResultPublicGroupsUnavailable';
 
   CheckChatUsernameResultPublicGroupsUnavailable({
@@ -152,8 +149,7 @@ class CheckChatUsernameResultPublicGroupsUnavailable
     super.client_id,
   });
 
-  CheckChatUsernameResultPublicGroupsUnavailable.fromMap(
-      Map<String, dynamic> map) {
+  CheckChatUsernameResultPublicGroupsUnavailable.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

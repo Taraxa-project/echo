@@ -31,8 +31,7 @@ class ToggleSupergroupJoinToSendMessages extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'supergroup_id': supergroup_id?.toMap(skipNulls: skipNulls),
-      'join_to_send_messages':
-          join_to_send_messages?.toMap(skipNulls: skipNulls),
+      'join_to_send_messages': join_to_send_messages?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

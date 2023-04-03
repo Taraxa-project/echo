@@ -90,10 +90,8 @@ class UserFullInfo extends TdObject {
     supports_video_calls = map['supports_video_calls'];
     has_private_calls = map['has_private_calls'];
     has_private_forwards = map['has_private_forwards'];
-    has_restricted_voice_and_video_note_messages =
-        map['has_restricted_voice_and_video_note_messages'];
-    need_phone_number_privacy_exception =
-        map['need_phone_number_privacy_exception'];
+    has_restricted_voice_and_video_note_messages = map['has_restricted_voice_and_video_note_messages'];
+    need_phone_number_privacy_exception = map['need_phone_number_privacy_exception'];
     if (map['bio'] != null) {
       bio = TdApiMap.fromMap(map['bio']) as FormattedText;
     }
@@ -101,8 +99,7 @@ class UserFullInfo extends TdObject {
       premium_gift_options = [];
       for (var someValue in map['premium_gift_options']) {
         if (someValue != null) {
-          premium_gift_options
-              ?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
+          premium_gift_options?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
         }
       }
     }
@@ -125,15 +122,11 @@ class UserFullInfo extends TdObject {
       'supports_video_calls': supports_video_calls?.toMap(skipNulls: skipNulls),
       'has_private_calls': has_private_calls?.toMap(skipNulls: skipNulls),
       'has_private_forwards': has_private_forwards?.toMap(skipNulls: skipNulls),
-      'has_restricted_voice_and_video_note_messages':
-          has_restricted_voice_and_video_note_messages?.toMap(
-              skipNulls: skipNulls),
-      'need_phone_number_privacy_exception':
-          need_phone_number_privacy_exception?.toMap(skipNulls: skipNulls),
+      'has_restricted_voice_and_video_note_messages': has_restricted_voice_and_video_note_messages?.toMap(skipNulls: skipNulls),
+      'need_phone_number_privacy_exception': need_phone_number_privacy_exception?.toMap(skipNulls: skipNulls),
       'bio': bio?.toMap(skipNulls: skipNulls),
       'premium_gift_options': premium_gift_options?.toMap(skipNulls: skipNulls),
-      'group_in_common_count':
-          group_in_common_count?.toMap(skipNulls: skipNulls),
+      'group_in_common_count': group_in_common_count?.toMap(skipNulls: skipNulls),
       'bot_info': bot_info?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

@@ -38,8 +38,7 @@ class EditMessageText extends TdFunction {
       reply_markup = TdApiMap.fromMap(map['reply_markup']) as ReplyMarkup;
     }
     if (map['input_message_content'] != null) {
-      input_message_content =
-          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -51,8 +50,7 @@ class EditMessageText extends TdFunction {
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'message_id': message_id?.toMap(skipNulls: skipNulls),
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
-      'input_message_content':
-          input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

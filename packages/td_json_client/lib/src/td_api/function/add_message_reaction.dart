@@ -53,8 +53,7 @@ class AddMessageReaction extends TdFunction {
       'message_id': message_id?.toMap(skipNulls: skipNulls),
       'reaction_type': reaction_type?.toMap(skipNulls: skipNulls),
       'is_big': is_big?.toMap(skipNulls: skipNulls),
-      'update_recent_reactions':
-          update_recent_reactions?.toMap(skipNulls: skipNulls),
+      'update_recent_reactions': update_recent_reactions?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

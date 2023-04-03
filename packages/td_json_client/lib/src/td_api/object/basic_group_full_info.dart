@@ -86,8 +86,7 @@ class BasicGroupFullInfo extends TdObject {
       'creator_user_id': creator_user_id?.toMap(skipNulls: skipNulls),
       'members': members?.toMap(skipNulls: skipNulls),
       'can_hide_members': can_hide_members?.toMap(skipNulls: skipNulls),
-      'can_toggle_aggressive_anti_spam':
-          can_toggle_aggressive_anti_spam?.toMap(skipNulls: skipNulls),
+      'can_toggle_aggressive_anti_spam': can_toggle_aggressive_anti_spam?.toMap(skipNulls: skipNulls),
       'invite_link': invite_link?.toMap(skipNulls: skipNulls),
       'bot_commands': bot_commands?.toMap(skipNulls: skipNulls),
     };

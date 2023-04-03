@@ -30,8 +30,7 @@ class AnswerPreCheckoutQuery extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'pre_checkout_query_id':
-          pre_checkout_query_id?.toMap(skipNulls: skipNulls),
+      'pre_checkout_query_id': pre_checkout_query_id?.toMap(skipNulls: skipNulls),
       'error_message': error_message?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

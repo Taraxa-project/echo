@@ -48,10 +48,8 @@ class SetPassword extends TdFunction {
       'old_password': old_password?.toMap(skipNulls: skipNulls),
       'new_password': new_password?.toMap(skipNulls: skipNulls),
       'new_hint': new_hint?.toMap(skipNulls: skipNulls),
-      'set_recovery_email_address':
-          set_recovery_email_address?.toMap(skipNulls: skipNulls),
-      'new_recovery_email_address':
-          new_recovery_email_address?.toMap(skipNulls: skipNulls),
+      'set_recovery_email_address': set_recovery_email_address?.toMap(skipNulls: skipNulls),
+      'new_recovery_email_address': new_recovery_email_address?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

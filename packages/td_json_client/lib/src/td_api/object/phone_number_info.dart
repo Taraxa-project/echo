@@ -45,8 +45,7 @@ class PhoneNumberInfo extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'country': country?.toMap(skipNulls: skipNulls),
       'country_calling_code': country_calling_code?.toMap(skipNulls: skipNulls),
-      'formatted_phone_number':
-          formatted_phone_number?.toMap(skipNulls: skipNulls),
+      'formatted_phone_number': formatted_phone_number?.toMap(skipNulls: skipNulls),
       'is_anonymous': is_anonymous?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

@@ -79,15 +79,13 @@ class PaymentForm extends TdObject {
     seller_bot_user_id = map['seller_bot_user_id'];
     payment_provider_user_id = map['payment_provider_user_id'];
     if (map['payment_provider'] != null) {
-      payment_provider =
-          TdApiMap.fromMap(map['payment_provider']) as PaymentProvider;
+      payment_provider = TdApiMap.fromMap(map['payment_provider']) as PaymentProvider;
     }
     if (map['additional_payment_options'] != null) {
       additional_payment_options = [];
       for (var someValue in map['additional_payment_options']) {
         if (someValue != null) {
-          additional_payment_options
-              ?.add(TdApiMap.fromMap(someValue) as PaymentOption);
+          additional_payment_options?.add(TdApiMap.fromMap(someValue) as PaymentOption);
         }
       }
     }
@@ -98,8 +96,7 @@ class PaymentForm extends TdObject {
       saved_credentials = [];
       for (var someValue in map['saved_credentials']) {
         if (someValue != null) {
-          saved_credentials
-              ?.add(TdApiMap.fromMap(someValue) as SavedCredentials);
+          saved_credentials?.add(TdApiMap.fromMap(someValue) as SavedCredentials);
         }
       }
     }
@@ -107,8 +104,7 @@ class PaymentForm extends TdObject {
     need_password = map['need_password'];
     product_title = map['product_title'];
     if (map['product_description'] != null) {
-      product_description =
-          TdApiMap.fromMap(map['product_description']) as FormattedText;
+      product_description = TdApiMap.fromMap(map['product_description']) as FormattedText;
     }
     if (map['product_photo'] != null) {
       product_photo = TdApiMap.fromMap(map['product_photo']) as Photo;
@@ -123,11 +119,9 @@ class PaymentForm extends TdObject {
       'id': id?.toMap(skipNulls: skipNulls),
       'invoice': invoice?.toMap(skipNulls: skipNulls),
       'seller_bot_user_id': seller_bot_user_id?.toMap(skipNulls: skipNulls),
-      'payment_provider_user_id':
-          payment_provider_user_id?.toMap(skipNulls: skipNulls),
+      'payment_provider_user_id': payment_provider_user_id?.toMap(skipNulls: skipNulls),
       'payment_provider': payment_provider?.toMap(skipNulls: skipNulls),
-      'additional_payment_options':
-          additional_payment_options?.toMap(skipNulls: skipNulls),
+      'additional_payment_options': additional_payment_options?.toMap(skipNulls: skipNulls),
       'saved_order_info': saved_order_info?.toMap(skipNulls: skipNulls),
       'saved_credentials': saved_credentials?.toMap(skipNulls: skipNulls),
       'can_save_credentials': can_save_credentials?.toMap(skipNulls: skipNulls),

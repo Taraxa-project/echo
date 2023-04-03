@@ -39,8 +39,7 @@ class Sessions extends TdObject {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'sessions': sessions?.toMap(skipNulls: skipNulls),
-      'inactive_session_ttl_days':
-          inactive_session_ttl_days?.toMap(skipNulls: skipNulls),
+      'inactive_session_ttl_days': inactive_session_ttl_days?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

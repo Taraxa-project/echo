@@ -25,8 +25,7 @@ class SetVideoChatDefaultParticipant extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     if (map['default_participant_id'] != null) {
-      default_participant_id =
-          TdApiMap.fromMap(map['default_participant_id']) as MessageSender;
+      default_participant_id = TdApiMap.fromMap(map['default_participant_id']) as MessageSender;
     }
   }
 
@@ -36,8 +35,7 @@ class SetVideoChatDefaultParticipant extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'default_participant_id':
-          default_participant_id?.toMap(skipNulls: skipNulls),
+      'default_participant_id': default_participant_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

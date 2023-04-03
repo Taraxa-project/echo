@@ -57,8 +57,7 @@ class ChatPhoto extends TdObject {
       animation = TdApiMap.fromMap(map['animation']) as AnimatedChatPhoto;
     }
     if (map['small_animation'] != null) {
-      small_animation =
-          TdApiMap.fromMap(map['small_animation']) as AnimatedChatPhoto;
+      small_animation = TdApiMap.fromMap(map['small_animation']) as AnimatedChatPhoto;
     }
   }
 

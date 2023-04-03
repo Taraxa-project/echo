@@ -85,8 +85,7 @@ class LanguagePackInfo extends TdObject {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'id': id?.toMap(skipNulls: skipNulls),
-      'base_language_pack_id':
-          base_language_pack_id?.toMap(skipNulls: skipNulls),
+      'base_language_pack_id': base_language_pack_id?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),
       'native_name': native_name?.toMap(skipNulls: skipNulls),
       'plural_code': plural_code?.toMap(skipNulls: skipNulls),
@@ -95,8 +94,7 @@ class LanguagePackInfo extends TdObject {
       'is_beta': is_beta?.toMap(skipNulls: skipNulls),
       'is_installed': is_installed?.toMap(skipNulls: skipNulls),
       'total_string_count': total_string_count?.toMap(skipNulls: skipNulls),
-      'translated_string_count':
-          translated_string_count?.toMap(skipNulls: skipNulls),
+      'translated_string_count': translated_string_count?.toMap(skipNulls: skipNulls),
       'local_string_count': local_string_count?.toMap(skipNulls: skipNulls),
       'translation_url': translation_url?.toMap(skipNulls: skipNulls),
     };

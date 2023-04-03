@@ -30,8 +30,7 @@ class GroupCallParticipantVideoInfo extends TdObject {
       source_groups = [];
       for (var someValue in map['source_groups']) {
         if (someValue != null) {
-          source_groups
-              ?.add(TdApiMap.fromMap(someValue) as GroupCallVideoSourceGroup);
+          source_groups?.add(TdApiMap.fromMap(someValue) as GroupCallVideoSourceGroup);
         }
       }
     }

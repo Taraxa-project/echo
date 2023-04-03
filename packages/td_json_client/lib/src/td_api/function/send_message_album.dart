@@ -50,8 +50,7 @@ class SendMessageAlbum extends TdFunction {
       input_message_contents = [];
       for (var someValue in map['input_message_contents']) {
         if (someValue != null) {
-          input_message_contents
-              ?.add(TdApiMap.fromMap(someValue) as InputMessageContent);
+          input_message_contents?.add(TdApiMap.fromMap(someValue) as InputMessageContent);
         }
       }
     }
@@ -67,8 +66,7 @@ class SendMessageAlbum extends TdFunction {
       'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),
       'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
       'options': options?.toMap(skipNulls: skipNulls),
-      'input_message_contents':
-          input_message_contents?.toMap(skipNulls: skipNulls),
+      'input_message_contents': input_message_contents?.toMap(skipNulls: skipNulls),
       'only_preview': only_preview?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

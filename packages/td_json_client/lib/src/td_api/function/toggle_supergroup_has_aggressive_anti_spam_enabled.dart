@@ -18,8 +18,7 @@ class ToggleSupergroupHasAggressiveAntiSpamEnabled extends TdFunction {
     this.has_aggressive_anti_spam_enabled,
   });
 
-  ToggleSupergroupHasAggressiveAntiSpamEnabled.fromMap(
-      Map<String, dynamic> map) {
+  ToggleSupergroupHasAggressiveAntiSpamEnabled.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     supergroup_id = map['supergroup_id'];
@@ -32,8 +31,7 @@ class ToggleSupergroupHasAggressiveAntiSpamEnabled extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'supergroup_id': supergroup_id?.toMap(skipNulls: skipNulls),
-      'has_aggressive_anti_spam_enabled':
-          has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
+      'has_aggressive_anti_spam_enabled': has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

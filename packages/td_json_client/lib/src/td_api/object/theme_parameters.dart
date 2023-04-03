@@ -55,8 +55,7 @@ class ThemeParameters extends TdObject {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'background_color': background_color?.toMap(skipNulls: skipNulls),
-      'secondary_background_color':
-          secondary_background_color?.toMap(skipNulls: skipNulls),
+      'secondary_background_color': secondary_background_color?.toMap(skipNulls: skipNulls),
       'text_color': text_color?.toMap(skipNulls: skipNulls),
       'hint_color': hint_color?.toMap(skipNulls: skipNulls),
       'link_color': link_color?.toMap(skipNulls: skipNulls),

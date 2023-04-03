@@ -51,12 +51,9 @@ class PhoneNumberAuthenticationSettings extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'allow_flash_call': allow_flash_call?.toMap(skipNulls: skipNulls),
       'allow_missed_call': allow_missed_call?.toMap(skipNulls: skipNulls),
-      'is_current_phone_number':
-          is_current_phone_number?.toMap(skipNulls: skipNulls),
-      'allow_sms_retriever_api':
-          allow_sms_retriever_api?.toMap(skipNulls: skipNulls),
-      'authentication_tokens':
-          authentication_tokens?.toMap(skipNulls: skipNulls),
+      'is_current_phone_number': is_current_phone_number?.toMap(skipNulls: skipNulls),
+      'allow_sms_retriever_api': allow_sms_retriever_api?.toMap(skipNulls: skipNulls),
+      'authentication_tokens': authentication_tokens?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

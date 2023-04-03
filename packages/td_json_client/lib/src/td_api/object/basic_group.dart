@@ -52,8 +52,7 @@ class BasicGroup extends TdObject {
       'member_count': member_count?.toMap(skipNulls: skipNulls),
       'status': status?.toMap(skipNulls: skipNulls),
       'is_active': is_active?.toMap(skipNulls: skipNulls),
-      'upgraded_to_supergroup_id':
-          upgraded_to_supergroup_id?.toMap(skipNulls: skipNulls),
+      'upgraded_to_supergroup_id': upgraded_to_supergroup_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

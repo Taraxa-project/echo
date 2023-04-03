@@ -68,8 +68,7 @@ class UserPrivacySettingShowLinkInForwardedMessages extends UserPrivacySetting {
     super.client_id,
   });
 
-  UserPrivacySettingShowLinkInForwardedMessages.fromMap(
-      Map<String, dynamic> map) {
+  UserPrivacySettingShowLinkInForwardedMessages.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }
@@ -204,8 +203,7 @@ class UserPrivacySettingAllowFindingByPhoneNumber extends UserPrivacySetting {
     super.client_id,
   });
 
-  UserPrivacySettingAllowFindingByPhoneNumber.fromMap(
-      Map<String, dynamic> map) {
+  UserPrivacySettingAllowFindingByPhoneNumber.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }
@@ -224,18 +222,15 @@ class UserPrivacySettingAllowFindingByPhoneNumber extends UserPrivacySetting {
 }
 
 /// A privacy setting for managing whether the user can receive voice and video messages in private chats
-class UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages
-    extends UserPrivacySetting {
-  String get tdType =>
-      'userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages';
+class UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages extends UserPrivacySetting {
+  String get tdType => 'userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages';
 
   UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages({
     super.extra,
     super.client_id,
   });
 
-  UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages.fromMap(
-      Map<String, dynamic> map) {
+  UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

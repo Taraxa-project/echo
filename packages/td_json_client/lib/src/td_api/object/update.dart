@@ -88,8 +88,7 @@ class UpdateAuthorizationState extends Update {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['authorization_state'] != null) {
-      authorization_state =
-          TdApiMap.fromMap(map['authorization_state']) as AuthorizationState;
+      authorization_state = TdApiMap.fromMap(map['authorization_state']) as AuthorizationState;
     }
   }
 
@@ -448,8 +447,7 @@ class UpdateMessageInteractionInfo extends Update {
     chat_id = map['chat_id'];
     message_id = map['message_id'];
     if (map['interaction_info'] != null) {
-      interaction_info =
-          TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
+      interaction_info = TdApiMap.fromMap(map['interaction_info']) as MessageInteractionInfo;
     }
   }
 
@@ -602,8 +600,7 @@ class UpdateMessageUnreadReactions extends Update {
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'message_id': message_id?.toMap(skipNulls: skipNulls),
       'unread_reactions': unread_reactions?.toMap(skipNulls: skipNulls),
-      'unread_reaction_count':
-          unread_reaction_count?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -937,8 +934,7 @@ class UpdateChatReadInbox extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'last_read_inbox_message_id':
-          last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
+      'last_read_inbox_message_id': last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
       'unread_count': unread_count?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -978,8 +974,7 @@ class UpdateChatReadOutbox extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'last_read_outbox_message_id':
-          last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
+      'last_read_outbox_message_id': last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1051,8 +1046,7 @@ class UpdateChatAvailableReactions extends Update {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     if (map['available_reactions'] != null) {
-      available_reactions = TdApiMap.fromMap(map['available_reactions'])
-          as ChatAvailableReactions;
+      available_reactions = TdApiMap.fromMap(map['available_reactions']) as ChatAvailableReactions;
     }
   }
 
@@ -1147,8 +1141,7 @@ class UpdateChatMessageSender extends Update {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     if (map['message_sender_id'] != null) {
-      message_sender_id =
-          TdApiMap.fromMap(map['message_sender_id']) as MessageSender;
+      message_sender_id = TdApiMap.fromMap(map['message_sender_id']) as MessageSender;
     }
   }
 
@@ -1197,8 +1190,7 @@ class UpdateChatMessageAutoDeleteTime extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'message_auto_delete_time':
-          message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1229,8 +1221,7 @@ class UpdateChatNotificationSettings extends Update {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     if (map['notification_settings'] != null) {
-      notification_settings = TdApiMap.fromMap(map['notification_settings'])
-          as ChatNotificationSettings;
+      notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
     }
   }
 
@@ -1240,8 +1231,7 @@ class UpdateChatNotificationSettings extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'notification_settings':
-          notification_settings?.toMap(skipNulls: skipNulls),
+      'notification_settings': notification_settings?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1272,8 +1262,7 @@ class UpdateChatPendingJoinRequests extends Update {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     if (map['pending_join_requests'] != null) {
-      pending_join_requests = TdApiMap.fromMap(map['pending_join_requests'])
-          as ChatJoinRequestsInfo;
+      pending_join_requests = TdApiMap.fromMap(map['pending_join_requests']) as ChatJoinRequestsInfo;
     }
   }
 
@@ -1283,8 +1272,7 @@ class UpdateChatPendingJoinRequests extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'pending_join_requests':
-          pending_join_requests?.toMap(skipNulls: skipNulls),
+      'pending_join_requests': pending_join_requests?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1323,8 +1311,7 @@ class UpdateChatReplyMarkup extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'reply_markup_message_id':
-          reply_markup_message_id?.toMap(skipNulls: skipNulls),
+      'reply_markup_message_id': reply_markup_message_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1441,8 +1428,7 @@ class UpdateChatUnreadReactionCount extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'unread_reaction_count':
-          unread_reaction_count?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1522,8 +1508,7 @@ class UpdateChatDefaultDisableNotification extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'default_disable_notification':
-          default_disable_notification?.toMap(skipNulls: skipNulls),
+      'default_disable_notification': default_disable_notification?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1562,8 +1547,7 @@ class UpdateChatHasProtectedContent extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'has_protected_content':
-          has_protected_content?.toMap(skipNulls: skipNulls),
+      'has_protected_content': has_protected_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1602,8 +1586,7 @@ class UpdateChatHasScheduledMessages extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'has_scheduled_messages':
-          has_scheduled_messages?.toMap(skipNulls: skipNulls),
+      'has_scheduled_messages': has_scheduled_messages?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1727,8 +1710,7 @@ class UpdateChatFilters extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_filters': chat_filters?.toMap(skipNulls: skipNulls),
-      'main_chat_list_position':
-          main_chat_list_position?.toMap(skipNulls: skipNulls),
+      'main_chat_list_position': main_chat_list_position?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1842,8 +1824,7 @@ class UpdateScopeNotificationSettings extends Update {
       scope = TdApiMap.fromMap(map['scope']) as NotificationSettingsScope;
     }
     if (map['notification_settings'] != null) {
-      notification_settings = TdApiMap.fromMap(map['notification_settings'])
-          as ScopeNotificationSettings;
+      notification_settings = TdApiMap.fromMap(map['notification_settings']) as ScopeNotificationSettings;
     }
   }
 
@@ -1853,8 +1834,7 @@ class UpdateScopeNotificationSettings extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'scope': scope?.toMap(skipNulls: skipNulls),
-      'notification_settings':
-          notification_settings?.toMap(skipNulls: skipNulls),
+      'notification_settings': notification_settings?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1894,8 +1874,7 @@ class UpdateNotification extends Update {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'notification_group_id':
-          notification_group_id?.toMap(skipNulls: skipNulls),
+      'notification_group_id': notification_group_id?.toMap(skipNulls: skipNulls),
       'notification': notification?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -1978,18 +1957,14 @@ class UpdateNotificationGroup extends Update {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'notification_group_id':
-          notification_group_id?.toMap(skipNulls: skipNulls),
+      'notification_group_id': notification_group_id?.toMap(skipNulls: skipNulls),
       'type': type?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'notification_settings_chat_id':
-          notification_settings_chat_id?.toMap(skipNulls: skipNulls),
-      'notification_sound_id':
-          notification_sound_id?.toMap(skipNulls: skipNulls),
+      'notification_settings_chat_id': notification_settings_chat_id?.toMap(skipNulls: skipNulls),
+      'notification_sound_id': notification_sound_id?.toMap(skipNulls: skipNulls),
       'total_count': total_count?.toMap(skipNulls: skipNulls),
       'added_notifications': added_notifications?.toMap(skipNulls: skipNulls),
-      'removed_notification_ids':
-          removed_notification_ids?.toMap(skipNulls: skipNulls),
+      'removed_notification_ids': removed_notification_ids?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -2067,10 +2042,8 @@ class UpdateHavePendingNotifications extends Update {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'have_delayed_notifications':
-          have_delayed_notifications?.toMap(skipNulls: skipNulls),
-      'have_unreceived_notifications':
-          have_unreceived_notifications?.toMap(skipNulls: skipNulls),
+      'have_delayed_notifications': have_delayed_notifications?.toMap(skipNulls: skipNulls),
+      'have_unreceived_notifications': have_unreceived_notifications?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -2434,8 +2407,7 @@ class UpdateBasicGroupFullInfo extends Update {
     client_id = map['@client_id'];
     basic_group_id = map['basic_group_id'];
     if (map['basic_group_full_info'] != null) {
-      basic_group_full_info =
-          TdApiMap.fromMap(map['basic_group_full_info']) as BasicGroupFullInfo;
+      basic_group_full_info = TdApiMap.fromMap(map['basic_group_full_info']) as BasicGroupFullInfo;
     }
   }
 
@@ -2445,8 +2417,7 @@ class UpdateBasicGroupFullInfo extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'basic_group_id': basic_group_id?.toMap(skipNulls: skipNulls),
-      'basic_group_full_info':
-          basic_group_full_info?.toMap(skipNulls: skipNulls),
+      'basic_group_full_info': basic_group_full_info?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -2477,8 +2448,7 @@ class UpdateSupergroupFullInfo extends Update {
     client_id = map['@client_id'];
     supergroup_id = map['supergroup_id'];
     if (map['supergroup_full_info'] != null) {
-      supergroup_full_info =
-          TdApiMap.fromMap(map['supergroup_full_info']) as SupergroupFullInfo;
+      supergroup_full_info = TdApiMap.fromMap(map['supergroup_full_info']) as SupergroupFullInfo;
     }
   }
 
@@ -2931,8 +2901,7 @@ class UpdateGroupCallParticipant extends Update {
     client_id = map['@client_id'];
     group_call_id = map['group_call_id'];
     if (map['participant'] != null) {
-      participant =
-          TdApiMap.fromMap(map['participant']) as GroupCallParticipant;
+      participant = TdApiMap.fromMap(map['participant']) as GroupCallParticipant;
     }
   }
 
@@ -3135,10 +3104,8 @@ class UpdateUnreadChatCount extends Update {
       'total_count': total_count?.toMap(skipNulls: skipNulls),
       'unread_count': unread_count?.toMap(skipNulls: skipNulls),
       'unread_unmuted_count': unread_unmuted_count?.toMap(skipNulls: skipNulls),
-      'marked_as_unread_count':
-          marked_as_unread_count?.toMap(skipNulls: skipNulls),
-      'marked_as_unread_unmuted_count':
-          marked_as_unread_unmuted_count?.toMap(skipNulls: skipNulls),
+      'marked_as_unread_count': marked_as_unread_count?.toMap(skipNulls: skipNulls),
+      'marked_as_unread_unmuted_count': marked_as_unread_unmuted_count?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -3293,8 +3260,7 @@ class UpdateTrendingStickerSets extends Update {
       sticker_type = TdApiMap.fromMap(map['sticker_type']) as StickerType;
     }
     if (map['sticker_sets'] != null) {
-      sticker_sets =
-          TdApiMap.fromMap(map['sticker_sets']) as TrendingStickerSets;
+      sticker_sets = TdApiMap.fromMap(map['sticker_sets']) as TrendingStickerSets;
     }
   }
 
@@ -3462,8 +3428,7 @@ class UpdateSavedNotificationSounds extends Update {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'notification_sound_ids':
-          notification_sound_ids?.toMap(skipNulls: skipNulls),
+      'notification_sound_ids': notification_sound_ids?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -3662,8 +3627,7 @@ class UpdateTermsOfService extends Update {
     client_id = map['@client_id'];
     terms_of_service_id = map['terms_of_service_id'];
     if (map['terms_of_service'] != null) {
-      terms_of_service =
-          TdApiMap.fromMap(map['terms_of_service']) as TermsOfService;
+      terms_of_service = TdApiMap.fromMap(map['terms_of_service']) as TermsOfService;
     }
   }
 

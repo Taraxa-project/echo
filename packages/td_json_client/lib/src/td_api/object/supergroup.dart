@@ -127,8 +127,7 @@ class Supergroup extends TdObject {
       'has_linked_chat': has_linked_chat?.toMap(skipNulls: skipNulls),
       'has_location': has_location?.toMap(skipNulls: skipNulls),
       'sign_messages': sign_messages?.toMap(skipNulls: skipNulls),
-      'join_to_send_messages':
-          join_to_send_messages?.toMap(skipNulls: skipNulls),
+      'join_to_send_messages': join_to_send_messages?.toMap(skipNulls: skipNulls),
       'join_by_request': join_by_request?.toMap(skipNulls: skipNulls),
       'is_slow_mode_enabled': is_slow_mode_enabled?.toMap(skipNulls: skipNulls),
       'is_channel': is_channel?.toMap(skipNulls: skipNulls),

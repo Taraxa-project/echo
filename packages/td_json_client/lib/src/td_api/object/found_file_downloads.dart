@@ -28,8 +28,7 @@ class FoundFileDownloads extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['total_counts'] != null) {
-      total_counts =
-          TdApiMap.fromMap(map['total_counts']) as DownloadedFileCounts;
+      total_counts = TdApiMap.fromMap(map['total_counts']) as DownloadedFileCounts;
     }
     if (map['files'] != null) {
       files = [];

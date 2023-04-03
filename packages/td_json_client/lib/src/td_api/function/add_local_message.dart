@@ -43,8 +43,7 @@ class AddLocalMessage extends TdFunction {
     reply_to_message_id = map['reply_to_message_id'];
     disable_notification = map['disable_notification'];
     if (map['input_message_content'] != null) {
-      input_message_content =
-          TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
+      input_message_content = TdApiMap.fromMap(map['input_message_content']) as InputMessageContent;
     }
   }
 
@@ -57,8 +56,7 @@ class AddLocalMessage extends TdFunction {
       'sender_id': sender_id?.toMap(skipNulls: skipNulls),
       'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
       'disable_notification': disable_notification?.toMap(skipNulls: skipNulls),
-      'input_message_content':
-          input_message_content?.toMap(skipNulls: skipNulls),
+      'input_message_content': input_message_content?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

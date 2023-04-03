@@ -34,8 +34,7 @@ class GetChatInviteLinkMembers extends TdFunction {
     chat_id = map['chat_id'];
     invite_link = map['invite_link'];
     if (map['offset_member'] != null) {
-      offset_member =
-          TdApiMap.fromMap(map['offset_member']) as ChatInviteLinkMember;
+      offset_member = TdApiMap.fromMap(map['offset_member']) as ChatInviteLinkMember;
     }
     limit = map['limit'];
   }

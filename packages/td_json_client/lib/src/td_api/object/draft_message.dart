@@ -29,8 +29,7 @@ class DraftMessage extends TdObject {
     reply_to_message_id = map['reply_to_message_id'];
     date = map['date'];
     if (map['input_message_text'] != null) {
-      input_message_text =
-          TdApiMap.fromMap(map['input_message_text']) as InputMessageContent;
+      input_message_text = TdApiMap.fromMap(map['input_message_text']) as InputMessageContent;
     }
   }
 

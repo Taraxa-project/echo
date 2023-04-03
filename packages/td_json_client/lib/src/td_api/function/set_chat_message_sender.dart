@@ -25,8 +25,7 @@ class SetChatMessageSender extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     if (map['message_sender_id'] != null) {
-      message_sender_id =
-          TdApiMap.fromMap(map['message_sender_id']) as MessageSender;
+      message_sender_id = TdApiMap.fromMap(map['message_sender_id']) as MessageSender;
     }
   }
 

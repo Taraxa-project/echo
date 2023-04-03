@@ -36,8 +36,7 @@ class ChatInviteLinkCount extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'user_id': user_id?.toMap(skipNulls: skipNulls),
       'invite_link_count': invite_link_count?.toMap(skipNulls: skipNulls),
-      'revoked_invite_link_count':
-          revoked_invite_link_count?.toMap(skipNulls: skipNulls),
+      'revoked_invite_link_count': revoked_invite_link_count?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

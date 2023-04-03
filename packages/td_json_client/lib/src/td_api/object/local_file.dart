@@ -62,13 +62,10 @@ class LocalFile extends TdObject {
       'path': path?.toMap(skipNulls: skipNulls),
       'can_be_downloaded': can_be_downloaded?.toMap(skipNulls: skipNulls),
       'can_be_deleted': can_be_deleted?.toMap(skipNulls: skipNulls),
-      'is_downloading_active':
-          is_downloading_active?.toMap(skipNulls: skipNulls),
-      'is_downloading_completed':
-          is_downloading_completed?.toMap(skipNulls: skipNulls),
+      'is_downloading_active': is_downloading_active?.toMap(skipNulls: skipNulls),
+      'is_downloading_completed': is_downloading_completed?.toMap(skipNulls: skipNulls),
       'download_offset': download_offset?.toMap(skipNulls: skipNulls),
-      'downloaded_prefix_size':
-          downloaded_prefix_size?.toMap(skipNulls: skipNulls),
+      'downloaded_prefix_size': downloaded_prefix_size?.toMap(skipNulls: skipNulls),
       'downloaded_size': downloaded_size?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

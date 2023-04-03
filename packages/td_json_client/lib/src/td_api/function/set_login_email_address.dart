@@ -26,8 +26,7 @@ class SetLoginEmailAddress extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'new_login_email_address':
-          new_login_email_address?.toMap(skipNulls: skipNulls),
+      'new_login_email_address': new_login_email_address?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

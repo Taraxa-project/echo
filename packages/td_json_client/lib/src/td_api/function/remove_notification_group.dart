@@ -30,8 +30,7 @@ class RemoveNotificationGroup extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'notification_group_id':
-          notification_group_id?.toMap(skipNulls: skipNulls),
+      'notification_group_id': notification_group_id?.toMap(skipNulls: skipNulls),
       'max_notification_id': max_notification_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

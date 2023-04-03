@@ -22,8 +22,7 @@ class NotificationSounds extends TdObject {
       notification_sounds = [];
       for (var someValue in map['notification_sounds']) {
         if (someValue != null) {
-          notification_sounds
-              ?.add(TdApiMap.fromMap(someValue) as NotificationSound);
+          notification_sounds?.add(TdApiMap.fromMap(someValue) as NotificationSound);
         }
       }
     }

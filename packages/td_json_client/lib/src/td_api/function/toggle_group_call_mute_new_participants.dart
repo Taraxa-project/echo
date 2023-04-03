@@ -31,8 +31,7 @@ class ToggleGroupCallMuteNewParticipants extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'group_call_id': group_call_id?.toMap(skipNulls: skipNulls),
-      'mute_new_participants':
-          mute_new_participants?.toMap(skipNulls: skipNulls),
+      'mute_new_participants': mute_new_participants?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

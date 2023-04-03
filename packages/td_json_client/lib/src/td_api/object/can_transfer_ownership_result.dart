@@ -33,8 +33,7 @@ class CanTransferOwnershipResultOk extends CanTransferOwnershipResult {
 }
 
 /// The 2-step verification needs to be enabled first
-class CanTransferOwnershipResultPasswordNeeded
-    extends CanTransferOwnershipResult {
+class CanTransferOwnershipResultPasswordNeeded extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultPasswordNeeded';
 
   CanTransferOwnershipResultPasswordNeeded({
@@ -61,8 +60,7 @@ class CanTransferOwnershipResultPasswordNeeded
 }
 
 /// The 2-step verification was enabled recently, user needs to wait
-class CanTransferOwnershipResultPasswordTooFresh
-    extends CanTransferOwnershipResult {
+class CanTransferOwnershipResultPasswordTooFresh extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultPasswordTooFresh';
 
   /// Time left before the session can be used to transfer ownership of a chat, in seconds
@@ -95,8 +93,7 @@ class CanTransferOwnershipResultPasswordTooFresh
 }
 
 /// The session was created recently, user needs to wait
-class CanTransferOwnershipResultSessionTooFresh
-    extends CanTransferOwnershipResult {
+class CanTransferOwnershipResultSessionTooFresh extends CanTransferOwnershipResult {
   String get tdType => 'canTransferOwnershipResultSessionTooFresh';
 
   /// Time left before the session can be used to transfer ownership of a chat, in seconds

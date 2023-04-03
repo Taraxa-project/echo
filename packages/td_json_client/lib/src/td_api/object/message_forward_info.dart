@@ -50,8 +50,7 @@ class MessageForwardInfo extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'origin': origin?.toMap(skipNulls: skipNulls),
       'date': date?.toMap(skipNulls: skipNulls),
-      'public_service_announcement_type':
-          public_service_announcement_type?.toMap(skipNulls: skipNulls),
+      'public_service_announcement_type': public_service_announcement_type?.toMap(skipNulls: skipNulls),
       'from_chat_id': from_chat_id?.toMap(skipNulls: skipNulls),
       'from_message_id': from_message_id?.toMap(skipNulls: skipNulls),
     };

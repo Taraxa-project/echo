@@ -82,8 +82,7 @@ class Invoice extends TdObject {
         suggested_tip_amounts?.add(someValue);
       }
     }
-    recurring_payment_terms_of_service_url =
-        map['recurring_payment_terms_of_service_url'];
+    recurring_payment_terms_of_service_url = map['recurring_payment_terms_of_service_url'];
     is_test = map['is_test'];
     need_name = map['need_name'];
     need_phone_number = map['need_phone_number'];
@@ -102,20 +101,15 @@ class Invoice extends TdObject {
       'currency': currency?.toMap(skipNulls: skipNulls),
       'price_parts': price_parts?.toMap(skipNulls: skipNulls),
       'max_tip_amount': max_tip_amount?.toMap(skipNulls: skipNulls),
-      'suggested_tip_amounts':
-          suggested_tip_amounts?.toMap(skipNulls: skipNulls),
-      'recurring_payment_terms_of_service_url':
-          recurring_payment_terms_of_service_url?.toMap(skipNulls: skipNulls),
+      'suggested_tip_amounts': suggested_tip_amounts?.toMap(skipNulls: skipNulls),
+      'recurring_payment_terms_of_service_url': recurring_payment_terms_of_service_url?.toMap(skipNulls: skipNulls),
       'is_test': is_test?.toMap(skipNulls: skipNulls),
       'need_name': need_name?.toMap(skipNulls: skipNulls),
       'need_phone_number': need_phone_number?.toMap(skipNulls: skipNulls),
       'need_email_address': need_email_address?.toMap(skipNulls: skipNulls),
-      'need_shipping_address':
-          need_shipping_address?.toMap(skipNulls: skipNulls),
-      'send_phone_number_to_provider':
-          send_phone_number_to_provider?.toMap(skipNulls: skipNulls),
-      'send_email_address_to_provider':
-          send_email_address_to_provider?.toMap(skipNulls: skipNulls),
+      'need_shipping_address': need_shipping_address?.toMap(skipNulls: skipNulls),
+      'send_phone_number_to_provider': send_phone_number_to_provider?.toMap(skipNulls: skipNulls),
+      'send_email_address_to_provider': send_email_address_to_provider?.toMap(skipNulls: skipNulls),
       'is_flexible': is_flexible?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

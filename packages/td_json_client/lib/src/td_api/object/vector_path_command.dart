@@ -67,8 +67,7 @@ class VectorPathCommandCubicBezierCurve extends VectorPathCommand {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['start_control_point'] != null) {
-      start_control_point =
-          TdApiMap.fromMap(map['start_control_point']) as Point;
+      start_control_point = TdApiMap.fromMap(map['start_control_point']) as Point;
     }
     if (map['end_control_point'] != null) {
       end_control_point = TdApiMap.fromMap(map['end_control_point']) as Point;

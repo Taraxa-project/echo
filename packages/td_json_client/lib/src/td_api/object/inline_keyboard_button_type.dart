@@ -150,8 +150,7 @@ class InlineKeyboardButtonTypeCallback extends InlineKeyboardButtonType {
 }
 
 /// A button that asks for the 2-step verification password of the current user and then sends a callback query to a bot
-class InlineKeyboardButtonTypeCallbackWithPassword
-    extends InlineKeyboardButtonType {
+class InlineKeyboardButtonTypeCallbackWithPassword extends InlineKeyboardButtonType {
   String get tdType => 'inlineKeyboardButtonTypeCallbackWithPassword';
 
   /// Data to be sent to the bot via a callback query
@@ -163,8 +162,7 @@ class InlineKeyboardButtonTypeCallbackWithPassword
     this.data,
   });
 
-  InlineKeyboardButtonTypeCallbackWithPassword.fromMap(
-      Map<String, dynamic> map) {
+  InlineKeyboardButtonTypeCallbackWithPassword.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     data = map['data'];

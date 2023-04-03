@@ -37,11 +37,9 @@ class MessageSendOptions extends TdObject {
     disable_notification = map['disable_notification'];
     from_background = map['from_background'];
     protect_content = map['protect_content'];
-    update_order_of_installed_sticker_sets =
-        map['update_order_of_installed_sticker_sets'];
+    update_order_of_installed_sticker_sets = map['update_order_of_installed_sticker_sets'];
     if (map['scheduling_state'] != null) {
-      scheduling_state =
-          TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
+      scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
     }
   }
 
@@ -53,8 +51,7 @@ class MessageSendOptions extends TdObject {
       'disable_notification': disable_notification?.toMap(skipNulls: skipNulls),
       'from_background': from_background?.toMap(skipNulls: skipNulls),
       'protect_content': protect_content?.toMap(skipNulls: skipNulls),
-      'update_order_of_installed_sticker_sets':
-          update_order_of_installed_sticker_sets?.toMap(skipNulls: skipNulls),
+      'update_order_of_installed_sticker_sets': update_order_of_installed_sticker_sets?.toMap(skipNulls: skipNulls),
       'scheduling_state': scheduling_state?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

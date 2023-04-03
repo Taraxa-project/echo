@@ -27,8 +27,7 @@ class InputPassportElementPersonalDetails extends InputPassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['personal_details'] != null) {
-      personal_details =
-          TdApiMap.fromMap(map['personal_details']) as PersonalDetails;
+      personal_details = TdApiMap.fromMap(map['personal_details']) as PersonalDetails;
     }
   }
 
@@ -98,8 +97,7 @@ class InputPassportElementDriverLicense extends InputPassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['driver_license'] != null) {
-      driver_license =
-          TdApiMap.fromMap(map['driver_license']) as InputIdentityDocument;
+      driver_license = TdApiMap.fromMap(map['driver_license']) as InputIdentityDocument;
     }
   }
 
@@ -134,8 +132,7 @@ class InputPassportElementIdentityCard extends InputPassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['identity_card'] != null) {
-      identity_card =
-          TdApiMap.fromMap(map['identity_card']) as InputIdentityDocument;
+      identity_card = TdApiMap.fromMap(map['identity_card']) as InputIdentityDocument;
     }
   }
 
@@ -170,8 +167,7 @@ class InputPassportElementInternalPassport extends InputPassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['internal_passport'] != null) {
-      internal_passport =
-          TdApiMap.fromMap(map['internal_passport']) as InputIdentityDocument;
+      internal_passport = TdApiMap.fromMap(map['internal_passport']) as InputIdentityDocument;
     }
   }
 
@@ -241,8 +237,7 @@ class InputPassportElementUtilityBill extends InputPassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['utility_bill'] != null) {
-      utility_bill =
-          TdApiMap.fromMap(map['utility_bill']) as InputPersonalDocument;
+      utility_bill = TdApiMap.fromMap(map['utility_bill']) as InputPersonalDocument;
     }
   }
 
@@ -277,8 +272,7 @@ class InputPassportElementBankStatement extends InputPassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['bank_statement'] != null) {
-      bank_statement =
-          TdApiMap.fromMap(map['bank_statement']) as InputPersonalDocument;
+      bank_statement = TdApiMap.fromMap(map['bank_statement']) as InputPersonalDocument;
     }
   }
 
@@ -313,8 +307,7 @@ class InputPassportElementRentalAgreement extends InputPassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['rental_agreement'] != null) {
-      rental_agreement =
-          TdApiMap.fromMap(map['rental_agreement']) as InputPersonalDocument;
+      rental_agreement = TdApiMap.fromMap(map['rental_agreement']) as InputPersonalDocument;
     }
   }
 
@@ -349,8 +342,7 @@ class InputPassportElementPassportRegistration extends InputPassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['passport_registration'] != null) {
-      passport_registration = TdApiMap.fromMap(map['passport_registration'])
-          as InputPersonalDocument;
+      passport_registration = TdApiMap.fromMap(map['passport_registration']) as InputPersonalDocument;
     }
   }
 
@@ -359,8 +351,7 @@ class InputPassportElementPassportRegistration extends InputPassportElement {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'passport_registration':
-          passport_registration?.toMap(skipNulls: skipNulls),
+      'passport_registration': passport_registration?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -386,8 +377,7 @@ class InputPassportElementTemporaryRegistration extends InputPassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['temporary_registration'] != null) {
-      temporary_registration = TdApiMap.fromMap(map['temporary_registration'])
-          as InputPersonalDocument;
+      temporary_registration = TdApiMap.fromMap(map['temporary_registration']) as InputPersonalDocument;
     }
   }
 
@@ -396,8 +386,7 @@ class InputPassportElementTemporaryRegistration extends InputPassportElement {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'temporary_registration':
-          temporary_registration?.toMap(skipNulls: skipNulls),
+      'temporary_registration': temporary_registration?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

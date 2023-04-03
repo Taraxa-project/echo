@@ -91,8 +91,7 @@ class OptimizeStorage extends TdFunction {
       'file_types': file_types?.toMap(skipNulls: skipNulls),
       'chat_ids': chat_ids?.toMap(skipNulls: skipNulls),
       'exclude_chat_ids': exclude_chat_ids?.toMap(skipNulls: skipNulls),
-      'return_deleted_file_statistics':
-          return_deleted_file_statistics?.toMap(skipNulls: skipNulls),
+      'return_deleted_file_statistics': return_deleted_file_statistics?.toMap(skipNulls: skipNulls),
       'chat_limit': chat_limit?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

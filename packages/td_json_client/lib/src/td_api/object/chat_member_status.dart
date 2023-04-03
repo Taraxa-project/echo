@@ -165,8 +165,7 @@ class ChatMemberStatusRestricted extends ChatMemberStatus {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'is_member': is_member?.toMap(skipNulls: skipNulls),
-      'restricted_until_date':
-          restricted_until_date?.toMap(skipNulls: skipNulls),
+      'restricted_until_date': restricted_until_date?.toMap(skipNulls: skipNulls),
       'permissions': permissions?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

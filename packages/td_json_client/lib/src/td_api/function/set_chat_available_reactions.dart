@@ -25,8 +25,7 @@ class SetChatAvailableReactions extends TdFunction {
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
     if (map['available_reactions'] != null) {
-      available_reactions = TdApiMap.fromMap(map['available_reactions'])
-          as ChatAvailableReactions;
+      available_reactions = TdApiMap.fromMap(map['available_reactions']) as ChatAvailableReactions;
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:td_json_client/src/td_api/td.dart';
 
 /// Represents a data needed to subscribe for push notifications through registerDevice method.
+/// To use specific push notification service, the correct application platform must be specified and a valid server authentication data must be uploaded at https://my.telegram.org
 abstract class DeviceToken extends TdObject {
   DeviceToken({super.extra, super.client_id});
 }

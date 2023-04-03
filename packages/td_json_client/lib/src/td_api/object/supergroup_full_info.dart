@@ -170,8 +170,7 @@ class SupergroupFullInfo extends TdObject {
       'banned_count': banned_count?.toMap(skipNulls: skipNulls),
       'linked_chat_id': linked_chat_id?.toMap(skipNulls: skipNulls),
       'slow_mode_delay': slow_mode_delay?.toMap(skipNulls: skipNulls),
-      'slow_mode_delay_expires_in':
-          slow_mode_delay_expires_in?.toMap(skipNulls: skipNulls),
+      'slow_mode_delay_expires_in': slow_mode_delay_expires_in?.toMap(skipNulls: skipNulls),
       'can_get_members': can_get_members?.toMap(skipNulls: skipNulls),
       'has_hidden_members': has_hidden_members?.toMap(skipNulls: skipNulls),
       'can_hide_members': can_hide_members?.toMap(skipNulls: skipNulls),
@@ -179,20 +178,15 @@ class SupergroupFullInfo extends TdObject {
       'can_set_sticker_set': can_set_sticker_set?.toMap(skipNulls: skipNulls),
       'can_set_location': can_set_location?.toMap(skipNulls: skipNulls),
       'can_get_statistics': can_get_statistics?.toMap(skipNulls: skipNulls),
-      'can_toggle_aggressive_anti_spam':
-          can_toggle_aggressive_anti_spam?.toMap(skipNulls: skipNulls),
-      'is_all_history_available':
-          is_all_history_available?.toMap(skipNulls: skipNulls),
-      'has_aggressive_anti_spam_enabled':
-          has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
+      'can_toggle_aggressive_anti_spam': can_toggle_aggressive_anti_spam?.toMap(skipNulls: skipNulls),
+      'is_all_history_available': is_all_history_available?.toMap(skipNulls: skipNulls),
+      'has_aggressive_anti_spam_enabled': has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
       'sticker_set_id': sticker_set_id?.toMap(skipNulls: skipNulls),
       'location': location?.toMap(skipNulls: skipNulls),
       'invite_link': invite_link?.toMap(skipNulls: skipNulls),
       'bot_commands': bot_commands?.toMap(skipNulls: skipNulls),
-      'upgraded_from_basic_group_id':
-          upgraded_from_basic_group_id?.toMap(skipNulls: skipNulls),
-      'upgraded_from_max_message_id':
-          upgraded_from_max_message_id?.toMap(skipNulls: skipNulls),
+      'upgraded_from_basic_group_id': upgraded_from_basic_group_id?.toMap(skipNulls: skipNulls),
+      'upgraded_from_max_message_id': upgraded_from_max_message_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

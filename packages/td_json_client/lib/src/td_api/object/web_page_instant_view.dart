@@ -52,8 +52,7 @@ class WebPageInstantView extends TdObject {
     is_rtl = map['is_rtl'];
     is_full = map['is_full'];
     if (map['feedback_link'] != null) {
-      feedback_link =
-          TdApiMap.fromMap(map['feedback_link']) as InternalLinkType;
+      feedback_link = TdApiMap.fromMap(map['feedback_link']) as InternalLinkType;
     }
   }
 

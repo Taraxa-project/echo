@@ -30,8 +30,7 @@ class SetForumTopicNotificationSettings extends TdFunction {
     chat_id = map['chat_id'];
     message_thread_id = map['message_thread_id'];
     if (map['notification_settings'] != null) {
-      notification_settings = TdApiMap.fromMap(map['notification_settings'])
-          as ChatNotificationSettings;
+      notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
     }
   }
 
@@ -42,8 +41,7 @@ class SetForumTopicNotificationSettings extends TdFunction {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),
-      'notification_settings':
-          notification_settings?.toMap(skipNulls: skipNulls),
+      'notification_settings': notification_settings?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

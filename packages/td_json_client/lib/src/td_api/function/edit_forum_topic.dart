@@ -48,8 +48,7 @@ class EditForumTopic extends TdFunction {
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),
       'name': name?.toMap(skipNulls: skipNulls),
-      'edit_icon_custom_emoji':
-          edit_icon_custom_emoji?.toMap(skipNulls: skipNulls),
+      'edit_icon_custom_emoji': edit_icon_custom_emoji?.toMap(skipNulls: skipNulls),
       'icon_custom_emoji_id': icon_custom_emoji_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

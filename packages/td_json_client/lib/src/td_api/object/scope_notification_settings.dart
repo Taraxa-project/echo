@@ -35,8 +35,7 @@ class ScopeNotificationSettings extends TdObject {
     mute_for = map['mute_for'];
     sound_id = map['sound_id'];
     show_preview = map['show_preview'];
-    disable_pinned_message_notifications =
-        map['disable_pinned_message_notifications'];
+    disable_pinned_message_notifications = map['disable_pinned_message_notifications'];
     disable_mention_notifications = map['disable_mention_notifications'];
   }
 
@@ -48,10 +47,8 @@ class ScopeNotificationSettings extends TdObject {
       'mute_for': mute_for?.toMap(skipNulls: skipNulls),
       'sound_id': sound_id?.toMap(skipNulls: skipNulls),
       'show_preview': show_preview?.toMap(skipNulls: skipNulls),
-      'disable_pinned_message_notifications':
-          disable_pinned_message_notifications?.toMap(skipNulls: skipNulls),
-      'disable_mention_notifications':
-          disable_mention_notifications?.toMap(skipNulls: skipNulls),
+      'disable_pinned_message_notifications': disable_pinned_message_notifications?.toMap(skipNulls: skipNulls),
+      'disable_mention_notifications': disable_mention_notifications?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

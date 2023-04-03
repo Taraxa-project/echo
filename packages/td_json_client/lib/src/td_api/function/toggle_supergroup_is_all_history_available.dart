@@ -31,8 +31,7 @@ class ToggleSupergroupIsAllHistoryAvailable extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'supergroup_id': supergroup_id?.toMap(skipNulls: skipNulls),
-      'is_all_history_available':
-          is_all_history_available?.toMap(skipNulls: skipNulls),
+      'is_all_history_available': is_all_history_available?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -93,13 +93,10 @@ class GroupCallParticipant extends TdObject {
     audio_source_id = map['audio_source_id'];
     screen_sharing_audio_source_id = map['screen_sharing_audio_source_id'];
     if (map['video_info'] != null) {
-      video_info =
-          TdApiMap.fromMap(map['video_info']) as GroupCallParticipantVideoInfo;
+      video_info = TdApiMap.fromMap(map['video_info']) as GroupCallParticipantVideoInfo;
     }
     if (map['screen_sharing_video_info'] != null) {
-      screen_sharing_video_info =
-          TdApiMap.fromMap(map['screen_sharing_video_info'])
-              as GroupCallParticipantVideoInfo;
+      screen_sharing_video_info = TdApiMap.fromMap(map['screen_sharing_video_info']) as GroupCallParticipantVideoInfo;
     }
     bio = map['bio'];
     is_current_user = map['is_current_user'];
@@ -123,27 +120,19 @@ class GroupCallParticipant extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'participant_id': participant_id?.toMap(skipNulls: skipNulls),
       'audio_source_id': audio_source_id?.toMap(skipNulls: skipNulls),
-      'screen_sharing_audio_source_id':
-          screen_sharing_audio_source_id?.toMap(skipNulls: skipNulls),
+      'screen_sharing_audio_source_id': screen_sharing_audio_source_id?.toMap(skipNulls: skipNulls),
       'video_info': video_info?.toMap(skipNulls: skipNulls),
-      'screen_sharing_video_info':
-          screen_sharing_video_info?.toMap(skipNulls: skipNulls),
+      'screen_sharing_video_info': screen_sharing_video_info?.toMap(skipNulls: skipNulls),
       'bio': bio?.toMap(skipNulls: skipNulls),
       'is_current_user': is_current_user?.toMap(skipNulls: skipNulls),
       'is_speaking': is_speaking?.toMap(skipNulls: skipNulls),
       'is_hand_raised': is_hand_raised?.toMap(skipNulls: skipNulls),
-      'can_be_muted_for_all_users':
-          can_be_muted_for_all_users?.toMap(skipNulls: skipNulls),
-      'can_be_unmuted_for_all_users':
-          can_be_unmuted_for_all_users?.toMap(skipNulls: skipNulls),
-      'can_be_muted_for_current_user':
-          can_be_muted_for_current_user?.toMap(skipNulls: skipNulls),
-      'can_be_unmuted_for_current_user':
-          can_be_unmuted_for_current_user?.toMap(skipNulls: skipNulls),
-      'is_muted_for_all_users':
-          is_muted_for_all_users?.toMap(skipNulls: skipNulls),
-      'is_muted_for_current_user':
-          is_muted_for_current_user?.toMap(skipNulls: skipNulls),
+      'can_be_muted_for_all_users': can_be_muted_for_all_users?.toMap(skipNulls: skipNulls),
+      'can_be_unmuted_for_all_users': can_be_unmuted_for_all_users?.toMap(skipNulls: skipNulls),
+      'can_be_muted_for_current_user': can_be_muted_for_current_user?.toMap(skipNulls: skipNulls),
+      'can_be_unmuted_for_current_user': can_be_unmuted_for_current_user?.toMap(skipNulls: skipNulls),
+      'is_muted_for_all_users': is_muted_for_all_users?.toMap(skipNulls: skipNulls),
+      'is_muted_for_current_user': is_muted_for_current_user?.toMap(skipNulls: skipNulls),
       'can_unmute_self': can_unmute_self?.toMap(skipNulls: skipNulls),
       'volume_level': volume_level?.toMap(skipNulls: skipNulls),
       'order': order?.toMap(skipNulls: skipNulls),

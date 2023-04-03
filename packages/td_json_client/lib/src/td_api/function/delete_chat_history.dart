@@ -36,8 +36,7 @@ class DeleteChatHistory extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'remove_from_chat_list':
-          remove_from_chat_list?.toMap(skipNulls: skipNulls),
+      'remove_from_chat_list': remove_from_chat_list?.toMap(skipNulls: skipNulls),
       'revoke': revoke?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

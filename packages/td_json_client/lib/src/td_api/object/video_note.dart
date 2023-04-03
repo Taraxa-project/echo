@@ -55,9 +55,7 @@ class VideoNote extends TdObject {
       thumbnail = TdApiMap.fromMap(map['thumbnail']) as Thumbnail;
     }
     if (map['speech_recognition_result'] != null) {
-      speech_recognition_result =
-          TdApiMap.fromMap(map['speech_recognition_result'])
-              as SpeechRecognitionResult;
+      speech_recognition_result = TdApiMap.fromMap(map['speech_recognition_result']) as SpeechRecognitionResult;
     }
     if (map['video'] != null) {
       video = TdApiMap.fromMap(map['video']) as File;
@@ -74,8 +72,7 @@ class VideoNote extends TdObject {
       'length': length?.toMap(skipNulls: skipNulls),
       'minithumbnail': minithumbnail?.toMap(skipNulls: skipNulls),
       'thumbnail': thumbnail?.toMap(skipNulls: skipNulls),
-      'speech_recognition_result':
-          speech_recognition_result?.toMap(skipNulls: skipNulls),
+      'speech_recognition_result': speech_recognition_result?.toMap(skipNulls: skipNulls),
       'video': video?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

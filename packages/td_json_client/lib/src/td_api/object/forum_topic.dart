@@ -70,8 +70,7 @@ class ForumTopic extends TdObject {
     unread_mention_count = map['unread_mention_count'];
     unread_reaction_count = map['unread_reaction_count'];
     if (map['notification_settings'] != null) {
-      notification_settings = TdApiMap.fromMap(map['notification_settings'])
-          as ChatNotificationSettings;
+      notification_settings = TdApiMap.fromMap(map['notification_settings']) as ChatNotificationSettings;
     }
     if (map['draft_message'] != null) {
       draft_message = TdApiMap.fromMap(map['draft_message']) as DraftMessage;
@@ -87,15 +86,11 @@ class ForumTopic extends TdObject {
       'last_message': last_message?.toMap(skipNulls: skipNulls),
       'is_pinned': is_pinned?.toMap(skipNulls: skipNulls),
       'unread_count': unread_count?.toMap(skipNulls: skipNulls),
-      'last_read_inbox_message_id':
-          last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
-      'last_read_outbox_message_id':
-          last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
+      'last_read_inbox_message_id': last_read_inbox_message_id?.toMap(skipNulls: skipNulls),
+      'last_read_outbox_message_id': last_read_outbox_message_id?.toMap(skipNulls: skipNulls),
       'unread_mention_count': unread_mention_count?.toMap(skipNulls: skipNulls),
-      'unread_reaction_count':
-          unread_reaction_count?.toMap(skipNulls: skipNulls),
-      'notification_settings':
-          notification_settings?.toMap(skipNulls: skipNulls),
+      'unread_reaction_count': unread_reaction_count?.toMap(skipNulls: skipNulls),
+      'notification_settings': notification_settings?.toMap(skipNulls: skipNulls),
       'draft_message': draft_message?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

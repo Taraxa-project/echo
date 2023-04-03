@@ -27,8 +27,7 @@ class PassportElementPersonalDetails extends PassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['personal_details'] != null) {
-      personal_details =
-          TdApiMap.fromMap(map['personal_details']) as PersonalDetails;
+      personal_details = TdApiMap.fromMap(map['personal_details']) as PersonalDetails;
     }
   }
 
@@ -98,8 +97,7 @@ class PassportElementDriverLicense extends PassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['driver_license'] != null) {
-      driver_license =
-          TdApiMap.fromMap(map['driver_license']) as IdentityDocument;
+      driver_license = TdApiMap.fromMap(map['driver_license']) as IdentityDocument;
     }
   }
 
@@ -134,8 +132,7 @@ class PassportElementIdentityCard extends PassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['identity_card'] != null) {
-      identity_card =
-          TdApiMap.fromMap(map['identity_card']) as IdentityDocument;
+      identity_card = TdApiMap.fromMap(map['identity_card']) as IdentityDocument;
     }
   }
 
@@ -170,8 +167,7 @@ class PassportElementInternalPassport extends PassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['internal_passport'] != null) {
-      internal_passport =
-          TdApiMap.fromMap(map['internal_passport']) as IdentityDocument;
+      internal_passport = TdApiMap.fromMap(map['internal_passport']) as IdentityDocument;
     }
   }
 
@@ -276,8 +272,7 @@ class PassportElementBankStatement extends PassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['bank_statement'] != null) {
-      bank_statement =
-          TdApiMap.fromMap(map['bank_statement']) as PersonalDocument;
+      bank_statement = TdApiMap.fromMap(map['bank_statement']) as PersonalDocument;
     }
   }
 
@@ -312,8 +307,7 @@ class PassportElementRentalAgreement extends PassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['rental_agreement'] != null) {
-      rental_agreement =
-          TdApiMap.fromMap(map['rental_agreement']) as PersonalDocument;
+      rental_agreement = TdApiMap.fromMap(map['rental_agreement']) as PersonalDocument;
     }
   }
 
@@ -348,8 +342,7 @@ class PassportElementPassportRegistration extends PassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['passport_registration'] != null) {
-      passport_registration =
-          TdApiMap.fromMap(map['passport_registration']) as PersonalDocument;
+      passport_registration = TdApiMap.fromMap(map['passport_registration']) as PersonalDocument;
     }
   }
 
@@ -358,8 +351,7 @@ class PassportElementPassportRegistration extends PassportElement {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'passport_registration':
-          passport_registration?.toMap(skipNulls: skipNulls),
+      'passport_registration': passport_registration?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -385,8 +377,7 @@ class PassportElementTemporaryRegistration extends PassportElement {
     extra = map['@extra'];
     client_id = map['@client_id'];
     if (map['temporary_registration'] != null) {
-      temporary_registration =
-          TdApiMap.fromMap(map['temporary_registration']) as PersonalDocument;
+      temporary_registration = TdApiMap.fromMap(map['temporary_registration']) as PersonalDocument;
     }
   }
 
@@ -395,8 +386,7 @@ class PassportElementTemporaryRegistration extends PassportElement {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'temporary_registration':
-          temporary_registration?.toMap(skipNulls: skipNulls),
+      'temporary_registration': temporary_registration?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

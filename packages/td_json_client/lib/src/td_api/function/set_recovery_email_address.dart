@@ -32,8 +32,7 @@ class SetRecoveryEmailAddress extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'password': password?.toMap(skipNulls: skipNulls),
-      'new_recovery_email_address':
-          new_recovery_email_address?.toMap(skipNulls: skipNulls),
+      'new_recovery_email_address': new_recovery_email_address?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

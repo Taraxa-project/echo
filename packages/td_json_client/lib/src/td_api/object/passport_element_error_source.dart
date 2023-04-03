@@ -147,8 +147,7 @@ class PassportElementErrorSourceSelfie extends PassportElementErrorSource {
 }
 
 /// One of files with the translation of the document contains an error. The error will be considered resolved when the file changes
-class PassportElementErrorSourceTranslationFile
-    extends PassportElementErrorSource {
+class PassportElementErrorSourceTranslationFile extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceTranslationFile';
 
   /// Index of a file with the error
@@ -181,8 +180,7 @@ class PassportElementErrorSourceTranslationFile
 }
 
 /// The translation of the document contains an error. The error will be considered resolved when the list of translation files changes
-class PassportElementErrorSourceTranslationFiles
-    extends PassportElementErrorSource {
+class PassportElementErrorSourceTranslationFiles extends PassportElementErrorSource {
   String get tdType => 'passportElementErrorSourceTranslationFiles';
 
   PassportElementErrorSourceTranslationFiles({

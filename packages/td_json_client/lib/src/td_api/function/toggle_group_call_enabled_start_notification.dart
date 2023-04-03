@@ -31,8 +31,7 @@ class ToggleGroupCallEnabledStartNotification extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'group_call_id': group_call_id?.toMap(skipNulls: skipNulls),
-      'enabled_start_notification':
-          enabled_start_notification?.toMap(skipNulls: skipNulls),
+      'enabled_start_notification': enabled_start_notification?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

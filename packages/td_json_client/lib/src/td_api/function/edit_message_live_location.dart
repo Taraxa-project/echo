@@ -62,8 +62,7 @@ class EditMessageLiveLocation extends TdFunction {
       'reply_markup': reply_markup?.toMap(skipNulls: skipNulls),
       'location': location?.toMap(skipNulls: skipNulls),
       'heading': heading?.toMap(skipNulls: skipNulls),
-      'proximity_alert_radius':
-          proximity_alert_radius?.toMap(skipNulls: skipNulls),
+      'proximity_alert_radius': proximity_alert_radius?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

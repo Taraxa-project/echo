@@ -40,8 +40,7 @@ class GetLanguagePackString extends TdFunction {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'language_pack_database_path':
-          language_pack_database_path?.toMap(skipNulls: skipNulls),
+      'language_pack_database_path': language_pack_database_path?.toMap(skipNulls: skipNulls),
       'localization_target': localization_target?.toMap(skipNulls: skipNulls),
       'language_pack_id': language_pack_id?.toMap(skipNulls: skipNulls),
       'key': key?.toMap(skipNulls: skipNulls),

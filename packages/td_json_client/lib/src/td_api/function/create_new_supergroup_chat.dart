@@ -57,8 +57,7 @@ class CreateNewSupergroupChat extends TdFunction {
       'is_channel': is_channel?.toMap(skipNulls: skipNulls),
       'description': description?.toMap(skipNulls: skipNulls),
       'location': location?.toMap(skipNulls: skipNulls),
-      'message_auto_delete_time':
-          message_auto_delete_time?.toMap(skipNulls: skipNulls),
+      'message_auto_delete_time': message_auto_delete_time?.toMap(skipNulls: skipNulls),
       'for_import': for_import?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

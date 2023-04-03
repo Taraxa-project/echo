@@ -42,8 +42,7 @@ class AvailableReactions extends TdObject {
       recent_reactions = [];
       for (var someValue in map['recent_reactions']) {
         if (someValue != null) {
-          recent_reactions
-              ?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
+          recent_reactions?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
         }
       }
     }
@@ -51,8 +50,7 @@ class AvailableReactions extends TdObject {
       popular_reactions = [];
       for (var someValue in map['popular_reactions']) {
         if (someValue != null) {
-          popular_reactions
-              ?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
+          popular_reactions?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
         }
       }
     }

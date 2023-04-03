@@ -47,9 +47,7 @@ class PasswordState extends TdObject {
     has_recovery_email_address = map['has_recovery_email_address'];
     has_passport_data = map['has_passport_data'];
     if (map['recovery_email_address_code_info'] != null) {
-      recovery_email_address_code_info =
-          TdApiMap.fromMap(map['recovery_email_address_code_info'])
-              as EmailAddressAuthenticationCodeInfo;
+      recovery_email_address_code_info = TdApiMap.fromMap(map['recovery_email_address_code_info']) as EmailAddressAuthenticationCodeInfo;
     }
     login_email_address_pattern = map['login_email_address_pattern'];
     pending_reset_date = map['pending_reset_date'];
@@ -62,13 +60,10 @@ class PasswordState extends TdObject {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'has_password': has_password?.toMap(skipNulls: skipNulls),
       'password_hint': password_hint?.toMap(skipNulls: skipNulls),
-      'has_recovery_email_address':
-          has_recovery_email_address?.toMap(skipNulls: skipNulls),
+      'has_recovery_email_address': has_recovery_email_address?.toMap(skipNulls: skipNulls),
       'has_passport_data': has_passport_data?.toMap(skipNulls: skipNulls),
-      'recovery_email_address_code_info':
-          recovery_email_address_code_info?.toMap(skipNulls: skipNulls),
-      'login_email_address_pattern':
-          login_email_address_pattern?.toMap(skipNulls: skipNulls),
+      'recovery_email_address_code_info': recovery_email_address_code_info?.toMap(skipNulls: skipNulls),
+      'login_email_address_pattern': login_email_address_pattern?.toMap(skipNulls: skipNulls),
       'pending_reset_date': pending_reset_date?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

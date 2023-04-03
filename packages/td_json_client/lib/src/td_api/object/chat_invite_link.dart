@@ -87,8 +87,7 @@ class ChatInviteLink extends TdObject {
       'expiration_date': expiration_date?.toMap(skipNulls: skipNulls),
       'member_limit': member_limit?.toMap(skipNulls: skipNulls),
       'member_count': member_count?.toMap(skipNulls: skipNulls),
-      'pending_join_request_count':
-          pending_join_request_count?.toMap(skipNulls: skipNulls),
+      'pending_join_request_count': pending_join_request_count?.toMap(skipNulls: skipNulls),
       'creates_join_request': creates_join_request?.toMap(skipNulls: skipNulls),
       'is_primary': is_primary?.toMap(skipNulls: skipNulls),
       'is_revoked': is_revoked?.toMap(skipNulls: skipNulls),
