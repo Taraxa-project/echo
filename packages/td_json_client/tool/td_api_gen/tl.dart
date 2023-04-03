@@ -47,7 +47,11 @@ class TlCommentValue extends Tl {
 }
 
 class TlAbstractClassComment extends TlCommentValue {
-  TlAbstractClassComment({required super.text});
+  List<TlCommentValue> nextLines = [];
+  TlAbstractClassComment({
+    required super.text,
+    this.nextLines = const [],
+  });
 }
 
 class TlClassComment extends TlCommentValue {

@@ -18,12 +18,13 @@ class Api {
       required this.tlObjects,
       required this.tlFunctions});
 
-  String get apiPath => path.joinAll([tdApiPath, 'api']);
-  String get basePath => path.joinAll([apiPath, 'base.dart']);
-  String get mapPath => path.joinAll([apiPath, 'map.dart']);
-  String get exportPath => path.joinAll([tdApiPath, '$package.dart']);
-  String get objectPath => path.joinAll([tdApiPath, 'api', 'object']);
-  String get functionPath => path.joinAll([tdApiPath, 'api', 'function']);
+  String get apiPath => path.joinAll([tdApiPath, 'lib', 'src', 'td_api']);
+  String get logLevelMapPath => path.joinAll([apiPath, 'log_level_map.dart']);
+  String get basePath => path.joinAll([apiPath, 'td.dart']);
+  String get mapPath => path.joinAll([apiPath, 'td_api_map.dart']);
+  String get exportPath => path.joinAll([tdApiPath, 'lib', 'td_api.dart']);
+  String get objectPath => path.joinAll([apiPath, 'object']);
+  String get functionPath => path.joinAll([apiPath, 'function']);
 
   Map<String, TdFile> _tdFiles = {};
   Map<String, String> _typeToFile = {};
@@ -56,6 +57,9 @@ class Api {
       );
       if (tlObject.comment.abstractClassComment != null) {
         td.comments.add(tlObject.comment.abstractClassComment!.text);
+        for (var comment in tlObject.comment.abstractClassComment!.nextLines) {
+          td.comments.add(comment.text);
+        }
       }
       tdFile.classes.putIfAbsent(tlObject.superClassName, () => td);
     }
@@ -95,6 +99,12 @@ class Api {
     await Directory(functionPath).create(recursive: true);
   }
 
+  Future<void> writeLogLevelMap() async {
+    await File(logLevelMapPath).writeAsString(
+        Template(TdFile.logLevelMapTemplate, htmlEscapeValues: false)
+            .renderString({}));
+  }
+
   Future<void> writeBase() async {
     await File(basePath).writeAsString(
         Template(TdFile.baseTemplate, htmlEscapeValues: false)
@@ -110,7 +120,8 @@ class Api {
     Map<String, dynamic> imports = {};
     for (var key in _typeToFile.keys) {
       imports[_typeToFile[key]!] = {
-        'value': "import 'package:$package/api/${_typeToFile[key]}.dart';"
+        'value':
+            "import 'package:$package/src/td_api/${_typeToFile[key]}.dart';"
       };
       map['map'].add({
         'name': ReCase(key).camelCase,
@@ -208,12 +219,44 @@ class TdFile {
       'package': {'value': package},
       'imports': imports.values.map((e) => {
             'value':
-                "import 'package:$package/api/object/${ReCase(e).snakeCase}.dart';",
+                "import 'package:$package/src/td_api/object/${ReCase(e).snakeCase}.dart';",
           }),
       'classes': classes.values.map((td) => td.toMap()),
       'usesMap': usesMap,
     };
   }
+
+  static String get logLevelMapTemplate => '''
+import 'package:logging/logging.dart';
+import 'package:quiver/collection.dart';
+
+/// Map for logging log levels and TDLib log levels
+class LogLevelMap {
+  BiMap _map = BiMap();
+
+  LogLevelMap() {
+    _map[1] = Level.SEVERE;
+    _map[2] = Level.WARNING;
+    _map[3] = Level.INFO;
+    _map[4] = Level.FINE;
+    _map[5] = Level.FINER;
+  }
+
+  /// Convert TDLib log level to logging log level
+  Level fromTd(int verbosityLevel) {
+    if (verbosityLevel == 0) return Level.SEVERE;
+    return _map[verbosityLevel] ?? Level.ALL;
+  }
+
+  /// Convert loggin log level to TDLib log level
+  int toTd(Level? level) {
+    return _map.inverse[level] ?? 6;
+  }
+
+  /// Convenient key to convert from log levels
+  static LogLevelMap MAP = LogLevelMap();
+}
+''';
 
   static String get baseTemplate => '''
 import 'dart:convert';
@@ -293,9 +336,9 @@ abstract class TdFunction extends Td {
 ''';
 
   static String get tdTemplate => '''
-import 'package:{{# package }}{{ value }}{{/ package }}/api/base.dart';
+import 'package:{{# package }}{{ value }}{{/ package }}/src/td_api/td.dart';
 {{# usesMap }}
-import 'package:{{# package }}{{ value }}{{/ package }}/api/map.dart';
+import 'package:{{# package }}{{ value }}{{/ package }}/src/td_api/td_api_map.dart';
 {{/ usesMap }}
 {{# imports }}
 {{ value }}
@@ -412,7 +455,7 @@ class {{ className }} extends {{ extendsClassName }} {
 ''';
 
   static String get mapTemplate => '''
-import 'package:{{# package }}{{ value }}{{/ package }}/api/base.dart';
+import 'package:{{# package }}{{ value }}{{/ package }}/src/td_api/td.dart';
 
 {{# imports }}
 {{ value }}
@@ -435,22 +478,12 @@ class TdApiMap {
 ''';
 
   static String get exportTemplate => '''
-/// Dart Telegram client using TDLib
-/// 
-/// Building TDLib and TDLibLC
-/// mkdir build
-/// cd build
-/// cmake -DCMAKE_INSTALL_PREFIX:PATH=<install path> lib/src/log_callback
-/// cmake --build . --target install
-library td_json_client;
 
-export 'client.dart';
-
-export 'api/base.dart';
-export 'api/map.dart';
+export 'src/td_api/td.dart';
+export 'src/td_api/td_api_map.dart';
 
 {{# files }}
-export 'api/{{ value }}.dart';
+export 'src/td_api/{{ value }}.dart';
 {{/ files }}
 ''';
 }

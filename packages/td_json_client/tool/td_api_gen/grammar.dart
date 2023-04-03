@@ -54,8 +54,15 @@ class TlGrammarDefinition extends GrammarDefinition {
           whitespace().star() &
           string('@description ') &
           noneOf('\n\r').star().flatten() &
-          whitespace().star())
-      .map((value) => TlAbstractClassComment(text: value[5]));
+          whitespace().star() &
+          ref0(classCommentContinued).star())
+      .map((value) => TlAbstractClassComment(
+          text: value[5],
+          nextLines: value[7]
+              .map((v) => TlCommentValue(text: v))
+              .toList()
+              .cast<TlCommentValue>()
+              .toList()));
 
   Parser classCommentBegin() => (string('//@description ') &
           noneOf('\n\r@').star().flatten() &
