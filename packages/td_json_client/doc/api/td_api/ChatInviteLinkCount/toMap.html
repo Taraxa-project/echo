@@ -74,8 +74,7 @@
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;user_id&#39;: user_id?.toMap(skipNulls: skipNulls),
     &#39;invite_link_count&#39;: invite_link_count?.toMap(skipNulls: skipNulls),
-    &#39;revoked_invite_link_count&#39;:
-        revoked_invite_link_count?.toMap(skipNulls: skipNulls),
+    &#39;revoked_invite_link_count&#39;: revoked_invite_link_count?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

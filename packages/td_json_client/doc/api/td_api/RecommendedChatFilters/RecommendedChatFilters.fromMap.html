@@ -66,8 +66,7 @@
     chat_filters = [];
     for (var someValue in map[&#39;chat_filters&#39;]) {
       if (someValue != null) {
-        chat_filters
-            ?.add(TdApiMap.fromMap(someValue) as RecommendedChatFilter);
+        chat_filters?.add(TdApiMap.fromMap(someValue) as RecommendedChatFilter);
       }
     }
   }

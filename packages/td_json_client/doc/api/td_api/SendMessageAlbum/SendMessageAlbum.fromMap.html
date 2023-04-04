@@ -72,8 +72,7 @@
     input_message_contents = [];
     for (var someValue in map[&#39;input_message_contents&#39;]) {
       if (someValue != null) {
-        input_message_contents
-            ?.add(TdApiMap.fromMap(someValue) as InputMessageContent);
+        input_message_contents?.add(TdApiMap.fromMap(someValue) as InputMessageContent);
       }
     }
   }

@@ -74,8 +74,7 @@
     recent_reactions = [];
     for (var someValue in map[&#39;recent_reactions&#39;]) {
       if (someValue != null) {
-        recent_reactions
-            ?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
+        recent_reactions?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
       }
     }
   }
@@ -83,8 +82,7 @@
     popular_reactions = [];
     for (var someValue in map[&#39;popular_reactions&#39;]) {
       if (someValue != null) {
-        popular_reactions
-            ?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
+        popular_reactions?.add(TdApiMap.fromMap(someValue) as AvailableReaction);
       }
     }
   }

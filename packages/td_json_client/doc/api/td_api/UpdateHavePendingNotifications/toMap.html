@@ -72,10 +72,8 @@
     &#39;@type&#39;: tdType,
     &#39;@extra&#39;: extra?.toMap(skipNulls: skipNulls),
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
-    &#39;have_delayed_notifications&#39;:
-        have_delayed_notifications?.toMap(skipNulls: skipNulls),
-    &#39;have_unreceived_notifications&#39;:
-        have_unreceived_notifications?.toMap(skipNulls: skipNulls),
+    &#39;have_delayed_notifications&#39;: have_delayed_notifications?.toMap(skipNulls: skipNulls),
+    &#39;have_unreceived_notifications&#39;: have_unreceived_notifications?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

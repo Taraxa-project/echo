@@ -81,8 +81,7 @@
     &#39;birthdate&#39;: birthdate?.toMap(skipNulls: skipNulls),
     &#39;gender&#39;: gender?.toMap(skipNulls: skipNulls),
     &#39;country_code&#39;: country_code?.toMap(skipNulls: skipNulls),
-    &#39;residence_country_code&#39;:
-        residence_country_code?.toMap(skipNulls: skipNulls),
+    &#39;residence_country_code&#39;: residence_country_code?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

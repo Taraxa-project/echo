@@ -74,8 +74,7 @@
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;user_id&#39;: user_id?.toMap(skipNulls: skipNulls),
     &#39;sent_message_count&#39;: sent_message_count?.toMap(skipNulls: skipNulls),
-    &#39;average_character_count&#39;:
-        average_character_count?.toMap(skipNulls: skipNulls),
+    &#39;average_character_count&#39;: average_character_count?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

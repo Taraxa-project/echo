@@ -77,8 +77,7 @@
     &#39;reply_markup&#39;: reply_markup?.toMap(skipNulls: skipNulls),
     &#39;location&#39;: location?.toMap(skipNulls: skipNulls),
     &#39;heading&#39;: heading?.toMap(skipNulls: skipNulls),
-    &#39;proximity_alert_radius&#39;:
-        proximity_alert_radius?.toMap(skipNulls: skipNulls),
+    &#39;proximity_alert_radius&#39;: proximity_alert_radius?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

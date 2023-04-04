@@ -78,10 +78,8 @@
     &#39;animation&#39;: animation?.toMap(skipNulls: skipNulls),
     &#39;menu_button&#39;: menu_button?.toMap(skipNulls: skipNulls),
     &#39;commands&#39;: commands?.toMap(skipNulls: skipNulls),
-    &#39;default_group_administrator_rights&#39;:
-        default_group_administrator_rights?.toMap(skipNulls: skipNulls),
-    &#39;default_channel_administrator_rights&#39;:
-        default_channel_administrator_rights?.toMap(skipNulls: skipNulls),
+    &#39;default_group_administrator_rights&#39;: default_group_administrator_rights?.toMap(skipNulls: skipNulls),
+    &#39;default_channel_administrator_rights&#39;: default_channel_administrator_rights?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

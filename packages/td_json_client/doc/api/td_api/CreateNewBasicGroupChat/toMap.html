@@ -74,8 +74,7 @@
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;user_ids&#39;: user_ids?.toMap(skipNulls: skipNulls),
     &#39;title&#39;: title?.toMap(skipNulls: skipNulls),
-    &#39;message_auto_delete_time&#39;:
-        message_auto_delete_time?.toMap(skipNulls: skipNulls),
+    &#39;message_auto_delete_time&#39;: message_auto_delete_time?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

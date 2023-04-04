@@ -74,8 +74,7 @@
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;group_call_id&#39;: group_call_id?.toMap(skipNulls: skipNulls),
     &#39;has_participants&#39;: has_participants?.toMap(skipNulls: skipNulls),
-    &#39;default_participant_id&#39;:
-        default_participant_id?.toMap(skipNulls: skipNulls),
+    &#39;default_participant_id&#39;: default_participant_id?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

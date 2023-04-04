@@ -66,14 +66,12 @@
     elements = [];
     for (var someValue in map[&#39;elements&#39;]) {
       if (someValue != null) {
-        elements
-            ?.add(TdApiMap.fromMap(someValue) as EncryptedPassportElement);
+        elements?.add(TdApiMap.fromMap(someValue) as EncryptedPassportElement);
       }
     }
   }
   if (map[&#39;credentials&#39;] != null) {
-    credentials =
-        TdApiMap.fromMap(map[&#39;credentials&#39;]) as EncryptedCredentials;
+    credentials = TdApiMap.fromMap(map[&#39;credentials&#39;]) as EncryptedCredentials;
   }
 }</code></pre>
 </section>

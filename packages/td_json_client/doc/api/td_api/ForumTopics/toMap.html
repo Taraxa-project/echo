@@ -75,10 +75,8 @@
     &#39;total_count&#39;: total_count?.toMap(skipNulls: skipNulls),
     &#39;topics&#39;: topics?.toMap(skipNulls: skipNulls),
     &#39;next_offset_date&#39;: next_offset_date?.toMap(skipNulls: skipNulls),
-    &#39;next_offset_message_id&#39;:
-        next_offset_message_id?.toMap(skipNulls: skipNulls),
-    &#39;next_offset_message_thread_id&#39;:
-        next_offset_message_thread_id?.toMap(skipNulls: skipNulls),
+    &#39;next_offset_message_id&#39;: next_offset_message_id?.toMap(skipNulls: skipNulls),
+    &#39;next_offset_message_thread_id&#39;: next_offset_message_thread_id?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

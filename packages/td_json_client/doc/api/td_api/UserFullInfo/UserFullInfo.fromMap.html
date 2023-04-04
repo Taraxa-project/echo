@@ -76,10 +76,8 @@
   supports_video_calls = map[&#39;supports_video_calls&#39;];
   has_private_calls = map[&#39;has_private_calls&#39;];
   has_private_forwards = map[&#39;has_private_forwards&#39;];
-  has_restricted_voice_and_video_note_messages =
-      map[&#39;has_restricted_voice_and_video_note_messages&#39;];
-  need_phone_number_privacy_exception =
-      map[&#39;need_phone_number_privacy_exception&#39;];
+  has_restricted_voice_and_video_note_messages = map[&#39;has_restricted_voice_and_video_note_messages&#39;];
+  need_phone_number_privacy_exception = map[&#39;need_phone_number_privacy_exception&#39;];
   if (map[&#39;bio&#39;] != null) {
     bio = TdApiMap.fromMap(map[&#39;bio&#39;]) as FormattedText;
   }
@@ -87,8 +85,7 @@
     premium_gift_options = [];
     for (var someValue in map[&#39;premium_gift_options&#39;]) {
       if (someValue != null) {
-        premium_gift_options
-            ?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
+        premium_gift_options?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
       }
     }
   }

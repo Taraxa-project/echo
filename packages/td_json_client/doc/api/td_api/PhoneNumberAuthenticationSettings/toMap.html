@@ -74,12 +74,9 @@
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;allow_flash_call&#39;: allow_flash_call?.toMap(skipNulls: skipNulls),
     &#39;allow_missed_call&#39;: allow_missed_call?.toMap(skipNulls: skipNulls),
-    &#39;is_current_phone_number&#39;:
-        is_current_phone_number?.toMap(skipNulls: skipNulls),
-    &#39;allow_sms_retriever_api&#39;:
-        allow_sms_retriever_api?.toMap(skipNulls: skipNulls),
-    &#39;authentication_tokens&#39;:
-        authentication_tokens?.toMap(skipNulls: skipNulls),
+    &#39;is_current_phone_number&#39;: is_current_phone_number?.toMap(skipNulls: skipNulls),
+    &#39;allow_sms_retriever_api&#39;: allow_sms_retriever_api?.toMap(skipNulls: skipNulls),
+    &#39;authentication_tokens&#39;: authentication_tokens?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

@@ -79,10 +79,8 @@
     &#39;invoice_payload&#39;: invoice_payload?.toMap(skipNulls: skipNulls),
     &#39;shipping_option_id&#39;: shipping_option_id?.toMap(skipNulls: skipNulls),
     &#39;order_info&#39;: order_info?.toMap(skipNulls: skipNulls),
-    &#39;telegram_payment_charge_id&#39;:
-        telegram_payment_charge_id?.toMap(skipNulls: skipNulls),
-    &#39;provider_payment_charge_id&#39;:
-        provider_payment_charge_id?.toMap(skipNulls: skipNulls),
+    &#39;telegram_payment_charge_id&#39;: telegram_payment_charge_id?.toMap(skipNulls: skipNulls),
+    &#39;provider_payment_charge_id&#39;: provider_payment_charge_id?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

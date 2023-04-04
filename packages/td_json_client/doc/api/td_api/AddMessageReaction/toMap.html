@@ -76,8 +76,7 @@
     &#39;message_id&#39;: message_id?.toMap(skipNulls: skipNulls),
     &#39;reaction_type&#39;: reaction_type?.toMap(skipNulls: skipNulls),
     &#39;is_big&#39;: is_big?.toMap(skipNulls: skipNulls),
-    &#39;update_recent_reactions&#39;:
-        update_recent_reactions?.toMap(skipNulls: skipNulls),
+    &#39;update_recent_reactions&#39;: update_recent_reactions?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

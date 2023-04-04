@@ -73,8 +73,7 @@
     &#39;@extra&#39;: extra?.toMap(skipNulls: skipNulls),
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;chat_id&#39;: chat_id?.toMap(skipNulls: skipNulls),
-    &#39;reply_markup_message_id&#39;:
-        reply_markup_message_id?.toMap(skipNulls: skipNulls),
+    &#39;reply_markup_message_id&#39;: reply_markup_message_id?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

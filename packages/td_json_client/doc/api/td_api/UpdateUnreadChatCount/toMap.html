@@ -76,10 +76,8 @@
     &#39;total_count&#39;: total_count?.toMap(skipNulls: skipNulls),
     &#39;unread_count&#39;: unread_count?.toMap(skipNulls: skipNulls),
     &#39;unread_unmuted_count&#39;: unread_unmuted_count?.toMap(skipNulls: skipNulls),
-    &#39;marked_as_unread_count&#39;:
-        marked_as_unread_count?.toMap(skipNulls: skipNulls),
-    &#39;marked_as_unread_unmuted_count&#39;:
-        marked_as_unread_unmuted_count?.toMap(skipNulls: skipNulls),
+    &#39;marked_as_unread_count&#39;: marked_as_unread_count?.toMap(skipNulls: skipNulls),
+    &#39;marked_as_unread_unmuted_count&#39;: marked_as_unread_unmuted_count?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

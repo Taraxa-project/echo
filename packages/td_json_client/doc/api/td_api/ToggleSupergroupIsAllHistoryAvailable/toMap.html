@@ -73,8 +73,7 @@
     &#39;@extra&#39;: extra?.toMap(skipNulls: skipNulls),
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;supergroup_id&#39;: supergroup_id?.toMap(skipNulls: skipNulls),
-    &#39;is_all_history_available&#39;:
-        is_all_history_available?.toMap(skipNulls: skipNulls),
+    &#39;is_all_history_available&#39;: is_all_history_available?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

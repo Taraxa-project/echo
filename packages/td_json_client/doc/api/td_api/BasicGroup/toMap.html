@@ -76,8 +76,7 @@
     &#39;member_count&#39;: member_count?.toMap(skipNulls: skipNulls),
     &#39;status&#39;: status?.toMap(skipNulls: skipNulls),
     &#39;is_active&#39;: is_active?.toMap(skipNulls: skipNulls),
-    &#39;upgraded_to_supergroup_id&#39;:
-        upgraded_to_supergroup_id?.toMap(skipNulls: skipNulls),
+    &#39;upgraded_to_supergroup_id&#39;: upgraded_to_supergroup_id?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

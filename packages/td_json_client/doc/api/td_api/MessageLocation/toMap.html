@@ -76,8 +76,7 @@
     &#39;live_period&#39;: live_period?.toMap(skipNulls: skipNulls),
     &#39;expires_in&#39;: expires_in?.toMap(skipNulls: skipNulls),
     &#39;heading&#39;: heading?.toMap(skipNulls: skipNulls),
-    &#39;proximity_alert_radius&#39;:
-        proximity_alert_radius?.toMap(skipNulls: skipNulls),
+    &#39;proximity_alert_radius&#39;: proximity_alert_radius?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

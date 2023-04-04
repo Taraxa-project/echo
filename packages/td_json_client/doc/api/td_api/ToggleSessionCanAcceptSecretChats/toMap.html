@@ -73,8 +73,7 @@
     &#39;@extra&#39;: extra?.toMap(skipNulls: skipNulls),
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;session_id&#39;: session_id?.toMap(skipNulls: skipNulls),
-    &#39;can_accept_secret_chats&#39;:
-        can_accept_secret_chats?.toMap(skipNulls: skipNulls),
+    &#39;can_accept_secret_chats&#39;: can_accept_secret_chats?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

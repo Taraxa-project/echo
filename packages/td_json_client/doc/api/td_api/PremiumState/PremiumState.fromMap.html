@@ -69,8 +69,7 @@
     payment_options = [];
     for (var someValue in map[&#39;payment_options&#39;]) {
       if (someValue != null) {
-        payment_options
-            ?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
+        payment_options?.add(TdApiMap.fromMap(someValue) as PremiumPaymentOption);
       }
     }
   }
@@ -78,8 +77,7 @@
     animations = [];
     for (var someValue in map[&#39;animations&#39;]) {
       if (someValue != null) {
-        animations?.add(
-            TdApiMap.fromMap(someValue) as PremiumFeaturePromotionAnimation);
+        animations?.add(TdApiMap.fromMap(someValue) as PremiumFeaturePromotionAnimation);
       }
     }
   }

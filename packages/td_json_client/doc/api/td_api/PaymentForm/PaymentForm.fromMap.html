@@ -69,15 +69,13 @@
   seller_bot_user_id = map[&#39;seller_bot_user_id&#39;];
   payment_provider_user_id = map[&#39;payment_provider_user_id&#39;];
   if (map[&#39;payment_provider&#39;] != null) {
-    payment_provider =
-        TdApiMap.fromMap(map[&#39;payment_provider&#39;]) as PaymentProvider;
+    payment_provider = TdApiMap.fromMap(map[&#39;payment_provider&#39;]) as PaymentProvider;
   }
   if (map[&#39;additional_payment_options&#39;] != null) {
     additional_payment_options = [];
     for (var someValue in map[&#39;additional_payment_options&#39;]) {
       if (someValue != null) {
-        additional_payment_options
-            ?.add(TdApiMap.fromMap(someValue) as PaymentOption);
+        additional_payment_options?.add(TdApiMap.fromMap(someValue) as PaymentOption);
       }
     }
   }
@@ -88,8 +86,7 @@
     saved_credentials = [];
     for (var someValue in map[&#39;saved_credentials&#39;]) {
       if (someValue != null) {
-        saved_credentials
-            ?.add(TdApiMap.fromMap(someValue) as SavedCredentials);
+        saved_credentials?.add(TdApiMap.fromMap(someValue) as SavedCredentials);
       }
     }
   }
@@ -97,8 +94,7 @@
   need_password = map[&#39;need_password&#39;];
   product_title = map[&#39;product_title&#39;];
   if (map[&#39;product_description&#39;] != null) {
-    product_description =
-        TdApiMap.fromMap(map[&#39;product_description&#39;]) as FormattedText;
+    product_description = TdApiMap.fromMap(map[&#39;product_description&#39;]) as FormattedText;
   }
   if (map[&#39;product_photo&#39;] != null) {
     product_photo = TdApiMap.fromMap(map[&#39;product_photo&#39;]) as Photo;

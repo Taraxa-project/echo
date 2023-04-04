@@ -73,8 +73,7 @@
     &#39;@extra&#39;: extra?.toMap(skipNulls: skipNulls),
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;basic_group_id&#39;: basic_group_id?.toMap(skipNulls: skipNulls),
-    &#39;basic_group_full_info&#39;:
-        basic_group_full_info?.toMap(skipNulls: skipNulls),
+    &#39;basic_group_full_info&#39;: basic_group_full_info?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

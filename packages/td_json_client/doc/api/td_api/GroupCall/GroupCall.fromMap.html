@@ -78,8 +78,7 @@
     recent_speakers = [];
     for (var someValue in map[&#39;recent_speakers&#39;]) {
       if (someValue != null) {
-        recent_speakers
-            ?.add(TdApiMap.fromMap(someValue) as GroupCallRecentSpeaker);
+        recent_speakers?.add(TdApiMap.fromMap(someValue) as GroupCallRecentSpeaker);
       }
     }
   }

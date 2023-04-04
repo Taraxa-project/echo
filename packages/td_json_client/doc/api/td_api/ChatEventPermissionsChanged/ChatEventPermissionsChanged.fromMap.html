@@ -63,12 +63,10 @@
   extra = map[&#39;@extra&#39;];
   client_id = map[&#39;@client_id&#39;];
   if (map[&#39;old_permissions&#39;] != null) {
-    old_permissions =
-        TdApiMap.fromMap(map[&#39;old_permissions&#39;]) as ChatPermissions;
+    old_permissions = TdApiMap.fromMap(map[&#39;old_permissions&#39;]) as ChatPermissions;
   }
   if (map[&#39;new_permissions&#39;] != null) {
-    new_permissions =
-        TdApiMap.fromMap(map[&#39;new_permissions&#39;]) as ChatPermissions;
+    new_permissions = TdApiMap.fromMap(map[&#39;new_permissions&#39;]) as ChatPermissions;
   }
 }</code></pre>
 </section>

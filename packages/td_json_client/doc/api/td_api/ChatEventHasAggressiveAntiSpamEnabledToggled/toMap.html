@@ -72,8 +72,7 @@
     &#39;@type&#39;: tdType,
     &#39;@extra&#39;: extra?.toMap(skipNulls: skipNulls),
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
-    &#39;has_aggressive_anti_spam_enabled&#39;:
-        has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
+    &#39;has_aggressive_anti_spam_enabled&#39;: has_aggressive_anti_spam_enabled?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

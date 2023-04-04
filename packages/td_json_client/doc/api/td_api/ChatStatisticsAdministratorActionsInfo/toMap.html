@@ -73,11 +73,9 @@
     &#39;@extra&#39;: extra?.toMap(skipNulls: skipNulls),
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;user_id&#39;: user_id?.toMap(skipNulls: skipNulls),
-    &#39;deleted_message_count&#39;:
-        deleted_message_count?.toMap(skipNulls: skipNulls),
+    &#39;deleted_message_count&#39;: deleted_message_count?.toMap(skipNulls: skipNulls),
     &#39;banned_user_count&#39;: banned_user_count?.toMap(skipNulls: skipNulls),
-    &#39;restricted_user_count&#39;:
-        restricted_user_count?.toMap(skipNulls: skipNulls),
+    &#39;restricted_user_count&#39;: restricted_user_count?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

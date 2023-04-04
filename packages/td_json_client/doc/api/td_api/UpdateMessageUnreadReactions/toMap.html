@@ -75,8 +75,7 @@
     &#39;chat_id&#39;: chat_id?.toMap(skipNulls: skipNulls),
     &#39;message_id&#39;: message_id?.toMap(skipNulls: skipNulls),
     &#39;unread_reactions&#39;: unread_reactions?.toMap(skipNulls: skipNulls),
-    &#39;unread_reaction_count&#39;:
-        unread_reaction_count?.toMap(skipNulls: skipNulls),
+    &#39;unread_reaction_count&#39;: unread_reaction_count?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

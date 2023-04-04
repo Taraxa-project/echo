@@ -83,8 +83,7 @@
     &#39;provider_token&#39;: provider_token?.toMap(skipNulls: skipNulls),
     &#39;provider_data&#39;: provider_data?.toMap(skipNulls: skipNulls),
     &#39;start_parameter&#39;: start_parameter?.toMap(skipNulls: skipNulls),
-    &#39;extended_media_content&#39;:
-        extended_media_content?.toMap(skipNulls: skipNulls),
+    &#39;extended_media_content&#39;: extended_media_content?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

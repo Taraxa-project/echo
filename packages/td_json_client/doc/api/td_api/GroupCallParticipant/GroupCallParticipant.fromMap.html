@@ -68,13 +68,10 @@
   audio_source_id = map[&#39;audio_source_id&#39;];
   screen_sharing_audio_source_id = map[&#39;screen_sharing_audio_source_id&#39;];
   if (map[&#39;video_info&#39;] != null) {
-    video_info =
-        TdApiMap.fromMap(map[&#39;video_info&#39;]) as GroupCallParticipantVideoInfo;
+    video_info = TdApiMap.fromMap(map[&#39;video_info&#39;]) as GroupCallParticipantVideoInfo;
   }
   if (map[&#39;screen_sharing_video_info&#39;] != null) {
-    screen_sharing_video_info =
-        TdApiMap.fromMap(map[&#39;screen_sharing_video_info&#39;])
-            as GroupCallParticipantVideoInfo;
+    screen_sharing_video_info = TdApiMap.fromMap(map[&#39;screen_sharing_video_info&#39;]) as GroupCallParticipantVideoInfo;
   }
   bio = map[&#39;bio&#39;];
   is_current_user = map[&#39;is_current_user&#39;];

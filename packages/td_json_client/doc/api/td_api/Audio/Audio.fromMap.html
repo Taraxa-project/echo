@@ -68,12 +68,10 @@
   file_name = map[&#39;file_name&#39;];
   mime_type = map[&#39;mime_type&#39;];
   if (map[&#39;album_cover_minithumbnail&#39;] != null) {
-    album_cover_minithumbnail =
-        TdApiMap.fromMap(map[&#39;album_cover_minithumbnail&#39;]) as Minithumbnail;
+    album_cover_minithumbnail = TdApiMap.fromMap(map[&#39;album_cover_minithumbnail&#39;]) as Minithumbnail;
   }
   if (map[&#39;album_cover_thumbnail&#39;] != null) {
-    album_cover_thumbnail =
-        TdApiMap.fromMap(map[&#39;album_cover_thumbnail&#39;]) as Thumbnail;
+    album_cover_thumbnail = TdApiMap.fromMap(map[&#39;album_cover_thumbnail&#39;]) as Thumbnail;
   }
   if (map[&#39;external_album_covers&#39;] != null) {
     external_album_covers = [];

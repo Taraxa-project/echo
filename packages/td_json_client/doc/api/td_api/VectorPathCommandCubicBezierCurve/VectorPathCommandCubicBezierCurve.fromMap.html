@@ -63,8 +63,7 @@
   extra = map[&#39;@extra&#39;];
   client_id = map[&#39;@client_id&#39;];
   if (map[&#39;start_control_point&#39;] != null) {
-    start_control_point =
-        TdApiMap.fromMap(map[&#39;start_control_point&#39;]) as Point;
+    start_control_point = TdApiMap.fromMap(map[&#39;start_control_point&#39;]) as Point;
   }
   if (map[&#39;end_control_point&#39;] != null) {
     end_control_point = TdApiMap.fromMap(map[&#39;end_control_point&#39;]) as Point;

@@ -75,10 +75,8 @@
     &#39;old_password&#39;: old_password?.toMap(skipNulls: skipNulls),
     &#39;new_password&#39;: new_password?.toMap(skipNulls: skipNulls),
     &#39;new_hint&#39;: new_hint?.toMap(skipNulls: skipNulls),
-    &#39;set_recovery_email_address&#39;:
-        set_recovery_email_address?.toMap(skipNulls: skipNulls),
-    &#39;new_recovery_email_address&#39;:
-        new_recovery_email_address?.toMap(skipNulls: skipNulls),
+    &#39;set_recovery_email_address&#39;: set_recovery_email_address?.toMap(skipNulls: skipNulls),
+    &#39;new_recovery_email_address&#39;: new_recovery_email_address?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

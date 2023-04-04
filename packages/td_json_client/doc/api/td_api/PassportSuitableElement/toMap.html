@@ -74,10 +74,8 @@
     &#39;@client_id&#39;: client_id?.toMap(skipNulls: skipNulls),
     &#39;type&#39;: type?.toMap(skipNulls: skipNulls),
     &#39;is_selfie_required&#39;: is_selfie_required?.toMap(skipNulls: skipNulls),
-    &#39;is_translation_required&#39;:
-        is_translation_required?.toMap(skipNulls: skipNulls),
-    &#39;is_native_name_required&#39;:
-        is_native_name_required?.toMap(skipNulls: skipNulls),
+    &#39;is_translation_required&#39;: is_translation_required?.toMap(skipNulls: skipNulls),
+    &#39;is_native_name_required&#39;: is_native_name_required?.toMap(skipNulls: skipNulls),
   };
   if (skipNulls) {
     map.removeWhere((key, value) =&gt; value == null);

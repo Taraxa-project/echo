@@ -66,8 +66,7 @@
     notification_sounds = [];
     for (var someValue in map[&#39;notification_sounds&#39;]) {
       if (someValue != null) {
-        notification_sounds
-            ?.add(TdApiMap.fromMap(someValue) as NotificationSound);
+        notification_sounds?.add(TdApiMap.fromMap(someValue) as NotificationSound);
       }
     }
   }

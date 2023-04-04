@@ -66,9 +66,7 @@
   waveform = map[&#39;waveform&#39;];
   mime_type = map[&#39;mime_type&#39;];
   if (map[&#39;speech_recognition_result&#39;] != null) {
-    speech_recognition_result =
-        TdApiMap.fromMap(map[&#39;speech_recognition_result&#39;])
-            as SpeechRecognitionResult;
+    speech_recognition_result = TdApiMap.fromMap(map[&#39;speech_recognition_result&#39;]) as SpeechRecognitionResult;
   }
   if (map[&#39;voice&#39;] != null) {
     voice = TdApiMap.fromMap(map[&#39;voice&#39;]) as File;

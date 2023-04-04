@@ -68,12 +68,10 @@
   }
   chat_id = map[&#39;chat_id&#39;];
   if (map[&#39;sending_state&#39;] != null) {
-    sending_state =
-        TdApiMap.fromMap(map[&#39;sending_state&#39;]) as MessageSendingState;
+    sending_state = TdApiMap.fromMap(map[&#39;sending_state&#39;]) as MessageSendingState;
   }
   if (map[&#39;scheduling_state&#39;] != null) {
-    scheduling_state =
-        TdApiMap.fromMap(map[&#39;scheduling_state&#39;]) as MessageSchedulingState;
+    scheduling_state = TdApiMap.fromMap(map[&#39;scheduling_state&#39;]) as MessageSchedulingState;
   }
   is_outgoing = map[&#39;is_outgoing&#39;];
   is_pinned = map[&#39;is_pinned&#39;];
@@ -95,12 +93,10 @@
   date = map[&#39;date&#39;];
   edit_date = map[&#39;edit_date&#39;];
   if (map[&#39;forward_info&#39;] != null) {
-    forward_info =
-        TdApiMap.fromMap(map[&#39;forward_info&#39;]) as MessageForwardInfo;
+    forward_info = TdApiMap.fromMap(map[&#39;forward_info&#39;]) as MessageForwardInfo;
   }
   if (map[&#39;interaction_info&#39;] != null) {
-    interaction_info =
-        TdApiMap.fromMap(map[&#39;interaction_info&#39;]) as MessageInteractionInfo;
+    interaction_info = TdApiMap.fromMap(map[&#39;interaction_info&#39;]) as MessageInteractionInfo;
   }
   if (map[&#39;unread_reactions&#39;] != null) {
     unread_reactions = [];
