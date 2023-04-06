@@ -6,9 +6,13 @@ It comes with a simple Telegram client and classes for the Telegram API (version
 Because you cannot invoke native callback outside an isolate this library wraps TDLib (libtdjson)
 into antoher library (libtdjsonlc). The libtdjson logs are sent to the Dart thread via a SendPort.
 
+Due to the size limitation of packages on [pub.dev](https://pub.dev), the documentation for the TdLib API classes is not generated.
+To generate it locally, remove the nodoc options from `dartdoc_options.yaml`, run `dart doc .` and 
+`dhttpd --path doc/api` and access it at [localhost:8080](http://localhost:8080).
+
 ## Example
 
-See `example/example.dart`
+See `example/example.dart`.
 
 ```dart
 import 'package:logging/logging.dart';
