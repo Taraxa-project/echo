@@ -12,7 +12,7 @@ To generate it locally, remove the nodoc options from `dartdoc_options.yaml`, ru
 
 ## Example
 
-See [example/example.dart](example_example/main.html)
+See `example/example.dart`.
 
 ```dart
 import 'package:logging/logging.dart';

@@ -1,5 +1,5 @@
 name: td_json_client
-version: 0.0.1
+version: 0.0.2
 description: Dart TDLib JSON client
 homepage: https://github.com/Taraxa-project/echo/tree/main/packages/td_json_client
 repository: https://github.com/Taraxa-project/echo/tree/main/packages/td_json_client
