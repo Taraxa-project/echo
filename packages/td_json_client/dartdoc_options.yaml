@@ -1,0 +1,10 @@
+dartdoc:
+  nodoc: 
+    - 'lib/src/td_api/function/*'
+    - 'lib/src/td_api/object/*'
+  showUndocumentedCategories: true
+  ignore:
+    - ambiguous-doc-reference
+    - unresolved-doc-reference
+  warnings:
+    - tool-error
