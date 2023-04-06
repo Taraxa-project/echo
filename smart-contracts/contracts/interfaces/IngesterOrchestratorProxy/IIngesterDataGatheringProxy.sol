@@ -12,5 +12,6 @@ interface IIngesterDataGatheringProxy {
     
     function addIpfsHash(address ingesterAddress, string memory usersHash, string memory chatsHash, string memory messagesHash ) external;
     function getIpfsHashes(address ingesterAddress) external view returns(IpfsHash memory ipfsHashes);
+    function setIngesterProxy(address _ingesterProxyAddress) external;
 
 }

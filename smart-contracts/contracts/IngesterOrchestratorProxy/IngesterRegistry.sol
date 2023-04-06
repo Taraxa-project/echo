@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.14;
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "../interfaces/IngesterOrchestratorProxy/IIngesterGroupManager.sol";
 import "../interfaces/IngesterOrchestratorProxy/IIngesterRegistration.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import './IngesterProxy.sol';
+import "hardhat/console.sol";
 
 
-contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
+contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
     bytes32 public constant INGESTER_ROLE = keccak256("INGESTER_ROLE");
     bytes32 public constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
 
@@ -22,9 +22,7 @@ contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
     uint private ingesterCount;
 
 
-    constructor(address _ingesterProxyAddress) {
-        ingesterProxyAddress = _ingesterProxyAddress;
-        ingesterProxy = IngesterProxy(_ingesterProxyAddress);
+    constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
@@ -38,13 +36,10 @@ contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
         _;
     }
 
-    /**
-    * @notice Transfers the ownership of the contract to a new address.
-    * @dev Can only be called by an address with the DEFAULT_ADMIN_ROLE.
-    * @param newOwner The address to transfer the ownership to.
-    */
-    function transferOwnership(address newOwner) public onlyAdmin override {
-        super.transferOwnership(newOwner);
+    function setIngesterProxy(address _ingesterProxyAddress) external onlyAdmin{
+        ingesterProxyAddress = _ingesterProxyAddress;
+        ingesterProxy = IngesterProxy(_ingesterProxyAddress);
+        _setupRole(DEFAULT_ADMIN_ROLE, _ingesterProxyAddress);
     }
 
     function registerIngester(
@@ -54,10 +49,8 @@ contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
         uint256 nonce,
         bytes calldata sig
         ) external onlyIngesterProxy {
-        require(ingesterToController[_ingesterAddress].controllerAddress == _controllerAddress, "Ingester already exists");
-        uint ingesterIndex = ingesterToController[_ingesterAddress].ingesterIndex;
-        require(controllerToIngesters[_controllerAddress][ingesterIndex].ingesterAddress == _ingesterAddress, "Controller already registered this ingester address");
-
+        require(ingesterToController[_ingesterAddress].controllerAddress != _controllerAddress, "Ingester already exists");
+       
         bytes32 messageHash = _hash(_ingesterAddress, message, nonce);
 
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
@@ -73,7 +66,7 @@ contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
         controllerToIngesters[_controllerAddress].push(ingester);
 
         ingesterAddresses.push(_ingesterAddress);
-        ingesterToController[_ingesterAddress] = IIngesterRegistration.IngesterToController(_controllerAddress, ingesterCount, ingesterAddresses.length - 1);
+        ingesterToController[_ingesterAddress] = IIngesterRegistration.IngesterToController(_controllerAddress, controllerToIngesters[_controllerAddress].length - 1, ingesterAddresses.length - 1);
         ++ingesterCount;
 
 
@@ -84,11 +77,15 @@ contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
     }
 
     function unRegisterIngester(address _ingesterAddress, address _controllerAddress) external onlyIngesterProxy {
-        require(ingesterToController[_ingesterAddress].controllerAddress != _controllerAddress, "Ingester does not exist");
-        string[] memory ingesterAssignedGroups = [];
+        require(ingesterToController[_ingesterAddress].controllerAddress == _controllerAddress, "Ingester does not exist");
+        console.log('ingesterAddress', _ingesterAddress);
         address controller = ingesterToController[_ingesterAddress].controllerAddress;
-        uint ingesterAddressesIndexToRemove = ingesterToController[_ingesterAddress].ingesterAddressesIndex;
+        uint256 ingesterIndexToRemove = ingesterToController[_ingesterAddress].ingesterIndex;
+        string[] memory ingesterAssignedGroups = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].assignedGroups;
+        console.log('am I getting the right ingester at 0 index, assignedGroups length', controllerToIngesters[_controllerAddress][ingesterIndexToRemove].assignedGroups.length);
 
+
+        uint ingesterAddressesIndexToRemove = ingesterToController[_ingesterAddress].ingesterAddressesIndex;
         // Remove ingester from the list
         if (ingesterAddressesIndexToRemove != ingesterCount - 1) {
             address lastIngesterAddress = ingesterAddresses[ingesterCount - 1];
@@ -101,29 +98,25 @@ contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
         // if this was the only ingester registered with this controller, remove their ingester role
         uint numIngestersPerController = controllerToIngesters[_controllerAddress].length;
         if (numIngestersPerController == 1) {
-            renounceRole("INGESTER_ROLE", _ingesterAddress);
-            renounceRole("CONTROLLER_ROLE", _controllerAddress);
-
-            ingesterAssignedGroups = controllerToIngesters[_controllerAddress][0].assignedGroups;
+            revokeRole("INGESTER_ROLE", _ingesterAddress);
+            revokeRole("CONTROLLER_ROLE", _controllerAddress);
             ingesterProxy.removeIngesterFromGroups(ingesterAssignedGroups, _ingesterAddress);
 
             // Remove Ingester from Cluster
-            uint256 clusterId = controllerToIngesters[_controllerAddress][0].clusterId;
-            ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId);
+            uint256 clusterId = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].clusterId;
+            ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId, ingesterAssignedGroups);
             // Remove ingester mappings
             delete controllerToIngesters[_controllerAddress];
             delete ingesterToController[_ingesterAddress];
         } else if (numIngestersPerController > 1) {
             //if there is more ingesters for this controller, only remove the desired ingester
-            renounceRole("INGESTER_ROLE", _ingesterAddress);
+            revokeRole("INGESTER_ROLE", _ingesterAddress);
 
-            uint256 ingesterIndexToRemove = ingesterToController[_ingesterAddress].ingesterIndex;
-            ingesterAssignedGroups = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].assignedGroups;
             ingesterProxy.removeIngesterFromGroups(ingesterAssignedGroups, _ingesterAddress);
 
             //Remove Ingester from Cluster
             uint256 clusterId = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].clusterId;
-            ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId);
+            ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId, ingesterAssignedGroups);
 
             // Remove ingester from the controllerToIngesters list
             if (ingesterIndexToRemove != numIngestersPerController - 1) {
@@ -135,11 +128,8 @@ contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
             controllerToIngesters[_controllerAddress].pop();
             delete ingesterToController[_ingesterAddress];
         }
-
-        for (uint256 i = 0; i < ingesterAssignedGroups.length; ++i) {
-            ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups[i]);
-        }
-
+        console.log("amount of groups to re-allocate within registration contract", ingesterAssignedGroups.length);
+        ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups);
     }
 
     function isRegisteredIngester(address ingesterAddress) public view returns (bool) {
@@ -193,37 +183,39 @@ contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
     }
 
     //Getter and Setters
-    function getIngester(address _controller, address _ingesterAddresses) public view returns (Ingester memory) {
-        uint ingesterIndex = ingesterToController[_ingesterAddresses].ingesterIndex;
-        return controllerToIngesters[_controller][ingesterIndex];
-    }
-
-    function getIngesterDetails(address _ingesterAddress) external view returns (Ingester memory) {
+    function getIngester(address _ingesterAddress) external view returns (Ingester memory) {
+        require(ingesterToController[_ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = ingesterToController[_ingesterAddress].controllerAddress;
         uint ingesterIndex = ingesterToController[_ingesterAddress].ingesterIndex;
         return controllerToIngesters[controller][ingesterIndex];
     }
 
     function setIngesterDetails(Ingester calldata _ingester, address _ingesterAddress) external returns (Ingester memory) {
+        require(ingesterToController[_ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = ingesterToController[_ingesterAddress].controllerAddress;
         uint ingesterIndex = ingesterToController[_ingesterAddress].ingesterIndex;
         controllerToIngesters[controller][ingesterIndex] = _ingester;
         emit IIngesterRegistration.IngesterAssignedGroupsUpdated(_ingesterAddress, _ingester.assignedGroups);
     }
 
-    function addAssignedGroupToIngester(address _ingesterAddress, string calldata _groupUsername) external onlyIngesterProxy {
+    function addAssignedGroupToIngester(address _ingesterAddress, string calldata _groupUsername) external onlyIngesterProxy returns (uint256) {
         address controller = ingesterToController[_ingesterAddress].controllerAddress;
         uint ingesterIndex = ingesterToController[_ingesterAddress].ingesterIndex;
         controllerToIngesters[controller][ingesterIndex].assignedGroups.push(_groupUsername);
         emit IIngesterRegistration.AssignGroupToIngester(_ingesterAddress, _groupUsername);
+        return controllerToIngesters[controller][ingesterIndex].assignedGroups.length - 1;
     }
 
     function getIngesterToController(address _ingesterAddresses) external view returns (IngesterToController memory) {
         return ingesterToController[_ingesterAddresses];
     }
 
-    function getIngesterAddress(uint256 index) external view returns (address) {
+    function getIngesterAddressFromIndex(uint256 index) external view returns (address) {
         return ingesterAddresses[index];
+    }
+
+    function getIngesterCount() external view returns (uint256) {
+        return ingesterCount;
     }
 
     function moveIngesterAssignedGroup(address _ingesterAddress, uint256 assignedGroupsIngesterIndex) external onlyIngesterProxy {
@@ -231,7 +223,7 @@ contract IngesterRegistry is AccessControl, Ownable, IIngesterRegistration {
         uint ingesterIndex = ingesterToController[_ingesterAddress].ingesterIndex;
         uint256 ingesterAssignedGroupsLength = controllerToIngesters[controller][ingesterIndex].assignedGroups.length;
         // replace last index with group that needs to be removed
-        string memory groupToMove = controllerToIngesters[controller][ingesterIndex].assignedGroups[ingesterAssignedGroupsLength];
+        string memory groupToMove = controllerToIngesters[controller][ingesterIndex].assignedGroups[ingesterAssignedGroupsLength-1];
         string memory groupToRemove = controllerToIngesters[controller][ingesterIndex].assignedGroups[assignedGroupsIngesterIndex];
         controllerToIngesters[controller][ingesterIndex].assignedGroups[assignedGroupsIngesterIndex] = groupToMove;
         controllerToIngesters[controller][ingesterIndex].assignedGroups.pop();

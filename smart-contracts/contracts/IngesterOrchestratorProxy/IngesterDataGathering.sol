@@ -2,8 +2,8 @@
 pragma solidity 0.8.14;
 
 import "../interfaces/IngesterOrchestratorProxy/IIngesterDataGatheringProxy.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
-
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "./IngesterProxy.sol";
 
 /**
  * @title IngesterDataGatheringV2
@@ -11,14 +11,19 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
  * It extends the IngesterRegistryAccessControlV2 which manages access control and ownership for the Ingester Registry and IngesterDataGatheringV2 interface
  */
 contract IngesterDataGathering is
-    AccessControl,
+    AccessControlEnumerable,
     IIngesterDataGatheringProxy
 {
     address public ingesterProxyAddress;
+    IngesterProxy private ingesterProxy;
 
-    constructor(address _ingesterProxyAddress) {
-        ingesterProxyAddress = _ingesterProxyAddress;
+    constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+    }
+
+    function setIngesterProxy(address _ingesterProxyAddress) external onlyAdmin{
+        ingesterProxyAddress = _ingesterProxyAddress;
+        ingesterProxy = IngesterProxy(_ingesterProxyAddress);
     }
 
     modifier onlyIngesterProxy() {
@@ -26,6 +31,10 @@ contract IngesterDataGathering is
         _;
     }
 
+    modifier onlyAdmin() {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Only admin can perform this action.");
+        _;
+    }
 
     mapping(address => IIngesterDataGatheringProxy.IpfsHash) private _ipfsHashes;
 

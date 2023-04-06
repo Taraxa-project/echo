@@ -5,10 +5,12 @@ import './IngesterRegistry.sol';
 import './IngesterDataGathering.sol';
 import './IngesterGroupManager.sol';
 import '../interfaces/IngesterOrchestratorProxy/IIngesterDataGatheringProxy.sol';
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import '../interfaces/IngesterOrchestratorProxy/IIngesterGroupManager.sol';
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 // add ingesterDataGathering Interface
-contract IngesterProxy is AccessControl {
+contract IngesterProxy is AccessControlEnumerable, Ownable {
     address public groupManagerContractAddress;
     address public registrationContractAddress;
     address public dataGatheringContractAddress;
@@ -46,6 +48,10 @@ contract IngesterProxy is AccessControl {
         _;
     }
 
+    function transferOwnership(address newOwner) public onlyAdmin override {
+        super.transferOwnership(newOwner);
+    }
+
     function registerIngester(
         address _ingesterAddress, 
         string calldata message,
@@ -75,22 +81,27 @@ contract IngesterProxy is AccessControl {
         return registrationContract.isRegisteredController(_controllerAddress);
     }
 
-    function getIngesterDetails(address _ingesterAddress) external view returns (IngesterRegistry.Ingester memory) {
-        return registrationContract.getIngesterDetails(_ingesterAddress);
+    function getIngester(address _ingesterAddress) external view returns (IngesterRegistry.Ingester memory) {
+        return registrationContract.getIngester(_ingesterAddress);
     }
 
-    function addAssignedGroupToIngester(address _ingesterAddress, string memory _groupUsername) external onlyGroupManager {
-        registrationContract.addAssignedGroupToIngester(_ingesterAddress, _groupUsername);
+    function getIngesterCount() external view returns (uint256) {
+        return registrationContract.getIngesterCount();
+    }
+
+    function getIngesterAddressFromIndex(uint256 _index) external view returns(address) {
+        return registrationContract.getIngesterAddressFromIndex(_index);
+    }
+
+    function addAssignedGroupToIngester(address _ingesterAddress, string memory _groupUsername) external onlyGroupManager returns(uint256){
+        return registrationContract.addAssignedGroupToIngester(_ingesterAddress, _groupUsername);
     }
 
     function moveIngesterAssignedGroup(address _ingesterAddress, uint256 _assignedGroupsIngesterIndex) external onlyGroupManager {
         registrationContract.moveIngesterAssignedGroup(_ingesterAddress, _assignedGroupsIngesterIndex);
     }
 
-    function setMaxNumberIngesterPerGroup(uint256 _maxNumberIngesterPerGroup) external onlyAdmin {
-        groupManagerContract.setMaxNumberIngesterPerGroup(_maxNumberIngesterPerGroup);
-    }
-
+    //Group Manager
     function addGroup(string calldata _groupUsername) external onlyAdmin {
         groupManagerContract.addGroup(_groupUsername);
     }
@@ -99,12 +110,56 @@ contract IngesterProxy is AccessControl {
         groupManagerContract.removeGroup(_groupUsername);
     }
 
+    function getGroup(string calldata _group) external view returns (IIngesterGroupManager.GroupToIngester memory){
+        return groupManagerContract.getGroup(_group);
+    }
+
+    function getGroupUsernameByIndex(uint256 groupIndex) external view returns (string memory) {
+        return groupManagerContract.getGroupUsernameByIndex(groupIndex);
+    }
+
+    function getGroupCount() external view returns (uint256) {
+        return groupManagerContract.getGroupCount();
+    }
+
+    function getClusters() external view returns(uint256[] memory) {
+        return groupManagerContract.getClusters();
+    }
+
+    function getCluster(uint256 clusterId) external view returns(IIngesterGroupManager.Cluster memory) {
+        return groupManagerContract.getCluster(clusterId);
+    }
+
+    function getMaxClusterSize() external view returns (uint256) {
+        return groupManagerContract.getMaxClusterSize();
+    }
+
+    function getMaxGroupsPerIngester() external view returns (uint256) {
+        return groupManagerContract.getMaxGroupsPerIngester();
+    }
+
+    function getMaxNumberIngesterPerGroup() external view returns (uint256) {
+        return groupManagerContract.getMaxNumberIngesterPerGroup();
+    }
+
+    function setMaxClusterSize(uint256 _maxClusterSize) external onlyAdmin {
+        groupManagerContract.setMaxClusterSize(_maxClusterSize);
+    }
+
+    function setMaxGroupsPerIngester(uint256 _maxGroupsPerIngester) external onlyAdmin {
+        groupManagerContract.setMaxGroupsPerIngester(_maxGroupsPerIngester);
+    }
+
+    function setMaxNumberIngesterPerGroup(uint256 _maxNumberIngesterPerGroup) external onlyAdmin {
+        groupManagerContract.setMaxNumberIngesterPerGroup(_maxNumberIngesterPerGroup);
+    }
+
     function removeIngesterFromGroups(string[] memory _groups, address _ingesterAddress) external onlyRegistrationContract {
         groupManagerContract.removeIngesterFromGroups(_groups, _ingesterAddress);
     }
 
     function distributeGroupPostUnregistration(string[] memory _groups) external onlyRegistrationContract {
-        ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups[i]);
+        groupManagerContract.distributeGroupPostUnregistration(_groups);
     }
 
     function addIpfsHash(
