@@ -28,8 +28,12 @@ class IpfsExporter extends Isolated {
 
   final _cron = Cron();
 
-  static const String fileExtData = 'json_lines';
-  static const String fileExtHash = 'hash';
+  static const tableNames = ['chat', 'message', 'user'];
+  static const tableNamesUploadFull = ['chat'];
+
+  static const String fileExtTypeData = 'json_lines';
+  static const String fileExtTypeMeta = 'json_lines';
+  static const String fileExtTypeHash = 'hash';
 
   static const int ipfsRequestRetryCountMax = 5;
   static const int ipfsRequestRetryDelaySeconds = 30;
@@ -89,76 +93,155 @@ class IpfsExporter extends Isolated {
     if (_exportInProgress) return;
 
     _exportInProgress = true;
-    await _writeFilesLocally();
-    await _writeFilesToIpfs();
-    _exportInProgress = false;
-  }
-
-  Future<void> _writeFilesLocally() async {
-    logger.info('writing files locally...');
-
-    dbSendPort.send(DbMsgRequestDumpTables(
-      replySendPort: receivePort.sendPort,
-      dumpPath: tableDumpPath,
-      dumpExt: fileExtData,
-    ));
-    var response = await receivePortBroadcast
-        .where((event) => event is DbMsgResponseDumpTables)
-        .first;
-
-    if (response.exception != null) {
-      logger.severe(response.exception!);
-    } else {
-      logger.info('writing files locally... done.');
-    }
-  }
-
-  Future<void> _writeFilesToIpfs() async {
-    logger.info('uploading files to ipfs...');
 
     final client = http.Client();
+    final ipfsUri = _buildIpfsUri('/api/v0/add');
 
-    var ipfsUri;
-    if (ipfsScheme == 'https') {
-      ipfsUri = Uri.https(
-        '$ipfsHost:$ipfsPort',
-        '/api/v0/add',
+    for (var tableName in tableNames) {
+      var fileNameData = p.joinAll([
+        tableDumpPath,
+        '$tableName.$fileExtTypeData',
+      ]);
+      dbSendPort.send(
+        DbMsgRequestDumpData(
+            replySendPort: receivePort.sendPort,
+            tableName: tableName,
+            fileName: fileNameData,
+            fromId: tableNamesUploadFull.contains(tableName) ? 0 : null),
       );
-    } else {
-      ipfsUri = Uri.http(
-        '$ipfsHost:$ipfsPort',
-        '/api/v0/add',
-      );
-    }
-
-    for (var dataName in ['chat', 'message', 'user']) {
-      logger.info('uploading $dataName to IPFS...');
-
-      var hash = await _ipfsAdd(client, ipfsUri, dataName);
-      if (hash == null) {
+      var responseDumpData = await receivePortBroadcast
+          .where((event) => event is DbMsgResponseDumpData)
+          .first;
+      if (responseDumpData.exception != null) {
+        logger.severe(responseDumpData.exception!);
         continue;
       }
-      logger.info('uploading $dataName to IPFS... done. Hash: $hash.');
+      if (responseDumpData.count == 0) {
+        continue;
+      }
 
-      logger.info('writing hash to $dataName.$fileExtHash...');
-      await _writeHash(dataName, hash);
-      logger.info('wroting hash to $dataName.$fileExtHash... done.');
+      logger.info('uploading $tableName to IPFS...');
+
+      var fileHashData =
+          await _ipfsAdd(client, ipfsUri, tableName, fileNameData);
+      if (fileHashData == null) {
+        continue;
+      }
+      logger.info('uploading $tableName to IPFS... done. Hash: $fileHashData.');
+
+      dbSendPort.send(DbMsgRequestUploadDataSucces(
+        replySendPort: receivePort.sendPort,
+        tableName: tableName,
+        file_hash: fileHashData,
+      ));
+      var responseUploadData = await receivePortBroadcast
+          .where((event) => event is DbMsgResponseUploadDataSucces)
+          .first;
+
+      if (responseUploadData.exception != null) {
+        logger.severe(responseDumpData.exception!);
+        continue;
+      }
+
+      var fileNameMeta = p.joinAll([
+        tableDumpPath,
+        '$tableName.meta.$fileExtTypeData',
+      ]);
+      dbSendPort.send(DbMsgRequestDumpMeta(
+        replySendPort: receivePort.sendPort,
+        tableName: tableName,
+        fileName: fileNameMeta,
+      ));
+      var responseDumpMeta = await receivePortBroadcast
+          .where((event) => event is DbMsgResponseDumpMeta)
+          .first;
+      if (responseDumpMeta.exception != null) {
+        logger.severe(responseDumpMeta.exception!);
+        continue;
+      }
+      if (responseDumpMeta.count == 0) {
+        continue;
+      }
+
+      logger.info('uploading $tableName ipfs file hashes to IPFS...');
+
+      var fileHashMeta =
+          await _ipfsAdd(client, ipfsUri, tableName, fileNameMeta);
+      if (fileHashMeta == null) {
+        continue;
+      }
+      logger.info('uploading $tableName ipfs file hashes to IPFS... done.'
+          ' Hash: $fileHashMeta.');
+
+      logger.info('writing hash to $tableName.$fileExtTypeHash...');
+      await _writeHash(tableName, fileHashMeta);
+      logger.info('wroting hash to $tableName.$fileExtTypeHash... done.');
+
+      dbSendPort.send(DbMsgRequestUploadMetaSucces(
+        replySendPort: receivePort.sendPort,
+        tableName: tableName,
+        file_hash: fileHashMeta,
+      ));
+      var responseUploadMeta = await receivePortBroadcast
+          .where((event) => event is DbMsgResponseUploadMetaSucces)
+          .first;
+      if (responseUploadMeta.exception != null) {
+        logger.severe(responseDumpData.exception!);
+        continue;
+      }
     }
 
     client.close();
 
-    logger.info('uploading files to ipfs... done.');
+    _exportInProgress = false;
+  }
+
+  Future<void> _writeHash(
+    String dataName,
+    String hash,
+  ) async {
+    var fileHash =
+        new File(p.join(tableDumpPath, '$dataName.$fileExtTypeHash'));
+    fileHash.createSync();
+
+    final sink = fileHash.openWrite(mode: FileMode.write);
+    sink.write(hash);
+    sink.write('\n');
+
+    await sink.flush();
+    await sink.close();
+  }
+
+  Uri _buildIpfsUri(
+    String ipfsUriPath, [
+    Map<String, dynamic>? queryParameters,
+  ]) {
+    if (ipfsScheme == 'https') {
+      return Uri.https('$ipfsHost:$ipfsPort', ipfsUriPath, queryParameters);
+    } else {
+      return Uri.http('$ipfsHost:$ipfsPort', ipfsUriPath, queryParameters);
+    }
+  }
+
+  _ipfsRequestAddAuth(http.BaseRequest request) {
+    if (ipfsUsername != null && ipfsPassword != null) {
+      var basicAuth = base64.encode(utf8.encode('$ipfsUsername:$ipfsPassword'));
+      request.headers['Authorization'] = 'Basic $basicAuth';
+    }
+    return request;
   }
 
   Future<String?> _ipfsAdd(
     http.Client httpClient,
     Uri ipfsUri,
-    String dataName,
+    String tableName,
+    String fileName,
   ) async {
     var responseBodyIpfsAdd = await _ipfsAddRetry(
       httpClient,
       ipfsUri,
-      dataName,
+      tableName,
+      fileName,
     );
     if (responseBodyIpfsAdd == null) {
       return null;
@@ -193,6 +276,7 @@ class IpfsExporter extends Isolated {
     http.Client httpClient,
     Uri ipfsUri,
     String dataName,
+    String fileName,
   ) async {
     var ipfsRequestRetryCountIndex = 1;
 
@@ -201,17 +285,9 @@ class IpfsExporter extends Isolated {
         'POST',
         ipfsUri,
       );
+      requestIpfsAdd = _ipfsRequestAddAuth(requestIpfsAdd);
 
-      if (ipfsUsername != null && ipfsPassword != null) {
-        var basicAuth =
-            base64.encode(utf8.encode('$ipfsUsername:$ipfsPassword'));
-        requestIpfsAdd.headers['Authorization'] = 'Basic $basicAuth';
-      }
-
-      var multipartFile = await http.MultipartFile.fromPath(
-        'data',
-        p.join(tableDumpPath, '$dataName.$fileExtData'),
-      );
+      var multipartFile = await http.MultipartFile.fromPath('data', fileName);
       requestIpfsAdd.files.add(multipartFile);
 
       logger.info('uploading $dataName to IPFS...'
@@ -249,20 +325,5 @@ class IpfsExporter extends Isolated {
     }
 
     return null;
-  }
-
-  Future<void> _writeHash(
-    String dataName,
-    String hash,
-  ) async {
-    var fileHash = new File(p.join(tableDumpPath, '$dataName.$fileExtHash'));
-    fileHash.createSync();
-
-    final sink = fileHash.openWrite(mode: FileMode.write);
-    sink.write(hash);
-    sink.write('\n');
-
-    await sink.flush();
-    await sink.close();
   }
 }
