@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Session constructor from Class Session from the td_api library, for the Dart programming language.">
+  <title>Session constructor - Session - td_api library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">td_json_client</a></li>
+    <li><a href="../../td_api/td_api-library.html">td_api</a></li>
+    <li><a href="../../td_api/Session-class.html">Session</a></li>
+    <li class="self-crumb">Session constructor</li>
+  </ol>
+  <div class="self-name">Session</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-constructor">Session</span> constructor 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      <span class="name ">Session</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-extra">{<span class="type-annotation"><a href="https://api.dart.dev/stable/2.18.6/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">extra</span>, </span></li>
+<li><span class="parameter" id="-param-client_id"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.18.6/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">client_id</span>, </span></li>
+<li><span class="parameter" id="-param-id"><span class="type-annotation"><a href="../../td_api/int64.html">int64</a>?</span> <span class="parameter-name">id</span>, </span></li>
+<li><span class="parameter" id="-param-is_current"><span class="type-annotation"><a href="../../td_api/Bool.html">Bool</a>?</span> <span class="parameter-name">is_current</span>, </span></li>
+<li><span class="parameter" id="-param-is_password_pending"><span class="type-annotation"><a href="../../td_api/Bool.html">Bool</a>?</span> <span class="parameter-name">is_password_pending</span>, </span></li>
+<li><span class="parameter" id="-param-can_accept_secret_chats"><span class="type-annotation"><a href="../../td_api/Bool.html">Bool</a>?</span> <span class="parameter-name">can_accept_secret_chats</span>, </span></li>
+<li><span class="parameter" id="-param-can_accept_calls"><span class="type-annotation"><a href="../../td_api/Bool.html">Bool</a>?</span> <span class="parameter-name">can_accept_calls</span>, </span></li>
+<li><span class="parameter" id="-param-type"><span class="type-annotation"><a href="../../td_api/SessionType-class.html">SessionType</a>?</span> <span class="parameter-name">type</span>, </span></li>
+<li><span class="parameter" id="-param-api_id"><span class="type-annotation"><a href="../../td_api/int32.html">int32</a>?</span> <span class="parameter-name">api_id</span>, </span></li>
+<li><span class="parameter" id="-param-application_name"><span class="type-annotation"><a href="../../td_api/string.html">string</a>?</span> <span class="parameter-name">application_name</span>, </span></li>
+<li><span class="parameter" id="-param-application_version"><span class="type-annotation"><a href="../../td_api/string.html">string</a>?</span> <span class="parameter-name">application_version</span>, </span></li>
+<li><span class="parameter" id="-param-is_official_application"><span class="type-annotation"><a href="../../td_api/Bool.html">Bool</a>?</span> <span class="parameter-name">is_official_application</span>, </span></li>
+<li><span class="parameter" id="-param-device_model"><span class="type-annotation"><a href="../../td_api/string.html">string</a>?</span> <span class="parameter-name">device_model</span>, </span></li>
+<li><span class="parameter" id="-param-platform"><span class="type-annotation"><a href="../../td_api/string.html">string</a>?</span> <span class="parameter-name">platform</span>, </span></li>
+<li><span class="parameter" id="-param-system_version"><span class="type-annotation"><a href="../../td_api/string.html">string</a>?</span> <span class="parameter-name">system_version</span>, </span></li>
+<li><span class="parameter" id="-param-log_in_date"><span class="type-annotation"><a href="../../td_api/int32.html">int32</a>?</span> <span class="parameter-name">log_in_date</span>, </span></li>
+<li><span class="parameter" id="-param-last_active_date"><span class="type-annotation"><a href="../../td_api/int32.html">int32</a>?</span> <span class="parameter-name">last_active_date</span>, </span></li>
+<li><span class="parameter" id="-param-ip"><span class="type-annotation"><a href="../../td_api/string.html">string</a>?</span> <span class="parameter-name">ip</span>, </span></li>
+<li><span class="parameter" id="-param-country"><span class="type-annotation"><a href="../../td_api/string.html">string</a>?</span> <span class="parameter-name">country</span>, </span></li>
+<li><span class="parameter" id="-param-region"><span class="type-annotation"><a href="../../td_api/string.html">string</a>?</span> <span class="parameter-name">region</span>}</span></li>
+</ol>)
+    </section>
+
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Session({
+  super.extra,
+  super.client_id,
+  this.id,
+  this.is_current,
+  this.is_password_pending,
+  this.can_accept_secret_chats,
+  this.can_accept_calls,
+  this.type,
+  this.api_id,
+  this.application_name,
+  this.application_version,
+  this.is_official_application,
+  this.device_model,
+  this.platform,
+  this.system_version,
+  this.log_in_date,
+  this.last_active_date,
+  this.ip,
+  this.country,
+  this.region,
+});</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">td_json_client</a></li>
+  <li><a href="../../td_api/td_api-library.html">td_api</a></li>
+  <li><a href="../../td_api/Session-class.html">Session</a></li>
+  <li class="self-crumb">Session constructor</li>
+</ol>
+
+
+    <h5>Session class</h5>
+    <ol>
+
+        <li class="section-title"><a href="../../td_api/Session-class.html#constructors">Constructors</a></li>
+          <li><a href="../../td_api/Session/Session.html">Session</a></li>
+          <li><a href="../../td_api/Session/Session.fromMap.html">fromMap</a></li>
+
+
+    <li class="section-title">
+      <a href="../../td_api/Session-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../td_api/Session/api_id.html">api_id</a></li>
+    <li><a href="../../td_api/Session/application_name.html">application_name</a></li>
+    <li><a href="../../td_api/Session/application_version.html">application_version</a></li>
+    <li><a href="../../td_api/Session/can_accept_calls.html">can_accept_calls</a></li>
+    <li><a href="../../td_api/Session/can_accept_secret_chats.html">can_accept_secret_chats</a></li>
+    <li class="inherited"><a href="../../td_api/Td/client_id.html">client_id</a></li>
+    <li><a href="../../td_api/Session/country.html">country</a></li>
+    <li><a href="../../td_api/Session/device_model.html">device_model</a></li>
+    <li class="inherited"><a href="../../td_api/Td/extra.html">extra</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.18.6/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../td_api/Session/id.html">id</a></li>
+    <li><a href="../../td_api/Session/ip.html">ip</a></li>
+    <li><a href="../../td_api/Session/is_current.html">is_current</a></li>
+    <li><a href="../../td_api/Session/is_official_application.html">is_official_application</a></li>
+    <li><a href="../../td_api/Session/is_password_pending.html">is_password_pending</a></li>
+    <li><a href="../../td_api/Session/last_active_date.html">last_active_date</a></li>
+    <li><a href="../../td_api/Session/log_in_date.html">log_in_date</a></li>
+    <li><a href="../../td_api/Session/platform.html">platform</a></li>
+    <li><a href="../../td_api/Session/region.html">region</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.18.6/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../td_api/Session/system_version.html">system_version</a></li>
+    <li><a href="../../td_api/Session/tdType.html">tdType</a></li>
+    <li><a href="../../td_api/Session/type.html">type</a></li>
+
+    <li class="section-title"><a href="../../td_api/Session-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.18.6/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="../../td_api/Td/toJson.html">toJson</a></li>
+    <li><a href="../../td_api/Session/toMap.html">toMap</a></li>
+    <li class="inherited"><a href="../../td_api/Td/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../td_api/Session-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.18.6/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-left-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    td_json_client
+      0.0.1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

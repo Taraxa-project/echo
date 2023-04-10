@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:uuid/uuid.dart';
 import 'package:telegram_client/wrap_id.dart';
+import 'package:td_json_client/td_api.dart';
 import 'package:td_json_client/td_json_client.dart';
 
 import 'isolate.dart';
@@ -166,7 +167,8 @@ class TelegramClient extends Isolated {
     loggerLibTdJson.onRecord.listen((event) {
       logSendPort?.send(event);
     });
-    _tdJsonClient.setupLogs(loggerTdJsonClient, loggerLibTdJson);
+    _tdJsonClient.logger = loggerTdJsonClient;
+    _tdJsonClient.loggerTdLib = loggerLibTdJson;
 
     logger.fine('created client id $_tdJsonClientId.');
     logger.fine('initialization finished.');

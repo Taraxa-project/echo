@@ -6,7 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:collection/collection.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:logging/logging.dart';
-import 'package:td_json_client/td_json_client.dart';
+import 'package:td_json_client/td_api.dart';
 import 'package:telegram_client/wrap_id.dart';
 import 'package:uuid/uuid.dart';
 

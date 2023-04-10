@@ -1,8 +1,16 @@
 name: td_json_client
-version: 0.0.1
+version: 0.0.2
+description: Dart TDLib JSON client
+homepage: https://github.com/Taraxa-project/echo/tree/main/packages/td_json_client
+repository: https://github.com/Taraxa-project/echo/tree/main/packages/td_json_client
 environment:
   sdk: '>=2.17.0 <3.0.0'
-publish_to: none
+false_secrets:
+  - /lib/src/blobs/*
+platforms:
+  linux:
+  macos:
+  windows:
 dependencies:
   ffi: ^2.0.0
   path: ^1.8.0
@@ -11,6 +19,10 @@ dependencies:
 dev_dependencies: 
   ffigen: ^6.0.1
   lints: ^2.0.0
+  petitparser: ^5.0.0
+  mustache_template: ^2.0.0
+  recase: ^4.0.0
+  args: ^2.3.1
 ffigen:
   name: LibTdJsonLC
   output: 'lib/src/lib_td_json_log_callback.dart'
