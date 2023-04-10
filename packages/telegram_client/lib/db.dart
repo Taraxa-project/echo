@@ -2,13 +2,11 @@ import 'dart:isolate';
 import 'dart:io' as io;
 import 'dart:convert';
 
-import 'package:path/path.dart' as p;
 import 'package:collection/collection.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:logging/logging.dart';
 import 'package:td_json_client/td_api.dart';
 import 'package:telegram_client/wrap_id.dart';
-import 'package:uuid/uuid.dart';
 
 import 'isolate.dart';
 
@@ -19,8 +17,6 @@ class Db extends Isolated {
   Database? db;
 
   static const maxTries = 3;
-
-  String? appId;
 
   Db({
     Level? super.logLevel,
@@ -136,28 +132,40 @@ class Db extends Isolated {
           DbMsgResponseSelectChatOnlineMemberCount(),
           "select chat online member count",
         ));
-      } else if (message is DbMsgRequestDumpTables) {
+      } else if (message is DbMsgRequestDumpData) {
         message.replySendPort?.send(await _retryDbOperationAsync(
           () async {
-            return await _dumpTables(
-              dumpPath: message.dumpPath,
-              fileExtData: message.dumpExt,
+            return await _dumpData(
+              tableName: message.tableName,
+              fileName: message.fileName,
+              fromId: message.fromId,
             );
           },
-          DbMsgResponseDumpTables(),
-          'dump table locally',
+          DbMsgResponseDumpData(count: 0),
+          'dump data locally',
         ));
-      } else if (message is DbMsgRequestAppId) {
+      } else if (message is DbMsgRequestUploadDataSucces) {
         message.replySendPort?.send(_retryDbOperation(
-          () => _appId(),
-          DbMsgResponseAppId(),
-          "select app id",
-        ));
-      } else if (message is DbMsgRequestUploadSucces) {
-        message.replySendPort?.send(_retryDbOperation(
-          () => _uploadSuccess(message.dataName),
-          DbMsgResponseUploadSucces(),
+          () => _uploadDataSuccess(message.tableName, message.file_hash),
+          DbMsgResponseUploadDataSucces(),
           "upload succes",
+        ));
+      } else if (message is DbMsgRequestDumpMeta) {
+        message.replySendPort?.send(await _retryDbOperationAsync(
+          () async {
+            return await _dumpMeta(
+              tableName: message.tableName,
+              fileName: message.fileName,
+            );
+          },
+          DbMsgResponseDumpMeta(count: 0),
+          'dump meta locally',
+        ));
+      } else if (message is DbMsgRequestUploadMetaSucces) {
+        message.replySendPort?.send(_retryDbOperation(
+          () => _uploadMetaSuccess(message.tableName, message.file_hash),
+          DbMsgResponseUploadMetaSucces(),
+          "upload meta succes",
         ));
       }
     });
@@ -247,24 +255,22 @@ class Db extends Isolated {
 
   DbMsgResponseMigrate _migrate() {
     logger.fine('running migrations...');
+
     for (final sql in _sqlInit()) {
       db?.execute(sql);
     }
-    db?.execute(_sqlInitExportTable, [
-      'message',
-      0,
-      0,
-      DateTime.now().toUtc().toIso8601String(),
-      DateTime.now().toUtc().toIso8601String(),
-    ]);
-    db?.execute(_sqlInitExportTable, [
-      'user',
-      0,
-      0,
-      DateTime.now().toUtc().toIso8601String(),
-      DateTime.now().toUtc().toIso8601String(),
-    ]);
+    for (var tableName in ['chat', 'message', 'user']) {
+      db?.execute(_sqlInitIpfsUploadTable, [
+        tableName,
+        0,
+        0,
+        DateTime.now().toUtc().toIso8601String(),
+        DateTime.now().toUtc().toIso8601String(),
+      ]);
+    }
+
     logger.fine('running migrations... done.');
+
     return DbMsgResponseMigrate();
   }
 
@@ -511,77 +517,101 @@ class Db extends Isolated {
     );
   }
 
-  Future<DbMsgResponseDumpTables> _dumpTables({
-    required String dumpPath,
-    required String fileExtData,
+  Future<DbMsgResponseDumpData> _dumpData({
+    required String tableName,
+    required String fileName,
+    int? fromId,
   }) async {
-    _appId();
-
-    PreparedStatement? stmt;
-    ResultSet? rs;
-    Row row;
-
-    logger.info('exporting chats...');
-    stmt = db?.prepare(_sqlSelectChatsForDump);
-    rs = stmt?.select();
-    if (rs != null && rs.isNotEmpty) {
-      await _dumpResultSet(rs, dumpPath, _fileName('chat', fileExtData));
+    if (fromId == null) {
+      fromId = _lastUploadedId(tableName);
     }
-    logger.info('exporting chats... done: ${rs?.length ?? 0} records.');
+    logger.info('exporting $tableName from id $fromId...');
 
-    var lastUploadeMessageId = _lastUploadedId('message');
-    logger.info('exporting messages from $lastUploadeMessageId...');
-    stmt = db?.prepare(_sqlSelectMessagesForDump);
-    rs = stmt?.select([lastUploadeMessageId]);
+    final stmtSelect = db?.prepare(_sqlSelectDataForDump(tableName));
+    final rs = stmtSelect?.select([fromId]);
+
+    var count = 0;
     if (rs != null && rs.isNotEmpty) {
-      await _dumpResultSet(rs, dumpPath, _fileName('message', fileExtData),
-          lastUploadeMessageId == 0);
-
-      row = rs.last;
-      stmt = db?.prepare(_sqlUpdateExportLastExportedId);
-      stmt?.execute([row['rowid'], 'message']);
-    } else {
-      _deleteExportFile(dumpPath, _fileName('message', fileExtData));
+      await _dumpResultSet(rs, fileName);
+      _updateLastExportedId(tableName, rs.last['rowid']);
+      count = rs.length;
     }
-    logger.info('exporting message from $lastUploadeMessageId... done:'
-        ' ${rs?.length ?? 0} records.');
+    stmtSelect?.dispose();
 
-    var lastUploadeUserId = _lastUploadedId('user');
-    logger.info('exporting users from $lastUploadeUserId...');
-    stmt = db?.prepare(_sqlSelectUsersForDump);
-    rs = stmt?.select([lastUploadeUserId]);
-    if (rs != null && rs.isNotEmpty) {
-      await _dumpResultSet(
-          rs, dumpPath, _fileName('user', fileExtData), lastUploadeUserId == 0);
+    logger.info('exporting $tableName from id $fromId... done:'
+        ' $count records.');
 
-      row = rs.last;
-      stmt = db?.prepare(_sqlUpdateExportLastExportedId);
-      stmt?.execute([row['rowid'], 'user']);
-    } else {
-      _deleteExportFile(dumpPath, _fileName('user', fileExtData));
-    }
-    logger.info('exporting users from $lastUploadeUserId... done:'
-        ' ${rs?.length ?? 0} records.');
-
-    stmt?.dispose();
-
-    return DbMsgResponseDumpTables();
+    return DbMsgResponseDumpData(count: count);
   }
 
-  DbMsgResponseUploadSucces _uploadSuccess(String dataName) {
-    var stmt = db?.prepare(_sqlUpdateExportLastUploadedId);
-    stmt?.execute([dataName]);
+  Future<DbMsgResponseDumpMeta> _dumpMeta({
+    required String tableName,
+    required String fileName,
+  }) async {
+    logger.info('exporting $tableName ipfs file hashes...');
 
-    stmt?.dispose();
+    final stmtSelect = db?.prepare(_sqlSelectMetaForDump);
+    final rs = stmtSelect?.select([tableName]);
 
-    return DbMsgResponseUploadSucces();
+    var count = 0;
+    if (rs != null && rs.isNotEmpty) {
+      await _dumpResultSet(rs, fileName);
+      count = rs.length;
+    }
+    stmtSelect?.dispose();
+
+    logger.info('exporting $tableName ipfs file hashes... done:'
+        ' $count records.');
+
+    return DbMsgResponseDumpMeta(count: count);
+  }
+
+  void _updateLastExportedId(String tableName, id) {
+    final stmtUpdate = db?.prepare(_sqlUpdateIpfsUploadLastExportedId);
+    stmtUpdate?.execute([id, tableName]);
+    stmtUpdate?.dispose();
+  }
+
+  DbMsgResponseUploadDataSucces _uploadDataSuccess(
+    String tableName,
+    String file_hash,
+  ) {
+    final stmtUpdateLastUploadId =
+        db?.prepare(_sqlUpdateIpfsUploadLastUploadedId);
+    stmtUpdateLastUploadId?.execute([tableName]);
+    stmtUpdateLastUploadId?.dispose();
+
+    final stmtInsertIpfsHash = db?.prepare(_sqlInsertIpfsHash);
+    stmtInsertIpfsHash?.execute([
+      tableName,
+      file_hash,
+      DateTime.now().toUtc().toIso8601String(),
+      DateTime.now().toUtc().toIso8601String(),
+    ]);
+    stmtInsertIpfsHash?.dispose();
+
+    return DbMsgResponseUploadDataSucces();
+  }
+
+  DbMsgResponseUploadMetaSucces _uploadMetaSuccess(
+    String tableName,
+    String file_hash,
+  ) {
+    final stmtUpdatMetaIpfsHash = db?.prepare(_sqlUpdateIpfsUploadMetaFileHash);
+    stmtUpdatMetaIpfsHash?.execute([
+      tableName,
+      file_hash,
+    ]);
+    stmtUpdatMetaIpfsHash?.dispose();
+
+    return DbMsgResponseUploadMetaSucces();
   }
 
   int _lastUploadedId(String tableName) {
     int id = 0;
 
     Row? row;
-    row = db?.select(_sqlSelectExport, [tableName]).firstOrNull;
+    row = db?.select(_sqlSelectIpfsUpload, [tableName]).firstOrNull;
     if (row != null) {
       id = row['last_uploaded_id'] ?? 0;
     }
@@ -589,9 +619,12 @@ class Db extends Isolated {
     return id;
   }
 
-  Future<void> _dumpResultSet(ResultSet rs, String dumpPath, String fileName,
-      [bool addColumnNames = true]) async {
-    final file = new io.File(p.join(dumpPath, fileName));
+  Future<void> _dumpResultSet(
+    ResultSet rs,
+    String fileName, [
+    bool addColumnNames = true,
+  ]) async {
+    final file = new io.File(fileName);
     file.createSync();
 
     final sink = file.openWrite(mode: io.FileMode.write);
@@ -610,61 +643,26 @@ class Db extends Isolated {
     await sink.close();
   }
 
-  Future<void> _deleteExportFile(
-    String dumpPath,
-    String fileName,
-  ) async {
-    final file = new io.File(p.join(dumpPath, fileName));
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
-  }
-
-  DbMsgResponseAppId _appId() {
-    if (appId != null) {
-      return DbMsgResponseAppId(appId: appId);
-    }
-
-    logger.fine('reading app id...');
-
-    final ResultSet? resultSet = db?.select(_sqlSelectApp);
-    if (resultSet != null && resultSet.isNotEmpty) {
-      appId = resultSet.first['id'];
-      logger.fine('reading app id... found $appId.');
-    } else {
-      logger.fine('reading app id... not found. Generating new app id...');
-
-      var newAppId = Uuid().v4();
-
-      final stmt = db?.prepare(_sqlInsertApp);
-      stmt?.execute([
-        newAppId,
-        DateTime.now().toUtc().toIso8601String(),
-        DateTime.now().toUtc().toIso8601String(),
-      ]);
-      logger.fine('New app id $newAppId saved.');
-      stmt?.dispose();
-
-      appId = newAppId;
-    }
-
-    logger.fine('reading app id... done.');
-    return DbMsgResponseAppId(appId: appId);
-  }
-
   List<String> _sqlInit() {
     return [
       _sqlCreateChatTable,
       _sqlCreateTableMessage,
       _sqlCreateTableUser,
       _sqlCreateIndexMessageChatIdMessageId,
-      _sqlCreateAppTable,
-      _sqlCreateExportTable,
+      _sqlCreateIpfsUploadTable,
+      _sqlCreateIpfsHashTable,
+      _sqlCreateIndexIpfsHashTableName,
     ];
   }
 
-  String _fileName(String dataName, String fileExtData) {
-    return '$dataName-$appId.$fileExtData';
+  String _sqlSelectDataForDump(String tableName) {
+    if (tableName == 'chat') {
+      return _sqlSelectChatsForDump;
+    } else if (tableName == 'message') {
+      return _sqlSelectMessagesForDump;
+    } else {
+      return _sqlSelectUsersForDump;
+    }
   }
 
   static const _sqlCreateChatTable = '''
@@ -715,26 +713,33 @@ CREATE TABLE IF NOT EXISTS user (
 );
 ''';
 
-  static const _sqlCreateAppTable = '''
-CREATE TABLE IF NOT EXISTS app (
-  id TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
-  created_at TEXT,
-  updated_at TEXT
-);
-''';
-
-  static const _sqlCreateExportTable = '''
-CREATE TABLE IF NOT EXISTS export (
+  static const _sqlCreateIpfsUploadTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_upload (
   table_name TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
   last_exported_id INTEGER,
   last_uploaded_id INTEGER,
+  meta_file_hash TEXT,
   created_at TEXT,
   updated_at TEXT
 );
 ''';
 
-  static const _sqlInitExportTable = '''
-INSERT INTO export
+  static const _sqlCreateIpfsHashTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_hash (
+  table_name TEXT,
+  file_hash TEXT,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+
+  static const _sqlCreateIndexIpfsHashTableName = '''
+CREATE INDEX IF NOT EXISTS idx_ipfs_hash_table_name ON
+  ipfs_hash(table_name);
+''';
+
+  static const _sqlInitIpfsUploadTable = '''
+INSERT INTO ipfs_upload
   (table_name, last_exported_id, last_uploaded_id, created_at, updated_at)
 VALUES
   (?, ?, ?, ?, ?);
@@ -767,40 +772,64 @@ WHERE
   username = ?;
 ''';
 
-  static const _sqlSelectChatsForDump = '''
+  static const _sqlSelectIpfsUpload = '''
 SELECT
   a.*
 FROM
-  chat a
-ORDER BY
-  a.rowid ASC;
-''';
-
-  static const _sqlSelectExport = '''
-SELECT
-  a.*
-FROM
-  export a
+  ipfs_upload a
 WHERE
   a.table_name = ?;
 ''';
 
-  static const _sqlUpdateExportLastExportedId = '''
+  static const _sqlUpdateIpfsUploadLastExportedId = '''
 UPDATE
-  export
+  ipfs_upload
 SET
   last_exported_id = ?
 WHERE
   table_name = ?;
 ''';
 
-  static const _sqlUpdateExportLastUploadedId = '''
+  static const _sqlUpdateIpfsUploadLastUploadedId = '''
 UPDATE
-  export
+  ipfs_upload
 SET
   last_uploaded_id = last_exported_id
 WHERE
   table_name = ?;
+''';
+
+  static const _sqlInsertIpfsHash = '''
+INSERT INTO
+  ipfs_hash (
+    table_name,
+    file_hash,
+    created_at,
+    updated_at
+  )
+VALUES
+  (?, ?, ?, ?)
+''';
+
+  static const _sqlUpdateIpfsUploadMetaFileHash = '''
+UPDATE
+  ipfs_upload
+SET
+  meta_file_hash = ?
+WHERE
+  table_name = ?;
+''';
+
+  static const _sqlSelectChatsForDump = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  chat a
+WHERE
+  a.rowid > ?
+ORDER BY
+  a.rowid ASC;
 ''';
 
   static const _sqlSelectMessagesForDump = '''
@@ -825,6 +854,18 @@ WHERE
   a.id > ?
 ORDER BY
   a.id ASC;
+''';
+
+  static const _sqlSelectMetaForDump = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_hash a
+WHERE
+  a.table_name = ?
+ORDER BY
+  a.rowid ASC;
 ''';
 
   static const _sqlInsertChat = '''
@@ -899,20 +940,6 @@ SET
   bot = ?, verified = ?, scam = ?, fake = ?
 WHERE
   user_id = ?;
-''';
-
-  static const _sqlSelectApp = '''
-SELECT
-  *
-FROM
-  app
-LIMIT 1;
-''';
-
-  static const _sqlInsertApp = '''
-INSERT INTO
-  app (id, created_at, updated_at)
-VALUES (?, ?, ?);
 ''';
 
   bool _dbErrorHandler(SqliteException error, String operation) {
@@ -1198,37 +1225,67 @@ class DbMsgResponseSelectChatOnlineMemberCount extends DbMsgResponse {
   });
 }
 
-class DbMsgRequestDumpTables extends DbMsgRequest {
-  final String dumpPath;
-  final String dumpExt;
-  DbMsgRequestDumpTables({
+class DbMsgRequestDumpData extends DbMsgRequest {
+  final String tableName;
+  final String fileName;
+  int? fromId;
+  DbMsgRequestDumpData({
     super.replySendPort,
-    required this.dumpPath,
-    required this.dumpExt,
+    required this.tableName,
+    required this.fileName,
+    this.fromId,
   });
 }
 
-class DbMsgResponseDumpTables extends DbMsgResponse {
-  DbMsgResponseDumpTables({
+class DbMsgResponseDumpData extends DbMsgResponse {
+  final int count;
+  DbMsgResponseDumpData({
     super.exception,
     super.operationName,
+    required this.count,
   });
 }
 
-class DbMsgRequestAppId extends DbMsgRequest {
-  DbMsgRequestAppId({super.replySendPort});
+class DbMsgRequestUploadDataSucces extends DbMsgRequest {
+  String tableName;
+  String file_hash;
+  DbMsgRequestUploadDataSucces({
+    super.replySendPort,
+    required this.tableName,
+    required this.file_hash,
+  });
 }
 
-class DbMsgResponseAppId extends DbMsgResponse {
-  String? appId;
-  DbMsgResponseAppId({super.exception, super.operationName, this.appId});
+class DbMsgResponseUploadDataSucces extends DbMsgResponse {
+  DbMsgResponseUploadDataSucces({super.exception, super.operationName});
 }
 
-class DbMsgRequestUploadSucces extends DbMsgRequest {
-  String dataName;
-  DbMsgRequestUploadSucces({super.replySendPort, required this.dataName});
+class DbMsgRequestDumpMeta extends DbMsgRequest {
+  final String tableName;
+  final String fileName;
+  DbMsgRequestDumpMeta(
+      {super.replySendPort, required this.tableName, required this.fileName});
 }
 
-class DbMsgResponseUploadSucces extends DbMsgResponse {
-  DbMsgResponseUploadSucces({super.exception, super.operationName});
+class DbMsgResponseDumpMeta extends DbMsgResponse {
+  final int count;
+  DbMsgResponseDumpMeta({
+    super.exception,
+    super.operationName,
+    required this.count,
+  });
+}
+
+class DbMsgRequestUploadMetaSucces extends DbMsgRequest {
+  String tableName;
+  String file_hash;
+  DbMsgRequestUploadMetaSucces({
+    super.replySendPort,
+    required this.tableName,
+    required this.file_hash,
+  });
+}
+
+class DbMsgResponseUploadMetaSucces extends DbMsgResponse {
+  DbMsgResponseUploadMetaSucces({super.exception, super.operationName});
 }

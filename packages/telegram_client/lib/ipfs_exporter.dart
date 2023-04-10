@@ -28,20 +28,16 @@ class IpfsExporter extends Isolated {
 
   final _cron = Cron();
 
-  static const dataNames = ['chat', 'message', 'user'];
-  static const dataNamesUploadFull = ['chat'];
+  static const tableNames = ['chat', 'message', 'user'];
+  static const tableNamesUploadFull = ['chat'];
 
-  static const ipfsUriPathFileWrite = '/api/v0/files/write';
-  static const ipfsUriPathFileStat = '/api/v0/files/stat';
-
-  static const String fileExtData = 'json_lines';
-  static const String fileExtHash = 'hash';
+  static const String fileExtTypeData = 'json_lines';
+  static const String fileExtTypeMeta = 'json_lines';
+  static const String fileExtTypeHash = 'hash';
 
   static const int ipfsRequestRetryCountMax = 5;
   static const int ipfsRequestRetryDelaySeconds = 30;
   static const int ipfsRequestTimeoutSeconds = 60;
-
-  String? appId;
 
   bool _exportInProgress = false;
 
@@ -97,280 +93,115 @@ class IpfsExporter extends Isolated {
     if (_exportInProgress) return;
 
     _exportInProgress = true;
-    appId = await _readAppId();
-    if (appId != null) {
-      await _writeFilesLocally();
-      await _writeFilesToIpfs();
-    }
-    _exportInProgress = false;
-  }
-
-  Future<String?> _readAppId() async {
-    logger.info('reading app id...');
-
-    dbSendPort.send(DbMsgRequestAppId(replySendPort: receivePort.sendPort));
-    var response = await receivePortBroadcast
-        .where((event) => event is DbMsgResponseAppId)
-        .first;
-
-    if (response.exception != null) {
-      logger.severe(response.exception!);
-    } else {
-      logger.info('reading app id... done.');
-    }
-    return response.appId;
-  }
-
-  Future<void> _writeFilesLocally() async {
-    logger.info('writing files locally...');
-
-    dbSendPort.send(DbMsgRequestDumpTables(
-      replySendPort: receivePort.sendPort,
-      dumpPath: tableDumpPath,
-      dumpExt: fileExtData,
-    ));
-    var response = await receivePortBroadcast
-        .where((event) => event is DbMsgResponseDumpTables)
-        .first;
-
-    if (response.exception != null) {
-      logger.severe(response.exception!);
-    } else {
-      logger.info('writing files locally... done.');
-    }
-  }
-
-  Future<void> _uploadSuccess(String dataName) async {
-    dbSendPort.send(DbMsgRequestUploadSucces(
-      replySendPort: receivePort.sendPort,
-      dataName: dataName,
-    ));
-    var response = await receivePortBroadcast
-        .where((event) => event is DbMsgResponseUploadSucces)
-        .first;
-
-    if (response.exception != null) {
-      logger.severe(response.exception!);
-    }
-  }
-
-  Future<void> _writeFilesToIpfs() async {
-    logger.info('uploading files to ipfs...');
 
     final client = http.Client();
+    final ipfsUri = _buildIpfsUri('/api/v0/add');
 
-    for (var dataName in dataNames) {
-      int offset = 0;
-      bool truncate = true;
-
-      if (!dataNamesUploadFull.contains(dataName)) {
-        truncate = false;
-
-        logger.info('reading stats for $dataName from IPFS...');
-        var stats = await _ipfsFileStatRetry(client, dataName);
-        if (stats != null && stats.containsKey('Size')) {
-          offset = stats['Size'];
-        }
-      }
-
-      logger.info('writing $dataName to IPFS...');
-
-      var _ipfsFileWriteResult =
-          await _ipfsFileWriteRetry(client, dataName, offset, truncate);
-      if (_ipfsFileWriteResult == null) {
+    for (var tableName in tableNames) {
+      var fileNameData = p.joinAll([
+        tableDumpPath,
+        '$tableName.$fileExtTypeData',
+      ]);
+      dbSendPort.send(
+        DbMsgRequestDumpData(
+            replySendPort: receivePort.sendPort,
+            tableName: tableName,
+            fileName: fileNameData,
+            fromId: tableNamesUploadFull.contains(tableName) ? 0 : null),
+      );
+      var responseDumpData = await receivePortBroadcast
+          .where((event) => event is DbMsgResponseDumpData)
+          .first;
+      if (responseDumpData.exception != null) {
+        logger.severe(responseDumpData.exception!);
         continue;
-      } else if (_ipfsFileWriteResult == false) {
-        logger.info('writing $dataName to IPFS... done. No new records.');
-      } else {
-        logger.info('writing $dataName to IPFS... done.');
+      }
+      if (responseDumpData.count == 0) {
+        continue;
       }
 
-      if (!dataNamesUploadFull.contains(dataName)) {
-        await _uploadSuccess(dataName);
+      logger.info('uploading $tableName to IPFS...');
+
+      var fileHashData =
+          await _ipfsAdd(client, ipfsUri, tableName, fileNameData);
+      if (fileHashData == null) {
+        continue;
+      }
+      logger.info('uploading $tableName to IPFS... done. Hash: $fileHashData.');
+
+      dbSendPort.send(DbMsgRequestUploadDataSucces(
+        replySendPort: receivePort.sendPort,
+        tableName: tableName,
+        file_hash: fileHashData,
+      ));
+      var responseUploadData = await receivePortBroadcast
+          .where((event) => event is DbMsgResponseUploadDataSucces)
+          .first;
+
+      if (responseUploadData.exception != null) {
+        logger.severe(responseDumpData.exception!);
+        continue;
       }
 
-      logger.info('reading stats for $dataName from IPFS...');
-      var stats = await _ipfsFileStatRetry(client, dataName);
+      var fileNameMeta = p.joinAll([
+        tableDumpPath,
+        '$tableName.meta.$fileExtTypeData',
+      ]);
+      dbSendPort.send(DbMsgRequestDumpMeta(
+        replySendPort: receivePort.sendPort,
+        tableName: tableName,
+        fileName: fileNameMeta,
+      ));
+      var responseDumpMeta = await receivePortBroadcast
+          .where((event) => event is DbMsgResponseDumpMeta)
+          .first;
+      if (responseDumpMeta.exception != null) {
+        logger.severe(responseDumpMeta.exception!);
+        continue;
+      }
+      if (responseDumpMeta.count == 0) {
+        continue;
+      }
 
-      var hash = stats?['Hash'];
-      if (hash == null) continue;
+      logger.info('uploading $tableName ipfs file hashes to IPFS...');
 
-      logger.info('reading stats for $dataName from IPFS... done.'
-          ' Hash: $hash.');
+      var fileHashMeta =
+          await _ipfsAdd(client, ipfsUri, tableName, fileNameMeta);
+      if (fileHashMeta == null) {
+        continue;
+      }
+      logger.info('uploading $tableName ipfs file hashes to IPFS... done.'
+          ' Hash: $fileHashMeta.');
 
-      logger.info('writing hash to $dataName.$fileExtHash...');
-      await _writeHash(dataName, hash);
-      logger.info('wroting hash to $dataName.$fileExtHash... done.');
+      logger.info('writing hash to $tableName.$fileExtTypeHash...');
+      await _writeHash(tableName, fileHashMeta);
+      logger.info('wroting hash to $tableName.$fileExtTypeHash... done.');
+
+      dbSendPort.send(DbMsgRequestUploadMetaSucces(
+        replySendPort: receivePort.sendPort,
+        tableName: tableName,
+        file_hash: fileHashMeta,
+      ));
+      var responseUploadMeta = await receivePortBroadcast
+          .where((event) => event is DbMsgResponseUploadMetaSucces)
+          .first;
+      if (responseUploadMeta.exception != null) {
+        logger.severe(responseDumpData.exception!);
+        continue;
+      }
     }
 
     client.close();
 
-    logger.info('uploading files to ipfs... done.');
-  }
-
-  Future<bool?> _ipfsFileWriteRetry(
-    http.Client httpClient,
-    String dataName, [
-    int offset = 0,
-    bool truncate = true,
-  ]) async {
-    var fileName = _fileName(dataName);
-
-    final file = new File(p.join(tableDumpPath, fileName));
-    if (!file.existsSync()) {
-      return false;
-    }
-
-    Map<String, dynamic> ipfsQueryParameters = {
-      'arg': '/echo/$fileName',
-      'create': 'true',
-      'parents': 'true',
-      'truncate': truncate.toString(),
-      'offset': offset.toString(),
-    };
-    var ipfsUri = _buildIpfsUri(ipfsUriPathFileWrite, ipfsQueryParameters);
-
-    var ipfsRequestRetryCountIndex = 0;
-    while (ipfsRequestRetryCountIndex < ipfsRequestRetryCountMax) {
-      ipfsRequestRetryCountIndex += 1;
-
-      var logRetryIndex =
-          '$ipfsRequestRetryCountIndex/$ipfsRequestRetryCountMax';
-
-      var ipfsRequest = http.MultipartRequest('POST', ipfsUri);
-      ipfsRequest = _ipfsRequestAddAuth(ipfsRequest);
-
-      var multipartFile = await http.MultipartFile.fromPath(
-        'data',
-        p.join(tableDumpPath, fileName),
-      );
-      ipfsRequest.files.add(multipartFile);
-
-      logger.info('[$logRetryIndex] ipfs write $dataName...');
-
-      var ipfsResponse;
-      try {
-        ipfsResponse = await httpClient
-            .send(ipfsRequest)
-            .timeout(const Duration(seconds: ipfsRequestTimeoutSeconds));
-      } on Exception catch (ex) {
-        logger.warning(ex);
-
-        logger.info('[$logRetryIndex] ipfs write $dataName...'
-            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
-        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-        continue;
-      }
-
-      var ipfsResponseBody = await ipfsResponse.stream.bytesToString();
-
-      if (ipfsResponse.statusCode == 200) {
-        logger.info('[$logRetryIndex] ipfs write $dataName... done.');
-        return true;
-      }
-
-      logger.warning('[$logRetryIndex] ipfs write $dataName...'
-          ' code=${ipfsResponse.statusCode} '
-          ' body=${ipfsResponseBody}.');
-
-      logger.info('[$logRetryIndex] ipfs write $dataName...'
-          ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
-      await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-    }
-
-    return null;
-  }
-
-  Future<Map<dynamic, dynamic>?> _ipfsFileStatRetry(
-      http.Client httpClient, String dataName) async {
-    var fileName = _fileName(dataName);
-
-    Map<String, dynamic> ipfsQueryParameters = {'arg': '/echo/$fileName'};
-    var ipfsUri = _buildIpfsUri(ipfsUriPathFileStat, ipfsQueryParameters);
-
-    var ipfsRequestRetryCountIndex = 0;
-    while (ipfsRequestRetryCountIndex < ipfsRequestRetryCountMax) {
-      ipfsRequestRetryCountIndex += 1;
-
-      var logRetryIndex =
-          '$ipfsRequestRetryCountIndex/$ipfsRequestRetryCountMax';
-
-      var ipfsRequest = http.Request('POST', ipfsUri);
-      ipfsRequest = _ipfsRequestAddAuth(ipfsRequest);
-
-      logger.info('[$logRetryIndex] ipfs stat $dataName...');
-
-      var ipfsResponse;
-      try {
-        ipfsResponse = await httpClient
-            .send(ipfsRequest)
-            .timeout(const Duration(seconds: ipfsRequestTimeoutSeconds));
-      } on Exception catch (ex) {
-        logger.warning(ex);
-
-        logger.info('[$logRetryIndex] ipfs stat $dataName...'
-            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
-        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-        continue;
-      }
-
-      var ipfsResponseBody = await ipfsResponse.stream.bytesToString();
-
-      var ipfsResponseBodyDecoded;
-      try {
-        ipfsResponseBodyDecoded = jsonDecode(ipfsResponseBody);
-      } on FormatException catch (ex) {
-        logger.warning(ex);
-
-        logger.info('[$logRetryIndex] ipfs stat $dataName...'
-            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
-        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-        continue;
-      }
-
-      if (ipfsResponse.statusCode == 500 &&
-          ipfsResponseBodyDecoded?['Message'] == 'file does not exist') {
-        logger.info('[$logRetryIndex] ipfs stat $dataName...'
-            ' file not found');
-        return null;
-      }
-
-      if (ipfsResponse.statusCode != 200) {
-        logger.warning('[$logRetryIndex] ipfs stat $dataName...'
-            ' code=${ipfsResponse.statusCode}'
-            ' body=${ipfsResponseBody}.');
-
-        logger.info('[$logRetryIndex] ipfs stat $dataName...'
-            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
-        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-        continue;
-      }
-
-      if (ipfsResponseBodyDecoded is! Map ||
-          !ipfsResponseBodyDecoded.containsKey('Hash')) {
-        logger.warning('[$logRetryIndex] ipfs stat $dataName...'
-            ' invalid response (expected hash)'
-            ' code=${ipfsResponse.statusCode}'
-            ' body=${ipfsResponseBody}.');
-
-        logger.info('[$logRetryIndex] ipfs stat $dataName...'
-            ' retrying in $ipfsRequestRetryDelaySeconds seconds.');
-        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-        continue;
-      }
-
-      logger.info('[$logRetryIndex] ipfs stat $dataName... done.');
-      return ipfsResponseBodyDecoded;
-    }
-
-    return null;
+    _exportInProgress = false;
   }
 
   Future<void> _writeHash(
     String dataName,
     String hash,
   ) async {
-    var fileHash = new File(p.join(tableDumpPath, '$dataName.$fileExtHash'));
+    var fileHash =
+        new File(p.join(tableDumpPath, '$dataName.$fileExtTypeHash'));
     fileHash.createSync();
 
     final sink = fileHash.openWrite(mode: FileMode.write);
@@ -400,7 +231,99 @@ class IpfsExporter extends Isolated {
     return request;
   }
 
-  String _fileName(String dataName) {
-    return '$dataName-$appId.$fileExtData';
+  Future<String?> _ipfsAdd(
+    http.Client httpClient,
+    Uri ipfsUri,
+    String tableName,
+    String fileName,
+  ) async {
+    var responseBodyIpfsAdd = await _ipfsAddRetry(
+      httpClient,
+      ipfsUri,
+      tableName,
+      fileName,
+    );
+    if (responseBodyIpfsAdd == null) {
+      return null;
+    }
+
+    var responseBodyIpfsAddDecoded;
+    try {
+      responseBodyIpfsAddDecoded = jsonDecode(responseBodyIpfsAdd);
+    } on FormatException catch (ex) {
+      logger.warning(ex);
+      return null;
+    }
+
+    if (responseBodyIpfsAddDecoded is! Map) {
+      logger.warning('ipfs add error: '
+          'reponse body is not a Map '
+          'body=${responseBodyIpfsAdd}.');
+      return null;
+    }
+
+    if (!responseBodyIpfsAddDecoded.containsKey('Hash')) {
+      logger.warning('ipfs add error: '
+          'reponse body without the Hash key '
+          'body=${responseBodyIpfsAdd}.');
+      return null;
+    }
+
+    return responseBodyIpfsAddDecoded['Hash'];
+  }
+
+  Future<String?> _ipfsAddRetry(
+    http.Client httpClient,
+    Uri ipfsUri,
+    String dataName,
+    String fileName,
+  ) async {
+    var ipfsRequestRetryCountIndex = 1;
+
+    while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
+      var requestIpfsAdd = http.MultipartRequest(
+        'POST',
+        ipfsUri,
+      );
+      requestIpfsAdd = _ipfsRequestAddAuth(requestIpfsAdd);
+
+      var multipartFile = await http.MultipartFile.fromPath('data', fileName);
+      requestIpfsAdd.files.add(multipartFile);
+
+      logger.info('uploading $dataName to IPFS...'
+          ' Retry $ipfsRequestRetryCountIndex/$ipfsRequestRetryCountMax.');
+
+      var responseIpfsAdd;
+      try {
+        responseIpfsAdd = await httpClient
+            .send(requestIpfsAdd)
+            .timeout(const Duration(seconds: ipfsRequestTimeoutSeconds));
+      } on Exception catch (ex) {
+        logger.warning(ex);
+        logger.info('ipfs add: '
+            'retrying in $ipfsRequestRetryDelaySeconds seconds.');
+        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+        ipfsRequestRetryCountIndex += 1;
+        continue;
+      }
+
+      var responseBodyIpfsAdd = await responseIpfsAdd.stream.bytesToString();
+
+      if (responseIpfsAdd.statusCode == 200) {
+        return responseBodyIpfsAdd;
+      }
+
+      logger.warning('ipfs add error: '
+          'code=${responseIpfsAdd.statusCode} '
+          'body=${responseBodyIpfsAdd}.');
+
+      logger.info('ipfs add: '
+          'retrying in $ipfsRequestRetryDelaySeconds seconds.');
+      await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+
+      ipfsRequestRetryCountIndex += 1;
+    }
+
+    return null;
   }
 }
