@@ -202,11 +202,11 @@ describe("IngesterOrchestratorV2", () => {
   });
 
     describe("Manage Groups", function () {
-    const numGroups = 100;
+    const numGroups = 7500;
     let  addedGroups: string[] = [];
     let ingesterToController: IngesterControllerMapping = {}
     let accounts: SignerWithAddress[] = [];
-    let numIngesters = 3;
+    let numIngesters = 25;
     let ingesters: SignerWithAddress[] = [];
     let numIngestersToRemove = 1;
     beforeEach(async function () {

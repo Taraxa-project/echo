@@ -74,15 +74,20 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         _grantRole(CONTROLLER_ROLE, _controllerAddress);
 
         emit IIngesterRegistration.IngesterRegistered(_controllerAddress, _ingesterAddress);
+
+        //check if there are unassigned groups
+        //if there are, is there now capacity to include them 
+        string[] memory unallocatedGroups = ingesterProxy.getUnallocatedGroups();
+        if (unallocatedGroups.length > 0) {
+            ingesterProxy.distributeGroupsPostRegistration();
+        }
     }
 
     function unRegisterIngester(address _ingesterAddress, address _controllerAddress) external onlyIngesterProxy {
         require(ingesterToController[_ingesterAddress].controllerAddress == _controllerAddress, "Ingester does not exist");
-        console.log('ingesterAddress', _ingesterAddress);
         address controller = ingesterToController[_ingesterAddress].controllerAddress;
         uint256 ingesterIndexToRemove = ingesterToController[_ingesterAddress].ingesterIndex;
         string[] memory ingesterAssignedGroups = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].assignedGroups;
-        console.log('am I getting the right ingester at 0 index, assignedGroups length', controllerToIngesters[_controllerAddress][ingesterIndexToRemove].assignedGroups.length);
 
 
         uint ingesterAddressesIndexToRemove = ingesterToController[_ingesterAddress].ingesterAddressesIndex;
@@ -104,7 +109,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
 
             // Remove Ingester from Cluster
             uint256 clusterId = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].clusterId;
-            ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId, ingesterAssignedGroups);
+            ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId);
             // Remove ingester mappings
             delete controllerToIngesters[_controllerAddress];
             delete ingesterToController[_ingesterAddress];
@@ -116,7 +121,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
 
             //Remove Ingester from Cluster
             uint256 clusterId = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].clusterId;
-            ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId, ingesterAssignedGroups);
+            ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId);
 
             // Remove ingester from the controllerToIngesters list
             if (ingesterIndexToRemove != numIngestersPerController - 1) {
@@ -128,7 +133,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
             controllerToIngesters[_controllerAddress].pop();
             delete ingesterToController[_ingesterAddress];
         }
-        console.log("amount of groups to re-allocate within registration contract", ingesterAssignedGroups.length);
+        
         ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups);
     }
 

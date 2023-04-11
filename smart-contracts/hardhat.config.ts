@@ -17,8 +17,8 @@ const config: HardhatUserConfig = {
   gasReporter: {
     enabled:true
   },
-  
   networks: {
+   
     hardhat: {
         accounts: {
           mnemonic: "test test test test test test test test test test test junk",

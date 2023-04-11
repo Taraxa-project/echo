@@ -126,7 +126,7 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
         return groupManagerContract.getClusters();
     }
 
-    function getCluster(uint256 clusterId) external view returns(IIngesterGroupManager.Cluster memory) {
+    function getCluster(uint256 clusterId) external view returns(IIngesterGroupManager.ClusterSlim memory) {
         return groupManagerContract.getCluster(clusterId);
     }
 
@@ -161,6 +161,15 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
     function distributeGroupPostUnregistration(string[] memory _groups) external onlyRegistrationContract {
         groupManagerContract.distributeGroupPostUnregistration(_groups);
     }
+
+    function distributeGroupsPostRegistration() external onlyRegistrationContract {
+        groupManagerContract.distributeGroupsPostRegistration();
+    }
+
+    function getUnallocatedGroups() external view returns(string[] memory) {
+        return groupManagerContract.getUnallocatedGroups();
+    }
+
 
     function addIpfsHash(
         address _ingesterAddress,
