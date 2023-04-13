@@ -53,7 +53,7 @@ IngesterRegistryAccessControlV2: This contract manages access control and owners
 - Register an ingester using the registerIngester function in the IngesterRegistrationV2 contract. You need to provide a valid signature proving that you control the ingester address. The signature is generated off-chain using the ingester's private key. Here's a step-by-step process:
     - Create a message: create a message that includes the ingester's Ethereum address and any additional information, e.g. <public_key>_<nonce>_<timestamp>
     - Create a nonce: generate a nonce (a random or incrementing number)
-    - Hash the message: The message, along with the ingester's Ethereum address and the nonce, needs to be hashed using the keccak256 hashing algorithm (SHA-3). You can also call the `_hash` function on the `IIngesterRegistrationV2` contract to do this. Example:
+    - Hash the message: The message, along with the ingester's Ethereum address and the nonce, needs to be hashed using the keccak256 hashing algorithm (SHA-3). You can also call the `_hash` function on the `IngesterRegistrationV2` contract to do this. Example:
     ```const messageHash = await contract._hash(ingesterAddress, message, nonce);```
     - Sign the hash: Now, the ingester should sign the hash using its private key. Example call:
     ```const sig = await ingesterWeb3Account.signMessage(ethers.utils.arrayify(messageHash));```
