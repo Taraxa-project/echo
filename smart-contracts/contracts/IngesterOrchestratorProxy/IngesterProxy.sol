@@ -33,6 +33,11 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
         _;
     }
 
+    modifier onlyRegisteredIngester() {
+        require(isRegisteredIngester(msg.sender), "Caller is not a registered ingester");
+        _;
+    }
+
     modifier onlyGroupManager() {
         require(msg.sender == groupManagerContractAddress, "Caller is not group manager contract");
         _;
@@ -172,15 +177,12 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
 
 
     function addIpfsHash(
-        address _ingesterAddress,
         string calldata _usersHash,
         string calldata _chatsHash,
         string calldata _messagesHash
-    ) external onlyRegisteredController {
-        require(isRegisteredIngester(_ingesterAddress), "Ingester is not registered");
-
+    ) external onlyRegisteredIngester {
         dataGatheringContract.addIpfsHash(
-            _ingesterAddress,
+            msg.sender,
             _usersHash,
             _chatsHash,
             _messagesHash);

@@ -35,14 +35,6 @@ interface IIngesterGroupManager {
         uint256 clusterRemainingCapacity;
     }
 
-    // modify the addGrroup to adapt to new structure - Done
-    // modify removeGroup to adapt to new structure
-    // adapt removal of ingester from cluster
-    // modify the distributeGroup function
-
-    //need to imlement re-assignement of unassigned groups to newly registered ingesters
-
-    
     // Events
     event GroupDistributed(uint256 clusterId, string groupUsername);
     event GroupAdded(string groupUsername);
