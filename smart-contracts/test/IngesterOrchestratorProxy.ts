@@ -8,6 +8,7 @@ import { IngesterDataGathering } from '../typechain-types/contracts/IngesterOrch
 import { IngesterGroupManager } from '../typechain-types/contracts/IngesterOrchestratorProxy/IngesterGroupManager';
 import { IngesterProxy } from '../typechain-types/contracts/IngesterOrchestratorProxy/IngesterProxy';
 import { IIngesterGroupManager } from '../typechain-types/contracts/IngesterOrchestratorProxy/IngesterGroupManager';
+import cluster from "cluster";
 
 interface IngesterControllerMapping {
     [ingesterAddress: string]: SignerWithAddress;
@@ -66,6 +67,12 @@ async function getClusterMaxGroupsPerIngester(ingesterProxy: IngesterProxy, clus
     return maxGroupsPerIngesterAfterUnregistering
 }
 
+function allUnique(arr: number[]): boolean {
+    const set = new Set(arr);
+    return set.size === arr.length;
+}
+  
+
 describe("IngesterOrchestratorProxy", () => {
   let accounts: SignerWithAddress[];
   let ingesterProxy: IngesterProxy;
@@ -83,9 +90,9 @@ describe("IngesterOrchestratorProxy", () => {
   let controller3: SignerWithAddress;
   const message: string = 'hello';
   const nonce: number = 123;
-  const maxIngesterPerGroup = 1;
+  let maxIngesterPerGroup = 1;
   const maxClusterSize = 3;
-  const maxGroupsPerIngester = 45;
+  const maxGroupsPerIngester = 40;
 
   beforeEach(async () => {
     accounts = await ethers.getSigners();
@@ -346,7 +353,6 @@ describe("IngesterOrchestratorProxy", () => {
 
         //Grab unallocated groups and check if they are correctly unallocated and don't overlap with allocated groups
         let unAllocatedGroups = await ingesterProxy.getUnallocatedGroups();
-        console.log("🚀 ~ file: IngesterOrchestratorProxy.ts:340 ~ it ~ unAllocatedGroups:", unAllocatedGroups.length);
         
         //register Ingester again and check if the unallocated groups get allocated again
         let hash = await ingesterRegistry._hash(ingesters[0].address, message, nonce);
@@ -364,15 +370,15 @@ describe("IngesterOrchestratorProxy", () => {
         }
 
     });
-   
+
   });
 
   describe("Manage Groups", function () {
     let  addedGroups: string[] = [];
     let ingesterToController: IngesterControllerMapping = {}
     let accounts: SignerWithAddress[] = [];
-    let numIngesters = 3;
-    const numGroups = maxGroupsPerIngester * numIngesters;
+    let numIngesters = 6;
+    let numGroups = 240; //maxGroupsPerIngester * numIngesters;
     let ingesters: SignerWithAddress[] = [];
     let numIngestersToRemove = 1;
     beforeEach(async function () {
@@ -557,9 +563,6 @@ describe("IngesterOrchestratorProxy", () => {
     });
 
     it("should re-adjust groups when multiple ingesters are removed", async () => {
-        let ingesterCount = BigNumber.from(await ingesterProxy.getIngesterCount()).toNumber();
-        let maxGroupsPerIngesterBeforeUnregistering = Math.ceil(numGroups / ingesterCount);
-
         // check group assignement are within constraints
         for (let i = 0; i < numGroups; i++) {
             await ingesterProxy.connect(owner).addGroup(`group${i}`);
@@ -627,7 +630,8 @@ describe("IngesterOrchestratorProxy", () => {
 
     it("should allocate new groups when available to newly registered ingester", async () => {
         // check group assignement are within constraints
-        for (let i = 0; i < numGroups; i++) {
+        let maxNumberOfGroups = maxGroupsPerIngester * numIngesters;
+        for (let i = 0; i < maxNumberOfGroups; i++) {
             await ingesterProxy.connect(owner).addGroup(`group${i}`);
             const group = await ingesterProxy.getGroup(`group${i}`);
             expect(group.isAdded).to.be.true;
@@ -638,9 +642,11 @@ describe("IngesterOrchestratorProxy", () => {
         let hash2 = await ingesterRegistry._hash(accounts[accounts.length -1].address, message, nonce);
         const sig2 = await accounts[accounts.length - 1].signMessage(ethers.utils.arrayify(hash2));
         await ingesterProxy.connect(accounts[accounts.length - 2]).registerIngester(accounts[accounts.length - 1].address, message, nonce, sig2);
+        
+        let ingesterAddresses = ingesters.map(ingester => ingester.address);
 
         // check all new incoming groups get allocated to the new ingester
-        for (let i = numGroups; i < numGroups + 10; i++) {
+        for (let i = maxNumberOfGroups; i < maxNumberOfGroups + 10; i++) {
             await ingesterProxy.connect(owner).addGroup(`group${i}`);
             const group = await ingesterProxy.getGroup(`group${i}`);
             expect(group.isAdded).to.be.true;
@@ -652,7 +658,316 @@ describe("IngesterOrchestratorProxy", () => {
         }
     });
 
+    describe("Manage Groups With Replication", function () {
+        let numGroupsWithReplication: number;
+        beforeEach(async function () {
+            maxIngesterPerGroup = 3;
+            numGroupsWithReplication = (numGroups / maxIngesterPerGroup);
+            // add replication of 3
+            await ingesterProxy.setMaxNumberIngesterPerGroup(maxIngesterPerGroup);
+        });
+
+        it("should have set maxNumberIngesterPerGroup correctly", async () => {
+            let newMaxNumberIngesterPerGroup = BigNumber.from(await ingesterProxy.getMaxNumberIngesterPerGroup()).toNumber();
+            expect(newMaxNumberIngesterPerGroup).to.equal(maxIngesterPerGroup);
+        });
     
+        it("should add a new group to all ingesters within cluster", async () => {
+            let addGroupTx = await ingesterProxy.connect(owner).addGroup("group1");
+            const group = await ingesterProxy.getGroup("group1");
+            let groupUserNameIndex = BigNumber.from(group.groupUsernameIndex).toNumber();
+            let groupUsernames = await ingesterProxy.getGroupUsernameByIndex(groupUserNameIndex);
+            expect(addGroupTx).to.emit(ingesterProxy, "GroupDistributed").withArgs(group.clusterId, "group1")
+                .and.to.emit(ingesterProxy, "GroupAdded").withArgs("group1");
+            expect(group.isAdded).to.be.true;
+            expect(groupUsernames == "group1");
+            
+            expect(group.ingesterAddresses.length == maxIngesterPerGroup);
+            
+            //check groups have been added to all ingesters
+            for (let i = 0; i < group.ingesterAddresses.length; i++) {
+                let ingester = await ingesterProxy.getIngester(group.ingesterAddresses[i]);
+                expect(ingester.assignedGroups).to.include("group1");
+            }
+
+        });
+    
+        it("should remove an existing group", async () => {
+            await ingesterProxy.connect(owner).addGroup("group1");
+            const groupAfterAddition = await ingesterProxy.getGroup("group1");
+
+            expect(await ingesterProxy.connect(owner).removeGroup("group1")) //GroupRemovedFromIngester
+            .to.emit(ingesterProxy, "GroupRemovedFromIngester").withArgs(ingester1.address, "group1")
+            .and.to.emit(ingesterProxy, "GroupRemoved").withArgs("group1");
+            const groupAfterRemoval = await ingesterProxy.getGroup("group1");
+            expect(groupAfterRemoval.isAdded).to.be.false;
+            expect(groupAfterRemoval.ingesterAddresses.length == 0);
+
+            for (let i = 0; i < groupAfterAddition.ingesterAddresses.length; i++) {
+                let ingester = await ingesterProxy.getIngester(groupAfterAddition.ingesterAddresses[i]);
+                expect(ingester.assignedGroups).not.include("group1");
+            }
+
+        });
+
+        it("should distribute to ingesters when groups are added", async () => {
+            //each ingester should have at least 33 groups
+            // check group assignement are within constraints
+            for (let i = 0; i < numGroupsWithReplication; i++) {
+                await ingesterProxy.connect(owner).addGroup(`group${i}`);
+                const group = await ingesterProxy.getGroup(`group${i}`);
+                expect(group.isAdded).to.be.true;
+                expect(group.ingesterAddresses.length <= maxIngesterPerGroup);
+            }
+    
+            //check each cluster is within constraints
+            let clusterIds = await ingesterProxy.getClusters();
+            let getMaxGroupsPerIngester = BigNumber.from(await ingesterProxy.getMaxGroupsPerIngester()).toNumber();
+            for (let i = 0; i < clusterIds.length; i++) {
+                let cluster = await ingesterProxy.getCluster(clusterIds[i]);
+    
+                //Calculate the inner cluster contraint for this particular cluster
+                let clusterGroupCount = BigNumber.from(cluster.clusterGroupCount).toNumber();
+                let maxGroupsPerIngesterWithinCluster = Math.ceil((clusterGroupCount + cluster.ingesterAddresses.length -1) / cluster.ingesterAddresses.length);
+                
+                let ingesterToGroup: IngesterToGroups = {};
+                let clusterGroups: string[] = []
+                for (let j = 0; j < cluster.ingesterAddresses.length; j++ ) {
+                    let ingester = await ingesterProxy.getIngester(cluster.ingesterAddresses[j]);
+                    ingesterToGroup[ingester.ingesterAddress] = ingester.assignedGroups;
+                    clusterGroups = clusterGroups.concat(ingester.assignedGroups);
+                    
+                    for (let z = 0; z < ingester.assignedGroups.length; z++){
+                        let group = await ingesterProxy.getGroup(ingester.assignedGroups[z]);
+                        expect(group.ingesterAddresses).includes(cluster.ingesterAddresses[j]);
+                    } 
+                    expect(ingester.assignedGroups.length <= maxGroupsPerIngesterWithinCluster);
+                }
+                
+                let maxNumberIngesterPerGroup = BigNumber.from(await ingesterProxy.getMaxNumberIngesterPerGroup()).toNumber();
+                for (let j = 0; j < clusterGroups.length; j++ ) {
+                    let group = await ingesterProxy.getGroup(clusterGroups[j]);
+                    expect(group.ingesterAddresses.length <= maxNumberIngesterPerGroup);
+                }
+                //check that the amount of addresses per group abides by the global constraint
+                expect(cluster.ingesterAddresses.length < maxClusterSize);
+                //Check that the amount of groups is lower than the global constraint
+                expect(clusterGroups.length < getMaxGroupsPerIngester);
+            }
+    
+        });
+
+        it("should revert when attempting to distribute more groups than the maxCapacity constraints", async () => {
+            let clusterIds = await ingesterProxy.getClusters();
+            let getMaxGroupsPerIngester = BigNumber.from(await ingesterProxy.getMaxGroupsPerIngester()).toNumber();
+            let maxClusterSize = BigNumber.from(await ingesterProxy.getMaxClusterSize()).toNumber();
+    
+            let totalGroupsConstraint = (clusterIds.length * maxClusterSize * getMaxGroupsPerIngester) / maxIngesterPerGroup;
+            
+            for (let i = 0; i < totalGroupsConstraint; i++) {
+                if(totalGroupsConstraint-1 == i) {
+                    expect(await ingesterProxy.connect(owner).addGroup(`group${i}`)).to.revertedWith("No more ingesters available to add groups to");
+                } else {
+                    await ingesterProxy.connect(owner).addGroup(`group${i}`);
+                    const group = await ingesterProxy.getGroup(`group${i}`);
+                    expect(group.isAdded).to.be.true;
+                    expect(group.ingesterAddresses.length <= maxIngesterPerGroup)
+                }
+                    
+            }
+        });
+
+        it("should re-adjust groups when ingester is removed", async () => {
+            let ingesterCount = BigNumber.from(await ingesterProxy.getIngesterCount()).toNumber();
+            // let maxGroupsPerIngesterBeforeUnregistering = Math.ceil(numGroups / ingesterCount);
+    
+            // check group assignement are within constraints
+            let totalAssignedGroups: string[] = [];
+            for (let i = 0; i < numGroupsWithReplication; i++) {
+                await ingesterProxy.connect(owner).addGroup(`group${i}`);
+                const group = await ingesterProxy.getGroup(`group${i}`);
+                totalAssignedGroups.push(`group${i}`);
+                expect(group.isAdded).to.be.true;
+                expect(group.ingesterAddresses.length <= maxIngesterPerGroup)
+            }
+    
+            let ingesterToRemove = await ingesterProxy.getIngester(ingesters[0].address);
+            let ingestersAllocatedCluster = BigNumber.from(ingesterToRemove.clusterId).toNumber();
+            let maxGroupsPerIngesterBeforeUnregistering = await getClusterMaxGroupsPerIngester(ingesterProxy, ingestersAllocatedCluster);
+    
+            let ingesterRemovedAssignedGroups: string[] = ingesterToRemove.assignedGroups;
+    
+            //Most expensive action in the entire flow, time this for reference
+            const start = new Date().getTime();
+            await ingesterProxy.connect(ingesterToController[ingesters[0].address]).unRegisterIngester(ingesters[0].address);
+            let elapsed = new Date().getTime() - start;
+            console.log("🚀 ~ file: IngesterOrchestratorProxy.ts:514 ~ it ~ elapsed:", elapsed)
+    
+            let clusterId = BigNumber.from(ingesterToRemove.clusterId).toNumber();
+            let maxGroupsPerIngesterAfterUnregistering = await getClusterMaxGroupsPerIngester(ingesterProxy, clusterId);
+            
+            expect(maxGroupsPerIngesterAfterUnregistering > maxGroupsPerIngesterBeforeUnregistering);
+    
+            //Get the new assigned groups after unregistration
+            let totalAssignedGroupsAfterUnregistration: string[] = []
+            let remainingIngesters: SignerWithAddress[] = ingesters.slice(1);
+            for (let j = 0; j < remainingIngesters.length; j++) {
+                let ingester = await ingesterProxy.getIngester(remainingIngesters[j].address);
+                totalAssignedGroupsAfterUnregistration = totalAssignedGroupsAfterUnregistration.concat(ingester.assignedGroups);
+                expect(ingester.assignedGroups.length > maxGroupsPerIngesterBeforeUnregistering);
+                expect(ingester.assignedGroups.length < maxGroupsPerIngesterAfterUnregistering);
+            }
+    
+            //Grab unallocated groups and check if they are correctly unallocated and don't overlap with allocated groups
+            let unAllocatedGroups = await ingesterProxy.getUnallocatedGroups();
+            if (unAllocatedGroups.length > 0) {
+                const allocatedGroups = totalAssignedGroups.filter(group => !unAllocatedGroups.includes(group));
+                
+                expect(allocatedGroups.length == totalAssignedGroupsAfterUnregistration.length);
+                const allGroupsAreReallocated = allocatedGroups.every(allocatedGroup => {
+                    return totalAssignedGroupsAfterUnregistration.includes(allocatedGroup)
+                });
+                const allUnallocatedGroupsAreUnassigned = totalAssignedGroupsAfterUnregistration.every(allocatedGroup => {
+                    return !unAllocatedGroups.includes(allocatedGroup)
+                })
+                expect(allGroupsAreReallocated).to.be.true;
+                expect(allUnallocatedGroupsAreUnassigned).to.be.true;
+    
+            } else {
+                //make sure that the removed assigned groups have been re-allocated to the existing ingesters
+                const allGroupsAreReallocated = ingesterRemovedAssignedGroups.every(removedGroup => {
+                    return totalAssignedGroupsAfterUnregistration.includes(removedGroup)
+                })
+                expect(allGroupsAreReallocated).to.be.true;
+            }
+    
+            //check if ingester was also removed from the cluster
+            let cluster = await ingesterProxy.getCluster(ingestersAllocatedCluster);
+            expect(cluster.ingesterAddresses).not.include(ingesterToRemove.ingesterAddress);
+        });
+    
+        it("should add to unassigned groups when entire cluster is removed", async () => {
+            // check group assignement are within constraints
+            for (let i = 0; i < numGroupsWithReplication; i++) {
+                await ingesterProxy.connect(owner).addGroup(`group${i}`);
+                const group = await ingesterProxy.getGroup(`group${i}`);
+                expect(group.isAdded).to.be.true;
+                expect(group.ingesterAddresses.length <= maxIngesterPerGroup)
+            }
+    
+            let ingestersRemaining = ingesters;
+            let clusterId = 0;
+            for (let i = 0; i < maxClusterSize; i++) {
+                let ingesterToRemove = await ingesterProxy.getIngester(ingesters[i].address);
+                
+                // _maxGroupsPerIngester = (numClusterGroups + numIngesters - 1) / numIngesters;
+                clusterId = BigNumber.from(ingesterToRemove.clusterId).toNumber();
+                let maxGroupsPerIngesterBeforeUnregistering = await getClusterMaxGroupsPerIngester(ingesterProxy, clusterId);
+    
+                let ingesterRemovedAssignedGroups: string[] = ingesterToRemove.assignedGroups;
+                
+                const start = new Date().getTime();
+                await ingesterProxy.connect(ingesterToController[ingesters[i].address]).unRegisterIngester(ingesters[i].address);
+                let elapsed = new Date().getTime() - start;
+                console.log("🚀 ~ file: IngesterOrchestratorProxy.ts:584 ~ it ~ elapsed:", elapsed)
+    
+                let maxGroupsPerIngesterAfterUnregistering = await getClusterMaxGroupsPerIngester(ingesterProxy, clusterId);
+    
+                expect(maxGroupsPerIngesterAfterUnregistering > maxGroupsPerIngesterBeforeUnregistering);
+    
+                // Remove the ingester from structure
+                let slicerIndex = i == 0 ? 1 : i;
+                ingestersRemaining = ingestersRemaining.slice(slicerIndex);
+    
+                // check i remaining ingesters contain all the groups that were removed 
+                let totalAssignedGroupsAfterUnregistration: string[] = []
+                for (let j = 0; j < ingestersRemaining.length; j++) {
+                    let ingester = await ingesterProxy.getIngester(ingestersRemaining[j].address);
+                    totalAssignedGroupsAfterUnregistration = totalAssignedGroupsAfterUnregistration.concat(ingester.assignedGroups);
+                    expect(ingester.assignedGroups.length > maxGroupsPerIngesterBeforeUnregistering);
+                    expect(ingester.assignedGroups.length < maxGroupsPerIngesterAfterUnregistering);
+                }
+    
+                //Grab unallocated groups and check if they are correctly unallocated and don't overlap with allocated groups
+                let unAllocatedGroups = await ingesterProxy.getUnallocatedGroups();
+                if (unAllocatedGroups.length > 0) {
+                    const allocatedGroups = totalAssignedGroupsAfterUnregistration.filter(group => !unAllocatedGroups.includes(group));
+                    
+                    expect(allocatedGroups.length == totalAssignedGroupsAfterUnregistration.length);
+                    const allGroupsAreReallocated = allocatedGroups.every(allocatedGroup => {
+                        return totalAssignedGroupsAfterUnregistration.includes(allocatedGroup)
+                    });
+                    const allUnallocatedGroupsAreUnassigned = totalAssignedGroupsAfterUnregistration.every(allocatedGroup => {
+                        return !unAllocatedGroups.includes(allocatedGroup)
+                    })
+                    expect(allGroupsAreReallocated).to.be.true;
+                    expect(allUnallocatedGroupsAreUnassigned).to.be.true;
+    
+                } else {
+                    //if no unallocated groups present, make sure that the all removed assigned groups have been re-allocated to the existing ingesters
+                    const allGroupsAreReallocated = ingesterRemovedAssignedGroups.every(removedGroup => {
+                        return totalAssignedGroupsAfterUnregistration.includes(removedGroup)
+                    })
+                    expect(allGroupsAreReallocated).to.be.true;
+                }
+
+                let cluster = await ingesterProxy.getCluster(clusterId);
+                expect(cluster.ingesterAddresses.length == 0);
+            }
+        });
+
+        it("should allocate new groups when available to newly registered ingester", async () => {
+            // check group assignement are within constraints
+            let clusterIds = await ingesterProxy.getClusters();
+            let totalGroupsConstraint = (clusterIds.length * maxClusterSize * maxGroupsPerIngester) / maxIngesterPerGroup;
+
+            for (let i = 0; i < totalGroupsConstraint; i++) {
+                await ingesterProxy.connect(owner).addGroup(`group${i}`);
+                const group = await ingesterProxy.getGroup(`group${i}`);
+                expect(group.isAdded).to.be.true;
+                expect(group.ingesterAddresses.length <= maxIngesterPerGroup)
+            }
+    
+            // use last available account as new test ingester to be registered
+            let hash2 = await ingesterRegistry._hash(accounts[accounts.length -1].address, message, nonce);
+            const sig2 = await accounts[accounts.length - 1].signMessage(ethers.utils.arrayify(hash2));
+            await ingesterProxy.connect(accounts[accounts.length - 2]).registerIngester(accounts[accounts.length - 1].address, message, nonce, sig2);
+            
+            // check all new incoming groups get allocated to the new ingester
+            for (let i = totalGroupsConstraint; i < numGroupsWithReplication + 10; i++) {
+                await ingesterProxy.connect(owner).addGroup(`group${i}`);
+                const group = await ingesterProxy.getGroup(`group${i}`);
+                expect(group.isAdded).to.be.true;
+                expect(group.ingesterAddresses).to.include(accounts[accounts.length -1].address);
+                expect(group.ingesterAddresses.length <= maxIngesterPerGroup)
+    
+                let newIngester = await ingesterProxy.getIngester(accounts[accounts.length -1].address);
+                expect(newIngester.assignedGroups).to.include(`group${i}`);
+            }
+        });
+
+        it("should restrict one controller wallet owning more than one ingester per cluster", async () => {
+            let numIngestersToAdd = 2;
+            let controllerAccount = accounts[0];
+            let newIngesters: SignerWithAddress[] = [];
+            for (let i = accounts.length - 1; i >= accounts.length - numIngestersToAdd; i-- ) {
+                let hash = await ingesterRegistry._hash(accounts[i].address, message, nonce);
+                const sig = await accounts[i].signMessage(ethers.utils.arrayify(hash));
+                await ingesterProxy.connect(controllerAccount).registerIngester(accounts[i].address, message, nonce, sig);
+                newIngesters.push(accounts[i]);
+
+            }
+
+            let controllerIngesters = await ingesterProxy.getControllerIngesters(controllerAccount.address);
+            let clusterIds: number[] = [];
+            for (const ingesterAccount of controllerIngesters) {
+                let ingester = await ingesterProxy.getIngester(ingesterAccount.ingesterAddress);
+                clusterIds.push(BigNumber.from(ingester.clusterId).toNumber());
+            }
+            expect(allUnique(clusterIds)).to.be.true;
+        });
+    });
+
   });
 
   describe('Add IPFS Hashes', function () {
@@ -675,11 +990,10 @@ describe("IngesterOrchestratorProxy", () => {
         
     });
   
-    it('should revert if called by an unregistered controller', async function () {
+    it('should revert if called by an unregistered ingester', async function () {
         
         expect(
-            ingesterProxy.connect(ingester1).addIpfsHash(
-                ingester1.address,
+            ingesterProxy.connect(controller).addIpfsHash(
                 usersHash,
                 chatsHash,
                 messagesHash
@@ -688,8 +1002,7 @@ describe("IngesterOrchestratorProxy", () => {
     });
 
     it('should add the IPFS hashes to the registry and emit events', async function () {
-        const txAddIpfsHash = await ingesterProxy.connect(controller).addIpfsHash(
-            ingester1.address,
+        const txAddIpfsHash = await ingesterProxy.connect(ingester1).addIpfsHash(
             usersHash,
             chatsHash,
             messagesHash
@@ -703,8 +1016,7 @@ describe("IngesterOrchestratorProxy", () => {
     });
 
     it('should emit events when add the IPFS hashes to the registry ', async function () {
-        const txAddIpfsHash = await ingesterProxy.connect(controller).addIpfsHash(
-            ingester1.address,
+        const txAddIpfsHash = await ingesterProxy.connect(ingester1).addIpfsHash(
             usersHash,
             chatsHash,
             messagesHash

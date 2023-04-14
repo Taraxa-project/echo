@@ -33,6 +33,7 @@ interface IIngesterRegistration {
     function addAssignedGroupToIngester(address _ingesterAddress, string calldata _groupUsername) external returns (uint256);
     function getIngesterToController(address _ingesterAddresses) external view returns (IngesterToController memory);
     function getIngesterAddressFromIndex(uint256 index) external view returns (address);
+    function getControllerIngesters(address controllerAddress) external view returns (IIngesterRegistration.Ingester[] memory);
     function moveIngesterAssignedGroup(address _ingesterAddress, uint256 assignedGroupsIngesterIndex) external;
     function setIngesterProxy(address _ingesterProxyAddress) external;
 

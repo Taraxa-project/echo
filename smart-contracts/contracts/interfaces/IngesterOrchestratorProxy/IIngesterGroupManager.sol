@@ -7,14 +7,23 @@ interface IIngesterGroupManager {
         bool isAdded;
         uint256 clusterId;
         address[] ingesterAddresses;
-        mapping(address => uint256) assignedGroupsIngesterIndex;
+        mapping(address => IngesterToGroup) ingesterToGroup;
         uint256 groupUsernameIndex;
-        uint256 groupClusterIndex;
+        // mapping(address => uint256) assignedGroupsIngesterIndex;
+        // mapping(address => uint256) groupClusterIngesterIndex;
+        // mapping(address => bool) isAddedToIngester;
+        // uint256 groupClusterIndex;
         //can add an index here to know where the group should be removed from within the cluster
         // this will be necessary to remove a group
     }
 
-    struct GroupToIngester{
+    struct IngesterToGroup{
+        bool isAdded;
+        uint256 assignedGroupsIngesterIndex;
+        uint256 groupClusterIngesterIndex;
+    }
+
+    struct GroupSlim{
         bool isAdded;
         uint256 clusterId;
         address[] ingesterAddresses;
@@ -25,6 +34,7 @@ interface IIngesterGroupManager {
         address[] ingesterAddresses;
         uint256 clusterGroupCount; //need to update this to know how many groups present without checking each mapping key
         uint256 clusterRemainingCapacity;
+        uint256 clusterIndex;
         mapping(address => string[]) ingesterToAssignedGroups; 
     }
 
@@ -56,14 +66,14 @@ interface IIngesterGroupManager {
     function addGroup(string calldata groupUsername) external;
     function removeGroup(string calldata groupUsername) external;
 
-    function getGroup(string calldata groupName) external view returns (GroupToIngester memory);
+    function getGroup(string calldata groupName) external view returns (GroupSlim memory);
     function getGroupUsernameByIndex(uint256 groupIndex) external view returns (string memory);
     function getGroupCount() external view returns (uint256);
     function updateIngesterProxy(address newIngesterProxy) external;
-    function addIngesterToCluster(address _ingesterAddress) external returns(uint256);
+    function addIngesterToCluster(address _ingesterAddress, address controllerAddress) external returns(uint256);
     function removeIngesterFromGroups(string[] memory _groups, address _ingesterAddress) external;
     function removeIngesterFromCluster(address _ingesterAddress, uint256 _clusterId) external;
-    function distributeGroupPostUnregistration(string[] memory _groups) external;
+    function distributeGroupPostUnregistration(string[] memory _groups, uint256 clusterId) external;
     function setIngesterProxy(address _ingesterProxyAddress) external;
 
     function getMaxClusterSize() external view returns (uint256);

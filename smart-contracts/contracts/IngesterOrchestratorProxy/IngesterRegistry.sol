@@ -36,7 +36,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         _;
     }
 
-    function setIngesterProxy(address _ingesterProxyAddress) external onlyAdmin{
+    function setIngesterProxy(address _ingesterProxyAddress) external onlyAdmin {
         ingesterProxyAddress = _ingesterProxyAddress;
         ingesterProxy = IngesterProxy(_ingesterProxyAddress);
         _setupRole(DEFAULT_ADMIN_ROLE, _ingesterProxyAddress);
@@ -59,7 +59,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         
         //add the ingester to an available cluster
         //return the cluster it was added and add that to ingester structure
-        uint256 clusterId = ingesterProxy.addIngesterToCluster(_ingesterAddress);
+        uint256 clusterId = ingesterProxy.addIngesterToCluster(_ingesterAddress, _controllerAddress);
 
         Ingester memory ingester = IIngesterRegistration.Ingester(_ingesterAddress, true, clusterId, new string[](0));
 
@@ -102,13 +102,14 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
 
         // if this was the only ingester registered with this controller, remove their ingester role
         uint numIngestersPerController = controllerToIngesters[_controllerAddress].length;
+        uint256 clusterId = 0;
         if (numIngestersPerController == 1) {
             revokeRole("INGESTER_ROLE", _ingesterAddress);
             revokeRole("CONTROLLER_ROLE", _controllerAddress);
             ingesterProxy.removeIngesterFromGroups(ingesterAssignedGroups, _ingesterAddress);
 
             // Remove Ingester from Cluster
-            uint256 clusterId = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].clusterId;
+            clusterId = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].clusterId;
             ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId);
             // Remove ingester mappings
             delete controllerToIngesters[_controllerAddress];
@@ -120,7 +121,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
             ingesterProxy.removeIngesterFromGroups(ingesterAssignedGroups, _ingesterAddress);
 
             //Remove Ingester from Cluster
-            uint256 clusterId = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].clusterId;
+            clusterId = controllerToIngesters[_controllerAddress][ingesterIndexToRemove].clusterId;
             ingesterProxy.removeIngesterFromCluster(_ingesterAddress, clusterId);
 
             // Remove ingester from the controllerToIngesters list
@@ -134,7 +135,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
             delete ingesterToController[_ingesterAddress];
         }
         
-        ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups);
+        ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups, clusterId);
     }
 
     function isRegisteredIngester(address ingesterAddress) public view returns (bool) {
@@ -211,12 +212,16 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         return controllerToIngesters[controller][ingesterIndex].assignedGroups.length - 1;
     }
 
-    function getIngesterToController(address _ingesterAddresses) external view returns (IngesterToController memory) {
-        return ingesterToController[_ingesterAddresses];
+    function getIngesterToController(address ingesterAddresses) external view returns (IIngesterRegistration.IngesterToController memory) {
+        return ingesterToController[ingesterAddresses];
     }
 
     function getIngesterAddressFromIndex(uint256 index) external view returns (address) {
         return ingesterAddresses[index];
+    }
+
+    function getControllerIngesters(address controllerAddress) external view returns (IIngesterRegistration.Ingester[] memory) {
+        return controllerToIngesters[controllerAddress];
     }
 
     function getIngesterCount() external view returns (uint256) {
