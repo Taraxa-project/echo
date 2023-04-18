@@ -14,17 +14,17 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
     address public groupManagerContractAddress;
     address public registrationContractAddress;
     address public dataGatheringContractAddress;
-    IngesterGroupManager private groupManagerContract;
-    IngesterRegistry private registrationContract;
-    IngesterDataGathering public dataGatheringContract;
+    IngesterGroupManager private _groupManagerContract;
+    IngesterRegistry private _registrationContract;
+    IngesterDataGathering public _dataGatheringContract;
 
     constructor(address _groupManagerContractAddress, address _registrationContractAddress,address _dataGatheringContractAddress) {
         groupManagerContractAddress = _groupManagerContractAddress;
         registrationContractAddress = _registrationContractAddress;
         dataGatheringContractAddress = _dataGatheringContractAddress;
-        groupManagerContract = IngesterGroupManager(_groupManagerContractAddress);
-        dataGatheringContract = IngesterDataGathering(_dataGatheringContractAddress);
-        registrationContract = IngesterRegistry(_registrationContractAddress);
+        _groupManagerContract = IngesterGroupManager(_groupManagerContractAddress);
+        _registrationContract = IngesterRegistry(_registrationContractAddress);
+        _dataGatheringContract = IngesterDataGathering(_dataGatheringContractAddress); 
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
@@ -58,145 +58,144 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
     }
 
     function registerIngester(
-        address _ingesterAddress, 
+        address ingesterAddress, 
         string calldata message,
         uint256 nonce,
         bytes calldata sig
     ) external {
-        registrationContract.registerIngester(_ingesterAddress, msg.sender, message, nonce, sig);
+        _registrationContract.registerIngester(ingesterAddress, msg.sender, message, nonce, sig);
     }
 
-    function unRegisterIngester(address _ingesterAddress) external onlyRegisteredController {
-        registrationContract.unRegisterIngester(_ingesterAddress, msg.sender);
+    function unRegisterIngester(address ingesterAddress) external onlyRegisteredController {
+        _registrationContract.unRegisterIngester(ingesterAddress, msg.sender);
     }
 
     function addIngesterToCluster(address ingesterAddress, address controllerAddress) external onlyRegistrationContract returns (uint256){
-        return groupManagerContract.addIngesterToCluster(ingesterAddress, controllerAddress);
+        return _groupManagerContract.addIngesterToCluster(ingesterAddress, controllerAddress);
     }
 
-    function removeIngesterFromCluster(address _ingesterAddress, uint256 _clusterId) external onlyRegistrationContract returns (uint256) {
-        groupManagerContract.removeIngesterFromCluster(_ingesterAddress, _clusterId);
+    function removeIngesterFromCluster(address ingesterAddress, uint256 _clusterId) external onlyRegistrationContract {
+        _groupManagerContract.removeIngesterFromCluster(ingesterAddress, _clusterId);
     }
 
-    function isRegisteredIngester(address _ingesterAddress) public view returns (bool) {
-        return registrationContract.isRegisteredIngester(_ingesterAddress);
+    function isRegisteredIngester(address ingesterAddress) public view returns (bool) {
+        return _registrationContract.isRegisteredIngester(ingesterAddress);
     }
 
-    function isRegisteredController(address _controllerAddress) public view returns (bool) {
-        return registrationContract.isRegisteredController(_controllerAddress);
+    function isRegisteredController(address controllerAddress) public view returns (bool) {
+        return _registrationContract.isRegisteredController(controllerAddress);
     }
 
-    function getIngester(address _ingesterAddress) external view returns (IIngesterRegistration.Ingester memory) {
-        return registrationContract.getIngester(_ingesterAddress);
+    function getIngester(address ingesterAddress) external view returns (IIngesterRegistration.Ingester memory) {
+        return _registrationContract.getIngester(ingesterAddress);
     }
 
     function getIngesterCount() external view returns (uint256) {
-        return registrationContract.getIngesterCount();
+        return _registrationContract.getIngesterCount();
     }
 
-    function getIngesterAddressFromIndex(uint256 _index) external view returns(address) {
-        return registrationContract.getIngesterAddressFromIndex(_index);
+    function getIngesterAddressFromIndex(uint256 index) external view returns(address) {
+        return _registrationContract.getIngesterAddressFromIndex(index);
     }
 
     function getIngesterToController(address ingesterAddress) external view returns(IIngesterRegistration.IngesterToController memory) {
-        return registrationContract.getIngesterToController(ingesterAddress);
+        return _registrationContract.getIngesterToController(ingesterAddress);
     }
 
     function getControllerIngesters(address controllerAddress) external view returns (IIngesterRegistration.Ingester[] memory) {
-        return registrationContract.getControllerIngesters(controllerAddress);
+        return _registrationContract.getControllerIngesters(controllerAddress);
     }
 
-    function addAssignedGroupToIngester(address _ingesterAddress, string memory _groupUsername) external onlyGroupManager returns(uint256){
-        return registrationContract.addAssignedGroupToIngester(_ingesterAddress, _groupUsername);
+    function addAssignedGroupToIngester(address ingesterAddress, string memory groupUsername) external onlyGroupManager returns(uint256){
+        return _registrationContract.addAssignedGroupToIngester(ingesterAddress, groupUsername);
     }
 
-    function moveIngesterAssignedGroup(address _ingesterAddress, uint256 _assignedGroupsIngesterIndex) external onlyGroupManager {
-        registrationContract.moveIngesterAssignedGroup(_ingesterAddress, _assignedGroupsIngesterIndex);
+    function moveIngesterAssignedGroup(address ingesterAddress, uint256 assignedGroupsIngesterIndex) external onlyGroupManager {
+        _registrationContract.moveIngesterAssignedGroup(ingesterAddress, assignedGroupsIngesterIndex);
     }
 
     //Group Manager
-    function addGroup(string calldata _groupUsername) external onlyAdmin {
-        groupManagerContract.addGroup(_groupUsername);
+    function addGroup(string calldata groupUsername) external onlyAdmin {
+        _groupManagerContract.addGroup(groupUsername);
     }
 
-    function removeGroup(string calldata _groupUsername) external onlyAdmin {
-        groupManagerContract.removeGroup(_groupUsername);
+    function removeGroup(string calldata groupUsername) external onlyAdmin {
+        _groupManagerContract.removeGroup(groupUsername);
     }
 
-    function getGroup(string calldata _group) external view returns (IIngesterGroupManager.GroupSlim memory){
-        return groupManagerContract.getGroup(_group);
+    function getGroup(string calldata group) external view returns (IIngesterGroupManager.GroupSlim memory){
+        return _groupManagerContract.getGroup(group);
     }
 
     function getGroupUsernameByIndex(uint256 groupIndex) external view returns (string memory) {
-        return groupManagerContract.getGroupUsernameByIndex(groupIndex);
+        return _groupManagerContract.getGroupUsernameByIndex(groupIndex);
     }
 
     function getGroupCount() external view returns (uint256) {
-        return groupManagerContract.getGroupCount();
+        return _groupManagerContract.getGroupCount();
     }
 
     function getClusters() external view returns(uint256[] memory) {
-        return groupManagerContract.getClusters();
+        return _groupManagerContract.getClusters();
     }
 
     function getCluster(uint256 clusterId) external view returns(IIngesterGroupManager.ClusterSlim memory) {
-        return groupManagerContract.getCluster(clusterId);
+        return _groupManagerContract.getCluster(clusterId);
     }
 
     function getMaxClusterSize() external view returns (uint256) {
-        return groupManagerContract.getMaxClusterSize();
+        return _groupManagerContract.getMaxClusterSize();
     }
 
     function getMaxGroupsPerIngester() external view returns (uint256) {
-        return groupManagerContract.getMaxGroupsPerIngester();
+        return _groupManagerContract.getMaxGroupsPerIngester();
     }
 
     function getMaxNumberIngesterPerGroup() external view returns (uint256) {
-        return groupManagerContract.getMaxNumberIngesterPerGroup();
+        return _groupManagerContract.getMaxNumberIngesterPerGroup();
     }
 
-    function setMaxClusterSize(uint256 _maxClusterSize) external onlyAdmin {
-        groupManagerContract.setMaxClusterSize(_maxClusterSize);
+    function setMaxClusterSize(uint256 maxClusterSize) external onlyAdmin {
+        _groupManagerContract.setMaxClusterSize(maxClusterSize);
     }
 
-    function setMaxGroupsPerIngester(uint256 _maxGroupsPerIngester) external onlyAdmin {
-        groupManagerContract.setMaxGroupsPerIngester(_maxGroupsPerIngester);
+    function setMaxGroupsPerIngester(uint256 maxGroupsPerIngester) external onlyAdmin {
+        _groupManagerContract.setMaxGroupsPerIngester(maxGroupsPerIngester);
     }
 
-    function setMaxNumberIngesterPerGroup(uint256 _maxNumberIngesterPerGroup) external onlyAdmin {
-        groupManagerContract.setMaxNumberIngesterPerGroup(_maxNumberIngesterPerGroup);
+    function setMaxNumberIngesterPerGroup(uint256 maxNumberIngesterPerGroup) external onlyAdmin {
+        _groupManagerContract.setMaxNumberIngesterPerGroup(maxNumberIngesterPerGroup);
     }
 
-    function removeIngesterFromGroups(string[] memory _groups, address _ingesterAddress) external onlyRegistrationContract {
-        groupManagerContract.removeIngesterFromGroups(_groups, _ingesterAddress);
+    function removeIngesterFromGroups(string[] memory groups, address ingesterAddress) external onlyRegistrationContract {
+        _groupManagerContract.removeIngesterFromGroups(groups, ingesterAddress);
     }
 
     function distributeGroupPostUnregistration(string[] memory groups, uint256 clusterId) external onlyRegistrationContract {
-        groupManagerContract.distributeGroupPostUnregistration(groups, clusterId);
+        _groupManagerContract.distributeGroupPostUnregistration(groups, clusterId);
     }
 
-    function distributeGroupsPostRegistration() external onlyRegistrationContract {
-        groupManagerContract.distributeGroupsPostRegistration();
+    function distributeGroups(address ingesterAddress) external onlyRegisteredController {
+        _groupManagerContract.distributeGroups(ingesterAddress);
     }
 
     function getUnallocatedGroups() external view returns(string[] memory) {
-        return groupManagerContract.getUnallocatedGroups();
+        return _groupManagerContract.getUnallocatedGroups();
     }
-
 
     function addIpfsHash(
-        string calldata _usersHash,
-        string calldata _chatsHash,
-        string calldata _messagesHash
+        string calldata usersHash,
+        string calldata chatsHash,
+        string calldata messagesHash
     ) external onlyRegisteredIngester {
-        dataGatheringContract.addIpfsHash(
+        _dataGatheringContract.addIpfsHash(
             msg.sender,
-            _usersHash,
-            _chatsHash,
-            _messagesHash);
+            usersHash,
+            chatsHash,
+            messagesHash);
     }
 
-    function getIpfsHashes(address _ingesterAddress) external view returns(IIngesterDataGatheringProxy.IpfsHash memory ipfsHashes) {
-        return dataGatheringContract.getIpfsHashes(_ingesterAddress);
+    function getIpfsHashes(address ingesterAddress) external view returns(IIngesterDataGatheringProxy.IpfsHash memory ipfsHashes) {
+        return _dataGatheringContract.getIpfsHashes(ingesterAddress);
     }
 }
