@@ -74,9 +74,9 @@ IngesterRegistryAccessControlV2: This contract manages access control and owners
     ```await contract.getIpfsHashes(ingesterWeb3Account.address);```
 
 3. Add or remove groups using the addGroup and removeGroup functions in the IngesterOrchestratorV2 contract. This action can only performed by the admin address.
-    - To add an account:
+    - To add a group:
     ```await contract.connect(adminWeb3Account).addGroup(groupUsername);```
-    - To remove an account:
+    - To remove a group:
     ```await contract.connect(adminWeb3Account).removeGroup(groupUsername);```
 
 4. Unregister an ingester using the unRegisterIngester function in the IngesterOrchestratorV2 contract. Example:
