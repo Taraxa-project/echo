@@ -15,15 +15,16 @@ contract IngesterDataGathering is
     IIngesterDataGatheringProxy
 {
     address public ingesterProxyAddress;
-    IngesterProxy private ingesterProxy;
+    IngesterProxy private _ingesterProxy;
+    mapping(address => IIngesterDataGatheringProxy.IpfsHash) private _ipfsHashes;
 
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
-    function setIngesterProxy(address _ingesterProxyAddress) external onlyAdmin{
+    function setIngesterProxy(address _ingesterProxyAddress) external onlyAdmin {
         ingesterProxyAddress = _ingesterProxyAddress;
-        ingesterProxy = IngesterProxy(_ingesterProxyAddress);
+        _ingesterProxy = IngesterProxy(ingesterProxyAddress);
     }
 
     modifier onlyIngesterProxy() {
@@ -36,7 +37,6 @@ contract IngesterDataGathering is
         _;
     }
 
-    mapping(address => IIngesterDataGatheringProxy.IpfsHash) private _ipfsHashes;
 
     /**
      * @notice Adds IPFS hashes for a registered ingester.
@@ -52,6 +52,7 @@ contract IngesterDataGathering is
         string calldata chatsHash,
         string calldata messagesHash
     ) external onlyIngesterProxy {
+
         IIngesterDataGatheringProxy.IpfsHash
             memory ipfsHashUsers = IIngesterDataGatheringProxy.IpfsHash(
                 usersHash,
