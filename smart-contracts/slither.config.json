@@ -1,4 +1,4 @@
 {
   "filter_paths": "(mocks/|test/|@openzeppelin/)",
-  "solc_remaps": "@=node_modules/@"
+  "solc_remaps": "@=smart-contracts/node_modules/@"
 }
