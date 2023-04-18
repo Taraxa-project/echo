@@ -29,7 +29,6 @@ interface IIngesterRegistration {
     function isRegisteredIngester(address ingesterAddress) external view returns (bool);
     function isRegisteredController(address _controllerAddress) external view returns (bool);
     function getIngester(address _ingesterAddress) external view returns (Ingester memory);
-    function setIngesterDetails(Ingester calldata _ingester, address _ingesterAddress) external returns (Ingester memory);
     function addAssignedGroupToIngester(address _ingesterAddress, string calldata _groupUsername) external returns (uint256);
     function getIngesterToController(address _ingesterAddresses) external view returns (IngesterToController memory);
     function getIngesterAddressFromIndex(uint256 index) external view returns (address);
