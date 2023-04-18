@@ -9,12 +9,6 @@ interface IIngesterGroupManager {
         address[] ingesterAddresses;
         mapping(address => IngesterToGroup) ingesterToGroup;
         uint256 groupUsernameIndex;
-        // mapping(address => uint256) assignedGroupsIngesterIndex;
-        // mapping(address => uint256) groupClusterIngesterIndex;
-        // mapping(address => bool) isAddedToIngester;
-        // uint256 groupClusterIndex;
-        //can add an index here to know where the group should be removed from within the cluster
-        // this will be necessary to remove a group
     }
 
     struct IngesterToGroup{
@@ -32,7 +26,7 @@ interface IIngesterGroupManager {
 
     struct Cluster {
         address[] ingesterAddresses;
-        uint256 clusterGroupCount; //need to update this to know how many groups present without checking each mapping key
+        uint256 clusterGroupCount;
         uint256 clusterRemainingCapacity;
         uint256 clusterIndex;
         mapping(address => string[]) ingesterToAssignedGroups; 
@@ -40,8 +34,7 @@ interface IIngesterGroupManager {
 
     struct ClusterSlim {
         address[] ingesterAddresses;
-        // string[] clusterGroups;
-        uint256 clusterGroupCount; //need to update this to know how many groups present without checking each mapping key
+        uint256 clusterGroupCount;
         uint256 clusterRemainingCapacity;
     }
 
