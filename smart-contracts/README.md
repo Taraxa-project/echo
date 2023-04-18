@@ -12,7 +12,27 @@ npx hardhat node
 npx hardhat run scripts/deploy.ts
 ```
 
+# Install foundry to use the foundry tests (optional)
 
+Download:
+```
+curl -L https://foundry.paradigm.xyz | bash
+```
+
+To install, run:
+```
+foundryup
+```
+
+Then you should be able to build:
+```
+forge build
+```
+
+and run the forge tests: 
+```
+forge test
+```
 
 
 # Ingester Orchestrator V2
