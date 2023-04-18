@@ -1,0 +1,23 @@
+name: Solidity Analysis
+on: [push]
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install packages
+        run: cd smart-contracts && yarn install
+      - name: Run slither
+        uses: crytic/slither-action@v0.3.0
+        id: slither
+        with:
+          solc-version: 0.8.14
+          node-version: 16
+          sarif: results.sarif
+          fail-on: none
+          target: 'smart-contracts/contracts/'
+          slither-config: 'smart-contracts/slither.config.json'
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.slither.outputs.sarif }}
