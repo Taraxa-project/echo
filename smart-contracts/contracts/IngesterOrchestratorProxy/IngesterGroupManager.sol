@@ -194,7 +194,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
      * @dev Returns the ID of the cluster with the most capacity available.
      * @return The ID of the cluster with the most capacity.
      */
-    function getMostCapacityCluster() internal returns(uint256) {
+    function getMostCapacityCluster() internal view returns(uint256) {
         //need to calculate this for an adaptive metric depending on group size
         uint256 mostAvailableGroups = 0;
         uint256 mostAvailableClusterId = 0;
@@ -210,7 +210,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Redistributes groups among clusters after an ingester unregistration.
-    * @param _groups An array of group usernames to be redistributed.
+    * @param groups An array of group usernames to be redistributed.
     * @param clusterId The ID of the cluster to redistribute the groups to.
     */
     function distributeGroupPostUnregistration(string[] memory groups, uint256 clusterId) external onlyIngesterProxy {
@@ -230,7 +230,6 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
             uint256 amountOfGroups = groups.length;
             if (amountOfGroups > totalCapacity) {
-                uint256 _unAllocatableGroups = amountOfGroups - totalCapacity;
                 for (uint256 i = 0; i < totalCapacity ; i++) {
                     distributeGroupsToCluster(groups[i], mostCapacityClusterId);
                 }
@@ -304,7 +303,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Adds an ingester to a cluster.
-    * @param _ingesterAddress The address of the ingester to be added.
+    * @param ingesterAddress The address of the ingester to be added.
     * @param controllerAddress The address of the controller responsible for the ingester.
     * @return The ID of the cluster the ingester was added to.
     */
@@ -391,8 +390,8 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Removes an ingester from a cluster.
-    * @param _ingesterAddress The address of the ingester to be removed.
-    * @param _clusterId The ID of the cluster the ingester is being removed from.
+    * @param ingesterAddress The address of the ingester to be removed.
+    * @param clusterId The ID of the cluster the ingester is being removed from.
     */
     function removeIngesterFromCluster(address ingesterAddress, uint256 clusterId) external onlyIngesterProxy {
         uint256 numIngesters = _ingesterClusters[clusterId].ingesterAddresses.length;
@@ -451,21 +450,21 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Removes an ingester from a list of groups.
-    * @param _groups An array of group usernames the ingester should be removed from.
-    * @param _ingesterAddress The address of the ingester to be removed.
+    * @param groups An array of group usernames the ingester should be removed from.
+    * @param ingesterAddress The address of the ingester to be removed.
     */
-    function removeIngesterFromGroups(string[] memory groups, address _ingesterAddress) external onlyIngesterProxy {
+    function removeIngesterFromGroups(string[] memory groups, address ingesterAddress) external onlyIngesterProxy {
         for (uint256 i = 0; i < groups.length; ++i) {
             // These arrays are capped by the _maxNumberIngesterPerGroup
             uint256 amountOfIngestersPerGroup = _groups[groups[i]].ingesterAddresses.length;
             for (uint256 j = 0; j < amountOfIngestersPerGroup; j++) {
-                if(_groups[groups[i]].ingesterAddresses[j] == _ingesterAddress ) {
+                if(_groups[groups[i]].ingesterAddresses[j] == ingesterAddress ) {
                     //delete ingesterAddress from groups and readjust array length so _maxNumberIngesterPerGroup check remains truthful
                     for (uint256 z = j; z < amountOfIngestersPerGroup - 1; ++z) {
                         _groups[groups[i]].ingesterAddresses[z] = _groups[groups[i]].ingesterAddresses[z+1];
                     }
                     _groups[groups[i]].ingesterAddresses.pop();
-                    emit IIngesterGroupManager.IngesterRemovedFromGroup(_ingesterAddress, groups[i]);
+                    emit IIngesterGroupManager.IngesterRemovedFromGroup(ingesterAddress, groups[i]);
                     break;
                 }
             }
@@ -474,8 +473,8 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Retrieves the details of a group by its username.
-    * @param groupName The username of the group to retrieve.
-    * @return A GroupSlim struct containing the group's details.
+    * @param groupUsername The username of the group to retrieve.
+    * @return GroupSlim struct containing the group's details.
     */
     function getGroup(string calldata groupUsername) external view returns (IIngesterGroupManager.GroupSlim memory) {
         IIngesterGroupManager.GroupSlim memory group = IIngesterGroupManager.GroupSlim(
@@ -489,7 +488,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Retrieves the total number of groups in the system.
-    * @return The total number of groups.
+    * @return uint256 The total number of groups.
     */
     function getGroupCount() external view returns (uint256) {
         return _groupCount;
@@ -498,7 +497,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
     /**
     * @notice Retrieves the group username by its index.
     * @param groupIndex The index of the group in the groups list.
-    * @return The username of the group corresponding to the provided index.
+    * @return string The groupUsername of the group corresponding to the provided index.
     */
     function getGroupUsernameByIndex(uint256 groupIndex) external view returns (string memory) {
         return _groupUsernames[groupIndex];
@@ -523,8 +522,8 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Retrieves the details of a cluster by its ID.
-    * @param _id The ID of the cluster to retrieve.
-    * @return A ClusterSlim struct containing the cluster's details.
+    * @param clusterId The ID of the cluster to retrieve.
+    * @return ClusterSlim struct containing the cluster's details.
     */
     function getCluster(uint256 clusterId) external view returns (IIngesterGroupManager.ClusterSlim memory) {
         IIngesterGroupManager.ClusterSlim memory clusterSlim = IIngesterGroupManager.ClusterSlim(
@@ -538,7 +537,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Retrieves the maximum cluster size.
-    * @return The maximum number of ingesters allowed in a cluster.
+    * @return uint256 The maximum number of ingesters allowed in a cluster.
     */
     function getMaxClusterSize() external view returns (uint256) {
         return _maxClusterSize;
@@ -546,7 +545,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Retrieves the maximum number of groups allowed per ingester.
-    * @return The maximum number of groups per ingester.
+    * @return uint256 The maximum number of groups per ingester.
     */
     function getMaxGroupsPerIngester() external view returns (uint256) {
         return _maxGroupsPerIngester;
@@ -554,7 +553,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Retrieves the maximum number of ingesters allowed per group.
-    * @return The maximum number of ingesters per group.
+    * @return uint256 The maximum number of ingesters per group.
     */
     function getMaxNumberIngesterPerGroup() external view returns (uint256) {
         return _maxNumberIngesterPerGroup;
@@ -562,7 +561,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Sets the maximum cluster size.
-    * @param _maxClusterSize The new maximum number of ingesters allowed in a cluster.
+    * @param maxClusterSize The new maximum number of ingesters allowed in a cluster.
     */
     function setMaxClusterSize(uint256 maxClusterSize) external onlyIngesterProxy {
         _maxClusterSize = maxClusterSize;
@@ -570,7 +569,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Sets the maximum number of groups allowed per ingester.
-    * @param _maxGroupsPerIngester The new maximum number of groups per ingester.
+    * @param maxGroupsPerIngester The new maximum number of groups per ingester.
     */
     function setMaxGroupsPerIngester(uint256 maxGroupsPerIngester) external onlyIngesterProxy {
         _maxGroupsPerIngester = maxGroupsPerIngester;
@@ -578,7 +577,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
     /**
     * @notice Sets the maximum number of ingesters allowed per group.
-    * @param _maxNumberIngesterPerGroup The new maximum number of ingesters per group.
+    * @param maxNumberIngesterPerGroup The new maximum number of ingesters per group.
     */
     function setMaxNumberIngesterPerGroup(uint256 maxNumberIngesterPerGroup) external onlyIngesterProxy {
         require(maxNumberIngesterPerGroup >= 1, "Can only set max ingester per group >= 1");
