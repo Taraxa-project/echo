@@ -66,8 +66,6 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
 
         require(ECDSA.recover(ethSignedMessageHash, sig) == ingesterAddress, "Invalid signature.");
         
-        //add the ingester to an available cluster
-        //return the cluster it was added and add that to ingester structure
         uint256 clusterId = ingesterProxy.addIngesterToCluster(ingesterAddress, controllerAddress);
 
         Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, clusterId, new string[](0));
@@ -77,7 +75,6 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         _ingesterAddresses.push(ingesterAddress);
         _ingesterToController[ingesterAddress] = IIngesterRegistration.IngesterToController(controllerAddress, _controllerToIngesters[controllerAddress].length - 1, _ingesterAddresses.length - 1);
         ++_ingesterCount;
-
 
         _grantRole(INGESTER_ROLE, ingesterAddress);
         _grantRole(CONTROLLER_ROLE, controllerAddress);
