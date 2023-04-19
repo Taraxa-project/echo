@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Build docker image
           command: | 
-            docker build -t ${IMAGE}:${VERSION} .
+            docker build -t ${IMAGE}:${VERSION} ./client
 
       - run:
           name: Tag docker image
@@ -89,7 +89,8 @@ workflows:
                only:
                 - main
                 - develop
-                - chore/circleci
+                - feat-ingester-smart-contract
+                - restructure-repo
             tags:
               ignore: /.*/
 
