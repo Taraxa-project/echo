@@ -68,7 +68,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         
         uint256 clusterId = ingesterProxy.addIngesterToCluster(ingesterAddress, controllerAddress);
 
-        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, clusterId, new string[](0));
+        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, clusterId);
 
         _controllerToIngesters[controllerAddress].push(ingester);
 
@@ -91,7 +91,8 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
     function unRegisterIngester(address ingesterAddress, address controllerAddress) external onlyIngesterProxy {
         require(_ingesterToController[ingesterAddress].controllerAddress == controllerAddress, "Ingester does not exist");
         uint256 ingesterIndexToRemove = _ingesterToController[ingesterAddress].ingesterIndex;
-        string[] memory ingesterAssignedGroups = _controllerToIngesters[controllerAddress][ingesterIndexToRemove].assignedGroups;
+        uint256 clusterId = _controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
+        string[] memory ingesterAssignedGroups = ingesterProxy.getIngesterAssignedGroups(ingesterAddress, clusterId);
 
 
         uint ingesterAddressesIndexToRemove = _ingesterToController[ingesterAddress].ingesterAddressesIndex;
@@ -106,14 +107,13 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
 
         // if this was the only ingester registered with this controller, remove their ingester role
         uint numIngestersPerController = _controllerToIngesters[controllerAddress].length;
-        uint256 clusterId = 0;
         if (numIngestersPerController == 1) {
             revokeRole("INGESTER_ROLE", ingesterAddress);
             revokeRole("CONTROLLER_ROLE", controllerAddress);
-            ingesterProxy.removeIngesterFromGroups(ingesterAssignedGroups, ingesterAddress);
+            
+            ingesterProxy.removeIngesterFromGroups(clusterId, ingesterAddress);
 
             // Remove Ingester from Cluster
-            clusterId = _controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
             ingesterProxy.removeIngesterFromCluster(ingesterAddress, clusterId);
             // Remove ingester mappings
             delete _controllerToIngesters[controllerAddress];
@@ -122,10 +122,9 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
             //if there is more ingesters for this controller, only remove the desired ingester
             revokeRole("INGESTER_ROLE", ingesterAddress);
 
-            ingesterProxy.removeIngesterFromGroups(ingesterAssignedGroups, ingesterAddress);
+            ingesterProxy.removeIngesterFromGroups(clusterId, ingesterAddress);
 
             //Remove Ingester from Cluster
-            clusterId = _controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
             ingesterProxy.removeIngesterFromCluster(ingesterAddress, clusterId);
 
             // Remove ingester from the _controllerToIngesters list
@@ -203,30 +202,37 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
     }
 
     /**
-    * @notice Retrieves the details of a registered ingester.
-    * @param _ingesterAddress The address of the registered ingester.
-    * @return An Ingester struct containing the ingester's details.
+    * @notice Retrieves the details of a registered ingester including assigned groups.
+    * @param ingesterAddress The address of the registered ingester.
+    * @return An IngesterWithGroups struct containing the ingester's details and its assigned groups.
     */
-    function getIngester(address _ingesterAddress) external view returns (Ingester memory) {
-        require(_ingesterToController[_ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
-        address controller = _ingesterToController[_ingesterAddress].controllerAddress;
-        uint ingesterIndex = _ingesterToController[_ingesterAddress].ingesterIndex;
-        return _controllerToIngesters[controller][ingesterIndex];
+    function getIngesterWithGroups(address ingesterAddress) external view returns (IngesterWithGroups memory) {
+        require(_ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
+        address controller = _ingesterToController[ingesterAddress].controllerAddress;
+        uint ingesterIndex = _ingesterToController[ingesterAddress].ingesterIndex;
+        Ingester memory ingester = _controllerToIngesters[controller][ingesterIndex];
+
+        string[] memory assignedGroups = ingesterProxy.getIngesterAssignedGroups(ingesterAddress, ingester.clusterId);
+        IngesterWithGroups memory ingesterWithAssignedGroups = IngesterWithGroups(
+            ingesterAddress,
+            ingester.verified,
+            ingester.clusterId,
+            assignedGroups
+        );
+        return ingesterWithAssignedGroups;
     }
 
     /**
-    * @notice Assigns a group to an ingester.
-    * @dev Can only be called by the IngesterProxy contract.
-    * @param _ingesterAddress The address of the ingester to be assigned the group.
-    * @param _groupUsername The group's username to be assigned.
-    * @return The new number of groups assigned to the ingester.
+    * @notice Retrieves the details of a registered ingester.
+    * @param ingesterAddress The address of the registered ingester.
+    * @return An Ingester struct containing the ingester's details.
     */
-    function addAssignedGroupToIngester(address _ingesterAddress, string calldata _groupUsername) external onlyIngesterProxy returns (uint256) {
-        address controller = _ingesterToController[_ingesterAddress].controllerAddress;
-        uint ingesterIndex = _ingesterToController[_ingesterAddress].ingesterIndex;
-        _controllerToIngesters[controller][ingesterIndex].assignedGroups.push(_groupUsername);
-        emit IIngesterRegistration.AssignGroupToIngester(_ingesterAddress, _groupUsername);
-        return _controllerToIngesters[controller][ingesterIndex].assignedGroups.length - 1;
+    function getIngester(address ingesterAddress) external view returns (Ingester memory) {
+        require(_ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
+        address controller = _ingesterToController[ingesterAddress].controllerAddress;
+        uint ingesterIndex = _ingesterToController[ingesterAddress].ingesterIndex;
+
+        return _controllerToIngesters[controller][ingesterIndex];
     }
 
     /**
@@ -263,21 +269,5 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
     */
     function getIngesterCount() external view returns (uint256) {
         return _ingesterCount;
-    }
-
-    /**
-    * @notice Moves an ingester's assigned group within the assignedGroups array.
-    * @dev This function can only be called by the IngesterProxy.
-    * @param _ingesterAddress The address of the ingester.
-    * @param assignedGroupsIngesterIndex The index of the assigned group to be moved within the assignedGroups array.
-    */
-    function moveIngesterAssignedGroup(address _ingesterAddress, uint256 assignedGroupsIngesterIndex) external onlyIngesterProxy {
-        address controller = _ingesterToController[_ingesterAddress].controllerAddress;
-        uint ingesterIndex = _ingesterToController[_ingesterAddress].ingesterIndex;
-        uint256 ingesterAssignedGroupsLength = _controllerToIngesters[controller][ingesterIndex].assignedGroups.length;
-        // replace last index with group that needs to be removed
-        string memory groupToMove = _controllerToIngesters[controller][ingesterIndex].assignedGroups[ingesterAssignedGroupsLength-1];
-        _controllerToIngesters[controller][ingesterIndex].assignedGroups[assignedGroupsIngesterIndex] = groupToMove;
-        _controllerToIngesters[controller][ingesterIndex].assignedGroups.pop();
     }
 }

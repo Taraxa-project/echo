@@ -7,6 +7,12 @@ interface IIngesterRegistration {
         address ingesterAddress;
         bool verified;
         uint256 clusterId;
+    }
+
+    struct IngesterWithGroups {
+        address ingesterAddress;
+        bool verified;
+        uint256 clusterId;
         string[] assignedGroups;
     }
 
@@ -29,11 +35,10 @@ interface IIngesterRegistration {
     function isRegisteredIngester(address ingesterAddress) external view returns (bool);
     function isRegisteredController(address _controllerAddress) external view returns (bool);
     function getIngester(address _ingesterAddress) external view returns (Ingester memory);
-    function addAssignedGroupToIngester(address _ingesterAddress, string calldata _groupUsername) external returns (uint256);
+    function getIngesterWithGroups(address ingesterAddress) external view returns (IngesterWithGroups memory);
     function getIngesterToController(address _ingesterAddresses) external view returns (IngesterToController memory);
     function getIngesterAddressFromIndex(uint256 index) external view returns (address);
     function getControllerIngesters(address controllerAddress) external view returns (IIngesterRegistration.Ingester[] memory);
-    function moveIngesterAssignedGroup(address _ingesterAddress, uint256 assignedGroupsIngesterIndex) external;
     function setIngesterProxy(address _ingesterProxyAddress) external;
 
     event IngesterRegistered(address indexed controllerAddress, address indexed ingesterAddress);

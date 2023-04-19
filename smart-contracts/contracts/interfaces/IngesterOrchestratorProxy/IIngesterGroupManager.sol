@@ -13,7 +13,6 @@ interface IIngesterGroupManager {
 
     struct IngesterToGroup{
         bool isAdded;
-        uint256 assignedGroupsIngesterIndex;
         uint256 groupClusterIngesterIndex;
     }
 
@@ -39,7 +38,7 @@ interface IIngesterGroupManager {
     }
 
     // Events
-    event GroupDistributed(uint256 clusterId, string groupUsername);
+    event GroupDistributed(uint256 clusterId, string groupUsername, address ingesterAddress);
     event GroupAdded(string groupUsername);
     event GroupRemoved(string groupUsername);
     event GroupRemovedFromIngester(address indexed ingesterAddress, string group);
@@ -64,10 +63,12 @@ interface IIngesterGroupManager {
     function getGroupCount() external view returns (uint256);
     function updateIngesterProxy(address newIngesterProxy) external;
     function addIngesterToCluster(address _ingesterAddress, address controllerAddress) external returns(uint256);
-    function removeIngesterFromGroups(string[] memory _groups, address _ingesterAddress) external;
+    function removeIngesterFromGroups(uint256 clusterId, address _ingesterAddress) external;
     function removeIngesterFromCluster(address _ingesterAddress, uint256 _clusterId) external;
     function distributeGroupPostUnregistration(string[] memory _groups, uint256 clusterId) external;
     function setIngesterProxy(address _ingesterProxyAddress) external;
+    function getIngesterAssignedGroups(address ingesterAddress, uint256 clusterId) external view returns (string[] memory);
+
 
     function getMaxClusterSize() external view returns (uint256);
     function getMaxGroupsPerIngester() external view returns (uint256);

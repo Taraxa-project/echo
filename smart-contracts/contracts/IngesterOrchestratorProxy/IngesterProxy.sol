@@ -92,13 +92,22 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
     }
 
     /**
+    * @notice Retrieves the assigned groups for a given ingester address and cluster ID by calling the Group Manager contract.
+    * @param ingesterAddress The address of the ingester.
+    * @param clusterId The ID of the cluster the ingester belongs to.
+    * @return An array of group usernames assigned to the ingester.
+    */
+    function getIngesterAssignedGroups(address ingesterAddress, uint256 clusterId) external view returns (string[] memory) {
+        return _groupManagerContract.getIngesterAssignedGroups(ingesterAddress, clusterId);
+    }
+
+    /**
     * @notice Adds an ingester to a cluster.
     * @param ingesterAddress The address of the ingester to be added to the cluster.
-    * @param controllerAddress The address of the controller adding the ingester to the cluster.
-    * @return The cluster ID where the ingester was added.
+    * @param clusterId The cluster ID where the ingester was added.
     */
-    function removeIngesterFromCluster(address ingesterAddress, uint256 _clusterId) external onlyRegistrationContract {
-        _groupManagerContract.removeIngesterFromCluster(ingesterAddress, _clusterId);
+    function removeIngesterFromCluster(address ingesterAddress, uint256 clusterId) external onlyRegistrationContract {
+        _groupManagerContract.removeIngesterFromCluster(ingesterAddress, clusterId);
     }
 
     /**
@@ -126,6 +135,15 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
     */
     function getIngester(address ingesterAddress) external view returns (IIngesterRegistration.Ingester memory) {
         return _registrationContract.getIngester(ingesterAddress);
+    }
+
+    /**
+    * @notice Retrieves ingester details for a given ingester address.
+    * @param ingesterAddress The address of the ingester.
+    * @return Ingester struct containing ingester details.
+    */
+    function getIngesterWithGroups(address ingesterAddress) external view returns (IIngesterRegistration.IngesterWithGroups memory) {
+        return _registrationContract.getIngesterWithGroups(ingesterAddress);
     }
     
     /**
@@ -161,25 +179,6 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
     */
     function getControllerIngesters(address controllerAddress) external view returns (IIngesterRegistration.Ingester[] memory) {
         return _registrationContract.getControllerIngesters(controllerAddress);
-    }
-
-    /**
-    * @notice Adds a group to an ingester's assigned groups.
-    * @param ingesterAddress The address of the ingester.
-    * @param groupUsername The group's username.
-    * @return The new length of the assigned groups array for the ingester.
-    */
-    function addAssignedGroupToIngester(address ingesterAddress, string memory groupUsername) external onlyGroupManager returns(uint256){
-        return _registrationContract.addAssignedGroupToIngester(ingesterAddress, groupUsername);
-    }
-
-    /**
-    * @notice Moves an ingester from one group to another within their assigned groups.
-    * @param ingesterAddress The address of the ingester.
-    * @param assignedGroupsIngesterIndex The index of the assigned group in the ingester's assigned groups array.
-    */
-    function moveIngesterAssignedGroup(address ingesterAddress, uint256 assignedGroupsIngesterIndex) external onlyGroupManager {
-        _registrationContract.moveIngesterAssignedGroup(ingesterAddress, assignedGroupsIngesterIndex);
     }
 
     /**
@@ -291,11 +290,11 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
 
     /**
     * @notice Removes an ingester from the specified groups.
-    * @param groups An array of group usernames.
+    * @param clusterId The Id of the cluster that the ingester is part of.
     * @param ingesterAddress The address of the ingester to be removed from the groups.
     */
-    function removeIngesterFromGroups(string[] memory groups, address ingesterAddress) external onlyRegistrationContract {
-        _groupManagerContract.removeIngesterFromGroups(groups, ingesterAddress);
+    function removeIngesterFromGroups(uint256 clusterId, address ingesterAddress) external onlyRegistrationContract {
+        _groupManagerContract.removeIngesterFromGroups(clusterId, ingesterAddress);
     }
 
     /**
@@ -346,7 +345,7 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
     * @param ingesterAddress The address of the ingester.
     * @return IpfsHash struct containing ingester IPFS hashes.
     */
-    function getIpfsHashes(address ingesterAddress) external view returns(IIngesterDataGatheringProxy.IpfsHash memory ipfsHashes) {
+    function getIpfsHashes(address ingesterAddress) external view returns(IIngesterDataGatheringProxy.IpfsHash memory) {
         return _dataGatheringContract.getIpfsHashes(ingesterAddress);
     }
 }
