@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: td_json_client
+dependency_overrides:
+  td_json_client:
+    path: ../td_json_client

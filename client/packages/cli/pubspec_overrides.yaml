@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: td_json_client,telegram_client
+dependency_overrides:
+  td_json_client:
+    path: ../td_json_client
+  telegram_client:
+    path: ../telegram_client
