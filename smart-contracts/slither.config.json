@@ -1,0 +1,4 @@
+{
+  "filter_paths": "(mocks/|test/|@openzeppelin/)",
+  "solc_remaps": "@=smart-contracts/node_modules/@ hardhat=smart-contracts/node_modules/hardhat"
+}
