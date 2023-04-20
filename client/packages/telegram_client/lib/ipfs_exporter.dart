@@ -10,11 +10,13 @@ import 'package:path/path.dart' as p;
 
 import 'isolate.dart';
 import 'db.dart';
+import 'ingester_contract.dart';
 
 class IpfsExporter extends Isolated {
   SendPort? logSendPort;
 
   final SendPort dbSendPort;
+  final SendPort ingesterContractSendPort;
 
   String cronFormat;
   Schedule schedule;
@@ -42,9 +44,10 @@ class IpfsExporter extends Isolated {
   bool _exportInProgress = false;
 
   IpfsExporter({
+    Level? super.logLevel,
     this.logSendPort,
     required this.dbSendPort,
-    required Level logLevel,
+    required this.ingesterContractSendPort,
     required this.cronFormat,
     required this.schedule,
     required this.tableDumpPath,
@@ -173,10 +176,6 @@ class IpfsExporter extends Isolated {
       logger.info('uploading $tableName ipfs file hashes to IPFS... done.'
           ' Hash: $fileHashMeta.');
 
-      logger.info('writing hash to $tableName.$fileExtTypeHash...');
-      await _writeHash(tableName, fileHashMeta);
-      logger.info('wroting hash to $tableName.$fileExtTypeHash... done.');
-
       dbSendPort.send(DbMsgRequestUploadMetaSucces(
         replySendPort: receivePort.sendPort,
         tableName: tableName,
@@ -193,23 +192,20 @@ class IpfsExporter extends Isolated {
 
     client.close();
 
+    logger.info('writing hashes to smart contract...');
+    await _writeHashes();
+    logger.info('writing hashes to smart contract... done.');
+
     _exportInProgress = false;
   }
 
-  Future<void> _writeHash(
-    String dataName,
-    String hash,
-  ) async {
-    var fileHash =
-        new File(p.join(tableDumpPath, '$dataName.$fileExtTypeHash'));
-    fileHash.createSync();
-
-    final sink = fileHash.openWrite(mode: FileMode.write);
-    sink.write(hash);
-    sink.write('\n');
-
-    await sink.flush();
-    await sink.close();
+  Future<void> _writeHashes() async {
+    ingesterContractSendPort.send(IngesterContractMsgRequestWriteHashes(
+      replySendPort: receivePort.sendPort,
+    ));
+    await receivePortBroadcast
+        .where((event) => event is IngesterContractMsgResponseWriteHashes)
+        .first;
   }
 
   Uri _buildIpfsUri(

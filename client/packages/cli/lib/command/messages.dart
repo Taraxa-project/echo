@@ -8,10 +8,11 @@ import 'package:cron/cron.dart';
 import 'package:echo_cli/callback/cli.dart';
 
 import 'package:telegram_client/isolate.dart';
-import 'package:telegram_client/telegram_client.dart';
 import 'package:telegram_client/log.dart';
 import 'package:telegram_client/db.dart';
+import 'package:telegram_client/ingester_contract.dart';
 import 'package:telegram_client/ipfs_exporter.dart';
+import 'package:telegram_client/telegram_client.dart';
 
 class TelegramCommandMessages extends Command {
   final name = 'messages';
@@ -19,6 +20,7 @@ class TelegramCommandMessages extends Command {
 
   final Isolater _log = Isolater();
   final Isolater _db = Isolater();
+  final Isolater _ingesterContract = Isolater();
   final Isolater _ipfsExporter = Isolater();
   final TelegramClientIsolater _telegramClient = TelegramClientIsolater();
 
@@ -45,13 +47,42 @@ class TelegramCommandMessages extends Command {
         debugName: 'DbIsolater',
       );
 
+      await _ingesterContract.spawn_(
+        IngesterContract(
+          logLevel: _logLevel,
+          logSendPort: _log.isolateSendPort,
+          dbSendPort: _db.isolateSendPort,
+          contractAddress: globalResults!.command!['ingester-contract-address'],
+          contractRpcUrl: globalResults!.command!['ingester-contract-rpc-url'],
+          ownerPrivateKey: globalResults!.command!['owner-private-key'],
+          configPath: globalResults!.command!['config-path'],
+        ),
+        debugName: 'IngesterContractIsolater',
+      );
+
+      _ingesterContract.isolateSendPort.send(IngesterContractMsgRequestRegister(
+          replySendPort: _ingesterContract.isolateReceivePort.sendPort));
+      await _ingesterContract.isolateReceivePortBroadcast.firstWhere(
+          (element) => element is IngesterContractMsgResponseRegister);
+      // .onError(<StateError>(error, _) => logger.warning('login $error'));
+
+      _ingesterContract.isolateSendPort.send(
+          IngesterContractMsgRequestGetGroups(
+              replySendPort: _ingesterContract.isolateReceivePort.sendPort));
+      IngesterContractMsgResponseGetGroups getGroupsResponse =
+          await _ingesterContract.isolateReceivePortBroadcast.firstWhere(
+              (element) => element is IngesterContractMsgResponseGetGroups);
+      // .onError(<StateError>(error, _) => logger.warning('login $error'));
+      var chatsNames = getGroupsResponse.groups;
+
       await _ipfsExporter.spawn_(
         IpfsExporter(
           logLevel: _logLevel,
           logSendPort: _log.isolateSendPort,
+          dbSendPort: _db.isolateSendPort,
+          ingesterContractSendPort: _ingesterContract.isolateSendPort,
           cronFormat: globalResults!.command!['ipfs-cron-schedule'],
           schedule: parseIpfsCronSchedule(),
-          dbSendPort: _db.isolateSendPort,
           tableDumpPath: globalResults!.command!['table-dump-path'],
           ipfsScheme: globalResults!.command!['ipfs-scheme'],
           ipfsHost: globalResults!.command!['ipfs-host'],
@@ -91,7 +122,7 @@ class TelegramCommandMessages extends Command {
       while (true) {
         await _telegramClient.readChatsHistory(
           dateTimeFrom: computeTwoWeeksAgo(),
-          chatsNames: getChatsNames(),
+          chatsNames: chatsNames,
         );
 
         if (!_runForever) {

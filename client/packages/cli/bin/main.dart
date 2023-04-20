@@ -103,6 +103,22 @@ void main(List<String> arguments) {
       'run-forever',
       help: 'Set this to true if you want the app to run forever',
       defaultsTo: 'false',
+    )
+    ..addOption(
+      'config-path',
+      help: 'Path to the folder containg config.json',
+    )
+    ..addOption(
+      'owner-private-key',
+      help: 'Owner private key',
+    )
+    ..addOption(
+      'ingester-contract-address',
+      help: 'Ingester contract address',
+    )
+    ..addOption(
+      'ingester-contract-rpc-url',
+      help: 'RPC url',
     );
 
   commandRunner
