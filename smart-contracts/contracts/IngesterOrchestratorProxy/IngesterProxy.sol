@@ -19,6 +19,10 @@ contract IngesterProxy is AccessControlEnumerable, Ownable, IIngesterProxy {
     IngesterDataGathering public _dataGatheringContract;
 
     constructor(address _groupManagerContractAddress, address _registrationContractAddress,address _dataGatheringContractAddress) {
+        require(_groupManagerContractAddress != address(0), "GroupManagerContractAddress: Proxy address should not be zero");
+        require(_registrationContractAddress != address(0), "RegistrationContractAddress: Proxy address should not be zero");
+        require(_dataGatheringContractAddress != address(0), "DataGatheringContractAddress: Proxy address should not be zero");
+
         groupManagerContractAddress = _groupManagerContractAddress;
         registrationContractAddress = _registrationContractAddress;
         dataGatheringContractAddress = _dataGatheringContractAddress;
