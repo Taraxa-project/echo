@@ -4,12 +4,13 @@ pragma solidity 0.8.14;
 import './IngesterRegistry.sol';
 import './IngesterDataGathering.sol';
 import './IngesterGroupManager.sol';
-import '../interfaces/IngesterOrchestratorProxy/IIngesterDataGatheringProxy.sol';
+import '../interfaces/IngesterOrchestratorProxy/IIngesterDataGathering.sol';
 import '../interfaces/IngesterOrchestratorProxy/IIngesterGroupManager.sol';
+import '../interfaces/IngesterOrchestratorProxy/IIngesterProxy.sol';
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract IngesterProxy is AccessControlEnumerable, Ownable {
+contract IngesterProxy is AccessControlEnumerable, Ownable, IIngesterProxy {
     address public groupManagerContractAddress;
     address public registrationContractAddress;
     address public dataGatheringContractAddress;
@@ -54,6 +55,42 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
 
     function transferOwnership(address newOwner) public onlyAdmin override {
         super.transferOwnership(newOwner);
+    }
+
+    /**
+    * @notice Updates the address of the GroupManager contract and sets a new instance.
+    * @dev Can only be called by an admin.
+    * @param newGroupManagerContractAddress The address of the new GroupManager contract.
+    */
+    function updateGroupManagerContract(address newGroupManagerContractAddress) external onlyAdmin {
+        require(newGroupManagerContractAddress != address(0), "New group manager contract address cannot be a zero address.");
+        groupManagerContractAddress = newGroupManagerContractAddress;
+        _groupManagerContract = IngesterGroupManager(newGroupManagerContractAddress);
+        emit GroupManagerContractAddressUpdated(newGroupManagerContractAddress);
+    }
+
+    /**
+    * @notice Updates the address of the Registration contract and sets a new instance.
+    * @dev Can only be called by an admin.
+    * @param newRegistrationContractAddress The address of the new Registration contract.
+    */
+    function updateRegistrationContract(address newRegistrationContractAddress) external onlyAdmin {
+        require(newRegistrationContractAddress != address(0), "New registration contract address cannot be a zero address.");
+        registrationContractAddress = newRegistrationContractAddress;
+        _registrationContract = IngesterRegistry(newRegistrationContractAddress);
+        emit RegistrationContractAddressUpdated(newRegistrationContractAddress);
+    }
+
+    /**
+    * @notice Updates the address of the DataGathering contract and sets a new instance.
+    * @dev Can only be called by an admin.
+    * @param newDataGatheringContractAddress The address of the new DataGathering contract.
+    */
+    function updateDataGatheringContract(address newDataGatheringContractAddress) external onlyAdmin {
+        require(newDataGatheringContractAddress != address(0), "New data gathering contract address cannot be a zero address.");
+        dataGatheringContractAddress = newDataGatheringContractAddress;
+        _dataGatheringContract = IngesterDataGathering(newDataGatheringContractAddress);
+        emit DataGatheringContractAddressUpdated(newDataGatheringContractAddress);
     }
 
     /**
@@ -345,7 +382,7 @@ contract IngesterProxy is AccessControlEnumerable, Ownable {
     * @param ingesterAddress The address of the ingester.
     * @return IpfsHash struct containing ingester IPFS hashes.
     */
-    function getIpfsHashes(address ingesterAddress) external view returns(IIngesterDataGatheringProxy.IpfsHash memory) {
+    function getIpfsHashes(address ingesterAddress) external view returns(IIngesterDataGathering.IpfsHash memory) {
         return _dataGatheringContract.getIpfsHashes(ingesterAddress);
     }
 }

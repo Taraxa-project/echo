@@ -46,10 +46,13 @@ interface IIngesterGroupManager {
     event IngesterRemovedFromGroup(address indexed ingesterAddress, string indexed groupId);
     event IngesterRegisteredGroups(address indexed ingesterAddress, string[] assignedGroups);
     event IngesterDetailsUpdated(address indexed ingesterAddress, bool verified, string[] assignedGroups);
-    event SetNewMaxIngesterPerGroup(uint256 maxNumberIngesterPerGroup);
+    event MaxIngesterPerGroupUpdated(uint256 maxNumberIngesterPerGroup);
     event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
     event AddUnallocatedGroups(string[] unAllocatedGroups);
     event RemoveUnallocatedGroup(string unAllocatedGroup);
+    event IngesterProxyAddressUpdated(address indexed newIngesterProxy);
+    event MaxClusterSizeUpdated(uint256 maxClusterSize);
+    event MaxGroupsPerIngesterUpdated(uint256 maxGroupsPerIngester);
 
 
     // Functions
@@ -66,9 +69,7 @@ interface IIngesterGroupManager {
     function removeIngesterFromGroups(uint256 clusterId, address _ingesterAddress) external;
     function removeIngesterFromCluster(address _ingesterAddress, uint256 _clusterId) external;
     function distributeGroupPostUnregistration(string[] memory _groups, uint256 clusterId) external;
-    function setIngesterProxy(address _ingesterProxyAddress) external;
     function getIngesterAssignedGroups(address ingesterAddress, uint256 clusterId) external view returns (string[] memory);
-
 
     function getMaxClusterSize() external view returns (uint256);
     function getMaxGroupsPerIngester() external view returns (uint256);

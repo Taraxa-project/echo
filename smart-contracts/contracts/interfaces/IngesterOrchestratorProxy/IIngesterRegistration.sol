@@ -39,12 +39,13 @@ interface IIngesterRegistration {
     function getIngesterToController(address _ingesterAddresses) external view returns (IngesterToController memory);
     function getIngesterAddressFromIndex(uint256 index) external view returns (address);
     function getControllerIngesters(address controllerAddress) external view returns (IIngesterRegistration.Ingester[] memory);
-    function setIngesterProxy(address _ingesterProxyAddress) external;
+    function updateIngesterProxy(address newIngesterProxy) external;
 
     event IngesterRegistered(address indexed controllerAddress, address indexed ingesterAddress);
     event IngesterUnRegistered(address indexed controllerAddress, address indexed ingesterAddress);
     event IngesterAssignedGroupsUpdated(address indexed ingesterAddress, string[] assignedGroups);
     event AssignGroupToIngester(address indexed ingesterAddress, string groupUsername);
+    event IngesterProxyAddressUpdated(address indexed newIngesterProxy);
 
 }
 

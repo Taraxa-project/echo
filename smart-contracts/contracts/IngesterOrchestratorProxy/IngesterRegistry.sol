@@ -14,13 +14,12 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
     bytes32 public constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
 
     address public ingesterProxyAddress;
-    IngesterProxy public ingesterProxy;
+    IngesterProxy private _ingesterProxy;
 
     mapping(address => Ingester[]) private _controllerToIngesters;
     mapping(address => IngesterToController) private _ingesterToController;
     address[] private _ingesterAddresses;
     uint private _ingesterCount;
-
 
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -36,10 +35,16 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         _;
     }
 
-    function setIngesterProxy(address _ingesterProxyAddress) external onlyAdmin {
-        ingesterProxyAddress = _ingesterProxyAddress;
-        ingesterProxy = IngesterProxy(_ingesterProxyAddress);
-        _setupRole(DEFAULT_ADMIN_ROLE, _ingesterProxyAddress);
+    /**
+    * @notice Updates the address of the IngesterProxy contract.
+    * @param newIngesterProxy The address of the new IngesterProxy contract.
+    */
+    function updateIngesterProxy(address newIngesterProxy) external onlyAdmin {
+        require(newIngesterProxy != address(0), "New ingester proxy address cannot be a zero address.");
+        ingesterProxyAddress = newIngesterProxy;
+        _ingesterProxy = IngesterProxy(newIngesterProxy);
+        _setupRole(DEFAULT_ADMIN_ROLE, newIngesterProxy);
+        emit IIngesterRegistration.IngesterProxyAddressUpdated(newIngesterProxy);
     }
 
     /**
@@ -66,7 +71,10 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
 
         require(ECDSA.recover(ethSignedMessageHash, sig) == ingesterAddress, "Invalid signature.");
         
-        uint256 clusterId = ingesterProxy.addIngesterToCluster(ingesterAddress, controllerAddress);
+        //slither possible re-rentrancy attack. Making an external call before modifying contract storage
+        //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
+        // is this still a risk? I will always have to change the ingester storage clusterId after external call
+        uint256 clusterId = _ingesterProxy.addIngesterToCluster(ingesterAddress, controllerAddress);
 
         Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, clusterId);
 
@@ -92,7 +100,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         require(_ingesterToController[ingesterAddress].controllerAddress == controllerAddress, "Ingester does not exist");
         uint256 ingesterIndexToRemove = _ingesterToController[ingesterAddress].ingesterIndex;
         uint256 clusterId = _controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
-        string[] memory ingesterAssignedGroups = ingesterProxy.getIngesterAssignedGroups(ingesterAddress, clusterId);
+        string[] memory ingesterAssignedGroups = _ingesterProxy.getIngesterAssignedGroups(ingesterAddress, clusterId);
 
 
         uint ingesterAddressesIndexToRemove = _ingesterToController[ingesterAddress].ingesterAddressesIndex;
@@ -111,21 +119,20 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
             revokeRole("INGESTER_ROLE", ingesterAddress);
             revokeRole("CONTROLLER_ROLE", controllerAddress);
             
-            ingesterProxy.removeIngesterFromGroups(clusterId, ingesterAddress);
-
-            // Remove Ingester from Cluster
-            ingesterProxy.removeIngesterFromCluster(ingesterAddress, clusterId);
             // Remove ingester mappings
             delete _controllerToIngesters[controllerAddress];
             delete _ingesterToController[ingesterAddress];
+            
+            //slither possible re-rentrancy attack. Making an external call before modifying contract storage
+            //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
+            // is this still a risk? I will always have to change the ingester storage clusterId after external call
+            _ingesterProxy.removeIngesterFromGroups(clusterId, ingesterAddress);
+
+            // Remove Ingester from Cluster
+            _ingesterProxy.removeIngesterFromCluster(ingesterAddress, clusterId);
         } else if (numIngestersPerController > 1) {
             //if there is more ingesters for this controller, only remove the desired ingester
             revokeRole("INGESTER_ROLE", ingesterAddress);
-
-            ingesterProxy.removeIngesterFromGroups(clusterId, ingesterAddress);
-
-            //Remove Ingester from Cluster
-            ingesterProxy.removeIngesterFromCluster(ingesterAddress, clusterId);
 
             // Remove ingester from the _controllerToIngesters list
             if (ingesterIndexToRemove != numIngestersPerController - 1) {
@@ -136,9 +143,15 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
             }
             _controllerToIngesters[controllerAddress].pop();
             delete _ingesterToController[ingesterAddress];
+
+            _ingesterProxy.removeIngesterFromGroups(clusterId, ingesterAddress);
+
+            //Remove Ingester from Cluster
+            _ingesterProxy.removeIngesterFromCluster(ingesterAddress, clusterId);
+
         }
         
-        ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups, clusterId);
+        _ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups, clusterId);
     }
 
     /**
@@ -212,7 +225,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         uint ingesterIndex = _ingesterToController[ingesterAddress].ingesterIndex;
         Ingester memory ingester = _controllerToIngesters[controller][ingesterIndex];
 
-        string[] memory assignedGroups = ingesterProxy.getIngesterAssignedGroups(ingesterAddress, ingester.clusterId);
+        string[] memory assignedGroups = _ingesterProxy.getIngesterAssignedGroups(ingesterAddress, ingester.clusterId);
         IngesterWithGroups memory ingesterWithAssignedGroups = IngesterWithGroups(
             ingesterAddress,
             ingester.verified,

@@ -1,30 +1,25 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.14;
 
-import "../interfaces/IngesterOrchestratorProxy/IIngesterDataGatheringProxy.sol";
+import "../interfaces/IngesterOrchestratorProxy/IIngesterDataGathering.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "./IngesterProxy.sol";
 
 /**
- * @title IngesterDataGatheringV2
+ * @title IngesterDataGathering
  * @dev This contract manages the storage of IPFS hashes stored by registered ingesters.
- * It extends the IngesterRegistryAccessControlV2 which manages access control and ownership for the Ingester Registry and IngesterDataGatheringV2 interface
+ * It extends the IngesterRegistryAccessControl which manages access control and ownership for the Ingester Registry and IngesterDataGatheringV2 interface
  */
 contract IngesterDataGathering is
     AccessControlEnumerable,
-    IIngesterDataGatheringProxy
+    IIngesterDataGathering
 {
     address public ingesterProxyAddress;
     IngesterProxy private _ingesterProxy;
-    mapping(address => IIngesterDataGatheringProxy.IpfsHash) private _ipfsHashes;
+    mapping(address => IIngesterDataGathering.IpfsHash) private _ipfsHashes;
 
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-    }
-
-    function setIngesterProxy(address _ingesterProxyAddress) external onlyAdmin {
-        ingesterProxyAddress = _ingesterProxyAddress;
-        _ingesterProxy = IngesterProxy(ingesterProxyAddress);
     }
 
     modifier onlyIngesterProxy() {
@@ -37,6 +32,16 @@ contract IngesterDataGathering is
         _;
     }
 
+    /**
+    * @notice Updates the address of the IngesterProxy contract.
+    * @param newIngesterProxy The address of the new IngesterProxy contract.
+    */
+    function updateIngesterProxy(address newIngesterProxy) external onlyAdmin {
+        require(newIngesterProxy != address(0), "New ingester proxy address cannot be a zero address.");
+        ingesterProxyAddress = newIngesterProxy;
+        _ingesterProxy = IngesterProxy(newIngesterProxy);
+        emit IIngesterDataGathering.IngesterProxyAddressUpdated(newIngesterProxy);
+    }
 
     /**
      * @notice Adds IPFS hashes for a registered ingester.
@@ -53,14 +58,14 @@ contract IngesterDataGathering is
         string calldata messagesHash
     ) external onlyIngesterProxy {
 
-        IIngesterDataGatheringProxy.IpfsHash
-            memory ipfsHashUsers = IIngesterDataGatheringProxy.IpfsHash(
+        IIngesterDataGathering.IpfsHash
+            memory ipfsHashUsers = IIngesterDataGathering.IpfsHash(
                 usersHash,
                 chatsHash,
                 messagesHash
             );
         _ipfsHashes[ingesterAddress] = ipfsHashUsers;
-        emit IIngesterDataGatheringProxy.IpfsHashAdded(
+        emit IIngesterDataGathering.IpfsHashAdded(
             ingesterAddress,
             usersHash,
             chatsHash,

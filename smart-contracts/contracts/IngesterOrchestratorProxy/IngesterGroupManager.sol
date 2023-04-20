@@ -10,7 +10,7 @@ import "hardhat/console.sol";
 contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager {
 
     address public ingesterProxyAddress;
-    IngesterProxy public ingesterProxy;
+    IngesterProxy private _ingesterProxy;
     uint256 private _maxClusterSize; // 5
     uint256 private _maxGroupsPerIngester; // 300
     uint256 private _maxNumberIngesterPerGroup;
@@ -39,46 +39,59 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
         _;
     }
     
+    function ceilDiv(uint256 a, uint256 b) public pure returns (uint256) {
+        require(b != 0, "Division by zero");
+        return (a + b - 1) / b;
+    }
+
     /**
      * @dev Distributes a group to the most available capacity cluster.
      * @param groupUsername The group username to distribute.
      */
     function distributeGroup(string memory groupUsername) internal {
         uint clusterId = getMostCapacityCluster();
+        require(_ingesterClusters[clusterId].clusterRemainingCapacity > 0, 'No more ingesters available to add groups to');
 
         uint256 numIngesters = _ingesterClusters[clusterId].ingesterAddresses.length;
-        uint256 maxGroupsPerIngester = 1;
-        uint256 numClusterGroups = _ingesterClusters[clusterId].clusterGroupCount;
 
-        //formula to apply a balanced distribution of groups across the ingesters
-        if (numClusterGroups > 0) {
-            maxGroupsPerIngester = (numClusterGroups + numIngesters - 1) / numIngesters;
-        }
+        if (numIngesters == 1) {
+            distributeGroupToIngester(groupUsername, clusterId, _ingesterClusters[clusterId].ingesterAddresses[0]);
+        } else {
+            uint256 maxGroupsPerIngester = 1;
+            uint256 numClusterGroups = _ingesterClusters[clusterId].clusterGroupCount;
 
-        for (uint256 i = 0; i < numIngesters; ++i) {
-            address currentIngesterAddress = _ingesterClusters[clusterId].ingesterAddresses[i];
-            if(_groups[groupUsername].ingesterToGroup[currentIngesterAddress].isAdded) {
-                continue;
+            //formula to apply a balanced distribution of groups across the ingesters
+            if (numClusterGroups > 0) {
+                maxGroupsPerIngester = ceilDiv((numClusterGroups + numIngesters - 1), numIngesters);
             }
 
-            uint256 numOfAssignedGroups = _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length;
-            uint256 numIngestersPerGroup = _groups[groupUsername].ingesterAddresses.length;
-            if (numOfAssignedGroups <= maxGroupsPerIngester && numIngestersPerGroup < _maxNumberIngesterPerGroup) {
-                //assign ingester to group storage
-                _groups[groupUsername].ingesterAddresses.push(currentIngesterAddress);
-                //add group to cluster for the respective ingester
-                _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].push(groupUsername);
-                //keep track of where it is stored so it is easy to remove
-                _groups[groupUsername].ingesterToGroup[currentIngesterAddress].groupClusterIngesterIndex = _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length - 1;
-                ++_ingesterClusters[clusterId].clusterGroupCount;
+            for (uint256 i = 0; i < numIngesters; ++i) {
+                address currentIngesterAddress = _ingesterClusters[clusterId].ingesterAddresses[i];
+                if(_groups[groupUsername].ingesterToGroup[currentIngesterAddress].isAdded) {
+                    continue;
+                }
 
-                // Re=calculate clusterRemainingCapacity
-                _ingesterClusters[clusterId].clusterRemainingCapacity = (_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) - _ingesterClusters[clusterId].clusterGroupCount;
+                uint256 numOfAssignedGroups = _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length;
+                uint256 numIngestersPerGroup = _groups[groupUsername].ingesterAddresses.length;
 
-                emit IIngesterGroupManager.GroupDistributed(clusterId, groupUsername, currentIngesterAddress);
-                //if there is replication, then keep assigning to the remining cluster, otherwise break
-                if ( i >= _maxNumberIngesterPerGroup - 1) {
-                    break;
+                if (numOfAssignedGroups < maxGroupsPerIngester && numIngestersPerGroup < _maxNumberIngesterPerGroup) {
+                    //assign ingester to group storage
+                    _groups[groupUsername].ingesterAddresses.push(currentIngesterAddress);
+                    //add group to cluster for the respective ingester
+                    _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].push(groupUsername);
+                    //keep track of where it is stored so it is easy to remove
+                    _groups[groupUsername].ingesterToGroup[currentIngesterAddress] = IngesterToGroup(true, _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length - 1);
+                    ++_ingesterClusters[clusterId].clusterGroupCount;
+
+                    // Re-calculate clusterRemainingCapacity
+                    require((_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) >= _ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
+                    _ingesterClusters[clusterId].clusterRemainingCapacity = (_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) - _ingesterClusters[clusterId].clusterGroupCount;
+
+                    emit IIngesterGroupManager.GroupDistributed(clusterId, groupUsername, currentIngesterAddress);
+                    //if there is replication, then keep assigning to the remining cluster, otherwise break
+                    if ( i >= _maxNumberIngesterPerGroup - 1) {
+                        break;
+                    }
                 }
             }
         }
@@ -90,7 +103,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
      */
     function distributeGroups(address ingesterAddress) external onlyIngesterProxy {
         uint numUnallocatedGroups = _unAllocatedGroups.length;
-        uint256 clusterId = ingesterProxy.getIngester(ingesterAddress).clusterId;
+        uint256 clusterId = _ingesterProxy.getIngester(ingesterAddress).clusterId;
 
         //prioritise allocation groups
         if (numUnallocatedGroups > 0) {
@@ -118,7 +131,6 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
                 //accounting for group replication scenario, simply assign present groups to cluster
                 address ingesterToCopyGroupsFrom = _ingesterClusters[clusterId].ingesterAddresses[0];
                 string[] memory groupsToAllocate = _ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterToCopyGroupsFrom];
-                console.log('groupsToAllocate upon distribute groups after registration', groupsToAllocate.length);
                 for (uint i = 0; i < groupsToAllocate.length; i++) {
                     distributeGroupToIngester(groupsToAllocate[i], clusterId, ingesterAddress);
                 }
@@ -158,51 +170,43 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
     function distributeGroupsToCluster(string memory groupUsername, uint256 clusterId) internal {
 
         uint256 numIngesters = _ingesterClusters[clusterId].ingesterAddresses.length;
-        uint256 maxGroupsPerIngester = 1;
-        uint256 numClusterGroups = _ingesterClusters[clusterId].clusterGroupCount;
+        if (numIngesters == 1) {
+            distributeGroupToIngester(groupUsername, clusterId, _ingesterClusters[clusterId].ingesterAddresses[0]);
+        } else {
+            uint256 maxGroupsPerIngester = 1;
+            uint256 numClusterGroups = _ingesterClusters[clusterId].clusterGroupCount;
 
-        //formula to apply a balanced distribution of groups across the ingesters
-        if (numClusterGroups > 0) {
-            maxGroupsPerIngester = (numClusterGroups + numIngesters - 1) / numIngesters;
-        }
-
-        for (uint256 i = 0; i < numIngesters; ++i) {
-            address currentIngesterAddress = _ingesterClusters[clusterId].ingesterAddresses[i];
-            if(_groups[groupUsername].ingesterToGroup[currentIngesterAddress].isAdded) {
-                continue;
+            //formula to apply a balanced distribution of groups across the ingesters
+            if (numClusterGroups > 0) {
+                maxGroupsPerIngester = ceilDiv((numClusterGroups + numIngesters - 1) , numIngesters);
             }
-            uint256 numOfAssignedGroups = _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length;
-            uint256 numIngestersPerGroup = _groups[groupUsername].ingesterAddresses.length;
-            if (numOfAssignedGroups <= maxGroupsPerIngester && numIngestersPerGroup < _maxNumberIngesterPerGroup) {
-                //assign ingester to group storage  
-                _groups[groupUsername].ingesterAddresses.push(currentIngesterAddress);
-                //add group to cluster for the respective ingester
-                _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].push(groupUsername);
-                //keep track of where it is stored so it is easy to remove
-                _groups[groupUsername].ingesterToGroup[currentIngesterAddress] = IngesterToGroup(true, _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length - 1);
-                ++_ingesterClusters[clusterId].clusterGroupCount;
-                
-                // Re-calculate clusterRemainingCapacity
-                require((_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) >= _ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
-                _ingesterClusters[clusterId].clusterRemainingCapacity = (_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) - _ingesterClusters[clusterId].clusterGroupCount;
-                emit IIngesterGroupManager.GroupDistributed(clusterId, groupUsername, currentIngesterAddress);
-                if ( i >= _maxNumberIngesterPerGroup - 1) {
-                    break;
+
+            for (uint256 i = 0; i < numIngesters; ++i) {
+                address currentIngesterAddress = _ingesterClusters[clusterId].ingesterAddresses[i];
+                if(_groups[groupUsername].ingesterToGroup[currentIngesterAddress].isAdded) {
+                    continue;
+                }
+                uint256 numOfAssignedGroups = _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length;
+                uint256 numIngestersPerGroup = _groups[groupUsername].ingesterAddresses.length;
+                if (numOfAssignedGroups < maxGroupsPerIngester && numIngestersPerGroup < _maxNumberIngesterPerGroup) {
+                    //assign ingester to group storage  
+                    _groups[groupUsername].ingesterAddresses.push(currentIngesterAddress);
+                    //add group to cluster for the respective ingester
+                    _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].push(groupUsername);
+                    //keep track of where it is stored so it is easy to remove
+                    _groups[groupUsername].ingesterToGroup[currentIngesterAddress] = IngesterToGroup(true, _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length - 1);
+                    ++_ingesterClusters[clusterId].clusterGroupCount;
+                    
+                    // Re-calculate clusterRemainingCapacity
+                    require((_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) >= _ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
+                    _ingesterClusters[clusterId].clusterRemainingCapacity = (_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) - _ingesterClusters[clusterId].clusterGroupCount;
+                    emit IIngesterGroupManager.GroupDistributed(clusterId, groupUsername, currentIngesterAddress);
+                    if ( i >= _maxNumberIngesterPerGroup - 1) {
+                        break;
+                    }
                 }
             }
         }
-    }
-
-    /**
-     * @dev Returns the total group capacity across all clusters.
-     * @return The total group capacity.
-     */
-    function getTotalGroupCapacity() public view returns(uint256) {
-        uint256 totalCapacity = 0;
-        for (uint256 i = 0; i < _clusterIds.length; i++) {
-            totalCapacity += _ingesterClusters[_clusterIds[i]].clusterRemainingCapacity;
-        }
-        return totalCapacity;
     }
 
     /**
@@ -219,7 +223,6 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
                 mostAvailableClusterId = _clusterIds[i];
             }
         }
-        require(mostAvailableGroups > 0, "No more ingesters available to add groups to");
         return mostAvailableClusterId;
     }
 
@@ -248,8 +251,8 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
                 for (uint256 i = 0; i < totalCapacity ; i++) {
                     distributeGroupsToCluster(groups[i], mostCapacityClusterId);
                 }
-                for (uint256 i = amountOfGroups - 1; i >= totalCapacity; i--) {
-                    _unAllocatedGroups.push(groups[i]);
+                for (uint256 i = amountOfGroups; i > totalCapacity; i--) {
+                    _unAllocatedGroups.push(groups[i-1]);
                 }
                 emit IIngesterGroupManager.AddUnallocatedGroups(_unAllocatedGroups);
             } else {
@@ -258,7 +261,6 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
                 }
             }
         }
-
     }
 
     /**
@@ -311,6 +313,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
         }
 
         //update clusterRemainingCapacity metric on the cluster
+        require((_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) >= _ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
         _ingesterClusters[clusterId].clusterRemainingCapacity = (_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) - _ingesterClusters[clusterId].clusterGroupCount;
         emit IIngesterGroupManager.GroupRemovedFromCluster(clusterId, groupUsername);
     }
@@ -330,6 +333,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
         }
         
         _ingesterClusters[clusterId].ingesterAddresses.push(ingesterAddress);
+        require((_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) >= _ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
         _ingesterClusters[clusterId].clusterRemainingCapacity = (_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) - _ingesterClusters[clusterId].clusterGroupCount;
        
         emit IIngesterGroupManager.IngesterAddedToCluster(ingesterAddress, clusterId);
@@ -362,7 +366,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
                 //If there is Duplication.
                 //Restrict more than one controller wallet owning one ingester per cluster
                 if (_maxNumberIngesterPerGroup > 1) {
-                    IIngesterRegistration.Ingester[] memory controllerIngesters = ingesterProxy.getControllerIngesters(controllerAddress);
+                    IIngesterRegistration.Ingester[] memory controllerIngesters = _ingesterProxy.getControllerIngesters(controllerAddress);
 
                     for (uint j = 0; j < _ingesterClusters[availableCluster].ingesterAddresses.length; j++) {
                         for (uint k = 0; k < controllerIngesters.length; k++) {
@@ -373,12 +377,15 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
                             }
                         }
                     }
+                    if (foundAvailableCluster) {
+                        break;
+                    }
                 } else {
                     break;
                 }
             }
         }
-        if (foundAvailableCluster != true) {
+        if (!foundAvailableCluster) {
             //create new cluster
             availableCluster = numClusters;
             _clusterIds.push(availableCluster);
@@ -429,10 +436,12 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
                     _ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress] = new string[](0);
 
                     //re-calculate cluster remaining capacity
+                    // console.log('max amount of groups allowed in cluster', _maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length);
+                    // console.log('amount of groups in cluster already', _ingesterClusters[clusterId].clusterGroupCount);
+                    require((_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) >= _ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
                     _ingesterClusters[clusterId].clusterRemainingCapacity = (_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) - _ingesterClusters[clusterId].clusterGroupCount;
                     break;
-                }
-                
+                } 
             }
         }
     }
@@ -494,15 +503,6 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
     }
 
     /**
-    * @notice Sets the address of the IngesterProxy contract.
-    * @param _ingesterProxyAddress The address of the IngesterProxy contract.
-    */
-    function setIngesterProxy(address _ingesterProxyAddress) external onlyAdmin {
-        ingesterProxyAddress = _ingesterProxyAddress;
-        ingesterProxy = IngesterProxy(_ingesterProxyAddress);
-    }
-
-    /**
     * @notice Retrieves the list of cluster IDs.
     * @return An array of cluster IDs.
     */
@@ -555,6 +555,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
     */
     function setMaxClusterSize(uint256 maxClusterSize) external onlyIngesterProxy {
         _maxClusterSize = maxClusterSize;
+        emit IIngesterGroupManager.MaxClusterSizeUpdated(maxClusterSize);
     }
 
     /**
@@ -563,6 +564,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
     */
     function setMaxGroupsPerIngester(uint256 maxGroupsPerIngester) external onlyIngesterProxy {
         _maxGroupsPerIngester = maxGroupsPerIngester;
+        emit IIngesterGroupManager.MaxGroupsPerIngesterUpdated(maxGroupsPerIngester);
     }  
 
     /**
@@ -572,7 +574,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
     function setMaxNumberIngesterPerGroup(uint256 maxNumberIngesterPerGroup) external onlyIngesterProxy {
         require(maxNumberIngesterPerGroup >= 1, "Can only set max ingester per group >= 1");
         _maxNumberIngesterPerGroup = maxNumberIngesterPerGroup;
-        emit IIngesterGroupManager.SetNewMaxIngesterPerGroup(maxNumberIngesterPerGroup);
+        emit IIngesterGroupManager.MaxIngesterPerGroupUpdated(maxNumberIngesterPerGroup);
     }
 
     /**
@@ -598,6 +600,9 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
     * @param newIngesterProxy The address of the new IngesterProxy contract.
     */
     function updateIngesterProxy(address newIngesterProxy) external onlyAdmin {
+        require(newIngesterProxy != address(0), "New ingester proxy address cannot be a zero address.");
         ingesterProxyAddress = newIngesterProxy;
+        _ingesterProxy = IngesterProxy(newIngesterProxy);
+        emit IIngesterGroupManager.IngesterProxyAddressUpdated(newIngesterProxy);
     }
 }
