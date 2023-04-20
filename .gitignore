@@ -16,7 +16,7 @@ build/
 *.binlog
 
 # Mac
-.DS_store
+.DS_Store
 
 # env
 .env*
