@@ -8,6 +8,7 @@ import { IngesterDataGathering } from '../typechain-types/contracts/IngesterOrch
 import { IngesterGroupManager } from '../typechain-types/contracts/IngesterOrchestratorProxy/IngesterGroupManager';
 import { IngesterProxy } from '../typechain-types/contracts/IngesterOrchestratorProxy/IngesterProxy';
 import { IIngesterGroupManager } from '../typechain-types/contracts/IngesterOrchestratorProxy/IngesterGroupManager';
+
 import cluster from "cluster";
 
 interface IngesterControllerMapping {

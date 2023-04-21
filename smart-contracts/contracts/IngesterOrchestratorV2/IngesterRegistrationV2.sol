@@ -84,7 +84,6 @@ contract IngesterRegistrationV2 is IIngesterRegistrationV2, IngesterRegistryAcce
         uint256 nonce,
         bytes calldata sig
     ) external override {
-        // require(_ingesters[msg.sender][_registeredIngesterToController[ingesterAddress].ingesterIndex].verified != true, "Ingestor already verified.");
         require(_registeredIngesterToController[ingesterAddress].controllerAddress != msg.sender, "Ingestor already registered.");
 
         bytes32 messageHash = _hash(ingesterAddress, message, nonce);
