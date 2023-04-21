@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "../interfaces/IngesterOrchestratorProxy/IIngesterGroupManager.sol";
 import "../interfaces/IngesterOrchestratorProxy/IIngesterRegistration.sol";
 import "./IngesterProxy.sol";
-import "hardhat/console.sol";
 
 contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager {
 
@@ -436,8 +435,6 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
                     _ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress] = new string[](0);
 
                     //re-calculate cluster remaining capacity
-                    // console.log('max amount of groups allowed in cluster', _maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length);
-                    // console.log('amount of groups in cluster already', _ingesterClusters[clusterId].clusterGroupCount);
                     require((_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) >= _ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
                     _ingesterClusters[clusterId].clusterRemainingCapacity = (_maxGroupsPerIngester * _ingesterClusters[clusterId].ingesterAddresses.length) - _ingesterClusters[clusterId].clusterGroupCount;
                     break;

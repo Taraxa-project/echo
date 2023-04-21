@@ -6,7 +6,6 @@ import "../interfaces/IngesterOrchestratorProxy/IIngesterGroupManager.sol";
 import "../interfaces/IngesterOrchestratorProxy/IIngesterRegistration.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import './IngesterProxy.sol';
-import "hardhat/console.sol";
 
 
 contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
