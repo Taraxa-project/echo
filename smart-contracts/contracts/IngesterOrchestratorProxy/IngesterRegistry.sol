@@ -65,11 +65,11 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         ) external onlyIngesterProxy {
         require(_ingesterToController[ingesterAddress].controllerAddress != controllerAddress, "Ingester already exists");
        
-        bytes32 messageHash = _hash(ingesterAddress, message, nonce);
+        bytes32 messageHash = hash(ingesterAddress, message, nonce);
 
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
 
-        require(ECDSA.recover(ethSignedMessageHash, sig) == ingesterAddress, "Invalid signature.");
+        require(ECDSA.recover(ethSignedMessageHash, sig) == controllerAddress, "Invalid signature.");
         
         //slither possible re-rentrancy attack. Making an external call before modifying contract storage
         //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
@@ -180,7 +180,7 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
     @param _nonce The nonce used for hashing.
     @return hash The keccak256 hash of the input parameters.
     */
-    function _hash(address _address, string calldata _value, uint256 _nonce) public pure returns (bytes32) {
+    function hash(address _address, string calldata _value, uint256 _nonce) public pure returns (bytes32) {
         return keccak256(abi.encodePacked(_address, _value, _nonce));
     }
 
