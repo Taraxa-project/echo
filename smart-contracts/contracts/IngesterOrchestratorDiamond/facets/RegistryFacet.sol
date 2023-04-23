@@ -67,6 +67,69 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet {
             );
     }
 
+    function unRegisterIngester(address ingesterAddress) external onlyRegisteredController {
+        AppStorage storage s = LibAppStorage.appStorage();
+        address controllerAddress = msg.sender;
+
+        require(s.ingesterToController[ingesterAddress].controllerAddress == controllerAddress, "Ingester does not exist");
+
+        uint256 ingesterIndexToRemove = s.ingesterToController[ingesterAddress].ingesterIndex;
+        uint256 clusterId = s.controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
+        string[] memory ingesterAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress];
+
+        uint ingesterAddressesIndexToRemove = s.ingesterToController[ingesterAddress].ingesterAddressesIndex;
+        // Remove ingester from the list
+        if (ingesterAddressesIndexToRemove != s.ingesterCount - 1) {
+            address lastIngesterAddress = s.ingesterAddresses[s.ingesterCount - 1];
+            s.ingesterAddresses[ingesterAddressesIndexToRemove] = lastIngesterAddress;
+            s.ingesterToController[lastIngesterAddress].ingesterAddressesIndex = ingesterAddressesIndexToRemove;
+        }
+        s.ingesterAddresses.pop();
+        --s.ingesterCount;
+
+        // if this was the only ingester registered with this controller, remove their ingester role
+        uint numIngestersPerController = s.controllerToIngesters[controllerAddress].length;
+        if (numIngestersPerController == 1) {
+            _revokeRole("INGESTER_ROLE", ingesterAddress);
+            _revokeRole("CONTROLLER_ROLE", controllerAddress);
+            
+            // Remove ingester mappings
+            delete s.controllerToIngesters[controllerAddress];
+            delete s.ingesterToController[ingesterAddress];
+            
+            //slither possible re-rentrancy attack. Making an external call before modifying contract storage
+            //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
+            // is this still a risk? I will always have to change the ingester storage clusterId after external call
+            LibAppStorage.removeIngesterFromGroups(clusterId, ingesterAddress);
+
+            // Remove Ingester from Cluster
+            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
+        } else if (numIngestersPerController > 1) {
+            //if there is more ingesters for this controller, only remove the desired ingester
+            _revokeRole("INGESTER_ROLE", ingesterAddress);
+
+            // Remove ingester from the s.controllerToIngesters list
+            if (ingesterIndexToRemove != numIngestersPerController - 1) {
+                Ingester memory ingester = s.controllerToIngesters[controllerAddress][numIngestersPerController - 1];
+                s.controllerToIngesters[controllerAddress][ingesterIndexToRemove] = ingester;
+                //update index of ingester that was moved
+                s.ingesterToController[ingester.ingesterAddress].ingesterAddressesIndex = ingesterIndexToRemove;
+            }
+            s.controllerToIngesters[controllerAddress].pop();
+            delete s.ingesterToController[ingesterAddress];
+
+            LibAppStorage.removeIngesterFromGroups(clusterId, ingesterAddress);
+
+            //Remove Ingester from Cluster
+            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
+
+        }
+        emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
+
+        LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
+        // s.ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups, clusterId);
+    }
+
     function getIngester(address ingesterAddress) external view returns (Ingester memory) {
         AppStorage storage s = LibAppStorage.appStorage();
 
@@ -75,5 +138,23 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet {
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
 
         return s.controllerToIngesters[controller][ingesterIndex];
+    }
+
+    function getIngesterWithGroups(address ingesterAddress) external view returns (IngesterWithGroups memory) {
+        AppStorage storage s = LibAppStorage.appStorage();
+
+        require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
+        address controller = s.ingesterToController[ingesterAddress].controllerAddress;
+        uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
+        Ingester memory ingester = s.controllerToIngesters[controller][ingesterIndex];
+
+        string[] memory assignedGroups = s.ingesterClusters[ingester.clusterId].ingesterToAssignedGroups[ingesterAddress];
+        IngesterWithGroups memory ingesterWithAssignedGroups = IngesterWithGroups(
+            ingesterAddress,
+            ingester.verified,
+            ingester.clusterId,
+            assignedGroups
+        );
+        return ingesterWithAssignedGroups;
     }
 }

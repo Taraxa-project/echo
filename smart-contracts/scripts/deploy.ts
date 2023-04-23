@@ -4,12 +4,17 @@
 import { ContractReceipt, Transaction } from "ethers";
 import { TransactionDescription, TransactionTypes } from "ethers/lib/utils";
 import { ethers } from "hardhat";
-import { DiamondCutFacet } from "../typechain-types";
+import { DiamondCutFacet, DiamondInit } from "../typechain-types";
 import { getSelectors, FacetCutAction } from "./libraries/diamond";
 
 export let DiamondAddress: string;
+export const maxClusterSize = 3;
+export const maxGroupsPerIngester = 50;
+export const maxIngestersPerGroup = 1;
 
 export async function deployDiamond() {
+
+
   const accounts = await ethers.getSigners();
   const contractOwner = accounts[0];
 
@@ -41,13 +46,15 @@ export async function deployDiamond() {
   // Creating a function call
   // This call gets executed during deployment and can also be executed in upgrades
   // It is executed with delegatecall on the DiamondInit address.
-  let functionCall = diamondInit.interface.encodeFunctionData('init')
+  let initArgs: DiamondInit.ArgsStruct = {maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup};
+
+  let functionCall = diamondInit.interface.encodeFunctionData('init', [initArgs]);
 
   // Setting arguments that will be used in the diamond constructor
   const diamondArgs = {
     owner: contractOwner.address,
     init: diamondInit.address,
-    initCalldata: functionCall
+    initCalldata: functionCall,
   }
 
   // deploy Diamond
