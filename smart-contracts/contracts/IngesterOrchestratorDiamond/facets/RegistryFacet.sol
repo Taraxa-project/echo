@@ -17,7 +17,6 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet {
         uint256 nonce,
         bytes calldata sig
         ) external {
-        AppStorage storage s = LibAppStorage.appStorage();
 
         require(s.ingesterToController[ingesterAddress].controllerAddress != controllerAddress, "Ingester already exists");
        
@@ -68,7 +67,7 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet {
     }
 
     function unRegisterIngester(address ingesterAddress) external onlyRegisteredController {
-        AppStorage storage s = LibAppStorage.appStorage();
+
         address controllerAddress = msg.sender;
 
         require(s.ingesterToController[ingesterAddress].controllerAddress == controllerAddress, "Ingester does not exist");
@@ -131,7 +130,6 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet {
     }
 
     function getIngester(address ingesterAddress) external view returns (Ingester memory) {
-        AppStorage storage s = LibAppStorage.appStorage();
 
         require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
@@ -141,7 +139,6 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet {
     }
 
     function getIngesterWithGroups(address ingesterAddress) external view returns (IngesterWithGroups memory) {
-        AppStorage storage s = LibAppStorage.appStorage();
 
         require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;

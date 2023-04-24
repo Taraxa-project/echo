@@ -9,7 +9,6 @@ import "./AccessControlFacet.sol";
 contract GroupManagerFacet is AccessControlFacet, IIngesterGroupManager {
 
    function addGroup(string calldata groupUsername) external onlyAdmin {
-        AppStorage storage s = LibAppStorage.appStorage();
         require(!s.groups[groupUsername].isAdded, "Group already exists.");
         s.groupUsernames.push(groupUsername);
         s.groups[groupUsername].isAdded = true;
@@ -20,8 +19,6 @@ contract GroupManagerFacet is AccessControlFacet, IIngesterGroupManager {
     }
 
     function distributeGroup(string memory groupUsername) internal {
-        AppStorage storage s = LibAppStorage.appStorage();
-
         uint clusterId = getMostCapacityCluster();
         require(s.ingesterClusters[clusterId].clusterRemainingCapacity > 0, 'No more ingesters available to add groups to');
 
@@ -71,7 +68,6 @@ contract GroupManagerFacet is AccessControlFacet, IIngesterGroupManager {
     }
 
     function distributeGroupToIngester(string memory groupUsername, uint256 clusterId, address ingesterAddress) internal {
-        AppStorage storage s = LibAppStorage.appStorage();
 
         uint256 numOfAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress].length;
         uint256 numIngestersPerGroup = s.groups[groupUsername].ingesterAddresses.length;
@@ -95,8 +91,6 @@ contract GroupManagerFacet is AccessControlFacet, IIngesterGroupManager {
     }
 
     function getMostCapacityCluster() internal view returns(uint256) {
-        AppStorage storage s = LibAppStorage.appStorage();
-
         //need to calculate this for an adaptive metric depending on group size
         uint256 mostAvailableGroups = 0;
         uint256 mostAvailableClusterId = 0;
@@ -110,8 +104,6 @@ contract GroupManagerFacet is AccessControlFacet, IIngesterGroupManager {
     }
 
     function removeGroup(string calldata groupUsername) external onlyAdmin {
-        AppStorage storage s = LibAppStorage.appStorage();
-
         require(s.groups[groupUsername].isAdded, "Group does not exist.");
         address[] memory ingesterAddresses = s.groups[groupUsername].ingesterAddresses;
         removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername, ingesterAddresses);
@@ -122,8 +114,6 @@ contract GroupManagerFacet is AccessControlFacet, IIngesterGroupManager {
     }
 
     function removeGroupFromCluster(uint256 clusterId, string calldata groupUsername, address[] memory ingesterAddresses) internal {
-        AppStorage storage s = LibAppStorage.appStorage();
-
         //Currently there should only be one address per group, this implementation is here to support multiple ingester allocations to one group
         for (uint256 i = 0; i < ingesterAddresses.length; i++) {
             address currentIngesterAddress = ingesterAddresses[i];
@@ -145,7 +135,6 @@ contract GroupManagerFacet is AccessControlFacet, IIngesterGroupManager {
     }
     
     function getGroup(string calldata groupUsername) external view returns (IIngesterGroupManager.GroupSlim memory) {
-        AppStorage storage s = LibAppStorage.appStorage();
         IIngesterGroupManager.GroupSlim memory group = IIngesterGroupManager.GroupSlim(
             s.groups[groupUsername].isAdded,
             s.groups[groupUsername].clusterId,
@@ -160,20 +149,14 @@ contract GroupManagerFacet is AccessControlFacet, IIngesterGroupManager {
     * @return uint256 The maximum number of ingesters allowed in a cluster.
     */
     function getMaxClusterSize() external view returns (uint256) {
-        AppStorage storage s = LibAppStorage.appStorage();
-
         return s.maxClusterSize;
     }
 
     function getMaxGroupsPerIngester() external view returns (uint256) {
-        AppStorage storage s = LibAppStorage.appStorage();
-
         return s.maxGroupsPerIngester;
     }
 
     function getMaxIngestersPerGroup() external view returns (uint256) {
-        AppStorage storage s = LibAppStorage.appStorage();
-
         return s.maxIngestersPerGroup;
     }
 

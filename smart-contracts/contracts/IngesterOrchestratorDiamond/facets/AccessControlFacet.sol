@@ -4,10 +4,11 @@ pragma solidity ^0.8.0;
 
 import "@solidstate/contracts/access/access_control/AccessControl.sol";
 import "../libraries/LibDiamond.sol";
-import { LibAppStorage } from  "../libraries/LibAppStorage.sol";
+import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 
 contract AccessControlFacet is AccessControl {
-
+    AppStorage internal s;
+    
     modifier onlyAdmin() {
         LibDiamond.enforceIsContractOwner();
         _;
