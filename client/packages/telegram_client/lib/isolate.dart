@@ -1,25 +1,38 @@
 import 'dart:isolate';
 
 import 'package:logging/logging.dart';
+import 'package:td_json_client/td_api.dart';
 
 class Isolater {
-  late final ReceivePort isolateReceivePort;
-  late final Stream<dynamic> isolateReceivePortBroadcast;
+  final ReceivePort receivePort = ReceivePort();
+  final ReceivePort receivePortError = ReceivePort();
+  late final Stream<dynamic> receivePortBroadcast;
 
-  late SendPort isolateSendPort;
+  SendPort? sendPort;
 
   Isolater() {
-    isolateReceivePort = ReceivePort();
-    isolateReceivePortBroadcast = isolateReceivePort.asBroadcastStream();
+    receivePortBroadcast = receivePort.asBroadcastStream();
   }
 
   Future<void> spawn_(Isolated isolated, {String? debugName}) async {
+    var ex;
+    receivePortError.listen((message) {
+      ex = IsolateException(message[0], message[1]);
+    });
+
     await Isolate.spawn(
       _entryPoint,
-      IsolateSpawnMessage(isolated, isolateReceivePort.sendPort),
+      IsolateSpawnMessage(isolated, receivePort.sendPort),
+      onError: receivePortError.sendPort,
       debugName: debugName ?? runtimeType.toString(),
     );
-    isolateSendPort = await isolateReceivePortBroadcast.first;
+
+    await Future.delayed(const Duration(seconds: 5));
+    if (ex != null) {
+      throw ex;
+    }
+
+    sendPort = await receivePortBroadcast.first;
   }
 
   static void _entryPoint(IsolateSpawnMessage isolateSpawnMessage) {
@@ -28,12 +41,15 @@ class Isolater {
   }
 
   Future<void> exit() async {
-    isolateSendPort.send(IsolateMsgRequestExit(
-      replySendPort: isolateReceivePort.sendPort,
-    ));
-    await isolateReceivePortBroadcast
-        .firstWhere((element) => element is IsolateMsgResponseExit);
-    isolateReceivePort.close();
+    if (sendPort != null) {
+      sendPort!.send(IsolateMsgRequestExit(
+        replySendPort: receivePort.sendPort,
+      ));
+      await receivePortBroadcast
+          .firstWhere((element) => element is IsolateMsgResponseExit);
+    }
+    receivePort.close();
+    receivePortError.close();
   }
 }
 
@@ -98,3 +114,17 @@ class IsolateMsgRequestExit extends IsolateMsgRequest {
 }
 
 class IsolateMsgResponseExit extends IsolateMsgResponse {}
+
+class IsolateException implements Exception {
+  String exceptionMEssage;
+  String? exceptionTrace;
+  IsolateException(this.exceptionMEssage, this.exceptionTrace);
+
+  String toString() {
+    var report = exceptionMEssage;
+    if (exceptionTrace != null) {
+      report += '\n' + exceptionTrace!;
+    }
+    return report;
+  }
+}

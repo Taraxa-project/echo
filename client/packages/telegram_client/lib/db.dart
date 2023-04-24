@@ -3,7 +3,6 @@ import 'dart:io' as io;
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:http/retry.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:logging/logging.dart';
 import 'package:td_json_client/td_api.dart';
@@ -606,8 +605,8 @@ class Db extends Isolated {
   ) {
     final stmtUpdatMetaIpfsHash = db?.prepare(_sqlUpdateIpfsUploadMetaFileHash);
     stmtUpdatMetaIpfsHash?.execute([
-      tableName,
       file_hash,
+      tableName,
     ]);
     stmtUpdatMetaIpfsHash?.dispose();
 

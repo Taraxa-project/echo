@@ -6,7 +6,6 @@ import 'dart:isolate';
 
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
-import 'package:telegram_client/src/smart_contract/IngesterDataGatheringV2.g.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:web3dart/json_rpc.dart';
 import 'package:web3dart/crypto.dart';
@@ -15,7 +14,42 @@ import 'package:uuid/uuid.dart';
 
 import 'isolate.dart';
 import 'db.dart';
-import 'package:telegram_client/src/smart_contract/IngesterRegistrationV2.g.dart';
+import 'package:telegram_client/src/smart_contract/IngesterProxy.g.dart';
+
+class IngesterContractIsolater extends Isolater {
+  final logger = Logger('TelegramClient');
+
+  Future<IngesterContractMsgResponseRegister> register() async {
+    sendPort!.send(IngesterContractMsgRequestRegister(
+      replySendPort: receivePort.sendPort,
+    ));
+    IngesterContractMsgResponseRegister response = await receivePortBroadcast
+        .firstWhere((element) => element is IngesterContractMsgResponseRegister)
+        .onError(<StateError>(error, _) =>
+            logger.warning('ingester register $error'));
+
+    if (response.exception != null) {
+      throw response.exception!;
+    }
+    return response;
+  }
+
+  Future<IngesterContractMsgResponseGetGroups> getGroups() async {
+    sendPort!.send(IngesterContractMsgRequestGetGroups(
+      replySendPort: receivePort.sendPort,
+    ));
+    IngesterContractMsgResponseGetGroups response = await receivePortBroadcast
+        .firstWhere(
+            (element) => element is IngesterContractMsgResponseGetGroups)
+        .onError(<StateError>(error, _) =>
+            logger.warning('ingester get groups $error'));
+
+    if (response.exception != null) {
+      throw response.exception!;
+    }
+    return response;
+  }
+}
 
 class IngesterContract extends Isolated {
   SendPort? logSendPort;
@@ -95,7 +129,12 @@ class IngesterContract extends Isolated {
           EthPrivateKey.fromHex(config['private_key_ingester']);
     } else {
       var credentials = EthPrivateKey.createRandom(Random.secure());
-      config = {'private_key_ingester': bytesToHex(credentials.privateKey)};
+      config = {
+        'private_key_ingester': bytesToHex(
+          credentials.privateKey,
+          include0x: true,
+        )
+      };
 
       try {
         file.writeAsStringSync(jsonEncode(config));
@@ -110,59 +149,59 @@ class IngesterContract extends Isolated {
 
   Future<void> _register(SendPort? replySendPort) async {
     final web3client = Web3Client(contractRpcUrl, Client());
-    final contractRegister = IngesterRegistrationV2(
+    final contract = IngesterProxy(
       address: EthereumAddress.fromHex(contractAddress),
       client: web3client,
     );
     final nonce = BigInt.from(Random().nextInt(100));
     final message = Uuid().v4();
 
+    var response = IngesterContractMsgResponseRegister();
     try {
-      var messageHash = await contractRegister.hash(
-        _credentialsOwner!.address,
+      var messageHash = await contract.hash(
+        _credentialsIngester!.address,
         message,
         nonce,
       );
       var sig = _credentialsOwner!.signPersonalMessageToUint8List(messageHash);
 
-      var result = await contractRegister.registerIngester(
-        _credentialsOwner!.address,
-        // _credentialsIngester!.address,
+      await contract.registerIngester(
+        _credentialsIngester!.address,
         message,
         nonce,
         sig,
         credentials: _credentialsOwner!,
       );
-      print(result);
     } on RPCError catch (ex) {
-      if (!ex.message.contains('already registered')) {
+      if (!ex.message.contains('already exists')) {
         logger.severe(ex);
-        rethrow;
+        response.exception = ex;
       }
     } finally {
-      replySendPort?.send(IngesterContractMsgResponseRegister());
+      replySendPort?.send(response);
       await web3client.dispose();
     }
   }
 
   Future<void> _getGroups(SendPort? replySendPort) async {
     final web3client = Web3Client(contractRpcUrl, Client());
-    final contractRegister = IngesterRegistrationV2(
+    final contract = IngesterProxy(
       address: EthereumAddress.fromHex(contractAddress),
       client: web3client,
     );
+    var response = IngesterContractMsgResponseGetGroups();
+
     var ingesterInfo;
     try {
       ingesterInfo =
-          await contractRegister.getIngester(_credentialsOwner!.address);
+          await contract.getIngesterWithGroups(_credentialsIngester!.address);
+      response.groups = ingesterInfo[3].cast<String>();
     } on RPCError catch (ex) {
       logger.severe(ex);
-      rethrow;
+      response.exception = ex;
     } finally {
-      replySendPort?.send(IngesterContractMsgResponseGetGroups(
-        groups: ingesterInfo[2],
-      ));
-      web3client.dispose();
+      replySendPort?.send(response);
+      await web3client.dispose();
     }
   }
 
@@ -183,25 +222,25 @@ class IngesterContract extends Isolated {
     }
 
     final web3client = Web3Client(contractRpcUrl, Client());
-    final contractRegister = IngesterDataGatheringV2(
+    final contract = IngesterProxy(
       address: EthereumAddress.fromHex(contractAddress),
       client: web3client,
     );
 
+    var response = IngesterContractMsgResponseWriteHashes();
     try {
-      await contractRegister.addIpfsHash(
-        _credentialsOwner!.address,
+      await contract.addIpfsHash(
         responseGetUploadedHashes.user_hash!,
         responseGetUploadedHashes.chat_hash!,
         responseGetUploadedHashes.message_hash!,
-        credentials: _credentialsOwner!,
+        credentials: _credentialsIngester!,
       );
     } on RPCError catch (ex) {
       logger.severe(ex);
-      rethrow;
+      response.exception = ex;
     } finally {
-      replySendPort?.send(IngesterContractMsgResponseWriteHashes());
-      web3client.dispose();
+      replySendPort?.send(response);
+      await web3client.dispose();
     }
   }
 }
@@ -210,21 +249,26 @@ class IngesterContractMsgRequest extends IsolateMsgRequest {
   IngesterContractMsgRequest({super.replySendPort});
 }
 
-class IngesterContractMsgResponse extends IsolateMsgResponse {}
+class IngesterContractMsgResponse extends IsolateMsgResponse {
+  Exception? exception;
+  IngesterContractMsgResponse({this.exception});
+}
 
 class IngesterContractMsgRequestRegister extends IngesterContractMsgRequest {
   IngesterContractMsgRequestRegister({super.replySendPort});
 }
 
-class IngesterContractMsgResponseRegister extends IngesterContractMsgResponse {}
+class IngesterContractMsgResponseRegister extends IngesterContractMsgResponse {
+  IngesterContractMsgResponseRegister({super.exception});
+}
 
 class IngesterContractMsgRequestGetGroups extends IngesterContractMsgRequest {
   IngesterContractMsgRequestGetGroups({super.replySendPort});
 }
 
 class IngesterContractMsgResponseGetGroups extends IngesterContractMsgResponse {
-  final List<String> groups;
-  IngesterContractMsgResponseGetGroups({required this.groups});
+  List<String>? groups;
+  IngesterContractMsgResponseGetGroups({super.exception, this.groups});
 }
 
 class IngesterContractMsgRequestWriteHashes extends IngesterContractMsgRequest {
@@ -232,4 +276,6 @@ class IngesterContractMsgRequestWriteHashes extends IngesterContractMsgRequest {
 }
 
 class IngesterContractMsgResponseWriteHashes
-    extends IngesterContractMsgResponse {}
+    extends IngesterContractMsgResponse {
+  IngesterContractMsgResponseWriteHashes({super.exception});
+}

@@ -20,7 +20,7 @@ class TelegramCommandMessages extends Command {
 
   final Isolater _log = Isolater();
   final Isolater _db = Isolater();
-  final Isolater _ingesterContract = Isolater();
+  final IngesterContractIsolater _ingesterContract = IngesterContractIsolater();
   final Isolater _ipfsExporter = Isolater();
   final TelegramClientIsolater _telegramClient = TelegramClientIsolater();
 
@@ -41,7 +41,7 @@ class TelegramCommandMessages extends Command {
       await _db.spawn_(
         Db(
           logLevel: _logLevel,
-          logSendPort: _log.isolateSendPort,
+          logSendPort: _log.sendPort,
           dbPath: globalResults!['message-database-path'],
         ),
         debugName: 'DbIsolater',
@@ -50,8 +50,8 @@ class TelegramCommandMessages extends Command {
       await _ingesterContract.spawn_(
         IngesterContract(
           logLevel: _logLevel,
-          logSendPort: _log.isolateSendPort,
-          dbSendPort: _db.isolateSendPort,
+          logSendPort: _log.sendPort,
+          dbSendPort: _db.sendPort!,
           contractAddress: globalResults!.command!['ingester-contract-address'],
           contractRpcUrl: globalResults!.command!['ingester-contract-rpc-url'],
           ownerPrivateKey: globalResults!.command!['owner-private-key'],
@@ -60,27 +60,14 @@ class TelegramCommandMessages extends Command {
         debugName: 'IngesterContractIsolater',
       );
 
-      _ingesterContract.isolateSendPort.send(IngesterContractMsgRequestRegister(
-          replySendPort: _ingesterContract.isolateReceivePort.sendPort));
-      await _ingesterContract.isolateReceivePortBroadcast.firstWhere(
-          (element) => element is IngesterContractMsgResponseRegister);
-      // .onError(<StateError>(error, _) => logger.warning('login $error'));
-
-      _ingesterContract.isolateSendPort.send(
-          IngesterContractMsgRequestGetGroups(
-              replySendPort: _ingesterContract.isolateReceivePort.sendPort));
-      IngesterContractMsgResponseGetGroups getGroupsResponse =
-          await _ingesterContract.isolateReceivePortBroadcast.firstWhere(
-              (element) => element is IngesterContractMsgResponseGetGroups);
-      // .onError(<StateError>(error, _) => logger.warning('login $error'));
-      var chatsNames = getGroupsResponse.groups;
+      await _ingesterContract.register();
 
       await _ipfsExporter.spawn_(
         IpfsExporter(
           logLevel: _logLevel,
-          logSendPort: _log.isolateSendPort,
-          dbSendPort: _db.isolateSendPort,
-          ingesterContractSendPort: _ingesterContract.isolateSendPort,
+          logSendPort: _log.sendPort,
+          dbSendPort: _db.sendPort!,
+          ingesterContractSendPort: _ingesterContract.sendPort!,
           cronFormat: globalResults!.command!['ipfs-cron-schedule'],
           schedule: parseIpfsCronSchedule(),
           tableDumpPath: globalResults!.command!['table-dump-path'],
@@ -98,8 +85,8 @@ class TelegramCommandMessages extends Command {
           logLevel: _logLevel,
           logLevelLibTdJson: _logLevelLibTdJson,
           proxyUri: parseProxyUri(),
-          logSendPort: _log.isolateSendPort,
-          dbSendPort: _db.isolateSendPort,
+          logSendPort: _log.sendPort,
+          dbSendPort: _db.sendPort!,
           libtdjsonlcPath: globalResults!['libtdjson-path'],
           tdReceiveWaitTimeout: 0.005,
           tdReceiveFrequency: const Duration(milliseconds: 10),
@@ -120,10 +107,15 @@ class TelegramCommandMessages extends Command {
       );
 
       while (true) {
-        await _telegramClient.readChatsHistory(
-          dateTimeFrom: computeTwoWeeksAgo(),
-          chatsNames: chatsNames,
-        );
+        var getGroups = await _ingesterContract.getGroups();
+        var chatsNames = getGroups.groups;
+
+        if (chatsNames != null && !chatsNames.isEmpty) {
+          await _telegramClient.readChatsHistory(
+            dateTimeFrom: computeTwoWeeksAgo(),
+            chatsNames: chatsNames,
+          );
+        }
 
         if (!_runForever) {
           break;
@@ -135,8 +127,8 @@ class TelegramCommandMessages extends Command {
     } on Exception catch (exception) {
       print(exception);
     } finally {
-      await _exitIsolates();
       await _subSignalHandler.cancel();
+      await _exitIsolates();
     }
   }
 
@@ -162,6 +154,7 @@ class TelegramCommandMessages extends Command {
 
   Future<void> _exitIsolates() async {
     await _telegramClient.exit();
+    await _ingesterContract.exit();
     await _ipfsExporter.exit();
     await _db.exit();
     await _log.exit();

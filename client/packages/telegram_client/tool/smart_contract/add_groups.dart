@@ -2,7 +2,7 @@ import 'package:web3dart/json_rpc.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
-import 'package:telegram_client/src/smart_contract/IngesterOrchestratorV2.g.dart';
+import 'package:telegram_client/src/smart_contract/IngesterProxy.g.dart';
 
 void main() async {
   final credentials =
@@ -10,21 +10,21 @@ void main() async {
 
   final web3client = Web3Client(String.fromEnvironment('rpc_url'), Client());
 
-  final contractOrchestrator = IngesterOrchestratorV2(
+  final contractOrchestrator = IngesterProxy(
     address: EthereumAddress.fromHex(
-        String.fromEnvironment('contract_register_address')),
+        String.fromEnvironment('ingester_contract_address')),
     client: web3client,
   );
 
   try {
-    var result = contractOrchestrator.addGroup(
+    var result = await contractOrchestrator.addGroup(
       'taraxa_project',
       credentials: credentials,
     );
     print(result);
   } on RPCError catch (ex) {
     print(ex);
+  } finally {
+    await web3client.dispose();
   }
-
-  web3client.dispose();
 }
