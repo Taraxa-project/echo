@@ -6,19 +6,19 @@ import "../interfaces/IIngesterRegistration.sol";
 import "@solidstate/contracts/cryptography/ECDSA.sol";
 import "@solidstate/contracts/access/access_control/AccessControl.sol";
 import "./AccessControlFacet.sol";
+import "./CommonFunctionsFacet.sol";
 
 
-contract RegistryFacet is IIngesterRegistration, AccessControlFacet {
+contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunctionsFacet {
 
     function registerIngester(
         address ingesterAddress, 
-        address controllerAddress,
         string calldata message,
         uint256 nonce,
         bytes calldata sig
         ) external {
-
-        require(s.ingesterToController[ingesterAddress].controllerAddress != controllerAddress, "Ingester already exists");
+        address controllerAddress = msg.sender;
+        require(s.ingesterToController[ingesterAddress].controllerAddress != controllerAddress, "Ingester already registered.");
        
         bytes32 messageHash = hash(ingesterAddress, message, nonce);
 
@@ -126,11 +126,9 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet {
         emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
 
         LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
-        // s.ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups, clusterId);
     }
 
     function getIngester(address ingesterAddress) external view returns (Ingester memory) {
-
         require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
@@ -138,8 +136,11 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet {
         return s.controllerToIngesters[controller][ingesterIndex];
     }
 
-    function getIngesterWithGroups(address ingesterAddress) external view returns (IngesterWithGroups memory) {
+    function getIngesters() external view returns (address[] memory) {
+        return LibAppStorage.getIngesters();
+    }
 
+    function getIngesterWithGroups(address ingesterAddress) external view returns (IngesterWithGroups memory) {
         require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;

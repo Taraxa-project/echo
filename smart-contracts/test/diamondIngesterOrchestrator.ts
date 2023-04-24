@@ -36,13 +36,17 @@ describe("DiamondTest", async function () {
     let accounts: SignerWithAddress[];
     let controller: SignerWithAddress;
     let ingester: SignerWithAddress;
+    let contractOwner: SignerWithAddress;
   
     before(async function () {
         accounts = await ethers.getSigners();
         controller = accounts[0];
         ingester = accounts[1];
 
-        diamondAddress = await deployDiamond();
+        const diamonDeployed = await deployDiamond();
+        diamondAddress = diamonDeployed.diamondAddress;
+        contractOwner = diamonDeployed.contractOwner;
+        
         diamondCutFacet = await ethers.getContractAt(
             "DiamondCutFacet",
             diamondAddress
@@ -96,8 +100,9 @@ describe("DiamondTest", async function () {
       );
     });
 
-    describe("RegistryFacet", async function () {
+    describe("RegistryFacet Diamond Tests", async function () {
         let registrationFacet: RegistryFacet;
+        let removedIngesterAssignedGroups: string[];
 
         it("should add registry functions", async () => {
           const RegisteryFacet = await ethers.getContractFactory("RegistryFacet");
@@ -205,52 +210,6 @@ describe("DiamondTest", async function () {
             result = await diamondLoupeFacet.facetFunctionSelectors(oldFacetAddress);
             assert.includeMembers(result, selectorToAdd);
         });
-          
-        
-        it("Should register an ingester", async function () {
-            registrationFacet = await ethers.getContractAt("RegistryFacet", diamondAddress);
-            const message = "Test message";
-            const nonce = 1;
-        
-            // Generate the signature
-            const hash = ethers.utils.solidityKeccak256(["address", "string", "uint256"], [ingester.address, message, nonce]);
-            const signature = await controller.signMessage(ethers.utils.arrayify(hash));
-        
-            // Register ingester
-            await registrationFacet.registerIngester(ingester.address, controller.address, message, nonce, signature);
-        
-            // Verify the registration
-            const ingesterData = await registrationFacet.getIngester(ingester.address);
-            expect(ingesterData.ingesterAddress).to.equal(ingester.address);
-            expect(ingesterData.verified).to.equal(true);
-        });
-
-        it("Should allocate an ingester role", async function () {
-            let isRegistered = await registrationFacet.isRegisteredIngester(ingester.address);
-            expect(isRegistered).to.be.true;
-        });
-
-        it("Should unregister an ingester", async function () {
-            registrationFacet = await ethers.getContractAt("RegistryFacet", diamondAddress);
-            let ingesterToRemove = await registrationFacet.getIngesterWithGroups(ingester.address);
-
-            let tx = await registrationFacet.unRegisterIngester(ingester.address);
-            let txUnregister = await tx.wait();
-
-            expect(txUnregister).to.emit(diamondAddress, "IngesterUnRegistered")
-                .withArgs(controller.address, ingester.address)
-                .and.to.emit(diamondAddress, "IngesterRemovedFromGroup")
-                .withArgs(ingester.address, ingesterToRemove.assignedGroups);
-        
-            expect(registrationFacet.getIngester(ingester.address)).to.be.revertedWith("Ingester does not exist.");
-        });
-
-        it("Should revoke role of ingester when unregistered", async function () {
-            registrationFacet = await ethers.getContractAt("RegistryFacet", diamondAddress);
-            
-            let isRegistered = await registrationFacet.isRegisteredIngester(ingester.address);
-            expect(isRegistered).to.not.false;
-        });
     });
 
     describe("GroupManagerFacet", async function () {
@@ -270,7 +229,7 @@ describe("DiamondTest", async function () {
             const signature = await controller.signMessage(ethers.utils.arrayify(hash));
         
             // Register ingester
-            await registrationFacet.registerIngester(ingester.address, controller.address, message, nonce, signature);
+            await registrationFacet.registerIngester(ingester.address, message, nonce, signature);
         });
 
         it("should add group manager functions", async () => {

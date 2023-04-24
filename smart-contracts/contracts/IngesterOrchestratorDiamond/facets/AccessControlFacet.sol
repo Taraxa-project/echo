@@ -7,7 +7,6 @@ import "../libraries/LibDiamond.sol";
 import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 
 contract AccessControlFacet is AccessControl {
-    AppStorage internal s;
     
     modifier onlyAdmin() {
         LibDiamond.enforceIsContractOwner();

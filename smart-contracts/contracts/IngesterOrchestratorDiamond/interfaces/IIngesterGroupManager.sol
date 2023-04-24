@@ -49,7 +49,7 @@ interface IIngesterGroupManager {
     // event IngesterDetailsUpdated(address indexed ingesterAddress, bool verified, string[] assignedGroups);
     // event MaxIngesterPerGroupUpdated(uint256 maxNumberIngesterPerGroup);
     // event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
-    // event RemoveUnallocatedGroup(string unAllocatedGroup);
+    event RemoveUnallocatedGroup(string unAllocatedGroup);
     // event IngesterProxyAddressUpdated(address indexed newIngesterProxy);
     // event MaxClusterSizeUpdated(uint256 maxClusterSize);
     // event MaxGroupsPerIngesterUpdated(uint256 maxGroupsPerIngester);

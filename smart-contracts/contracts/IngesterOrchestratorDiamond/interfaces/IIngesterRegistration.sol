@@ -24,14 +24,11 @@ interface IIngesterRegistration {
 
     function registerIngester(
         address ingesterAddress,
-        address _controllerAddress,
         string calldata message,
         uint256 nonce,
         bytes calldata sig
         ) external;
-    // function unRegisterIngester(
-    //     address ingesterAddress,
-    //     address _controllerAddress) external;
+    function unRegisterIngester(address ingesterAddress) external;
     // function isRegisteredIngester(address ingesterAddress) external view returns (bool);
     // function isRegisteredController(address _controllerAddress) external view returns (bool);
     function getIngester(address _ingesterAddress) external view returns (Ingester memory);

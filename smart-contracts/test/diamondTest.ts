@@ -20,6 +20,7 @@ import { ethers } from "hardhat";
 
 import { ContractReceipt } from "ethers";
 import { assert } from "chai";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 describe("DiamondTest", async function () {
   let diamondCutFacet: DiamondCutFacet;
@@ -30,9 +31,13 @@ describe("DiamondTest", async function () {
   let result;
   const addresses: string[] = [];
   let diamondAddress: string;
+  let contractOwner: SignerWithAddress;
 
   before(async function () {
-    diamondAddress = await deployDiamond();
+    const diamonDeployed = await deployDiamond();
+    diamondAddress = diamonDeployed.diamondAddress;
+    contractOwner = diamonDeployed.contractOwner;
+
     diamondCutFacet = await ethers.getContractAt(
       "DiamondCutFacet",
       diamondAddress

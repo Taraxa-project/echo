@@ -6,18 +6,18 @@ import "../interfaces/IIngesterRegistration.sol";
 import "@solidstate/contracts/cryptography/ECDSA.sol";
 import "@solidstate/contracts/access/access_control/AccessControl.sol";
 import "./AccessControlFacet.sol";
+import "./CommonFunctionsFacet.sol";
 
 
-contract RegistryFacetTest is IIngesterRegistration, AccessControlFacet {
+contract RegistryFacetTest is IIngesterRegistration, AccessControlFacet, CommonFunctionsFacet {
 
     function registerIngester(
         address ingesterAddress, 
-        address controllerAddress,
         string calldata message,
         uint256 nonce,
         bytes calldata sig
         ) external {
-
+        address controllerAddress = msg.sender;
         require(s.ingesterToController[ingesterAddress].controllerAddress != controllerAddress, "Ingester already exists");
        
         bytes32 messageHash = hash(ingesterAddress, message, nonce);
@@ -126,7 +126,6 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacet {
         emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
 
         LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
-        // s.ingesterProxy.distributeGroupPostUnregistration(ingesterAssignedGroups, clusterId);
     }
 
     function getIngester(address ingesterAddress) external view returns (Ingester memory) {

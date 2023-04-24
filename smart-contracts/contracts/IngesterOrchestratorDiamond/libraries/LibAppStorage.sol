@@ -56,6 +56,17 @@ library LibAppStorage {
         emit UnAllocatedGroupsAdded(groups);
     }
 
+    function getUnallocatedGroups() internal view returns(string[] memory) {
+        AppStorage storage s = appStorage();
+        return s.unAllocatedGroups;
+    }
+
+    function getIngesters() internal view returns (address[] memory) {
+        AppStorage storage s = appStorage();
+        address[] memory ingesterAddresses = s.ingesterAddresses;
+        return ingesterAddresses;
+    }
+
     function addIngesterToCluster(address ingesterAddress, address controllerAddress) internal returns(uint256) {
         AppStorage storage s = appStorage();
 
@@ -193,24 +204,5 @@ library LibAppStorage {
         }
         s.clusterIds.pop();
     }
-
-    function getClusters() external view returns (uint256[] memory){
-        AppStorage storage s = LibAppStorage.appStorage();
-
-        return s.clusterIds;
-    }
-
-    function getCluster(uint256 clusterId) external view returns (IIngesterGroupManager.ClusterSlim memory) {
-        AppStorage storage s = LibAppStorage.appStorage();
-   
-        IIngesterGroupManager.ClusterSlim memory clusterSlim = IIngesterGroupManager.ClusterSlim(
-            s.ingesterClusters[clusterId].ingesterAddresses,
-            s.ingesterClusters[clusterId].clusterGroupCount,
-            s.ingesterClusters[clusterId].clusterRemainingCapacity
-        );
-      
-        return clusterSlim;
-    }
-
 }
 
