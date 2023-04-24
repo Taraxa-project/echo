@@ -125,6 +125,87 @@ describe("DiamondTest", async function () {
           result = await diamondLoupeFacet.facetFunctionSelectors(registryFacet.address);
           assert.sameMembers(result, selectors);
         });
+
+        it("should replace getIngester function", async () => {
+            const RegistryFacet = await ethers.getContractFactory("RegistryFacet");
+            const RegistryFacetTest = await ethers.getContractFactory("RegistryFacetTest");
+            const registryFacetTest = await RegistryFacetTest.deploy();
+            await registryFacetTest.deployed();
+          
+            const selectorsToReplace = getSelectors(registryFacetTest).get(["getIngester(address)"]);
+          
+            tx = await diamondCutFacet.diamondCut(
+              [
+                {
+                  facetAddress: registryFacetTest.address,
+                  action: FacetCutAction.Replace,
+                  functionSelectors: selectorsToReplace,
+                },
+              ],
+              ethers.constants.AddressZero,
+              "0x",
+              { gasLimit: 800000 }
+            );
+            receipt = await tx.wait();
+            if (!receipt.status) {
+              throw Error(`Diamond upgrade failed: ${tx.hash}`);
+            }
+          
+            // Check if the old facet no longer has the replaced function
+            const oldFacetAddress = addresses[3];
+            result = await diamondLoupeFacet.facetFunctionSelectors(oldFacetAddress);
+            assert.notIncludeMembers(result, selectorsToReplace);
+          });
+
+        it("should call replaced function", async () => {
+            registrationFacet = await ethers.getContractAt("RegistryFacet", diamondAddress);
+            let ingesterTestRes = await registrationFacet.getIngester(ingester.address);
+            let testClusterId = BigNumber.from(ingesterTestRes.clusterId).toNumber();
+            expect(testClusterId == 999);
+        });
+
+        it("should replace original getIngester function by removing and adding back in", async () => {
+            const RegistryFacet = await ethers.getContractFactory("RegistryFacet");
+            const RegistryFacetTest = await ethers.getContractFactory("RegistryFacetTest");
+            const registryFacetTest = await RegistryFacetTest.deploy();
+            await registryFacetTest.deployed();
+          
+            const selectorToRemove = getSelectors(registryFacetTest).get(["getIngester(address)"]);
+            const selectorToAdd = getSelectors(RegistryFacet).get(["getIngester(address)"]);
+          
+            const oldFacetAddress = addresses[3]; // assuming the old RegistryFacet address is stored at index 0
+          
+            tx = await diamondCutFacet.diamondCut(
+              [
+                {
+                  facetAddress: ethers.constants.AddressZero,
+                  action: FacetCutAction.Remove,
+                  functionSelectors: selectorToRemove,
+                },
+                {
+                  facetAddress: oldFacetAddress,
+                  action: FacetCutAction.Add,
+                  functionSelectors: selectorToAdd,
+                },
+              ],
+              ethers.constants.AddressZero,
+              "0x",
+              { gasLimit: 800000 }
+            );
+            receipt = await tx.wait();
+            if (!receipt.status) {
+              throw Error(`Diamond upgrade failed: ${tx.hash}`);
+            }
+          
+            // Check if the new facet has the replaced function
+            result = await diamondLoupeFacet.facetFunctionSelectors(registryFacetTest.address);
+            assert.notIncludeMembers(result, selectorToRemove);
+          
+            // Check if the old facet no longer has the replaced function
+            result = await diamondLoupeFacet.facetFunctionSelectors(oldFacetAddress);
+            assert.includeMembers(result, selectorToAdd);
+        });
+          
         
         it("Should register an ingester", async function () {
             registrationFacet = await ethers.getContractAt("RegistryFacet", diamondAddress);
