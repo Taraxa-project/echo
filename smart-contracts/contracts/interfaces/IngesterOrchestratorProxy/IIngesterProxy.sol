@@ -20,6 +20,8 @@ interface IIngesterProxy {
     // Functions
     function registerIngester(address ingesterAddress, string calldata message, uint256 nonce, bytes calldata sig) external;
 
+    function hash(address _address, string calldata _value, uint256 _nonce) external view returns (bytes32);
+
     function unRegisterIngester(address ingesterAddress) external;
 
     function getIngesterCount() external view returns (uint256);

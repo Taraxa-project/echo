@@ -256,7 +256,7 @@ describe("IngesterOrchestratorProxy", () => {
     it("should register a new ingester", async function () {
         const controller = ingester2;
 
-        let hash = await ingesterRegistry.hash(ingester1.address, message, nonce);
+        let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
 
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
         expect(ingesterProxy.connect(controller).registerIngester(ingester1.address, message, nonce, sig))
@@ -269,7 +269,7 @@ describe("IngesterOrchestratorProxy", () => {
 
         const incorrectMessage = 'bye';
 
-        let hash = await ingesterRegistry.hash(ingester1.address, message, nonce);
+        let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
 
         expect(ingesterProxy.connect(controller).registerIngester(ingester1.address, incorrectMessage, nonce, sig)).to.be.revertedWith("Invalid signature.");
@@ -279,7 +279,7 @@ describe("IngesterOrchestratorProxy", () => {
         //Register an ingester
         const controller = ingester2;
         
-        let hash = await ingesterRegistry.hash(ingester1.address, message, nonce);
+        let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
         
         await ingesterProxy.connect(controller).registerIngester(ingester1.address, message, nonce, sig)
@@ -293,7 +293,7 @@ describe("IngesterOrchestratorProxy", () => {
         //Register an ingester
         const controller = ingester2;
         
-        let hash = await ingesterRegistry.hash(ingester1.address, message, nonce);
+        let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
         
         await ingesterProxy.connect(controller).registerIngester(ingester1.address, message, nonce, sig);
@@ -305,7 +305,7 @@ describe("IngesterOrchestratorProxy", () => {
         //Register an ingester
         const controller = ingester2;
         
-        let hash = await ingesterRegistry.hash(ingester1.address, message, nonce);
+        let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
         
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
         
@@ -318,7 +318,7 @@ describe("IngesterOrchestratorProxy", () => {
         //Register an ingester
         const controller = ingester2;
         
-        let hash = await ingesterRegistry.hash(ingester1.address, message, nonce);
+        let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
         
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
         
@@ -336,7 +336,7 @@ describe("IngesterOrchestratorProxy", () => {
         //Register an ingester
         const controller = ingester2;
         
-        let hash = await ingesterRegistry.hash(ingester1.address, message, nonce);
+        let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
         
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
         
@@ -358,7 +358,7 @@ describe("IngesterOrchestratorProxy", () => {
         //Register an ingester
         const controller = ingester2;
         
-        let hash = await ingesterRegistry.hash(ingester1.address, message, nonce);
+        let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
         
         expect(await ingesterProxy.connect(controller).registerIngester(ingester1.address, message, nonce, sig)).to.emit(ingesterProxy, "IngesterAddedToCluster").withArgs(ingester1.address, 0);
@@ -373,7 +373,7 @@ describe("IngesterOrchestratorProxy", () => {
         let currentClusterCount = 0;
 
         for (let i = 1; i <= numIngesters; i++ ) {
-            let hash = await ingesterRegistry.hash(accounts[i].address, message, nonce);
+            let hash = await ingesterProxy.hash(accounts[i].address, message, nonce);
             const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
             if (i <= maxClusterSize) {
                 expect(await ingesterProxy.connect(accounts[i-1]).registerIngester(accounts[i].address, message, nonce, sig)).to.emit(ingesterProxy, "IngesterAddedToCluster").withArgs(accounts[i].address, currentClusterCount);
@@ -401,7 +401,7 @@ describe("IngesterOrchestratorProxy", () => {
         ingesters = [];
 
         for (let i = 1; i <= numIngesters; i++ ) {
-            let hash = await ingesterRegistry.hash(accounts[i].address, message, nonce);
+            let hash = await ingesterProxy.hash(accounts[i].address, message, nonce);
             const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
             await ingesterProxy.connect(accounts[i-1]).registerIngester(accounts[i].address, message, nonce, sig);
             ingesterToController[accounts[i].address] = accounts[i-1];
@@ -648,7 +648,7 @@ describe("IngesterOrchestratorProxy", () => {
         }
 
         // use last available account as new test ingester to be registered
-        let hash2 = await ingesterRegistry.hash(accounts[accounts.length -1].address, message, nonce);
+        let hash2 = await ingesterProxy.hash(accounts[accounts.length -1].address, message, nonce);
         const sig2 = await accounts[accounts.length - 2].signMessage(ethers.utils.arrayify(hash2));
         await ingesterProxy.connect(accounts[accounts.length - 2]).registerIngester(accounts[accounts.length - 1].address, message, nonce, sig2);
         
@@ -690,7 +690,7 @@ describe("IngesterOrchestratorProxy", () => {
         let unAllocatedGroupsBeforeRegistration = await ingesterProxy.getUnallocatedGroups();
         
         //register Ingester again and check if the unallocated groups get allocated again
-        let hash = await ingesterRegistry.hash(ingesters[0].address, message, nonce);
+        let hash = await ingesterProxy.hash(ingesters[0].address, message, nonce);
         const sig = await ingesterToController[ingesters[0].address].signMessage(ethers.utils.arrayify(hash));
         await ingesterProxy.connect(ingesterToController[ingesters[0].address]).registerIngester(ingesters[0].address, message, nonce, sig);
         //Distribute groups after registration
@@ -749,11 +749,11 @@ describe("IngesterOrchestratorProxy", () => {
         let unAllocatedGroupsBeforeRegistration = await ingesterProxy.getUnallocatedGroups();
         
         //register Ingester again and check if the unallocated groups get allocated again
-        let hash = await ingesterRegistry.hash(ingesters[indIngesterToRemove].address, message, nonce);
+        let hash = await ingesterProxy.hash(ingesters[indIngesterToRemove].address, message, nonce);
         const sig = await ingesterToController[ingesters[indIngesterToRemove].address].signMessage(ethers.utils.arrayify(hash));
         await ingesterProxy.connect(ingesterToController[ingesters[indIngesterToRemove].address]).registerIngester(ingesters[indIngesterToRemove].address, message, nonce, sig);
 
-        let hash2 = await ingesterRegistry.hash(ingesters[indIngesterToRemove2].address, message, nonce);
+        let hash2 = await ingesterProxy.hash(ingesters[indIngesterToRemove2].address, message, nonce);
         const sig2 = await ingesterToController[ingesters[indIngesterToRemove2].address].signMessage(ethers.utils.arrayify(hash2));
         await ingesterProxy.connect(ingesterToController[ingesters[indIngesterToRemove2].address]).registerIngester(ingesters[indIngesterToRemove2].address, message, nonce, sig2);
         
@@ -1034,7 +1034,7 @@ describe("IngesterOrchestratorProxy", () => {
             }
     
             // use last available account as new test ingester to be registered
-            let hash2 = await ingesterRegistry.hash(accounts[accounts.length -1].address, message, nonce);
+            let hash2 = await ingesterProxy.hash(accounts[accounts.length -1].address, message, nonce);
             const sig2 = await accounts[accounts.length - 2].signMessage(ethers.utils.arrayify(hash2));
             await ingesterProxy.connect(accounts[accounts.length - 2]).registerIngester(accounts[accounts.length - 1].address, message, nonce, sig2);
             
@@ -1056,7 +1056,7 @@ describe("IngesterOrchestratorProxy", () => {
             let controllerAccount = accounts[0];
             let newIngesters: SignerWithAddress[] = [];
             for (let i = accounts.length - 1; i >= accounts.length - numIngestersToAdd; i-- ) {
-                let hash = await ingesterRegistry.hash(accounts[i].address, message, nonce);
+                let hash = await ingesterProxy.hash(accounts[i].address, message, nonce);
                 const sig = await controllerAccount.signMessage(ethers.utils.arrayify(hash));
                 await ingesterProxy.connect(controllerAccount).registerIngester(accounts[i].address, message, nonce, sig);
                 newIngesters.push(accounts[i]);
@@ -1099,7 +1099,7 @@ describe("IngesterOrchestratorProxy", () => {
             let unAllocatedGroupsBeforeRegistration = await ingesterProxy.getUnallocatedGroups();
             
             //register Ingester again and check if the unallocated groups get allocated again
-            let hash = await ingesterRegistry.hash(ingesters[0].address, message, nonce);
+            let hash = await ingesterProxy.hash(ingesters[0].address, message, nonce);
             const sig = await ingesterToController[ingesters[0].address].signMessage(ethers.utils.arrayify(hash));
             await ingesterProxy.connect(ingesterToController[ingesters[0].address]).registerIngester(ingesters[0].address, message, nonce, sig);
             //Distribute groups after registration
@@ -1127,12 +1127,12 @@ describe("IngesterOrchestratorProxy", () => {
   
     beforeEach(async function () {
         //Verify ingester1
-        let hash = await ingesterRegistry.hash(ingester1.address, message, nonce);
+        let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
         await ingesterProxy.connect(controller).registerIngester(ingester1.address, message, nonce, sig);
 
         //Verify ingester2
-        let hash2 = await ingesterRegistry.hash(ingester2.address, message, nonce);
+        let hash2 = await ingesterProxy.hash(ingester2.address, message, nonce);
         const sig2 = await controller.signMessage(ethers.utils.arrayify(hash2));
         await ingesterProxy.connect(controller).registerIngester(ingester2.address, message, nonce, sig2);
     });

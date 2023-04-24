@@ -114,6 +114,18 @@ contract IngesterProxy is AccessControlEnumerable, Ownable, IIngesterProxy {
     }
 
     /**
+    * @notice Calculates the keccak256 hash of the given input parameters.
+    * @dev This function is used for generating the message hash for signature verification.
+    * @param _address The address used for hashing.
+    * @param _value The string value used for hashing.
+    * @param _nonce The nonce used for hashing.
+    * @return hash The keccak256 hash of the input parameters.
+    */
+    function hash(address _address, string calldata _value, uint256 _nonce) external view returns (bytes32) {
+        return _registrationContract.hash(_address, _value, _nonce);
+    }
+
+    /**
     * @notice Unregisters an ingester and removes its association with the controller.
     * @dev Can only be called by a registered controller.
     * @param ingesterAddress The address of the ingester to be unregistered.
