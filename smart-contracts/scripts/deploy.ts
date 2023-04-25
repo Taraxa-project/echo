@@ -63,9 +63,10 @@ export async function deployDiamond() {
   await diamond.deployed()
   console.log()
   console.log('Diamond deployed:', diamond.address)
+  const diamondAddress = diamond.address
 
   // returning the address of the diamond
-  return diamond.address
+  return {diamondAddress, contractOwner};
 }
 
 // We recommend this pattern to be able to use async/await everywhere
