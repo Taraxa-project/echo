@@ -96,7 +96,7 @@ async function addFacetsToDiamond(addresses: string[], diamondCutFacet: DiamondC
         facetCuts,
         ethers.constants.AddressZero,
         "0x",
-        { gasLimit: 800000 }
+        { gasLimit: 30000000 }
     );
     let receiptTx = await txDiamond.wait();
     if (!receiptTx.status) {
@@ -127,6 +127,8 @@ describe("Testing Registration Functionalities", async function () {
     let registrationTx: any;
     const maxAllocatableGroups: number = maxClusterSize * maxGroupsPerIngester;
 
+    const verbose = false;
+
     before(async function () {
         accounts = await ethers.getSigners();
         controller = accounts[0];
@@ -135,7 +137,7 @@ describe("Testing Registration Functionalities", async function () {
         ingester2 = accounts[3];
         ingester3 = accounts[4];
 
-        const diamonDeployed = await deployDiamond();
+        const diamonDeployed = await deployDiamond(verbose);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
 
@@ -291,11 +293,11 @@ describe("Testing Registration with pre-populated data", async function () {
     const nonce = 1;
     const maxAllocatableGroups: number = maxClusterSize * maxGroupsPerIngester;
 
-
+    const verbose = false;
     beforeEach(async function () {
         accounts = await ethers.getSigners();
 
-        const diamonDeployed = await deployDiamond();
+        const diamonDeployed = await deployDiamond(verbose);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
         

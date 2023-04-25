@@ -12,7 +12,7 @@ export const maxClusterSize = 3;
 export const maxGroupsPerIngester = 50;
 export const maxIngestersPerGroup = 1;
 
-export async function deployDiamond() {
+export async function deployDiamond(verbose=false) {
 
 
   const accounts = await ethers.getSigners();
@@ -24,18 +24,23 @@ export async function deployDiamond() {
   const DiamondInit = await ethers.getContractFactory("DiamondInit");
   const diamondInit = await DiamondInit.deploy();
   await diamondInit.deployed();
-  console.log("DiamondInit deployed:", diamondInit.address);
-
+  
   // deploy facets
-  console.log("");
-  console.log("Deploying facets");
+  if (verbose){
+    console.log("DiamondInit deployed:", diamondInit.address);
+    console.log("");
+    console.log("Deploying facets");
+  }
+
   const FacetNames = ["DiamondCutFacet", "DiamondLoupeFacet", "OwnershipFacet"];
   const facetCuts = [];
   for (const FacetName of FacetNames) {
     const Facet = await ethers.getContractFactory(FacetName);
     const facet = await Facet.deploy();
     await facet.deployed();
-    console.log(`${FacetName} deployed: ${facet.address}`);
+
+    verbose ?? console.log(`${FacetName} deployed: ${facet.address}`);
+
     facetCuts.push({
       facetAddress: facet.address,
       action: FacetCutAction.Add,
@@ -61,8 +66,8 @@ export async function deployDiamond() {
   const Diamond = await ethers.getContractFactory('Diamond')
   const diamond = await Diamond.deploy(facetCuts, diamondArgs)
   await diamond.deployed()
-  console.log()
-  console.log('Diamond deployed:', diamond.address)
+
+  verbose ?? console.log('Diamond deployed:', diamond.address)
   const diamondAddress = diamond.address
 
   // returning the address of the diamond
@@ -72,7 +77,7 @@ export async function deployDiamond() {
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 if (require.main === module) {
-  deployDiamond()
+  deployDiamond(true)
     .then(() => process.exit(0))
     .catch((error) => {
       console.error(error);

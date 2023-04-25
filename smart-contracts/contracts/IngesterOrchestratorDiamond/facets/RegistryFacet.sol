@@ -126,33 +126,5 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
         emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
 
         LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
-    }
-
-    function getIngester(address ingesterAddress) external view returns (Ingester memory) {
-        require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
-        address controller = s.ingesterToController[ingesterAddress].controllerAddress;
-        uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
-
-        return s.controllerToIngesters[controller][ingesterIndex];
-    }
-
-    function getIngesters() external view returns (address[] memory) {
-        return LibAppStorage.getIngesters();
-    }
-
-    function getIngesterWithGroups(address ingesterAddress) external view returns (IngesterWithGroups memory) {
-        require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
-        address controller = s.ingesterToController[ingesterAddress].controllerAddress;
-        uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
-        Ingester memory ingester = s.controllerToIngesters[controller][ingesterIndex];
-
-        string[] memory assignedGroups = s.ingesterClusters[ingester.clusterId].ingesterToAssignedGroups[ingesterAddress];
-        IngesterWithGroups memory ingesterWithAssignedGroups = IngesterWithGroups(
-            ingesterAddress,
-            ingester.verified,
-            ingester.clusterId,
-            assignedGroups
-        );
-        return ingesterWithAssignedGroups;
-    }
+    }   
 }

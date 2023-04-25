@@ -31,12 +31,9 @@ interface IIngesterRegistration {
     function unRegisterIngester(address ingesterAddress) external;
     // function isRegisteredIngester(address ingesterAddress) external view returns (bool);
     // function isRegisteredController(address _controllerAddress) external view returns (bool);
-    function getIngester(address _ingesterAddress) external view returns (Ingester memory);
-    // function getIngesterWithGroups(address ingesterAddress) external view returns (IngesterWithGroups memory);
     // function getIngesterToController(address _ingesterAddresses) external view returns (IngesterToController memory);
     // function getIngesterAddressFromIndex(uint256 index) external view returns (address);
     // function getControllerIngesters(address controllerAddress) external view returns (IIngesterRegistration.Ingester[] memory);
-    // function updateIngesterProxy(address newIngesterProxy) external;
 
     event IngesterRegistered(address indexed controllerAddress, address indexed ingesterAddress);
     event IngesterUnRegistered(address indexed controllerAddress, address indexed ingesterAddress);

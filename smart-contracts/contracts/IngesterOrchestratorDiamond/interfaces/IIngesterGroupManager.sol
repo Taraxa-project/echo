@@ -47,20 +47,19 @@ interface IIngesterGroupManager {
     event IngesterRegisteredGroups(address indexed ingesterAddress, string[] assignedGroups);
     event UnAllocatedGroupsAdded(string[] groups);
     // event IngesterDetailsUpdated(address indexed ingesterAddress, bool verified, string[] assignedGroups);
-    // event MaxIngesterPerGroupUpdated(uint256 maxNumberIngesterPerGroup);
     // event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
     event RemoveUnallocatedGroup(string unAllocatedGroup);
-    // event IngesterProxyAddressUpdated(address indexed newIngesterProxy);
-    // event MaxClusterSizeUpdated(uint256 maxClusterSize);
-    // event MaxGroupsPerIngesterUpdated(uint256 maxGroupsPerIngester);
+    event MaxIngesterPerGroupUpdated(uint256 maxNumberIngesterPerGroup);
+    event MaxClusterSizeUpdated(uint256 maxClusterSize);
+    event MaxGroupsPerIngesterUpdated(uint256 maxGroupsPerIngester);
 
 
     // Functions
-    // function getClusters() external view returns (uint256[] memory);
-    // function getCluster(uint256 _id) external view returns (ClusterSlim memory);
     function addGroup(string calldata groupUsername) external;
     function removeGroup(string calldata groupUsername) external;
     function getGroup(string calldata groupName) external view returns (GroupSlim memory);
-
+    function setMaxClusterSize(uint256 maxClusterSize) external;
+    function setMaxGroupsPerIngester(uint256 maxGroupsPerIngester) external;
+    function setMaxIngestersPerGroup(uint256 maxIngestersPerGroup) external;
 }
 

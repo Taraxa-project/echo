@@ -93,21 +93,29 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
 
     function distributeUnallocatedGroups() external {
         uint mostCapacityClusterId = getMostCapacityCluster();
+        console.log('mostCapacityClusterId', mostCapacityClusterId);
         uint256 clusterCapacity = s.ingesterClusters[mostCapacityClusterId].clusterRemainingCapacity;
+        console.log('clusterCapacity', clusterCapacity);
         uint256 amountOfGroups = s.unAllocatedGroups.length;
 
         if (amountOfGroups > clusterCapacity) {
             uint256 allocatableAmount = amountOfGroups - clusterCapacity;
-
+            console.log('more groups than capacity');
+            console.log('allocatableAmount', allocatableAmount);
             while (s.unAllocatedGroups.length > allocatableAmount) {
                 uint256 i = s.unAllocatedGroups.length - 1;
+                console.log('distirbuting to cluster', i);
+
                 distributeGroupsToCluster(s.unAllocatedGroups[i], mostCapacityClusterId);
                 emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
+                console.log('emitted event');
                 s.unAllocatedGroups.pop();
+                console.log('popped value');
             }
         } else {
             while (s.unAllocatedGroups.length > 0) {
                 uint256 i = s.unAllocatedGroups.length - 1;
+                console.log('distirbuting to cluster', i);
                 distributeGroupsToCluster(s.unAllocatedGroups[i], mostCapacityClusterId);
                 emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
                 s.unAllocatedGroups.pop();
@@ -216,10 +224,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         return group;
     }
 
-    /**
-    * @notice Retrieves the maximum cluster size.
-    * @return uint256 The maximum number of ingesters allowed in a cluster.
-    */
     function getMaxClusterSize() external view returns (uint256) {
         return s.maxClusterSize;
     }
@@ -232,8 +236,28 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         return s.maxIngestersPerGroup;
     }
 
+    function setMaxClusterSize(uint256 maxClusterSize) external onlyAdmin {
+        s.maxClusterSize = maxClusterSize;
+        emit IIngesterGroupManager.MaxClusterSizeUpdated(maxClusterSize);
+    }
+
+    function setMaxGroupsPerIngester(uint256 maxGroupsPerIngester) external onlyAdmin {
+        s.maxGroupsPerIngester = maxGroupsPerIngester;
+        emit IIngesterGroupManager.MaxGroupsPerIngesterUpdated(maxGroupsPerIngester);
+    }  
+
+    function setMaxIngestersPerGroup(uint256 maxIngestersPerGroup) external  {
+        require(maxIngestersPerGroup >= 1, "Can only set max ingester per group >= 1");
+        s.maxIngestersPerGroup = maxIngestersPerGroup;
+        emit IIngesterGroupManager.MaxIngesterPerGroupUpdated(maxIngestersPerGroup);
+    }
+
     function ceilDiv(uint256 a, uint256 b) public pure returns (uint256) {
         require(b != 0, "Division by zero");
         return (a + b - 1) / b;
+    }
+
+    function getGroupUsernameByIndex(uint256 groupIndex) external view returns (string memory) {
+        return s.groupUsernames[groupIndex];
     }
 }
