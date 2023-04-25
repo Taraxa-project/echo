@@ -1,7 +1,6 @@
 import 'dart:isolate';
 
 import 'package:logging/logging.dart';
-import 'package:td_json_client/td_api.dart';
 
 class Isolater {
   final ReceivePort receivePort = ReceivePort();

@@ -62,11 +62,6 @@ void main(List<String> arguments) {
   TelegramCommandMessages telegramCommandMessages = TelegramCommandMessages();
   telegramCommandMessages.argParser
     ..addOption(
-      'chats-names',
-      mandatory: true,
-      help: 'A list of chat names JSON encoded.',
-    )
-    ..addOption(
       'table-dump-path',
       help: 'table dump path',
       defaultsTo: '.',
@@ -109,8 +104,8 @@ void main(List<String> arguments) {
       help: 'Path to the folder containg config.json',
     )
     ..addOption(
-      'owner-private-key',
-      help: 'Owner private key',
+      'wallet-private-key-owner',
+      help: 'Owner wallet private key',
     )
     ..addOption(
       'ingester-contract-address',

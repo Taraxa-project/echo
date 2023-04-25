@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
@@ -54,7 +53,7 @@ class TelegramCommandMessages extends Command {
           dbSendPort: _db.sendPort!,
           contractAddress: globalResults!.command!['ingester-contract-address'],
           contractRpcUrl: globalResults!.command!['ingester-contract-rpc-url'],
-          ownerPrivateKey: globalResults!.command!['owner-private-key'],
+          ownerPrivateKey: globalResults!.command!['wallet-private-key-owner'],
           configPath: globalResults!.command!['config-path'],
         ),
         debugName: 'IngesterContractIsolater',
@@ -158,34 +157,6 @@ class TelegramCommandMessages extends Command {
     await _ipfsExporter.exit();
     await _db.exit();
     await _log.exit();
-  }
-
-  List<String> getChatsNames() {
-    var chatsNamesDecoded;
-
-    try {
-      chatsNamesDecoded = jsonDecode(globalResults!.command!['chats-names']);
-    } on FormatException {
-      _invalidInputChats();
-    }
-
-    if (chatsNamesDecoded.runtimeType != List || chatsNamesDecoded.isEmpty) {
-      _invalidInputChats();
-    }
-
-    List<String> chatsNames = [];
-    for (var chatNameDecoded in chatsNamesDecoded) {
-      if (chatNameDecoded.runtimeType != String) {
-        _invalidInputChats();
-      }
-      chatsNames.add(chatNameDecoded);
-    }
-    return chatsNames;
-  }
-
-  Never _invalidInputChats() {
-    _exit('The option "chats-names" must be a valid '
-        'JSON encoded list of strings.');
   }
 
   DateTime computeTwoWeeksAgo() {

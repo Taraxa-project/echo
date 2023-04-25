@@ -15,8 +15,6 @@ data:
   RUN_FOREVER: {{ .Values.configEnvs.RUN_FOREVER | quote }}
   TABLE_DUMP_PATH: {{ .Values.configEnvs.TABLE_DUMP_PATH | quote }}
   
-  CHATS_NAMES_0: {{ .Values.configEnvs.CHATS_NAMES_0 | quote }}
-  CHATS_NAMES_1: {{ .Values.configEnvs.CHATS_NAMES_1 | quote }}
-  CHATS_NAMES_2: {{ .Values.configEnvs.CHATS_NAMES_2 | quote }}
-  CHATS_NAMES_3: {{ .Values.configEnvs.CHATS_NAMES_3 | quote }}
-  CHATS_NAMES_4: {{ .Values.configEnvs.CHATS_NAMES_4 | quote }}
+  CONFIG_PATH: {{ .Values.configEnvs.CONFIG_PATH | quote }}
+  INGESTER_CONTRACT_RPC_URL: {{ .Values.configEnvs.INGESTER_CONTRACT_RPC_URL | quote }}
+  INGESTER_CONTRACT_ADDRESS: {{ .Values.configEnvs.INGESTER_CONTRACT_ADDRESS | quote }}
