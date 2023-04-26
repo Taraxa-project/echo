@@ -11,8 +11,6 @@ interface IIngesterDataGathering {
     event IpfsHashAdded(address indexed ingesterAddress, string usersIpfsHash, string chatsIpfsHash, string messagesIpfsHash);
     event IngesterProxyAddressUpdated(address indexed newIngesterProxy);
 
-    function addIpfsHash(address ingesterAddress, string memory usersHash, string memory chatsHash, string memory messagesHash ) external;
+    function addIpfsHash(string memory usersHash, string memory chatsHash, string memory messagesHash ) external;
     function getIpfsHashes(address ingesterAddress) external view returns(IpfsHash memory ipfsHashes);
-    function updateIngesterProxy(address newIngesterProxy) external;
-
 }

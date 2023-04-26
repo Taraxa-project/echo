@@ -23,114 +23,13 @@ import { BigNumber } from "ethers";
 import { assert, expect } from "chai";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
-interface IngesterControllerMapping {
-    [ingesterAddress: string]: SignerWithAddress;
-}
-
-interface IngesterToGroups {
-    [ingesterAddress: string]: string[];
-  }
-
-async function addFacetsToDiamond(addresses: string[], diamondCutFacet: DiamondCutFacet, diamondAddress: string, FacetNames: string[]) {
-    let accessControlFacet = await ethers.getContractFactory("AccessControlFacet");
-    let accessControlFacetSelectors = getSelectors(accessControlFacet);
-
-    let commonFunctionsFacet = await ethers.getContractFactory("CommonFunctionsFacet");
-    let commonFunctionSelectors = getSelectors(commonFunctionsFacet);
-
-    FacetNames = [...FacetNames, "AccessControlFacet", "CommonFunctionsFacet"];
-    const facetCuts = [];
-    let selectorsAdded: any= [];
-    for (const FacetName of FacetNames) {
-        const Facet = await ethers.getContractFactory(FacetName);
-        const facet = await Facet.deploy();
-        await facet.deployed();
-        addresses.push(facet.address);
-        // console.log(`${FacetName} deployed: ${facet.address}`);
-        
-        let selectorsToAdd = getSelectors(facet);
-        if (FacetName != 'AccessControlFacet') {
-            let accessControlFacetSelectors = getSelectors(accessControlFacet);
-            //filter out AccessControlFacet since all other facets extend this
-            selectorsToAdd = selectorsToAdd.filter(
-                (selector: any) => !accessControlFacetSelectors.includes(selector)
-                );
-        }
-        if (FacetName != 'CommonFunctionsFacet') {
-            let commonFunctionSelectors = getSelectors(commonFunctionsFacet);
-            // filter out Common Functions Facet since all other facets extend this
-            selectorsToAdd = selectorsToAdd.filter(
-                (selector: any) => !commonFunctionSelectors.includes(selector)
-                );
-        }
-        selectorsAdded.push(...selectorsToAdd);
-        facetCuts.push({
-            facetAddress: facet.address,
-            action: FacetCutAction.Add,
-            functionSelectors: selectorsToAdd,
-        });
-    }
-    // let diff = selectorsAdded.filter((facet) => !defaultFacets.includes(facet));
-
-    let txDiamond = await diamondCutFacet.diamondCut(
-        facetCuts,
-        ethers.constants.AddressZero,
-        "0x",
-        { gasLimit: 30000000 }
-    );
-    let receiptTx = await txDiamond.wait();
-    if (!receiptTx.status) {
-        throw Error(`Diamond upgrade failed: ${txDiamond.hash}`);
-    }
-
-    return addresses;
-}
-
-async function checkClusterIsWithinConstraints(groupManagerFacet: GroupManagerFacet, registryFacet: RegistryFacet) {
-    //check each cluster is within constraints
-    let clusterIds = await groupManagerFacet.getClusters();
-    let getMaxGroupsPerIngester = BigNumber.from(await groupManagerFacet.getMaxGroupsPerIngester()).toNumber();
-    for (let i = 0; i < clusterIds.length; i++) {
-        let cluster = await groupManagerFacet.getCluster(clusterIds[i]);
-
-        //Calculate the inner cluster contraint for this particular cluster
-        let clusterGroupCount = BigNumber.from(cluster.clusterGroupCount).toNumber();
-        let maxGroupsPerIngesterWithinCluster = Math.ceil((clusterGroupCount + cluster.ingesterAddresses.length -1) / cluster.ingesterAddresses.length);
-        
-        let ingesterToGroup: IngesterToGroups = {};
-        let clusterGroups: string[] = []
-        for (let j = 0; j < cluster.ingesterAddresses.length; j++ ) {
-            let ingester = await registryFacet.getIngesterWithGroups(cluster.ingesterAddresses[j]);
-            ingesterToGroup[ingester.ingesterAddress] = ingester.assignedGroups;
-            clusterGroups = clusterGroups.concat(ingester.assignedGroups);
-            
-            for (let z = 0; z < ingester.assignedGroups.length; z++){
-                let group = await groupManagerFacet.getGroup(ingester.assignedGroups[z]);
-                expect(group.ingesterAddresses).includes(cluster.ingesterAddresses[j]);
-            } 
-            expect(ingester.assignedGroups.length <= maxGroupsPerIngesterWithinCluster);
-        }
-        
-        let maxNumberIngesterPerGroup = BigNumber.from(await groupManagerFacet.getMaxIngestersPerGroup()).toNumber();
-        for (let j = 0; j < clusterGroups.length; j++ ) {
-            let group = await groupManagerFacet.getGroup(clusterGroups[j]);
-            expect(group.ingesterAddresses.length <= maxNumberIngesterPerGroup);
-        }
-        //check that the amount of addresses per group abides by the global constraint
-        expect(cluster.ingesterAddresses.length < maxClusterSize);
-        //Check that the amount of groups is lower than the global constraint
-        expect(clusterGroups.length < getMaxGroupsPerIngester);
-    }
-
-}
-
-async function getClusterMaxGroupsPerIngester(groupManagerFacet: GroupManagerFacet, clusterId: number) {
-    let clusterDetails = await groupManagerFacet.getCluster(clusterId);
-    let clusterGroupCount = BigNumber.from(clusterDetails.clusterGroupCount).toNumber();
-    let clusterIngesterCount = BigNumber.from(clusterDetails.ingesterAddresses.length).toNumber();
-    let maxGroupsPerIngesterAfterUnregistering = (clusterGroupCount + clusterIngesterCount - 1) / clusterIngesterCount;
-    return maxGroupsPerIngesterAfterUnregistering
-}
+import {IngesterControllerMapping,
+    IngesterToGroups,
+    allUnique,
+    addFacetsToDiamond,
+    checkClusterIsWithinConstraints,
+    getClusterMaxGroupsPerIngester
+ } from "./testUtils/testUtils";
 
 
 describe("Testing Group Manager", async function () {
@@ -264,7 +163,7 @@ describe("Testing Group Manager", async function () {
             
         }
 
-        await checkClusterIsWithinConstraints(groupManagerFacet, registryFacet);
+        await checkClusterIsWithinConstraints(groupManagerFacet, registryFacet, maxClusterSize);
     });
 
     it("should revert when attempting to distribute more groups than the maxCapacity constraints", async () => {
@@ -631,20 +530,7 @@ describe("Testing Group Manager", async function () {
                 expect(group.ingesterAddresses.length <= newMaxIngestersPerGroup);
             }
             
-            await checkClusterIsWithinConstraints(groupManagerFacet, registryFacet);
-        });
-
-        it("should distribute to ingesters when groups are added", async () => {
-            //each ingester should have at least 33 groups
-            // check group assignement are within constraints
-            for (let i = 0; i < numGroupsWithReplication; i++) {
-                await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
-                const group = await groupManagerFacet.getGroup(`group${i}`);
-                expect(group.isAdded).to.be.true;
-                expect(group.ingesterAddresses.length <= newMaxIngestersPerGroup);
-            }
-            
-            await checkClusterIsWithinConstraints(groupManagerFacet, registryFacet);
+            await checkClusterIsWithinConstraints(groupManagerFacet, registryFacet, maxClusterSize);
         });
 
         it("should revert when attempting to distribute more groups than the maxCapacity constraints", async () => {
@@ -709,6 +595,166 @@ describe("Testing Group Manager", async function () {
             //check if ingester was also removed from the cluster
             let cluster = await groupManagerFacet.getCluster(ingestersAllocatedCluster);
             expect(cluster.ingesterAddresses).not.include(ingesterToRemove.ingesterAddress);
+        });
+
+        it("should add to unassigned groups when entire cluster is removed", async () => {
+            // check group assignement are within constraints
+            for (let i = 0; i < numGroupsWithReplication; i++) {
+                await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
+                const group = await groupManagerFacet.getGroup(`group${i}`);
+                expect(group.isAdded).to.be.true;
+                expect(group.ingesterAddresses.length <= maxIngestersPerGroup)
+            }
+    
+            let ingestersRemaining = ingesters;
+            let clusterId = 0;
+            let ingesterRemovedAssignedGroups: string[];
+            for (let i = 0; i < maxClusterSize; i++) {
+                let ingesterToRemove = await groupManagerFacet.getIngesterWithGroups(ingesters[i].address);
+                
+                // _maxGroupsPerIngester = (numClusterGroups + numIngesters - 1) / numIngesters;
+                clusterId = BigNumber.from(ingesterToRemove.clusterId).toNumber();
+                let maxGroupsPerIngesterBeforeUnregistering = await getClusterMaxGroupsPerIngester(groupManagerFacet, clusterId);
+    
+                ingesterRemovedAssignedGroups = ingesterToRemove.assignedGroups;
+                
+                await registryFacet.connect(ingesterToController[ingesters[i].address]).unRegisterIngester(ingesters[i].address);
+                await groupManagerFacet.connect(ingesterToController[ingesters[i].address]).getUnallocatedGroups();
+    
+                let maxGroupsPerIngesterAfterUnregistering = await getClusterMaxGroupsPerIngester(groupManagerFacet, clusterId);
+    
+                expect(maxGroupsPerIngesterAfterUnregistering > maxGroupsPerIngesterBeforeUnregistering);
+    
+                // Remove the ingester from structure
+                let slicerIndex = i == 0 ? 1 : i;
+                ingestersRemaining = ingestersRemaining.slice(slicerIndex);
+    
+                // check i remaining ingesters contain all the groups that were removed 
+                let totalAssignedGroupsAfterUnregistration: string[] = []
+                for (let j = 0; j < ingestersRemaining.length; j++) {
+                    let ingester = await groupManagerFacet.getIngesterWithGroups(ingestersRemaining[j].address);
+                    totalAssignedGroupsAfterUnregistration = totalAssignedGroupsAfterUnregistration.concat(ingester.assignedGroups);
+                    expect(ingester.assignedGroups.length > maxGroupsPerIngesterBeforeUnregistering);
+                    expect(ingester.assignedGroups.length < maxGroupsPerIngesterAfterUnregistering);
+                }
+    
+                //Grab unallocated groups and check if they are correctly unallocated and don't overlap with allocated groups
+                let unAllocatedGroups = await groupManagerFacet.getUnallocatedGroups();
+                if (unAllocatedGroups.length > 0) {
+                    const allocatedGroups = totalAssignedGroupsAfterUnregistration.filter(group => !unAllocatedGroups.includes(group));
+                    
+                    expect(allocatedGroups.length == totalAssignedGroupsAfterUnregistration.length);
+                    const allGroupsAreReallocated = allocatedGroups.every(allocatedGroup => {
+                        return totalAssignedGroupsAfterUnregistration.includes(allocatedGroup)
+                    });
+                    const allUnallocatedGroupsAreUnassigned = totalAssignedGroupsAfterUnregistration.every(allocatedGroup => {
+                        return !unAllocatedGroups.includes(allocatedGroup)
+                    })
+                    expect(allGroupsAreReallocated).to.be.true;
+                    expect(allUnallocatedGroupsAreUnassigned).to.be.true;
+    
+                } else {
+                    //if no unallocated groups present, make sure that the all removed assigned groups have been re-allocated to the existing ingesters
+                    const allGroupsAreReallocated = ingesterRemovedAssignedGroups.every(removedGroup => {
+                        return totalAssignedGroupsAfterUnregistration.includes(removedGroup)
+                    })
+                    expect(allGroupsAreReallocated).to.be.true;
+                }
+
+                let cluster = await groupManagerFacet.getCluster(clusterId);
+                if(i == maxClusterSize - 1) {
+                    assert.strictEqual(cluster.ingesterAddresses.length, 0);
+                    assert.sameMembers(unAllocatedGroups, ingesterRemovedAssignedGroups);
+                }
+            }
+        });
+
+        it("should allocate new groups when available to newly registered ingester", async () => {
+            // check group assignement are within constraints
+            let clusterIds = await groupManagerFacet.getClusters();
+            let totalGroupsConstraint = (clusterIds.length * maxClusterSize * maxGroupsPerIngester) / newMaxIngestersPerGroup;
+
+            for (let i = 0; i < totalGroupsConstraint; i++) {
+                await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
+                const group = await groupManagerFacet.getGroup(`group${i}`);
+                expect(group.isAdded).to.be.true;
+                expect(group.ingesterAddresses.length <= newMaxIngestersPerGroup)
+            }
+    
+            // use last available account as new test ingester to be registered
+            let hash2 = await registryFacet.hash(accounts[accounts.length -1].address, message, nonce);
+            const sig2 = await accounts[accounts.length - 2].signMessage(ethers.utils.arrayify(hash2));
+            await registryFacet.connect(accounts[accounts.length - 2]).registerIngester(accounts[accounts.length - 1].address, message, nonce, sig2);
+            
+            // check all new incoming groups get allocated to the new ingester
+            for (let i = totalGroupsConstraint; i < numGroupsWithReplication + 10; i++) {
+                await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
+                const group = await groupManagerFacet.getGroup(`group${i}`);
+                expect(group.isAdded).to.be.true;
+                expect(group.ingesterAddresses).to.include(accounts[accounts.length -1].address);
+                expect(group.ingesterAddresses.length <= maxIngestersPerGroup)
+    
+                let newIngester = await groupManagerFacet.getIngesterWithGroups(accounts[accounts.length -1].address);
+                expect(newIngester.assignedGroups).to.include(`group${i}`);
+            }
+        });
+
+        it("should restrict one controller wallet owning more than one ingester per cluster", async () => {
+            let numIngestersToAdd = 2;
+            let controllerAccount = accounts[0];
+            let newIngesters: SignerWithAddress[] = [];
+            for (let i = accounts.length - 1; i >= accounts.length - numIngestersToAdd; i-- ) {
+                let hash = await registryFacet.hash(accounts[i].address, message, nonce);
+                const sig = await controllerAccount.signMessage(ethers.utils.arrayify(hash));
+                await registryFacet.connect(controllerAccount).registerIngester(accounts[i].address, message, nonce, sig);
+                await groupManagerFacet.connect(controllerAccount).distributeGroupsToIngester(accounts[i].address);
+                newIngesters.push(accounts[i]);
+
+            }
+
+            let controllerIngesters = await groupManagerFacet.getControllerIngesters(controllerAccount.address);
+            let clusterIds: number[] = [];
+            for (const ingesterAccount of controllerIngesters) {
+                let ingester = await groupManagerFacet.getIngesterWithGroups(ingesterAccount.ingesterAddress);
+                clusterIds.push(BigNumber.from(ingester.clusterId).toNumber());
+            }
+            expect(allUnique(clusterIds)).to.be.true;
+        });
+
+        it("should add groups to newly registered ingester if capacity allows", async () => {
+            // let maxGroupsPerCluster = numIngesters * maxGroupsPerIngester;
+            let clusterIds = await groupManagerFacet.getClusters();
+            let totalGroupsConstraint = (clusterIds.length * maxClusterSize * maxGroupsPerIngester) / newMaxIngestersPerGroup;
+    
+            // Add maximum groups possible
+            let totalAssignedGroups: string[] = [];
+            for (let i = 0; i < totalGroupsConstraint; i++) {
+                await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
+                const group = await groupManagerFacet.getGroup(`group${i}`);
+                totalAssignedGroups.push(`group${i}`);
+                expect(group.isAdded).to.be.true;
+                expect(group.ingesterAddresses.length <= newMaxIngestersPerGroup)
+            }
+    
+            await registryFacet.connect(ingesterToController[ingesters[0].address]).unRegisterIngester(ingesters[0].address);
+            await groupManagerFacet.distributeUnallocatedGroups();
+
+            expect(groupManagerFacet.getIngesterWithGroups(ingesters[0].address)).to.be.revertedWith("Ingester does not exist.");
+    
+            //register Ingester again and check if the unallocated groups get allocated again
+            let hash = await registryFacet.hash(ingesters[0].address, message, nonce);
+            const sig = await ingesterToController[ingesters[0].address].signMessage(ethers.utils.arrayify(hash));
+            await registryFacet.connect(ingesterToController[ingesters[0].address]).registerIngester(ingesters[0].address, message, nonce, sig);
+            
+            //Distribute groups after registration
+            let ingesterBeforeDistribution = await groupManagerFacet.getIngesterWithGroups(ingesters[0].address);
+            let distributeTx = await groupManagerFacet.connect(ingesterToController[ingesters[0].address]).distributeGroupsToIngester(ingesters[0].address);
+            let ingesterAfterDistribution = await groupManagerFacet.getIngesterWithGroups(ingesters[0].address);
+    
+            //check that the assigned groups to ingester with replication is the same as the other ingesters within cluster
+            let cluster = await groupManagerFacet.getCluster(ingesterBeforeDistribution.clusterId);
+            let ingesterWithinCluster = await groupManagerFacet.getIngesterWithGroups(cluster.ingesterAddresses[0]);
+            expect(ingesterWithinCluster.assignedGroups == ingesterAfterDistribution.assignedGroups);
         });
     });
     

@@ -16,95 +16,16 @@ import {
     Test1Facet,
     } from "../typechain-types";
 import { deployDiamond, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deploy";
-import { IDiamondLoupe } from "../typechain-types/contracts/IngesterOrchestratorDiamond/facets/DiamondLoupeFacet";
 
 import { ethers } from "hardhat";
 
-import { BigNumber, ContractReceipt } from "ethers";
 import { assert, expect } from "chai";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { Sign } from "crypto";
-import { group } from "console";
 
-interface IngesterControllerMapping {
-    [ingesterAddress: string]: SignerWithAddress;
-}
-
-async function addRegistrationFacet(addresses: string[], diamondCutFacet: DiamondCutFacet) {
-    const RegisteryFacet = await ethers.getContractFactory("RegistryFacet");
-    const registryFacet = await RegisteryFacet.deploy();
-    await registryFacet.deployed();
-    addresses.push(registryFacet.address);
-    const selectors = getSelectors(registryFacet);
-
-    let tx = await diamondCutFacet.diamondCut(
-    [
-        {
-        facetAddress: registryFacet.address,
-        action: FacetCutAction.Add,
-        functionSelectors: selectors,
-        },
-    ],
-    ethers.constants.AddressZero,
-    "0x",
-    { gasLimit: 800000 }
-    );
-    let receipt = await tx.wait();
-    if (!receipt.status) {
-    throw Error(`Diamond upgrade failed: ${tx.hash}`);
-    }
-    return registryFacet;
-}
-
-async function addFacetsToDiamond(addresses: string[], diamondCutFacet: DiamondCutFacet, diamondAddress: string, FacetNames: string[]) {
-    let accessControlFacet = await ethers.getContractFactory("AccessControlFacet");
-    let accessControlFacetSelectors = getSelectors(accessControlFacet);
-
-    let commonFunctionsFacet = await ethers.getContractFactory("CommonFunctionsFacet");
-    let commonFunctionSelectors = getSelectors(commonFunctionsFacet);
-    FacetNames = [...FacetNames, "AccessControlFacet", "CommonFunctionsFacet"];
-    const facetCuts = [];
-    for (const FacetName of FacetNames) {
-      const Facet = await ethers.getContractFactory(FacetName);
-      const facet = await Facet.deploy();
-      await facet.deployed();
-      addresses.push(facet.address);
-      console.log(`${FacetName} deployed: ${facet.address}`);
-
-      let selectorsToAdd = getSelectors(facet);
-      if (FacetName != 'AccessControlFacet') {
-          //filter out AccessControlFacet since all other facets extend this
-          selectorsToAdd = selectorsToAdd.filter(
-            (selector: any) => !accessControlFacetSelectors.includes(selector)
-          );
-      }
-      if (FacetName != 'CommonFunctionsFacet') {
-          // filter out Common Functions Facet since all other facets extend this
-          selectorsToAdd = selectorsToAdd.filter(
-            (selector: any) => !commonFunctionSelectors.includes(selector)
-          );
-      }
-
-      facetCuts.push({
-        facetAddress: facet.address,
-        action: FacetCutAction.Add,
-        functionSelectors: selectorsToAdd,
-      });
-    }
-
-    let txDiamond = await diamondCutFacet.diamondCut(
-        facetCuts,
-        ethers.constants.AddressZero,
-        "0x",
-        { gasLimit: 30000000 }
-    );
-    let receiptTx = await txDiamond.wait();
-    if (!receiptTx.status) {
-        throw Error(`Diamond upgrade failed: ${txDiamond.hash}`);
-    }
-
-    return addresses;
-}
+import {IngesterControllerMapping,
+    addFacetsToDiamond,
+    addRegistrationFacet,
+ } from "./testUtils/testUtils";
 
 
 describe("Testing Registration Functionalities", async function () {
@@ -347,12 +268,10 @@ describe("Testing Registration with pre-populated data", async function () {
         let ingesterToRemove = await registryFacet.getIngesterWithGroups(ingesters[0].address);
 
         let ingesterAssignedGroups = ingesterToRemove.assignedGroups;
-        console.log("🚀 ~ file: registryFacetTest.ts:337 ~ ingesterAssignedGroups:", ingesterAssignedGroups.length)
 
         await registryFacet.unRegisterIngester(ingesters[0].address);
 
         let unAllocatedGroups = await registryFacet.getUnallocatedGroups();
-        console.log("🚀 ~ file: registryFacetTest.ts:343 ~ unAllocatedGroups:", unAllocatedGroups.length)
         expect(unAllocatedGroups.length == ingesterAssignedGroups.length);
         assert.sameMembers(unAllocatedGroups, ingesterAssignedGroups);
     });
@@ -361,7 +280,6 @@ describe("Testing Registration with pre-populated data", async function () {
         let ingesterToRemove = await registryFacet.getIngesterWithGroups(ingesters[0].address);
 
         let ingesterAssignedGroups = ingesterToRemove.assignedGroups;
-        console.log("🚀 ~ file: registryFacetTest.ts:337 ~ ingesterAssignedGroups:", ingesterAssignedGroups.length)
 
         await registryFacet.unRegisterIngester(ingesters[0].address);
 

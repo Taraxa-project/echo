@@ -59,4 +59,13 @@ contract CommonFunctionsFacet {
         );
         return ingesterWithAssignedGroups;
     }
+
+    /**
+    * @notice Retrieves the list of ingesters for a given controller.
+    * @param controllerAddress The address of the controller.
+    * @return An array of Ingester structs containing the details of
+    */
+    function getControllerIngesters(address controllerAddress) public view returns (IIngesterRegistration.Ingester[] memory) {
+        return s.controllerToIngesters[controllerAddress];
+    }
 }

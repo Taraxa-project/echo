@@ -26,7 +26,7 @@ struct AppStorage {
     string[] unAllocatedGroups;
 
     //IPFS Storage
-    mapping(address => IIngesterDataGathering.IpfsHash) _ipfsHashes;
+    mapping(address => IIngesterDataGathering.IpfsHash) ipfsHashes;
 }
 
 library LibAppStorage {
