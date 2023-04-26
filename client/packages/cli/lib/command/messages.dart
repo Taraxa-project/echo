@@ -53,13 +53,10 @@ class TelegramCommandMessages extends Command {
           dbSendPort: _db.sendPort!,
           contractAddress: globalResults!.command!['ingester-contract-address'],
           contractRpcUrl: globalResults!.command!['ingester-contract-rpc-url'],
-          ownerPrivateKey: globalResults!.command!['wallet-private-key-owner'],
           configPath: globalResults!.command!['config-path'],
         ),
         debugName: 'IngesterContractIsolater',
       );
-
-      await _ingesterContract.register();
 
       await _ipfsExporter.spawn_(
         IpfsExporter(

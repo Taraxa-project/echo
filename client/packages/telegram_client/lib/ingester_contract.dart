@@ -10,7 +10,6 @@ import 'package:web3dart/web3dart.dart';
 import 'package:web3dart/json_rpc.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:http/http.dart';
-import 'package:uuid/uuid.dart';
 
 import 'isolate.dart';
 import 'db.dart';
@@ -18,21 +17,6 @@ import 'package:telegram_client/src/smart_contract/IngesterProxy.g.dart';
 
 class IngesterContractIsolater extends Isolater {
   final logger = Logger('TelegramClient');
-
-  Future<IngesterContractMsgResponseRegister> register() async {
-    sendPort!.send(IngesterContractMsgRequestRegister(
-      replySendPort: receivePort.sendPort,
-    ));
-    IngesterContractMsgResponseRegister response = await receivePortBroadcast
-        .firstWhere((element) => element is IngesterContractMsgResponseRegister)
-        .onError(<StateError>(error, _) =>
-            logger.warning('ingester register $error'));
-
-    if (response.exception != null) {
-      throw response.exception!;
-    }
-    return response;
-  }
 
   Future<IngesterContractMsgResponseGetGroups> getGroups() async {
     sendPort!.send(IngesterContractMsgRequestGetGroups(
@@ -59,8 +43,6 @@ class IngesterContract extends Isolated {
   final String contractRpcUrl;
   final String contractAddress;
 
-  final String ownerPrivateKey;
-  EthPrivateKey? _credentialsOwner;
   EthPrivateKey? _credentialsIngester;
 
   String configPath;
@@ -72,7 +54,6 @@ class IngesterContract extends Isolated {
     required SendPort this.dbSendPort,
     required String this.contractAddress,
     required String this.contractRpcUrl,
-    required String this.ownerPrivateKey,
     required String this.configPath,
   }) {
     logger.onRecord.listen((logRecord) {
@@ -82,7 +63,6 @@ class IngesterContract extends Isolated {
 
   Future<void> init(SendPort parentSendPort) async {
     super.init(parentSendPort);
-    _initCredentialsOwner();
     _initCredentialsIngester();
   }
 
@@ -91,18 +71,12 @@ class IngesterContract extends Isolated {
       if (message is IsolateMsgRequestExit) {
         logger.fine('exiting...');
         exit(message.replySendPort);
-      } else if (message is IngesterContractMsgRequestRegister) {
-        await _register(message.replySendPort);
       } else if (message is IngesterContractMsgRequestGetGroups) {
         await _getGroups(message.replySendPort);
       } else if (message is IngesterContractMsgRequestWriteHashes) {
         await _writeHashes(message.replySendPort);
       }
     });
-  }
-
-  void _initCredentialsOwner() {
-    _credentialsOwner = EthPrivateKey.fromHex(ownerPrivateKey);
   }
 
   void _initCredentialsIngester() {
@@ -144,42 +118,6 @@ class IngesterContract extends Isolated {
       }
 
       _credentialsIngester = credentials;
-    }
-  }
-
-  Future<void> _register(SendPort? replySendPort) async {
-    final web3client = Web3Client(contractRpcUrl, Client());
-    final contract = IngesterProxy(
-      address: EthereumAddress.fromHex(contractAddress),
-      client: web3client,
-    );
-    final nonce = BigInt.from(Random().nextInt(100));
-    final message = Uuid().v4();
-
-    var response = IngesterContractMsgResponseRegister();
-    try {
-      var messageHash = await contract.hash(
-        _credentialsIngester!.address,
-        message,
-        nonce,
-      );
-      var sig = _credentialsOwner!.signPersonalMessageToUint8List(messageHash);
-
-      await contract.registerIngester(
-        _credentialsIngester!.address,
-        message,
-        nonce,
-        sig,
-        credentials: _credentialsOwner!,
-      );
-    } on RPCError catch (ex) {
-      if (!ex.message.contains('already exists')) {
-        logger.severe(ex);
-        response.exception = ex;
-      }
-    } finally {
-      replySendPort?.send(response);
-      await web3client.dispose();
     }
   }
 
@@ -252,14 +190,6 @@ class IngesterContractMsgRequest extends IsolateMsgRequest {
 class IngesterContractMsgResponse extends IsolateMsgResponse {
   Exception? exception;
   IngesterContractMsgResponse({this.exception});
-}
-
-class IngesterContractMsgRequestRegister extends IngesterContractMsgRequest {
-  IngesterContractMsgRequestRegister({super.replySendPort});
-}
-
-class IngesterContractMsgResponseRegister extends IngesterContractMsgResponse {
-  IngesterContractMsgResponseRegister({super.exception});
 }
 
 class IngesterContractMsgRequestGetGroups extends IngesterContractMsgRequest {

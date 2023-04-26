@@ -24,8 +24,6 @@ services:
       - INGESTER_CONTRACT_RPC_URL=
       - INGESTER_CONTRACT_ADDRESS=
 
-      - WALLET_PRIVATE_KEY_OWNER_0=
-
       - IPFS_CRON_SCHEDULE=0 8 * * *
       - IPFS_SCHEME=http
       - IPFS_HOST=localhost

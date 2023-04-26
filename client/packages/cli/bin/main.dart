@@ -104,10 +104,6 @@ void main(List<String> arguments) {
       help: 'Path to the folder containg config.json',
     )
     ..addOption(
-      'wallet-private-key-owner',
-      help: 'Owner wallet private key',
-    )
-    ..addOption(
       'ingester-contract-address',
       help: 'Ingester contract address',
     )
