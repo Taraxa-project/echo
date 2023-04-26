@@ -125,6 +125,13 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
         }
         emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
 
-        LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
+        //if there is replication and there isn't ingesters live in cluster than add to unallocated groups
+        if (s.maxIngestersPerGroup > 1){ 
+            if (s.ingesterClusters[clusterId].ingesterAddresses.length == 0) {
+                LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
+            }
+        } else {
+            LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
+        }
     }   
 }

@@ -4,8 +4,6 @@ pragma solidity ^0.8.0;
 import "../interfaces/IIngesterRegistration.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "../interfaces/IIngesterDataGathering.sol";
-import "@solidstate/contracts/access/access_control/AccessControl.sol";
-import "@solidstate/contracts/access/access_control/AccessControlStorage.sol";
 import { LibDiamond } from "./LibDiamond.sol";
 
 struct AppStorage {

@@ -32,7 +32,7 @@ contract CommonFunctionsFacet {
         return s.ingesterCount;
     }
 
-    function getIngester(address ingesterAddress) external view returns (IIngesterRegistration.Ingester memory) {
+    function getIngester(address ingesterAddress) public view returns (IIngesterRegistration.Ingester memory) {
         require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
@@ -40,11 +40,11 @@ contract CommonFunctionsFacet {
         return s.controllerToIngesters[controller][ingesterIndex];
     }
 
-    function getIngesters() external view returns (address[] memory) {
+    function getIngesters() public view returns (address[] memory) {
         return LibAppStorage.getIngesters();
     }
 
-    function getIngesterWithGroups(address ingesterAddress) external view returns (IIngesterRegistration.IngesterWithGroups memory) {
+    function getIngesterWithGroups(address ingesterAddress) public view returns (IIngesterRegistration.IngesterWithGroups memory) {
         require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;

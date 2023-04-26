@@ -68,6 +68,51 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         }
     }
 
+     /**
+     * @dev Distributes groups to the specified ingester address.
+     * @param ingesterAddress The ingester address to distribute groups to.
+     */
+    function distributeGroupsToIngester(address ingesterAddress) external onlyRegisteredController {
+        require(isIngesterOwnedByController(ingesterAddress, msg.sender), "Ingester is not owned by controller wallet");
+        
+        uint numUnallocatedGroups = s.unAllocatedGroups.length;
+        uint256 clusterId = getIngester(ingesterAddress).clusterId;
+
+        //prioritise allocation groups
+        if (numUnallocatedGroups > 0) {
+            uint256 clusterCapacity = s.ingesterClusters[clusterId].clusterRemainingCapacity;
+
+            if (numUnallocatedGroups > clusterCapacity) {
+                uint256 allocatableAmount = numUnallocatedGroups - clusterCapacity;
+                while (s.unAllocatedGroups.length > allocatableAmount) {
+                    uint256 i = s.unAllocatedGroups.length - 1;
+                    distributeGroupToIngester(s.unAllocatedGroups[i], clusterId, ingesterAddress);
+                    emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
+                    s.unAllocatedGroups.pop();
+                }
+            } else {
+                while (s.unAllocatedGroups.length > 0) {
+                    uint256 i = s.unAllocatedGroups.length - 1;
+                    distributeGroupToIngester(s.unAllocatedGroups[i], clusterId, ingesterAddress);
+                    emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
+                    s.unAllocatedGroups.pop();
+                }
+            }
+
+        } else {
+            if (s.maxIngestersPerGroup > 1) {
+                //accounting for group replication scenario, simply assign present groups to cluster
+                address ingesterToCopyGroupsFrom = s.ingesterClusters[clusterId].ingesterAddresses[0];
+                string[] memory groupsToAllocate = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterToCopyGroupsFrom];
+                for (uint i = 0; i < groupsToAllocate.length; i++) {
+                    distributeGroupToIngester(groupsToAllocate[i], clusterId, ingesterAddress);
+                }
+            } else {
+                revert("No more groups to allocate.");
+            }
+        }
+    }
+
     function distributeGroupToIngester(string memory groupUsername, uint256 clusterId, address ingesterAddress) internal {
 
         uint256 numOfAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress].length;
@@ -93,29 +138,29 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
 
     function distributeUnallocatedGroups() external {
         uint mostCapacityClusterId = getMostCapacityCluster();
-        console.log('mostCapacityClusterId', mostCapacityClusterId);
+        // console.log('mostCapacityClusterId', mostCapacityClusterId);
         uint256 clusterCapacity = s.ingesterClusters[mostCapacityClusterId].clusterRemainingCapacity;
-        console.log('clusterCapacity', clusterCapacity);
+        // console.log('clusterCapacity', clusterCapacity);
         uint256 amountOfGroups = s.unAllocatedGroups.length;
 
         if (amountOfGroups > clusterCapacity) {
             uint256 allocatableAmount = amountOfGroups - clusterCapacity;
-            console.log('more groups than capacity');
-            console.log('allocatableAmount', allocatableAmount);
+            // console.log('more groups than capacity');
+            // console.log('allocatableAmount', allocatableAmount);
             while (s.unAllocatedGroups.length > allocatableAmount) {
                 uint256 i = s.unAllocatedGroups.length - 1;
-                console.log('distirbuting to cluster', i);
+                // console.log('distirbuting to cluster', i);
 
                 distributeGroupsToCluster(s.unAllocatedGroups[i], mostCapacityClusterId);
                 emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
-                console.log('emitted event');
+                // console.log('emitted event');
                 s.unAllocatedGroups.pop();
-                console.log('popped value');
+                // console.log('popped value');
             }
         } else {
             while (s.unAllocatedGroups.length > 0) {
                 uint256 i = s.unAllocatedGroups.length - 1;
-                console.log('distirbuting to cluster', i);
+                // console.log('distirbuting to cluster', i);
                 distributeGroupsToCluster(s.unAllocatedGroups[i], mostCapacityClusterId);
                 emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
                 s.unAllocatedGroups.pop();

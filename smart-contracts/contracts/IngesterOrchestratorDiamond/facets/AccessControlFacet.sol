@@ -23,11 +23,16 @@ contract AccessControlFacet is AccessControl {
         _;
     }
 
-    function isRegisteredIngester(address ingester) external view returns (bool) {
+    function isRegisteredIngester(address ingester) public view returns (bool) {
         return _hasRole(LibAppStorage.INGESTER_ROLE, ingester);
     }
 
-    function isRegisteredController(address controller) external view returns (bool) {
+    function isRegisteredController(address controller) public view returns (bool) {
         return _hasRole(LibAppStorage.INGESTER_ROLE, controller);
+    }
+
+    function isIngesterOwnedByController(address ingester, address controller) public view returns (bool) {
+        AppStorage storage s = LibAppStorage.appStorage();
+        return s.ingesterToController[ingester].controllerAddress == controller;
     }
 }
