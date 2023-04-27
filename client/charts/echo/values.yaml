@@ -67,6 +67,7 @@ persistence:
 # set to false when providing secrets externally i.e. thru SealedSecrets
 appSecret:
   create: true
+  privateKeyIngester: ""
 
 configEnvs:
   PATH_TD_JSON_LIB: /usr/local/lib/libtdjsonlc.so
@@ -79,11 +80,9 @@ configEnvs:
   TABLE_DUMP_PATH: /var/lib/sqlite
   IPFS_CRON_SCHEDULE: "0 8 * * *"
 
-  CHATS_NAMES_0: "[]"
-  CHATS_NAMES_1: "[]"
-  CHATS_NAMES_2: "[]"
-  CHATS_NAMES_3: "[]"
-  CHATS_NAMES_4: "[]"
+  CONFIG_PATH: /var/lib/config
+  INGESTER_CONTRACT_RPC_URL: ""
+  INGESTER_CONTRACT_ADDRESS: ""
 
 secretEnvs:
   IPFS_SCHEME: http

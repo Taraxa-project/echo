@@ -25,8 +25,8 @@ class TelegramClientIsolater extends Isolater {
     required String Function() readUserLastName,
     required String Function() readUserPassword,
   }) async {
-    isolateSendPort.send(TgMsgRequestLogin(
-      replySendPort: isolateReceivePort.sendPort,
+    sendPort!.send(TgMsgRequestLogin(
+      replySendPort: receivePort.sendPort,
       apiId: apiId,
       apiHash: apiHash,
       phoneNumber: phoneNumber,
@@ -37,7 +37,7 @@ class TelegramClientIsolater extends Isolater {
       readUserLastName: readUserLastName,
       readUserPassword: readUserPassword,
     ));
-    TgMsgResponseLogin response = await isolateReceivePortBroadcast
+    TgMsgResponseLogin response = await receivePortBroadcast
         .firstWhere((element) => element is TgMsgResponseLogin)
         .onError(<StateError>(error, _) => logger.warning('login $error'));
 
@@ -51,13 +51,13 @@ class TelegramClientIsolater extends Isolater {
     required DateTime dateTimeFrom,
     required List<String> chatsNames,
   }) async {
-    isolateSendPort.send(TgMsgRequestReadChatsHistory(
-      replySendPort: isolateReceivePort.sendPort,
+    sendPort!.send(TgMsgRequestReadChatsHistory(
+      replySendPort: receivePort.sendPort,
       dateTimeFrom: dateTimeFrom,
       chatsNames: chatsNames,
     ));
 
-    TgMsgResponseReadChatHistory response = await isolateReceivePortBroadcast
+    TgMsgResponseReadChatHistory response = await receivePortBroadcast
         .firstWhere((element) => element is TgMsgResponseReadChatHistory)
         .onError(<StateError>(error, _) =>
             logger.warning('readChatsHistory $error'));

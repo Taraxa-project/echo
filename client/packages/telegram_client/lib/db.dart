@@ -167,6 +167,12 @@ class Db extends Isolated {
           DbMsgResponseUploadMetaSucces(),
           "upload meta succes",
         ));
+      } else if (message is DbMsgRequestGetUploadHashes) {
+        message.replySendPort?.send(_retryDbOperation(
+          () => _getUploadHashes(),
+          DbMsgResponseGetUploadHashes(),
+          'get upload meta hashes',
+        ));
       }
     });
   }
@@ -599,8 +605,8 @@ class Db extends Isolated {
   ) {
     final stmtUpdatMetaIpfsHash = db?.prepare(_sqlUpdateIpfsUploadMetaFileHash);
     stmtUpdatMetaIpfsHash?.execute([
-      tableName,
       file_hash,
+      tableName,
     ]);
     stmtUpdatMetaIpfsHash?.dispose();
 
@@ -641,6 +647,32 @@ class Db extends Isolated {
 
     await sink.flush();
     await sink.close();
+  }
+
+  DbMsgResponseGetUploadHashes _getUploadHashes() {
+    logger.fine('reading uploaded meta hashes...');
+
+    var response = DbMsgResponseGetUploadHashes();
+
+    Row? row;
+
+    row = db?.select(_sqlSelectIpfsUpload, ['chat']).firstOrNull;
+    if (row != null) {
+      response.chat_hash = row['meta_file_hash'];
+    }
+
+    row = db?.select(_sqlSelectIpfsUpload, ['message']).firstOrNull;
+    if (row != null) {
+      response.message_hash = row['meta_file_hash'];
+    }
+
+    row = db?.select(_sqlSelectIpfsUpload, ['user']).firstOrNull;
+    if (row != null) {
+      response.user_hash = row['meta_file_hash'];
+    }
+    logger.fine('reading uploaded meta hashes... done.');
+
+    return response;
   }
 
   List<String> _sqlInit() {
@@ -1288,4 +1320,21 @@ class DbMsgRequestUploadMetaSucces extends DbMsgRequest {
 
 class DbMsgResponseUploadMetaSucces extends DbMsgResponse {
   DbMsgResponseUploadMetaSucces({super.exception, super.operationName});
+}
+
+class DbMsgRequestGetUploadHashes extends DbMsgRequest {
+  DbMsgRequestGetUploadHashes({super.replySendPort});
+}
+
+class DbMsgResponseGetUploadHashes extends DbMsgResponse {
+  String? chat_hash;
+  String? message_hash;
+  String? user_hash;
+  DbMsgResponseGetUploadHashes({
+    super.exception,
+    super.operationName,
+    this.chat_hash,
+    this.message_hash,
+    this.user_hash,
+  });
 }

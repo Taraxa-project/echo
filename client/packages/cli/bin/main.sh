@@ -17,9 +17,6 @@ PHONE=${!PHONE_VAR_NAME}
 PROXY_OPTION_VAR_NAME="PROXY_OPTION_$HOSTNAME_INDEX"
 PROXY_OPTION=${!PROXY_OPTION_VAR_NAME}
 
-CHATS_NAMES_VAR_NAME="CHATS_NAMES_$HOSTNAME_INDEX"
-CHATS_NAMES=${!CHATS_NAMES_VAR_NAME}
-
 /app/echo \
     --api-id $API_ID \
     --api-hash $API_HASH \
@@ -31,9 +28,11 @@ CHATS_NAMES=${!CHATS_NAMES_VAR_NAME}
     --message-database-path $PATH_DB_MESSAGE \
     $PROXY_OPTION \
     messages \
-    --chats-names $CHATS_NAMES \
     --run-forever $RUN_FOREVER \
     --table-dump-path $TABLE_DUMP_PATH \
+    --config-path $CONFIG_PATH \
+    --ingester-contract-rpc-url $INGESTER_CONTRACT_RPC_URL \
+    --ingester-contract-address $INGESTER_CONTRACT_ADDRESS \
     --ipfs-cron-schedule "$IPFS_CRON_SCHEDULE" \
     --ipfs-scheme $IPFS_SCHEME \
     --ipfs-host $IPFS_HOST \

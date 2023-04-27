@@ -20,6 +20,10 @@ services:
 
       - TABLE_DUMP_PATH=/var/lib/sqlite
 
+      - CONFIG_PATH=/var/lib/sqlite
+      - INGESTER_CONTRACT_RPC_URL=
+      - INGESTER_CONTRACT_ADDRESS=
+
       - IPFS_CRON_SCHEDULE=0 8 * * *
       - IPFS_SCHEME=http
       - IPFS_HOST=localhost
@@ -29,7 +33,6 @@ services:
       - API_HASH_0=0
       - PHONE_0=0
       - PROXY_OPTION_0=
-      - CHATS_NAMES_0=[]
     volumes:
       - tdlib-data:/var/lib/tdlib:rw
       - sqlite-data:/var/lib/sqlite:rw

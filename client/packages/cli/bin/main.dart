@@ -62,11 +62,6 @@ void main(List<String> arguments) {
   TelegramCommandMessages telegramCommandMessages = TelegramCommandMessages();
   telegramCommandMessages.argParser
     ..addOption(
-      'chats-names',
-      mandatory: true,
-      help: 'A list of chat names JSON encoded.',
-    )
-    ..addOption(
       'table-dump-path',
       help: 'table dump path',
       defaultsTo: '.',
@@ -103,6 +98,18 @@ void main(List<String> arguments) {
       'run-forever',
       help: 'Set this to true if you want the app to run forever',
       defaultsTo: 'false',
+    )
+    ..addOption(
+      'config-path',
+      help: 'Path to the folder containg wallet.json',
+    )
+    ..addOption(
+      'ingester-contract-address',
+      help: 'Ingester contract address',
+    )
+    ..addOption(
+      'ingester-contract-rpc-url',
+      help: 'RPC url',
     );
 
   commandRunner
