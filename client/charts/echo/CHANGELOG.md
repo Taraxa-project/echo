@@ -9,4 +9,9 @@ numbering uses [semantic versioning](http://semver.org).
 
 * Initial chart version
 
+## v0.1.4
+
+### Patch changes
+
+* Adds wallet secret
 
