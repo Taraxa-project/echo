@@ -1002,25 +1002,21 @@ class TelegramClient extends Isolated {
     });
   }
 
-  Future<Proxy> _addProxy({
+  Future<void> _addProxy({
     String? server,
     int? port,
     ProxyType? proxyType,
-    int timeoutMilliseconds = tgTimeoutMilliseconds,
-    int retryCountMax = tgRetryCountMax,
   }) async {
     logger.info('adding proxy...');
 
-    return await _retryTdCall(
-      tdFunction: AddProxy(
-        server: server,
-        port: port,
-        type: proxyType,
-        enable: true,
-      ),
-      timeoutMilliseconds: timeoutMilliseconds,
-      retryCountMax: retryCountMax,
-    ) as Proxy;
+    await _tdJsonClient.send(
+        _tdJsonClientId,
+        AddProxy(
+          server: server,
+          port: port,
+          type: proxyType,
+          enable: true,
+        ));
   }
 
   Future<void> _addChats({
