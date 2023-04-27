@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../interfaces/IIngesterRegistration.sol";
-import "../interfaces/IIngesterGroupManager.sol";
-import "../interfaces/IIngesterDataGathering.sol";
-import { LibDiamond } from "./LibDiamond.sol";
+import "../../interfaces/IIngesterRegistration.sol";
+import "../../interfaces/IIngesterGroupManager.sol";
+import "../../interfaces/IIngesterDataGathering.sol";
+import { LibDiamond } from "../../libraries/LibDiamond.sol";
 
-struct AppStorage {
+struct AppStorageTest {
     //Registry
     mapping(address => IIngesterRegistration.Ingester) ingesters;
     mapping(address => IIngesterRegistration.IngesterToController) ingesterToController;
@@ -27,9 +27,12 @@ struct AppStorage {
 
     //IPFS Storage
     mapping(address => IIngesterDataGathering.IpfsHash) ipfsHashes;
+
+    //new storage property
+    bool newTestProperty;
 }
 
-library LibAppStorage {
+library LibAppStorageTest {
 
     bytes32 internal constant INGESTER_ROLE = keccak256("INGESTER_ROLE");
     bytes32 internal constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
@@ -40,12 +43,12 @@ library LibAppStorage {
     event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
 
 
-    function appStorage() internal pure returns (AppStorage storage ds) {    
+    function appStorage() internal pure returns (AppStorageTest storage ds) {    
         assembly { ds.slot := 0 }
     }
 
     function AddToUnAllocateGroups(string[] memory groups) internal {
-        AppStorage storage s = appStorage();
+        AppStorageTest storage s = appStorage();
 
         uint256 numGroups = groups.length;
         for (uint256 i = 0; i < numGroups; i++) {
@@ -55,19 +58,31 @@ library LibAppStorage {
         emit UnAllocatedGroupsAdded(groups);
     }
 
+    function setTestProperty(bool testProperty) internal {
+        AppStorageTest storage s = appStorage();
+        s.newTestProperty = testProperty;
+    }
+
+    function getTestProperty() internal view returns(bool) {
+        AppStorageTest storage s = appStorage();
+        return s.newTestProperty;
+    }
+
+    //this function was updated to only return the first two values
     function getUnallocatedGroups() internal view returns(string[] memory) {
-        AppStorage storage s = appStorage();
+        AppStorageTest storage s = appStorage();
         return s.unAllocatedGroups;
     }
 
     function getIngesters() internal view returns (address[] memory) {
-        AppStorage storage s = appStorage();
-        address[] memory ingesterAddresses = s.ingesterAddresses;
+        AppStorageTest storage s = appStorage();
+        address[] memory ingesterAddresses = new address[](1);
+        ingesterAddresses[0] = s.ingesterAddresses[0];
         return ingesterAddresses;
     }
 
     function addIngesterToCluster(address ingesterAddress, address controllerAddress) internal returns(uint256) {
-        AppStorage storage s = appStorage();
+        AppStorageTest storage s = appStorage();
 
         uint256 clusterId = 0;
         if (s.clusterIds.length == 0) {
@@ -85,7 +100,7 @@ library LibAppStorage {
     }
 
      function getAvailableCluster(address ingesterAddress, address controllerAddress) internal returns (uint256) {
-        AppStorage storage s = appStorage();
+        AppStorageTest storage s = appStorage();
 
         uint256 availableCluster = 0;
         bool foundAvailableCluster = false;
@@ -136,7 +151,7 @@ library LibAppStorage {
     }
 
     function removeIngesterFromGroups(uint256 clusterId, address ingesterAddress) internal {
-        AppStorage storage s = LibAppStorage.appStorage();
+        AppStorageTest storage s = LibAppStorageTest.appStorage();
 
         string[] memory groups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress];
         for (uint256 i = 0; i < groups.length; ++i) {
@@ -157,7 +172,7 @@ library LibAppStorage {
     }
 
     function removeIngesterFromCluster(address ingesterAddress, uint256 clusterId) internal {
-        AppStorage storage s = LibAppStorage.appStorage();
+        AppStorageTest storage s = LibAppStorageTest.appStorage();
 
         uint256 numIngesters = s.ingesterClusters[clusterId].ingesterAddresses.length;
         uint256 ingesterIndexToRemove = 0;
@@ -193,7 +208,7 @@ library LibAppStorage {
      * @param clusterId The cluster ID to remove.
      */
     function removeCluster(uint256 clusterId) internal {
-        AppStorage storage s = LibAppStorage.appStorage();
+        AppStorageTest storage s = LibAppStorageTest.appStorage();
 
         uint256 clusterIndex = s.ingesterClusters[clusterId].clusterIndex;
         uint256 numClusters = s.clusterIds.length;

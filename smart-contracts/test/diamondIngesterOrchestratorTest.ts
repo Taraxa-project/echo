@@ -178,7 +178,7 @@ describe("DiamondTest", async function () {
             const selectorToRemove = getSelectors(registryFacetTest).get(["getIngester(address)"]);
             const selectorToAdd = getSelectors(RegistryFacet).get(["getIngester(address)"]);
           
-            const oldFacetAddress = addresses[3]; // assuming the old RegistryFacet address is stored at index 0
+            const oldFacetAddress = addresses[3]; // assuming the old RegistryFacet address is stored at index 3
           
             tx = await diamondCutFacet.diamondCut(
               [
@@ -212,99 +212,5 @@ describe("DiamondTest", async function () {
         });
     });
 
-    describe("GroupManagerFacet", async function () {
-        let groupManagerFacet: GroupManagerFacet;
-        let selectorsAccessControl: any;
-        const message = "Test message";
-        const nonce = 1;
-        let registrationFacet: RegistryFacet;
-
-        before(async function () {
-            let accessControlFacet = await ethers.getContractAt("AccessControlFacet", diamondAddress);
-            selectorsAccessControl = getSelectors(accessControlFacet);
-        
-            // Generate the signature
-            registrationFacet = await ethers.getContractAt("RegistryFacet", diamondAddress);
-            const hash = ethers.utils.solidityKeccak256(["address", "string", "uint256"], [ingester.address, message, nonce]);
-            const signature = await controller.signMessage(ethers.utils.arrayify(hash));
-        
-            // Register ingester
-            await registrationFacet.registerIngester(ingester.address, message, nonce, signature);
-        });
-
-        it("should add group manager functions", async () => {
-            const GroupManagerFacet = await ethers.getContractFactory("GroupManagerFacet");
-            const groupManagerFacet = await GroupManagerFacet.deploy();
-            await groupManagerFacet.deployed();
-            addresses.push(groupManagerFacet.address);
-            const selectorsGroupManager = getSelectors(groupManagerFacet);
-
-            // Remove AccessControlFacet selectors from GroupManagerFacet selectors
-            const selectorsGroupManagerAdd = selectorsGroupManager.filter(
-                (selector: any) => !selectorsAccessControl.includes(selector)
-            );
-         
-            tx = await diamondCutFacet.diamondCut(
-            [
-                {
-                facetAddress: groupManagerFacet.address,
-                action: FacetCutAction.Add,
-                functionSelectors: selectorsGroupManagerAdd,
-                },
-            ],
-            ethers.constants.AddressZero,
-            "0x",
-            { gasLimit: 800000 }
-            );
-            receipt = await tx.wait();
-            if (!receipt.status) {
-            throw Error(`Diamond upgrade failed: ${tx.hash}`);
-            }
-            result = await diamondLoupeFacet.facetFunctionSelectors(groupManagerFacet.address);
-            assert.sameMembers(result, selectorsGroupManagerAdd);
-        });
-
-        it("should add have initialized group manager constants correctly", async () => {
-            let groupManagerFacet = await ethers.getContractAt("GroupManagerFacet", diamondAddress);
-            let maxClusterSizeRes = await groupManagerFacet.getMaxClusterSize();
-            let maxGroupsPerIngesterRes = await groupManagerFacet.getMaxGroupsPerIngester();
-            let maxIngestersPerGroupRes = await groupManagerFacet.getMaxIngestersPerGroup();
-
-            expect(maxClusterSize == BigNumber.from(maxClusterSizeRes).toNumber());
-            expect(maxGroupsPerIngester == BigNumber.from(maxGroupsPerIngesterRes).toNumber());
-            expect(maxIngestersPerGroup == BigNumber.from(maxIngestersPerGroupRes).toNumber());
-        });
-
-        it("should add group to ingester and cluster", async () => {
-            let groupToAdd = 'group1';
-            let groupManagerFacet = await ethers.getContractAt("GroupManagerFacet", diamondAddress);
-            let tx = await groupManagerFacet.addGroup(groupToAdd);
-            let txGroup = await tx.wait();
-
-            expect(txGroup).to.emit(diamondAddress, "AddGroup")
-                .withArgs(groupToAdd)
-                .and.to.emit(diamondAddress, "GroupDistributed")
-                .withArgs(0, groupToAdd);
-
-            let group = await groupManagerFacet.getGroup(groupToAdd);
-
-            expect(group.isAdded).to.be.true;
-            expect(group.ingesterAddresses).to.include(ingester.address);
-            expect(BigNumber.from(group.clusterId).toNumber() == 0);
-        });
-
-        it("should remove group from ingester", async () => {
-            let groupToRemove = 'group1';
-            let groupManagerFacet = await ethers.getContractAt("GroupManagerFacet", diamondAddress);
-            let tx = await groupManagerFacet.removeGroup(groupToRemove);
-            let txGroup = await tx.wait();
-
-            expect(txGroup).to.emit(diamondAddress, "RemoveGroup").withArgs(groupToRemove);
-
-            let group = await groupManagerFacet.getGroup(groupToRemove);
-
-            expect(group.isAdded).to.be.false;
-        });
-    });
 });
   

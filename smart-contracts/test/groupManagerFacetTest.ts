@@ -54,8 +54,9 @@ describe("Testing Group Manager", async function () {
     //constants
     const message = "Test message";
     const nonce = 1;
-    const maxAllocatableGroups: number = maxClusterSize * maxGroupsPerIngester;
-    let numIngesters: number = 3;
+    let numIngesters: number = 300;
+    const maxAllocatableGroups: number = numIngesters * maxGroupsPerIngester;
+    console.log("🚀 ~ file: groupManagerFacetTest.ts:59 ~ maxAllocatableGroups:", maxAllocatableGroups)
     const numIngestersToRemove = 2;
     const verbose = false;
 
@@ -98,14 +99,6 @@ describe("Testing Group Manager", async function () {
             ingesterToController[accounts[i].address] = accounts[i-1];
             ingesters.push(accounts[i]);
         }
-
-        // console.log("🚀 ~ file: registryFacetTest.ts:326 ~ maxAllocatableGroups:", maxAllocatableGroups)
-        // for (let i = 0; i < maxAllocatableGroups; i++ ) {
-        //     await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
-        //     const group = await groupManagerFacet.getGroup(`group${i}`);
-        //     expect(group.isAdded).to.be.true;
-        //     expect(group.ingesterAddresses.length <= maxGroupsPerIngester)
-        // }
     });
         
     it("should set maxNumberIngesterPerGroup correctly with deployment", async () => {

@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
-import "../interfaces/IIngesterRegistration.sol";
+import { LibAppStorageTest, AppStorageTest } from  "../libraries/LibAppStorageUpgradeTest.sol";
+import "../../interfaces/IIngesterRegistration.sol";
 import "@solidstate/contracts/cryptography/ECDSA.sol";
-import "@solidstate/contracts/access/access_control/AccessControl.sol";
-import "./AccessControlFacet.sol";
-import "./CommonFunctionsFacet.sol";
+import "./AccessControlFacetTest.sol";
+import "./CommonFunctionsFacetTest.sol";
 
 
-contract RegistryFacetTest is IIngesterRegistration, AccessControlFacet, CommonFunctionsFacet {
+contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, CommonFunctionsFacetTest {
 
     function registerIngester(
         address ingesterAddress, 
@@ -29,7 +28,7 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacet, CommonF
         //slither possible re-rentrancy attack. Making an external call before modifying contract storage
         //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
         // is this still a risk? I will always have to change the ingester storage clusterId after external call
-        uint256 clusterId = LibAppStorage.addIngesterToCluster(ingesterAddress, controllerAddress);
+        uint256 clusterId = LibAppStorageTest.addIngesterToCluster(ingesterAddress, controllerAddress);
 
         Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, clusterId);
 
@@ -39,8 +38,8 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacet, CommonF
         s.ingesterToController[ingesterAddress] = IIngesterRegistration.IngesterToController(controllerAddress, s.controllerToIngesters[controllerAddress].length - 1, s.ingesterAddresses.length - 1);
         ++s.ingesterCount;
 
-        _grantRole(LibAppStorage.INGESTER_ROLE, ingesterAddress);
-        _grantRole(LibAppStorage.CONTROLLER_ROLE, controllerAddress);
+        _grantRole(LibAppStorageTest.INGESTER_ROLE, ingesterAddress);
+        _grantRole(LibAppStorageTest.CONTROLLER_ROLE, controllerAddress);
 
         emit IIngesterRegistration.IngesterRegistered(controllerAddress, ingesterAddress);
     }
@@ -99,10 +98,10 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacet, CommonF
             //slither possible re-rentrancy attack. Making an external call before modifying contract storage
             //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
             // is this still a risk? I will always have to change the ingester storage clusterId after external call
-            LibAppStorage.removeIngesterFromGroups(clusterId, ingesterAddress);
+            LibAppStorageTest.removeIngesterFromGroups(clusterId, ingesterAddress);
 
             // Remove Ingester from Cluster
-            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
+            LibAppStorageTest.removeIngesterFromCluster(ingesterAddress, clusterId);
         } else if (numIngestersPerController > 1) {
             //if there is more ingesters for this controller, only remove the desired ingester
             _revokeRole("INGESTER_ROLE", ingesterAddress);
@@ -117,15 +116,15 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacet, CommonF
             s.controllerToIngesters[controllerAddress].pop();
             delete s.ingesterToController[ingesterAddress];
 
-            LibAppStorage.removeIngesterFromGroups(clusterId, ingesterAddress);
+            LibAppStorageTest.removeIngesterFromGroups(clusterId, ingesterAddress);
 
             //Remove Ingester from Cluster
-            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
+            LibAppStorageTest.removeIngesterFromCluster(ingesterAddress, clusterId);
 
         }
         emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
 
-        LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
+        LibAppStorageTest.AddToUnAllocateGroups(ingesterAssignedGroups);
     }
 
 }

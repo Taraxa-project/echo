@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./AccessControlFacet.sol";
-import "./CommonFunctionsFacet.sol";
-import "../interfaces/IIngesterDataGathering.sol";
-import { AppStorage } from "../libraries/LibAppStorage.sol";
+import "./AccessControlFacetTest.sol";
+import "./CommonFunctionsFacetTest.sol";
+import "../../interfaces/IIngesterDataGathering.sol";
+import { AppStorageTest } from "../libraries/LibAppStorageUpgradeTest.sol";
 
-contract DataGatheringFacet is AccessControlFacet, CommonFunctionsFacet, IIngesterDataGathering {
+contract DataGatheringFacetTest is AccessControlFacetTest, CommonFunctionsFacetTest, IIngesterDataGathering {
+    // AppStorageTest internal s;
+
      /**
      * @notice Adds IPFS hashes for a registered ingester.
      * @dev Can only be called by a registered ingester.
