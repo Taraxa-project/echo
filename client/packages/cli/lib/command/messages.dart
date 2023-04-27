@@ -54,6 +54,7 @@ class TelegramCommandMessages extends Command {
           contractAddress: globalResults!.command!['ingester-contract-address'],
           contractRpcUrl: globalResults!.command!['ingester-contract-rpc-url'],
           configPath: globalResults!.command!['config-path'],
+          walletPrivateKey: globalResults!.command!['wallet-private-key'],
         ),
         debugName: 'IngesterContractIsolater',
       );

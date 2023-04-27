@@ -67,7 +67,6 @@ persistence:
 # set to false when providing secrets externally i.e. thru SealedSecrets
 appSecret:
   create: true
-  privateKeyIngester: ""
 
 configEnvs:
   PATH_TD_JSON_LIB: /usr/local/lib/libtdjsonlc.so
@@ -114,3 +113,9 @@ secretEnvs:
   PROXY_OPTION_2: ""
   PROXY_OPTION_3: ""
   PROXY_OPTION_4: ""
+
+  WALLET_PRIVATE_KEY_0: ""
+  WALLET_PRIVATE_KEY_1: ""
+  WALLET_PRIVATE_KEY_2: ""
+  WALLET_PRIVATE_KEY_3: ""
+  WALLET_PRIVATE_KEY_4: ""

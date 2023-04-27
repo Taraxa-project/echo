@@ -17,6 +17,9 @@ PHONE=${!PHONE_VAR_NAME}
 PROXY_OPTION_VAR_NAME="PROXY_OPTION_$HOSTNAME_INDEX"
 PROXY_OPTION=${!PROXY_OPTION_VAR_NAME}
 
+WALLET_PRIVATE_KEY_VAR_NAME="WALLET_PRIVATE_KEY_$HOSTNAME_INDEX"
+WALLET_PRIVATE_KEY=${!WALLET_PRIVATE_KEY_VAR_NAME}
+
 /app/echo \
     --api-id $API_ID \
     --api-hash $API_HASH \
@@ -31,6 +34,7 @@ PROXY_OPTION=${!PROXY_OPTION_VAR_NAME}
     --run-forever $RUN_FOREVER \
     --table-dump-path $TABLE_DUMP_PATH \
     --config-path $CONFIG_PATH \
+    --wallet-private-key $WALLET_PRIVATE_KEY \
     --ingester-contract-rpc-url $INGESTER_CONTRACT_RPC_URL \
     --ingester-contract-address $INGESTER_CONTRACT_ADDRESS \
     --ipfs-cron-schedule "$IPFS_CRON_SCHEDULE" \

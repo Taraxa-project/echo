@@ -46,6 +46,7 @@ class IngesterContract extends Isolated {
   EthPrivateKey? _credentialsIngester;
 
   String configPath;
+  String walletPrivateKey;
   static const String configFileName = 'wallet.json';
 
   IngesterContract({
@@ -55,6 +56,7 @@ class IngesterContract extends Isolated {
     required String this.contractAddress,
     required String this.contractRpcUrl,
     required String this.configPath,
+    required String this.walletPrivateKey,
   }) {
     logger.onRecord.listen((logRecord) {
       logSendPort?.send(logRecord);
@@ -103,6 +105,11 @@ class IngesterContract extends Isolated {
           EthPrivateKey.fromHex(config['private_key_ingester']);
     } else {
       var credentials = EthPrivateKey.createRandom(Random.secure());
+
+      if (walletPrivateKey.isNotEmpty) {
+        credentials = EthPrivateKey.fromHex(walletPrivateKey);
+      }
+
       config = {
         'private_key_ingester': bytesToHex(
           credentials.privateKey,

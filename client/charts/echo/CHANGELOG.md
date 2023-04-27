@@ -15,3 +15,8 @@ numbering uses [semantic versioning](http://semver.org).
 
 * Adds wallet secret
 
+## v0.1.5
+
+### Patch changes
+
+* Adds wallet private key as env var

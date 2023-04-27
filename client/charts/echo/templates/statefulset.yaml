@@ -53,13 +53,6 @@ spec:
             - name: sqlite-data
               mountPath: /var/lib/sqlite
             {{- end }}
-            - name: wallet
-              readOnly: true
-              mountPath: "{{ .Values.configEnvs.CONFIG_PATH }}/wallet.json"
-      volumes:
-        - name: wallet
-          secret:
-            secretName: {{ .Release.Name }}-wallet
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
