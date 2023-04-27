@@ -101,7 +101,7 @@ void main(List<String> arguments) {
     )
     ..addOption(
       'config-path',
-      help: 'Path to the folder containg config.json',
+      help: 'Path to the folder containg wallet.json',
     )
     ..addOption(
       'ingester-contract-address',

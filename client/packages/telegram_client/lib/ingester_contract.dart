@@ -46,7 +46,7 @@ class IngesterContract extends Isolated {
   EthPrivateKey? _credentialsIngester;
 
   String configPath;
-  static const String configFileName = 'config.json';
+  static const String configFileName = 'wallet.json';
 
   IngesterContract({
     Level? super.logLevel,
