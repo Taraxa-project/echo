@@ -34,7 +34,6 @@ contract CommonFunctionsFacetTest {
             s.ingesterClusters[clusterId].clusterGroupCount,
             s.ingesterClusters[clusterId].clusterRemainingCapacity
         );
-      
         return clusterSlim;
     }
 
@@ -42,11 +41,10 @@ contract CommonFunctionsFacetTest {
         return s.ingesterCount;
     }
 
-    function getIngester(address ingesterAddress) public view returns (IIngesterRegistration.Ingester memory) {
+    function getIngester(address ingesterAddress) public view virtual returns (IIngesterRegistration.Ingester memory) {
         require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
-
         return s.controllerToIngesters[controller][ingesterIndex];
     }
 

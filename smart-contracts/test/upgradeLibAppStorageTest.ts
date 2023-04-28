@@ -15,7 +15,7 @@ import { deployDiamond, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGro
 import {
     addFacetsToDiamond,
     IngesterControllerMapping,
-    removeFacetsToDiamond
+    removeFacetsFromDiamond
  } from "./testUtils/testUtils";
 import { BigNumber } from "ethers";
 
@@ -86,6 +86,104 @@ describe("Diamond Upgrade", () => {
     // ...
   });
 
+  it("upgrades LibAppStorage only with partial facets", async () => {
+
+    // Get the ingester data before the upgrade
+    let ingestersBeforeUpgrade = []
+    for (let i = 0; i < ingesters.length; i++) {
+        const ingesterBeforeUpgrade = await registryFacet.getIngester(ingesters[i].address);
+        ingestersBeforeUpgrade.push(ingesterBeforeUpgrade);
+        expect(ingesterBeforeUpgrade.verified).to.be.true;
+    }
+
+    // Remove the existing facets
+    // let facetNames = ["GroupManagerFacet", "RegistryFacet", "DataGatheringFacet"];
+    let facetNames: string[] = [];
+    let sharedFacets = [ "CommonFunctionsFacet"]; // "AccessControlFacet",
+    addresses = await removeFacetsFromDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets)
+
+
+    //Deploy and add the new facets with the new libAppStorage 
+    // let newFacetNames = ["GroupManagerFacetTest", "RegistryFacetTest", "DataGatheringFacetTest"];
+    let newFacetNames: string[] = []
+    let newSharedFacets = ["CommonFunctionsFacetTest"]; //"AccessControlFacetTest", 
+    addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, newFacetNames, newSharedFacets);
+
+    // Check if the new facet has the replaced function
+    let newCommonFunctionsFacet = await ethers.getContractAt("CommonFunctionsFacetTest", diamondAddress);
+
+    //Test that ingesters storage before update has persisted
+    let ingesterCount = await newCommonFunctionsFacet.getIngesterCount();
+    assert.strictEqual(BigNumber.from(ingesterCount).toNumber(), ingesters.length);
+
+    // new ingesters() function only returns one ingester instead of all the ingesters
+    let newIngestersRes = await newCommonFunctionsFacet.getIngesters();
+    assert.strictEqual(newIngestersRes.length, 1);
+
+    await newCommonFunctionsFacet.setTestProperty(true);
+    let newTestProperty = await newCommonFunctionsFacet.getTestProperty();
+    assert.isTrue(newTestProperty);
+
+    // Check that the new LibAppStorage is being used and any related state changes
+    // Check that ingester data is still the same after upgrade
+    let ingestersAfterUpgrade = []
+    for (let i = 0; i < ingesters.length; i++) {
+        const ingesterAfterUpgrade = await newCommonFunctionsFacet.getIngester(ingesters[i].address);
+        ingestersAfterUpgrade.push(ingesterAfterUpgrade);
+        expect(ingesterAfterUpgrade.verified).to.be.true;
+    }
+    assert.sameDeepMembers(ingestersAfterUpgrade, ingestersBeforeUpgrade);
+  });
+
+  it("upgrades LibAppStorage only with partial facets", async () => {
+
+    // Get the ingester data before the upgrade
+    let ingestersBeforeUpgrade = []
+    for (let i = 0; i < ingesters.length; i++) {
+        const ingesterBeforeUpgrade = await registryFacet.getIngester(ingesters[i].address);
+        ingestersBeforeUpgrade.push(ingesterBeforeUpgrade);
+        expect(ingesterBeforeUpgrade.verified).to.be.true;
+    }
+
+    // Remove the existing facets
+    // let facetNames = ["GroupManagerFacet", "RegistryFacet", "DataGatheringFacet"];
+    let facetNames: string[] = [];
+    let sharedFacets = [ "AccessControlFacet", "CommonFunctionsFacet"]; // "AccessControlFacet",
+    addresses = await removeFacetsFromDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets)
+
+
+    //Deploy and add the new facets with the new libAppStorage 
+    // let newFacetNames = ["GroupManagerFacetTest", "RegistryFacetTest", "DataGatheringFacetTest"];
+    let newFacetNames: string[] = []
+    let newSharedFacets = ["AccessControlFacetTest", "CommonFunctionsFacetTest"]; //"AccessControlFacetTest", 
+    addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, newFacetNames, newSharedFacets);
+
+    // Check if the new facet has the replaced function
+    let newCommonFunctionsFacet = await ethers.getContractAt("CommonFunctionsFacetTest", diamondAddress);
+
+    //Test that ingesters storage before update has persisted
+    let ingesterCount = await newCommonFunctionsFacet.getIngesterCount();
+    assert.strictEqual(BigNumber.from(ingesterCount).toNumber(), ingesters.length);
+
+    // new ingesters() function only returns one ingester instead of all the ingesters
+    let newIngestersRes = await newCommonFunctionsFacet.getIngesters();
+    assert.strictEqual(newIngestersRes.length, 1);
+
+    await newCommonFunctionsFacet.setTestProperty(true);
+    let newTestProperty = await newCommonFunctionsFacet.getTestProperty();
+    assert.isTrue(newTestProperty);
+
+    // Check that the new LibAppStorage is being used and any related state changes
+    // Check that ingester data is still the same after upgrade
+    let ingestersAfterUpgrade = []
+    for (let i = 0; i < ingesters.length; i++) {
+        const ingesterAfterUpgrade = await newCommonFunctionsFacet.getIngester(ingesters[i].address);
+        ingestersAfterUpgrade.push(ingesterAfterUpgrade);
+        expect(ingesterAfterUpgrade.verified).to.be.true;
+    }
+    assert.sameDeepMembers(ingestersAfterUpgrade, ingestersBeforeUpgrade);
+  });
+
   it("upgrades LibAppStorage and retains ingester data", async () => {
 
     // Get the ingester data before the upgrade
@@ -99,13 +197,12 @@ describe("Diamond Upgrade", () => {
     // Remove the existing facets
     let facetNames = ["GroupManagerFacet", "RegistryFacet", "DataGatheringFacet"];
     let sharedFacets = ["AccessControlFacet", "CommonFunctionsFacet"];
-    addresses = await removeFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets)
+    addresses = await removeFacetsFromDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets)
 
 
     //Deploy and add the new facets with the new libAppStorage 
     let newFacetNames = ["GroupManagerFacetTest", "RegistryFacetTest", "DataGatheringFacetTest"];
     let newSharedFacets = ["AccessControlFacetTest", "CommonFunctionsFacetTest"];
-    console.log("🚀 ~ file: updateLibAppStorageTest.ts:162 ~ it ~ newSharedFacets:", newSharedFacets)
     addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, newFacetNames, newSharedFacets);
    
     // Check if the new facet has the replaced function
@@ -121,7 +218,6 @@ describe("Diamond Upgrade", () => {
 
     await newCommonFunctionsFacet.setTestProperty(true);
     let newTestProperty = await newCommonFunctionsFacet.getTestProperty();
-    console.log("🚀 ~ file: updateLibAppStorageTest.ts:158 ~ it ~ newTestProperty:", newTestProperty)
     assert.isTrue(newTestProperty);
 
 

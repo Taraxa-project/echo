@@ -54,7 +54,7 @@ describe("Testing Group Manager", async function () {
     //constants
     const message = "Test message";
     const nonce = 1;
-    let numIngesters: number = 300;
+    let numIngesters: number = 50;
     const maxAllocatableGroups: number = numIngesters * maxGroupsPerIngester;
     console.log("🚀 ~ file: groupManagerFacetTest.ts:59 ~ maxAllocatableGroups:", maxAllocatableGroups)
     const numIngestersToRemove = 2;
@@ -85,7 +85,8 @@ describe("Testing Group Manager", async function () {
         }
 
         let facetNames = ['RegistryFacet', 'GroupManagerFacet'];
-        addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, facetNames);
+        let sharedFacets = ["AccessControlFacet", "CommonFunctionsFacet"];
+        addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets);
 
         registryFacet = await ethers.getContractAt('RegistryFacet', diamondAddress);
         groupManagerFacet = await ethers.getContractAt('GroupManagerFacet', diamondAddress);

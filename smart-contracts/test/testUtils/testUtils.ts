@@ -52,13 +52,11 @@ export async function addRegistrationFacet(addresses: string[], diamondCutFacet:
     return registryFacet;
 }
 
-export async function removeFacetsToDiamond(addresses: string[], diamondCutFacet: DiamondCutFacet, diamondAddress: string, FacetNames: string[], SharedFacets: string[]) {
+export async function removeFacetsFromDiamond(addresses: string[], diamondCutFacet: DiamondCutFacet, diamondAddress: string, FacetNames: string[], SharedFacets: string[]) {
     const facetCuts = [];
     FacetNames = FacetNames.concat(SharedFacets);
 
     for (const FacetName of FacetNames) {
-        console.log(`Removing facet: ${FacetName}`);
-
         const facetFactory = await ethers.getContractFactory(FacetName);
         const facetSelectors = getSelectors(facetFactory);
 
@@ -81,7 +79,7 @@ export async function removeFacetsToDiamond(addresses: string[], diamondCutFacet
         addresses = addresses.filter(address => address !== facetToRemove.address);
         let selectorsToRemove = getSelectors(facetToRemove);
         
-        //remove the shared facets from the facetNames so you don't remove shared functions more than once
+        //remove the shared facets from the inherited facets so you don't remove shared functions more than once
         if (!SharedFacets.includes(FacetName)) {
             for (const sharedFacet of SharedFacets) {
                 let sharedFacetContract = await ethers.getContractFactory(sharedFacet);
@@ -122,7 +120,6 @@ export async function addFacetsToDiamond(addresses: string[], diamondCutFacet: D
         const facet = await Facet.deploy();
         await facet.deployed();
         addresses.push(facet.address);
-        console.log(`${FacetName} deployed: ${facet.address}`);
         
         let selectorsToAdd = getSelectors(facet);
         if (!SharedFacets.includes(FacetName)) {

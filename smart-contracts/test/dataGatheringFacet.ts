@@ -67,7 +67,8 @@ describe('Add IPFS Hashes', function () {
         );
         
         let facetNames = ['RegistryFacet', 'DataGatheringFacet'];
-        addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, facetNames);
+        let sharedFacets = ["AccessControlFacet", "CommonFunctionsFacet"];
+        addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets);
 
         registryFacet = await ethers.getContractAt('RegistryFacet', diamondAddress);
         dataGatheringFacet = await ethers.getContractAt('DataGatheringFacet', diamondAddress);

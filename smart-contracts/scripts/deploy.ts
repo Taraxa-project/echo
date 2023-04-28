@@ -9,12 +9,10 @@ import { getSelectors, FacetCutAction } from "./libraries/diamond";
 
 export let DiamondAddress: string;
 export const maxClusterSize = 3;
-export const maxGroupsPerIngester = 50;
+export const maxGroupsPerIngester = 200;
 export const maxIngestersPerGroup = 1;
 
 export async function deployDiamond(verbose=false) {
-
-
   const accounts = await ethers.getSigners();
   const contractOwner = accounts[0];
 

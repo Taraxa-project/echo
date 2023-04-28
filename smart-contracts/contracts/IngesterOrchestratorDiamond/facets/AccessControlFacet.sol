@@ -13,24 +13,46 @@ contract AccessControlFacet is AccessControl {
         _;
     }
 
+    /**
+    * @notice Modifier to enforce that the caller is a registered ingester.
+    */
     modifier onlyRegisteredIngester() {
         require(_hasRole(LibAppStorage.INGESTER_ROLE, msg.sender), "LibAppStorage: Not a registered ingester");
         _;
     }
 
+    /**
+    * @notice Modifier to enforce that the caller is a registered controller.
+    */
     modifier onlyRegisteredController() {
         require(_hasRole(LibAppStorage.CONTROLLER_ROLE, msg.sender), "LibAppStorage: Not a registered controller");
         _;
     }
 
+    /**
+    * @notice Checks if an address is a registered ingester.
+    * @param ingesterAddress The address to check for ingester registration.
+    * @return A boolean indicating if the address is a registered ingester.
+    */
     function isRegisteredIngester(address ingester) public view returns (bool) {
         return _hasRole(LibAppStorage.INGESTER_ROLE, ingester);
     }
 
+    /**
+    * @notice Checks if an address is a registered controller.
+    * @param _controllerAddress The address to check for controller registration.
+    * @return A boolean indicating if the address is a registered controller.
+    */
     function isRegisteredController(address controller) public view returns (bool) {
         return _hasRole(LibAppStorage.INGESTER_ROLE, controller);
     }
 
+    /**
+    * @notice Checks if an ingester is owned by a controller.
+    * @param ingester The address of the ingester to check.
+    * @param controller The address of the controller to check.
+    * @return A boolean indicating if the ingester is owned by the controller.
+    */
     function isIngesterOwnedByController(address ingester, address controller) public view returns (bool) {
         AppStorage storage s = LibAppStorage.appStorage();
         return s.ingesterToController[ingester].controllerAddress == controller;

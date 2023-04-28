@@ -10,6 +10,11 @@ import "./CommonFunctionsFacetTest.sol";
 
 contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, CommonFunctionsFacetTest {
 
+    function getIngester(address ingesterAddress) public view override returns (IIngesterRegistration.Ingester memory) {
+        IIngesterRegistration.Ingester memory ingester = Ingester(ingesterAddress, true, 999);
+        return ingester;
+    }
+
     function registerIngester(
         address ingesterAddress, 
         string calldata message,

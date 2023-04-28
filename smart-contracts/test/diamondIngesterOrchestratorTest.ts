@@ -13,25 +13,25 @@ import {
     OwnershipFacet,
     RegistryFacet,
     Test1Facet,
+    NotContractOwner
     } from "../typechain-types";
 import { deployDiamond, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deploy";
-import { IDiamondLoupe } from "../typechain-types/contracts/IngesterOrchestratorDiamond/facets/DiamondLoupeFacet";
 
 import { ethers } from "hardhat";
 
 import { BigNumber, ContractReceipt } from "ethers";
 import { assert, expect } from "chai";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { Sign } from "crypto";
+import { addFacetsToDiamond, removeFacetsFromDiamond } from "./testUtils/testUtils";
   
-describe("DiamondTest", async function () {
+describe("Ingester Orchestrator Diamond Tests", async function () {
     let diamondCutFacet: DiamondCutFacet;
     let diamondLoupeFacet: DiamondLoupeFacet;
     let ownershipFacet: OwnershipFacet;
     let tx;
     let receipt: ContractReceipt;
     let result;
-    const addresses: string[] = [];
+    let addresses: string[] = [];
     let diamondAddress: string;
     let accounts: SignerWithAddress[];
     let controller: SignerWithAddress;
@@ -212,5 +212,56 @@ describe("DiamondTest", async function () {
         });
     });
 
+    describe("ownership", function () {
+      let registryFacet: RegistryFacet;
+      let newOwner: SignerWithAddress;
+
+      before(async function () {
+        accounts = await ethers.getSigners();
+        newOwner = accounts[1];
+
+        // const diamonDeployed = await deployDiamond();
+        // diamondAddress = diamonDeployed.diamondAddress;
+        // contractOwner = diamonDeployed.contractOwner;
+
+        let facetNames = ['GroupManagerFacet', 'DataGatheringFacet'];
+        let sharedFacets = ["AccessControlFacet", "CommonFunctionsFacet"];
+        await removeFacetsFromDiamond(addresses, diamondCutFacet, diamondAddress, ["RegistryFacet"], sharedFacets)
+        addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets);
+        registryFacet = await ethers.getContractAt("RegistryFacet", diamondAddress);
+    });
+
+
+      it("should transfer ownership", async function () {
+          let diamond = (await ethers.getContractAt(
+            "OwnershipFacet",
+            diamondAddress,
+            contractOwner
+          )) as OwnershipFacet;
+
+          let currentOwner = await diamond.owner();
+
+          let tx = await diamond.transferOwnership(newOwner.address);
+          await tx.wait();
+          await expect(tx).to.emit(diamond, "OwnershipTransferred");
+          let modOwner = await diamond.owner();
+          expect(await diamond.owner()).to.equal(newOwner.address);
+      });
+  
+      it("should not allow non-admin to transfer ownership", async function () {
+
+        console.log('starting the failing test');
+        let diamond = (await ethers.getContractAt(
+          "OwnershipFacet",
+          diamondAddress
+        )) as OwnershipFacet;
+
+        let currentOwner = await diamond.owner();
+        console.log("🚀 ~ file: diamondIngesterOrchestratorTest.ts:243 ~ currentOwner:", currentOwner)
+        const expectedError = "NotContractOwner";
+
+        await expect(diamond.transferOwnership(newOwner.address)).to.be.revertedWithCustomError(diamond, 'NotContractOwner');
+      });
+    });
 });
   

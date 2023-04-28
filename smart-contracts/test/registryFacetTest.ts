@@ -215,6 +215,7 @@ describe("Testing Registration with pre-populated data", async function () {
     const maxAllocatableGroups: number = maxClusterSize * maxGroupsPerIngester;
 
     const verbose = false;
+    
     beforeEach(async function () {
         accounts = await ethers.getSigners();
 
@@ -240,7 +241,8 @@ describe("Testing Registration with pre-populated data", async function () {
         }
 
         let facetNames = ['RegistryFacet', 'GroupManagerFacet'];
-        addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, facetNames);
+        let sharedFacets = ["AccessControlFacet", "CommonFunctionsFacet"];
+        addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets);
 
         registryFacet = await ethers.getContractAt('RegistryFacet', diamondAddress);
         groupManagerFacet = await ethers.getContractAt('GroupManagerFacet', diamondAddress);

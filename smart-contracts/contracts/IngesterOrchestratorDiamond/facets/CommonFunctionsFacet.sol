@@ -10,14 +10,27 @@ import "../interfaces/IIngesterRegistration.sol";
 contract CommonFunctionsFacet {
     AppStorage internal s;
     
+    /**
+    * @notice Retrieves the list of unallocated groups.
+    * @return An array of unallocated group usernames.
+    */
     function getUnallocatedGroups() external view returns(string[] memory) {
-        return LibAppStorage.getUnallocatedGroups();
+        return s.unAllocatedGroups;
     }
 
+    /**
+    * @notice Retrieves the list of cluster IDs.
+    * @return An array of cluster IDs.
+    */
     function getClusters() external view returns (uint256[] memory){
         return s.clusterIds;
     }
 
+    /**
+    * @notice Retrieves the details of a cluster by its ID.
+    * @param clusterId The ID of the cluster to retrieve.
+    * @return ClusterSlim struct containing the cluster's details.
+    */
     function getCluster(uint256 clusterId) external view returns (IIngesterGroupManager.ClusterSlim memory) {
         IIngesterGroupManager.ClusterSlim memory clusterSlim = IIngesterGroupManager.ClusterSlim(
             s.ingesterClusters[clusterId].ingesterAddresses,
@@ -32,6 +45,11 @@ contract CommonFunctionsFacet {
         return s.ingesterCount;
     }
 
+    /**
+    * @notice Retrieves the details of a registered ingester.
+    * @param ingesterAddress The address of the registered ingester.
+    * @return An Ingester struct containing the ingester's details.
+    */
     function getIngester(address ingesterAddress) public view returns (IIngesterRegistration.Ingester memory) {
         require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
@@ -40,10 +58,20 @@ contract CommonFunctionsFacet {
         return s.controllerToIngesters[controller][ingesterIndex];
     }
 
+    /**
+    * @notice Retrieves the addresses of all registered ingesters.
+    * @return An address aray containing the registered ingesters.
+    */
     function getIngesters() public view returns (address[] memory) {
-        return LibAppStorage.getIngesters();
+        address[] memory ingesterAddresses = s.ingesterAddresses;
+        return ingesterAddresses;
     }
 
+    /**
+    * @notice Retrieves the details of a registered ingester including assigned groups.
+    * @param ingesterAddress The address of the registered ingester.
+    * @return An IngesterWithGroups struct containing the ingester's details and its assigned groups.
+    */
     function getIngesterWithGroups(address ingesterAddress) public view returns (IIngesterRegistration.IngesterWithGroups memory) {
         require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist.");
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;

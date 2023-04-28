@@ -43,7 +43,11 @@ library LibAppStorage {
     function appStorage() internal pure returns (AppStorage storage ds) {    
         assembly { ds.slot := 0 }
     }
-
+    
+    /**
+    * @notice Adds a list of group names to the unallocated groups.
+    * @param groups An array of group names to be added to the unallocated groups.
+    */
     function AddToUnAllocateGroups(string[] memory groups) internal {
         AppStorage storage s = appStorage();
 
@@ -55,17 +59,22 @@ library LibAppStorage {
         emit UnAllocatedGroupsAdded(groups);
     }
 
+    /**
+    * @notice Retrieves the list of unallocated groups.
+    * @return An array of unallocated group usernames.
+    */
     function getUnallocatedGroups() internal view returns(string[] memory) {
         AppStorage storage s = appStorage();
         return s.unAllocatedGroups;
     }
 
-    function getIngesters() internal view returns (address[] memory) {
-        AppStorage storage s = appStorage();
-        address[] memory ingesterAddresses = s.ingesterAddresses;
-        return ingesterAddresses;
-    }
 
+    /**
+    * @notice Adds an ingester to a cluster.
+    * @param ingesterAddress The address of the ingester to be added.
+    * @param controllerAddress The address of the controller responsible for the ingester.
+    * @return The ID of the cluster the ingester was added to.
+    */
     function addIngesterToCluster(address ingesterAddress, address controllerAddress) internal returns(uint256) {
         AppStorage storage s = appStorage();
 
@@ -84,7 +93,13 @@ library LibAppStorage {
         return clusterId;
     }
 
-     function getAvailableCluster(address ingesterAddress, address controllerAddress) internal returns (uint256) {
+    /**
+     * @dev Returns the available cluster for a given ingester and controller address.
+     * @param ingesterAddress The address of the ingester.
+     * @param controllerAddress The address of the controller.
+     * @return The available cluster ID.
+     */
+    function getAvailableCluster(address ingesterAddress, address controllerAddress) internal returns (uint256) {
         AppStorage storage s = appStorage();
 
         uint256 availableCluster = 0;
@@ -135,6 +150,11 @@ library LibAppStorage {
         }
     }
 
+    /**
+    * @notice Removes an ingester from a list of groups.
+    * @param clusterId The cluster ID that the ingesterAddress is assigned to.
+    * @param ingesterAddress The address of the ingester to be removed.
+    */
     function removeIngesterFromGroups(uint256 clusterId, address ingesterAddress) internal {
         AppStorage storage s = LibAppStorage.appStorage();
 
@@ -156,6 +176,11 @@ library LibAppStorage {
         }
     }
 
+    /**
+    * @notice Removes an ingester from a cluster.
+    * @param ingesterAddress The address of the ingester to be removed.
+    * @param clusterId The ID of the cluster the ingester is being removed from.
+    */
     function removeIngesterFromCluster(address ingesterAddress, uint256 clusterId) internal {
         AppStorage storage s = LibAppStorage.appStorage();
 
