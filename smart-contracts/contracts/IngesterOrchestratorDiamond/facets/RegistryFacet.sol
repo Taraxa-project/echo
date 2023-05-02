@@ -15,7 +15,6 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
     * @notice Registers a new ingester with the corresponding controller address.
     * @dev Can only be called by a registered controller.
     * @param ingesterAddress The address of the ingester to be registered.
-    * @param controllerAddress The address of the controller registering the ingester.
     * @param message The message containing ingester and controller addresses.
     * @param nonce The nonce used to generate the signature.
     * @param sig The signature proving the ingester's consent for registration.
@@ -100,7 +99,6 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
     * @notice Unregisters an ingester and removes its association with the controller.
     * @dev Can only be called by a registered controller.
     * @param ingesterAddress The address of the ingester to be unregistered.
-    * @param controllerAddress The address of the controller unregistering the ingester.
     */
     function unRegisterIngester(address ingesterAddress) external onlyRegisteredController {
 

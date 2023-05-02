@@ -30,6 +30,7 @@ import {IngesterControllerMapping,
     checkClusterIsWithinConstraints,
     getClusterMaxGroupsPerIngester
  } from "./testUtils/testUtils";
+import { group } from "console";
 
 
 describe("Testing Group Manager", async function () {
@@ -54,7 +55,7 @@ describe("Testing Group Manager", async function () {
     //constants
     const message = "Test message";
     const nonce = 1;
-    let numIngesters: number = 50;
+    let numIngesters: number = 9;
     const maxAllocatableGroups: number = numIngesters * maxGroupsPerIngester;
     console.log("🚀 ~ file: groupManagerFacetTest.ts:59 ~ maxAllocatableGroups:", maxAllocatableGroups)
     const numIngestersToRemove = 2;
@@ -168,6 +169,7 @@ describe("Testing Group Manager", async function () {
         let totalGroupsConstraint = clusterIds.length * maxClusterSize * getMaxGroupsPerIngester;
         
         for (let i = 0; i < totalGroupsConstraint; i++) {
+            console.log("🚀 ~ file: groupManagerFacetTest.ts:171 ~ it ~ i:", i)
             if(totalGroupsConstraint-1 == i) {
                 expect(await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`)).to.revertedWith("No more ingesters available to add groups to");
             } else {
@@ -355,9 +357,11 @@ describe("Testing Group Manager", async function () {
             expect(group.isAdded).to.be.true;
             expect(group.ingesterAddresses.length <= maxIngestersPerGroup)
         }
+        
 
         let ingesterToRemove = await groupManagerFacet.getIngesterWithGroups(ingesters[0].address);
         let ingesterRemovedAssignedGroups: string[] = ingesterToRemove.assignedGroups;
+        console.log("🚀 ~ Amount of groups that will be remoed when unregistering", ingesterRemovedAssignedGroups.length)
 
         //Most expensive action in the entire flow, time this for reference
         await registryFacet.connect(ingesterToController[ingesters[0].address]).unRegisterIngester(ingesters[0].address);
@@ -372,6 +376,7 @@ describe("Testing Group Manager", async function () {
         let hash = await registryFacet.hash(ingesters[0].address, message, nonce);
         const sig = await ingesterToController[ingesters[0].address].signMessage(ethers.utils.arrayify(hash));
         await registryFacet.connect(ingesterToController[ingesters[0].address]).registerIngester(ingesters[0].address, message, nonce, sig);
+
         //Distribute groups after registration
         let ingesterBeforeDistribution = await groupManagerFacet.getIngesterWithGroups(ingesters[0].address);
         let distributeTx = await groupManagerFacet.connect(ingesterToController[ingesters[0].address]).distributeGroupsToIngester(ingesters[0].address);
@@ -407,9 +412,34 @@ describe("Testing Group Manager", async function () {
             expect(group.isAdded).to.be.true;
             expect(group.ingesterAddresses.length <= maxIngestersPerGroup)
         }
+
+        let clusterIds = await groupManagerFacet.getClusters();
+        for (let i = 0; i < clusterIds.length; i++) {
+            console.log('clusterId:', clusterIds[i]);
+            for (let j = 0; j < ingesters.length; j++) {
+                let ingester = await groupManagerFacet.getIngesterWithGroups(ingesters[j].address);
+                console.log("🚀 ~ file: groupManagerFacetTest.ts:422 ~ it ~ ingester.clusterId:", ingester.clusterId)
+                console.log("🚀 ~ file: groupManagerFacetTest.ts:423 ~ it ~ clusterIds[i]:", clusterIds[i])
+                if (BigNumber.from(ingester.clusterId).toNumber() == BigNumber.from(clusterIds[i]).toNumber()) {
+                    console.log(`ingester from cluster ${clusterIds[i]} has ingester with groups: ${ingester.assignedGroups.length}`);
+                }
+            }
+        }
         
+        let ingesterToRemove = await groupManagerFacet.getIngesterWithGroups(ingesters[indIngesterToRemove].address);
+        console.log("🚀 ~ file: groupManagerFacetTest.ts:415 ~ it ~ ingesterToRemove:", ingesterToRemove.clusterId);
+        let ingesterRemovedAssignedGroups: string[] = ingesterToRemove.assignedGroups;
+        console.log("🚀 ~ Amount of groups that will be removed when unregistering", ingesterRemovedAssignedGroups.length)
+
+        let ingesterToRemove2 = await groupManagerFacet.getIngesterWithGroups(ingesters[indIngesterToRemove].address);
+        console.log("🚀 ~ file: groupManagerFacetTest.ts:415 ~ it ~ ingesterToRemove:", ingesterToRemove2.clusterId);
+        let ingesterRemovedAssignedGroups2: string[] = ingesterToRemove.assignedGroups;
+        console.log("🚀 ~ Amount of groups that will be removed when unregistering", ingesterRemovedAssignedGroups2.length)
+
+
         //Most expensive action in the entire flow, time this for reference
         await registryFacet.connect(ingesterToController[ingesters[indIngesterToRemove].address]).unRegisterIngester(ingesters[indIngesterToRemove].address);
+        console.log('unregistering second ingester');
         await registryFacet.connect(ingesterToController[ingesters[indIngesterToRemove2].address]).unRegisterIngester(ingesters[indIngesterToRemove2].address);
         await groupManagerFacet.distributeUnallocatedGroups();
         await groupManagerFacet.distributeUnallocatedGroups();

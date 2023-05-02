@@ -76,4 +76,17 @@ contract CommonFunctionsFacetTest {
     function getControllerIngesters(address controllerAddress) public view returns (IIngesterRegistration.Ingester[] memory) {
         return s.controllerToIngesters[controllerAddress];
     }
+
+    function divideAndRoundUp(uint256 numerator, uint256 denominator) public pure returns (uint256) {
+        require(denominator != 0, "Division by zero");
+        uint256 result = numerator / denominator;
+        uint256 remainder = numerator % denominator;
+
+        // Check if the remainder is at least half of the denominator to decide whether to round up
+        if (remainder * 2 >= denominator) {
+            result += 1;
+        }
+
+        return result;
+    }
 }

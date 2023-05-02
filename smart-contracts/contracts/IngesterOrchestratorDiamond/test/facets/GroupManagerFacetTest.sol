@@ -33,7 +33,7 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
 
             //formula to apply a balanced distribution of groups across the ingesters
             if (numClusterGroups > 0) {
-                maxGroupsPerIngester = ceilDiv((numClusterGroups + numIngesters - 1), numIngesters);
+                maxGroupsPerIngester = divideAndRoundUp((numClusterGroups + numIngesters - 1), numIngesters);
             }
 
             for (uint256 i = 0; i < numIngesters; ++i) {
@@ -184,7 +184,7 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
 
             //formula to apply a balanced distribution of groups across the ingesters
             if (numClusterGroups > 0) {
-                maxGroupsPerIngester = ceilDiv((numClusterGroups + numIngesters - 1) , numIngesters);
+                maxGroupsPerIngester = divideAndRoundUp((numClusterGroups + numIngesters - 1) , numIngesters);
             }
 
             for (uint256 i = 0; i < numIngesters; ++i) {
@@ -295,11 +295,6 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         require(maxIngestersPerGroup >= 1, "Can only set max ingester per group >= 1");
         s.maxIngestersPerGroup = maxIngestersPerGroup;
         emit IIngesterGroupManager.MaxIngesterPerGroupUpdated(maxIngestersPerGroup);
-    }
-
-    function ceilDiv(uint256 a, uint256 b) public pure returns (uint256) {
-        require(b != 0, "Division by zero");
-        return (a + b - 1) / b;
     }
 
     function getGroupUsernameByIndex(uint256 groupIndex) external view returns (string memory) {

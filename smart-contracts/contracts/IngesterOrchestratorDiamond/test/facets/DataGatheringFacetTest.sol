@@ -8,7 +8,6 @@ import "../../interfaces/IIngesterDataGathering.sol";
 import { AppStorageTest } from "../libraries/LibAppStorageUpgradeTest.sol";
 
 contract DataGatheringFacetTest is AccessControlFacetTest, CommonFunctionsFacetTest, IIngesterDataGathering {
-    // AppStorageTest internal s;
 
      /**
      * @notice Adds IPFS hashes for a registered ingester.

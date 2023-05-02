@@ -220,10 +220,6 @@ describe("Ingester Orchestrator Diamond Tests", async function () {
         accounts = await ethers.getSigners();
         newOwner = accounts[1];
 
-        // const diamonDeployed = await deployDiamond();
-        // diamondAddress = diamonDeployed.diamondAddress;
-        // contractOwner = diamonDeployed.contractOwner;
-
         let facetNames = ['GroupManagerFacet', 'DataGatheringFacet'];
         let sharedFacets = ["AccessControlFacet", "CommonFunctionsFacet"];
         await removeFacetsFromDiamond(addresses, diamondCutFacet, diamondAddress, ["RegistryFacet"], sharedFacets)

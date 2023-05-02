@@ -34,13 +34,13 @@ contract AccessControlFacet is AccessControl {
     * @param ingesterAddress The address to check for ingester registration.
     * @return A boolean indicating if the address is a registered ingester.
     */
-    function isRegisteredIngester(address ingester) public view returns (bool) {
-        return _hasRole(LibAppStorage.INGESTER_ROLE, ingester);
+    function isRegisteredIngester(address ingesterAddress) public view returns (bool) {
+        return _hasRole(LibAppStorage.INGESTER_ROLE, ingesterAddress);
     }
 
     /**
     * @notice Checks if an address is a registered controller.
-    * @param _controllerAddress The address to check for controller registration.
+    * @param controller The address to check for controller registration.
     * @return A boolean indicating if the address is a registered controller.
     */
     function isRegisteredController(address controller) public view returns (bool) {

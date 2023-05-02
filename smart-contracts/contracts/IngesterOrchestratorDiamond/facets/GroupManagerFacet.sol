@@ -6,7 +6,6 @@ import "../interfaces/IIngesterGroupManager.sol";
 import "./AccessControlFacet.sol";
 import "./CommonFunctionsFacet.sol";
 
-
 contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngesterGroupManager {
 
    /**
@@ -41,7 +40,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
 
             //formula to apply a balanced distribution of groups across the ingesters
             if (numClusterGroups > 0) {
-                maxGroupsPerIngester = ceilDiv((numClusterGroups + numIngesters - 1), numIngesters);
+                maxGroupsPerIngester = divideAndRoundUp((numClusterGroups + numIngesters - 1), numIngesters);
             }
 
             for (uint256 i = 0; i < numIngesters; ++i) {
@@ -49,15 +48,17 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
                 if(s.groups[groupUsername].ingesterToGroup[currentIngesterAddress].isAdded) {
                     continue;
                 }
-
+                
                 uint256 numOfAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length;
                 uint256 numIngestersPerGroup = s.groups[groupUsername].ingesterAddresses.length;
 
                 if (numOfAssignedGroups < maxGroupsPerIngester && numIngestersPerGroup < s.maxIngestersPerGroup) {
                     //assign ingester to group storage
                     s.groups[groupUsername].ingesterAddresses.push(currentIngesterAddress);
+                    
                     //add group to cluster for the respective ingester
                     s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].push(groupUsername);
+                    
                     //keep track of where it is stored so it is easy to remove
                     s.groups[groupUsername].ingesterToGroup[currentIngesterAddress] = IngesterToGroup(true, s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length - 1);
                     ++s.ingesterClusters[clusterId].clusterGroupCount;
@@ -185,7 +186,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
 
             //formula to apply a balanced distribution of groups across the ingesters
             if (numClusterGroups > 0) {
-                maxGroupsPerIngester = ceilDiv((numClusterGroups + numIngesters - 1) , numIngesters);
+                maxGroupsPerIngester = divideAndRoundUp((numClusterGroups + numIngesters - 1), numIngesters);
             }
 
             for (uint256 i = 0; i < numIngesters; ++i) {
@@ -221,7 +222,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
      * @return The ID of the cluster with the most capacity.
     */
     function getMostCapacityCluster() internal view returns(uint256) {
-        //need to calculate this for an adaptive metric depending on group size
         uint256 mostAvailableGroups = 0;
         uint256 mostAvailableClusterId = 0;
         for (uint256 i = 0; i < s.clusterIds.length; i++) {
@@ -339,11 +339,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         require(maxIngestersPerGroup >= 1, "Can only set max ingester per group >= 1");
         s.maxIngestersPerGroup = maxIngestersPerGroup;
         emit IIngesterGroupManager.MaxIngesterPerGroupUpdated(maxIngestersPerGroup);
-    }
-
-    function ceilDiv(uint256 a, uint256 b) public pure returns (uint256) {
-        require(b != 0, "Division by zero");
-        return (a + b - 1) / b;
     }
 
     /**
