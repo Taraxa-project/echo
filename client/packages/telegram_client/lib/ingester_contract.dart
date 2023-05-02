@@ -66,6 +66,10 @@ class IngesterContract extends Isolated {
   Future<void> init(SendPort parentSendPort) async {
     super.init(parentSendPort);
     _initCredentialsIngester();
+
+    if (_credentialsIngester != null) {
+      logger.info('Ingester addres is ${_credentialsIngester!.address.hex}.');
+    }
   }
 
   Future<void> initDispatch() async {
