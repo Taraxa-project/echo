@@ -42,9 +42,17 @@ async function main() {
   
   const ingesterProxy = await deployIngesterProxyContract(deployer, ingesterGroupManager.address, ingesterRegistry.address, ingesterDataGathering.address);
   
-  await ingesterDataGathering.connect(deployer).updateIngesterProxy(ingesterProxy.address);
-  await ingesterGroupManager.connect(deployer).updateIngesterProxy(ingesterProxy.address);
-  await ingesterRegistry.connect(deployer).updateIngesterProxy(ingesterProxy.address);
+  let txData = await ingesterDataGathering.connect(deployer).updateIngesterProxy(ingesterProxy.address);
+  let txDataFinalized = await txData.wait();
+  let dataProxyAddress = await ingesterDataGathering.connect(deployer).ingesterProxyAddress();
+  
+  let txGroup = await ingesterGroupManager.connect(deployer).updateIngesterProxy(ingesterProxy.address);
+  let txGroupFinalized =await txGroup.wait();
+  let groupProxyAddress = await ingesterGroupManager.connect(deployer).ingesterProxyAddress();
+
+  let txRegistry = await ingesterRegistry.connect(deployer).updateIngesterProxy(ingesterProxy.address);
+  let txRegistryFinalized = await txRegistry.wait();
+  let registryProxyAddress = await ingesterRegistry.connect(deployer).ingesterProxyAddress();
   
   console.log('Deploying contracts with the account:', deployer.address);
   console.log('Ingester Orchestrator Proxy deployment address: ', ingesterProxy.address );
