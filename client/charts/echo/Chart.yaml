@@ -2,7 +2,7 @@ apiVersion: v2
 name: echo
 description: Kubernetes helm chart for Taraxa's echo project.
 type: application
-version: 0.1.5
+version: 0.1.6
 keywords:
   - taraxa
   - echo

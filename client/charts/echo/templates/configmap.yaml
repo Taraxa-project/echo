@@ -18,3 +18,4 @@ data:
   CONFIG_PATH: {{ .Values.configEnvs.CONFIG_PATH | quote }}
   INGESTER_CONTRACT_RPC_URL: {{ .Values.configEnvs.INGESTER_CONTRACT_RPC_URL | quote }}
   INGESTER_CONTRACT_ADDRESS: {{ .Values.configEnvs.INGESTER_CONTRACT_ADDRESS | quote }}
+  INGESTER_CONTRACT_MAX_GAS: {{ .Values.configEnvs.INGESTER_CONTRACT_MAX_GAS | quote }}

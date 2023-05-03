@@ -28,6 +28,8 @@ class TelegramCommandMessages extends Command {
   late final Level _logLevelLibTdJson;
   late final StreamSubscription _subSignalHandler;
 
+  late final int _ingesterContractMaxGas;
+
   void run() async {
     _init();
 
@@ -53,6 +55,7 @@ class TelegramCommandMessages extends Command {
           dbSendPort: _db.sendPort!,
           contractAddress: globalResults!.command!['ingester-contract-address'],
           contractRpcUrl: globalResults!.command!['ingester-contract-rpc-url'],
+          contractMaxGas: _ingesterContractMaxGas,
           configPath: globalResults!.command!['config-path'],
           walletPrivateKey: globalResults!.command!['wallet-private-key'],
         ),
@@ -136,6 +139,11 @@ class TelegramCommandMessages extends Command {
     _logLevel = getLogLevel();
     _logLevelLibTdJson = getLogLevelLibtdjson();
 
+    _ingesterContractMaxGas = parseInt(
+      globalResults!.command!['ingester-contract-max-gas'],
+      'ingester-contract-max-gas must be an integer',
+    );
+
     _initSignalHandler();
   }
 
@@ -184,6 +192,14 @@ class TelegramCommandMessages extends Command {
       return true;
     } else {
       return false;
+    }
+  }
+
+  int parseInt(String intToParse, String message) {
+    try {
+      return int.parse(intToParse);
+    } on FormatException {
+      _exit(message);
     }
   }
 
