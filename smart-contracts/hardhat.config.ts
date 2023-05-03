@@ -20,25 +20,25 @@ const config: HardhatUserConfig = {
   networks: {
     mainnet: {
       url: 'https://rpc.mainnet.taraxa.io/',
-      accounts: [''],
+      accounts: [],
       chainId: 841,
-      gas: 10000000, 
+      gas: 20000000, 
       gasPrice: 1, 
     },
-    // testnet: {
-    //   url: 'https://rpc.testnet.taraxa.io/',
-    //   accounts: [''],
-    //   chainId: 842, // Replace with Taraxa testnet's chainId
-    //   gas: 10000000, // Custom gas limit; adjust this value as needed
-    //   gasPrice: 1, // Custom gas price in gwei; adjust this value as needed (1 gwei in this example)
-    // },
-    // devnet: {
-    //   url: 'https://rpc.devnet.taraxa.io/',
-    //   accounts: [''],
-    //   chainId: 843, // Replace with Taraxa testnet's chainId
-    //   gas: 100000000000, // Custom gas limit; adjust this value as needed
-    //   gasPrice: 1, // Custom gas price in gwei; adjust this value as needed (1 gwei in this example)
-    // },
+    testnet: {
+      url: 'https://rpc.testnet.taraxa.io/',
+      accounts: [],
+      chainId: 842, 
+      gas: 20000000, 
+      gasPrice: 1, 
+    },
+    devnet: {
+      url: 'https://rpc.devnet.taraxa.io/',
+      accounts: [],
+      chainId: 843, 
+      gas: 20000000, 
+      gasPrice: 1, 
+    },
     hardhat: {
         accounts: {
           mnemonic: "test test test test test test test test test test test junk",
