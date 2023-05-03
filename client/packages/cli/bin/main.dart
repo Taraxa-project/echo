@@ -114,6 +114,11 @@ void main(List<String> arguments) {
     ..addOption(
       'ingester-contract-rpc-url',
       help: 'RPC url',
+    )
+    ..addOption(
+      'ingester-contract-max-gas',
+      help: 'Ingester contract max gas to use',
+      defaultsTo: '1000000',
     );
 
   commandRunner

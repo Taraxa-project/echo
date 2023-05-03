@@ -42,6 +42,7 @@ class IngesterContract extends Isolated {
 
   final String contractRpcUrl;
   final String contractAddress;
+  final int contractMaxGas;
 
   EthPrivateKey? _credentialsIngester;
 
@@ -55,6 +56,7 @@ class IngesterContract extends Isolated {
     required SendPort this.dbSendPort,
     required String this.contractAddress,
     required String this.contractRpcUrl,
+    required int this.contractMaxGas,
     required String this.configPath,
     required String this.walletPrivateKey,
   }) {
@@ -183,6 +185,9 @@ class IngesterContract extends Isolated {
         responseGetUploadedHashes.chat_hash!,
         responseGetUploadedHashes.message_hash!,
         credentials: _credentialsIngester!,
+        transaction: Transaction(
+          maxGas: contractMaxGas,
+        ),
       );
     } on RPCError catch (ex) {
       logger.severe(ex);

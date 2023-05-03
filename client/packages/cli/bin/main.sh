@@ -37,6 +37,7 @@ WALLET_PRIVATE_KEY=${!WALLET_PRIVATE_KEY_VAR_NAME}
     --wallet-private-key $WALLET_PRIVATE_KEY \
     --ingester-contract-rpc-url $INGESTER_CONTRACT_RPC_URL \
     --ingester-contract-address $INGESTER_CONTRACT_ADDRESS \
+    --ingester-contract-max-gas $INGESTER_CONTRACT_MAX_GAS \
     --ipfs-cron-schedule "$IPFS_CRON_SCHEDULE" \
     --ipfs-scheme $IPFS_SCHEME \
     --ipfs-host $IPFS_HOST \

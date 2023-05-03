@@ -3,11 +3,18 @@
 This file documents all notable changes to `echo` Helm Chart. The release
 numbering uses [semantic versioning](http://semver.org).
 
-## v0.1.0
 
-### Major changes
+## v0.1.6
 
-* Initial chart version
+### Patch changes
+
+* Added max gas optional param
+
+## v0.1.5
+
+### Patch changes
+
+* Adds wallet private key as env var
 
 ## v0.1.4
 
@@ -15,8 +22,10 @@ numbering uses [semantic versioning](http://semver.org).
 
 * Adds wallet secret
 
-## v0.1.5
 
-### Patch changes
+## v0.1.0
 
-* Adds wallet private key as env var
+### Major changes
+
+* Initial chart version
+

@@ -82,6 +82,7 @@ configEnvs:
   CONFIG_PATH: /var/lib/config
   INGESTER_CONTRACT_RPC_URL: ""
   INGESTER_CONTRACT_ADDRESS: ""
+  INGESTER_CONTRACT_MAX_GAS: "1000000"
 
 secretEnvs:
   IPFS_SCHEME: http
