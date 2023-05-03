@@ -55,7 +55,7 @@ describe("Testing Group Manager", async function () {
     //constants
     const message = "Test message";
     const nonce = 1;
-    let numIngesters: number = 9;
+    let numIngesters: number = 40;
     const maxAllocatableGroups: number = numIngesters * maxGroupsPerIngester;
     console.log("🚀 ~ file: groupManagerFacetTest.ts:59 ~ maxAllocatableGroups:", maxAllocatableGroups)
     const numIngestersToRemove = 2;
@@ -165,8 +165,9 @@ describe("Testing Group Manager", async function () {
         let clusterIds = await groupManagerFacet.getClusters();
         let getMaxGroupsPerIngester = BigNumber.from(await groupManagerFacet.getMaxGroupsPerIngester()).toNumber();
         let maxClusterSize = BigNumber.from(await groupManagerFacet.getMaxClusterSize()).toNumber();
+        let ingesterCount = await groupManagerFacet.getIngesterCount();
 
-        let totalGroupsConstraint = clusterIds.length * maxClusterSize * getMaxGroupsPerIngester;
+        let totalGroupsConstraint = BigNumber.from(ingesterCount).toNumber() * getMaxGroupsPerIngester;
         
         for (let i = 0; i < totalGroupsConstraint; i++) {
             console.log("🚀 ~ file: groupManagerFacetTest.ts:171 ~ it ~ i:", i)

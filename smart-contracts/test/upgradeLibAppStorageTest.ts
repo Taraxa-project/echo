@@ -86,7 +86,7 @@ describe("Diamond Upgrade", () => {
     // ...
   });
 
-  it("upgrades LibAppStorage only with partial facets", async () => {
+  it("upgrades LibAppStorage only with only one facet", async () => {
 
     // Get the ingester data before the upgrade
     let ingestersBeforeUpgrade = []
@@ -97,16 +97,14 @@ describe("Diamond Upgrade", () => {
     }
 
     // Remove the existing facets
-    // let facetNames = ["GroupManagerFacet", "RegistryFacet", "DataGatheringFacet"];
     let facetNames: string[] = [];
-    let sharedFacets = [ "CommonFunctionsFacet"]; // "AccessControlFacet",
+    let sharedFacets = [ "CommonFunctionsFacet"];
     addresses = await removeFacetsFromDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets)
 
 
     //Deploy and add the new facets with the new libAppStorage 
-    // let newFacetNames = ["GroupManagerFacetTest", "RegistryFacetTest", "DataGatheringFacetTest"];
     let newFacetNames: string[] = []
-    let newSharedFacets = ["CommonFunctionsFacetTest"]; //"AccessControlFacetTest", 
+    let newSharedFacets = ["CommonFunctionsFacetTest"]; 
     addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, newFacetNames, newSharedFacets);
 
     // Check if the new facet has the replaced function
@@ -146,16 +144,14 @@ describe("Diamond Upgrade", () => {
     }
 
     // Remove the existing facets
-    // let facetNames = ["GroupManagerFacet", "RegistryFacet", "DataGatheringFacet"];
     let facetNames: string[] = [];
-    let sharedFacets = [ "AccessControlFacet", "CommonFunctionsFacet"]; // "AccessControlFacet",
+    let sharedFacets = [ "AccessControlFacet", "CommonFunctionsFacet"];
     addresses = await removeFacetsFromDiamond(addresses, diamondCutFacet, diamondAddress, facetNames, sharedFacets)
 
 
     //Deploy and add the new facets with the new libAppStorage 
-    // let newFacetNames = ["GroupManagerFacetTest", "RegistryFacetTest", "DataGatheringFacetTest"];
     let newFacetNames: string[] = []
-    let newSharedFacets = ["AccessControlFacetTest", "CommonFunctionsFacetTest"]; //"AccessControlFacetTest", 
+    let newSharedFacets = ["AccessControlFacetTest", "CommonFunctionsFacetTest"];  
     addresses = await addFacetsToDiamond(addresses, diamondCutFacet, diamondAddress, newFacetNames, newSharedFacets);
 
     // Check if the new facet has the replaced function

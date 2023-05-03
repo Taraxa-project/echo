@@ -263,6 +263,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
             if (groupClusterIndex != numAssignedGroups - 1) {
                 string memory groupToMove = s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress][numAssignedGroups - 1];
                 s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress][groupClusterIndex] = groupToMove;
+                s.groups[groupToMove].ingesterToGroup[currentIngesterAddress].groupClusterIngesterIndex = groupClusterIndex;
             }
             s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].pop();
             --s.ingesterClusters[clusterId].clusterGroupCount;

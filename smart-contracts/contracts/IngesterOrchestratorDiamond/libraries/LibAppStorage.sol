@@ -225,6 +225,7 @@ library LibAppStorage {
         if (clusterIndex != numClusters - 1) {
             uint256 clusterToMove = s.clusterIds[numClusters - 1];
             s.clusterIds[clusterIndex] = clusterToMove;
+            s.ingesterClusters[clusterToMove].clusterIndex = clusterIndex;
         }
         s.clusterIds.pop();
     }
