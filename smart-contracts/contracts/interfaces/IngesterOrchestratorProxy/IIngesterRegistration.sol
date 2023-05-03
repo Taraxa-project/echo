@@ -40,6 +40,7 @@ interface IIngesterRegistration {
     function getIngesterAddressFromIndex(uint256 index) external view returns (address);
     function getControllerIngesters(address controllerAddress) external view returns (IIngesterRegistration.Ingester[] memory);
     function updateIngesterProxy(address newIngesterProxy) external;
+    function getIngesters() external view returns (address[] memory);
 
     event IngesterRegistered(address indexed controllerAddress, address indexed ingesterAddress);
     event IngesterUnRegistered(address indexed controllerAddress, address indexed ingesterAddress);

@@ -306,8 +306,10 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
             if (groupClusterIndex != numAssignedGroups - 1) {
                 string memory groupToMove = _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress][numAssignedGroups - 1];
                 _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress][groupClusterIndex] = groupToMove;
+                _groups[groupToMove].ingesterToGroup[currentIngesterAddress].groupClusterIngesterIndex = groupClusterIndex;
             }
             _ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].pop();
+
             --_ingesterClusters[clusterId].clusterGroupCount;
         }
 
@@ -404,6 +406,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
         if (clusterIndex != numClusters - 1) {
             uint256 clusterToMove = _clusterIds[numClusters - 1];
             _clusterIds[clusterIndex] = clusterToMove;
+            _ingesterClusters[clusterToMove].clusterIndex = clusterIndex;
         }
         _clusterIds.pop();
     }
@@ -480,6 +483,10 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
             _groups[groupUsername].groupUsernameIndex
         );
         return group;
+    }
+
+    function getGroups() external view returns (string[] memory){
+        return _groupUsernames;
     }
 
     /**

@@ -281,8 +281,7 @@ describe("IngesterOrchestratorProxy", () => {
         
         let hash = await ingesterProxy.hash(ingester1.address, message, nonce);
         const sig = await controller.signMessage(ethers.utils.arrayify(hash));
-        
-        await ingesterProxy.connect(controller).registerIngester(ingester1.address, message, nonce, sig)
+        await ingesterProxy.connect(controller).registerIngester(ingester1.address, message, nonce, sig);
         
         //Fetch Ingester Role addresses
         const isRegisteredIngester = await ingesterProxy.isRegisteredIngester(ingester1.address);
@@ -437,6 +436,22 @@ describe("IngesterOrchestratorProxy", () => {
         .and.to.emit(ingesterProxy, "GroupRemoved").withArgs("group1");
         const group = await ingesterProxy.getGroup("group1");
         expect(group.isAdded).to.be.false;
+    });
+
+    it("should add groups and remove them all", async () => {
+        for (let i = 0; i < numGroups; i++) {
+            await ingesterProxy.connect(owner).addGroup(`group${i}`);
+            const group = await ingesterProxy.getGroup(`group${i}`);
+            expect(group.isAdded).to.be.true;
+            expect(group.ingesterAddresses.length <= maxIngesterPerGroup)
+            
+        }
+        for (let i = 0; i < numGroups; i++) {
+            await ingesterProxy.connect(owner).removeGroup(`group${i}`);
+            const group = await ingesterProxy.getGroup(`group${i}`);
+            expect(group.isAdded).to.be.false;
+            expect(group.ingesterAddresses.length <= maxIngesterPerGroup)
+        }
     });
 
     it("should distribute to ingesters when groups are added", async () => {

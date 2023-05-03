@@ -190,6 +190,10 @@ contract IngesterProxy is AccessControlEnumerable, Ownable, IIngesterProxy {
         return _registrationContract.getIngester(ingesterAddress);
     }
 
+    function getIngesters() external view returns (address[] memory) {
+        return _registrationContract.getIngesters();
+    }
+
     /**
     * @notice Retrieves ingester details for a given ingester address.
     * @param ingesterAddress The address of the ingester.
@@ -257,6 +261,14 @@ contract IngesterProxy is AccessControlEnumerable, Ownable, IIngesterProxy {
     */
     function getGroup(string calldata group) external view returns (IIngesterGroupManager.GroupSlim memory){
         return _groupManagerContract.getGroup(group);
+    }
+
+    /**
+    * @notice Retrieves all the stored groups.
+    * @return Groups string array returned with all the stored groups
+    */
+    function getGroups() external view returns (string[] memory){
+        return _groupManagerContract.getGroups();
     }
 
     /**

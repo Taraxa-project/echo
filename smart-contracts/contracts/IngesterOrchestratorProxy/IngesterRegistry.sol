@@ -247,6 +247,10 @@ contract IngesterRegistry is AccessControlEnumerable, IIngesterRegistration {
         return _controllerToIngesters[controller][ingesterIndex];
     }
 
+    function getIngesters() external view returns (address[] memory) {
+        return _ingesterAddresses;
+    }
+
     /**
     * @notice Retrieves the controller information for an ingester.
     * @param ingesterAddresses The address of the ingester.
