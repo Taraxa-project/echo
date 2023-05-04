@@ -15,7 +15,7 @@ import {
     Test1Facet,
     NotContractOwner
     } from "../typechain-types";
-import { deployDiamond, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deploy";
+import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
 
 import { ethers } from "hardhat";
 
@@ -43,7 +43,7 @@ describe("Ingester Orchestrator Diamond Tests", async function () {
         controller = accounts[0];
         ingester = accounts[1];
 
-        const diamonDeployed = await deployDiamond();
+        const diamonDeployed = await deployDiamondTest();
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
         

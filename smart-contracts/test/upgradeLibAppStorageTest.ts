@@ -11,7 +11,7 @@ import {
     } from "../typechain-types";
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { deployDiamond, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deploy";
+import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
 import {
     addFacetsToDiamond,
     IngesterControllerMapping,
@@ -46,7 +46,7 @@ describe("Diamond Upgrade", () => {
     // Set up the initial Diamond and its facets (including the initial LibAppStorage and IngesterFacet)
     accounts = await ethers.getSigners();
 
-    const diamonDeployed = await deployDiamond(verbose);
+    const diamonDeployed = await deployDiamondTest(verbose);
     diamondAddress = diamonDeployed.diamondAddress;
     contractOwner = diamonDeployed.contractOwner;
     

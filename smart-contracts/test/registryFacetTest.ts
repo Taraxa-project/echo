@@ -15,7 +15,7 @@ import {
     RegistryFacet,
     Test1Facet,
     } from "../typechain-types";
-import { deployDiamond, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deploy";
+import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
 
 import { ethers } from "hardhat";
 
@@ -58,7 +58,7 @@ describe("Testing Registration Functionalities", async function () {
         ingester2 = accounts[3];
         ingester3 = accounts[4];
 
-        const diamonDeployed = await deployDiamond(verbose);
+        const diamonDeployed = await deployDiamondTest(verbose);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
 
@@ -219,7 +219,7 @@ describe("Testing Registration with pre-populated data", async function () {
     beforeEach(async function () {
         accounts = await ethers.getSigners();
 
-        const diamonDeployed = await deployDiamond(verbose);
+        const diamonDeployed = await deployDiamondTest(verbose);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
         

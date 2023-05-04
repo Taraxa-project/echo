@@ -22,7 +22,7 @@ import {IngesterControllerMapping,
     RegistryFacet,
     DataGatheringFacet
     } from "../typechain-types";
-import { deployDiamond, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deploy";
+import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
 
 describe('Add IPFS Hashes', function () {
     //Diamond related storage
@@ -57,7 +57,7 @@ describe('Add IPFS Hashes', function () {
         controller = accounts[0];
         ingester = accounts[1];
 
-        const diamonDeployed = await deployDiamond(verbose);
+        const diamonDeployed = await deployDiamondTest(verbose);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
 

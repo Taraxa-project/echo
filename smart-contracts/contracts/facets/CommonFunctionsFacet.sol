@@ -109,4 +109,9 @@ contract CommonFunctionsFacet {
 
         return result;
     }
+
+    function getGroupCount() external view returns(uint256) {
+        return s.groupUsernames.length;
+    }
+
 }

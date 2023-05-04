@@ -14,7 +14,7 @@ import {
     OwnershipFacet,
     RegistryFacet,
     } from "../typechain-types";
-import { deployDiamond, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deploy";
+import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
 import { IDiamondLoupe } from "../typechain-types/contracts/IngesterOrchestratorDiamond/facets/DiamondLoupeFacet";
 
 import { ethers } from "hardhat";
@@ -31,6 +31,7 @@ import {IngesterControllerMapping,
     getClusterMaxGroupsPerIngester
  } from "./testUtils/testUtils";
 import { group } from "console";
+import { deployDiamond } from "../scripts/deployDiamond";
 
 
 describe("Testing Group Manager", async function () {
@@ -55,7 +56,7 @@ describe("Testing Group Manager", async function () {
     //constants
     const message = "Test message";
     const nonce = 1;
-    let numIngesters: number = 40;
+    let numIngesters: number = 3;
     const maxAllocatableGroups: number = numIngesters * maxGroupsPerIngester;
     console.log("🚀 ~ file: groupManagerFacetTest.ts:59 ~ maxAllocatableGroups:", maxAllocatableGroups)
     const numIngestersToRemove = 2;
@@ -64,7 +65,7 @@ describe("Testing Group Manager", async function () {
     beforeEach(async function () {
         accounts = await ethers.getSigners();
 
-        const diamonDeployed = await deployDiamond(verbose);
+        const diamonDeployed = await deployDiamondTest();
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
         
