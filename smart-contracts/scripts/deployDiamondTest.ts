@@ -12,7 +12,7 @@ export const maxClusterSize = 3;
 export const maxGroupsPerIngester = 200;
 export const maxIngestersPerGroup = 1;
 
-export async function deployDiamond(verbose=false) {
+export async function deployDiamondTest(verbose=false) {
   const accounts = await ethers.getSigners();
   const contractOwner = accounts[0];
 
@@ -75,7 +75,7 @@ export async function deployDiamond(verbose=false) {
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 if (require.main === module) {
-  deployDiamond(true)
+  deployDiamondTest(true)
     .then(() => process.exit(0))
     .catch((error) => {
       console.error(error);
@@ -83,4 +83,4 @@ if (require.main === module) {
     });
 }
 
-exports.deployDiamond = deployDiamond;
+exports.deployDiamond = deployDiamondTest;

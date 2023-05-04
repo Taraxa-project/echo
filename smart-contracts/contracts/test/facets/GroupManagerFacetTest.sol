@@ -6,7 +6,6 @@ import "../../interfaces/IIngesterGroupManager.sol";
 import "./AccessControlFacetTest.sol";
 import "./CommonFunctionsFacetTest.sol";
 
-
 contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTest, IIngesterGroupManager {
 
    function addGroup(string calldata groupUsername) external onlyAdmin {
@@ -138,29 +137,21 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
 
     function distributeUnallocatedGroups() external {
         uint mostCapacityClusterId = getMostCapacityCluster();
-        // console.log('mostCapacityClusterId', mostCapacityClusterId);
         uint256 clusterCapacity = s.ingesterClusters[mostCapacityClusterId].clusterRemainingCapacity;
-        // console.log('clusterCapacity', clusterCapacity);
         uint256 amountOfGroups = s.unAllocatedGroups.length;
 
         if (amountOfGroups > clusterCapacity) {
             uint256 allocatableAmount = amountOfGroups - clusterCapacity;
-            // console.log('more groups than capacity');
-            // console.log('allocatableAmount', allocatableAmount);
             while (s.unAllocatedGroups.length > allocatableAmount) {
                 uint256 i = s.unAllocatedGroups.length - 1;
-                // console.log('distirbuting to cluster', i);
 
                 distributeGroupsToCluster(s.unAllocatedGroups[i], mostCapacityClusterId);
                 emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
-                // console.log('emitted event');
                 s.unAllocatedGroups.pop();
-                // console.log('popped value');
             }
         } else {
             while (s.unAllocatedGroups.length > 0) {
                 uint256 i = s.unAllocatedGroups.length - 1;
-                // console.log('distirbuting to cluster', i);
                 distributeGroupsToCluster(s.unAllocatedGroups[i], mostCapacityClusterId);
                 emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
                 s.unAllocatedGroups.pop();

@@ -15,7 +15,7 @@ import {
     Test1Facet,
     NotContractOwner
     } from "../typechain-types";
-import { deployDiamond, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deploy";
+import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
 
 import { ethers } from "hardhat";
 
@@ -43,7 +43,7 @@ describe("Ingester Orchestrator Diamond Tests", async function () {
         controller = accounts[0];
         ingester = accounts[1];
 
-        const diamonDeployed = await deployDiamond();
+        const diamonDeployed = await deployDiamondTest();
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
         
@@ -246,14 +246,12 @@ describe("Ingester Orchestrator Diamond Tests", async function () {
   
       it("should not allow non-admin to transfer ownership", async function () {
 
-        console.log('starting the failing test');
         let diamond = (await ethers.getContractAt(
           "OwnershipFacet",
           diamondAddress
         )) as OwnershipFacet;
 
         let currentOwner = await diamond.owner();
-        console.log("🚀 ~ file: diamondIngesterOrchestratorTest.ts:243 ~ currentOwner:", currentOwner)
         const expectedError = "NotContractOwner";
 
         await expect(diamond.transferOwnership(newOwner.address)).to.be.revertedWithCustomError(diamond, 'NotContractOwner');

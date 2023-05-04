@@ -10,7 +10,6 @@ export const FacetCutAction = { Add: 0, Replace: 1, Remove: 2 };
 // get function selectors from ABI
 export function getSelectors(contract: any) {
   const signatures = Object.keys(contract.interface.functions);
-  // console.log("sigs are", signatures);
   const selectors = signatures.reduce((acc: any, val: string) => {
     if (val !== "init(bytes)") {
       acc.push(contract.interface.getSighash(val));

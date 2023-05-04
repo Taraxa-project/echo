@@ -13,7 +13,7 @@ import {
   Test1Facet,
 } from "../typechain-types";
 
-import { deployDiamond } from "../scripts/deploy";
+import { deployDiamondTest } from "../scripts/deployDiamondTest";
 import { IDiamondLoupe } from "../typechain-types/contracts/IngesterOrchestratorDiamond/facets/DiamondLoupeFacet";
 
 import { ethers } from "hardhat";
@@ -34,7 +34,7 @@ describe("DiamondTest", async function () {
   let contractOwner: SignerWithAddress;
 
   before(async function () {
-    const diamonDeployed = await deployDiamond();
+    const diamonDeployed = await deployDiamondTest();
     diamondAddress = diamonDeployed.diamondAddress;
     contractOwner = diamonDeployed.contractOwner;
 
