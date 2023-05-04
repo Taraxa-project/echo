@@ -38,9 +38,17 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
         _;
     }
     
-    function ceilDiv(uint256 a, uint256 b) public pure returns (uint256) {
-        require(b != 0, "Division by zero");
-        return (a + b - 1) / b;
+    function divideAndRoundUp(uint256 numerator, uint256 denominator) public pure returns (uint256) {
+        require(denominator != 0, "Division by zero");
+        uint256 result = numerator / denominator;
+        uint256 remainder = numerator % denominator;
+
+        // Check if the remainder is at least half of the denominator to decide whether to round up
+        if (remainder * 2 >= denominator) {
+            result += 1;
+        }
+
+        return result;
     }
 
     /**
@@ -61,7 +69,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
             //formula to apply a balanced distribution of groups across the ingesters
             if (numClusterGroups > 0) {
-                maxGroupsPerIngester = ceilDiv((numClusterGroups + numIngesters - 1), numIngesters);
+                maxGroupsPerIngester = divideAndRoundUp((numClusterGroups + numIngesters - 1), numIngesters);
             }
 
             for (uint256 i = 0; i < numIngesters; ++i) {
@@ -177,7 +185,7 @@ contract IngesterGroupManager is AccessControlEnumerable, IIngesterGroupManager 
 
             //formula to apply a balanced distribution of groups across the ingesters
             if (numClusterGroups > 0) {
-                maxGroupsPerIngester = ceilDiv((numClusterGroups + numIngesters - 1) , numIngesters);
+                maxGroupsPerIngester = divideAndRoundUp((numClusterGroups + numIngesters - 1), numIngesters);
             }
 
             for (uint256 i = 0; i < numIngesters; ++i) {
