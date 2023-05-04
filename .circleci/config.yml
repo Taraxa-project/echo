@@ -89,7 +89,6 @@ workflows:
                only:
                 - main
                 - develop
-                - feat-smart-contract
             tags:
               ignore: /.*/
 
