@@ -19,7 +19,7 @@ async function main() {
   const registryFacet = await ethers.getContractAt("RegistryFacet", contractAddress);
   console.log("🚀 ~ file: interactDeployedSmartContract.ts:20 ~ main ~ registryFacet:", registryFacet)
   
-  const maxGroupsPerIngester = 200;//BigNumber.from(await groupManagerFacet.getMaxGroupsPerIngester()).toNumber();
+  const maxGroupsPerIngester = BigNumber.from(await groupManagerFacet.getMaxGroupsPerIngester()).toNumber();
   console.log("🚀 ~ file: interactDeployedSmartContract.ts:22 ~ main ~ maxGroupsPerIngester:", maxGroupsPerIngester)
   const maxGroupCapacity = 50;
 

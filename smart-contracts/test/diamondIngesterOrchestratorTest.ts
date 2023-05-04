@@ -246,14 +246,12 @@ describe("Ingester Orchestrator Diamond Tests", async function () {
   
       it("should not allow non-admin to transfer ownership", async function () {
 
-        console.log('starting the failing test');
         let diamond = (await ethers.getContractAt(
           "OwnershipFacet",
           diamondAddress
         )) as OwnershipFacet;
 
         let currentOwner = await diamond.owner();
-        console.log("🚀 ~ file: diamondIngesterOrchestratorTest.ts:243 ~ currentOwner:", currentOwner)
         const expectedError = "NotContractOwner";
 
         await expect(diamond.transferOwnership(newOwner.address)).to.be.revertedWithCustomError(diamond, 'NotContractOwner');
