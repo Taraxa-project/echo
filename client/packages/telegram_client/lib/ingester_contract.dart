@@ -13,7 +13,7 @@ import 'package:http/http.dart';
 
 import 'isolate.dart';
 import 'db.dart';
-import 'package:telegram_client/src/smart_contract/IngesterProxy.g.dart';
+import 'package:telegram_client/src/smart_contract/DataGatheringFacet.g.dart';
 
 class IngesterContractIsolater extends Isolater {
   final logger = Logger('TelegramClient');
@@ -136,7 +136,7 @@ class IngesterContract extends Isolated {
 
   Future<void> _getGroups(SendPort? replySendPort) async {
     final web3client = Web3Client(contractRpcUrl, Client());
-    final contract = IngesterProxy(
+    final contract = DataGatheringFacet(
       address: EthereumAddress.fromHex(contractAddress),
       client: web3client,
     );
@@ -173,7 +173,7 @@ class IngesterContract extends Isolated {
     }
 
     final web3client = Web3Client(contractRpcUrl, Client());
-    final contract = IngesterProxy(
+    final contract = DataGatheringFacet(
       address: EthereumAddress.fromHex(contractAddress),
       client: web3client,
     );

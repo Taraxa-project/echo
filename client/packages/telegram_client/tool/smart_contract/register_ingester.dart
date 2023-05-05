@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:telegram_client/src/smart_contract/IngesterProxy.g.dart';
+import 'package:telegram_client/src/smart_contract/RegistryFacet.g.dart';
 
 void main() async {
   final credentialsOwner =
@@ -14,7 +14,7 @@ void main() async {
       EthPrivateKey.fromHex(String.fromEnvironment('private_key_ingester'));
 
   final web3client = Web3Client(String.fromEnvironment('rpc_url'), Client());
-  final contract = IngesterProxy(
+  final contract = RegistryFacet(
     address: EthereumAddress.fromHex(
         String.fromEnvironment('ingester_contract_address')),
     client: web3client,
@@ -30,18 +30,28 @@ void main() async {
   );
   var sig = credentialsOwner.signPersonalMessageToUint8List(messageHash);
 
+  var result;
   try {
-    var result = await contract.registerIngester(
+    result = await contract.registerIngester(
       credentialsIngester.address,
       message,
       nonce,
       sig,
       credentials: credentialsOwner,
+      transaction: Transaction(maxGas: 25000000),
     );
-    print(result);
   } on RPCError catch (ex) {
-    print(ex);
+    result = ex.toString();
   }
+
+  var ingesterCount = await contract.getIngesterCount();
+  var ingesterInfo = await contract.getIngesters();
+
+  print({
+    'ingesterCountRemote': ingesterCount,
+    'ingesterInfoRemote': ingesterInfo,
+    'registerIngesterResult': result,
+  });
 
   await web3client.dispose();
 }
