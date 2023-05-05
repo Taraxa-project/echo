@@ -118,7 +118,7 @@ void main(List<String> arguments) {
     ..addOption(
       'ingester-contract-max-gas',
       help: 'Ingester contract max gas to use',
-      defaultsTo: '1000000',
+      defaultsTo: '25000000',
     );
 
   commandRunner
