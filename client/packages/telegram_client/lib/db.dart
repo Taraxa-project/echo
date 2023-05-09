@@ -581,7 +581,11 @@ class Db extends Isolated {
 
   void _updateLastExportedId(String tableName, id) {
     final stmtUpdate = db?.prepare(_sqlUpdateIpfsUploadLastExportedId);
-    stmtUpdate?.execute([id, tableName]);
+    stmtUpdate?.execute([
+      id,
+      DateTime.now().toUtc().toIso8601String(),
+      tableName,
+    ]);
     stmtUpdate?.dispose();
   }
 
@@ -589,9 +593,13 @@ class Db extends Isolated {
     String tableName,
     String file_hash,
   ) {
-    final stmtUpdateLastUploadId =
-        db?.prepare(_sqlUpdateIpfsUploadLastUploadedId);
-    stmtUpdateLastUploadId?.execute([tableName]);
+    final stmtUpdateLastUploadId = db?.prepare(
+      _sqlUpdateIpfsUploadLastUploadedId,
+    );
+    stmtUpdateLastUploadId?.execute([
+      DateTime.now().toUtc().toIso8601String(),
+      tableName,
+    ]);
     stmtUpdateLastUploadId?.dispose();
 
     final stmtInsertIpfsHash = db?.prepare(_sqlInsertIpfsHash);
@@ -613,6 +621,7 @@ class Db extends Isolated {
     final stmtUpdatMetaIpfsHash = db?.prepare(_sqlUpdateIpfsUploadMetaFileHash);
     stmtUpdatMetaIpfsHash?.execute([
       file_hash,
+      DateTime.now().toUtc().toIso8601String(),
       tableName,
     ]);
     stmtUpdatMetaIpfsHash?.dispose();
@@ -824,7 +833,8 @@ WHERE
 UPDATE
   ipfs_upload
 SET
-  last_exported_id = ?
+  last_exported_id = ?,
+  updated_at = ?
 WHERE
   table_name = ?;
 ''';
@@ -833,7 +843,8 @@ WHERE
 UPDATE
   ipfs_upload
 SET
-  last_uploaded_id = last_exported_id
+  last_uploaded_id = last_exported_id,
+  updated_at = ?
 WHERE
   table_name = ?;
 ''';
@@ -854,7 +865,8 @@ VALUES
 UPDATE
   ipfs_upload
 SET
-  meta_file_hash = ?
+  meta_file_hash = ?,
+  updated_at = ?
 WHERE
   table_name = ?;
 ''';
