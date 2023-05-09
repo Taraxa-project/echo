@@ -67,6 +67,27 @@ class TelegramClientIsolater extends Isolater {
     }
     return response;
   }
+
+  Future<TgMsgResponseReadChatMessage> readChatMessage({
+    required String chatName,
+    required int messageId,
+  }) async {
+    sendPort!.send(TgMsgRequestReadChatMessage(
+      replySendPort: receivePort.sendPort,
+      chatName: chatName,
+      messageId: messageId,
+    ));
+
+    TgMsgResponseReadChatMessage response = await receivePortBroadcast
+        .firstWhere((element) => element is TgMsgResponseReadChatMessage)
+        .onError(
+            <StateError>(error, _) => logger.warning('readChatMessage $error'));
+
+    if (response.exception != null) {
+      throw response.exception!;
+    }
+    return response;
+  }
 }
 
 class TelegramClient extends Isolated {
@@ -146,6 +167,11 @@ class TelegramClient extends Isolated {
         _readChatsHistory(
           datetimeFrom: message.dateTimeFrom,
           chatsNames: message.chatsNames,
+        ).then((value) => message.replySendPort?.send(value));
+      } else if (message is TgMsgRequestReadChatMessage) {
+        _readChatMessage(
+          chatName: message.chatName,
+          messageId: message.messageId,
         ).then((value) => message.replySendPort?.send(value));
       }
     });
@@ -706,6 +732,25 @@ class TelegramClient extends Isolated {
         seconds: delayUntilNextMessageBatchSeconds,
       ));
     }
+  }
+
+  Future<TgMsgResponseReadChatMessage> _readChatMessage({
+    required String chatName,
+    required int messageId,
+  }) async {
+    final chat = await _searchPublicChat(chatName: chatName);
+
+    final chatId = WrapId.unwrapChatId(chat.id);
+    logger.info('[$chatName] unwrapped chat id is $chatId.');
+
+    var message = await _retryTdCall(
+      tdFunction: GetMessage(
+        chat_id: chat.id,
+        message_id: WrapId.wrapMessageId(messageId),
+      ),
+    ) as Message;
+
+    return TgMsgResponseReadChatMessage(message: message);
   }
 
   Future<void> _updateUser({required int userId, required User user}) async {
@@ -1379,6 +1424,21 @@ class TgMsgRequestReadChatsHistory extends IsolateMsgRequest {
 
 class TgMsgResponseReadChatHistory extends TgMsgResponse {
   TgMsgResponseReadChatHistory({super.exception});
+}
+
+class TgMsgRequestReadChatMessage extends IsolateMsgRequest {
+  final String chatName;
+  final int messageId;
+  TgMsgRequestReadChatMessage({
+    super.replySendPort,
+    required this.chatName,
+    required this.messageId,
+  });
+}
+
+class TgMsgResponseReadChatMessage extends TgMsgResponse {
+  final Message message;
+  TgMsgResponseReadChatMessage({super.exception, required this.message});
 }
 
 class TgException implements Exception {
