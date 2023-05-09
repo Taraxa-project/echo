@@ -435,10 +435,17 @@ class Db extends Isolated {
     }
 
     var text = null;
-    if (message.content != null && message.content.runtimeType == MessageText) {
-      var formattedText = (message.content as MessageText).text;
-      if (formattedText != null) {
-        text = formattedText.text;
+    if (message.content != null) {
+      if (message.content is MessageText) {
+        var formattedText = (message.content as MessageText).text;
+        if (formattedText != null) {
+          text = formattedText.text;
+        }
+      } else if (message.content is MessagePhoto) {
+        var formattedText = (message.content as MessagePhoto).caption;
+        if (formattedText != null) {
+          text = formattedText.text;
+        }
       }
     }
 
