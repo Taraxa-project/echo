@@ -25,20 +25,47 @@ contract CommonFunctionsFacet {
     function getClusters() external view returns (uint256[] memory){
         return s.clusterIds;
     }
+    
+     /**
+    * @notice Retrieves the list of active cluster IDs.
+    * @return An array of active cluster IDs.
+    */
+    function getActiveClusters() external view returns (uint256[] memory) {
+        uint256 activeCount = 0;
+        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+            if (s.groupsCluster[s.clusterIds[i]].isActive) {
+                activeCount++;
+            }
+        }
+
+        uint256[] memory clusterIds = new uint256[](activeCount);
+        
+        uint256 index = 0;
+        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+            if (s.groupsCluster[s.clusterIds[i]].isActive) {
+                clusterIds[index] = s.clusterIds[i];
+                index++;
+            }
+        }
+        
+        return clusterIds;
+    }
+
+    function getClusterCount() external view returns (uint256){
+        return s.clusterIds.length - s.inActiveClusters.length;
+    }
+
+    function getInActiveClusters() external view returns (uint256[] memory){
+        return s.inActiveClusters;
+    }
 
     /**
     * @notice Retrieves the details of a cluster by its ID.
     * @param clusterId The ID of the cluster to retrieve.
     * @return ClusterSlim struct containing the cluster's details.
     */
-    function getCluster(uint256 clusterId) external view returns (IIngesterGroupManager.ClusterSlim memory) {
-        IIngesterGroupManager.ClusterSlim memory clusterSlim = IIngesterGroupManager.ClusterSlim(
-            s.ingesterClusters[clusterId].ingesterAddresses,
-            s.ingesterClusters[clusterId].clusterGroupCount,
-            s.ingesterClusters[clusterId].clusterRemainingCapacity
-        );
-      
-        return clusterSlim;
+    function getCluster(uint256 clusterId) external view returns (IIngesterGroupManager.GroupsCluster memory) {
+        return s.groupsCluster[clusterId];
     }
 
     function getIngesterCount() external view returns(uint256) {
@@ -78,7 +105,7 @@ contract CommonFunctionsFacet {
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
         IIngesterRegistration.Ingester memory ingester = s.controllerToIngesters[controller][ingesterIndex];
 
-        string[] memory assignedGroups = s.ingesterClusters[ingester.clusterId].ingesterToAssignedGroups[ingesterAddress];
+        string[] memory assignedGroups = s.groupsCluster[ingester.clusterId].groupUsernames;
         IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
             ingesterAddress,
             ingester.verified,
@@ -95,19 +122,6 @@ contract CommonFunctionsFacet {
     */
     function getControllerIngesters(address controllerAddress) public view returns (IIngesterRegistration.Ingester[] memory) {
         return s.controllerToIngesters[controllerAddress];
-    }
-
-    function divideAndRoundUp(uint256 numerator, uint256 denominator) public pure returns (uint256) {
-        require(denominator != 0, "Division by zero");
-        uint256 result = numerator / denominator;
-        uint256 remainder = numerator % denominator;
-
-        // Check if the remainder is at least half of the denominator to decide whether to round up
-        if (remainder * 2 >= denominator) {
-            result += 1;
-        }
-
-        return result;
     }
 
     function getGroupCount() external view returns(uint256) {

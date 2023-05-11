@@ -34,12 +34,13 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
 
         require(ECDSA.recover(ethSignedMessageHash, sig) == controllerAddress, "Invalid signature.");
         
+        _grantRole(LibAppStorage.INGESTER_ROLE, ingesterAddress);
+        _grantRole(LibAppStorage.CONTROLLER_ROLE, controllerAddress);
+
         //slither possible re-rentrancy attack. Making an external call before modifying contract storage
         //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
         // is this still a risk? I will always have to change the ingester storage clusterId after external call
-        uint256 clusterId = LibAppStorage.addIngesterToCluster(ingesterAddress, controllerAddress);
-
-        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, clusterId);
+        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, 0);
 
         s.controllerToIngesters[controllerAddress].push(ingester);
 
@@ -47,8 +48,7 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
         s.ingesterToController[ingesterAddress] = IIngesterRegistration.IngesterToController(controllerAddress, s.controllerToIngesters[controllerAddress].length - 1, s.ingesterAddresses.length - 1);
         ++s.ingesterCount;
 
-        _grantRole(LibAppStorage.INGESTER_ROLE, ingesterAddress);
-        _grantRole(LibAppStorage.CONTROLLER_ROLE, controllerAddress);
+        LibAppStorage.addIngesterToCluster(ingesterAddress, controllerAddress);
 
         emit IIngesterRegistration.IngesterRegistered(controllerAddress, ingesterAddress);
     }
@@ -101,14 +101,12 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
     * @param ingesterAddress The address of the ingester to be unregistered.
     */
     function unRegisterIngester(address ingesterAddress) external onlyRegisteredController {
-
         address controllerAddress = msg.sender;
-
         require(s.ingesterToController[ingesterAddress].controllerAddress == controllerAddress, "Ingester does not exist");
 
         uint256 ingesterIndexToRemove = s.ingesterToController[ingesterAddress].ingesterIndex;
         uint256 clusterId = s.controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
-        string[] memory ingesterAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress];
+        // string[] memory ingesterAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress];
 
         uint ingesterAddressesIndexToRemove = s.ingesterToController[ingesterAddress].ingesterAddressesIndex;
         // Remove ingester from the list
@@ -133,9 +131,6 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
             //slither possible re-rentrancy attack. Making an external call before modifying contract storage
             //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
             // is this still a risk? I will always have to change the ingester storage clusterId after external call
-            LibAppStorage.removeIngesterFromGroups(clusterId, ingesterAddress);
-
-            // Remove Ingester from Cluster
             LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
         } else if (numIngestersPerController > 1) {
             //if there is more ingesters for this controller, only remove the desired ingester
@@ -151,21 +146,10 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
             s.controllerToIngesters[controllerAddress].pop();
             delete s.ingesterToController[ingesterAddress];
 
-            LibAppStorage.removeIngesterFromGroups(clusterId, ingesterAddress);
-
             //Remove Ingester from Cluster
             LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
 
         }
         emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
-
-        //if there is replication and there isn't ingesters live in cluster than add to unallocated groups
-        if (s.maxIngestersPerGroup > 1){ 
-            if (s.ingesterClusters[clusterId].ingesterAddresses.length == 0) {
-                LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
-            }
-        } else {
-            LibAppStorage.AddToUnAllocateGroups(ingesterAssignedGroups);
-        }
     }   
 }

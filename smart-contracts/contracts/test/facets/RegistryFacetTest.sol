@@ -15,6 +15,14 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
         return ingester;
     }
 
+     /**
+    * @notice Registers a new ingester with the corresponding controller address.
+    * @dev Can only be called by a registered controller.
+    * @param ingesterAddress The address of the ingester to be registered.
+    * @param message The message containing ingester and controller addresses.
+    * @param nonce The nonce used to generate the signature.
+    * @param sig The signature proving the ingester's consent for registration.
+    */
     function registerIngester(
         address ingesterAddress, 
         string calldata message,
@@ -22,7 +30,7 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
         bytes calldata sig
         ) external {
         address controllerAddress = msg.sender;
-        require(s.ingesterToController[ingesterAddress].controllerAddress != controllerAddress, "Ingester already exists");
+        require(s.ingesterToController[ingesterAddress].controllerAddress != controllerAddress, "Ingester already registered.");
        
         bytes32 messageHash = hash(ingesterAddress, message, nonce);
 
@@ -30,12 +38,13 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
 
         require(ECDSA.recover(ethSignedMessageHash, sig) == controllerAddress, "Invalid signature.");
         
+        _grantRole(LibAppStorageTest.INGESTER_ROLE, ingesterAddress);
+        _grantRole(LibAppStorageTest.CONTROLLER_ROLE, controllerAddress);
+
         //slither possible re-rentrancy attack. Making an external call before modifying contract storage
         //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
         // is this still a risk? I will always have to change the ingester storage clusterId after external call
-        uint256 clusterId = LibAppStorageTest.addIngesterToCluster(ingesterAddress, controllerAddress);
-
-        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, clusterId);
+        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, 0);
 
         s.controllerToIngesters[controllerAddress].push(ingester);
 
@@ -43,20 +52,40 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
         s.ingesterToController[ingesterAddress] = IIngesterRegistration.IngesterToController(controllerAddress, s.controllerToIngesters[controllerAddress].length - 1, s.ingesterAddresses.length - 1);
         ++s.ingesterCount;
 
-        _grantRole(LibAppStorageTest.INGESTER_ROLE, ingesterAddress);
-        _grantRole(LibAppStorageTest.CONTROLLER_ROLE, controllerAddress);
+        LibAppStorageTest.addIngesterToCluster(ingesterAddress, controllerAddress);
 
         emit IIngesterRegistration.IngesterRegistered(controllerAddress, ingesterAddress);
     }
 
+    /**
+    @notice Calculates the keccak256 hash of the given input parameters.
+    @dev This function is used for generating the message hash for signature verification.
+    @param _address The address used for hashing.
+    @param _value The string value used for hashing.
+    @param _nonce The nonce used for hashing.
+    @return hash The keccak256 hash of the input parameters.
+    */
     function hash(address _address, string calldata _value, uint256 _nonce) public pure returns (bytes32) {
         return keccak256(abi.encodePacked(_address, _value, _nonce));
     }
 
+    /**
+    * @notice Recovers the signer's address from a signed message hash.
+    * @dev Utilizes ECDSA to recover the address.
+    * @param messageHash The signed message hash.
+    * @param sig The signature provided by the signer.
+    * @return address The recovered address of the signer.
+    */
     function recover(bytes32 messageHash, bytes calldata sig) internal pure returns (address){
         return ECDSA.recover(messageHash, sig);
     }
 
+    /**
+    @notice Calculates the Ethereum signed message hash of the given message hash.
+    @dev This function is used for converting the message hash into a format that is used for signature verification in Ethereum.
+    @param _messageHash The message hash to be converted into an Ethereum signed message hash.
+    @return hash The Ethereum signed message hash of the given message hash.
+    */
     function getEthSignedMessageHash(
         bytes32 _messageHash
     ) internal pure returns (bytes32) {
@@ -70,15 +99,18 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
             );
     }
 
+    /**
+    * @notice Unregisters an ingester and removes its association with the controller.
+    * @dev Can only be called by a registered controller.
+    * @param ingesterAddress The address of the ingester to be unregistered.
+    */
     function unRegisterIngester(address ingesterAddress) external onlyRegisteredController {
-
         address controllerAddress = msg.sender;
-
         require(s.ingesterToController[ingesterAddress].controllerAddress == controllerAddress, "Ingester does not exist");
 
         uint256 ingesterIndexToRemove = s.ingesterToController[ingesterAddress].ingesterIndex;
         uint256 clusterId = s.controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
-        string[] memory ingesterAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress];
+        // string[] memory ingesterAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress];
 
         uint ingesterAddressesIndexToRemove = s.ingesterToController[ingesterAddress].ingesterAddressesIndex;
         // Remove ingester from the list
@@ -103,9 +135,6 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
             //slither possible re-rentrancy attack. Making an external call before modifying contract storage
             //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
             // is this still a risk? I will always have to change the ingester storage clusterId after external call
-            LibAppStorageTest.removeIngesterFromGroups(clusterId, ingesterAddress);
-
-            // Remove Ingester from Cluster
             LibAppStorageTest.removeIngesterFromCluster(ingesterAddress, clusterId);
         } else if (numIngestersPerController > 1) {
             //if there is more ingesters for this controller, only remove the desired ingester
@@ -121,15 +150,11 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
             s.controllerToIngesters[controllerAddress].pop();
             delete s.ingesterToController[ingesterAddress];
 
-            LibAppStorageTest.removeIngesterFromGroups(clusterId, ingesterAddress);
-
             //Remove Ingester from Cluster
             LibAppStorageTest.removeIngesterFromCluster(ingesterAddress, clusterId);
 
         }
         emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
-
-        LibAppStorageTest.AddToUnAllocateGroups(ingesterAssignedGroups);
-    }
+    }   
 
 }

@@ -18,219 +18,46 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         s.groups[groupUsername].isAdded = true;
         s.groups[groupUsername].groupUsernameIndex = s.groupUsernames.length -1;
         ++s.groupCount;
-        distributeGroup(groupUsername);
+        addGroupToCluster(groupUsername);
         emit IIngesterGroupManager.GroupAdded(groupUsername);
     }
 
-    /**
-     * @dev Distributes a group to the most available capacity cluster.
-     * @param groupUsername The group username to distribute.
-    */
-    function distributeGroup(string memory groupUsername) internal {
-        uint clusterId = getMostCapacityCluster();
-        require(s.ingesterClusters[clusterId].clusterRemainingCapacity > 0, 'No more ingesters available to add groups to');
-
-        uint256 numIngesters = s.ingesterClusters[clusterId].ingesterAddresses.length;
-
-        if (numIngesters == 1) {
-            distributeGroupToIngester(groupUsername, clusterId, s.ingesterClusters[clusterId].ingesterAddresses[0]);
+    function addGroupToCluster(string calldata groupUsername) internal {
+        uint256 clusterId = 0;
+        if (s.clusterIds.length == 0) {
+            s.clusterIds.push(clusterId);
+            s.groupsCluster[clusterId].isActive = true;
         } else {
-            uint256 maxGroupsPerIngester = 1;
-            uint256 numClusterGroups = s.ingesterClusters[clusterId].clusterGroupCount;
-
-            //formula to apply a balanced distribution of groups across the ingesters
-            if (numClusterGroups > 0) {
-                maxGroupsPerIngester = divideAndRoundUp((numClusterGroups + numIngesters - 1), numIngesters);
-            }
-
-            for (uint256 i = 0; i < numIngesters; ++i) {
-                address currentIngesterAddress = s.ingesterClusters[clusterId].ingesterAddresses[i];
-                if(s.groups[groupUsername].ingesterToGroup[currentIngesterAddress].isAdded) {
-                    continue;
-                }
-                
-                uint256 numOfAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length;
-                uint256 numIngestersPerGroup = s.groups[groupUsername].ingesterAddresses.length;
-
-                if (numOfAssignedGroups < maxGroupsPerIngester && numIngestersPerGroup < s.maxIngestersPerGroup) {
-                    //assign ingester to group storage
-                    s.groups[groupUsername].ingesterAddresses.push(currentIngesterAddress);
-                    
-                    //add group to cluster for the respective ingester
-                    s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].push(groupUsername);
-                    
-                    //keep track of where it is stored so it is easy to remove
-                    s.groups[groupUsername].ingesterToGroup[currentIngesterAddress] = IngesterToGroup(true, s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length - 1);
-                    ++s.ingesterClusters[clusterId].clusterGroupCount;
-
-                    // Re-calculate clusterRemainingCapacity
-                    require((s.maxGroupsPerIngester * s.ingesterClusters[clusterId].ingesterAddresses.length) >= s.ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
-                    s.ingesterClusters[clusterId].clusterRemainingCapacity = (s.maxGroupsPerIngester * s.ingesterClusters[clusterId].ingesterAddresses.length) - s.ingesterClusters[clusterId].clusterGroupCount;
-
-                    emit IIngesterGroupManager.GroupDistributed(clusterId, groupUsername, currentIngesterAddress);
-                    //if there is replication, then keep assigning to the remining cluster, otherwise break
-                    if ( i >= s.maxIngestersPerGroup - 1) {
-                        break;
-                    }
-                }
-            }
+            clusterId = getAvailableCluster();
         }
-    }
 
-     /**
-     * @dev Distributes groups to the specified ingester address.
-     * @param ingesterAddress The ingester address to distribute groups to.
-     */
-    function distributeGroupsToIngester(address ingesterAddress) external onlyRegisteredController {
-        require(isIngesterOwnedByController(ingesterAddress, msg.sender), "Ingester is not owned by controller wallet");
+        s.groupsCluster[clusterId].groupUsernames.push(groupUsername);
+        ++s.groupsCluster[clusterId].groupCount;
+        s.groups[groupUsername].groupUsernameClusterIndex = s.groupsCluster[clusterId].groupUsernames.length - 1;
+        s.groups[groupUsername].clusterId = clusterId;
         
-        uint numUnallocatedGroups = s.unAllocatedGroups.length;
-        uint256 clusterId = getIngester(ingesterAddress).clusterId;
+        emit GroupAddedToCluster(groupUsername, clusterId);
+    }
 
-        //prioritise allocation groups
-        if (numUnallocatedGroups > 0) {
-            uint256 clusterCapacity = s.ingesterClusters[clusterId].clusterRemainingCapacity;
+    function getAvailableCluster() internal returns(uint256) {
+        uint256 availableGroups = 0;
+        uint256 availableClusterId = 0;
 
-            if (numUnallocatedGroups > clusterCapacity) {
-                uint256 allocatableAmount = numUnallocatedGroups - clusterCapacity;
-                while (s.unAllocatedGroups.length > allocatableAmount) {
-                    uint256 i = s.unAllocatedGroups.length - 1;
-                    distributeGroupToIngester(s.unAllocatedGroups[i], clusterId, ingesterAddress);
-                    emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
-                    s.unAllocatedGroups.pop();
-                }
-            } else {
-                while (s.unAllocatedGroups.length > 0) {
-                    uint256 i = s.unAllocatedGroups.length - 1;
-                    distributeGroupToIngester(s.unAllocatedGroups[i], clusterId, ingesterAddress);
-                    emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
-                    s.unAllocatedGroups.pop();
-                }
-            }
-
-        } else {
-            if (s.maxIngestersPerGroup > 1) {
-                //accounting for group replication scenario, simply assign present groups to cluster
-                address ingesterToCopyGroupsFrom = s.ingesterClusters[clusterId].ingesterAddresses[0];
-                string[] memory groupsToAllocate = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterToCopyGroupsFrom];
-                for (uint i = 0; i < groupsToAllocate.length; i++) {
-                    distributeGroupToIngester(groupsToAllocate[i], clusterId, ingesterAddress);
-                }
-            } else {
-                revert("No more groups to allocate.");
-            }
+        //prioritize inactive cluster to add groups to 
+        if (s.inActiveClusters.length > 0) {
+            availableClusterId = s.inActiveClusters[s.inActiveClusters.length - 1];
+            s.inActiveClusters.pop();
+            s.groupsCluster[availableClusterId].isActive = true;
         }
-    }
-
-    /**
-    * @notice Distributes a group to an ingester within a specified cluster.
-    * @param groupUsername The group username to be distributed.
-    * @param clusterId The cluster ID where the ingester resides.
-    * @param ingesterAddress The address of the ingester the group will be assigned to.
-    */
-    function distributeGroupToIngester(string memory groupUsername, uint256 clusterId, address ingesterAddress) internal {
-
-        //assign ingester to group storage            
-        s.groups[groupUsername].ingesterAddresses.push(ingesterAddress);
-        //add group to cluster for the respective ingester
-        s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress].push(groupUsername);
-        //keep track of where it is stored so it is easy to remove
-        s.groups[groupUsername].ingesterToGroup[ingesterAddress] = IngesterToGroup(true, s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress].length - 1);
-        ++s.ingesterClusters[clusterId].clusterGroupCount;
-        
-        // Re-calculate clusterRemainingCapacity
-        require((s.maxGroupsPerIngester * s.ingesterClusters[clusterId].ingesterAddresses.length) >= s.ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
-        s.ingesterClusters[clusterId].clusterRemainingCapacity = (s.maxGroupsPerIngester * s.ingesterClusters[clusterId].ingesterAddresses.length) - s.ingesterClusters[clusterId].clusterGroupCount;
-        emit IIngesterGroupManager.GroupDistributed(clusterId, groupUsername, ingesterAddress);
-    }
-
-    /**
-    * @notice Distributes unallocated groups to the cluster with the most available capacity.
-    */
-    function distributeUnallocatedGroups() external {
-        uint mostCapacityClusterId = getMostCapacityCluster();
-        uint256 clusterCapacity = s.ingesterClusters[mostCapacityClusterId].clusterRemainingCapacity;
-        uint256 amountOfGroups = s.unAllocatedGroups.length;
-
-        if (amountOfGroups > clusterCapacity) {
-            uint256 allocatableAmount = amountOfGroups - clusterCapacity;
-            while (s.unAllocatedGroups.length > allocatableAmount) {
-                uint256 i = s.unAllocatedGroups.length - 1;
-                distributeGroupsToCluster(s.unAllocatedGroups[i], mostCapacityClusterId);
-                emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
-                s.unAllocatedGroups.pop();
-            }
-        } else {
-            while (s.unAllocatedGroups.length > 0) {
-                uint256 i = s.unAllocatedGroups.length - 1;
-                distributeGroupsToCluster(s.unAllocatedGroups[i], mostCapacityClusterId);
-                emit IIngesterGroupManager.RemoveUnallocatedGroup(s.unAllocatedGroups[i]);
-                s.unAllocatedGroups.pop();
-            }
-        }
-    }
-
-    /**
-     * @dev Distributes a group to the specified cluster.
-     * @param groupUsername The group username to distribute.
-     * @param clusterId The cluster ID to distribute the group to.
-     */
-    function distributeGroupsToCluster(string memory groupUsername, uint256 clusterId) internal {
-
-        uint256 numIngesters = s.ingesterClusters[clusterId].ingesterAddresses.length;
-        if (numIngesters == 1) {
-            distributeGroupToIngester(groupUsername, clusterId, s.ingesterClusters[clusterId].ingesterAddresses[0]);
-        } else {
-            uint256 maxGroupsPerIngester = 1;
-            uint256 numClusterGroups = s.ingesterClusters[clusterId].clusterGroupCount;
-
-            //formula to apply a balanced distribution of groups across the ingesters
-            if (numClusterGroups > 0) {
-                maxGroupsPerIngester = divideAndRoundUp((numClusterGroups + numIngesters - 1), numIngesters);
-            }
-
-            for (uint256 i = 0; i < numIngesters; ++i) {
-                address currentIngesterAddress = s.ingesterClusters[clusterId].ingesterAddresses[i];
-                if(s.groups[groupUsername].ingesterToGroup[currentIngesterAddress].isAdded) {
-                    continue;
-                }
-                uint256 numOfAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length;
-                uint256 numIngestersPerGroup = s.groups[groupUsername].ingesterAddresses.length;
-                if (numOfAssignedGroups < maxGroupsPerIngester && numIngestersPerGroup < s.maxIngestersPerGroup) {
-                    //assign ingester to group storage  
-                    s.groups[groupUsername].ingesterAddresses.push(currentIngesterAddress);
-                    //add group to cluster for the respective ingester
-                    s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].push(groupUsername);
-                    //keep track of where it is stored so it is easy to remove
-                    s.groups[groupUsername].ingesterToGroup[currentIngesterAddress] = IngesterToGroup(true, s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length - 1);
-                    ++s.ingesterClusters[clusterId].clusterGroupCount;
-                    
-                    // Re-calculate clusterRemainingCapacity
-                    require((s.maxGroupsPerIngester * s.ingesterClusters[clusterId].ingesterAddresses.length) >= s.ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
-                    s.ingesterClusters[clusterId].clusterRemainingCapacity = (s.maxGroupsPerIngester * s.ingesterClusters[clusterId].ingesterAddresses.length) - s.ingesterClusters[clusterId].clusterGroupCount;
-                    emit IIngesterGroupManager.GroupDistributed(clusterId, groupUsername, currentIngesterAddress);
-                    if ( i >= s.maxIngestersPerGroup - 1) {
-                        break;
-                    }
+        else {
+            for (uint256 i = 0; i < s.clusterIds.length; i++) {
+                if (s.groupsCluster[s.clusterIds[i]].groupCount < s.maxClusterSize) {
+                    availableClusterId = s.clusterIds[i];
                 }
             }
         }
-    }
 
-    /**
-     * @dev Returns the ID of the cluster with the most capacity available.
-     * @return The ID of the cluster with the most capacity.
-    */
-    function getMostCapacityCluster() internal view returns(uint256) {
-        uint256 mostAvailableGroups = 0;
-        uint256 mostAvailableClusterId = 0;
-        for (uint256 i = 0; i < s.clusterIds.length; i++) {
-            if (s.ingesterClusters[s.clusterIds[i]].clusterRemainingCapacity > mostAvailableGroups) {
-                mostAvailableGroups = s.ingesterClusters[s.clusterIds[i]].clusterRemainingCapacity;
-                mostAvailableClusterId = s.clusterIds[i];
-            }
-        }
-        return mostAvailableClusterId;
+        return availableClusterId;
     }
 
     /**
@@ -239,55 +66,70 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     */
     function removeGroup(string calldata groupUsername) external onlyAdmin {
         require(s.groups[groupUsername].isAdded, "Group does not exist.");
-        address[] memory ingesterAddresses = s.groups[groupUsername].ingesterAddresses;
-        removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername, ingesterAddresses);
-        delete s.groupUsernames[s.groups[groupUsername].groupUsernameIndex];
+
+        removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
+
+        //Remove group from groupUsernames
+        uint256 groupUsernameIndex = s.groups[groupUsername].groupUsernameIndex;
+        uint256 amountOfGroups = s.groupUsernames.length;
+        if (s.groups[groupUsername].groupUsernameIndex != amountOfGroups - 1) {
+            string memory groupToMove = s.groupUsernames[amountOfGroups - 1];
+            s.groupUsernames[groupUsernameIndex] = groupToMove;
+            s.groups[groupToMove].groupUsernameIndex = groupUsernameIndex;
+        }
+        s.groupUsernames.pop();
+
         delete s.groups[groupUsername];
+
         --s.groupCount;
+
         emit IIngesterGroupManager.GroupRemoved(groupUsername);
     }
+
 
     /**
      * @dev Removes a group from the specified cluster and its associated ingester addresses.
      * @param clusterId The cluster ID to remove the group from.
      * @param groupUsername The group username to remove.
-     * @param ingesterAddresses The array of ingester addresses associated with the group.
     */
-    function removeGroupFromCluster(uint256 clusterId, string calldata groupUsername, address[] memory ingesterAddresses) internal {
-        //Currently there should only be one address per group, this implementation is here to support multiple ingester allocations to one group
-        for (uint256 i = 0; i < ingesterAddresses.length; i++) {
-            address currentIngesterAddress = ingesterAddresses[i];
-            uint256 numAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].length;
-            uint256 groupClusterIndex = s.groups[groupUsername].ingesterToGroup[currentIngesterAddress].groupClusterIngesterIndex;
-            //Re-adjust the ingesterToAssignedGroups array 
-            if (groupClusterIndex != numAssignedGroups - 1) {
-                string memory groupToMove = s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress][numAssignedGroups - 1];
-                s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress][groupClusterIndex] = groupToMove;
-                s.groups[groupToMove].ingesterToGroup[currentIngesterAddress].groupClusterIngesterIndex = groupClusterIndex;
-            }
-            s.ingesterClusters[clusterId].ingesterToAssignedGroups[currentIngesterAddress].pop();
-            --s.ingesterClusters[clusterId].clusterGroupCount;
+    function removeGroupFromCluster(uint256 clusterId, string calldata groupUsername) internal {
+        uint256 groupUsernameClusterIndex = s.groups[groupUsername].groupUsernameClusterIndex;
+        uint256 numGroups = s.groupsCluster[clusterId].groupUsernames.length;
+        if (groupUsernameClusterIndex != numGroups - 1) {
+            string memory groupToMove = s.groupsCluster[clusterId].groupUsernames[numGroups - 1];
+            s.groupsCluster[clusterId].groupUsernames[groupUsernameClusterIndex] = groupToMove;
+            s.groups[groupToMove].groupUsernameClusterIndex = groupUsernameClusterIndex;
+        }
+        s.groupsCluster[clusterId].groupUsernames.pop();
+        --s.groupsCluster[clusterId].groupCount;
+        
+        if (s.groupsCluster[clusterId].groupCount == 0) {
+            s.groupsCluster[clusterId].isActive = false;
+            s.inActiveClusters.push(clusterId);
+            moveIngestersToAvailableClusters(s.groupsCluster[clusterId].ingesterAddresses);
+            s.groupsCluster[clusterId].ingesterAddresses = new address[](0);
+            // LibAppStorage.removeCluster(clusterId); don't do this as it causes re-shuffling of groups
         }
 
-        //update clusterRemainingCapacity metric on the cluster
-        require((s.maxGroupsPerIngester * s.ingesterClusters[clusterId].ingesterAddresses.length) >= s.ingesterClusters[clusterId].clusterGroupCount, "More groups in cluster than cluster constraints");
-        s.ingesterClusters[clusterId].clusterRemainingCapacity = (s.maxGroupsPerIngester * s.ingesterClusters[clusterId].ingesterAddresses.length) - s.ingesterClusters[clusterId].clusterGroupCount;
+        //TODO: may need to re-adjust the ingesters assigned to this cluster and assign them to a non-empty cluster
         emit IIngesterGroupManager.GroupRemovedFromCluster(clusterId, groupUsername);
     }
-    
+
+    function moveIngestersToAvailableClusters(address[] storage ingesterAddresses) internal {
+        for (uint256 i = 0; i < ingesterAddresses.length; i++) {
+            address ingesterAddress = ingesterAddresses[i];
+            address controllerAddress = s.ingesterToController[ingesterAddress].controllerAddress;
+            LibAppStorage.addIngesterToCluster(ingesterAddress, controllerAddress);
+        }
+    }
+
     /**
     * @notice Retrieves the details of a group by its username.
     * @param groupUsername The username of the group to retrieve.
-    * @return GroupSlim struct containing the group's details.
+    * @return Group struct containing the group's details.
     */
-    function getGroup(string calldata groupUsername) external view returns (IIngesterGroupManager.GroupSlim memory) {
-        IIngesterGroupManager.GroupSlim memory group = IIngesterGroupManager.GroupSlim(
-            s.groups[groupUsername].isAdded,
-            s.groups[groupUsername].clusterId,
-            s.groups[groupUsername].ingesterAddresses, 
-            s.groups[groupUsername].groupUsernameIndex
-        );
-        return group;
+    function getGroup(string calldata groupUsername) external view returns (IIngesterGroupManager.Group memory) {
+        return s.groups[groupUsername];
     }
 
     /**
