@@ -13,6 +13,8 @@ interface IIngesterGroupManager {
     struct GroupWithIngesters {
         bool isAdded;
         uint256 clusterId;
+        uint256 groupUsernameIndex;
+        uint256 groupUsernameClusterIndex;
         address[] ingesterAddresses;
     }
 

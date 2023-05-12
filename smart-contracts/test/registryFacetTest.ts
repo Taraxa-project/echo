@@ -244,6 +244,23 @@ describe("Testing Registration with pre-populated data", async function () {
    
     });
 
+    it("should add registered ingester to unAllocatedIngesters if there is not enough groups to monitor", async () => {
+        let maxAmountOfIngesters = maxAllocatableGroups / maxGroupsPerIngester;
+
+        for (let i = 1; i < maxAmountOfIngesters + 1; i++ ) {
+            let hash = await registryFacet.hash(accounts[i].address, message, nonce);
+            const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
+            if (i == maxAmountOfIngesters) {
+                let registrationTx = await registryFacet.connect(accounts[i-1]).registerIngester(accounts[i].address, message, nonce, sig);
+                await expect(registrationTx).to.emit(registryFacet, "UnAllocatedIngesterAdded").withArgs(accounts[i].address);
+                let unAllocatedIngesters = await registryFacet.getUnAllocatedIngesters();
+                expect(unAllocatedIngesters.length == 1);
+            } else {
+                await registryFacet.connect(accounts[i-1]).registerIngester(accounts[i].address, message, nonce, sig);
+            }
+        }
+    });
+
     it("Should remove ingester from cluster upon ingester unregistration", async function () {
         let currentNumIngesters = 1;
         for (let i = 1; i <= currentNumIngesters; i++ ) {
@@ -262,10 +279,8 @@ describe("Testing Registration with pre-populated data", async function () {
 
         let unregisterTx = await registryFacet.unRegisterIngester(ingesters[0].address);
 
-        expect(unregisterTx).to.emit(registryFacet, "IngesterRemovedFromCluster")
+        await expect(unregisterTx).to.emit(registryFacet, "IngesterRemovedFromCluster")
         .withArgs(ingesterToRemove.clusterId, ingesters[0].address)
-        // .and.to.emit(registryFacet, "IngesterAddedToCluster")
-        // .withArgs(ingesterToRemove.clusterId, unAllocatedIngesters[unAllocatedIngesters.length - 1]);
     });
 
     it("Should distribute groups to other unallocated ingester upon unregistration", async function () {
@@ -290,7 +305,7 @@ describe("Testing Registration with pre-populated data", async function () {
 
         let unregistrationTx = await registryFacet.unRegisterIngester(ingesters[0].address);
 
-        expect(unregistrationTx).to.emit(registryFacet, "IngesterRemovedFromCluster")
+        await expect(unregistrationTx).to.emit(registryFacet, "IngesterRemovedFromCluster")
         .withArgs(ingesterToRemove.clusterId, ingesters[0].address)
         .and.to.emit(registryFacet, "IngesterAddedToCluster")
         .withArgs(ingesterToRemove.clusterId, unAllocatedIngesters[unAllocatedIngesters.length - 1]);
@@ -399,7 +414,7 @@ describe("Testing Registration with pre-populated data and group duplication", a
 
         let unregistrationTx = await registryFacet.unRegisterIngester(ingesters[0].address);
 
-        expect(unregistrationTx).to.emit(registryFacet, "IngesterRemovedFromCluster")
+        await expect(unregistrationTx).to.emit(registryFacet, "IngesterRemovedFromCluster")
         .withArgs(ingesterToRemove.clusterId, ingesters[0].address)
         .and.to.emit(registryFacet, "IngesterAddedToCluster")
         .withArgs(ingesterToRemove.clusterId, ingesterReplacementAddress);

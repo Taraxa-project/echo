@@ -132,6 +132,8 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         IIngesterGroupManager.GroupWithIngesters memory groups = GroupWithIngesters(
             group.isAdded,
             group.clusterId,
+            group.groupUsernameIndex,
+            group.groupUsernameClusterIndex,
             s.groupsCluster[group.clusterId].ingesterAddresses
         );
         return groups;

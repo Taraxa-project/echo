@@ -148,6 +148,8 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         IIngesterGroupManager.GroupWithIngesters memory groups = GroupWithIngesters(
             group.isAdded,
             group.clusterId,
+            group.groupUsernameIndex,
+            group.groupUsernameClusterIndex,
             s.groupsCluster[group.clusterId].ingesterAddresses
         );
         return groups;
