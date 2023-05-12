@@ -360,7 +360,7 @@ class Db extends Isolated {
   }) {
     final stmt = db?.prepare(_sqlUpdateChatMemberOnlineCount);
 
-    logger.fine('updating chat $username, bots count $memberCount...');
+    logger.fine('updating chat $username, member online count $memberCount...');
     stmt?.execute([
       memberCount,
       DateTime.now().toUtc().toIso8601String(),

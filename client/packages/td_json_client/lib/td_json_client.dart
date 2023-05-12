@@ -34,14 +34,14 @@ class TdJsonClient {
   /// Executes a synchronous TDLib request
   void execute(TdFunction request) {
     final requestJson = request.toJson();
-    logger?.fine({"method": "execute", "value": "$requestJson"});
+    logger?.finer({"method": "execute", "value": "$requestJson"});
     _libTdJson.td_execute_lc(requestJson.toNativeUtf8().cast<Char>());
   }
 
   /// Sends an asynchronous TDLib request
-  Future<void> send(int clientId, TdFunction request) async {
+  void send(int clientId, TdFunction request) {
     final requestJson = request.toJson();
-    logger?.fine({"method": "send", "value": "$requestJson"});
+    logger?.finer({"method": "send", "value": "$requestJson"});
     _libTdJson.td_send_lc(clientId, requestJson.toNativeUtf8().cast<Char>());
   }
 
@@ -53,7 +53,7 @@ class TdJsonClient {
     if (tdResponse == nullptr) return null;
 
     final responseJson = tdResponse.cast<Utf8>().toDartString();
-    logger?.fine({"method": "receive", "value": "$responseJson"});
+    logger?.finer({"method": "receive", "value": "$responseJson"});
 
     final responseDecoded = jsonDecode(responseJson);
 

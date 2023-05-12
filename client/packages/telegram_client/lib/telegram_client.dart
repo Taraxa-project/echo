@@ -143,7 +143,7 @@ class TelegramClient extends Isolated {
   Future<void> init(SendPort parentSendPort) async {
     super.init(parentSendPort);
     _initTdLib();
-    await _initProxy();
+    _initProxy();
   }
 
   void initDispatch() {
@@ -205,7 +205,7 @@ class TelegramClient extends Isolated {
     );
   }
 
-  Future<void> _initProxy() async {
+  void _initProxy() {
     logger.info('checking proxy...');
 
     if (proxyUri == null) {
@@ -245,7 +245,7 @@ class TelegramClient extends Isolated {
       return;
     }
 
-    await _addProxy(
+    _addProxy(
       server: proxyUri?.host,
       port: proxyUri?.port,
       proxyType: proxyType,
@@ -1047,14 +1047,14 @@ class TelegramClient extends Isolated {
     });
   }
 
-  Future<void> _addProxy({
+  void _addProxy({
     String? server,
     int? port,
     ProxyType? proxyType,
   }) async {
     logger.info('adding proxy...');
 
-    await _tdJsonClient.send(
+    _tdJsonClient.send(
         _tdJsonClientId,
         AddProxy(
           server: server,
