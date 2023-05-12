@@ -3,19 +3,17 @@ pragma solidity ^0.8.0;
 
 interface IIngesterGroupManager {
 
-    struct Cluster {
-        address[] ingesterAddresses;
-        uint256 clusterGroupCount;
-        uint256 clusterRemainingCapacity;
-        uint256 clusterIndex;
-        mapping(address => string[]) ingesterToAssignedGroups; 
-    }
-
     struct Group {
         bool isAdded;
         uint256 clusterId;
         uint256 groupUsernameIndex;
         uint256 groupUsernameClusterIndex;
+    }
+
+    struct GroupWithIngesters {
+        bool isAdded;
+        uint256 clusterId;
+        address[] ingesterAddresses;
     }
 
     struct GroupsCluster {
@@ -24,12 +22,6 @@ interface IIngesterGroupManager {
         address[] ingesterAddresses;
         uint256 groupCount;
         uint256 clusterIndex;
-    }
-
-    struct ClusterSlim {
-        address[] ingesterAddresses;
-        uint256 clusterGroupCount;
-        uint256 clusterRemainingCapacity;
     }
 
     // Events
@@ -52,7 +44,7 @@ interface IIngesterGroupManager {
     // Functions
     function addGroup(string calldata groupUsername) external;
     function removeGroup(string calldata groupUsername) external;
-    function getGroup(string calldata groupName) external view returns (Group memory);
+    function getGroup(string calldata groupName) external view returns (GroupWithIngesters memory);
     function setMaxClusterSize(uint256 maxClusterSize) external;
     function setMaxGroupsPerIngester(uint256 maxGroupsPerIngester) external;
     function setMaxIngestersPerGroup(uint256 maxIngestersPerGroup) external;

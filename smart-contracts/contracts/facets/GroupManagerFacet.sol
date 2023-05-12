@@ -5,6 +5,7 @@ import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "./AccessControlFacet.sol";
 import "./CommonFunctionsFacet.sol";
+import "hardhat/console.sol";
 
 contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngesterGroupManager {
 
@@ -28,7 +29,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
             s.clusterIds.push(clusterId);
             s.groupsCluster[clusterId].isActive = true;
         } else {
-            clusterId = getAvailableCluster();
+            clusterId = getAvailableClusterForGroups();
         }
 
         s.groupsCluster[clusterId].groupUsernames.push(groupUsername);
@@ -39,9 +40,10 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         emit GroupAddedToCluster(groupUsername, clusterId);
     }
 
-    function getAvailableCluster() internal returns(uint256) {
+    function getAvailableClusterForGroups() internal returns(uint256) {
         uint256 availableGroups = 0;
         uint256 availableClusterId = 0;
+        bool foundAvailableCluster = false;
 
         //prioritize inactive cluster to add groups to 
         if (s.inActiveClusters.length > 0) {
@@ -51,8 +53,21 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         }
         else {
             for (uint256 i = 0; i < s.clusterIds.length; i++) {
-                if (s.groupsCluster[s.clusterIds[i]].groupCount < s.maxClusterSize) {
+                if (s.groupsCluster[s.clusterIds[i]].groupCount < s.maxGroupsPerIngester) {
                     availableClusterId = s.clusterIds[i];
+                    foundAvailableCluster = true;
+                    break;
+                }
+            }
+            if (!foundAvailableCluster) {
+                availableClusterId = s.clusterIds.length;
+                s.clusterIds.push(availableClusterId);
+                s.groupsCluster[availableClusterId].isActive = true;
+
+                //if newly avaialble cluster, attempt to assign any unregistered ingester
+                if (s.unAllocatedIngesters.length > 0) {
+                    address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
+                    LibAppStorage.addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, availableClusterId);
                 }
             }
         }
@@ -126,10 +141,16 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     /**
     * @notice Retrieves the details of a group by its username.
     * @param groupUsername The username of the group to retrieve.
-    * @return Group struct containing the group's details.
+    * @return GroupWithIngesters struct containing the group's details and the associated ingesters.
     */
-    function getGroup(string calldata groupUsername) external view returns (IIngesterGroupManager.Group memory) {
-        return s.groups[groupUsername];
+    function getGroup(string calldata groupUsername) external view returns (IIngesterGroupManager.GroupWithIngesters memory) {
+        IIngesterGroupManager.Group memory group = s.groups[groupUsername];
+        IIngesterGroupManager.GroupWithIngesters memory groups = GroupWithIngesters(
+            group.isAdded,
+            group.clusterId,
+            s.groupsCluster[group.clusterId].ingesterAddresses
+        );
+        return groups;
     }
 
     /**

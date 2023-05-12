@@ -40,6 +40,13 @@ interface IIngesterRegistration {
     event IngesterAssignedGroupsUpdated(address indexed ingesterAddress, string[] assignedGroups);
     event AssignGroupToIngester(address indexed ingesterAddress, string groupUsername);
     event IngesterProxyAddressUpdated(address indexed newIngesterProxy);
+    
+    event UnAllocatedIngesterAdded(address indexed ingesterAddress);
+    event ClusterHasNoIngesters(uint256 clusterId);
+    event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
+    event IngesterRemovedFromCluster(uint256 indexed clusterId, address indexed ingesterAddress);
+
+
 
 }
 

@@ -122,13 +122,19 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         }
     }
 
-    /**
+     /**
     * @notice Retrieves the details of a group by its username.
     * @param groupUsername The username of the group to retrieve.
-    * @return Group struct containing the group's details.
+    * @return GroupWithIngesters struct containing the group's details and the associated ingesters.
     */
-    function getGroup(string calldata groupUsername) external view returns (IIngesterGroupManager.Group memory) {
-        return s.groups[groupUsername];
+    function getGroup(string calldata groupUsername) external view returns (IIngesterGroupManager.GroupWithIngesters memory) {
+        IIngesterGroupManager.Group memory group = s.groups[groupUsername];
+        IIngesterGroupManager.GroupWithIngesters memory groups = GroupWithIngesters(
+            group.isAdded,
+            group.clusterId,
+            s.groupsCluster[group.clusterId].ingesterAddresses
+        );
+        return groups;
     }
 
     /**

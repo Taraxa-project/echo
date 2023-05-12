@@ -5,6 +5,7 @@ import "../interfaces/IIngesterRegistration.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "../interfaces/IIngesterDataGathering.sol";
 import { LibDiamond } from "./LibDiamond.sol";
+import "hardhat/console.sol";
 
 struct AppStorage {
     //Registry
@@ -37,11 +38,11 @@ library LibAppStorage {
     bytes32 internal constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
     
     event UnAllocatedGroupsAdded(string[] groups);
-    event IngesterRemovedFromGroup(address indexed ingesterAddress, string indexed groupId);
-    event IngesterRegisteredGroups(address indexed ingesterAddress, string[] assignedGroups);
     event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
     event ClusterHasNoIngesters(uint256 clusterId);
+    event IngesterRemovedFromCluster(uint256 indexed clusterId, address indexed ingesterAddress);
+
 
     function appStorage() internal pure returns (AppStorage storage ds) {    
         assembly { ds.slot := 0 }
@@ -90,29 +91,37 @@ library LibAppStorage {
                     s.groupsCluster[clusterId].ingesterAddresses[i] = ingesterAddressToMove;
                 }
                 s.groupsCluster[clusterId].ingesterAddresses.pop();
+                emit IngesterRemovedFromCluster(clusterId, ingesterAddress);
 
                 if (s.groupsCluster[clusterId].ingesterAddresses.length == 0) {
                     //check if there is unallocated ingesters to assign
                     if (s.unAllocatedIngesters.length > 0) {
-                        s.groupsCluster[clusterId].ingesterAddresses.push( s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1]);
-                        s.unAllocatedIngesters.pop();
+                        console.log('allocating an unregistered ingester to substitute the unregistered ingester', s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1]);
+                        console.log('allocating to clusterId', clusterId);
+                        address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
+                        addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, clusterId);
                     } else if (s.maxIngestersPerGroup > 1) {
-                        (uint clusterIdAvaialble, bool foundAvailableCluster) = getClusterWithIngesterReplication();
-                        
+                        (uint clusterIdAvailable, bool foundAvailableCluster) = getClusterWithIngesterReplication();
+                        console.log('there is foundAvailableCluster', foundAvailableCluster);
+                        console.log('there is replication, grabbing an ingester from cluster', clusterIdAvailable);
                         //if available cluster, then steal ingester from available cluster and put it into empty cluster
                         if (foundAvailableCluster) {
-                            address ingesterAddressToMove = s.groupsCluster[clusterIdAvaialble].ingesterAddresses[s.groupsCluster[clusterIdAvaialble].ingesterAddresses.length - 1];
+                            address ingesterAddressToMove = s.groupsCluster[clusterIdAvailable].ingesterAddresses[s.groupsCluster[clusterIdAvailable].ingesterAddresses.length - 1];
                             s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddressToMove);
                             //update clusterId of moved ingester
                             IIngesterRegistration.IngesterToController memory controller = s.ingesterToController[ingesterAddressToMove];
                             s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].clusterId = clusterId;
                         } else {
+                            console.log('cluster has no ingesters inside the empty cluster clause');
+
                             emit ClusterHasNoIngesters(clusterId);
                         }
                     } else {
+                        console.log('cluster has no ingesters');
                         emit ClusterHasNoIngesters(clusterId);
                     }
                 } // TODO: check if we should steal an ingester from  another cluster
+                break;
             }
         }
     }
@@ -134,6 +143,18 @@ library LibAppStorage {
     //     s.clusterIds.pop();
     // }
 
+    function addIngesterToClusterId(address ingesterAddress, address controllerAddress, uint256 clusterId) internal {
+        AppStorage storage s = appStorage();
+
+        s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
+        s.unAllocatedIngesters.pop();
+
+        uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
+        s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId = clusterId;
+        
+        emit IngesterAddedToCluster(ingesterAddress, clusterId);
+    }
+
     function addIngesterToCluster(address ingesterAddress, address controllerAddress) internal {
         AppStorage storage s = appStorage();
 
@@ -144,12 +165,15 @@ library LibAppStorage {
         } else {
             (clusterId, foundAvailableCluster) = getAvailableClusterForIngesters(ingesterAddress, controllerAddress);
         }
-
+        console.log('clusterId', clusterId);
+        console.log('foundAvailableCluster', foundAvailableCluster);
         //if no available cluster then put it in unAllocatedIngester otherwise allocate ingester
         if (!foundAvailableCluster) {
             s.unAllocatedIngesters.push(ingesterAddress);
+            console.log('adding unallocated ingester', ingesterAddress);
             emit UnAllocatedIngesterAdded(ingesterAddress);
         } else {
+            console.log('adding ingester to cluster', clusterId);
             s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
             emit IngesterAddedToCluster(ingesterAddress, clusterId);
         }

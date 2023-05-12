@@ -26,6 +26,7 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
         bytes calldata sig
         ) external {
         address controllerAddress = msg.sender;
+        require(s.ingesterToController[ingesterAddress].controllerAddress == address(0), "Ingester already registered.");
         require(s.ingesterToController[ingesterAddress].controllerAddress != controllerAddress, "Ingester already registered.");
        
         bytes32 messageHash = hash(ingesterAddress, message, nonce);

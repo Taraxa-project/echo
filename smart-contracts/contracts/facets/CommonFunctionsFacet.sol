@@ -115,6 +115,10 @@ contract CommonFunctionsFacet {
         return ingesterWithAssignedGroups;
     }
 
+    function getUnAllocatedIngesters() public view returns (address[] memory) {
+        return  s.unAllocatedIngesters;
+    }
+    
     /**
     * @notice Retrieves the list of ingesters for a given controller.
     * @param controllerAddress The address of the controller.
