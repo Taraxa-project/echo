@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:logging/logging.dart';
 
-import 'package:td_json_client/src/td_api/object/chat.dart';
 import 'package:td_json_client/td_api.dart';
 import 'package:telegram_client/ref/lg_isolated.dart';
 
@@ -109,6 +108,31 @@ class DbIsolated implements DbInterface {
   Future<void> updateUser(int userId, User user) async {
     await isolatedProxy.call(UpdateUser(userId, user));
   }
+
+  @override
+  Future<int> exportData(String tableName, String fileName, int? fromId) async {
+    return await isolatedProxy.call(ExportData(tableName, fileName, fromId));
+  }
+
+  @override
+  Future<void> insertIpfsHash(String tableName, String fileHash) async {
+    await isolatedProxy.call(InsertIpfsHash(tableName, fileHash));
+  }
+
+  @override
+  Future<int> exportMeta(String tableName, String fileName) async {
+    return await isolatedProxy.call(ExportMeta(tableName, fileName));
+  }
+
+  @override
+  Future<void> updateMetaFileHash(String tableName, String fileHash) async {
+    await isolatedProxy.call(UpdateMetaFileHash(tableName, fileHash));
+  }
+
+  @override
+  Future<IfpsFileHashesMeta> selectMetaFileHahes() async {
+    return await isolatedProxy.call(SelectMetaFileHahes());
+  }
 }
 
 class DbIsolatedDispatch extends IsolatedDispatch {
@@ -116,7 +140,7 @@ class DbIsolatedDispatch extends IsolatedDispatch {
 
   DbIsolatedDispatch(this.db) {}
 
-  dynamic dispatch(message) {
+  dynamic dispatch(message) async {
     if (message is Close) {
       db.close();
     } else if (message is InsertChats) {
@@ -143,6 +167,17 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       db.insertUser(message.userId);
     } else if (message is UpdateUser) {
       db.updateUser(message.userId, message.user);
+    } else if (message is ExportData) {
+      return await db.exportData(
+          message.tableName, message.fileName, message.fromId);
+    } else if (message is InsertIpfsHash) {
+      db.insertIpfsHash(message.tableName, message.fileHash);
+    } else if (message is ExportMeta) {
+      return await db.exportMeta(message.tableName, message.fileName);
+    } else if (message is UpdateMetaFileHash) {
+      db.updateMetaFileHash(message.tableName, message.fileHash);
+    } else if (message is SelectMetaFileHahes) {
+      return db.selectMetaFileHahes();
     } else {
       return super.dispatch(message);
     }
@@ -231,3 +266,34 @@ class UpdateUser {
 
   UpdateUser(this.userId, this.user);
 }
+
+class ExportData {
+  final String tableName;
+  final String fileName;
+  int? fromId;
+
+  ExportData(this.tableName, this.fileName, this.fromId);
+}
+
+class InsertIpfsHash {
+  final String tableName;
+  final String fileHash;
+
+  InsertIpfsHash(this.tableName, this.fileHash);
+}
+
+class ExportMeta {
+  final String tableName;
+  final String fileName;
+
+  ExportMeta(this.tableName, this.fileName);
+}
+
+class UpdateMetaFileHash {
+  final String tableName;
+  final String fileHash;
+
+  UpdateMetaFileHash(this.tableName, this.fileHash);
+}
+
+class SelectMetaFileHahes {}

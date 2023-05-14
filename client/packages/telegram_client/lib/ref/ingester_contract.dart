@@ -11,41 +11,28 @@ import 'package:http/http.dart';
 
 import 'package:telegram_client/src/smart_contract/DataGatheringFacet.g.dart';
 
-import 'ingester_contract_interface.dart';
-
-class IngesterContract implements IngesterContractInterface {
+class IngesterContract {
   final Logger logger;
-
-  final String contractAddress;
-  final String contractRpcUrl;
-  final int contractMaxGas;
-  final String configPath;
+  final IngesterContractParams ingesterContractParams;
 
   EthPrivateKey? _credentials;
 
   static const String walletFileName = 'wallet.json';
   static const String walletPrivateKeyName = 'private_key_ingester';
 
-  IngesterContract(
-    this.logger,
-    this.contractAddress,
-    this.contractRpcUrl,
-    this.contractMaxGas,
-    this.configPath,
-    String walletPrivateKey,
-  ) {
-    _initCredentials(walletPrivateKey);
+  IngesterContract(this.logger, this.ingesterContractParams) {
+    _initCredentials(ingesterContractParams.walletPrivateKey);
   }
 
-  @override
   Future<List<String>> getChatsNames() async {
     logger.info('reading Telegram groups...');
 
-    final web3client = Web3Client(contractRpcUrl, Client());
+    final web3client =
+        Web3Client(ingesterContractParams.contractRpcUrl, Client());
     final contract = DataGatheringFacet(
-      address: EthereumAddress.fromHex(contractAddress),
-      client: web3client,
-    );
+        address:
+            EthereumAddress.fromHex(ingesterContractParams.contractAddress),
+        client: web3client);
 
     try {
       final ingesterWithGroups =
@@ -60,8 +47,33 @@ class IngesterContract implements IngesterContractInterface {
     }
   }
 
+  @override
+  Future<void> writeHashes(
+      String chatHash, String messageHash, String userHash) async {
+    logger.info('writing hashes in smart contract...');
+
+    final web3client =
+        Web3Client(ingesterContractParams.contractRpcUrl, Client());
+    final contract = DataGatheringFacet(
+        address:
+            EthereumAddress.fromHex(ingesterContractParams.contractAddress),
+        client: web3client);
+
+    try {
+      await contract.addIpfsHash(userHash, chatHash, messageHash,
+          credentials: _credentials!,
+          transaction:
+              Transaction(maxGas: ingesterContractParams.contractMaxGas));
+    } on Object {
+      rethrow;
+    } finally {
+      await web3client.dispose();
+    }
+  }
+
   void _initCredentials(String walletPrivateKey) {
-    final file = new io.File(p.joinAll([configPath, walletFileName]));
+    final file = new io.File(
+        p.joinAll([ingesterContractParams.configPath, walletFileName]));
     if (file.existsSync()) {
       _credentials = _readCredentialsFromFile(file);
     } else {
@@ -93,4 +105,20 @@ class IngesterContract implements IngesterContractInterface {
     };
     file.writeAsStringSync(jsonEncode(wallet));
   }
+}
+
+class IngesterContractParams {
+  final String contractAddress;
+  final String contractRpcUrl;
+  final int contractMaxGas;
+  final String configPath;
+  final String walletPrivateKey;
+
+  IngesterContractParams(
+    this.contractAddress,
+    this.contractRpcUrl,
+    this.contractMaxGas,
+    this.configPath,
+    this.walletPrivateKey,
+  );
 }

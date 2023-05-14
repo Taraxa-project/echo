@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
-import 'package:td_json_client/td_api.dart';
-import 'package:telegram_client/ref/db_isolated.dart';
 
+import 'package:telegram_client/ref/db_isolated.dart';
 import 'package:telegram_client/ref/lg_isolated.dart';
 
 import 'tg_interface.dart';
+import 'ingester_contract.dart';
 import 'tg.dart';
 import 'isolate.dart';
 
@@ -23,25 +23,11 @@ class TgIsolated implements TgInterface {
     String libtdjsonlcPath,
     Level logLevelLibTdJson,
     Uri? proxyUri,
-    String ingesterContractAddress,
-    String ingesterContractRpcUrl,
-    int ingesterContractMaxGas,
-    String configPath,
-    String walletPrivateKey, [
+    IngesterContractParams ingesterContractParams, [
     String? debugName,
   ]) async {
-    final init = Init(
-      lg,
-      db,
-      libtdjsonlcPath,
-      logLevelLibTdJson,
-      proxyUri,
-      ingesterContractAddress,
-      ingesterContractRpcUrl,
-      ingesterContractMaxGas,
-      configPath,
-      walletPrivateKey,
-    );
+    final init = Init(lg, db, libtdjsonlcPath, logLevelLibTdJson, proxyUri,
+        ingesterContractParams);
     final sendPort =
         await Isolater.spawn(TgIsolated._entryPoint, init, debugName);
     final isolatedProxy = IsolatedProxy(sendPort);
@@ -60,18 +46,8 @@ class TgIsolated implements TgInterface {
         init.lg.logExternal(event);
       });
 
-    final tg = Tg(
-      logger,
-      init.db,
-      init.libtdjsonlcPath,
-      init.logLevelLibTdJson,
-      init.proxyUri,
-      init.ingesterContractAddress,
-      init.ingesterContractRpcUrl,
-      init.ingesterContractMaxGas,
-      init.configPath,
-      init.walletPrivateKey,
-    );
+    final tg = Tg(logger, init.db, init.libtdjsonlcPath, init.logLevelLibTdJson,
+        init.proxyUri, init.ingesterContractParams);
     final isolatedDispatch = TgIsolatedDispatch(tg);
 
     isolateSpawnMessage.sendPort.send(isolatedDispatch.receivePort.sendPort);
@@ -84,33 +60,13 @@ class TgIsolated implements TgInterface {
   }
 
   @override
-  Future<void> login(
-    int apiId,
-    String apiHash,
-    String phoneNumber,
-    String databasePath,
-    String Function() readTelegramCode,
-    void Function(String p1) writeQrCodeLink,
-    String Function() readUserFirstName,
-    String Function() readUserLastName,
-    String Function() readUserPassword,
-  ) async {
-    return await isolatedProxy.call(Login(
-      apiId,
-      apiHash,
-      phoneNumber,
-      databasePath,
-      readTelegramCode,
-      writeQrCodeLink,
-      readUserFirstName,
-      readUserLastName,
-      readUserPassword,
-    ));
+  Future<void> login(LoginParams loginParams) async {
+    return await isolatedProxy.call(Login(loginParams));
   }
 
   @override
-  FutureOr<void> saveChatsHistory() async {
-    return await isolatedProxy.call(ReadChatsHistory());
+  Future<void> saveChatsHistory(DateTime dateTimeFrom) async {
+    return await isolatedProxy.call(ReadChatsHistory(dateTimeFrom));
   }
 }
 
@@ -123,19 +79,9 @@ class TgIsolatedDispatch extends IsolatedDispatch {
     if (message is Close) {
       return await tg.close();
     } else if (message is Login) {
-      return await tg.login(
-        message.apiId,
-        message.apiHash,
-        message.phoneNumber,
-        message.databasePath,
-        message.readTelegramCode,
-        message.writeQrCodeLink,
-        message.readUserFirstName,
-        message.readUserLastName,
-        message.readUserPassword,
-      );
+      return await tg.login(message.loginParams);
     } else if (message is ReadChatsHistory) {
-      return await tg.saveChatsHistory();
+      return await tg.saveChatsHistory(message.dateTimeFrom);
     } else {
       return super.dispatch(message);
     }
@@ -148,11 +94,7 @@ class Init {
   final String libtdjsonlcPath;
   final Level logLevelLibTdJson;
   final Uri? proxyUri;
-  final String ingesterContractAddress;
-  final String ingesterContractRpcUrl;
-  final int ingesterContractMaxGas;
-  final String configPath;
-  final String walletPrivateKey;
+  final IngesterContractParams ingesterContractParams;
 
   Init(
     this.lg,
@@ -160,38 +102,20 @@ class Init {
     this.libtdjsonlcPath,
     this.logLevelLibTdJson,
     this.proxyUri,
-    this.ingesterContractAddress,
-    this.ingesterContractRpcUrl,
-    this.ingesterContractMaxGas,
-    this.configPath,
-    this.walletPrivateKey,
+    this.ingesterContractParams,
   );
 }
 
 class Close {}
 
 class Login {
-  final int apiId;
-  final String apiHash;
-  final String phoneNumber;
-  final String databasePath;
-  final String Function() readTelegramCode;
-  final void Function(String) writeQrCodeLink;
-  final String Function() readUserFirstName;
-  final String Function() readUserLastName;
-  final String Function() readUserPassword;
+  final LoginParams loginParams;
 
-  Login(
-    this.apiId,
-    this.apiHash,
-    this.phoneNumber,
-    this.databasePath,
-    this.readTelegramCode,
-    this.writeQrCodeLink,
-    this.readUserFirstName,
-    this.readUserLastName,
-    this.readUserPassword,
-  );
+  Login(this.loginParams);
 }
 
-class ReadChatsHistory {}
+class ReadChatsHistory {
+  DateTime dateTimeFrom;
+
+  ReadChatsHistory(this.dateTimeFrom);
+}

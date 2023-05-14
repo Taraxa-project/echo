@@ -19,4 +19,18 @@ abstract class DbInterface {
 
   FutureOr<void> insertUser(int userId);
   FutureOr<void> updateUser(int userId, User user);
+
+  FutureOr<void> updateMetaFileHash(String tableName, String fileHash);
+  FutureOr<IfpsFileHashesMeta> selectMetaFileHahes();
+
+  FutureOr<void> insertIpfsHash(String tableName, String fileHash);
+
+  FutureOr<int> exportData(String tableName, String fileName, int? fromId);
+  FutureOr<int> exportMeta(String tableName, String fileName);
+}
+
+class IfpsFileHashesMeta {
+  String? chat;
+  String? message;
+  String? user;
 }

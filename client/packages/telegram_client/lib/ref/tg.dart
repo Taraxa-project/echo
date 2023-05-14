@@ -16,9 +16,9 @@ class Tg implements TgInterface {
   late final TdClient tdClient;
   late final IngesterContract ingesterContract;
 
-  static const int delayUntilNextChatSeconds = 300;
-  static const int delayUntilNextMessageBatchSeconds = 30;
-  static const int delayUntilNextUserSeconds = 5;
+  static const int delayUntilNextChatSeconds = 10;
+  static const int delayUntilNextMessageBatchSeconds = 5;
+  static const int delayUntilNextUserSeconds = 2;
 
   Tg(
     this.logger,
@@ -26,11 +26,7 @@ class Tg implements TgInterface {
     String libtdjsonlcPath,
     Level logLevelLibTdJson,
     Uri? proxyUri,
-    String ingesterContractAddress,
-    String ingesterContractRpcUrl,
-    int ingesterContractMaxGas,
-    String configPath,
-    String walletPrivateKey,
+    IngesterContractParams ingesterContractParams,
   ) {
     tdClient = TdClient(
       logger,
@@ -40,11 +36,7 @@ class Tg implements TgInterface {
     );
     ingesterContract = IngesterContract(
       logger,
-      ingesterContractAddress,
-      ingesterContractRpcUrl,
-      ingesterContractMaxGas,
-      configPath,
-      walletPrivateKey,
+      ingesterContractParams,
     );
   }
 
@@ -52,17 +44,7 @@ class Tg implements TgInterface {
     await tdClient.close();
   }
 
-  Future<void> login(
-    int apiId,
-    String apiHash,
-    String phoneNumber,
-    String databasePath,
-    String Function() readTelegramCode,
-    void Function(String) writeQrCodeLink,
-    String Function() readUserFirstName,
-    String Function() readUserLastName,
-    String Function() readUserPassword,
-  ) async {
+  Future<void> login(LoginParams loginParams) async {
     logger.info('loging in...');
 
     var isAuthorized = false;
@@ -76,18 +58,18 @@ class Tg implements TgInterface {
 
       try {
         if (authorizationState is AuthorizationStateWaitTdlibParameters) {
-          await _setTdlibParameters(apiId, apiHash, databasePath);
+          await _setTdlibParameters(loginParams);
         } else if (authorizationState is AuthorizationStateWaitPhoneNumber) {
-          await _setAuthenticationPhoneNumber(phoneNumber);
+          await _setAuthenticationPhoneNumber(loginParams);
         } else if (authorizationState is AuthorizationStateWaitCode) {
-          await _checkAuthenticationCode(readTelegramCode);
+          await _checkAuthenticationCode(loginParams);
         } else if (authorizationState
             is AuthorizationStateWaitOtherDeviceConfirmation) {
-          writeQrCodeLink(authorizationState.link ?? '');
+          loginParams.writeQrCodeLink(authorizationState.link ?? '');
         } else if (authorizationState is AuthorizationStateWaitRegistration) {
-          await _registerUser(readUserFirstName, readUserLastName);
+          await _registerUser(loginParams);
         } else if (authorizationState is AuthorizationStateWaitPassword) {
-          await _checkAuthenticationPassword(readUserPassword);
+          await _checkAuthenticationPassword(loginParams);
         } else if (authorizationState is AuthorizationStateReady) {
           isAuthorized = true;
         }
@@ -110,16 +92,12 @@ class Tg implements TgInterface {
     logger.info('login success.');
   }
 
-  Future<TdObject> _setTdlibParameters(
-    int apiId,
-    String apiHash,
-    String databasePath,
-  ) async {
+  Future<TdObject> _setTdlibParameters(LoginParams loginParams) async {
     logger.info('sending SetTdlibParameters...');
     return await tdClient.retryTdCall(SetTdlibParameters(
-      api_id: apiId,
-      api_hash: apiHash,
-      database_directory: databasePath,
+      api_id: loginParams.apiId,
+      api_hash: loginParams.apiHash,
+      database_directory: loginParams.databasePath,
       use_message_database: false,
       device_model: 'Desktop',
       application_version: '1.0',
@@ -128,39 +106,37 @@ class Tg implements TgInterface {
     ));
   }
 
-  Future<TdObject> _setAuthenticationPhoneNumber(String phoneNumber) async {
+  Future<TdObject> _setAuthenticationPhoneNumber(
+      LoginParams loginParams) async {
     logger.info('sending SetAuthenticationPhoneNumber...');
     return await tdClient.retryTdCall(SetAuthenticationPhoneNumber(
-      phone_number: phoneNumber,
+      phone_number: loginParams.phoneNumber,
     ));
   }
 
-  Future<TdObject> _checkAuthenticationCode(
-      String Function() readTelegramCode) async {
+  Future<TdObject> _checkAuthenticationCode(LoginParams loginParams) async {
     logger.info('sending CheckAuthenticationCode...');
     return await tdClient.retryTdCall(CheckAuthenticationCode(
-      code: readTelegramCode(),
+      code: loginParams.readTelegramCode(),
     ));
   }
 
-  Future<TdObject> _registerUser(String Function() readUserFirstName,
-      String Function() readUserLastName) async {
+  Future<TdObject> _registerUser(LoginParams loginParams) async {
     logger.info('sending RegisterUser...');
     return await tdClient.retryTdCall(RegisterUser(
-      first_name: readUserFirstName(),
-      last_name: readUserLastName(),
+      first_name: loginParams.readUserFirstName(),
+      last_name: loginParams.readUserLastName(),
     ));
   }
 
-  Future<TdObject> _checkAuthenticationPassword(
-      String Function() readUserPassword) async {
+  Future<TdObject> _checkAuthenticationPassword(LoginParams loginParams) async {
     logger.info('sending CheckAuthenticationPassword...');
     return await tdClient.retryTdCall(CheckAuthenticationPassword(
-      password: readUserPassword(),
+      password: loginParams.readUserPassword(),
     ));
   }
 
-  Future<void> saveChatsHistory() async {
+  Future<void> saveChatsHistory(DateTime dateTimeFrom) async {
     logger.info('reading groups history... ');
 
     final chatsNames = await ingesterContract.getChatsNames();
@@ -168,11 +144,10 @@ class Tg implements TgInterface {
     logger.info('adding groups to db...');
     await db.insertChats(chatsNames);
 
-    final twoWeeksAgo = _twoWeeksAgo();
     for (final chatName in chatsNames) {
       logger.info('[$chatName] reading group history...');
       try {
-        await _saveChatHistory(twoWeeksAgo, chatName);
+        await _saveChatHistory(dateTimeFrom, chatName);
       } on TgChatNotFoundException catch (ex) {
         logger.warning('[$chatName] $ex.');
         await db.blacklistChat(chatName, ex.message ?? 'Group not found');
@@ -193,6 +168,7 @@ class Tg implements TgInterface {
       logger.info('reading groups history... '
           'sleeping for $delayUntilNextChatSeconds seconds.');
       await Future.delayed(const Duration(seconds: delayUntilNextChatSeconds));
+      break;
     }
   }
 
@@ -212,24 +188,17 @@ class Tg implements TgInterface {
     await subscriptionOnlineMemberCount.cancel();
 
     final onlineMembersCount = await db.selectChatOnlineMembersCount(chatName);
-    var messageIdLast =
-        await _findMessageIdLast(chatName, chatId, dateTimeFrom) ?? 0;
 
     while (true) {
-      var messageIdFrom = messageIdLast + 1;
+      final messageIdLast =
+          await _findMessageIdLast(chatName, chatId, dateTimeFrom) ?? 0;
+      final messageIdFrom = messageIdLast + 1;
 
-      var history = await _getChatHistory(chatName, chatId, messageIdFrom);
-      var messages = history.messages;
+      final history = await _getChatHistory(chatName, chatId, messageIdFrom);
+      final messages = history.messages;
       if (messages == null || messages.length == 0) break;
 
-      messageIdLast = await _saveMessages(
-        chatName,
-        chatId,
-        messages,
-        onlineMembersCount,
-      );
-      if (messageIdLast == 0) break;
-
+      await _saveMessages(chatName, chatId, messages, onlineMembersCount);
       await _saveUsersFromMessages(chatName, messages);
 
       logger.info('[$chatName] '
@@ -395,30 +364,22 @@ class Tg implements TgInterface {
     )) as Messages;
   }
 
-  Future<int> _saveMessages(
+  Future<void> _saveMessages(
     String chatName,
     int chatId,
     List<Message> messages,
     int? onlineMemberCount,
   ) async {
-    var messageIdLast = 0;
     var messagesCount = 0;
 
     for (Message message in messages) {
       if (message.chat_id == null || message.id == null || message.date == null)
         continue;
-
       db.insertMessage(message, onlineMemberCount);
-
       messagesCount += 1;
-      var messageId = WrapId.unwrapMessageId(message.id);
-      if (messageId > messageIdLast) {
-        messageIdLast = messageId;
-      }
     }
 
     logger.info('[$chatName] saved ${messagesCount} messages.');
-    return messageIdLast;
   }
 
   Future<void> _saveUsersFromMessages(

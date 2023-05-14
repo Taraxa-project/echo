@@ -1,3 +1,6 @@
+import 'dart:io' as io;
+import 'dart:convert';
+
 import 'package:logging/logging.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:collection/collection.dart';
@@ -6,6 +9,7 @@ import 'package:td_json_client/td_api.dart';
 import 'package:telegram_client/wrap_id.dart';
 
 import 'db_interface.dart';
+import 'db_sql.dart';
 
 class Db implements DbInterface {
   final Logger logger;
@@ -18,6 +22,11 @@ class Db implements DbInterface {
 
     logger.info('running migrations...');
     _runMigrations();
+  }
+
+  void close() {
+    logger.info('closing...');
+    _database.dispose();
   }
 
   void insertChats(List<String> usernames) {
@@ -95,10 +104,8 @@ class Db implements DbInterface {
     logger.fine('selecting max message id for $parameters...');
     final resultSet =
         _database.select(SqlMessage.selectMaxIdFromDate, parameters);
-    if (resultSet.isNotEmpty)
-      return resultSet.first['id'];
-    else
-      return null;
+    if (resultSet.isNotEmpty) return resultSet.first['id'];
+    return null;
   }
 
   void insertMessage(Message message, int? onlineMembersCount) {
@@ -177,9 +184,80 @@ class Db implements DbInterface {
     _execute(SqlUser.update, parameters);
   }
 
-  void close() {
-    logger.info('closing...');
-    _database.dispose();
+  Future<int> exportData(String tableName, String fileName, int? fromId) async {
+    final minId = fromId ?? _selectLastUploadedId(tableName) ?? 0;
+    final parameters = [minId];
+
+    final rs = _select(_sqlSelectDataForExport(tableName), parameters);
+    if (rs.isNotEmpty) {
+      await _exportResultSet(rs, fileName);
+      _updateLastExportedId(tableName, rs.last['rowid']);
+    }
+
+    logger.fine('exported ${rs.length} records from $tableName');
+    return rs.length;
+  }
+
+  Future<int> exportMeta(String tableName, String fileName) async {
+    final parameters = [tableName];
+
+    final rs = _select(SqlIpfsHash.selectForExport, parameters);
+    if (rs.isNotEmpty) await _exportResultSet(rs, fileName);
+
+    logger.fine('exported ${rs.length} ipfs hashes for $tableName');
+    return rs.length;
+  }
+
+  void insertIpfsHash(String tableName, String fileHash) {
+    try {
+      _database.execute('BEGIN');
+      _insertIpfsHash(tableName, fileHash);
+      _updateLastUploadedId(tableName);
+      _database.execute('COMMIT');
+    } on Object {
+      _database.execute('ROLLBACK');
+      rethrow;
+    }
+  }
+
+  void updateMetaFileHash(String tableName, String fileHash) {
+    final now = _now();
+    final parameters = [fileHash, now, tableName];
+
+    logger.fine('updating ipfs meta $parameters...');
+    _execute(SqlIpfsUpload.updateMetaFileHash, parameters);
+  }
+
+  IfpsFileHashesMeta selectMetaFileHahes() {
+    logger.fine('selecting meta hashes...');
+
+    var hashes = IfpsFileHashesMeta();
+
+    Row? row;
+    row = _database.select(SqlIpfsUpload.select, ['chat']).firstOrNull;
+    if (row != null) hashes.chat = row['meta_file_hash'];
+    row = _database.select(SqlIpfsUpload.select, ['message']).firstOrNull;
+    if (row != null) hashes.message = row['meta_file_hash'];
+    row = _database.select(SqlIpfsUpload.select, ['user']).firstOrNull;
+    if (row != null) hashes.user = row['meta_file_hash'];
+
+    return hashes;
+  }
+
+  void _insertIpfsHash(String tableName, String fileHash) {
+    final now = _now();
+    final parameters = [tableName, fileHash, now, now];
+
+    logger.fine('inserting ipfs hash $parameters...');
+    _execute(SqlIpfsHash.insert, parameters);
+  }
+
+  void _updateLastUploadedId(String tableName) {
+    final now = _now();
+    final parameters = [now, tableName];
+
+    logger.fine('inserting ipfs hash $parameters...');
+    _execute(SqlIpfsUpload.updateLastUploadedId, parameters);
   }
 
   void _runMigrations() {
@@ -205,7 +283,7 @@ class Db implements DbInterface {
     final now = _now();
     final tableNames = ['chat', 'message', 'user'];
 
-    final stmt = _database.prepare(SqlIpfsUpload.insertIpfsUpload);
+    final stmt = _database.prepare(SqlIpfsUpload.insert);
     try {
       for (var tableName in tableNames)
         stmt.execute([tableName, 0, 0, now, now]);
@@ -214,6 +292,46 @@ class Db implements DbInterface {
     } finally {
       stmt.dispose();
     }
+  }
+
+  int? _selectLastUploadedId(String tableName) {
+    final parameters = [tableName];
+
+    logger.fine('selecting last uploaded id for $parameters...');
+    final resultSet = _database.select(SqlIpfsUpload.select, parameters);
+    if (resultSet.isNotEmpty) return resultSet.first['last_uploaded_id'];
+    return null;
+  }
+
+  String _sqlSelectDataForExport(String tableName) {
+    if (tableName == 'chat') {
+      return SqlChat.selectForExport;
+    } else if (tableName == 'message') {
+      return SqlMessage.selectForExport;
+    } else {
+      return SqlUser.selectForExport;
+    }
+  }
+
+  Future<void> _exportResultSet(ResultSet rs, String fileName) async {
+    final file = new io.File(fileName);
+    file.createSync();
+
+    final sink = file.openWrite(mode: io.FileMode.write);
+    sink.write(jsonEncode(rs.columnNames) + '\n');
+
+    for (final row in rs) sink.write(jsonEncode(row.values) + '\n');
+
+    await sink.flush();
+    await sink.close();
+  }
+
+  void _updateLastExportedId(String tableName, int exportedId) {
+    final now = _now();
+    final parameters = [exportedId, now, tableName];
+
+    logger.fine('updating last exported id $parameters...');
+    _execute(SqlIpfsUpload.updateLastExportedId, parameters);
   }
 
   String _now() {
@@ -230,195 +348,15 @@ class Db implements DbInterface {
       stmt.dispose();
     }
   }
-}
 
-class SqlMigration {
-  static const createChatTable = '''
-CREATE TABLE IF NOT EXISTS chat (
-  username TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
-  id INTEGER,
-  title TEXT,
-  member_count INTEGER, 
-  member_online_count INTEGER,
-  bot_count INTEGER,
-  blacklisted INTEGER DEFAULT 0, /* 0 - false; 1 - true; */
-  blacklist_reason TEXT,
-  created_at TEXT,
-  updated_at TEXT
-);
-''';
-
-  static const createTableMessage = '''
-CREATE TABLE IF NOT EXISTS message (
-  chat_id INTEGER NOT NULL,
-  id INTEGER NOT NULL,
-  date TEXT,
-  user_id INTEGER,
-  text TEXT,
-  member_online_count INTEGER,
-  views INTEGER,
-  replies INTEGER,
-  forwards INTEGER,
-  reply_to_id INTEGER,
-  created_at TEXT,
-  updated_at TEXT
-);
-''';
-
-  static const createTableUser = '''
-CREATE TABLE IF NOT EXISTS user (
-  id INTEGER NOT NULL PRIMARY KEY,
-  user_id INTEGER UNIQUE NOT NULL,
-  first_name TEXT,
-  last_name TEXT,
-  username TEXT,
-  bot INTEGER,
-  verified INTEGER,
-  scam INTEGER,
-  fake INTEGER,
-  created_at TEXT,
-  updated_at TEXT
-);
-''';
-
-  static const createIpfsUploadTable = '''
-CREATE TABLE IF NOT EXISTS ipfs_upload (
-  table_name TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
-  last_exported_id INTEGER,
-  last_uploaded_id INTEGER,
-  meta_file_hash TEXT,
-  created_at TEXT,
-  updated_at TEXT
-);
-''';
-
-  static const createIpfsHashTable = '''
-CREATE TABLE IF NOT EXISTS ipfs_hash (
-  table_name TEXT,
-  file_hash TEXT,
-  created_at TEXT,
-  updated_at TEXT
-);
-''';
-
-  static const createIndexIpfsHashTableName = '''
-CREATE INDEX IF NOT EXISTS idx_ipfs_hash_table_name ON
-  ipfs_hash(table_name);
-''';
-
-  static const createIndexMessageChatIdMessageId = '''
-CREATE UNIQUE INDEX IF NOT EXISTS idx_message_chat_id_message_id ON
-  message(chat_id, id);
-''';
-}
-
-class SqlChat {
-  static const insert = '''
-INSERT INTO
-  chat (username, created_at, updated_at)
-VALUES (?, ?, ?);
-''';
-
-  static const blacklist = '''
-UPDATE
-  chat
-SET
-  blacklisted = 1, blacklist_reason = ?, updated_at = ?
-WHERE username = ?;
-''';
-
-  static const update = '''
-UPDATE 
-  chat
-SET
-  id = ?, title = ?, updated_at = ?
-WHERE
-  username = ?;
-''';
-
-  static const updateMembersCount = '''
-UPDATE
-  chat
-SET
-  member_count = ?, updated_at = ?
-WHERE
-  username = ?;
-''';
-
-  static const updateMemberOnlineCount = '''
-UPDATE
-  chat
-SET
-  member_online_count = ?, updated_at = ?
-WHERE username = ?;
-''';
-
-  static const updateBotCount = '''
-UPDATE
-  chat
-SET
-  bot_count = ?, updated_at = ?
-WHERE username = ?;
-''';
-
-  static const select = '''
-SELECT
-  *
-FROM
-  chat 
-WHERE 
-  username = ?;
-''';
-}
-
-class SqlMessage {
-  static const selectMaxIdFromDate = '''
-SELECT
-  max(id) id
-FROM
-  message
-WHERE
-  chat_id = ?
-  AND date >= ?;
-''';
-
-  static const insert = '''
-INSERT INTO message (
-  chat_id, id, date, user_id, text, 
-  member_online_count, views, replies, forwards, reply_to_id, 
-  created_at, updated_at
-)
-VALUES (
-  ?, ?, ?, ?, ?,
-  ?, ?, ?, ?, ?,
-  ?, ?
-) ON CONFLICT DO NOTHING;
-''';
-}
-
-class SqlUser {
-  static const insert = '''
-INSERT INTO
-  user (user_id, created_at, updated_at)
-VALUES (?, ?, ?);
-''';
-
-  static const update = '''
-UPDATE
-  user
-SET
-  first_name = ?, last_name = ?, username = ?,
-  bot = ?, verified = ?, scam = ?, fake = ?, updated_at = ?
-WHERE
-  user_id = ?;
-''';
-}
-
-class SqlIpfsUpload {
-  static const insertIpfsUpload = '''
-INSERT INTO ipfs_upload
-  (table_name, last_exported_id, last_uploaded_id, created_at, updated_at)
-VALUES
-  (?, ?, ?, ?, ?);
-''';
+  ResultSet _select(String sql, List<Object?> parameters) {
+    final stmt = _database.prepare(sql);
+    try {
+      return stmt.select(parameters);
+    } on Object {
+      rethrow;
+    } finally {
+      stmt.dispose();
+    }
+  }
 }

@@ -6,9 +6,13 @@ import 'package:logging/logging.dart';
 import 'package:cron/cron.dart';
 import 'package:echo_cli/callback/cli.dart';
 
+import 'package:telegram_client/ref/ipfs_interface.dart';
+import 'package:telegram_client/ref/tg_interface.dart';
+
 import 'package:telegram_client/ref/lg_isolated.dart';
 import 'package:telegram_client/ref/db_isolated.dart';
 import 'package:telegram_client/ref/tg_isolated.dart';
+import 'package:telegram_client/ref/ipfs_isolated.dart';
 import 'package:telegram_client/ref/ingester_contract.dart';
 
 class TelegramCommandMsgs extends Command {
@@ -23,42 +27,38 @@ class TelegramCommandMsgs extends Command {
 
   void run() async {
     _init();
-    // _timer();
 
     LgIsolated? lg;
     DbIsolated? db;
     TgIsolated? tg;
+    IpfsIsolated? ipfs;
     try {
       lg = await LgIsolated.spawn(_logLevel);
       db = await DbIsolated.spawn(lg, globalResults!['message-database-path']);
-      tg = await TgIsolated.spawn(
-        lg,
-        db,
-        globalResults!['libtdjson-path'],
-        _logLevelLibTdJson,
-        parseProxyUri(),
-        globalResults!.command!['ingester-contract-address'],
-        globalResults!.command!['ingester-contract-rpc-url'],
-        _ingesterContractMaxGas,
-        globalResults!.command!['config-path'],
-        globalResults!.command!['wallet-private-key'],
-      );
+      final ingesterContractParams = _buildIngesterContractParams();
+      tg = await TgIsolated.spawn(lg, db, globalResults!['libtdjson-path'],
+          _logLevelLibTdJson, parseProxyUri(), ingesterContractParams);
+      ipfs = await IpfsIsolated.spawn(
+          lg,
+          db,
+          globalResults!.command!['ipfs-cron-schedule'],
+          parseIpfsCronSchedule(),
+          globalResults!.command!['table-dump-path'],
+          _buildIpfsParams(),
+          ingesterContractParams);
+      await tg.login(_buildLoginParams());
 
-      await tg.login(
-          parseInt(globalResults!['api-id'], '--api-id must be an intege'),
-          globalResults!['api-hash'],
-          globalResults!['phone-number'],
-          globalResults!['database-path'],
-          readTelegramCode,
-          writeQrCodeLink,
-          readUserFirstName,
-          readUserLastName,
-          readUserPassword);
+      while (true) {
+        if (!_runForever) break;
 
-      await tg.saveChatsHistory();
+        final dateTimeFrom = _twoWeeksAgo();
+        await tg.saveChatsHistory(dateTimeFrom);
+        await Future.delayed(const Duration(minutes: 5));
+      }
     } on Object {
       rethrow;
     } finally {
+      ipfs?.exit();
       await tg?.close();
       await db?.close();
       lg?.exit();
@@ -78,6 +78,39 @@ class TelegramCommandMsgs extends Command {
     );
   }
 
+  LoginParams _buildLoginParams() {
+    return LoginParams(
+      parseInt(globalResults!['api-id'], '--api-id must be an integer'),
+      globalResults!['api-hash'],
+      globalResults!['phone-number'],
+      globalResults!['database-path'],
+      readTelegramCode,
+      writeQrCodeLink,
+      readUserFirstName,
+      readUserLastName,
+      readUserPassword,
+    );
+  }
+
+  IngesterContractParams _buildIngesterContractParams() {
+    return IngesterContractParams(
+      globalResults!.command!['ingester-contract-address'],
+      globalResults!.command!['ingester-contract-rpc-url'],
+      _ingesterContractMaxGas,
+      globalResults!.command!['config-path'],
+      globalResults!.command!['wallet-private-key'],
+    );
+  }
+
+  IpfsParams _buildIpfsParams() {
+    return IpfsParams(
+        globalResults!.command!['ipfs-scheme'],
+        globalResults!.command!['ipfs-host'],
+        globalResults!.command!['ipfs-port'],
+        globalResults!.command?['ipfs-username'],
+        globalResults!.command?['ipfs-password']);
+  }
+
   void _timer() {
     final lg = Logger('Timer')
       ..level = Level.ALL
@@ -93,7 +126,7 @@ class TelegramCommandMsgs extends Command {
     });
   }
 
-  DateTime computeTwoWeeksAgo() {
+  DateTime _twoWeeksAgo() {
     final dateTimeTwoWeeksAgo =
         DateTime.now().toUtc().subtract(const Duration(days: 14));
     return DateTime(dateTimeTwoWeeksAgo.year, dateTimeTwoWeeksAgo.month,
