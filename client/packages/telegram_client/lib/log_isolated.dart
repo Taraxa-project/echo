@@ -3,21 +3,21 @@ import 'dart:async';
 import 'package:logging/logging.dart';
 
 import 'isolate.dart';
-import 'lg_interface.dart';
-import 'lg.dart';
+import 'log_interface.dart';
+import 'log.dart';
 
-class LgIsolated implements LgInterface {
+class LogIsolated implements LogInterface {
   final IsolatedProxy isolatedProxy;
   final Level? level;
 
-  LgIsolated._(this.isolatedProxy, this.level);
+  LogIsolated._(this.isolatedProxy, this.level);
 
-  static Future<LgIsolated> spawn([Level? level, String? debugName]) async {
+  static Future<LogIsolated> spawn([Level? level, String? debugName]) async {
     final init = Init(level);
     final sendPort =
-        await Isolater.spawn(LgIsolated._entryPoint, init, debugName);
+        await Isolater.spawn(LogIsolated._entryPoint, init, debugName);
     final isolatedProxy = IsolatedProxy(sendPort);
-    return LgIsolated._(isolatedProxy, level);
+    return LogIsolated._(isolatedProxy, level);
   }
 
   static void _entryPoint(message) {
@@ -26,7 +26,7 @@ class LgIsolated implements LgInterface {
     final isolateSpawnMessage = message as IsolateSpawnMessage;
     final init = isolateSpawnMessage.init as Init;
 
-    final isolatedDispatch = LgIsolatedDispatch(Lg(init.level));
+    final isolatedDispatch = LgIsolatedDispatch(Log(init.level));
 
     isolateSpawnMessage.sendPort.send(isolatedDispatch.receivePort.sendPort);
   }
@@ -42,7 +42,7 @@ class LgIsolated implements LgInterface {
 }
 
 class LgIsolatedDispatch extends IsolatedDispatch {
-  final Lg lg;
+  final Log lg;
 
   LgIsolatedDispatch(this.lg) {}
 

@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:logging/logging.dart';
 import 'package:args/command_runner.dart';
 
-// import 'package:echo_cli/command/messages.dart';
-import 'package:echo_cli/command/msgs.dart';
-// import 'package:echo_cli/command/message.dart';
+import 'package:echo_cli/command/messages.dart';
+import 'package:echo_cli/command/message.dart';
 
 void main(List<String> arguments) {
   hierarchicalLoggingEnabled = true;
@@ -41,11 +40,6 @@ void main(List<String> arguments) {
       defaultsTo: 'tdlib',
     )
     ..addOption(
-      'message-database-path',
-      help: 'message database path',
-      defaultsTo: 'message.sqlite',
-    )
-    ..addOption(
       'loglevel',
       help: 'Log level',
       defaultsTo: 'warning',
@@ -61,8 +55,13 @@ void main(List<String> arguments) {
       valueHelp: 'scheme://username:password@host:port',
     );
 
-  final telegramCommandMsgs = TelegramCommandMsgs();
-  telegramCommandMsgs.argParser
+  final telegramSaveChatHistoryCommand = TelegramSaveChatHistoryCommand();
+  telegramSaveChatHistoryCommand.argParser
+    ..addOption(
+      'message-database-path',
+      help: 'message database path',
+      defaultsTo: 'message.sqlite',
+    )
     ..addOption(
       'table-dump-path',
       help: 'table dump path',
@@ -123,22 +122,22 @@ void main(List<String> arguments) {
       defaultsTo: '25000000',
     );
 
-  // final telegramCommandChatMessage = TelegramCommandChatMessage();
-  // telegramCommandChatMessage.argParser
-  //   ..addOption(
-  //     'chat-name',
-  //     help: 'Chat name',
-  //     defaultsTo: 'taraxa_project',
-  //   )
-  //   ..addOption(
-  //     'message-id',
-  //     help: 'Message id',
-  //     defaultsTo: '1',
-  //   );
+  final telegramCommandChatMessage = TelegramGetMessageCommand();
+  telegramCommandChatMessage.argParser
+    ..addOption(
+      'chat-name',
+      help: 'Chat name',
+      defaultsTo: 'taraxa_project',
+    )
+    ..addOption(
+      'message-id',
+      help: 'Message id',
+      defaultsTo: '1',
+    );
 
   commandRunner
-    ..addCommand(telegramCommandMsgs)
-    // ..addCommand(telegramCommandChatMessage)
+    ..addCommand(telegramSaveChatHistoryCommand)
+    ..addCommand(telegramCommandChatMessage)
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
       print(error);

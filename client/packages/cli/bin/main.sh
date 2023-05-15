@@ -20,6 +20,7 @@ PROXY_OPTION=${!PROXY_OPTION_VAR_NAME}
 WALLET_PRIVATE_KEY_VAR_NAME="WALLET_PRIVATE_KEY_$HOSTNAME_INDEX"
 WALLET_PRIVATE_KEY=${!WALLET_PRIVATE_KEY_VAR_NAME}
 
+
 /app/echo \
     --api-id $API_ID \
     --api-hash $API_HASH \
@@ -28,10 +29,10 @@ WALLET_PRIVATE_KEY=${!WALLET_PRIVATE_KEY_VAR_NAME}
     --loglevel $LOG_LEVEL \
     --libtdjson-loglevel $LIBTDJSON_LOGLEVEL \
     --database-path $PATH_TD_JSON_LIB_DATA \
-    --message-database-path $PATH_DB_MESSAGE \
     $PROXY_OPTION \
     messages \
     --run-forever $RUN_FOREVER \
+    --message-database-path $PATH_DB_MESSAGE \
     --table-dump-path $TABLE_DUMP_PATH \
     --config-path $CONFIG_PATH \
     --wallet-private-key $WALLET_PRIVATE_KEY \

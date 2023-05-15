@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:logging/logging.dart';
 
 import 'package:td_json_client/td_api.dart';
-import 'package:telegram_client/ref/lg_isolated.dart';
 
 import 'db_interface.dart';
 import 'db.dart';
 import 'isolate.dart';
+import 'log_isolated.dart';
 
 class DbIsolated implements DbInterface {
   final IsolatedProxy isolatedProxy;
@@ -15,11 +15,11 @@ class DbIsolated implements DbInterface {
   DbIsolated._(this.isolatedProxy);
 
   static Future<DbIsolated> spawn(
-    LgIsolated lg,
+    LogIsolated log,
     String filename, [
     String? debugName,
   ]) async {
-    final init = Init(filename, lg);
+    final init = Init(filename, log);
     final sendPort =
         await Isolater.spawn(DbIsolated._entryPoint, init, debugName);
     final isolatedProxy = IsolatedProxy(sendPort);
@@ -33,9 +33,9 @@ class DbIsolated implements DbInterface {
     final init = isolateSpawnMessage.init as Init;
 
     final logger = Logger('Db')
-      ..level = init.lg.level
+      ..level = init.log.level
       ..onRecord.listen((event) {
-        init.lg.logExternal(event);
+        init.log.logExternal(event);
       });
 
     final db = Db(logger, init.filename);
@@ -186,9 +186,9 @@ class DbIsolatedDispatch extends IsolatedDispatch {
 
 class Init {
   final String filename;
-  final LgIsolated lg;
+  final LogIsolated log;
 
-  Init(this.filename, this.lg);
+  Init(this.filename, this.log);
 }
 
 class Close {}

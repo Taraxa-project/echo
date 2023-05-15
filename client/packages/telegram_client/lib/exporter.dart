@@ -6,11 +6,11 @@ import 'package:logging/logging.dart';
 import 'package:cron/cron.dart';
 import 'package:path/path.dart' as p;
 
-import 'ipfs_interface.dart';
+import 'exporter_interface.dart';
 import 'ingester_contract.dart';
-import 'package:telegram_client/ref/db_isolated.dart';
+import 'package:telegram_client/db_isolated.dart';
 
-class Ipfs implements IpfsInterface {
+class Exporter implements ExporterInterface {
   final Logger logger;
   final DbIsolated db;
 
@@ -37,8 +37,14 @@ class Ipfs implements IpfsInterface {
 
   bool _exportInProgress = false;
 
-  Ipfs(this.logger, this.db, this.cronFormat, this.schedule, this.tableDumpPath,
-      this.ipfsParams, IngesterContractParams ingesterContractParams) {
+  Exporter(
+      this.logger,
+      this.db,
+      this.cronFormat,
+      this.schedule,
+      this.tableDumpPath,
+      this.ipfsParams,
+      IngesterContractParams ingesterContractParams) {
     ingesterContract = IngesterContract(
       logger,
       ingesterContractParams,
@@ -204,5 +210,3 @@ class Ipfs implements IpfsInterface {
     return null;
   }
 }
-
-enum Tables { chat, message, user }

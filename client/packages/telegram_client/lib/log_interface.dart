@@ -1,5 +1,5 @@
 import 'package:logging/logging.dart';
 
-abstract class LgInterface {
+abstract class LogInterface {
   void logExternal(LogRecord logRecord);
 }

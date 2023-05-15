@@ -1,25 +1,25 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
-import 'package:telegram_client/ref/ipfs.dart';
+import 'package:telegram_client/exporter.dart';
 
-import 'ipfs_interface.dart';
+import 'exporter_interface.dart';
 
-import 'package:telegram_client/ref/lg_isolated.dart';
-import 'package:telegram_client/ref/db_isolated.dart';
+import 'package:telegram_client/log_isolated.dart';
+import 'package:telegram_client/db_isolated.dart';
 import 'package:cron/cron.dart';
 
 import 'ingester_contract.dart';
 
 import 'isolate.dart';
 
-class IpfsIsolated implements IpfsInterface {
+class ExporterIsolated implements ExporterInterface {
   final IsolatedProxy isolatedProxy;
 
-  IpfsIsolated._(this.isolatedProxy);
+  ExporterIsolated._(this.isolatedProxy);
 
-  static Future<IpfsIsolated> spawn(
-    LgIsolated lg,
+  static Future<ExporterIsolated> spawn(
+    LogIsolated log,
     DbIsolated db,
     String cronFormat,
     Schedule schedule,
@@ -28,12 +28,12 @@ class IpfsIsolated implements IpfsInterface {
     IngesterContractParams ingesterContractParams, [
     String? debugName,
   ]) async {
-    final init = Init(lg, db, cronFormat, schedule, tableDumpPath, ifpsParams,
+    final init = Init(log, db, cronFormat, schedule, tableDumpPath, ifpsParams,
         ingesterContractParams);
     final sendPort =
-        await Isolater.spawn(IpfsIsolated._entryPoint, init, debugName);
+        await Isolater.spawn(ExporterIsolated._entryPoint, init, debugName);
     final isolatedProxy = IsolatedProxy(sendPort);
-    return IpfsIsolated._(isolatedProxy);
+    return ExporterIsolated._(isolatedProxy);
   }
 
   static void _entryPoint(message) {
@@ -42,14 +42,14 @@ class IpfsIsolated implements IpfsInterface {
     final isolateSpawnMessage = message as IsolateSpawnMessage;
     final init = isolateSpawnMessage.init as Init;
 
-    final logger = Logger('Ipfs')
-      ..level = init.lg.level
+    final logger = Logger('Exporter')
+      ..level = init.log.level
       ..onRecord.listen((event) {
-        init.lg.logExternal(event);
+        init.log.logExternal(event);
       });
-    final ipfs = Ipfs(logger, init.db, init.cronFormat, init.schedule,
+    final exporter = Exporter(logger, init.db, init.cronFormat, init.schedule,
         init.tableDumpPath, init.ifpsParams, init.ingesterContractParams);
-    final isolatedDispatch = IpfsIsolatedDispatch(ipfs);
+    final isolatedDispatch = IpfsIsolatedDispatch(exporter);
 
     isolateSpawnMessage.sendPort.send(isolatedDispatch.receivePort.sendPort);
   }
@@ -57,21 +57,16 @@ class IpfsIsolated implements IpfsInterface {
   void exit() {
     isolatedProxy.exit();
   }
-
-  @override
-  Future<void> export() async {
-    await isolatedProxy.call(Export());
-  }
 }
 
 class IpfsIsolatedDispatch extends IsolatedDispatch {
-  final Ipfs ipfs;
+  final Exporter ipfs;
 
   IpfsIsolatedDispatch(this.ipfs) {}
 }
 
 class Init {
-  final LgIsolated lg;
+  final LogIsolated log;
   final DbIsolated db;
   final String cronFormat;
   final Schedule schedule;
@@ -80,7 +75,7 @@ class Init {
   final IngesterContractParams ingesterContractParams;
 
   Init(
-    this.lg,
+    this.log,
     this.db,
     this.cronFormat,
     this.schedule,

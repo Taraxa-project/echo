@@ -1,4 +1,4 @@
-abstract class IpfsInterface {}
+abstract class ExporterInterface {}
 
 class IpfsParams {
   String ipfsScheme;

@@ -2,10 +2,15 @@ import 'dart:async';
 
 import 'package:td_json_client/td_api.dart';
 
-abstract class TgInterface {
+import 'db_isolated.dart';
+import 'ingester_contract.dart';
+
+abstract class TelegramClientInterface {
   FutureOr<void> close();
   FutureOr<void> login(LoginParams loginParams);
-  FutureOr<void> saveChatsHistory(DateTime dateTimeFrom);
+  FutureOr<Message> readChatMessage(String chatName, int messageId);
+  FutureOr<void> saveChatsHistory(DateTime dateTimeFrom,
+      IngesterContractParams ingesterContractParams, DbIsolated db);
 }
 
 class LoginParams {
