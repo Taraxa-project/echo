@@ -37,7 +37,6 @@ library LibAppStorage {
     bytes32 internal constant INGESTER_ROLE = keccak256("INGESTER_ROLE");
     bytes32 internal constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
     
-    event UnAllocatedGroupsAdded(string[] groups);
     event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
     event ClusterHasNoIngesters(uint256 clusterId);
@@ -48,30 +47,6 @@ library LibAppStorage {
         assembly { ds.slot := 0 }
     }
     
-    /**
-    * @notice Adds a list of group names to the unallocated groups.
-    * @param groups An array of group names to be added to the unallocated groups.
-    */
-    function AddToUnAllocateGroups(string[] memory groups) internal {
-        AppStorage storage s = appStorage();
-
-        uint256 numGroups = groups.length;
-        for (uint256 i = 0; i < numGroups; i++) {
-            s.unAllocatedGroups.push(groups[i]);
-        }
-
-        emit UnAllocatedGroupsAdded(groups);
-    }
-
-    /**
-    * @notice Retrieves the list of unallocated groups.
-    * @return An array of unallocated group usernames.
-    */
-    function getUnallocatedGroups() internal view returns(string[] memory) {
-        AppStorage storage s = appStorage();
-        return s.unAllocatedGroups;
-    }
-
     /**
     * @notice Removes an ingester from a cluster.
     * @param ingesterAddress The address of the ingester to be removed.

@@ -23,16 +23,26 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         emit IIngesterGroupManager.GroupAdded(groupUsername);
     }
 
+    function addNewCluster() internal {
+        uint256 clusterId = s.clusterIds.length;
+        s.clusterIds.push(clusterId);
+        s.groupsCluster[clusterId].isActive = true;
+        emit ClusterAdded(clusterId);
+    }
+
     function addGroupToCluster(string calldata groupUsername) internal {
         uint256 clusterId = 0;
+        bool foundAvailableCluster = false;
         if (s.clusterIds.length == 0) {
-            s.clusterIds.push(clusterId);
-            s.groupsCluster[clusterId].isActive = true;
+            addNewCluster();
         } else {
-            clusterId = getAvailableClusterForGroups();
+            (clusterId, foundAvailableCluster) = getAvailableClusterForGroups();
+            if (!foundAvailableCluster) {
+                addNewCluster();
+            }
         }
 
-        //if newly avaialble cluster, attempt to assign any unregistered ingester
+        //if newly unavailable ingesters, attempt to assign any unregistered ingester
         if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxGroupsPerIngester) {
             address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
             LibAppStorage.addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, clusterId);
@@ -44,9 +54,10 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         s.groups[groupUsername].clusterId = clusterId;
         
         emit GroupAddedToCluster(groupUsername, clusterId);
+        
     }
 
-    function getAvailableClusterForGroups() internal returns(uint256) {
+    function getAvailableClusterForGroups() internal returns(uint256, bool) {
         uint256 availableGroups = 0;
         uint256 availableClusterId = 0;
         bool foundAvailableCluster = false;
@@ -57,6 +68,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
             availableClusterId = s.inActiveClusters[s.inActiveClusters.length - 1];
             s.inActiveClusters.pop();
             s.groupsCluster[availableClusterId].isActive = true;
+            emit ActivateInactiveCluster(availableClusterId);
         }
         else {
             for (uint256 i = 0; i < s.clusterIds.length; i++) {
@@ -66,14 +78,10 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
                     break;
                 }
             }
-            if (!foundAvailableCluster) {
-                availableClusterId = s.clusterIds.length;
-                s.clusterIds.push(availableClusterId);
-                s.groupsCluster[availableClusterId].isActive = true;
-            }
+            
         }
 
-        return availableClusterId;
+        return (availableClusterId, foundAvailableCluster);
     }
 
     /**
@@ -125,6 +133,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
             moveIngestersToAvailableClusters(s.groupsCluster[clusterId].ingesterAddresses);
             s.groupsCluster[clusterId].ingesterAddresses = new address[](0);
             // LibAppStorage.removeCluster(clusterId); don't do this as it causes re-shuffling of groups
+            emit InactivateCluster(clusterId);
         }
 
         //TODO: may need to re-adjust the ingesters assigned to this cluster and assign them to a non-empty cluster

@@ -9,7 +9,7 @@ import { getSelectors, FacetCutAction } from "./libraries/diamond";
 
 export let DiamondAddress: string;
 export const maxClusterSize = 3;
-export const maxGroupsPerIngester = 200;
+export const maxGroupsPerIngester = 50;
 export const maxIngestersPerGroup = 1;
 
 export async function deployDiamondTest(verbose=false) {

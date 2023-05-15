@@ -25,7 +25,6 @@ struct AppStorageTest {
     mapping(string => IIngesterGroupManager.Group) groups;
     string[] groupUsernames;
     uint256 groupCount;
-    string[] unAllocatedGroups;
     uint256[] inActiveClusters;
 
     //IPFS Storage
@@ -40,7 +39,6 @@ library LibAppStorageTest {
     bytes32 internal constant INGESTER_ROLE = keccak256("INGESTER_ROLE");
     bytes32 internal constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
     
-    event UnAllocatedGroupsAdded(string[] groups);
     event IngesterRemovedFromGroup(address indexed ingesterAddress, string indexed groupId);
     event IngesterRegisteredGroups(address indexed ingesterAddress, string[] assignedGroups);
     event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
@@ -51,17 +49,6 @@ library LibAppStorageTest {
         assembly { ds.slot := 0 }
     }
 
-    function AddToUnAllocateGroups(string[] memory groups) internal {
-        AppStorageTest storage s = appStorage();
-
-        uint256 numGroups = groups.length;
-        for (uint256 i = 0; i < numGroups; i++) {
-            s.unAllocatedGroups.push(groups[i]);
-        }
-
-        emit UnAllocatedGroupsAdded(groups);
-    }
-
     function setTestProperty(bool testProperty) internal {
         AppStorageTest storage s = appStorage();
         s.newTestProperty = testProperty;
@@ -70,12 +57,6 @@ library LibAppStorageTest {
     function getTestProperty() internal view returns(bool) {
         AppStorageTest storage s = appStorage();
         return s.newTestProperty;
-    }
-
-    //this function was updated to only return the first two values
-    function getUnallocatedGroups() internal view returns(string[] memory) {
-        AppStorageTest storage s = appStorage();
-        return s.unAllocatedGroups;
     }
 
     /**

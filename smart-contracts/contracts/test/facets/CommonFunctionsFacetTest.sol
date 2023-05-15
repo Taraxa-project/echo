@@ -12,10 +12,6 @@ import "../../interfaces/IIngesterRegistration.sol";
 contract CommonFunctionsFacetTest {
     AppStorageTest internal s;
     
-    function getUnallocatedGroups() external view returns(string[] memory) {
-        return LibAppStorageTest.getUnallocatedGroups();
-    }
-
     function setTestProperty(bool testProperty) external {
         s.newTestProperty = testProperty;
     }

@@ -32,7 +32,6 @@ interface IIngesterGroupManager {
     event GroupRemovedFromIngester(address indexed ingesterAddress, string group);
     event GroupRemovedFromCluster(uint256 indexed _clusterId, string indexed _groupUsername);
     event IngesterRegisteredGroups(address indexed ingesterAddress, string[] assignedGroups);
-    event UnAllocatedGroupsAdded(string[] groups);
     // event IngesterDetailsUpdated(address indexed ingesterAddress, bool verified, string[] assignedGroups);
     // event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
     event RemoveUnallocatedGroup(string unAllocatedGroup);
@@ -43,6 +42,10 @@ interface IIngesterGroupManager {
     //new
     event GroupAddedToCluster(string groupUsername, uint256 indexed clusterId);
     event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
+    event ActivateInactiveCluster(uint256 indexed clusterId);
+    event InactivateCluster(uint256 indexed clusterId);
+    event UnAllocatedIngesterAdded(address indexed ingesterAddress);
+    event ClusterAdded(uint256 indexed clusterId);
 
 
     // Functions
