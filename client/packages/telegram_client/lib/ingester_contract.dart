@@ -2,226 +2,123 @@ import 'dart:math';
 import 'dart:async';
 import 'dart:io' as io;
 import 'dart:convert';
-import 'dart:isolate';
 
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
 import 'package:web3dart/web3dart.dart';
-import 'package:web3dart/json_rpc.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:http/http.dart';
 
-import 'isolate.dart';
-import 'db.dart';
-import 'package:telegram_client/src/smart_contract/DataGatheringFacet.g.dart';
+import 'src/smart_contract/GroupManagerFacet.g.dart';
+import 'src/smart_contract/DataGatheringFacet.g.dart';
 
-class IngesterContractIsolater extends Isolater {
-  final logger = Logger('TelegramClient');
+class IngesterContract {
+  final Logger logger;
+  final IngesterContractParams ingesterContractParams;
 
-  Future<IngesterContractMsgResponseGetGroups> getGroups() async {
-    sendPort!.send(IngesterContractMsgRequestGetGroups(
-      replySendPort: receivePort.sendPort,
-    ));
-    IngesterContractMsgResponseGetGroups response = await receivePortBroadcast
-        .firstWhere(
-            (element) => element is IngesterContractMsgResponseGetGroups)
-        .onError(<StateError>(error, _) =>
-            logger.warning('ingester get groups $error'));
+  EthPrivateKey? _credentials;
 
-    if (response.exception != null) {
-      throw response.exception!;
-    }
-    return response;
-  }
-}
+  static const String walletFileName = 'wallet.json';
+  static const String walletPrivateKeyName = 'private_key_ingester';
 
-class IngesterContract extends Isolated {
-  SendPort? logSendPort;
-
-  final SendPort dbSendPort;
-
-  final String contractRpcUrl;
-  final String contractAddress;
-  final int contractMaxGas;
-
-  EthPrivateKey? _credentialsIngester;
-
-  String configPath;
-  String walletPrivateKey;
-  static const String configFileName = 'wallet.json';
-
-  IngesterContract({
-    Level? super.logLevel,
-    SendPort? this.logSendPort,
-    required SendPort this.dbSendPort,
-    required String this.contractAddress,
-    required String this.contractRpcUrl,
-    required int this.contractMaxGas,
-    required String this.configPath,
-    required String this.walletPrivateKey,
-  }) {
-    logger.onRecord.listen((logRecord) {
-      logSendPort?.send(logRecord);
-    });
+  IngesterContract(this.logger, this.ingesterContractParams) {
+    _initCredentials(ingesterContractParams.walletPrivateKey);
   }
 
-  Future<void> init(SendPort parentSendPort) async {
-    super.init(parentSendPort);
-    _initCredentialsIngester();
+  Future<List<String>> getChatsNames() async {
+    logger.info('reading Telegram groups...');
 
-    if (_credentialsIngester != null) {
-      logger.info('Ingester addres is ${_credentialsIngester!.address.hex}.');
+    final web3client =
+        Web3Client(ingesterContractParams.contractRpcUrl, Client());
+    final contract = GroupManagerFacet(
+        address:
+            EthereumAddress.fromHex(ingesterContractParams.contractAddress),
+        client: web3client);
+
+    try {
+      final ingesterWithGroups =
+          await contract.getIngesterWithGroups(_credentials!.address);
+      final List<String> chatsNames = ingesterWithGroups[3].cast<String>();
+      logger.info('received ${chatsNames.length} Telegram groups.');
+      return chatsNames;
+    } on Object {
+      rethrow;
+    } finally {
+      await web3client.dispose();
     }
   }
 
-  Future<void> initDispatch() async {
-    receivePortBroadcast.listen((message) async {
-      if (message is IsolateMsgRequestExit) {
-        logger.fine('exiting...');
-        exit(message.replySendPort);
-      } else if (message is IngesterContractMsgRequestGetGroups) {
-        await _getGroups(message.replySendPort);
-      } else if (message is IngesterContractMsgRequestWriteHashes) {
-        await _writeHashes(message.replySendPort);
-      }
-    });
+  Future<void> writeHashes(
+      String chatHash, String messageHash, String userHash) async {
+    logger.info('writing hashes in smart contract...');
+
+    final web3client =
+        Web3Client(ingesterContractParams.contractRpcUrl, Client());
+    final contract = DataGatheringFacet(
+        address:
+            EthereumAddress.fromHex(ingesterContractParams.contractAddress),
+        client: web3client);
+
+    try {
+      await contract.addIpfsHash(userHash, chatHash, messageHash,
+          credentials: _credentials!,
+          transaction:
+              Transaction(maxGas: ingesterContractParams.contractMaxGas));
+    } on Object {
+      rethrow;
+    } finally {
+      await web3client.dispose();
+    }
   }
 
-  void _initCredentialsIngester() {
-    final file = new io.File(p.joinAll([configPath, configFileName]));
-
-    var config;
-
+  void _initCredentials(String walletPrivateKey) {
+    final file = new io.File(
+        p.joinAll([ingesterContractParams.configPath, walletFileName]));
     if (file.existsSync()) {
-      try {
-        config = jsonDecode(file.readAsStringSync());
-      } on FormatException catch (ex) {
-        logger.severe(ex);
-        rethrow;
-      }
-
-      if (config is! Map) {
-        throw FormatException('Invalid config format');
-      }
-      if (!config.containsKey('private_key_ingester')) {
-        throw FormatException('Missing private_key_ingester from config');
-      }
-
-      _credentialsIngester =
-          EthPrivateKey.fromHex(config['private_key_ingester']);
+      _credentials = _readCredentialsFromFile(file);
     } else {
-      var credentials = EthPrivateKey.createRandom(Random.secure());
-
-      if (walletPrivateKey.isNotEmpty) {
-        credentials = EthPrivateKey.fromHex(walletPrivateKey);
-      }
-
-      config = {
-        'private_key_ingester': bytesToHex(
-          credentials.privateKey,
-          include0x: true,
-        )
-      };
-
-      try {
-        file.writeAsStringSync(jsonEncode(config));
-      } on Exception catch (ex) {
-        logger.severe(ex);
-        rethrow;
-      }
-
-      _credentialsIngester = credentials;
+      final EthPrivateKey credentials;
+      if (walletPrivateKey.isNotEmpty)
+        credentials = EthPrivateKey.fromHex(walletPrivateKeyName);
+      else
+        credentials = EthPrivateKey.createRandom(Random.secure());
+      _writeCredentialsToFile(file, credentials);
+      _credentials = credentials;
     }
   }
 
-  Future<void> _getGroups(SendPort? replySendPort) async {
-    final web3client = Web3Client(contractRpcUrl, Client());
-    final contract = DataGatheringFacet(
-      address: EthereumAddress.fromHex(contractAddress),
-      client: web3client,
-    );
-    var response = IngesterContractMsgResponseGetGroups();
-
-    var ingesterInfo;
-    try {
-      ingesterInfo =
-          await contract.getIngesterWithGroups(_credentialsIngester!.address);
-      response.groups = ingesterInfo[3].cast<String>();
-    } on RPCError catch (ex) {
-      logger.severe(ex);
-      response.exception = ex;
-    } finally {
-      replySendPort?.send(response);
-      await web3client.dispose();
-    }
+  EthPrivateKey _readCredentialsFromFile(io.File file) {
+    final wallet = jsonDecode(file.readAsStringSync());
+    if (wallet is! Map)
+      throw FormatException('$walletFileName has invalid format');
+    if (!wallet.containsKey(walletPrivateKeyName))
+      throw FormatException('$walletFileName is missing $walletPrivateKeyName');
+    return EthPrivateKey.fromHex(wallet[walletPrivateKeyName]);
   }
 
-  Future<void> _writeHashes(SendPort? replySendPort) async {
-    dbSendPort
-        .send(DbMsgRequestGetUploadHashes(replySendPort: receivePort.sendPort));
-    var responseGetUploadedHashes = await receivePortBroadcast
-        .where((event) => event is DbMsgResponseGetUploadHashes)
-        .first as DbMsgResponseGetUploadHashes;
-    if (responseGetUploadedHashes.exception != null) {
-      logger.severe(responseGetUploadedHashes.exception!);
-      return;
-    }
-    if (responseGetUploadedHashes.chat_hash == null ||
-        responseGetUploadedHashes.message_hash == null ||
-        responseGetUploadedHashes.user_hash == null) {
-      return;
-    }
-
-    final web3client = Web3Client(contractRpcUrl, Client());
-    final contract = DataGatheringFacet(
-      address: EthereumAddress.fromHex(contractAddress),
-      client: web3client,
-    );
-
-    var response = IngesterContractMsgResponseWriteHashes();
-    try {
-      await contract.addIpfsHash(
-        responseGetUploadedHashes.user_hash!,
-        responseGetUploadedHashes.chat_hash!,
-        responseGetUploadedHashes.message_hash!,
-        credentials: _credentialsIngester!,
-        transaction: Transaction(
-          maxGas: contractMaxGas,
-        ),
-      );
-    } on RPCError catch (ex) {
-      logger.severe(ex);
-      response.exception = ex;
-    } finally {
-      replySendPort?.send(response);
-      await web3client.dispose();
-    }
+  void _writeCredentialsToFile(io.File file, EthPrivateKey credentials) {
+    final wallet = {
+      walletPrivateKeyName: bytesToHex(
+        credentials.privateKey,
+        include0x: true,
+      )
+    };
+    file.writeAsStringSync(jsonEncode(wallet));
   }
 }
 
-class IngesterContractMsgRequest extends IsolateMsgRequest {
-  IngesterContractMsgRequest({super.replySendPort});
-}
+class IngesterContractParams {
+  final String contractAddress;
+  final String contractRpcUrl;
+  final int contractMaxGas;
+  final String configPath;
+  final String walletPrivateKey;
 
-class IngesterContractMsgResponse extends IsolateMsgResponse {
-  Exception? exception;
-  IngesterContractMsgResponse({this.exception});
-}
-
-class IngesterContractMsgRequestGetGroups extends IngesterContractMsgRequest {
-  IngesterContractMsgRequestGetGroups({super.replySendPort});
-}
-
-class IngesterContractMsgResponseGetGroups extends IngesterContractMsgResponse {
-  List<String>? groups;
-  IngesterContractMsgResponseGetGroups({super.exception, this.groups});
-}
-
-class IngesterContractMsgRequestWriteHashes extends IngesterContractMsgRequest {
-  IngesterContractMsgRequestWriteHashes({super.replySendPort});
-}
-
-class IngesterContractMsgResponseWriteHashes
-    extends IngesterContractMsgResponse {
-  IngesterContractMsgResponseWriteHashes({super.exception});
+  IngesterContractParams(
+    this.contractAddress,
+    this.contractRpcUrl,
+    this.contractMaxGas,
+    this.configPath,
+    this.walletPrivateKey,
+  );
 }

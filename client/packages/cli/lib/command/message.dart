@@ -1,152 +1,112 @@
-import 'dart:async';
 import 'dart:io';
+import 'dart:async';
 
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
-import 'package:cron/cron.dart';
+
 import 'package:echo_cli/callback/cli.dart';
+import 'package:telegram_client/log_isolated.dart';
+import 'package:telegram_client/telegram_client_interface.dart';
+import 'package:telegram_client/telegram_client_isolated.dart';
 
-import 'package:telegram_client/isolate.dart';
-import 'package:telegram_client/log.dart';
-import 'package:telegram_client/db.dart';
-import 'package:telegram_client/telegram_client.dart';
-
-class TelegramCommandChatMessage extends Command {
+class TelegramGetMessageCommand extends Command {
   final name = 'message';
-  final description = 'Read chat message by id.';
-
-  final Isolater _log = Isolater();
-  final Isolater _db = Isolater();
-  final TelegramClientIsolater _telegramClient = TelegramClientIsolater();
-
-  late final Level _logLevel;
-  late final Level _logLevelLibTdJson;
-  late final StreamSubscription _subSignalHandler;
+  final description = 'Read chat message.';
 
   void run() async {
-    _init();
+    _readChatMessage();
+  }
+
+  Future<void> _readChatMessage() async {
+    hierarchicalLoggingEnabled = true;
+
+    LogIsolated? log;
+    TelegramClientIsolated? telegramClient;
+
+    final subscriptionSignalHandler = _initSignalHandler(log, telegramClient);
+
+    final logLevel = _parseLogLevel();
+    final logLevelLibTdJson = _parseLogLevelLibtdjson();
+    final fileNameLibTdJson = globalResults!['libtdjson-path'];
+    final proxyUri = _parseProxyUri();
+    final loginParams = _buildLoginParams();
+
+    final chatName = globalResults!.command!['chat-name'];
+    final messageId = _parseInt(
+        globalResults!.command!['message-id'], 'message-id is not int');
 
     try {
-      await _log.spawn_(
-        Log(logLevel: _logLevel),
-        debugName: 'LogIsolater',
-      );
+      log = await LogIsolated.spawn(logLevel);
+      telegramClient = await TelegramClientIsolated.spawn(
+          log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
 
-      await _db.spawn_(
-        Db(
-          logLevel: _logLevel,
-          logSendPort: _log.sendPort,
-          dbPath: globalResults!['message-database-path'],
-        ),
-        debugName: 'DbIsolater',
-      );
+      await telegramClient.login(loginParams);
+      final message = await telegramClient.readChatMessage(chatName, messageId);
 
-      await _telegramClient.spawn_(
-        TelegramClient(
-          logLevel: _logLevel,
-          logLevelLibTdJson: _logLevelLibTdJson,
-          proxyUri: parseProxyUri(),
-          logSendPort: _log.sendPort,
-          dbSendPort: _db.sendPort!,
-          libtdjsonlcPath: globalResults!['libtdjson-path'],
-          tdReceiveWaitTimeout: 0.005,
-          tdReceiveFrequency: const Duration(milliseconds: 10),
-        ),
-        debugName: 'TelegramClientIsolater',
-      );
-
-      await _telegramClient.login(
-        apiId: int.parse(globalResults!['api-id']),
-        apiHash: globalResults!['api-hash'],
-        phoneNumber: globalResults!['phone-number'],
-        databasePath: globalResults!['database-path'],
-        readTelegramCode: readTelegramCode,
-        writeQrCodeLink: writeQrCodeLink,
-        readUserFirstName: readUserFirstName,
-        readUserLastName: readUserLastName,
-        readUserPassword: readUserPassword,
-      );
-
-      var message = await _telegramClient.readChatMessage(
-        chatName: globalResults!.command!['chat-name'],
-        messageId: parseInt(
-          globalResults!.command!['message-id'],
-          'message-id is not int',
-        ),
-      );
-      print(message.message);
-    } on Exception catch (exception) {
-      print(exception);
+      print(message);
+    } on Object {
+      rethrow;
     } finally {
-      await _subSignalHandler.cancel();
-      await _exitIsolates();
+      subscriptionSignalHandler.cancel();
+      _exitIsolates(log, telegramClient);
     }
   }
 
-  void _init() {
-    hierarchicalLoggingEnabled = true;
-
-    _logLevel = getLogLevel();
-    _logLevelLibTdJson = getLogLevelLibtdjson();
-
-    _initSignalHandler();
-  }
-
-  void _initSignalHandler() {
-    _subSignalHandler = ProcessSignal.sigint.watch().listen((signal) async {
+  StreamSubscription _initSignalHandler(
+      LogIsolated? log, TelegramClientIsolated? telegramClient) {
+    return ProcessSignal.sigint.watch().listen((signal) async {
       if ((signal == ProcessSignal.sigint) |
           (signal == ProcessSignal.sigkill)) {
-        await _exitIsolates();
-        _exit();
+        await _exitIsolates(log, telegramClient);
+        exit(0);
       }
     });
   }
 
-  Future<void> _exitIsolates() async {
-    await _telegramClient.exit();
-    await _db.exit();
-    await _log.exit();
+  Future<void> _exitIsolates(
+      LogIsolated? log, TelegramClientIsolated? telegramClient) async {
+    await telegramClient?.close();
+    log?.exit();
   }
 
-  DateTime computeTwoWeeksAgo() {
-    final dateTimeTwoWeeksAgo =
-        DateTime.now().toUtc().subtract(const Duration(days: 14));
-    return DateTime(dateTimeTwoWeeksAgo.year, dateTimeTwoWeeksAgo.month,
-        dateTimeTwoWeeksAgo.day);
-  }
-
-  Level getLogLevel() {
-    return getLogLevelByName(globalResults!['loglevel']);
-  }
-
-  Level getLogLevelLibtdjson() {
-    return getLogLevelByName(globalResults!['libtdjson-loglevel']);
-  }
-
-  Level getLogLevelByName(String name) {
-    return Level.LEVELS.firstWhere(
-      (level) => level.name == name.toUpperCase(),
-      orElse: () => Level.WARNING,
+  LoginParams _buildLoginParams() {
+    return LoginParams(
+      _parseInt(globalResults!['api-id'], '--api-id must be an integer'),
+      globalResults!['api-hash'],
+      globalResults!['phone-number'],
+      globalResults!['database-path'],
+      readTelegramCode,
+      writeQrCodeLink,
+      readUserFirstName,
+      readUserLastName,
+      readUserPassword,
     );
   }
 
-  bool parseBool(boolToParse) {
-    if (boolToParse.toLowerCase() == 'true') {
-      return true;
-    } else {
-      return false;
-    }
+  Level _parseLogLevel() {
+    return _parseLogLevelByName(globalResults!['loglevel']);
   }
 
-  int parseInt(String intToParse, String message) {
+  Level _parseLogLevelLibtdjson() {
+    return _parseLogLevelByName(globalResults!['libtdjson-loglevel']);
+  }
+
+  Level _parseLogLevelByName(String name) {
+    return Level.LEVELS.firstWhere(
+      (level) => level.name == name.toUpperCase(),
+      orElse: () => throw Exception('Invalid log level $name'),
+    );
+  }
+
+  int _parseInt(String intToParse, String message) {
     try {
       return int.parse(intToParse);
     } on FormatException {
-      _exit(message);
+      throw Exception(message);
     }
   }
 
-  Uri? parseProxyUri() {
+  Uri? _parseProxyUri() {
     Uri? uri;
 
     if (globalResults?['proxy'] != null) {
@@ -155,27 +115,14 @@ class TelegramCommandChatMessage extends Command {
         if (['http', 'socks5'].contains(uri.scheme)) {
           return uri;
         } else {
-          _exit('Invalid proxy scheme ${uri.scheme}.'
+          throw Exception('Invalid proxy scheme ${uri.scheme}.'
               ' Allowed values: http, socks5.');
         }
       } on FormatException catch (ex) {
-        _exit('Invalid proxy URI: $ex');
+        throw Exception('Invalid proxy URI: $ex');
       }
     }
 
     return uri;
-  }
-
-  Schedule parseIpfsCronSchedule() {
-    try {
-      return Schedule.parse(globalResults!.command!['ipfs-cron-schedule']);
-    } on ScheduleParseException catch (ex) {
-      _exit('Invalid ipsf-cron-schedule: $ex');
-    }
-  }
-
-  Never _exit([String? message = null, code = 1]) {
-    if (message != null) print(message);
-    exit(code);
   }
 }

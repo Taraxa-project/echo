@@ -1,209 +1,172 @@
-import 'dart:async';
 import 'dart:io';
+import 'dart:async';
 
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
 import 'package:cron/cron.dart';
+
 import 'package:echo_cli/callback/cli.dart';
-
-import 'package:telegram_client/isolate.dart';
-import 'package:telegram_client/log.dart';
-import 'package:telegram_client/db.dart';
+import 'package:telegram_client/log_isolated.dart';
+import 'package:telegram_client/db_isolated.dart';
+import 'package:telegram_client/exporter_interface.dart';
+import 'package:telegram_client/exporter_isolated.dart';
+import 'package:telegram_client/telegram_client_interface.dart';
+import 'package:telegram_client/telegram_client_isolated.dart';
 import 'package:telegram_client/ingester_contract.dart';
-import 'package:telegram_client/ipfs_exporter.dart';
-import 'package:telegram_client/telegram_client.dart';
 
-class TelegramCommandMessages extends Command {
+class TelegramSaveChatHistoryCommand extends Command {
   final name = 'messages';
   final description = 'Read and save messages from the last two weeks.';
 
-  final Isolater _log = Isolater();
-  final Isolater _db = Isolater();
-  final IngesterContractIsolater _ingesterContract = IngesterContractIsolater();
-  final Isolater _ipfsExporter = Isolater();
-  final TelegramClientIsolater _telegramClient = TelegramClientIsolater();
-
-  late final bool _runForever;
-  late final Level _logLevel;
-  late final Level _logLevelLibTdJson;
-  late final StreamSubscription _subSignalHandler;
-
-  late final int _ingesterContractMaxGas;
-
   void run() async {
-    _init();
+    _saveChatsHistory();
+  }
+
+  Future<void> _saveChatsHistory() async {
+    hierarchicalLoggingEnabled = true;
+
+    LogIsolated? log;
+    DbIsolated? db;
+    TelegramClientIsolated? telegramClient;
+    ExporterIsolated? exporter;
+
+    final subscriptionSignalHandler =
+        _initSignalHandler(log, db, exporter, telegramClient);
+
+    final doLoop = _parseBool(globalResults!.command!['run-forever']);
+    final logLevel = _parseLogLevel();
+    final logLevelLibTdJson = _parseLogLevelLibtdjson();
+    final fileNameDb = globalResults!.command!['message-database-path'];
+    final exporterCronFormat = globalResults!.command!['ipfs-cron-schedule'];
+    final exporterCronSchedule = _parseExporterCron(exporterCronFormat);
+    final exportPath = globalResults!.command!['table-dump-path'];
+    final ipfsParams = _buildIpfsParams();
+    final ingesterContractParams = _buildIngesterContractParams();
+    final fileNameLibTdJson = globalResults!['libtdjson-path'];
+    final proxyUri = _parseProxyUri();
+    final loginParams = _buildLoginParams();
 
     try {
-      await _log.spawn_(
-        Log(logLevel: _logLevel),
-        debugName: 'LogIsolater',
-      );
+      log = await LogIsolated.spawn(logLevel);
+      db = await DbIsolated.spawn(log, fileNameDb);
+      exporter = await ExporterIsolated.spawn(log, db, exporterCronFormat,
+          exporterCronSchedule, exportPath, ipfsParams, ingesterContractParams);
+      telegramClient = await TelegramClientIsolated.spawn(
+          log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
 
-      await _db.spawn_(
-        Db(
-          logLevel: _logLevel,
-          logSendPort: _log.sendPort,
-          dbPath: globalResults!['message-database-path'],
-        ),
-        debugName: 'DbIsolater',
-      );
-
-      await _ingesterContract.spawn_(
-        IngesterContract(
-          logLevel: _logLevel,
-          logSendPort: _log.sendPort,
-          dbSendPort: _db.sendPort!,
-          contractAddress: globalResults!.command!['ingester-contract-address'],
-          contractRpcUrl: globalResults!.command!['ingester-contract-rpc-url'],
-          contractMaxGas: _ingesterContractMaxGas,
-          configPath: globalResults!.command!['config-path'],
-          walletPrivateKey: globalResults!.command!['wallet-private-key'],
-        ),
-        debugName: 'IngesterContractIsolater',
-      );
-
-      await _ipfsExporter.spawn_(
-        IpfsExporter(
-          logLevel: _logLevel,
-          logSendPort: _log.sendPort,
-          dbSendPort: _db.sendPort!,
-          ingesterContractSendPort: _ingesterContract.sendPort!,
-          cronFormat: globalResults!.command!['ipfs-cron-schedule'],
-          schedule: parseIpfsCronSchedule(),
-          tableDumpPath: globalResults!.command!['table-dump-path'],
-          ipfsScheme: globalResults!.command!['ipfs-scheme'],
-          ipfsHost: globalResults!.command!['ipfs-host'],
-          ipfsPort: globalResults!.command!['ipfs-port'],
-          ipfsUsername: globalResults!.command?['ipfs-username'],
-          ipfsPassword: globalResults!.command?['ipfs-password'],
-        ),
-        debugName: 'IpfsExporterIsolater',
-      );
-
-      await _telegramClient.spawn_(
-        TelegramClient(
-          logLevel: _logLevel,
-          logLevelLibTdJson: _logLevelLibTdJson,
-          proxyUri: parseProxyUri(),
-          logSendPort: _log.sendPort,
-          dbSendPort: _db.sendPort!,
-          libtdjsonlcPath: globalResults!['libtdjson-path'],
-          tdReceiveWaitTimeout: 0.005,
-          tdReceiveFrequency: const Duration(milliseconds: 10),
-        ),
-        debugName: 'TelegramClientIsolater',
-      );
-
-      await _telegramClient.login(
-        apiId: int.parse(globalResults!['api-id']),
-        apiHash: globalResults!['api-hash'],
-        phoneNumber: globalResults!['phone-number'],
-        databasePath: globalResults!['database-path'],
-        readTelegramCode: readTelegramCode,
-        writeQrCodeLink: writeQrCodeLink,
-        readUserFirstName: readUserFirstName,
-        readUserLastName: readUserLastName,
-        readUserPassword: readUserPassword,
-      );
+      await telegramClient.login(loginParams);
 
       while (true) {
-        var getGroups = await _ingesterContract.getGroups();
-        var chatsNames = getGroups.groups;
+        final dateTimeFrom = _twoWeeksAgo();
+        await telegramClient.saveChatsHistory(
+            dateTimeFrom, ingesterContractParams, db);
 
-        if (chatsNames != null && !chatsNames.isEmpty) {
-          await _telegramClient.readChatsHistory(
-            dateTimeFrom: computeTwoWeeksAgo(),
-            chatsNames: chatsNames,
-          );
-        }
-
-        if (!_runForever) {
-          break;
-        }
-
-        print('Sleeping for 5 minutes.');
+        if (!doLoop) break;
         await Future.delayed(const Duration(minutes: 5));
       }
-    } on Exception catch (exception) {
-      print(exception);
+    } on Object {
+      rethrow;
     } finally {
-      await _subSignalHandler.cancel();
-      await _exitIsolates();
+      subscriptionSignalHandler.cancel();
+      _exitIsolates(log, db, exporter, telegramClient);
     }
   }
 
-  void _init() {
-    hierarchicalLoggingEnabled = true;
-
-    _runForever = parseBool(globalResults!.command!['run-forever']);
-    _logLevel = getLogLevel();
-    _logLevelLibTdJson = getLogLevelLibtdjson();
-
-    _ingesterContractMaxGas = parseInt(
-      globalResults!.command!['ingester-contract-max-gas'],
-      'ingester-contract-max-gas must be an integer',
-    );
-
-    _initSignalHandler();
-  }
-
-  void _initSignalHandler() {
-    _subSignalHandler = ProcessSignal.sigint.watch().listen((signal) async {
+  StreamSubscription _initSignalHandler(LogIsolated? log, DbIsolated? db,
+      ExporterIsolated? exporter, TelegramClientIsolated? telegramClient) {
+    return ProcessSignal.sigint.watch().listen((signal) async {
       if ((signal == ProcessSignal.sigint) |
           (signal == ProcessSignal.sigkill)) {
-        await _exitIsolates();
-        _exit();
+        await _exitIsolates(log, db, exporter, telegramClient);
+        exit(0);
       }
     });
   }
 
-  Future<void> _exitIsolates() async {
-    await _telegramClient.exit();
-    await _ingesterContract.exit();
-    await _ipfsExporter.exit();
-    await _db.exit();
-    await _log.exit();
+  Future<void> _exitIsolates(
+      LogIsolated? log,
+      DbIsolated? db,
+      ExporterIsolated? exporter,
+      TelegramClientIsolated? telegramClient) async {
+    exporter?.exit();
+    await telegramClient?.close();
+    await db?.close();
+    log?.exit();
   }
 
-  DateTime computeTwoWeeksAgo() {
+  LoginParams _buildLoginParams() {
+    return LoginParams(
+      _parseInt(globalResults!['api-id'], '--api-id must be an integer'),
+      globalResults!['api-hash'],
+      globalResults!['phone-number'],
+      globalResults!['database-path'],
+      readTelegramCode,
+      writeQrCodeLink,
+      readUserFirstName,
+      readUserLastName,
+      readUserPassword,
+    );
+  }
+
+  IngesterContractParams _buildIngesterContractParams() {
+    final ingesterContractMaxGas = _parseInt(
+      globalResults!.command!['ingester-contract-max-gas'],
+      'ingester-contract-max-gas must be an integer',
+    );
+
+    return IngesterContractParams(
+      globalResults!.command!['ingester-contract-address'],
+      globalResults!.command!['ingester-contract-rpc-url'],
+      ingesterContractMaxGas,
+      globalResults!.command!['config-path'],
+      globalResults!.command!['wallet-private-key'],
+    );
+  }
+
+  IpfsParams _buildIpfsParams() {
+    return IpfsParams(
+        globalResults!.command!['ipfs-scheme'],
+        globalResults!.command!['ipfs-host'],
+        globalResults!.command!['ipfs-port'],
+        globalResults!.command?['ipfs-username'],
+        globalResults!.command?['ipfs-password']);
+  }
+
+  DateTime _twoWeeksAgo() {
     final dateTimeTwoWeeksAgo =
         DateTime.now().toUtc().subtract(const Duration(days: 14));
     return DateTime(dateTimeTwoWeeksAgo.year, dateTimeTwoWeeksAgo.month,
         dateTimeTwoWeeksAgo.day);
   }
 
-  Level getLogLevel() {
-    return getLogLevelByName(globalResults!['loglevel']);
+  Level _parseLogLevel() {
+    return _parseLogLevelByName(globalResults!['loglevel']);
   }
 
-  Level getLogLevelLibtdjson() {
-    return getLogLevelByName(globalResults!['libtdjson-loglevel']);
+  Level _parseLogLevelLibtdjson() {
+    return _parseLogLevelByName(globalResults!['libtdjson-loglevel']);
   }
 
-  Level getLogLevelByName(String name) {
+  Level _parseLogLevelByName(String name) {
     return Level.LEVELS.firstWhere(
       (level) => level.name == name.toUpperCase(),
-      orElse: () => Level.WARNING,
+      orElse: () => throw Exception('Invalid log level $name'),
     );
   }
 
-  bool parseBool(boolToParse) {
-    if (boolToParse.toLowerCase() == 'true') {
-      return true;
-    } else {
-      return false;
-    }
+  bool _parseBool(boolToParse) {
+    return boolToParse.toLowerCase() == 'true';
   }
 
-  int parseInt(String intToParse, String message) {
+  int _parseInt(String intToParse, String message) {
     try {
       return int.parse(intToParse);
     } on FormatException {
-      _exit(message);
+      throw Exception(message);
     }
   }
 
-  Uri? parseProxyUri() {
+  Uri? _parseProxyUri() {
     Uri? uri;
 
     if (globalResults?['proxy'] != null) {
@@ -212,27 +175,22 @@ class TelegramCommandMessages extends Command {
         if (['http', 'socks5'].contains(uri.scheme)) {
           return uri;
         } else {
-          _exit('Invalid proxy scheme ${uri.scheme}.'
+          throw Exception('Invalid proxy scheme ${uri.scheme}.'
               ' Allowed values: http, socks5.');
         }
       } on FormatException catch (ex) {
-        _exit('Invalid proxy URI: $ex');
+        throw Exception('Invalid proxy URI: $ex');
       }
     }
 
     return uri;
   }
 
-  Schedule parseIpfsCronSchedule() {
+  Schedule _parseExporterCron(String cronFormat) {
     try {
-      return Schedule.parse(globalResults!.command!['ipfs-cron-schedule']);
+      return Schedule.parse(cronFormat);
     } on ScheduleParseException catch (ex) {
-      _exit('Invalid ipsf-cron-schedule: $ex');
+      throw Exception('Invalid ipsf-cron-schedule: $ex');
     }
-  }
-
-  Never _exit([String? message = null, code = 1]) {
-    if (message != null) print(message);
-    exit(code);
   }
 }

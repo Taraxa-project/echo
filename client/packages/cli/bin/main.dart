@@ -40,11 +40,6 @@ void main(List<String> arguments) {
       defaultsTo: 'tdlib',
     )
     ..addOption(
-      'message-database-path',
-      help: 'message database path',
-      defaultsTo: 'message.sqlite',
-    )
-    ..addOption(
       'loglevel',
       help: 'Log level',
       defaultsTo: 'warning',
@@ -60,8 +55,13 @@ void main(List<String> arguments) {
       valueHelp: 'scheme://username:password@host:port',
     );
 
-  TelegramCommandMessages telegramCommandMessages = TelegramCommandMessages();
-  telegramCommandMessages.argParser
+  final telegramSaveChatHistoryCommand = TelegramSaveChatHistoryCommand();
+  telegramSaveChatHistoryCommand.argParser
+    ..addOption(
+      'message-database-path',
+      help: 'message database path',
+      defaultsTo: 'message.sqlite',
+    )
     ..addOption(
       'table-dump-path',
       help: 'table dump path',
@@ -122,8 +122,7 @@ void main(List<String> arguments) {
       defaultsTo: '25000000',
     );
 
-  TelegramCommandChatMessage telegramCommandChatMessage =
-      TelegramCommandChatMessage();
+  final telegramCommandChatMessage = TelegramGetMessageCommand();
   telegramCommandChatMessage.argParser
     ..addOption(
       'chat-name',
@@ -137,7 +136,7 @@ void main(List<String> arguments) {
     );
 
   commandRunner
-    ..addCommand(telegramCommandMessages)
+    ..addCommand(telegramSaveChatHistoryCommand)
     ..addCommand(telegramCommandChatMessage)
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
