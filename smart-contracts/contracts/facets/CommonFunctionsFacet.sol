@@ -7,6 +7,7 @@ import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "../interfaces/IIngesterRegistration.sol";
 import "hardhat/console.sol";
+
 contract CommonFunctionsFacet {
     AppStorage internal s;
     
@@ -15,7 +16,20 @@ contract CommonFunctionsFacet {
     * @return An array of unallocated group usernames.
     */
     function getUnallocatedGroups() external view returns(string[] memory) {
-        return s.unAllocatedGroups;
+        uint256 groupCount = 0;
+        for (uint256 i = 0; i < s.inActiveClusters.length; i++) {
+            groupCount += s.groupsCluster[s.inActiveClusters[i]].groupCount;
+        }
+
+        string[] memory groups = new string[](groupCount);
+        
+        for (uint256 i = 0; i < s.inActiveClusters.length; i++) {
+            for (uint256 j = 0; j < s.groupsCluster[s.inActiveClusters[i]].groupUsernames.length; j++) {
+                groups.push(s.groupsCluster[s.inActiveClusters[i]].groupUsernames[j]);
+            }
+        }
+
+        return groups;
     }
 
     /**
@@ -52,7 +66,7 @@ contract CommonFunctionsFacet {
     }
 
     function getClusterCount() external view returns (uint256){
-        return s.clusterIds.length - s.inActiveClusters.length;
+        return s.clusterIds.length;
     }
 
     function getInActiveClusters() external view returns (uint256[] memory){
