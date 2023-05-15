@@ -42,6 +42,8 @@ interface IIngesterGroupManager {
 
     //new
     event GroupAddedToCluster(string groupUsername, uint256 indexed clusterId);
+    event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
+
 
     // Functions
     function addGroup(string calldata groupUsername) external;

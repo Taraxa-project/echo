@@ -96,14 +96,10 @@ library LibAppStorage {
                 if (s.groupsCluster[clusterId].ingesterAddresses.length == 0) {
                     //check if there is unallocated ingesters to assign
                     if (s.unAllocatedIngesters.length > 0) {
-                        console.log('allocating an unregistered ingester to substitute the unregistered ingester', s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1]);
-                        console.log('allocating to clusterId', clusterId);
                         address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
                         addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, clusterId);
                     } else if (s.maxIngestersPerGroup > 1) {
                         (uint clusterIdAvailable, bool foundAvailableCluster) = getClusterWithIngesterReplication();
-                        console.log('there is foundAvailableCluster', foundAvailableCluster);
-                        console.log('there is replication, grabbing an ingester from cluster', clusterIdAvailable);
                         //if available cluster, then steal ingester from available cluster and put it into empty cluster
                         if (foundAvailableCluster) {
                             address ingesterAddressToMove = s.groupsCluster[clusterIdAvailable].ingesterAddresses[s.groupsCluster[clusterIdAvailable].ingesterAddresses.length - 1];
@@ -113,7 +109,6 @@ library LibAppStorage {
                             s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].clusterId = clusterId;
                         } else {
                             console.log('cluster has no ingesters inside the empty cluster clause');
-
                             emit ClusterHasNoIngesters(clusterId);
                         }
                     } else {
@@ -125,23 +120,6 @@ library LibAppStorage {
             }
         }
     }
-
-    // /**
-    //  * @dev Removes the specified cluster from the list of clusters.
-    //  * @param clusterId The cluster ID to remove.
-    //  */
-    // function removeCluster(uint256 clusterId) internal {
-    //     AppStorage storage s = LibAppStorage.appStorage();
-
-    //     uint256 clusterIndex = s.groupCluster[clusterId].clusterIndex;
-    //     uint256 numClusters = s.clusterIds.length;
-    //     if (clusterIndex != numClusters - 1) {
-    //         uint256 clusterToMove = s.clusterIds[numClusters - 1];
-    //         s.clusterIds[clusterIndex] = clusterToMove;
-    //         s.groupCluster[clusterToMove].clusterIndex = clusterIndex;
-    //     }
-    //     s.clusterIds.pop();
-    // }
 
     function addIngesterToClusterId(address ingesterAddress, address controllerAddress, uint256 clusterId) internal {
         AppStorage storage s = appStorage();
@@ -160,26 +138,29 @@ library LibAppStorage {
 
         bool foundAvailableCluster;
         uint256 clusterId = 0;
-        if (s.clusterIds.length == 0) {
-            s.clusterIds.push(clusterId);
-        } else {
-            (clusterId, foundAvailableCluster) = getAvailableClusterForIngesters(ingesterAddress, controllerAddress);
-        }
+      
+        (clusterId, foundAvailableCluster) = getAvailableClusterForIngesters(ingesterAddress, controllerAddress);
+        
         console.log('clusterId', clusterId);
         console.log('foundAvailableCluster', foundAvailableCluster);
         //if no available cluster then put it in unAllocatedIngester otherwise allocate ingester
         if (!foundAvailableCluster) {
+            //TODO: add an allocataled boolean to the ingesters, clusterId is default 0, this could be a problem
+            //it will think it is always allocated to something and it shouldn't
             s.unAllocatedIngesters.push(ingesterAddress);
             console.log('adding unallocated ingester', ingesterAddress);
             emit UnAllocatedIngesterAdded(ingesterAddress);
         } else {
             console.log('adding ingester to cluster', clusterId);
             s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
+            uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
+            console.log('ingester', ingesterAddress);
+            s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId = clusterId;
+            console.log('clusterId it should be in', clusterId);
+            console.log('storage is', s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId);
             emit IngesterAddedToCluster(ingesterAddress, clusterId);
         }
 
-        uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
-        s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId = clusterId;
     }
 
     function getClusterWithIngesterReplication() internal view returns(uint256, bool) {

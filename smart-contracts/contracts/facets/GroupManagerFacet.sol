@@ -32,6 +32,12 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
             clusterId = getAvailableClusterForGroups();
         }
 
+        //if newly avaialble cluster, attempt to assign any unregistered ingester
+        if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxGroupsPerIngester) {
+            address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
+            LibAppStorage.addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, clusterId);
+        }
+
         s.groupsCluster[clusterId].groupUsernames.push(groupUsername);
         ++s.groupsCluster[clusterId].groupCount;
         s.groups[groupUsername].groupUsernameClusterIndex = s.groupsCluster[clusterId].groupUsernames.length - 1;
@@ -47,6 +53,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
 
         //prioritize inactive cluster to add groups to 
         if (s.inActiveClusters.length > 0) {
+            console.log('there was inactive clusters to assign to');
             availableClusterId = s.inActiveClusters[s.inActiveClusters.length - 1];
             s.inActiveClusters.pop();
             s.groupsCluster[availableClusterId].isActive = true;
@@ -63,12 +70,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
                 availableClusterId = s.clusterIds.length;
                 s.clusterIds.push(availableClusterId);
                 s.groupsCluster[availableClusterId].isActive = true;
-
-                //if newly avaialble cluster, attempt to assign any unregistered ingester
-                if (s.unAllocatedIngesters.length > 0) {
-                    address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
-                    LibAppStorage.addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, availableClusterId);
-                }
             }
         }
 

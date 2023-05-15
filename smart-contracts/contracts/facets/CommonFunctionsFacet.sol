@@ -6,7 +6,7 @@ import "../libraries/LibDiamond.sol";
 import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "../interfaces/IIngesterRegistration.sol";
-
+import "hardhat/console.sol";
 contract CommonFunctionsFacet {
     AppStorage internal s;
     
@@ -104,7 +104,6 @@ contract CommonFunctionsFacet {
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
         IIngesterRegistration.Ingester memory ingester = s.controllerToIngesters[controller][ingesterIndex];
-
         string[] memory assignedGroups = s.groupsCluster[ingester.clusterId].groupUsernames;
         IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
             ingesterAddress,
@@ -118,7 +117,7 @@ contract CommonFunctionsFacet {
     function getUnAllocatedIngesters() public view returns (address[] memory) {
         return  s.unAllocatedIngesters;
     }
-    
+
     /**
     * @notice Retrieves the list of ingesters for a given controller.
     * @param controllerAddress The address of the controller.
