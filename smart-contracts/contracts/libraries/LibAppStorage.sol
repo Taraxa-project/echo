@@ -18,7 +18,6 @@ struct AppStorage {
 
     //Groups & Clusters
     uint256 maxClusterSize;
-    uint256 maxGroupsPerIngester; 
     uint256 maxIngestersPerGroup;
     mapping(uint => IIngesterGroupManager.GroupsCluster) groupsCluster;
     uint256[] clusterIds;
