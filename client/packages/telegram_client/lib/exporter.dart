@@ -65,7 +65,6 @@ class Exporter implements ExporterInterface {
 
     final hashes = await db.selectMetaFileHahes();
     if (hashes.chat != null && hashes.message != null && hashes.user != null) {
-      logger.info('writing hashes to smart contract...');
       await ingesterContract.writeHashes(
           hashes.chat!, hashes.message!, hashes.user!);
     }
