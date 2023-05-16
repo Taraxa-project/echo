@@ -61,7 +61,7 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  FutureOr<void> blacklistChat(String username, String reason) async {
+  Future<void> blacklistChat(String username, String reason) async {
     await isolatedProxy.call(BlacklistChat(username, username));
   }
 

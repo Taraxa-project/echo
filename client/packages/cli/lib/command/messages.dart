@@ -62,7 +62,7 @@ class TelegramSaveChatHistoryCommand extends Command {
             dateTimeFrom, ingesterContractParams, db);
 
         if (!doLoop) break;
-        await Future.delayed(const Duration(minutes: 5));
+        await Future.delayed(const Duration(seconds: 60));
       }
     } on Object {
       rethrow;

@@ -8,7 +8,7 @@ class Isolater {
     dynamic init,
     String? debugName,
   ]) async {
-    var receivePort = ReceivePort();
+    final receivePort = ReceivePort();
 
     final Isolate isolate;
     try {
