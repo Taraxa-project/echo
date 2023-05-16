@@ -79,7 +79,7 @@ class IngesterContract {
     } else {
       final EthPrivateKey credentials;
       if (walletPrivateKey.isNotEmpty)
-        credentials = EthPrivateKey.fromHex(walletPrivateKeyName);
+        credentials = EthPrivateKey.fromHex(walletPrivateKey);
       else
         credentials = EthPrivateKey.createRandom(Random.secure());
       _writeCredentialsToFile(file, credentials);
@@ -103,7 +103,7 @@ class IngesterContract {
         include0x: true,
       )
     };
-    file.writeAsStringSync(jsonEncode(wallet));
+    file.writeAsStringSync(jsonEncode(wallet), flush: true);
   }
 }
 
