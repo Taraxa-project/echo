@@ -49,7 +49,7 @@ class ExporterIsolated implements ExporterInterface {
       });
     final exporter = Exporter(logger, init.db, init.cronFormat, init.schedule,
         init.tableDumpPath, init.ifpsParams, init.ingesterContractParams);
-    final isolatedDispatch = IpfsIsolatedDispatch(exporter);
+    final isolatedDispatch = ExporterIsolatedDispatch(exporter);
 
     isolateSpawnMessage.sendPort.send(isolatedDispatch.receivePort.sendPort);
   }
@@ -59,10 +59,10 @@ class ExporterIsolated implements ExporterInterface {
   }
 }
 
-class IpfsIsolatedDispatch extends IsolatedDispatch {
-  final Exporter ipfs;
+class ExporterIsolatedDispatch extends IsolatedDispatch {
+  final Exporter exporter;
 
-  IpfsIsolatedDispatch(this.ipfs) {}
+  ExporterIsolatedDispatch(this.exporter) {}
 }
 
 class Init {

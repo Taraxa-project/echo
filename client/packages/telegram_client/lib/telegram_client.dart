@@ -15,10 +15,6 @@ class TelegramClient implements TelegramClientInterface {
 
   late final TdClient tdClient;
 
-  static const int delayUntilNextChatSeconds = 10;
-  static const int delayUntilNextMessageBatchSeconds = 5;
-  static const int delayUntilNextUserSeconds = 2;
-
   TelegramClient(this.logger, String libtdjsonlcPath, Level logLevelLibTdJson,
       Uri? proxyUri) {
     tdClient = TdClient(
@@ -86,7 +82,9 @@ class TelegramClient implements TelegramClientInterface {
     logger.info('reading groups history... ');
 
     final ingesterContract = IngesterContract(logger, ingesterContractParams);
-    final chatsNames = await ingesterContract.getChatsNames();
+    final chatsNames = (await ingesterContract.getChatsNames())
+        .where((element) => element.isNotEmpty)
+        .toList();
 
     logger.info('adding groups to db...');
     await db.insertChats(chatsNames);
@@ -112,7 +110,8 @@ class TelegramClient implements TelegramClientInterface {
         logger.severe('[$chatName] $ex.');
       }
 
-      await Future.delayed(const Duration(seconds: delayUntilNextChatSeconds));
+      await Future.delayed(const Duration(
+          seconds: TelegramClientConfig.delayUntilNextChatSeconds));
     }
   }
 
@@ -181,12 +180,17 @@ class TelegramClient implements TelegramClientInterface {
 
     await db.updateChat(chatName, chat);
 
-    await _updateChatMembersCount(chatName, chatId, db);
+    final supergroupFullInfo = await _getSupergroupFullInfo(chatName, chatId);
+    await _updateChatMembersCount(chatName, chatId, db, supergroupFullInfo);
+
     final subscriptionOnlineMemberCount =
         _subscribeUpdateChatOnlineMemberCount(chatName, chatId, db);
+
     await _openChat(chatName, chatId);
-    await _updateChatBotsCount(chatName, chatId, db);
+    if (supergroupFullInfo.can_get_members == true)
+      await _updateChatBotsCount(chatName, chatId, db);
     await _closeChat(chatName, chatId);
+
     await subscriptionOnlineMemberCount.cancel();
 
     final onlineMembersCount = await db.selectChatOnlineMembersCount(chatName);
@@ -203,8 +207,10 @@ class TelegramClient implements TelegramClientInterface {
       await _saveMessages(chatName, chatId, messages, onlineMembersCount, db);
       await _saveUsersFromMessages(chatName, messages, db);
 
+      if (messages.length < TelegramClientConfig.getChatHistoryLimit) break;
+
       await Future.delayed(const Duration(
-        seconds: delayUntilNextMessageBatchSeconds,
+        seconds: TelegramClientConfig.delayUntilNextMessageBatchSeconds,
       ));
     }
   }
@@ -231,9 +237,8 @@ class TelegramClient implements TelegramClientInterface {
     }
   }
 
-  Future<void> _updateChatMembersCount(
-      String chatName, int chatId, DbIsolated db) async {
-    final supergroupFullInfo = await _getSupergroupFullInfo(chatName, chatId);
+  Future<void> _updateChatMembersCount(String chatName, int chatId,
+      DbIsolated db, SupergroupFullInfo supergroupFullInfo) async {
     final memberCount = supergroupFullInfo.member_count;
     if (memberCount != null && memberCount != 0) {
       logger.info('[$chatName] member count is $memberCount.');
@@ -356,8 +361,8 @@ class TelegramClient implements TelegramClientInterface {
     return await tdClient.retryTdCall(GetChatHistory(
       chat_id: WrapId.wrapChatId(chatId),
       from_message_id: WrapId.wrapMessageId(messageIdFrom),
-      offset: -99,
-      limit: 99,
+      offset: -TelegramClientConfig.getChatHistoryLimit,
+      limit: TelegramClientConfig.getChatHistoryLimit,
       only_local: false,
     )) as Messages;
   }
@@ -399,7 +404,8 @@ class TelegramClient implements TelegramClientInterface {
       await db.updateUser(userId, user);
       userCount++;
 
-      await Future.delayed(const Duration(seconds: delayUntilNextUserSeconds));
+      await Future.delayed(const Duration(
+          seconds: TelegramClientConfig.delayUntilNextUserSeconds));
     }
 
     if (userCount > 0) {
@@ -412,4 +418,12 @@ class TelegramClient implements TelegramClientInterface {
       user_id: userId,
     )) as User;
   }
+}
+
+class TelegramClientConfig {
+  static const int delayUntilNextChatSeconds = 10;
+  static const int delayUntilNextMessageBatchSeconds = 5;
+  static const int delayUntilNextUserSeconds = 2;
+
+  static const int getChatHistoryLimit = 99;
 }

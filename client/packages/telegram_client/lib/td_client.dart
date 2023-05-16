@@ -293,20 +293,15 @@ class TgException implements Exception {
 
 class TgChatNotFoundException implements Exception {
   final String? message;
-  final int? code;
 
   TgChatNotFoundException([
     this.message = '',
-    this.code = 0,
   ]);
 
   String toString() {
     var report = 'TgChatNotFoundException';
     if (message != null) {
       report += ': $message';
-    }
-    if (code != null) {
-      report += ', code: $code';
     }
     return report;
   }
