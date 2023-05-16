@@ -14,38 +14,43 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     * @param groupUsername The username of the group to be added.
    */
    function addGroup(string calldata groupUsername) external onlyAdmin {
+        require(bytes(groupUsername).length != 0, "GroupUsername is empty");
         require(!s.groups[groupUsername].isAdded, "Group already exists.");
         s.groupUsernames.push(groupUsername);
         s.groups[groupUsername].isAdded = true;
         s.groups[groupUsername].groupUsernameIndex = s.groupUsernames.length -1;
         ++s.groupCount;
-        addGroupToCluster(groupUsername);
+        uint256 clusterId = addGroupToCluster(groupUsername);
+        checkUnallocatedIngesters(clusterId);
         emit IIngesterGroupManager.GroupAdded(groupUsername);
     }
 
-    function addNewCluster() internal {
+    function addNewCluster() internal returns (uint256) {
         uint256 clusterId = s.clusterIds.length;
         s.clusterIds.push(clusterId);
         s.groupsCluster[clusterId].isActive = true;
         emit ClusterAdded(clusterId);
+        return clusterId;
     }
 
-    function addGroupToCluster(string calldata groupUsername) internal {
+    function checkUnallocatedIngesters(uint256 clusterId) internal {
+        //if newly unavailable ingesters, attempt to assign any unregistered ingester
+        if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxIngestersPerGroup) {
+            address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
+            LibAppStorage.addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, clusterId);
+        }
+    }
+
+    function addGroupToCluster(string calldata groupUsername) internal returns(uint256){
         uint256 clusterId = 0;
         bool foundAvailableCluster = false;
         if (s.clusterIds.length == 0) {
-            addNewCluster();
+            clusterId = addNewCluster();
         } else {
             (clusterId, foundAvailableCluster) = getAvailableClusterForGroups();
             if (!foundAvailableCluster) {
-                addNewCluster();
+                clusterId = addNewCluster();
             }
-        }
-
-        //if newly unavailable ingesters, attempt to assign any unregistered ingester
-        if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxGroupsPerIngester) {
-            address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
-            LibAppStorage.addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, clusterId);
         }
 
         s.groupsCluster[clusterId].groupUsernames.push(groupUsername);
@@ -55,6 +60,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         
         emit GroupAddedToCluster(groupUsername, clusterId);
         
+        return clusterId;
     }
 
     function getAvailableClusterForGroups() internal returns(uint256, bool) {
@@ -64,15 +70,15 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
 
         //prioritize inactive cluster to add groups to 
         if (s.inActiveClusters.length > 0) {
-            console.log('there was inactive clusters to assign to');
             availableClusterId = s.inActiveClusters[s.inActiveClusters.length - 1];
             s.inActiveClusters.pop();
             s.groupsCluster[availableClusterId].isActive = true;
+            foundAvailableCluster = true;
             emit ActivateInactiveCluster(availableClusterId);
         }
         else {
             for (uint256 i = 0; i < s.clusterIds.length; i++) {
-                if (s.groupsCluster[s.clusterIds[i]].groupCount < s.maxGroupsPerIngester) {
+                if (s.groupsCluster[s.clusterIds[i]].groupCount < s.maxClusterSize) {
                     availableClusterId = s.clusterIds[i];
                     foundAvailableCluster = true;
                     break;
@@ -84,15 +90,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         return (availableClusterId, foundAvailableCluster);
     }
 
-    /**
-    * @notice Removes a group from the system.
-    * @param groupUsername The username of the group to be removed.
-    */
-    function removeGroup(string calldata groupUsername) external onlyAdmin {
-        require(s.groups[groupUsername].isAdded, "Group does not exist.");
-
-        removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
-
+    function removeGroupFromStorage(string memory groupUsername) internal {
         //Remove group from groupUsernames
         uint256 groupUsernameIndex = s.groups[groupUsername].groupUsernameIndex;
         uint256 amountOfGroups = s.groupUsernames.length;
@@ -104,6 +102,31 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         s.groupUsernames.pop();
 
         delete s.groups[groupUsername];
+    }
+
+    /**
+    * @notice Removes a group from the system.
+    * @param groupUsername The username of the group to be removed.
+    */
+    function removeGroup(string memory groupUsername) external onlyAdmin {
+        require(bytes(groupUsername).length != 0, "GroupUsername is empty");
+        require(s.groups[groupUsername].isAdded, "Group does not exist.");
+
+        removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
+        removeGroupFromStorage(groupUsername);
+
+        --s.groupCount;
+
+        emit IIngesterGroupManager.GroupRemoved(groupUsername);
+    }
+
+    function removeGroupByIndex(uint256 groupIndex) external onlyAdmin {
+        require(groupIndex < s.groupUsernames.length, "Group index exceed the list length");
+        string memory groupUsername = s.groupUsernames[groupIndex];
+        require(s.groups[groupUsername].isAdded, "Group does not exist.");
+
+        removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
+        removeGroupFromStorage(groupUsername);
 
         --s.groupCount;
 
@@ -116,7 +139,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
      * @param clusterId The cluster ID to remove the group from.
      * @param groupUsername The group username to remove.
     */
-    function removeGroupFromCluster(uint256 clusterId, string calldata groupUsername) internal {
+    function removeGroupFromCluster(uint256 clusterId, string memory groupUsername) internal {
         uint256 groupUsernameClusterIndex = s.groups[groupUsername].groupUsernameClusterIndex;
         uint256 numGroups = s.groupsCluster[clusterId].groupUsernames.length;
         if (groupUsernameClusterIndex != numGroups - 1) {
@@ -132,7 +155,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
             s.inActiveClusters.push(clusterId);
             moveIngestersToAvailableClusters(s.groupsCluster[clusterId].ingesterAddresses);
             s.groupsCluster[clusterId].ingesterAddresses = new address[](0);
-            // LibAppStorage.removeCluster(clusterId); don't do this as it causes re-shuffling of groups
             emit InactivateCluster(clusterId);
         }
 
@@ -174,22 +196,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     }
 
     /**
-    * @notice Retrieves the maximum number of groups allowed per ingester.
-    * @return uint256 The maximum number of groups per ingester.
-    */
-    function getMaxGroupsPerIngester() external view returns (uint256) {
-        return s.maxGroupsPerIngester;
-    }
-
-    /**
-    * @notice Retrieves the maximum number of ingesters allowed per group.
-    * @return uint256 The maximum number of ingesters per group.
-    */
-    function getMaxIngestersPerGroup() external view returns (uint256) {
-        return s.maxIngestersPerGroup;
-    }
-
-    /**
     * @notice Sets the maximum cluster size.
     * @param maxClusterSize The new maximum number of ingesters allowed in a cluster.
     */
@@ -199,13 +205,12 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     }
 
     /**
-    * @notice Sets the maximum number of groups allowed per ingester.
-    * @param maxGroupsPerIngester The new maximum number of groups per ingester.
+    * @notice Retrieves the maximum number of ingesters allowed per group.
+    * @return uint256 The maximum number of ingesters per group.
     */
-    function setMaxGroupsPerIngester(uint256 maxGroupsPerIngester) external onlyAdmin {
-        s.maxGroupsPerIngester = maxGroupsPerIngester;
-        emit IIngesterGroupManager.MaxGroupsPerIngesterUpdated(maxGroupsPerIngester);
-    }  
+    function getMaxIngestersPerGroup() external view returns (uint256) {
+        return s.maxIngestersPerGroup;
+    }
 
     /**
     * @notice Sets the maximum number of ingesters allowed per group.
