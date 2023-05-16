@@ -108,6 +108,20 @@ class Db implements DbInterface {
     return null;
   }
 
+  void insertMessagesUsers(
+      List<Message> messages, List<User> users, int? onlineMembersCount) {
+    try {
+      _database.execute('BEGIN');
+      for (final message in messages)
+        insertMessage(message, onlineMembersCount);
+      for (final user in users) insertUser(user);
+      _database.execute('COMMIT');
+    } on Object {
+      _database.execute('ROLLBACK');
+      rethrow;
+    }
+  }
+
   void insertMessage(Message message, int? onlineMembersCount) {
     final now = _now();
 
@@ -158,17 +172,18 @@ class Db implements DbInterface {
     _execute(SqlMessage.insert, parameters);
   }
 
-  void insertUser(int userId) {
-    final now = _now();
-    final parameters = [userId, now, now];
+  bool userExists(int userId) {
+    final parameters = [userId];
 
-    logger.fine('inserting user $parameters...');
-    _execute(SqlUser.insert, parameters);
+    logger.fine('checking if user exists $parameters...');
+    final rs = _select(SqlUser.select, parameters);
+    return rs.isNotEmpty;
   }
 
-  void updateUser(int userId, User user) {
+  void insertUser(User user) {
     final now = _now();
     final parameters = [
+      user.id,
       user.first_name,
       user.last_name,
       user.usernames?.active_usernames?.firstOrNull!,
@@ -177,11 +192,11 @@ class Db implements DbInterface {
       user.is_scam,
       user.is_fake,
       now,
-      userId,
+      now,
     ];
 
-    logger.fine('updating user $parameters...');
-    _execute(SqlUser.update, parameters);
+    logger.fine('inserting user $parameters...');
+    _execute(SqlUser.insert, parameters);
   }
 
   Future<int> exportData(String tableName, String fileName, int? fromId) async {

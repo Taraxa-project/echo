@@ -100,13 +100,8 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<void> insertUser(int userId) async {
-    await isolatedProxy.call(InsertUser(userId));
-  }
-
-  @override
-  Future<void> updateUser(int userId, User user) async {
-    await isolatedProxy.call(UpdateUser(userId, user));
+  Future<void> insertUser(User user) async {
+    await isolatedProxy.call(InsertUser(user));
   }
 
   @override
@@ -132,6 +127,18 @@ class DbIsolated implements DbInterface {
   @override
   Future<IfpsFileHashesMeta> selectMetaFileHahes() async {
     return await isolatedProxy.call(SelectMetaFileHahes());
+  }
+
+  @override
+  Future<bool> userExists(int userId) async {
+    return await isolatedProxy.call(UserExists(userId));
+  }
+
+  @override
+  Future<void> insertMessagesUsers(
+      List<Message> messages, List<User> users, int? onlineMembersCount) async {
+    await isolatedProxy
+        .call(InsertMessagesUsers(messages, users, onlineMembersCount));
   }
 }
 
@@ -163,10 +170,13 @@ class DbIsolatedDispatch extends IsolatedDispatch {
           message.chatId, message.dateTimeFrom);
     } else if (message is InsertMessage) {
       db.insertMessage(message.message, message.onlineMembersCount);
+    } else if (message is UserExists) {
+      return db.userExists(message.userId);
     } else if (message is InsertUser) {
-      db.insertUser(message.userId);
-    } else if (message is UpdateUser) {
-      db.updateUser(message.userId, message.user);
+      db.insertUser(message.user);
+    } else if (message is InsertMessagesUsers) {
+      db.insertMessagesUsers(
+          message.messages, message.users, message.onlineMembersCount);
     } else if (message is ExportData) {
       return await db.exportData(
           message.tableName, message.fileName, message.fromId);
@@ -254,17 +264,24 @@ class InsertMessage {
   InsertMessage(this.message, this.onlineMembersCount);
 }
 
-class InsertUser {
+class UserExists {
   final int userId;
 
-  InsertUser(this.userId);
+  UserExists(this.userId);
 }
 
-class UpdateUser {
-  final int userId;
+class InsertUser {
   final User user;
 
-  UpdateUser(this.userId, this.user);
+  InsertUser(this.user);
+}
+
+class InsertMessagesUsers {
+  final List<Message> messages;
+  final List<User> users;
+  final int? onlineMembersCount;
+
+  InsertMessagesUsers(this.messages, this.users, this.onlineMembersCount);
 }
 
 class ExportData {
