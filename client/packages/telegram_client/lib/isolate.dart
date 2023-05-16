@@ -1,129 +1,145 @@
 import 'dart:isolate';
 
-import 'package:logging/logging.dart';
+import 'package:uuid/uuid.dart';
 
 class Isolater {
-  final ReceivePort receivePort = ReceivePort();
-  final ReceivePort receivePortError = ReceivePort();
-  late final Stream<dynamic> receivePortBroadcast;
+  static Future<SendPort> spawn(
+    void Function(dynamic) entryPoint, [
+    dynamic init,
+    String? debugName,
+  ]) async {
+    final receivePort = ReceivePort();
 
-  SendPort? sendPort;
+    final Isolate isolate;
+    try {
+      isolate = await Isolate.spawn(
+        entryPoint,
+        IsolateSpawnMessage(receivePort.sendPort, init),
+        onError: receivePort.sendPort,
+        debugName: debugName,
+      );
+    } on Object {
+      receivePort.close();
+      rethrow;
+    }
 
-  Isolater() {
-    receivePortBroadcast = receivePort.asBroadcastStream();
+    final response = await receivePort.first;
+    receivePort.close();
+
+    await Future.delayed(const Duration(seconds: 3));
+    if (response == null) {
+      throw RemoteError('Isolate finished without result', '');
+    } else if (response is List<dynamic>) {
+      isolate.kill(priority: Isolate.immediate);
+      throw RemoteError(response[0], response[1]);
+    } else if (response is! SendPort) {
+      isolate.kill(priority: Isolate.immediate);
+      throw RemoteError(
+          'Isolate response is not SendPort: ${response.runtimeType}', '');
+    }
+
+    return response;
   }
+}
 
-  Future<void> spawn_(Isolated isolated, {String? debugName}) async {
-    var ex;
-    receivePortError.listen((message) {
-      ex = IsolateException(message[0], message[1]);
+class IsolatedProxy {
+  final SendPort sendPort;
+  IsolatedProxy(this.sendPort);
+
+  dynamic call(message) async {
+    final receivePort = ReceivePort();
+    final isolateCall = IsolateCall(receivePort.sendPort, message);
+    final first = receivePort.firstWhere((element) {
+      return element.uuid == isolateCall.uuid;
     });
-
-    await Isolate.spawn(
-      _entryPoint,
-      IsolateSpawnMessage(isolated, receivePort.sendPort),
-      onError: receivePortError.sendPort,
-      debugName: debugName ?? runtimeType.toString(),
-    );
-
-    await Future.delayed(const Duration(seconds: 5));
-    if (ex != null) {
-      throw ex;
-    }
-
-    sendPort = await receivePortBroadcast.first;
-  }
-
-  static void _entryPoint(IsolateSpawnMessage isolateSpawnMessage) {
-    hierarchicalLoggingEnabled = true;
-    isolateSpawnMessage.isolated.init(isolateSpawnMessage.parentSendPort);
-  }
-
-  Future<void> exit() async {
-    if (sendPort != null) {
-      sendPort!.send(IsolateMsgRequestExit(
-        replySendPort: receivePort.sendPort,
-      ));
-      await receivePortBroadcast
-          .firstWhere((element) => element is IsolateMsgResponseExit);
-    }
+    sendPort.send(isolateCall);
+    final result = await first;
     receivePort.close();
-    receivePortError.close();
+
+    if (result is IsolateCallResult) {
+      return result.payload;
+    } else if (result is IsolateCallException) {
+      throw result.payload;
+    } else {
+      throw Exception('Invalid response type: ${result.runtimeType}');
+    }
+  }
+
+  send(isolateMessage) {
+    sendPort.send(isolateMessage);
+  }
+
+  void exit() {
+    send(IsolateExit());
   }
 }
 
-class IsolateSpawnMessage {
-  final Isolated isolated;
-  final SendPort parentSendPort;
-  IsolateSpawnMessage(this.isolated, this.parentSendPort);
-}
+abstract class IsolatedDispatch {
+  final ReceivePort receivePort = ReceivePort();
 
-abstract class Isolated {
-  late final Logger logger;
-
-  late final SendPort parentSendPort;
-
-  late final ReceivePort receivePort;
-  late final Stream<dynamic> receivePortBroadcast;
-
-  Isolated({
-    Level? logLevel,
-  }) {
-    logger = Logger(runtimeType.toString());
-    logger.level = logLevel;
+  IsolatedDispatch() {
+    receivePort.listen((event) async {
+      if (event is IsolateCall) {
+        try {
+          final result = await dispatch(event.isolateMessage);
+          final isolateCallResult = IsolateCallResult(event, result);
+          event.replySendPort.send(isolateCallResult);
+        } on Object catch (ex) {
+          event.replySendPort.send(IsolateCallException(event, ex));
+        }
+      } else {
+        await dispatch(event);
+      }
+    });
   }
 
-  void init(SendPort parentSendPort) {
-    initPorts(parentSendPort);
-    initDispatch();
+  dynamic dispatch(message) {
+    if (message is! IsolateExit)
+      throw Exception('Don\'t know to dispatch ${message.runtimeType}');
+    exit();
   }
 
-  void initPorts(SendPort parentSendPort) {
-    this.parentSendPort = parentSendPort;
-
-    receivePort = ReceivePort();
-    receivePortBroadcast = receivePort.asBroadcastStream();
-
-    parentSendPort.send(receivePort.sendPort);
-  }
-
-  void initDispatch() {}
-
-  Future<void> exit(SendPort? replySendPort) async {
-    replySendPort?.send(IsolateMsgResponseExit());
-
-    await Future.delayed(const Duration(milliseconds: 10));
-
-    receivePort.close();
+  void exit() {
     Isolate.exit();
   }
 }
 
-abstract class IsolateMsg {}
+class IsolateSpawnMessage {
+  final SendPort sendPort;
+  final dynamic init;
 
-abstract class IsolateMsgRequest extends IsolateMsg {
-  final SendPort? replySendPort;
-  IsolateMsgRequest({this.replySendPort});
+  IsolateSpawnMessage(this.sendPort, [this.init]);
 }
 
-abstract class IsolateMsgResponse extends IsolateMsg {}
+class IsolateCall {
+  final String uuid = Uuid().v4();
+  final SendPort replySendPort;
+  final isolateMessage;
 
-class IsolateMsgRequestExit extends IsolateMsgRequest {
-  IsolateMsgRequestExit({super.replySendPort});
+  IsolateCall(this.replySendPort, [this.isolateMessage]) {}
 }
 
-class IsolateMsgResponseExit extends IsolateMsgResponse {}
+class IsolateCallResult {
+  final String uuid;
+  final payload;
 
-class IsolateException implements Exception {
-  String exceptionMEssage;
-  String? exceptionTrace;
-  IsolateException(this.exceptionMEssage, this.exceptionTrace);
-
-  String toString() {
-    var report = exceptionMEssage;
-    if (exceptionTrace != null) {
-      report += '\n' + exceptionTrace!;
-    }
-    return report;
-  }
+  IsolateCallResult(IsolateCall isolateCall, this.payload)
+      : uuid = isolateCall.uuid {}
 }
+
+class IsolateCallException {
+  final String uuid;
+  final payload;
+
+  IsolateCallException(IsolateCall isolateCall, this.payload)
+      : uuid = isolateCall.uuid {}
+}
+
+class IsolateSpawnException {
+  final String exception;
+  final String? exceptionTrace;
+
+  IsolateSpawnException(this.exception, [this.exceptionTrace]) {}
+}
+
+class IsolateExit {}
