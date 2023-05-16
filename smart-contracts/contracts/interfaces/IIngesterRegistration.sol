@@ -29,18 +29,9 @@ interface IIngesterRegistration {
         bytes calldata sig
         ) external;
     function unRegisterIngester(address ingesterAddress) external;
-    // function isRegisteredIngester(address ingesterAddress) external view returns (bool);
-    // function isRegisteredController(address _controllerAddress) external view returns (bool);
-    // function getIngesterToController(address _ingesterAddresses) external view returns (IngesterToController memory);
-    // function getIngesterAddressFromIndex(uint256 index) external view returns (address);
-    // function getControllerIngesters(address controllerAddress) external view returns (IIngesterRegistration.Ingester[] memory);
 
     event IngesterRegistered(address indexed controllerAddress, address indexed ingesterAddress);
     event IngesterUnRegistered(address indexed controllerAddress, address indexed ingesterAddress);
-    event IngesterAssignedGroupsUpdated(address indexed ingesterAddress, string[] assignedGroups);
-    event AssignGroupToIngester(address indexed ingesterAddress, string groupUsername);
-    event IngesterProxyAddressUpdated(address indexed newIngesterProxy);
-    
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
     event ClusterHasNoIngesters(uint256 clusterId);
     event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);

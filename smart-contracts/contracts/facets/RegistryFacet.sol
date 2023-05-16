@@ -103,7 +103,8 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
     */
     function unRegisterIngester(address ingesterAddress) external onlyRegisteredController {
         address controllerAddress = msg.sender;
-        require(s.ingesterToController[ingesterAddress].controllerAddress == controllerAddress, "Ingester does not exist");
+        require(s.ingesterToController[ingesterAddress].controllerAddress != address(0), "Ingester does not exist");
+        require(s.ingesterToController[ingesterAddress].controllerAddress == controllerAddress, "Controllers address does not match ingesters address.");
 
         uint256 ingesterIndexToRemove = s.ingesterToController[ingesterAddress].ingesterIndex;
         uint256 clusterId = s.controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
