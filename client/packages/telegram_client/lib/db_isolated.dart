@@ -95,16 +95,6 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<void> insertMessage(Message message, int? onlineMembersCount) async {
-    await isolatedProxy.call(InsertMessage(message, onlineMembersCount));
-  }
-
-  @override
-  Future<void> insertUser(User user) async {
-    await isolatedProxy.call(InsertUser(user));
-  }
-
-  @override
   Future<int> exportData(String tableName, String fileName, int? fromId) async {
     return await isolatedProxy.call(ExportData(tableName, fileName, fromId));
   }
@@ -168,12 +158,8 @@ class DbIsolatedDispatch extends IsolatedDispatch {
     } else if (message is SelectMaxMessageIdFromDate) {
       return db.selectMaxMessageIdFromDate(
           message.chatId, message.dateTimeFrom);
-    } else if (message is InsertMessage) {
-      db.insertMessage(message.message, message.onlineMembersCount);
     } else if (message is UserExists) {
       return db.userExists(message.userId);
-    } else if (message is InsertUser) {
-      db.insertUser(message.user);
     } else if (message is InsertMessagesUsers) {
       db.insertMessagesUsers(
           message.messages, message.users, message.onlineMembersCount);
@@ -257,23 +243,10 @@ class SelectMaxMessageIdFromDate {
   SelectMaxMessageIdFromDate(this.chatId, this.dateTimeFrom);
 }
 
-class InsertMessage {
-  final Message message;
-  final int? onlineMembersCount;
-
-  InsertMessage(this.message, this.onlineMembersCount);
-}
-
 class UserExists {
   final int userId;
 
   UserExists(this.userId);
-}
-
-class InsertUser {
-  final User user;
-
-  InsertUser(this.user);
 }
 
 class InsertMessagesUsers {

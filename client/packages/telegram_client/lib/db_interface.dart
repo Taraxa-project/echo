@@ -15,10 +15,8 @@ abstract class DbInterface {
   FutureOr<int?> selectChatOnlineMembersCount(String username);
 
   FutureOr<int?> selectMaxMessageIdFromDate(int chatId, DateTime dateTimeFrom);
-  FutureOr<void> insertMessage(Message message, int? onlineMembersCount);
 
   FutureOr<bool> userExists(int userId);
-  FutureOr<void> insertUser(User user);
 
   FutureOr<void> insertMessagesUsers(
       List<Message> messages, List<User> users, int? onlineMembersCount);

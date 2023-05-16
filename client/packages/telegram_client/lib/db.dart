@@ -112,9 +112,8 @@ class Db implements DbInterface {
       List<Message> messages, List<User> users, int? onlineMembersCount) {
     try {
       _database.execute('BEGIN');
-      for (final message in messages)
-        insertMessage(message, onlineMembersCount);
-      for (final user in users) insertUser(user);
+      _insertMessages(messages, onlineMembersCount);
+      _insertUsers(users);
       _database.execute('COMMIT');
     } on Object {
       _database.execute('ROLLBACK');
@@ -122,7 +121,37 @@ class Db implements DbInterface {
     }
   }
 
-  void insertMessage(Message message, int? onlineMembersCount) {
+  void _insertMessages(List<Message> messages, int? onlineMembersCount) {
+    final stmt = _database.prepare(SqlMessage.insert);
+    try {
+      for (final message in messages) {
+        final parameters = _extractMessageInfo(message, onlineMembersCount);
+        logger.fine('inserting message $parameters...');
+        stmt.execute(parameters);
+      }
+    } on Object {
+      rethrow;
+    } finally {
+      stmt.dispose();
+    }
+  }
+
+  void _insertUsers(List<User> users) {
+    final stmt = _database.prepare(SqlUser.insert);
+    try {
+      for (final user in users) {
+        final parameters = _extractUserInfo(user);
+        logger.fine('inserting user $parameters...');
+        stmt.execute(parameters);
+      }
+    } on Object {
+      rethrow;
+    } finally {
+      stmt.dispose();
+    }
+  }
+
+  List<dynamic> _extractMessageInfo(Message message, int? onlineMembersCount) {
     final now = _now();
 
     int? userId;
@@ -151,7 +180,7 @@ class Db implements DbInterface {
       replyToId = WrapId.unwrapMessageId(message.reply_to_message_id);
     }
 
-    final parameters = [
+    return [
       WrapId.unwrapChatId(message.chat_id),
       WrapId.unwrapMessageId(message.id),
       DateTime.fromMillisecondsSinceEpoch(message.date! * 1000)
@@ -167,22 +196,11 @@ class Db implements DbInterface {
       now,
       now,
     ];
-
-    logger.fine('inserting message $parameters...');
-    _execute(SqlMessage.insert, parameters);
   }
 
-  bool userExists(int userId) {
-    final parameters = [userId];
-
-    logger.fine('checking if user exists $parameters...');
-    final rs = _select(SqlUser.select, parameters);
-    return rs.isNotEmpty;
-  }
-
-  void insertUser(User user) {
+  List<dynamic> _extractUserInfo(User user) {
     final now = _now();
-    final parameters = [
+    return [
       user.id,
       user.first_name,
       user.last_name,
@@ -194,9 +212,14 @@ class Db implements DbInterface {
       now,
       now,
     ];
+  }
 
-    logger.fine('inserting user $parameters...');
-    _execute(SqlUser.insert, parameters);
+  bool userExists(int userId) {
+    final parameters = [userId];
+
+    logger.fine('checking if user exists $parameters...');
+    final rs = _select(SqlUser.select, parameters);
+    return rs.isNotEmpty;
   }
 
   Future<int> exportData(String tableName, String fileName, int? fromId) async {

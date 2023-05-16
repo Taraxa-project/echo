@@ -388,6 +388,9 @@ class TelegramClient implements TelegramClientInterface {
 
       final user = await _getUser(userId);
       users[userId] = user;
+
+      await Future.delayed(const Duration(
+          seconds: TelegramClientConfig.delayUntilNextUserSeconds));
     }
 
     if (msgs.length == 0) return;
