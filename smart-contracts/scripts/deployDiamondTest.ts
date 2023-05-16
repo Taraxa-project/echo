@@ -8,11 +8,8 @@ import { DiamondCutFacet, DiamondInit } from "../typechain-types";
 import { getSelectors, FacetCutAction } from "./libraries/diamond";
 
 export let DiamondAddress: string;
-export const maxClusterSize = 3;
-export const maxGroupsPerIngester = 50;
-export const maxIngestersPerGroup = 1;
 
-export async function deployDiamondTest(verbose=false) {
+export async function deployDiamondTest(verbose=false, maxClusterSize=300, maxIngestersPerGroup=1) {
   const accounts = await ethers.getSigners();
   const contractOwner = accounts[0];
 
@@ -49,7 +46,7 @@ export async function deployDiamondTest(verbose=false) {
   // Creating a function call
   // This call gets executed during deployment and can also be executed in upgrades
   // It is executed with delegatecall on the DiamondInit address.
-  let initArgs: DiamondInit.ArgsStruct = {maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup};
+  let initArgs: DiamondInit.ArgsStruct = {maxClusterSize, maxIngestersPerGroup};
 
   let functionCall = diamondInit.interface.encodeFunctionData('init', [initArgs]);
 
@@ -75,7 +72,7 @@ export async function deployDiamondTest(verbose=false) {
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 if (require.main === module) {
-  deployDiamondTest(true)
+  deployDiamondTest(true, 300, 1)
     .then(() => process.exit(0))
     .catch((error) => {
       console.error(error);
