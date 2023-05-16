@@ -17,18 +17,25 @@ contract CommonFunctionsFacet {
     */
     function getUnallocatedGroups() external view returns(string[] memory) {
         uint256 groupCount = 0;
-        for (uint256 i = 0; i < s.inActiveClusters.length; i++) {
-            groupCount += s.groupsCluster[s.inActiveClusters[i]].groupCount;
-        }
-
-        string[] memory groups = new string[](groupCount);
-        
-        for (uint256 i = 0; i < s.inActiveClusters.length; i++) {
-            for (uint256 j = 0; j < s.groupsCluster[s.inActiveClusters[i]].groupUsernames.length; j++) {
-                groups.push(s.groupsCluster[s.inActiveClusters[i]].groupUsernames[j]);
+        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+            if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length == 0) {
+                groupCount += s.groupsCluster[s.clusterIds[i]].groupCount;
             }
         }
 
+        string[] memory groups = new string[](groupCount);
+        uint256 index = 0;
+
+        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+            if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length == 0) {
+                uint256 groupsLength = s.groupsCluster[s.clusterIds[i]].groupUsernames.length;
+                for ( uint256 j = 0; j < groupsLength; j++) {
+                    groups[index] = s.groupsCluster[s.clusterIds[i]].groupUsernames[j];
+                    ++index;
+                }
+            }
+        }
+        
         return groups;
     }
 
