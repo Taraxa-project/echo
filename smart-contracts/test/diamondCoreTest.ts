@@ -34,7 +34,7 @@ describe("DiamondTest", async function () {
   let contractOwner: SignerWithAddress;
 
   before(async function () {
-    const diamonDeployed = await deployDiamondTest();
+    const diamonDeployed = await deployDiamondTest(false);
     diamondAddress = diamonDeployed.diamondAddress;
     contractOwner = diamonDeployed.contractOwner;
 

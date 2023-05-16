@@ -148,14 +148,6 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
     }
 
     /**
-    * @notice Retrieves the maximum number of groups allowed per ingester.
-    * @return uint256 The maximum number of groups per ingester.
-    */
-    function getMaxGroupsPerIngester() external view returns (uint256) {
-        return s.maxGroupsPerIngester;
-    }
-
-    /**
     * @notice Retrieves the maximum number of ingesters allowed per group.
     * @return uint256 The maximum number of ingesters per group.
     */
@@ -171,15 +163,6 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         s.maxClusterSize = maxClusterSize;
         emit IIngesterGroupManager.MaxClusterSizeUpdated(maxClusterSize);
     }
-
-    /**
-    * @notice Sets the maximum number of groups allowed per ingester.
-    * @param maxGroupsPerIngester The new maximum number of groups per ingester.
-    */
-    function setMaxGroupsPerIngester(uint256 maxGroupsPerIngester) external onlyAdmin {
-        s.maxGroupsPerIngester = maxGroupsPerIngester;
-        emit IIngesterGroupManager.MaxGroupsPerIngesterUpdated(maxGroupsPerIngester);
-    }  
 
     /**
     * @notice Sets the maximum number of ingesters allowed per group.

@@ -18,7 +18,6 @@ struct AppStorageTest {
 
     //Groups & Clusters
     uint256 maxClusterSize;
-    uint256 maxGroupsPerIngester; 
     uint256 maxIngestersPerGroup;
     mapping(uint => IIngesterGroupManager.GroupsCluster) groupsCluster;
     uint256[] clusterIds;
@@ -40,7 +39,6 @@ library LibAppStorageTest {
     bytes32 internal constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
     
     event IngesterRemovedFromGroup(address indexed ingesterAddress, string indexed groupId);
-    event IngesterRegisteredGroups(address indexed ingesterAddress, string[] assignedGroups);
     event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
     event ClusterHasNoIngesters(uint256 clusterId);

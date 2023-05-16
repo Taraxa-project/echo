@@ -15,7 +15,7 @@ import {
     RegistryFacet,
     Test1Facet,
     } from "../typechain-types";
-import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
+import { deployDiamondTest, maxClusterSize, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
 
 import { ethers } from "hardhat";
 
@@ -32,6 +32,9 @@ import { BigNumber } from "ethers";
 const contractArtifact = require("../artifacts/contracts/facets/RegistryFacet.sol/RegistryFacet.json");
 const registryABI = contractArtifact.abi;
 
+const maxClusterSize = 50;
+const maxIngestersPerGroup = 1;
+
 
 describe("Testing Registration Functionalities", async function () {
     let diamondCutFacet: DiamondCutFacet;
@@ -47,11 +50,9 @@ describe("Testing Registration Functionalities", async function () {
     let ingester2: SignerWithAddress;
     let ingester3: SignerWithAddress;
     let registryFacet: RegistryFacet;
-    let removedIngesterAssignedGroups: string[];
     const message = "Test message";
     const nonce = 1;
     let registrationTx: any;
-    const maxAllocatableGroups: number = maxClusterSize * maxGroupsPerIngester;
 
     const verbose = false;
 
@@ -63,7 +64,7 @@ describe("Testing Registration Functionalities", async function () {
         ingester2 = accounts[3];
         ingester3 = accounts[4];
 
-        const diamonDeployed = await deployDiamondTest(verbose);
+        const diamonDeployed = await deployDiamondTest(false, maxClusterSize, maxIngestersPerGroup);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
 
@@ -196,7 +197,7 @@ describe("Testing Registration with pre-populated data", async function () {
     let ingesters: SignerWithAddress[] = [];
     const message = "Test message";
     const nonce = 1;
-    const maxAllocatableGroups: number = numIngesters * maxGroupsPerIngester;
+    const maxAllocatableGroups: number = numIngesters * maxClusterSize;
 
     const verbose = false;
     
@@ -238,14 +239,14 @@ describe("Testing Registration with pre-populated data", async function () {
             await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
             const group = await groupManagerFacet.getGroup(`group${i}`);
             expect(group.isAdded).to.be.true;
-            expect(group.ingesterAddresses.length <= maxGroupsPerIngester)
+            expect(group.ingesterAddresses.length <= maxIngestersPerGroup)
         }
 
    
     });
 
     it("should add registered ingester to unAllocatedIngesters if there is not enough groups to monitor", async () => {
-        let maxAmountOfIngesters = maxAllocatableGroups / maxGroupsPerIngester;
+        let maxAmountOfIngesters = maxAllocatableGroups / maxClusterSize;
 
         for (let i = 1; i < maxAmountOfIngesters + 1; i++ ) {
             let hash = await registryFacet.hash(accounts[i].address, message, nonce);
@@ -334,7 +335,7 @@ describe("Testing Registration with pre-populated data and group duplication", a
     let ingesters: SignerWithAddress[] = [];
     const message = "Test message";
     const nonce = 1;
-    const maxAllocatableGroups: number = numIngesters * maxGroupsPerIngester;
+    const maxAllocatableGroups: number = numIngesters * maxClusterSize;
     console.log("🚀 ~ file: registryFacetTest.ts:322 ~ maxAllocatableGroups:", maxAllocatableGroups)
 
     const verbose = false;
@@ -344,7 +345,7 @@ describe("Testing Registration with pre-populated data and group duplication", a
     beforeEach(async function () {
         accounts = await ethers.getSigners();
 
-        const diamonDeployed = await deployDiamondTest(verbose);
+        const diamonDeployed = await deployDiamondTest(true, maxClusterSize, maxIngestersPerGroup);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
         
@@ -382,7 +383,7 @@ describe("Testing Registration with pre-populated data and group duplication", a
             await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
             const group = await groupManagerFacet.getGroup(`group${i}`);
             expect(group.isAdded).to.be.true;
-            expect(group.ingesterAddresses.length <= maxGroupsPerIngester)
+            expect(group.ingesterAddresses.length <= maxIngestersPerGroup)
         }
 
    
