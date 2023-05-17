@@ -95,21 +95,6 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<void> insertMessage(Message message, int? onlineMembersCount) async {
-    await isolatedProxy.call(InsertMessage(message, onlineMembersCount));
-  }
-
-  @override
-  Future<void> insertUser(int userId) async {
-    await isolatedProxy.call(InsertUser(userId));
-  }
-
-  @override
-  Future<void> updateUser(int userId, User user) async {
-    await isolatedProxy.call(UpdateUser(userId, user));
-  }
-
-  @override
   Future<int> exportData(String tableName, String fileName, int? fromId) async {
     return await isolatedProxy.call(ExportData(tableName, fileName, fromId));
   }
@@ -132,6 +117,18 @@ class DbIsolated implements DbInterface {
   @override
   Future<IfpsFileHashesMeta> selectMetaFileHahes() async {
     return await isolatedProxy.call(SelectMetaFileHahes());
+  }
+
+  @override
+  Future<bool> userExists(int userId) async {
+    return await isolatedProxy.call(UserExists(userId));
+  }
+
+  @override
+  Future<void> insertMessagesUsers(
+      List<Message> messages, List<User> users, int? onlineMembersCount) async {
+    await isolatedProxy
+        .call(InsertMessagesUsers(messages, users, onlineMembersCount));
   }
 }
 
@@ -161,12 +158,11 @@ class DbIsolatedDispatch extends IsolatedDispatch {
     } else if (message is SelectMaxMessageIdFromDate) {
       return db.selectMaxMessageIdFromDate(
           message.chatId, message.dateTimeFrom);
-    } else if (message is InsertMessage) {
-      db.insertMessage(message.message, message.onlineMembersCount);
-    } else if (message is InsertUser) {
-      db.insertUser(message.userId);
-    } else if (message is UpdateUser) {
-      db.updateUser(message.userId, message.user);
+    } else if (message is UserExists) {
+      return db.userExists(message.userId);
+    } else if (message is InsertMessagesUsers) {
+      db.insertMessagesUsers(
+          message.messages, message.users, message.onlineMembersCount);
     } else if (message is ExportData) {
       return await db.exportData(
           message.tableName, message.fileName, message.fromId);
@@ -247,24 +243,18 @@ class SelectMaxMessageIdFromDate {
   SelectMaxMessageIdFromDate(this.chatId, this.dateTimeFrom);
 }
 
-class InsertMessage {
-  final Message message;
+class UserExists {
+  final int userId;
+
+  UserExists(this.userId);
+}
+
+class InsertMessagesUsers {
+  final List<Message> messages;
+  final List<User> users;
   final int? onlineMembersCount;
 
-  InsertMessage(this.message, this.onlineMembersCount);
-}
-
-class InsertUser {
-  final int userId;
-
-  InsertUser(this.userId);
-}
-
-class UpdateUser {
-  final int userId;
-  final User user;
-
-  UpdateUser(this.userId, this.user);
+  InsertMessagesUsers(this.messages, this.users, this.onlineMembersCount);
 }
 
 class ExportData {

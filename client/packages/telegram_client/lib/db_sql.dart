@@ -187,20 +187,23 @@ ORDER BY
 }
 
 class SqlUser {
-  static const insert = '''
-INSERT INTO
-  user (user_id, created_at, updated_at)
-VALUES (?, ?, ?);
+  static const select = '''
+SELECT
+  a.*
+FROM
+  user a
+WHERE
+  a.user_id = ?
 ''';
 
-  static const update = '''
-UPDATE
-  user
-SET
-  first_name = ?, last_name = ?, username = ?,
-  bot = ?, verified = ?, scam = ?, fake = ?, updated_at = ?
-WHERE
-  user_id = ?;
+  static const insert = '''
+INSERT INTO user (
+  user_id, first_name, last_name, username,
+  bot, verified, scam, fake, created_at, updated_at
+)
+VALUES (
+  ?, ?, ?, ?,
+  ?, ?, ?, ?, ?, ?);
 ''';
 
   static const selectForExport = '''
