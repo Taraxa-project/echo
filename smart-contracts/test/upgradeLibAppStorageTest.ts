@@ -20,7 +20,7 @@ import {
 import { BigNumber } from "ethers";
 
 
-const maxClusterSize = 300;
+const maxClusterSize = 50;
 const maxIngestersPerGroup = 1;
 
 describe("Diamond Upgrade", () => {
@@ -79,8 +79,13 @@ describe("Diamond Upgrade", () => {
     registryFacet = await ethers.getContractAt('RegistryFacet', diamondAddress);
     groupManagerFacet = await ethers.getContractAt('GroupManagerFacet', diamondAddress);
 
-    ingesters = [];
+    let numGroups = 150;
+    for (let i = 0; i < numGroups; i++) {
+        await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
+        const group = await groupManagerFacet.getGroup(`group${i}`);
+    }
 
+    ingesters = [];
     for (let i = 1; i <= numIngesters; i++ ) {
         let hash = await registryFacet.hash(accounts[i].address, message, nonce);
         const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
@@ -88,7 +93,6 @@ describe("Diamond Upgrade", () => {
         ingesterToController[accounts[i].address] = accounts[i-1];
         ingesters.push(accounts[i]);
     }
-    // ...
   });
 
   it("upgrades LibAppStorage only with only one facet", async () => {

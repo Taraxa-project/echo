@@ -21,6 +21,34 @@ contract CommonFunctionsFacetTest {
     }
 
    /**
+    * @notice Retrieves the list of unallocated groups.
+    * @return An array of unallocated group usernames.
+    */
+    function getUnallocatedGroups() external view returns(string[] memory) {
+        uint256 groupCount = 0;
+        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+            if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length == 0) {
+                groupCount += s.groupsCluster[s.clusterIds[i]].groupCount;
+            }
+        }
+
+        string[] memory groups = new string[](groupCount);
+        uint256 index = 0;
+
+        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+            if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length == 0) {
+                uint256 groupsLength = s.groupsCluster[s.clusterIds[i]].groupUsernames.length;
+                for ( uint256 j = 0; j < groupsLength; j++) {
+                    groups[index] = s.groupsCluster[s.clusterIds[i]].groupUsernames[j];
+                    ++index;
+                }
+            }
+        }
+        
+        return groups;
+    }
+
+    /**
     * @notice Retrieves the list of cluster IDs.
     * @return An array of cluster IDs.
     */
@@ -54,7 +82,7 @@ contract CommonFunctionsFacetTest {
     }
 
     function getClusterCount() external view returns (uint256){
-        return s.clusterIds.length - s.inActiveClusters.length;
+        return s.clusterIds.length;
     }
 
     function getInActiveClusters() external view returns (uint256[] memory){
@@ -88,13 +116,14 @@ contract CommonFunctionsFacetTest {
     }
 
     /**
-    * @notice Retrieves the addresses of all registered ingesters.
+    * @notice Retrieves the addresses of one ingester instead of all ingesters - MODIFIER VERSION FOR UPGRADEABILITY TESTING
     * @return An address aray containing the registered ingesters.
     */
     function getIngesters() public view returns (address[] memory) {
-        address[] memory ingesterAddresses = s.ingesterAddresses;
-        return ingesterAddresses;
-    }
+        address[] memory singleIngesterAddress = new address[](1);
+        singleIngesterAddress[0] = s.ingesterAddresses[0];
+        return singleIngesterAddress;
+    }   
 
     /**
     * @notice Retrieves the details of a registered ingester including assigned groups.
@@ -106,7 +135,6 @@ contract CommonFunctionsFacetTest {
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
         IIngesterRegistration.Ingester memory ingester = s.controllerToIngesters[controller][ingesterIndex];
-
         string[] memory assignedGroups = s.groupsCluster[ingester.clusterId].groupUsernames;
         IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
             ingesterAddress,
@@ -133,4 +161,5 @@ contract CommonFunctionsFacetTest {
     function getGroupCount() external view returns(uint256) {
         return s.groupUsernames.length;
     }
+
 }

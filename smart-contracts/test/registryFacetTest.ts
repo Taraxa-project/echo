@@ -204,7 +204,7 @@ describe("Testing Registration with pre-populated data", async function () {
     beforeEach(async function () {
         accounts = await ethers.getSigners();
 
-        const diamonDeployed = await deployDiamondTest(verbose);
+        const diamonDeployed = await deployDiamondTest(false, maxClusterSize, maxIngestersPerGroup);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
         
@@ -233,8 +233,6 @@ describe("Testing Registration with pre-populated data", async function () {
         groupManagerFacet = await ethers.getContractAt('GroupManagerFacet', diamondAddress);
 
         ingesters = [];
-        
-        console.log("🚀 ~ file: registryFacetTest.ts:326 ~ maxAllocatableGroups:", maxAllocatableGroups)
         for (let i = 0; i < maxAllocatableGroups; i++ ) {
             await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
             const group = await groupManagerFacet.getGroup(`group${i}`);
@@ -251,7 +249,7 @@ describe("Testing Registration with pre-populated data", async function () {
         for (let i = 1; i < maxAmountOfIngesters + 1; i++ ) {
             let hash = await registryFacet.hash(accounts[i].address, message, nonce);
             const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
-            if (i == maxAmountOfIngesters) {
+            if (i == maxAmountOfIngesters + 1) {
                 let registrationTx = await registryFacet.connect(accounts[i-1]).registerIngester(accounts[i].address, message, nonce, sig);
                 await expect(registrationTx).to.emit(registryFacet, "UnAllocatedIngesterAdded").withArgs(accounts[i].address);
                 let unAllocatedIngesters = await registryFacet.getUnAllocatedIngesters();
@@ -286,9 +284,10 @@ describe("Testing Registration with pre-populated data", async function () {
 
     it("Should distribute groups to other unallocated ingester upon unregistration", async function () {
         let clusterCount = await registryFacet.getClusterCount();
-        console.log("🚀 ~ file: registryFacetTest.ts:283 ~ clusterCount:", clusterCount);
 
         let currentNumIngesters = 3;
+        ingesters=[];
+        ingesterToController={};
         for (let i = 1; i <= currentNumIngesters; i++ ) {
             let hash = await registryFacet.hash(accounts[i].address, message, nonce);
             const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
@@ -302,7 +301,6 @@ describe("Testing Registration with pre-populated data", async function () {
 
         let unAllocatedIngesters = await registryFacet.getUnAllocatedIngesters();
         let ingesterReplacementAddress = unAllocatedIngesters[unAllocatedIngesters.length - 1];
-        console.log("🚀 ~ file: registryFacetTest.ts:289 ~ ingesterReplacementAddress:", ingesterReplacementAddress)
 
         let unregistrationTx = await registryFacet.unRegisterIngester(ingesters[0].address);
 
@@ -337,11 +335,10 @@ describe("Testing Registration with pre-populated data and group duplication", a
     const nonce = 1;
     const maxAllocatableGroups: number = numIngesters * maxClusterSize;
     console.log("🚀 ~ file: registryFacetTest.ts:322 ~ maxAllocatableGroups:", maxAllocatableGroups)
-
     const verbose = false;
-
     const newMaxIngestersPerGroup = 3;
     let numGroupsWithReplication: number;
+
     beforeEach(async function () {
         accounts = await ethers.getSigners();
 
@@ -378,7 +375,6 @@ describe("Testing Registration with pre-populated data and group duplication", a
         await groupManagerFacet.setMaxIngestersPerGroup(newMaxIngestersPerGroup);
 
         ingesters = [];
-        console.log("🚀 ~ file: registryFacetTest.ts:326 ~ maxAllocatableGroups:", maxAllocatableGroups)
         for (let i = 0; i < maxAllocatableGroups; i++ ) {
             await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
             const group = await groupManagerFacet.getGroup(`group${i}`);
@@ -407,16 +403,18 @@ describe("Testing Registration with pre-populated data and group duplication", a
         }
         //grab ingester that will replace the unregistered ingester, last element
         let cluster1PreUnregistration = await registryFacet.getCluster(0);
+
         let ingesterReplacementAddress = cluster1PreUnregistration.ingesterAddresses[cluster1PreUnregistration.ingesterAddresses.length - 1];
         
         //grab ingester that will be unregistered and replaced
-        let ingesterToRemove = await registryFacet.getIngesterWithGroups(ingesters[0].address);
+        let ingesterToRemoveAddress = ingesters[currentNumIngesters-1].address;
+        let ingesterToRemove = await registryFacet.getIngesterWithGroups(ingesterToRemoveAddress);
         let ingesterAssignedGroups = ingesterToRemove.assignedGroups;
 
-        let unregistrationTx = await registryFacet.unRegisterIngester(ingesters[0].address);
+        let unregistrationTx = await registryFacet.connect(ingesterToController[ingesterToRemoveAddress]).unRegisterIngester(ingesterToRemoveAddress);
 
         await expect(unregistrationTx).to.emit(registryFacet, "IngesterRemovedFromCluster")
-        .withArgs(ingesterToRemove.clusterId, ingesters[0].address)
+        .withArgs(ingesterToRemove.clusterId, ingesterToRemoveAddress)
         .and.to.emit(registryFacet, "IngesterAddedToCluster")
         .withArgs(ingesterToRemove.clusterId, ingesterReplacementAddress);
 

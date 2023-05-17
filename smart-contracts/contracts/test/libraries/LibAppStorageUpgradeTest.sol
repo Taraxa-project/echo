@@ -8,7 +8,6 @@ import { LibDiamond } from "../../libraries/LibDiamond.sol";
 
 struct AppStorageTest {
     //Registry
-    mapping(address => IIngesterRegistration.Ingester) ingesters;
     mapping(address => IIngesterRegistration.IngesterToController) ingesterToController;
     mapping(address => IIngesterRegistration.Ingester[]) controllerToIngesters;
     address[] ingesterAddresses;
@@ -24,6 +23,7 @@ struct AppStorageTest {
     mapping(string => IIngesterGroupManager.Group) groups;
     string[] groupUsernames;
     uint256 groupCount;
+    string[] unAllocatedGroups;
     uint256[] inActiveClusters;
 
     //IPFS Storage
@@ -38,10 +38,10 @@ library LibAppStorageTest {
     bytes32 internal constant INGESTER_ROLE = keccak256("INGESTER_ROLE");
     bytes32 internal constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
     
-    event IngesterRemovedFromGroup(address indexed ingesterAddress, string indexed groupId);
-    event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
+    event IngesterAddedToCluster(uint256 indexed clusterId, address indexed ingesterAddress);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
     event ClusterHasNoIngesters(uint256 clusterId);
+    event IngesterRemovedFromCluster(uint256 indexed clusterId, address indexed ingesterAddress);
 
     function appStorage() internal pure returns (AppStorageTest storage ds) {    
         assembly { ds.slot := 0 }
@@ -76,22 +76,19 @@ library LibAppStorageTest {
                     s.groupsCluster[clusterId].ingesterAddresses[i] = ingesterAddressToMove;
                 }
                 s.groupsCluster[clusterId].ingesterAddresses.pop();
+                emit IngesterRemovedFromCluster(clusterId, ingesterAddress);
 
                 if (s.groupsCluster[clusterId].ingesterAddresses.length == 0) {
                     //check if there is unallocated ingesters to assign
                     if (s.unAllocatedIngesters.length > 0) {
-                        s.groupsCluster[clusterId].ingesterAddresses.push( s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1]);
+                        address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
                         s.unAllocatedIngesters.pop();
+                        addIngesterToClusterId(unAllocatedIngester, clusterId);
                     } else if (s.maxIngestersPerGroup > 1) {
-                        (uint clusterIdAvaialble, bool foundAvailableCluster) = getClusterWithIngesterReplication();
-                        
+                        (uint clusterIdAvailable, bool foundAvailableCluster) = getClusterWithIngesterReplication();
                         //if available cluster, then steal ingester from available cluster and put it into empty cluster
                         if (foundAvailableCluster) {
-                            address ingesterAddressToMove = s.groupsCluster[clusterIdAvaialble].ingesterAddresses[s.groupsCluster[clusterIdAvaialble].ingesterAddresses.length - 1];
-                            s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddressToMove);
-                            //update clusterId of moved ingester
-                            IIngesterRegistration.IngesterToController memory controller = s.ingesterToController[ingesterAddressToMove];
-                            s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].clusterId = clusterId;
+                            fetchIngesterFromAvailableCluster(clusterIdAvailable, clusterId);
                         } else {
                             emit ClusterHasNoIngesters(clusterId);
                         }
@@ -99,49 +96,55 @@ library LibAppStorageTest {
                         emit ClusterHasNoIngesters(clusterId);
                     }
                 } // TODO: check if we should steal an ingester from  another cluster
+                break;
             }
         }
     }
 
-    // /**
-    //  * @dev Removes the specified cluster from the list of clusters.
-    //  * @param clusterId The cluster ID to remove.
-    //  */
-    // function removeCluster(uint256 clusterId) internal {
-    //     AppStorage storage s = LibAppStorage.appStorage();
+    function fetchIngesterFromAvailableCluster(uint256 fetchClusterId, uint256 assignClusterId) internal {
+        AppStorageTest storage s = appStorage();
 
-    //     uint256 clusterIndex = s.groupCluster[clusterId].clusterIndex;
-    //     uint256 numClusters = s.clusterIds.length;
-    //     if (clusterIndex != numClusters - 1) {
-    //         uint256 clusterToMove = s.clusterIds[numClusters - 1];
-    //         s.clusterIds[clusterIndex] = clusterToMove;
-    //         s.groupCluster[clusterToMove].clusterIndex = clusterIndex;
-    //     }
-    //     s.clusterIds.pop();
-    // }
+        //fetch from fetchClusterId
+        uint256 numIngesters = s.groupsCluster[fetchClusterId].ingesterAddresses.length;
+        address ingesterAddressToMove = s.groupsCluster[fetchClusterId].ingesterAddresses[numIngesters - 1];
+        s.groupsCluster[fetchClusterId].ingesterAddresses.pop();
+        emit IngesterRemovedFromCluster(fetchClusterId, ingesterAddressToMove);
+
+        //assign ingester to assignClusterId
+        addIngesterToClusterId(ingesterAddressToMove, assignClusterId);
+    }
+
+    function addIngesterToClusterId(address ingesterAddress, uint256 clusterId) internal {
+        AppStorageTest storage s = appStorage();
+
+        s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
+        IIngesterRegistration.IngesterToController memory controller = s.ingesterToController[ingesterAddress];
+        s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].clusterId = clusterId;
+        
+        emit IngesterAddedToCluster(clusterId, ingesterAddress);
+    }
 
     function addIngesterToCluster(address ingesterAddress, address controllerAddress) internal {
         AppStorageTest storage s = appStorage();
 
         bool foundAvailableCluster;
         uint256 clusterId = 0;
-        if (s.clusterIds.length == 0) {
-            s.clusterIds.push(clusterId);
-        } else {
-            (clusterId, foundAvailableCluster) = getAvailableClusterForIngesters(ingesterAddress, controllerAddress);
-        }
-
+      
+        (clusterId, foundAvailableCluster) = getAvailableClusterForIngesters(ingesterAddress, controllerAddress);
+        
         //if no available cluster then put it in unAllocatedIngester otherwise allocate ingester
         if (!foundAvailableCluster) {
+            //TODO: add an allocataled boolean to the ingesters, clusterId is default 0, this could be a problem
+            //it will think it is always allocated to something and it shouldn't, .e.g getIngesterWithGroups
             s.unAllocatedIngesters.push(ingesterAddress);
             emit UnAllocatedIngesterAdded(ingesterAddress);
         } else {
             s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
-            emit IngesterAddedToCluster(ingesterAddress, clusterId);
+            uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
+            s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId = clusterId;
+            emit IngesterAddedToCluster(clusterId, ingesterAddress);
         }
 
-        uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
-        s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId = clusterId;
     }
 
     function getClusterWithIngesterReplication() internal view returns(uint256, bool) {
