@@ -38,9 +38,6 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
         _grantRole(LibAppStorage.INGESTER_ROLE, ingesterAddress);
         _grantRole(LibAppStorage.CONTROLLER_ROLE, controllerAddress);
 
-        //slither possible re-rentrancy attack. Making an external call before modifying contract storage
-        //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
-        // is this still a risk? I will always have to change the ingester storage clusterId after external call
         Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, 0);
 
         s.controllerToIngesters[controllerAddress].push(ingester);

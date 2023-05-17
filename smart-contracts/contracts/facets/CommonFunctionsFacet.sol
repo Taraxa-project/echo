@@ -6,7 +6,6 @@ import "../libraries/LibDiamond.sol";
 import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "../interfaces/IIngesterRegistration.sol";
-import "hardhat/console.sol";
 
 contract CommonFunctionsFacet {
     AppStorage internal s;

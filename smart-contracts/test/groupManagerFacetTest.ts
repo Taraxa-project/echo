@@ -249,7 +249,7 @@ describe("Testing Group Manager", async function () {
         for (let i = 0; i < maxClusterSize; i++) {
             let groupTx = await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
             if ( i == 0){
-                await expect(groupTx).to.emit(groupManagerFacet, "IngesterAddedToCluster").withArgs(accounts[1].address, 0);
+                await expect(groupTx).to.emit(groupManagerFacet, "IngesterAddedToCluster").withArgs(0, accounts[1].address);
                 let cluster = await registryFacet.getCluster(0);
                 expect(cluster.ingesterAddresses).to.include(accounts[1].address);
             }
@@ -346,8 +346,6 @@ describe("Testing Group Manager", async function () {
         let numGroupsWithReplication: number;
         beforeEach(async function () {
             numGroupsWithReplication = maxAllocatableGroups; 
-            console.log("🚀 ~ file: groupManagerFacetTest.ts:351 ~ numGroupsWithReplication:", numGroupsWithReplication)
-            // add replication of 3
             await groupManagerFacet.setMaxIngestersPerGroup(newMaxIngestersPerGroup);
 
             for (let i = 0; i < numGroupsWithReplication; i++) {

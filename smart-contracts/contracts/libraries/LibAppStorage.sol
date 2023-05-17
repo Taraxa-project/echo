@@ -36,7 +36,7 @@ library LibAppStorage {
     bytes32 internal constant INGESTER_ROLE = keccak256("INGESTER_ROLE");
     bytes32 internal constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
     
-    event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
+    event IngesterAddedToCluster(uint256 indexed clusterId, address indexed ingesterAddress);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
     event ClusterHasNoIngesters(uint256 clusterId);
     event IngesterRemovedFromCluster(uint256 indexed clusterId, address indexed ingesterAddress);
@@ -71,22 +71,17 @@ library LibAppStorage {
                     //check if there is unallocated ingesters to assign
                     if (s.unAllocatedIngesters.length > 0) {
                         address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
-                        addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, clusterId);
+                        s.unAllocatedIngesters.pop();
+                        addIngesterToClusterId(unAllocatedIngester, clusterId);
                     } else if (s.maxIngestersPerGroup > 1) {
                         (uint clusterIdAvailable, bool foundAvailableCluster) = getClusterWithIngesterReplication();
                         //if available cluster, then steal ingester from available cluster and put it into empty cluster
                         if (foundAvailableCluster) {
-                            address ingesterAddressToMove = s.groupsCluster[clusterIdAvailable].ingesterAddresses[s.groupsCluster[clusterIdAvailable].ingesterAddresses.length - 1];
-                            s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddressToMove);
-                            //update clusterId of moved ingester
-                            IIngesterRegistration.IngesterToController memory controller = s.ingesterToController[ingesterAddressToMove];
-                            s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].clusterId = clusterId;
+                            fetchIngesterFromAvailableCluster(clusterIdAvailable, clusterId);
                         } else {
-                            console.log('cluster has no ingesters inside the empty cluster clause');
                             emit ClusterHasNoIngesters(clusterId);
                         }
                     } else {
-                        console.log('cluster has no ingesters');
                         emit ClusterHasNoIngesters(clusterId);
                     }
                 } // TODO: check if we should steal an ingester from  another cluster
@@ -95,16 +90,27 @@ library LibAppStorage {
         }
     }
 
-    function addIngesterToClusterId(address ingesterAddress, address controllerAddress, uint256 clusterId) internal {
+    function fetchIngesterFromAvailableCluster(uint256 fetchClusterId, uint256 assignClusterId) internal {
+        AppStorage storage s = appStorage();
+
+        //fetch from fetchClusterId
+        uint256 numIngesters = s.groupsCluster[fetchClusterId].ingesterAddresses.length;
+        address ingesterAddressToMove = s.groupsCluster[fetchClusterId].ingesterAddresses[numIngesters - 1];
+        s.groupsCluster[fetchClusterId].ingesterAddresses.pop();
+        emit IngesterRemovedFromCluster(fetchClusterId, ingesterAddressToMove);
+
+        //assign ingester to assignClusterId
+        addIngesterToClusterId(ingesterAddressToMove, assignClusterId);
+    }
+
+    function addIngesterToClusterId(address ingesterAddress, uint256 clusterId) internal {
         AppStorage storage s = appStorage();
 
         s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
-        s.unAllocatedIngesters.pop();
-
-        uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
-        s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId = clusterId;
+        IIngesterRegistration.IngesterToController memory controller = s.ingesterToController[ingesterAddress];
+        s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].clusterId = clusterId;
         
-        emit IngesterAddedToCluster(ingesterAddress, clusterId);
+        emit IngesterAddedToCluster(clusterId, ingesterAddress);
     }
 
     function addIngesterToCluster(address ingesterAddress, address controllerAddress) internal {
@@ -115,24 +121,17 @@ library LibAppStorage {
       
         (clusterId, foundAvailableCluster) = getAvailableClusterForIngesters(ingesterAddress, controllerAddress);
         
-        console.log('clusterId', clusterId);
-        console.log('foundAvailableCluster', foundAvailableCluster);
         //if no available cluster then put it in unAllocatedIngester otherwise allocate ingester
         if (!foundAvailableCluster) {
             //TODO: add an allocataled boolean to the ingesters, clusterId is default 0, this could be a problem
-            //it will think it is always allocated to something and it shouldn't
+            //it will think it is always allocated to something and it shouldn't, .e.g getIngesterWithGroups
             s.unAllocatedIngesters.push(ingesterAddress);
-            console.log('adding unallocated ingester', ingesterAddress);
             emit UnAllocatedIngesterAdded(ingesterAddress);
         } else {
-            console.log('adding ingester to cluster', clusterId);
             s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
             uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
-            console.log('ingester', ingesterAddress);
             s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId = clusterId;
-            console.log('clusterId it should be in', clusterId);
-            console.log('storage is', s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId);
-            emit IngesterAddedToCluster(ingesterAddress, clusterId);
+            emit IngesterAddedToCluster(clusterId, ingesterAddress);
         }
 
     }

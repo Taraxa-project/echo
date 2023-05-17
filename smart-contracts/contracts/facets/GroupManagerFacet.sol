@@ -5,7 +5,6 @@ import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "./AccessControlFacet.sol";
 import "./CommonFunctionsFacet.sol";
-import "hardhat/console.sol";
 
 contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngesterGroupManager {
 
@@ -37,7 +36,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         //if newly unavailable ingesters, attempt to assign any unregistered ingester
         if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxIngestersPerGroup) {
             address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
-            LibAppStorage.addIngesterToClusterId(unAllocatedIngester, s.ingesterToController[unAllocatedIngester].controllerAddress, clusterId);
+            LibAppStorage.addIngesterToClusterId(unAllocatedIngester, clusterId);
         }
     }
 

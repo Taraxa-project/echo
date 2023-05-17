@@ -30,11 +30,11 @@ interface IIngesterGroupManager {
     event GroupAdded(string groupUsername);
     event GroupRemoved(string groupUsername);
     event GroupRemovedFromIngester(address indexed ingesterAddress, string group);
-    event GroupRemovedFromCluster(uint256 indexed _clusterId, string indexed _groupUsername);
+    event GroupRemovedFromCluster(uint256 indexed clusterId, string indexed groupUsername);
     event MaxIngesterPerGroupUpdated(uint256 maxNumberIngesterPerGroup);
     event MaxClusterSizeUpdated(uint256 maxClusterSize);
     event GroupAddedToCluster(string groupUsername, uint256 indexed clusterId);
-    event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
+    event IngesterAddedToCluster(uint256 indexed clusterId, address indexed ingesterAddress);
     event ActivateInactiveCluster(uint256 indexed clusterId);
     event InactivateCluster(uint256 indexed clusterId);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);

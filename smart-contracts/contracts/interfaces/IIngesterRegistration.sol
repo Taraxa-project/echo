@@ -34,7 +34,7 @@ interface IIngesterRegistration {
     event IngesterUnRegistered(address indexed controllerAddress, address indexed ingesterAddress);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
     event ClusterHasNoIngesters(uint256 clusterId);
-    event IngesterAddedToCluster(address indexed ingesterAddress, uint256 indexed clusterId);
+    event IngesterAddedToCluster(uint256 indexed clusterId, address indexed ingesterAddress);
     event IngesterRemovedFromCluster(uint256 indexed clusterId, address indexed ingesterAddress);
 
 
