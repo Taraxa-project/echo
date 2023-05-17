@@ -15,10 +15,11 @@ abstract class DbInterface {
   FutureOr<int?> selectChatOnlineMembersCount(String username);
 
   FutureOr<int?> selectMaxMessageIdFromDate(int chatId, DateTime dateTimeFrom);
-  FutureOr<void> insertMessage(Message message, int? onlineMembersCount);
 
-  FutureOr<void> insertUser(int userId);
-  FutureOr<void> updateUser(int userId, User user);
+  FutureOr<bool> userExists(int userId);
+
+  FutureOr<void> insertMessagesUsers(
+      List<Message> messages, List<User> users, int? onlineMembersCount);
 
   FutureOr<void> updateMetaFileHash(String tableName, String fileHash);
   FutureOr<IfpsFileHashesMeta> selectMetaFileHahes();

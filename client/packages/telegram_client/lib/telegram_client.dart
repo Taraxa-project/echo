@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
-import 'package:sqlite3/sqlite3.dart';
 import 'package:td_json_client/td_api.dart';
 
 import 'telegram_client_interface.dart';
@@ -204,8 +203,8 @@ class TelegramClient implements TelegramClientInterface {
       final messages = history.messages;
       if (messages == null || messages.length == 0) break;
 
-      await _saveMessages(chatName, chatId, messages, onlineMembersCount, db);
-      await _saveUsersFromMessages(chatName, messages, db);
+      await _saveMessagesUsers(
+          chatName, chatId, messages, onlineMembersCount, db);
 
       if (messages.length < TelegramClientConfig.getChatHistoryLimit) break;
 
@@ -367,50 +366,42 @@ class TelegramClient implements TelegramClientInterface {
     )) as Messages;
   }
 
-  Future<void> _saveMessages(String chatName, int chatId,
-      List<Message> messages, int? onlineMemberCount, DbIsolated db) async {
-    var messagesCount = 0;
+  Future<void> _saveMessagesUsers(String chatName, int chatId,
+      List<Message> messages, int? onlineMembersCount, DbIsolated db) async {
+    final msgs = <Message>[];
+    final users = <int, User>{};
 
-    for (Message message in messages) {
+    for (final Message message in messages) {
       if (message.chat_id == null || message.id == null || message.date == null)
         continue;
-      db.insertMessage(message, onlineMemberCount);
-      messagesCount += 1;
-    }
+      msgs.add(message);
 
-    logger.info('[$chatName] saved ${messagesCount} messages.');
-  }
-
-  Future<void> _saveUsersFromMessages(
-      String chatName, List<Message> messages, DbIsolated db) async {
-    var userCount = 0;
-
-    for (var message in messages) {
       if (message.sender_id == null) continue;
       if (message.sender_id is! MessageSenderUser) continue;
-
-      int? userId = (message.sender_id as MessageSenderUser).user_id;
+      final userId = (message.sender_id as MessageSenderUser).user_id;
       if (userId == null) continue;
 
-      try {
-        await db.insertUser(userId);
-      } on SqliteException catch (ex) {
-        // Unique constraint
-        if (ex.resultCode == 19 && ex.extendedResultCode == 2067) continue;
-        rethrow;
-      }
+      final userExists = await db.userExists(userId);
+      if (userExists) continue;
 
-      var user = await _getUser(userId);
-      await db.updateUser(userId, user);
-      userCount++;
+      if (users.containsKey(userId)) continue;
+
+      final user = await _getUser(userId);
+      users[userId] = user;
 
       await Future.delayed(const Duration(
           seconds: TelegramClientConfig.delayUntilNextUserSeconds));
     }
 
-    if (userCount > 0) {
-      logger.info('[$chatName] saved $userCount users.');
-    }
+    if (msgs.length == 0) return;
+
+    await db.insertMessagesUsers(
+        messages, users.values.toList(), onlineMembersCount);
+
+    var info = '[$chatName] saved ${msgs.length} messages';
+    if (users.length > 0) info += ', ${users.length} users';
+    info += '.';
+    logger.info(info);
   }
 
   Future<User> _getUser(int userId) async {
