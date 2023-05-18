@@ -6,12 +6,14 @@ interface IIngesterRegistration {
     struct Ingester {
         address ingesterAddress;
         bool verified;
+        bool isAllocated;
         uint256 clusterId;
     }
 
     struct IngesterWithGroups {
         address ingesterAddress;
         bool verified;
+        bool isAllocated;
         uint256 clusterId;
         string[] assignedGroups;
     }

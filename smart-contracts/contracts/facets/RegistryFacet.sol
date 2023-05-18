@@ -38,7 +38,7 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
         _grantRole(LibAppStorage.INGESTER_ROLE, ingesterAddress);
         _grantRole(LibAppStorage.CONTROLLER_ROLE, controllerAddress);
 
-        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, 0);
+        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, false, 0);
 
         s.controllerToIngesters[controllerAddress].push(ingester);
 

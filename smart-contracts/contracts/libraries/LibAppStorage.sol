@@ -83,7 +83,7 @@ library LibAppStorage {
                     } else {
                         emit ClusterHasNoIngesters(clusterId);
                     }
-                } // TODO: check if we should steal an ingester from  another cluster
+                } 
                 break;
             }
         }
@@ -108,6 +108,7 @@ library LibAppStorage {
         s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
         IIngesterRegistration.IngesterToController memory controller = s.ingesterToController[ingesterAddress];
         s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].clusterId = clusterId;
+        s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].isAllocated = true;
         
         emit IngesterAddedToCluster(clusterId, ingesterAddress);
     }
@@ -122,15 +123,15 @@ library LibAppStorage {
         
         //if no available cluster then put it in unAllocatedIngester otherwise allocate ingester
         if (!foundAvailableCluster) {
-            //TODO: add an allocataled boolean to the ingesters, clusterId is default 0, this could be a problem
-            //it will think it is always allocated to something and it shouldn't, .e.g getIngesterWithGroups
-            
+            uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
+            s.controllerToIngesters[controllerAddress][ingesterIndex].isAllocated = false;
             s.unAllocatedIngesters.push(ingesterAddress);
             emit UnAllocatedIngesterAdded(ingesterAddress);
         } else {
             s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
             uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
             s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId = clusterId;
+            s.controllerToIngesters[controllerAddress][ingesterIndex].isAllocated = true;
             emit IngesterAddedToCluster(clusterId, ingesterAddress);
         }
 
@@ -207,97 +208,5 @@ library LibAppStorage {
 
         return (availableClusterId, foundAvailableCluster);
     }
-
-    // function getAvailableClusterForIngesters(address ingesterAddress, address controllerAddress) internal view returns(uint256, bool) {
-    //     AppStorage storage s = appStorage();
-
-    //     uint256 availableClusterId = 0;
-    //     bool foundAvailableCluster = false;
-    //     uint256 numClusters = s.clusterIds.length;
-
-    //     //otherwise go through the existing clusters and get the first available one
-    //     for (uint256 i = 0; i < numClusters; i++) {
-    //         if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length < s.maxIngestersPerGroup && s.groupsCluster[s.clusterIds[i]].isActive) {
-    //             availableClusterId = s.clusterIds[i];
-    //             foundAvailableCluster = true;
-    //             //If there is Duplication.
-    //             //Restrict more than one controller wallet owning one ingester per cluster
-    //             if (s.maxIngestersPerGroup > 1) {
-    //                 IIngesterRegistration.Ingester[] memory controllerIngesters = s.controllerToIngesters[controllerAddress];
-
-    //                 for (uint j = 0; j < s.groupsCluster[availableClusterId].ingesterAddresses.length; j++) {
-    //                     for (uint k = 0; k < controllerIngesters.length; k++) {
-    //                         //controller ingester addresses match ingesterAddresses within the cluster and it's not the current ingester we are trying to assign
-    //                         //continue looking for another cluster
-    //                         if (s.groupsCluster[availableClusterId].ingesterAddresses[j] == controllerIngesters[k].ingesterAddress && s.groupsCluster[availableClusterId].ingesterAddresses[j] != ingesterAddress) {
-    //                             foundAvailableCluster = false;
-    //                         }
-    //                     }
-    //                 }
-    //             } 
-
-    //             if (foundAvailableCluster) {
-    //                 break;
-    //             }
-    //         }
-    //     }
-
-    //     return (availableClusterId, foundAvailableCluster);
-    // }
-
-    // function getAvailableClusterForIngesters(address ingesterAddress, address controllerAddress) internal view returns(uint256, bool) {
-    //     AppStorage storage s = appStorage();
-
-    //     uint256 availableClusterId = 0;
-    //     bool foundAvailableCluster = false;
-    //     uint256 numClusters = s.clusterIds.length;
-
-        
-    //     foundAvailableCluster = true;
-    //     (availableClusterId, foundAvailableCluster) = getClusterWithLeastIngesters();
-    //     //If there is Duplication.
-    //     //Restrict more than one controller wallet owning one ingester per cluster
-    //     if (s.maxIngestersPerGroup > 1) {
-    //         IIngesterRegistration.Ingester[] memory controllerIngesters = s.controllerToIngesters[controllerAddress];
-
-    //         for (uint j = 0; j < s.groupsCluster[availableClusterId].ingesterAddresses.length; j++) {
-    //             for (uint k = 0; k < controllerIngesters.length; k++) {
-    //                 //controller ingester addresses match ingesterAddresses within the cluster and it's not the current ingester we are trying to assign
-    //                 //continue looking for another cluster
-    //                 if (s.groupsCluster[availableClusterId].ingesterAddresses[j] == controllerIngesters[k].ingesterAddress && s.groupsCluster[availableClusterId].ingesterAddresses[j] != ingesterAddress) {
-    //                     foundAvailableCluster = false;
-    //                 }
-    //             }
-    //         }
-    //     } 
-
-    //     if (foundAvailableCluster) {
-    //         break;
-    //     }
-
-    //     return (availableClusterId, foundAvailableCluster);
-    // }
-
-    // function getClusterWithLeastIngesters() internal returns(uint256, bool){
-    //     AppStorage storage s = appStorage();
-
-    //     uint256 minIngestersClusterId = 0;
-    //     bool foundAvailableCluster = false;
-    //     uint256 numClusters = s.clusterIds.length;
-    //     uint256 minNumIngesters = type(uint256).max;
-
-    //     //otherwise go through the existing clusters and get the first available one
-    //     for (uint256 i = 0; i < numClusters; i++) {
-    //         GroupsCluster storage currentCluster = s.groupsCluster[s.clusterIds[i]];
-    //         uint256 numIngesters = currentCluster.ingesterAddresses.length;
-            
-    //         if (numIngesters <= minNumIngesters && numIngesters < s.maxIngestersPerGroup && currentCluster.isActive) {
-    //             minNumIngesters = s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length;
-    //             minIngestersClusterId = s.clusterIds[i];
-    //             foundAvailableCluster = true;
-    //         }
-    //     }
-    //     return (minIngestersClusterId, foundAvailableCluster);
-    // }
 }
 

@@ -81,7 +81,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         //prioritize inactive cluster to add groups to 
         if (s.inActiveClusters.length > 0) {
             availableClusterId = s.inActiveClusters[s.inActiveClusters.length - 1];
-            console.log('reactivating clusterid',availableClusterId );
             s.inActiveClusters.pop();
             s.groupsCluster[availableClusterId].isActive = true;
             foundAvailableCluster = true;

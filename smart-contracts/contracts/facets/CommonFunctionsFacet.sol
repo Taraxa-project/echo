@@ -124,14 +124,27 @@ contract CommonFunctionsFacet {
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
         IIngesterRegistration.Ingester memory ingester = s.controllerToIngesters[controller][ingesterIndex];
-        string[] memory assignedGroups = s.groupsCluster[ingester.clusterId].groupUsernames;
-        IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
-            ingesterAddress,
-            ingester.verified,
-            ingester.clusterId,
-            assignedGroups
-        );
-        return ingesterWithAssignedGroups;
+        if (!ingester.isAllocated) {
+            string[] memory assignedGroups = new string[](0);
+            IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
+                ingesterAddress,
+                ingester.verified,
+                ingester.isAllocated,
+                ingester.clusterId,
+                assignedGroups
+            );
+            return ingesterWithAssignedGroups;
+        } else {
+             string[] memory assignedGroups = s.groupsCluster[ingester.clusterId].groupUsernames;
+            IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
+                ingesterAddress,
+                ingester.verified,
+                ingester.isAllocated,
+                ingester.clusterId,
+                assignedGroups
+            );
+            return ingesterWithAssignedGroups;
+        }
     }
 
     function getUnAllocatedIngesters() public view returns (address[] memory) {
