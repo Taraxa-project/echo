@@ -43,10 +43,6 @@ library LibAppStorageTest {
     event ClusterHasNoIngesters(uint256 clusterId);
     event IngesterRemovedFromCluster(uint256 indexed clusterId, address indexed ingesterAddress);
 
-    function appStorage() internal pure returns (AppStorageTest storage ds) {    
-        assembly { ds.slot := 0 }
-    }
-
     function setTestProperty(bool testProperty) internal {
         AppStorageTest storage s = appStorage();
         s.newTestProperty = testProperty;
@@ -57,6 +53,14 @@ library LibAppStorageTest {
         return s.newTestProperty;
     }
 
+    /**
+    * @notice Retrieves the AppStorageTest state.
+    * @return ds AppStorageTest The current state of the AppStorageTest.
+    */
+    function appStorage() internal pure returns (AppStorageTest storage ds) {    
+        assembly { ds.slot := 0 }
+    }
+    
     /**
     * @notice Removes an ingester from a cluster.
     * @param ingesterAddress The address of the ingester to be removed.
@@ -95,12 +99,17 @@ library LibAppStorageTest {
                     } else {
                         emit ClusterHasNoIngesters(clusterId);
                     }
-                } // TODO: check if we should steal an ingester from  another cluster
+                } 
                 break;
             }
         }
     }
 
+    /**
+    * @notice Fetches an ingester from an available cluster and assigns it to a specified cluster.
+    * @param fetchClusterId The ID of the cluster to fetch the ingester from.
+    * @param assignClusterId The ID of the cluster to assign the fetched ingester to.
+    */
     function fetchIngesterFromAvailableCluster(uint256 fetchClusterId, uint256 assignClusterId) internal {
         AppStorageTest storage s = appStorage();
 
@@ -114,16 +123,27 @@ library LibAppStorageTest {
         addIngesterToClusterId(ingesterAddressToMove, assignClusterId);
     }
 
+    /**
+    * @notice Adds an ingester to a specified cluster.
+    * @param ingesterAddress The address of the ingester to be added.
+    * @param clusterId The ID of the cluster the ingester is being added to.
+    */
     function addIngesterToClusterId(address ingesterAddress, uint256 clusterId) internal {
         AppStorageTest storage s = appStorage();
 
         s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
         IIngesterRegistration.IngesterToController memory controller = s.ingesterToController[ingesterAddress];
         s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].clusterId = clusterId;
+        s.controllerToIngesters[controller.controllerAddress][controller.ingesterIndex].isAllocated = true;
         
         emit IngesterAddedToCluster(clusterId, ingesterAddress);
     }
 
+    /**
+    * @notice Adds an ingester to a cluster.
+    * @param ingesterAddress The address of the ingester to be added.
+    * @param controllerAddress The address of the controller of the ingester.
+    */
     function addIngesterToCluster(address ingesterAddress, address controllerAddress) internal {
         AppStorageTest storage s = appStorage();
 
@@ -134,19 +154,25 @@ library LibAppStorageTest {
         
         //if no available cluster then put it in unAllocatedIngester otherwise allocate ingester
         if (!foundAvailableCluster) {
-            //TODO: add an allocataled boolean to the ingesters, clusterId is default 0, this could be a problem
-            //it will think it is always allocated to something and it shouldn't, .e.g getIngesterWithGroups
+            uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
+            s.controllerToIngesters[controllerAddress][ingesterIndex].isAllocated = false;
             s.unAllocatedIngesters.push(ingesterAddress);
             emit UnAllocatedIngesterAdded(ingesterAddress);
         } else {
             s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);
             uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
             s.controllerToIngesters[controllerAddress][ingesterIndex].clusterId = clusterId;
+            s.controllerToIngesters[controllerAddress][ingesterIndex].isAllocated = true;
             emit IngesterAddedToCluster(clusterId, ingesterAddress);
         }
 
     }
 
+    /**
+    * @notice Retrieves the ID of a cluster with ingester replication.
+    * @return uint256 The ID of the cluster.
+    * @return bool A boolean value indicating if a cluster with ingester replication was found.
+    */
     function getClusterWithIngesterReplication() internal view returns(uint256, bool) {
         AppStorageTest storage s = appStorage();
 
@@ -163,35 +189,61 @@ library LibAppStorageTest {
         return (availableClusterId, foundAvailableCluster);
     }
 
+    /**
+    * @notice Retrieves the ID of an available cluster for ingesters.
+    * @param ingesterAddress The address of the ingester.
+    * @param controllerAddress The address of the controller of the ingester.
+    * @return uint256 The ID of the available cluster.
+    * @return bool A boolean value indicating if an available cluster for ingesters was found.
+    */
     function getAvailableClusterForIngesters(address ingesterAddress, address controllerAddress) internal view returns(uint256, bool) {
         AppStorageTest storage s = appStorage();
 
         uint256 availableClusterId = 0;
         bool foundAvailableCluster = false;
         uint256 numClusters = s.clusterIds.length;
+        uint256 minNumIngesters = type(uint256).max;
 
-        //otherwise go through the existing clusters and get the first available one
+        // First find the absolute minimum number of ingestors across all clusters
         for (uint256 i = 0; i < numClusters; i++) {
-            if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length < s.maxIngestersPerGroup && s.groupsCluster[s.clusterIds[i]].isActive) {
-                availableClusterId = s.clusterIds[i];
-                foundAvailableCluster = true;
-                //If there is Duplication.
-                //Restrict more than one controller wallet owning one ingester per cluster
+            IIngesterGroupManager.GroupsCluster storage currentCluster = s.groupsCluster[s.clusterIds[i]];
+            uint256 numIngesters = currentCluster.ingesterAddresses.length;
+            if (numIngesters < minNumIngesters) {
+                minNumIngesters = numIngesters;
+            }
+        }
+
+        // Then assign the ingestor to the cluster with minimum number of ingestors and without any ingestor controlled by the same controller wallet
+        for (uint256 i = 0; i < numClusters; i++) {
+            IIngesterGroupManager.GroupsCluster storage currentCluster = s.groupsCluster[s.clusterIds[i]];
+            uint256 numIngesters = currentCluster.ingesterAddresses.length;
+
+            // If the cluster is active and has the minimum number of ingestors
+            if (numIngesters == minNumIngesters && numIngesters < s.maxIngestersPerGroup && currentCluster.isActive) {
+                bool hasSameControllerIngester = false;
+
+                // If there is more than one controller wallet owning one ingester per cluster, check for same controller ingestor
                 if (s.maxIngestersPerGroup > 1) {
                     IIngesterRegistration.Ingester[] memory controllerIngesters = s.controllerToIngesters[controllerAddress];
 
-                    for (uint j = 0; j < s.groupsCluster[availableClusterId].ingesterAddresses.length; j++) {
+                    for (uint j = 0; j < numIngesters; j++) {
                         for (uint k = 0; k < controllerIngesters.length; k++) {
-                            //controller ingester addresses match ingesterAddresses within the cluster and it's not the current ingester we are trying to assign
-                            //continue looking for another cluster
-                            if (s.groupsCluster[availableClusterId].ingesterAddresses[j] == controllerIngesters[k].ingesterAddress && s.groupsCluster[availableClusterId].ingesterAddresses[j] != ingesterAddress) {
-                                foundAvailableCluster = false;
+                            if (currentCluster.ingesterAddresses[j] == controllerIngesters[k].ingesterAddress && currentCluster.ingesterAddresses[j] != ingesterAddress) {
+                                hasSameControllerIngester = true;
+                                break;
                             }
                         }
-                    }
-                } 
 
-                if (foundAvailableCluster) {
+                        if (hasSameControllerIngester) {
+                            break;
+                        }
+                    }
+                }
+
+                // If the cluster doesn't have the same controller ingestor, it's a candidate
+                if (!hasSameControllerIngester) {
+                    availableClusterId = s.clusterIds[i];
+                    foundAvailableCluster = true;
                     break;
                 }
             }

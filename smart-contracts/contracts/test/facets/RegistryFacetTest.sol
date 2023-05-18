@@ -11,7 +11,7 @@ import "./CommonFunctionsFacetTest.sol";
 contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, CommonFunctionsFacetTest {
 
     function getIngester(address ingesterAddress) public view override returns (IIngesterRegistration.Ingester memory) {
-        IIngesterRegistration.Ingester memory ingester = Ingester(ingesterAddress, true, 999);
+        IIngesterRegistration.Ingester memory ingester = Ingester(ingesterAddress, true, false, 999);
         return ingester;
     }
 
@@ -41,10 +41,7 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
         _grantRole(LibAppStorageTest.INGESTER_ROLE, ingesterAddress);
         _grantRole(LibAppStorageTest.CONTROLLER_ROLE, controllerAddress);
 
-        //slither possible re-rentrancy attack. Making an external call before modifying contract storage
-        //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
-        // is this still a risk? I will always have to change the ingester storage clusterId after external call
-        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, 0);
+        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, false, 0);
 
         s.controllerToIngesters[controllerAddress].push(ingester);
 
@@ -110,7 +107,6 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
 
         uint256 ingesterIndexToRemove = s.ingesterToController[ingesterAddress].ingesterIndex;
         uint256 clusterId = s.controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
-        // string[] memory ingesterAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress];
 
         uint ingesterAddressesIndexToRemove = s.ingesterToController[ingesterAddress].ingesterAddressesIndex;
         // Remove ingester from the list
@@ -132,9 +128,6 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
             delete s.controllerToIngesters[controllerAddress];
             delete s.ingesterToController[ingesterAddress];
             
-            //slither possible re-rentrancy attack. Making an external call before modifying contract storage
-            //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
-            // is this still a risk? I will always have to change the ingester storage clusterId after external call
             LibAppStorageTest.removeIngesterFromCluster(ingesterAddress, clusterId);
         } else if (numIngestersPerController > 1) {
             //if there is more ingesters for this controller, only remove the desired ingester
@@ -144,13 +137,11 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
             if (ingesterIndexToRemove != numIngestersPerController - 1) {
                 Ingester memory ingester = s.controllerToIngesters[controllerAddress][numIngestersPerController - 1];
                 s.controllerToIngesters[controllerAddress][ingesterIndexToRemove] = ingester;
-                //update index of ingester that was moved
                 s.ingesterToController[ingester.ingesterAddress].ingesterAddressesIndex = ingesterIndexToRemove;
             }
             s.controllerToIngesters[controllerAddress].pop();
             delete s.ingesterToController[ingesterAddress];
 
-            //Remove Ingester from Cluster
             LibAppStorageTest.removeIngesterFromCluster(ingesterAddress, clusterId);
 
         }

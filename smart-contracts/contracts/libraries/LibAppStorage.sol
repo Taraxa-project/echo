@@ -41,6 +41,10 @@ library LibAppStorage {
     event IngesterRemovedFromCluster(uint256 indexed clusterId, address indexed ingesterAddress);
 
 
+    /**
+    * @notice Retrieves the AppStorage state.
+    * @return ds AppStorage The current state of the AppStorage.
+    */
     function appStorage() internal pure returns (AppStorage storage ds) {    
         assembly { ds.slot := 0 }
     }
@@ -89,6 +93,11 @@ library LibAppStorage {
         }
     }
 
+    /**
+    * @notice Fetches an ingester from an available cluster and assigns it to a specified cluster.
+    * @param fetchClusterId The ID of the cluster to fetch the ingester from.
+    * @param assignClusterId The ID of the cluster to assign the fetched ingester to.
+    */
     function fetchIngesterFromAvailableCluster(uint256 fetchClusterId, uint256 assignClusterId) internal {
         AppStorage storage s = appStorage();
 
@@ -102,6 +111,11 @@ library LibAppStorage {
         addIngesterToClusterId(ingesterAddressToMove, assignClusterId);
     }
 
+    /**
+    * @notice Adds an ingester to a specified cluster.
+    * @param ingesterAddress The address of the ingester to be added.
+    * @param clusterId The ID of the cluster the ingester is being added to.
+    */
     function addIngesterToClusterId(address ingesterAddress, uint256 clusterId) internal {
         AppStorage storage s = appStorage();
 
@@ -113,6 +127,11 @@ library LibAppStorage {
         emit IngesterAddedToCluster(clusterId, ingesterAddress);
     }
 
+    /**
+    * @notice Adds an ingester to a cluster.
+    * @param ingesterAddress The address of the ingester to be added.
+    * @param controllerAddress The address of the controller of the ingester.
+    */
     function addIngesterToCluster(address ingesterAddress, address controllerAddress) internal {
         AppStorage storage s = appStorage();
 
@@ -137,6 +156,11 @@ library LibAppStorage {
 
     }
 
+    /**
+    * @notice Retrieves the ID of a cluster with ingester replication.
+    * @return uint256 The ID of the cluster.
+    * @return bool A boolean value indicating if a cluster with ingester replication was found.
+    */
     function getClusterWithIngesterReplication() internal view returns(uint256, bool) {
         AppStorage storage s = appStorage();
 
@@ -153,6 +177,13 @@ library LibAppStorage {
         return (availableClusterId, foundAvailableCluster);
     }
 
+    /**
+    * @notice Retrieves the ID of an available cluster for ingesters.
+    * @param ingesterAddress The address of the ingester.
+    * @param controllerAddress The address of the controller of the ingester.
+    * @return uint256 The ID of the available cluster.
+    * @return bool A boolean value indicating if an available cluster for ingesters was found.
+    */
     function getAvailableClusterForIngesters(address ingesterAddress, address controllerAddress) internal view returns(uint256, bool) {
         AppStorage storage s = appStorage();
 

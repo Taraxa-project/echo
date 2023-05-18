@@ -81,10 +81,18 @@ contract CommonFunctionsFacetTest {
         return clusterIds;
     }
 
+    /**
+    * @notice Retrieves the total number of clusters.
+    * @return The count of total clusters.
+    */
     function getClusterCount() external view returns (uint256){
         return s.clusterIds.length;
     }
 
+    /**
+    * @notice Retrieves the list of inactive cluster IDs.
+    * @return An array of inactive cluster IDs.
+    */
     function getInActiveClusters() external view returns (uint256[] memory){
         return s.inActiveClusters;
     }
@@ -98,6 +106,10 @@ contract CommonFunctionsFacetTest {
         return s.groupsCluster[clusterId];
     }
 
+    /**
+    * @notice Retrieves the total number of registered ingesters.
+    * @return The count of total registered ingesters.
+    */
     function getIngesterCount() external view returns(uint256) {
         return s.ingesterCount;
     }
@@ -135,16 +147,33 @@ contract CommonFunctionsFacetTest {
         address controller = s.ingesterToController[ingesterAddress].controllerAddress;
         uint ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
         IIngesterRegistration.Ingester memory ingester = s.controllerToIngesters[controller][ingesterIndex];
-        string[] memory assignedGroups = s.groupsCluster[ingester.clusterId].groupUsernames;
-        IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
-            ingesterAddress,
-            ingester.verified,
-            ingester.clusterId,
-            assignedGroups
-        );
-        return ingesterWithAssignedGroups;
+        if (!ingester.isAllocated) {
+            string[] memory assignedGroups = new string[](0);
+            IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
+                ingesterAddress,
+                ingester.verified,
+                ingester.isAllocated,
+                ingester.clusterId,
+                assignedGroups
+            );
+            return ingesterWithAssignedGroups;
+        } else {
+             string[] memory assignedGroups = s.groupsCluster[ingester.clusterId].groupUsernames;
+            IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
+                ingesterAddress,
+                ingester.verified,
+                ingester.isAllocated,
+                ingester.clusterId,
+                assignedGroups
+            );
+            return ingesterWithAssignedGroups;
+        }
     }
 
+    /**
+    * @notice Retrieves the list of unallocated ingesters.
+    * @return An array of unallocated ingester addresses.
+    */
     function getUnAllocatedIngesters() public view returns (address[] memory) {
         return  s.unAllocatedIngesters;
     }
@@ -158,6 +187,10 @@ contract CommonFunctionsFacetTest {
         return s.controllerToIngesters[controllerAddress];
     }
 
+    /**
+    * @notice Retrieves the total number of groups.
+    * @return The count of total groups.
+    */
     function getGroupCount() external view returns(uint256) {
         return s.groupUsernames.length;
     }

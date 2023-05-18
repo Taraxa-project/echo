@@ -71,10 +71,18 @@ contract CommonFunctionsFacet {
         return clusterIds;
     }
 
+    /**
+    * @notice Retrieves the total number of clusters.
+    * @return The count of total clusters.
+    */
     function getClusterCount() external view returns (uint256){
         return s.clusterIds.length;
     }
 
+    /**
+    * @notice Retrieves the list of inactive cluster IDs.
+    * @return An array of inactive cluster IDs.
+    */
     function getInActiveClusters() external view returns (uint256[] memory){
         return s.inActiveClusters;
     }
@@ -88,6 +96,10 @@ contract CommonFunctionsFacet {
         return s.groupsCluster[clusterId];
     }
 
+    /**
+    * @notice Retrieves the total number of registered ingesters.
+    * @return The count of total registered ingesters.
+    */
     function getIngesterCount() external view returns(uint256) {
         return s.ingesterCount;
     }
@@ -147,6 +159,10 @@ contract CommonFunctionsFacet {
         }
     }
 
+    /**
+    * @notice Retrieves the list of unallocated ingesters.
+    * @return An array of unallocated ingester addresses.
+    */
     function getUnAllocatedIngesters() public view returns (address[] memory) {
         return  s.unAllocatedIngesters;
     }
@@ -160,6 +176,10 @@ contract CommonFunctionsFacet {
         return s.controllerToIngesters[controllerAddress];
     }
 
+    /**
+    * @notice Retrieves the total number of groups.
+    * @return The count of total groups.
+    */
     function getGroupCount() external view returns(uint256) {
         return s.groupUsernames.length;
     }

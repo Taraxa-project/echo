@@ -8,7 +8,6 @@ import "./CommonFunctionsFacetTest.sol";
 
 contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTest, IIngesterGroupManager {
 
-   
    /**
     * @notice Adds a new group to the system and distributes it among the clusters.
     * @param groupUsername The username of the group to be added.
@@ -22,9 +21,14 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         ++s.groupCount;
         uint256 clusterId = addGroupToCluster(groupUsername);
         checkUnallocatedIngesters(clusterId);
+        balanceIngesters(clusterId);
         emit IIngesterGroupManager.GroupAdded(groupUsername);
     }
 
+    /**
+    * @dev Adds a new cluster to the system and assigns it an ID.
+    * @return uint256 The ID assigned to the new cluster.
+    */
     function addNewCluster() internal returns (uint256) {
         uint256 clusterId = s.clusterIds.length;
         s.clusterIds.push(clusterId);
@@ -33,6 +37,10 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         return clusterId;
     }
 
+    /**
+    * @dev Checks for unallocated ingesters and assigns them to a specified cluster if possible.
+    * @param clusterId The ID of the cluster to assign unallocated ingesters to.
+    */
     function checkUnallocatedIngesters(uint256 clusterId) internal {
         //if newly unavailable ingesters, attempt to assign any unregistered ingester
         if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxIngestersPerGroup) {
@@ -41,6 +49,26 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         }
     }
 
+    /**
+    * @dev Attempts to balance the distribution of ingesters among clusters.
+    * @param clusterId The ID of the cluster to balance ingesters for.
+    */
+    function balanceIngesters(uint256 clusterId) internal {
+        //if there replication and cluster is currently empty, allocatiion from other clusters should be done
+        if (s.groupsCluster[clusterId].ingesterAddresses.length == 0 && s.maxIngestersPerGroup > 1) {
+            (uint clusterIdAvailable, bool foundAvailableCluster) = LibAppStorageTest.getClusterWithIngesterReplication();
+            //if available cluster, then steal ingester from available cluster and put it into empty cluster
+            if (foundAvailableCluster) {
+                LibAppStorageTest.fetchIngesterFromAvailableCluster(clusterIdAvailable, clusterId);
+            } 
+        }
+    }
+
+    /**
+    * @dev Adds a new group to a cluster.
+    * @param groupUsername The username of the group to add.
+    * @return uint256 The ID of the cluster the group was added to.
+    */
     function addGroupToCluster(string calldata groupUsername) internal returns(uint256){
         uint256 clusterId = 0;
         bool foundAvailableCluster = false;
@@ -63,6 +91,11 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         return clusterId;
     }
 
+    /**
+    * @dev Checks for available clusters and returns one if found.
+    * @return uint256 The ID of the available cluster.
+    * @return bool A boolean value indicating if an available cluster was found.
+    */
     function getAvailableClusterForGroups() internal returns(uint256, bool) {
         uint256 availableClusterId = 0;
         bool foundAvailableCluster = false;
@@ -89,6 +122,10 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         return (availableClusterId, foundAvailableCluster);
     }
 
+    /**
+    * @dev Removes a group from the storage.
+    * @param groupUsername The username of the group to remove.
+    */
     function removeGroupFromStorage(string memory groupUsername) internal {
         //Remove group from groupUsernames
         uint256 groupUsernameIndex = s.groups[groupUsername].groupUsernameIndex;
@@ -119,6 +156,10 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         emit IIngesterGroupManager.GroupRemoved(groupUsername);
     }
 
+    /**
+    * @notice Removes a group from the system by its index.
+    * @param groupIndex The index of the group to be removed.
+    */
     function removeGroupByIndex(uint256 groupIndex) external onlyAdmin {
         require(groupIndex < s.groupUsernames.length, "Group index exceed the list length");
         string memory groupUsername = s.groupUsernames[groupIndex];
@@ -134,9 +175,9 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
 
 
     /**
-     * @dev Removes a group from the specified cluster and its associated ingester addresses.
-     * @param clusterId The cluster ID to remove the group from.
-     * @param groupUsername The group username to remove.
+    * @dev Removes a group from a specified cluster.
+    * @param clusterId The ID of the cluster to remove the group from.
+    * @param groupUsername The username of the group to remove.
     */
     function removeGroupFromCluster(uint256 clusterId, string memory groupUsername) internal {
         uint256 groupUsernameClusterIndex = s.groups[groupUsername].groupUsernameClusterIndex;
@@ -161,6 +202,10 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         emit IIngesterGroupManager.GroupRemovedFromCluster(clusterId, groupUsername);
     }
 
+    /**
+    * @dev Moves ingesters from an inactive cluster to available clusters.
+    * @param ingesterAddresses The addresses of the ingesters to move.
+    */
     function moveIngestersToAvailableClusters(address[] storage ingesterAddresses) internal {
         for (uint256 i = 0; i < ingesterAddresses.length; i++) {
             address ingesterAddress = ingesterAddresses[i];
