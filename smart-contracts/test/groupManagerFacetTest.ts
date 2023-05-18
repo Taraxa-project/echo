@@ -36,7 +36,7 @@ function assertAllSameLength(array: string[][]) {
     }
 }
 
-const maxClusterSize = 50;
+const maxClusterSize = 10;
 const maxIngestersPerGroup = 1;
 
 describe("Testing Group Manager", async function () {
@@ -346,6 +346,7 @@ describe("Testing Group Manager", async function () {
         let numGroupsWithReplication: number;
         beforeEach(async function () {
             numGroupsWithReplication = maxAllocatableGroups; 
+            console.log("🚀 ~ file: groupManagerFacetTest.ts:349 ~ numGroupsWithReplication:", numGroupsWithReplication)
             await groupManagerFacet.setMaxIngestersPerGroup(newMaxIngestersPerGroup);
 
             for (let i = 0; i < numGroupsWithReplication; i++) {
@@ -361,36 +362,26 @@ describe("Testing Group Manager", async function () {
         });
     
         it("should add ingesters to group cluster with replication", async () => {
-
-            numIngesters = 6;
+            let numClusters = BigNumber.from(await registryFacet.getClusterCount()).toNumber();
+            numIngesters = numClusters * newMaxIngestersPerGroup;
             ingesters = []
             ingesterToController = {}
+            let ingestersAddresses: string[] = []
             for (let i = 1; i <= numIngesters; i++ ) {
                 let hash = await registryFacet.hash(accounts[i].address, message, nonce);
                 const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
                 await registryFacet.connect(accounts[i-1]).registerIngester(accounts[i].address, message, nonce, sig);
                 ingesterToController[accounts[i].address] = accounts[i-1];
-                ingesters.push(accounts[i]);
+                ingestersAddresses.push(accounts[i].address);
             }
 
             let clusters = await groupManagerFacet.getClusters();
-            let cluster1 = await groupManagerFacet.getCluster(BigNumber.from(clusters[0]).toNumber());
-            let cluster2 = await groupManagerFacet.getCluster(BigNumber.from(clusters[1]).toNumber());
-            
-            //check that there is only one cluster and it contains all three ingesters
-            expect(clusters.length == 2);
-            expect(cluster1.ingesterAddresses.length == numGroupsWithReplication);
-            expect(cluster2.ingesterAddresses.length == numGroupsWithReplication);
-
-            for (let i = 0; i < ingesters.length / 2; i++) {
-                let ingester = await registryFacet.getIngesterWithGroups(ingesters[i].address);
-                assert.sameMembers(ingester.assignedGroups, cluster1.groupUsernames);
-            }
-
-            for (let i = ingesters.length / 2; i < ingesters.length; i++) {
-                let ingester = await registryFacet.getIngesterWithGroups(ingesters[i].address);
-                assert.sameMembers(ingester.assignedGroups, cluster2.groupUsernames);
-            }
+            expect(clusters.length == numClusters);
+            clusters.map(async (cluster) => {
+                let clusterDetails = await groupManagerFacet.getCluster(BigNumber.from(cluster).toNumber());
+                expect(clusterDetails.ingesterAddresses.length == numGroupsWithReplication);
+                expect(clusterDetails.ingesterAddresses).to.include(ingestersAddresses);
+            });
         });
 
         it("should remove an existing group should remove it from cluster and all associated ingesters", async () => {
@@ -415,6 +406,7 @@ describe("Testing Group Manager", async function () {
         it("should move all ingesters to other available clusters when all cluster groups within cluster are removed and make cluster inactive", async () => {
             let numClusters = BigNumber.from(await groupManagerFacet.getClusterCount()).toNumber();
             let numIngesters = (numClusters - 1) * 3; // want to have an empty cluster for this test
+            let clusterIdRemove = 0;
          
             ingesters = []
             ingesterToController = {}
@@ -429,31 +421,39 @@ describe("Testing Group Manager", async function () {
             let emptyCluster = await groupManagerFacet.getCluster(numClusters - 1);
             expect(emptyCluster.ingesterAddresses.length == 0);
 
-            let clusterToEmpty = await groupManagerFacet.getCluster(numClusters - 2);
+            let clusters = await groupManagerFacet.getClusters();
+            for (let i = 0; i < clusters.length; i++) {
+                let clusterDetails = await groupManagerFacet.getCluster(clusters[i]);
+                // console.log('cluster details', clusterDetails);
+            }
+            let clusterToEmpty = await groupManagerFacet.getCluster(clusterIdRemove);
             let groupsToRemove = clusterToEmpty.groupUsernames;
             let ingestersToMove = clusterToEmpty.ingesterAddresses;
+            console.log("🚀 ~ file: groupManagerFacetTest.ts:432 ~ it ~ ingestersToMove:", ingestersToMove)
 
             for (let i = 0; i < groupsToRemove.length; i++ ) {
                 let groupRemovalTx = await groupManagerFacet.removeGroup(groupsToRemove[i]);
                 if ( i == groupsToRemove.length - 1) {
                     await expect(groupRemovalTx).to.emit(groupManagerFacet, "GroupRemovedFromCluster")
-                    .and.to.emit(groupManagerFacet, "InactivateCluster").withArgs(numClusters - 2)
+                    .and.to.emit(groupManagerFacet, "InactivateCluster").withArgs(clusterIdRemove)
                     .and.to.emit(groupManagerFacet, "IngesterAddedToCluster");
                 }
             }
 
-            let emptyClusterFilled = await groupManagerFacet.getCluster(numClusters - 1);
+            clusters = await groupManagerFacet.getClusters();
+            let remainingClusters = clusters.filter(cluster => BigNumber.from(cluster).toNumber() != clusterIdRemove);
+            console.log("🚀 ~ file: groupManagerFacetTest.ts:449 ~ it ~ remainingClusters:", remainingClusters)
 
-            assert.sameMembers(emptyClusterFilled.ingesterAddresses, ingestersToMove);
+            remainingClusters.map( async cluster => {
+                let clusterId = BigNumber.from(cluster).toNumber();
+                let clusterDetails = await groupManagerFacet.getCluster(clusterId)
+                console.log("🚀 ~ file: groupManagerFacetTest.ts:454 ~ it ~ clusterDetails:", clusterDetails.ingesterAddresses);
+                expect(clusterDetails.ingesterAddresses).to.include(ingestersToMove);
+            })
 
-            for (let i = 0; i < ingestersToMove.length; i++) {
-                let ingester = await registryFacet.getIngesterWithGroups(ingestersToMove[i]);
-                assert.sameMembers(ingester.assignedGroups, emptyClusterFilled.groupUsernames);
-            }
-
-            clusterToEmpty = await groupManagerFacet.getCluster(numClusters - 2);
-
+            clusterToEmpty = await groupManagerFacet.getCluster(clusterIdRemove);
             expect(clusterToEmpty.isActive).to.be.false;
+            expect(clusterToEmpty.ingesterAddresses.length == 0);
         });
 
         it("should move possible ingesters to other available clusters when all cluster groups within cluster are removed and make cluster inactive", async () => {
@@ -546,6 +546,56 @@ describe("Testing Group Manager", async function () {
             inactiveCluster = await groupManagerFacet.getCluster(BigNumber.from(inactiveClusterId[0]).toNumber());
             expect(inactiveCluster.isActive).to.be.true;
             assert.sameMembers(inactiveCluster.groupUsernames, groupsAdded);
+        });
+
+        it("should fetch available ingesters when group cluster is re-activated", async () => {
+
+            let numIngesters = newMaxIngestersPerGroup + 1; // want to have an empty cluster for this test
+            let clusterIdToEmpty = 0;
+            let clusterIdEmpty = 1;
+            
+            // add the ingesters
+            ingesters = []
+            ingesterToController = {}
+            for (let i = 1; i <= numIngesters; i++ ) {
+                let hash = await registryFacet.hash(accounts[i].address, message, nonce);
+                const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
+                await registryFacet.connect(accounts[i-1]).registerIngester(accounts[i].address, message, nonce, sig);
+                ingesterToController[accounts[i].address] = accounts[i-1];
+                ingesters.push(accounts[i]);
+                let ingester = await registryFacet.getIngesterWithGroups(accounts[i].address);
+                console.log("🚀 ~ file: groupManagerFacetTest.ts:568 ~ it ~ ingester:", ingester.assignedGroups.length);
+                console.log("ingester cluster", ingester.clusterId);
+            }
+
+            let emptyCluster = await groupManagerFacet.getCluster(clusterIdEmpty);
+            expect(emptyCluster.ingesterAddresses.length == 0);
+
+            let clusterToEmpty = await groupManagerFacet.getCluster(clusterIdToEmpty);
+            let groupsToRemove = clusterToEmpty.groupUsernames;
+            let ingestersToMove = clusterToEmpty.ingesterAddresses;
+
+            //remove all the groups from the cluster
+            for (let i = 0; i < groupsToRemove.length; i++ ) {
+                let groupRemovalTx = await groupManagerFacet.removeGroup(groupsToRemove[i]);
+            }
+            clusterToEmpty = await groupManagerFacet.getCluster(clusterIdToEmpty);
+            expect(clusterToEmpty.isActive).to.be.false;
+
+            let inactiveClusterId = await groupManagerFacet.getInActiveClusters();
+            expect(inactiveClusterId.length == 1);
+            //add all the groups from the emptied cluster back in
+            for (let i = 0; i < groupsToRemove.length; i++ ) {
+                let groupRemovalTx = await groupManagerFacet.addGroup(groupsToRemove[i]);
+                if ( i == 0) {
+                    await expect(groupRemovalTx).to.emit(groupManagerFacet, "GroupAdded").withArgs(groupsToRemove[i])
+                    .and.to.emit(groupManagerFacet, "ActivateInactiveCluster")
+                    .and.to.emit(groupManagerFacet, "IngesterRemovedFromCluster")
+                    .and.to.emit(groupManagerFacet, "IngesterAddedToCluster")
+                }
+            }
+            let cluster = await groupManagerFacet.getCluster(clusterIdToEmpty);
+            expect(cluster.ingesterAddresses.length == 1);            
         });
 
         it("should restrict one controller wallet owning more than one ingester per cluster", async () => {

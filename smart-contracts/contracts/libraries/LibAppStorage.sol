@@ -5,7 +5,6 @@ import "../interfaces/IIngesterRegistration.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "../interfaces/IIngesterDataGathering.sol";
 import { LibDiamond } from "./LibDiamond.sol";
-import "hardhat/console.sol";
 
 struct AppStorage {
     //Registry
@@ -125,6 +124,7 @@ library LibAppStorage {
         if (!foundAvailableCluster) {
             //TODO: add an allocataled boolean to the ingesters, clusterId is default 0, this could be a problem
             //it will think it is always allocated to something and it shouldn't, .e.g getIngesterWithGroups
+            
             s.unAllocatedIngesters.push(ingesterAddress);
             emit UnAllocatedIngesterAdded(ingesterAddress);
         } else {
@@ -158,29 +158,48 @@ library LibAppStorage {
         uint256 availableClusterId = 0;
         bool foundAvailableCluster = false;
         uint256 numClusters = s.clusterIds.length;
+        uint256 minNumIngesters = type(uint256).max;
 
-        //otherwise go through the existing clusters and get the first available one
+        // First find the absolute minimum number of ingestors across all clusters
         for (uint256 i = 0; i < numClusters; i++) {
-            if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length < s.maxIngestersPerGroup && s.groupsCluster[s.clusterIds[i]].isActive) {
-                availableClusterId = s.clusterIds[i];
-                foundAvailableCluster = true;
-                //If there is Duplication.
-                //Restrict more than one controller wallet owning one ingester per cluster
+            IIngesterGroupManager.GroupsCluster storage currentCluster = s.groupsCluster[s.clusterIds[i]];
+            uint256 numIngesters = currentCluster.ingesterAddresses.length;
+            if (numIngesters < minNumIngesters) {
+                minNumIngesters = numIngesters;
+            }
+        }
+
+        // Then assign the ingestor to the cluster with minimum number of ingestors and without any ingestor controlled by the same controller wallet
+        for (uint256 i = 0; i < numClusters; i++) {
+            IIngesterGroupManager.GroupsCluster storage currentCluster = s.groupsCluster[s.clusterIds[i]];
+            uint256 numIngesters = currentCluster.ingesterAddresses.length;
+
+            // If the cluster is active and has the minimum number of ingestors
+            if (numIngesters == minNumIngesters && numIngesters < s.maxIngestersPerGroup && currentCluster.isActive) {
+                bool hasSameControllerIngester = false;
+
+                // If there is more than one controller wallet owning one ingester per cluster, check for same controller ingestor
                 if (s.maxIngestersPerGroup > 1) {
                     IIngesterRegistration.Ingester[] memory controllerIngesters = s.controllerToIngesters[controllerAddress];
 
-                    for (uint j = 0; j < s.groupsCluster[availableClusterId].ingesterAddresses.length; j++) {
+                    for (uint j = 0; j < numIngesters; j++) {
                         for (uint k = 0; k < controllerIngesters.length; k++) {
-                            //controller ingester addresses match ingesterAddresses within the cluster and it's not the current ingester we are trying to assign
-                            //continue looking for another cluster
-                            if (s.groupsCluster[availableClusterId].ingesterAddresses[j] == controllerIngesters[k].ingesterAddress && s.groupsCluster[availableClusterId].ingesterAddresses[j] != ingesterAddress) {
-                                foundAvailableCluster = false;
+                            if (currentCluster.ingesterAddresses[j] == controllerIngesters[k].ingesterAddress && currentCluster.ingesterAddresses[j] != ingesterAddress) {
+                                hasSameControllerIngester = true;
+                                break;
                             }
                         }
-                    }
-                } 
 
-                if (foundAvailableCluster) {
+                        if (hasSameControllerIngester) {
+                            break;
+                        }
+                    }
+                }
+
+                // If the cluster doesn't have the same controller ingestor, it's a candidate
+                if (!hasSameControllerIngester) {
+                    availableClusterId = s.clusterIds[i];
+                    foundAvailableCluster = true;
                     break;
                 }
             }
@@ -188,5 +207,97 @@ library LibAppStorage {
 
         return (availableClusterId, foundAvailableCluster);
     }
+
+    // function getAvailableClusterForIngesters(address ingesterAddress, address controllerAddress) internal view returns(uint256, bool) {
+    //     AppStorage storage s = appStorage();
+
+    //     uint256 availableClusterId = 0;
+    //     bool foundAvailableCluster = false;
+    //     uint256 numClusters = s.clusterIds.length;
+
+    //     //otherwise go through the existing clusters and get the first available one
+    //     for (uint256 i = 0; i < numClusters; i++) {
+    //         if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length < s.maxIngestersPerGroup && s.groupsCluster[s.clusterIds[i]].isActive) {
+    //             availableClusterId = s.clusterIds[i];
+    //             foundAvailableCluster = true;
+    //             //If there is Duplication.
+    //             //Restrict more than one controller wallet owning one ingester per cluster
+    //             if (s.maxIngestersPerGroup > 1) {
+    //                 IIngesterRegistration.Ingester[] memory controllerIngesters = s.controllerToIngesters[controllerAddress];
+
+    //                 for (uint j = 0; j < s.groupsCluster[availableClusterId].ingesterAddresses.length; j++) {
+    //                     for (uint k = 0; k < controllerIngesters.length; k++) {
+    //                         //controller ingester addresses match ingesterAddresses within the cluster and it's not the current ingester we are trying to assign
+    //                         //continue looking for another cluster
+    //                         if (s.groupsCluster[availableClusterId].ingesterAddresses[j] == controllerIngesters[k].ingesterAddress && s.groupsCluster[availableClusterId].ingesterAddresses[j] != ingesterAddress) {
+    //                             foundAvailableCluster = false;
+    //                         }
+    //                     }
+    //                 }
+    //             } 
+
+    //             if (foundAvailableCluster) {
+    //                 break;
+    //             }
+    //         }
+    //     }
+
+    //     return (availableClusterId, foundAvailableCluster);
+    // }
+
+    // function getAvailableClusterForIngesters(address ingesterAddress, address controllerAddress) internal view returns(uint256, bool) {
+    //     AppStorage storage s = appStorage();
+
+    //     uint256 availableClusterId = 0;
+    //     bool foundAvailableCluster = false;
+    //     uint256 numClusters = s.clusterIds.length;
+
+        
+    //     foundAvailableCluster = true;
+    //     (availableClusterId, foundAvailableCluster) = getClusterWithLeastIngesters();
+    //     //If there is Duplication.
+    //     //Restrict more than one controller wallet owning one ingester per cluster
+    //     if (s.maxIngestersPerGroup > 1) {
+    //         IIngesterRegistration.Ingester[] memory controllerIngesters = s.controllerToIngesters[controllerAddress];
+
+    //         for (uint j = 0; j < s.groupsCluster[availableClusterId].ingesterAddresses.length; j++) {
+    //             for (uint k = 0; k < controllerIngesters.length; k++) {
+    //                 //controller ingester addresses match ingesterAddresses within the cluster and it's not the current ingester we are trying to assign
+    //                 //continue looking for another cluster
+    //                 if (s.groupsCluster[availableClusterId].ingesterAddresses[j] == controllerIngesters[k].ingesterAddress && s.groupsCluster[availableClusterId].ingesterAddresses[j] != ingesterAddress) {
+    //                     foundAvailableCluster = false;
+    //                 }
+    //             }
+    //         }
+    //     } 
+
+    //     if (foundAvailableCluster) {
+    //         break;
+    //     }
+
+    //     return (availableClusterId, foundAvailableCluster);
+    // }
+
+    // function getClusterWithLeastIngesters() internal returns(uint256, bool){
+    //     AppStorage storage s = appStorage();
+
+    //     uint256 minIngestersClusterId = 0;
+    //     bool foundAvailableCluster = false;
+    //     uint256 numClusters = s.clusterIds.length;
+    //     uint256 minNumIngesters = type(uint256).max;
+
+    //     //otherwise go through the existing clusters and get the first available one
+    //     for (uint256 i = 0; i < numClusters; i++) {
+    //         GroupsCluster storage currentCluster = s.groupsCluster[s.clusterIds[i]];
+    //         uint256 numIngesters = currentCluster.ingesterAddresses.length;
+            
+    //         if (numIngesters <= minNumIngesters && numIngesters < s.maxIngestersPerGroup && currentCluster.isActive) {
+    //             minNumIngesters = s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length;
+    //             minIngestersClusterId = s.clusterIds[i];
+    //             foundAvailableCluster = true;
+    //         }
+    //     }
+    //     return (minIngestersClusterId, foundAvailableCluster);
+    // }
 }
 

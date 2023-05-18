@@ -39,6 +39,7 @@ interface IIngesterGroupManager {
     event InactivateCluster(uint256 indexed clusterId);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
     event ClusterAdded(uint256 indexed clusterId);
+    event IngesterRemovedFromCluster(uint256 indexed clusterId, address indexed ingesterAddress);
 
 
     // Functions

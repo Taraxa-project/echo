@@ -21,6 +21,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         ++s.groupCount;
         uint256 clusterId = addGroupToCluster(groupUsername);
         checkUnallocatedIngesters(clusterId);
+        balanceIngesters(clusterId);
         emit IIngesterGroupManager.GroupAdded(groupUsername);
     }
 
@@ -37,6 +38,17 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxIngestersPerGroup) {
             address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
             LibAppStorage.addIngesterToClusterId(unAllocatedIngester, clusterId);
+        }
+    }
+
+    function balanceIngesters(uint256 clusterId) internal {
+        //if there replication and cluster is currently empty, allocatiion from other clusters should be done
+        if (s.groupsCluster[clusterId].ingesterAddresses.length == 0 && s.maxIngestersPerGroup > 1) {
+            (uint clusterIdAvailable, bool foundAvailableCluster) = LibAppStorage.getClusterWithIngesterReplication();
+            //if available cluster, then steal ingester from available cluster and put it into empty cluster
+            if (foundAvailableCluster) {
+                LibAppStorage.fetchIngesterFromAvailableCluster(clusterIdAvailable, clusterId);
+            } 
         }
     }
 
@@ -63,13 +75,13 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     }
 
     function getAvailableClusterForGroups() internal returns(uint256, bool) {
-        uint256 availableGroups = 0;
         uint256 availableClusterId = 0;
         bool foundAvailableCluster = false;
 
         //prioritize inactive cluster to add groups to 
         if (s.inActiveClusters.length > 0) {
             availableClusterId = s.inActiveClusters[s.inActiveClusters.length - 1];
+            console.log('reactivating clusterid',availableClusterId );
             s.inActiveClusters.pop();
             s.groupsCluster[availableClusterId].isActive = true;
             foundAvailableCluster = true;

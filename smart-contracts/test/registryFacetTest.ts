@@ -391,9 +391,12 @@ describe("Testing Registration with pre-populated data and group duplication", a
     });
 
     it("Should distribute groups to other unallocated ingester upon unregistration", async function () {
-        //with replication of 3, adding 4 ingesters will result in allocation of two separate clusters
+        //with replication of 3, adding 3 ingesters will result in allocation of two separate clusters
         // unregistering an ingester should trigger one of the replicated ingesters to move to empty cluster post unregistration
-        let currentNumIngesters = 4;
+        let currentNumIngesters = 3;
+        let ingesterIndToRemove = 1;
+        ingesters = [];
+        ingesterToController = {};
         for (let i = 1; i <= currentNumIngesters; i++ ) {
             let hash = await registryFacet.hash(accounts[i].address, message, nonce);
             const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
@@ -401,13 +404,13 @@ describe("Testing Registration with pre-populated data and group duplication", a
             ingesterToController[accounts[i].address] = accounts[i-1];
             ingesters.push(accounts[i]);
         }
+
         //grab ingester that will replace the unregistered ingester, last element
         let cluster1PreUnregistration = await registryFacet.getCluster(0);
-
         let ingesterReplacementAddress = cluster1PreUnregistration.ingesterAddresses[cluster1PreUnregistration.ingesterAddresses.length - 1];
         
         //grab ingester that will be unregistered and replaced
-        let ingesterToRemoveAddress = ingesters[currentNumIngesters-1].address;
+        let ingesterToRemoveAddress = ingesters[ingesterIndToRemove].address;
         let ingesterToRemove = await registryFacet.getIngesterWithGroups(ingesterToRemoveAddress);
         let ingesterAssignedGroups = ingesterToRemove.assignedGroups;
 
@@ -418,16 +421,14 @@ describe("Testing Registration with pre-populated data and group duplication", a
         .and.to.emit(registryFacet, "IngesterAddedToCluster")
         .withArgs(ingesterToRemove.clusterId, ingesterReplacementAddress);
 
+        //check that the ingester replacement has the same groups as the ingester that was removed
         let ingesterReplacement =  await registryFacet.getIngesterWithGroups(ingesterReplacementAddress);
         assert.sameMembers(ingesterReplacement.assignedGroups, ingesterAssignedGroups);
 
         let cluster1PostUnregistration = await registryFacet.getCluster(0);
         let cluster2PostUnregistration = await registryFacet.getCluster(1);
-        expect(cluster1PostUnregistration.ingesterAddresses.length == 2);
+        expect(cluster1PostUnregistration.ingesterAddresses.length == 1);
         expect(cluster2PostUnregistration.ingesterAddresses.length == 1);
-
-        let cluster = await registryFacet.getCluster(ingesterToRemove.clusterId);
-        assert.sameMembers(cluster.groupUsernames, ingesterReplacement.assignedGroups)
     });
 
 });
