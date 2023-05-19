@@ -8,6 +8,9 @@ import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 
 contract AccessControlFacet is AccessControl {
     
+    /**
+    * @notice Modifier to enforce that the caller is a contract admin.
+    */
     modifier onlyAdmin() {
         LibDiamond.enforceIsContractOwner();
         _;
