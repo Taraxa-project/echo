@@ -27,7 +27,6 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
         ) external {
         address controllerAddress = msg.sender;
         require(s.ingesterToController[ingesterAddress].controllerAddress == address(0), "Ingester already registered.");
-        require(s.ingesterToController[ingesterAddress].controllerAddress != controllerAddress, "Ingester already registered.");
        
         bytes32 messageHash = hash(ingesterAddress, message, nonce);
 
@@ -105,50 +104,51 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
 
         uint256 ingesterIndexToRemove = s.ingesterToController[ingesterAddress].ingesterIndex;
         uint256 clusterId = s.controllerToIngesters[controllerAddress][ingesterIndexToRemove].clusterId;
-        // string[] memory ingesterAssignedGroups = s.ingesterClusters[clusterId].ingesterToAssignedGroups[ingesterAddress];
-
         uint ingesterAddressesIndexToRemove = s.ingesterToController[ingesterAddress].ingesterAddressesIndex;
-        // Remove ingester from the list
+        
+        removeIngesterFromIngesterAddresses(ingesterAddressesIndexToRemove);
+        removeIngesterFromControllerMapping(ingesterIndexToRemove, controllerAddress);
+        --s.ingesterCount;
+
+        uint numIngestersPerController = s.controllerToIngesters[controllerAddress].length;
+        if (numIngestersPerController >= 1) {
+            _revokeRole("INGESTER_ROLE", ingesterAddress);
+
+            delete s.ingesterToController[ingesterAddress];
+
+            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
+
+        } else {
+            _revokeRole("INGESTER_ROLE", ingesterAddress);
+            _revokeRole("CONTROLLER_ROLE", controllerAddress);
+            
+            delete s.controllerToIngesters[controllerAddress];
+            delete s.ingesterToController[ingesterAddress];
+            
+            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
+        }
+        
+        emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
+    }  
+
+
+    function removeIngesterFromIngesterAddresses(uint256 ingesterAddressesIndexToRemove) internal {
         if (ingesterAddressesIndexToRemove != s.ingesterCount - 1) {
             address lastIngesterAddress = s.ingesterAddresses[s.ingesterCount - 1];
             s.ingesterAddresses[ingesterAddressesIndexToRemove] = lastIngesterAddress;
             s.ingesterToController[lastIngesterAddress].ingesterAddressesIndex = ingesterAddressesIndexToRemove;
         }
         s.ingesterAddresses.pop();
-        --s.ingesterCount;
+    } 
 
-        // if this was the only ingester registered with this controller, remove their ingester role
+    function removeIngesterFromControllerMapping(uint256 ingesterIndexToRemove, address controllerAddress) internal {
         uint numIngestersPerController = s.controllerToIngesters[controllerAddress].length;
-        if (numIngestersPerController == 1) {
-            _revokeRole("INGESTER_ROLE", ingesterAddress);
-            _revokeRole("CONTROLLER_ROLE", controllerAddress);
-            
-            // Remove ingester mappings
-            delete s.controllerToIngesters[controllerAddress];
-            delete s.ingesterToController[ingesterAddress];
-            
-            //slither possible re-rentrancy attack. Making an external call before modifying contract storage
-            //this is a closed loop without sending eth around. IngesterProxy is fixed unless owner of contracts is taken over
-            // is this still a risk? I will always have to change the ingester storage clusterId after external call
-            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
-        } else if (numIngestersPerController > 1) {
-            //if there is more ingesters for this controller, only remove the desired ingester
-            _revokeRole("INGESTER_ROLE", ingesterAddress);
 
-            // Remove ingester from the s.controllerToIngesters list
-            if (ingesterIndexToRemove != numIngestersPerController - 1) {
-                Ingester memory ingester = s.controllerToIngesters[controllerAddress][numIngestersPerController - 1];
-                s.controllerToIngesters[controllerAddress][ingesterIndexToRemove] = ingester;
-                //update index of ingester that was moved
-                s.ingesterToController[ingester.ingesterAddress].ingesterAddressesIndex = ingesterIndexToRemove;
-            }
-            s.controllerToIngesters[controllerAddress].pop();
-            delete s.ingesterToController[ingesterAddress];
-
-            //Remove Ingester from Cluster
-            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
-
+        if (ingesterIndexToRemove != numIngestersPerController - 1) {
+            Ingester memory ingester = s.controllerToIngesters[controllerAddress][numIngestersPerController - 1];
+            s.controllerToIngesters[controllerAddress][ingesterIndexToRemove] = ingester;
+            s.ingesterToController[ingester.ingesterAddress].ingesterIndex = ingesterIndexToRemove;
         }
-        emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
-    }   
+        s.controllerToIngesters[controllerAddress].pop();
+    }
 }
