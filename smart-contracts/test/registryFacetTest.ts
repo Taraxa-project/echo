@@ -15,7 +15,7 @@ import {
     RegistryFacet,
     Test1Facet,
     } from "../typechain-types";
-import { deployDiamondTest, maxClusterSize, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
+import { deployDiamondTest } from "../scripts/deployDiamondTest";
 
 import { ethers } from "hardhat";
 
@@ -34,7 +34,6 @@ const registryABI = contractArtifact.abi;
 
 const maxClusterSize = 50;
 const maxIngestersPerGroup = 1;
-
 
 describe("Testing Registration Functionalities", async function () {
     let diamondCutFacet: DiamondCutFacet;
