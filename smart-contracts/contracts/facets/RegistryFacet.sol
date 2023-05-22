@@ -108,26 +108,16 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
         
         removeIngesterFromIngesterAddresses(ingesterAddressesIndexToRemove);
         removeIngesterFromControllerMapping(ingesterIndexToRemove, controllerAddress);
+        removeIngesterFromIngesterMapping(ingesterAddress);
         --s.ingesterCount;
 
         uint numIngestersPerController = s.controllerToIngesters[controllerAddress].length;
-        if (numIngestersPerController >= 1) {
-            _revokeRole("INGESTER_ROLE", ingesterAddress);
-
-            delete s.ingesterToController[ingesterAddress];
-
-            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
-
-        } else {
-            _revokeRole("INGESTER_ROLE", ingesterAddress);
+        if (numIngestersPerController == 0) {
             _revokeRole("CONTROLLER_ROLE", controllerAddress);
-            
             delete s.controllerToIngesters[controllerAddress];
-            delete s.ingesterToController[ingesterAddress];
-            
-            LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
         }
         
+        LibAppStorage.removeIngesterFromCluster(ingesterAddress, clusterId);
         emit IIngesterRegistration.IngesterUnRegistered(controllerAddress, ingesterAddress);
     }  
 
@@ -150,5 +140,10 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
             s.ingesterToController[ingester.ingesterAddress].ingesterIndex = ingesterIndexToRemove;
         }
         s.controllerToIngesters[controllerAddress].pop();
+    }
+
+    function removeIngesterFromIngesterMapping(address ingesterAddress) internal {
+        _revokeRole("INGESTER_ROLE", ingesterAddress);
+        delete s.ingesterToController[ingesterAddress];
     }
 }
