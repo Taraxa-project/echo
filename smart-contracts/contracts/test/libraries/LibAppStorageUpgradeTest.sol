@@ -24,7 +24,7 @@ struct AppStorageTest {
     string[] groupUsernames;
     uint256 groupCount;
     string[] unAllocatedGroups;
-    uint256[] inActiveClusters;
+    uint256[] inactiveClusters;
 
     //IPFS Storage
     mapping(address => IIngesterDataGathering.IpfsHash) ipfsHashes;

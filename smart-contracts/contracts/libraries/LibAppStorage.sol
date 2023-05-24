@@ -18,13 +18,13 @@ struct AppStorage {
     //Groups & Clusters
     uint256 maxClusterSize;
     uint256 maxIngestersPerGroup;
-    mapping(uint => IIngesterGroupManager.GroupsCluster) groupsCluster;
+    mapping(uint256 => IIngesterGroupManager.GroupsCluster) groupsCluster;
     uint256[] clusterIds;
     mapping(string => IIngesterGroupManager.Group) groups;
     string[] groupUsernames;
     uint256 groupCount;
     string[] unAllocatedGroups;
-    uint256[] inActiveClusters;
+    uint256[] inactiveClusters;
 
     //IPFS Storage
     mapping(address => IIngesterDataGathering.IpfsHash) ipfsHashes;

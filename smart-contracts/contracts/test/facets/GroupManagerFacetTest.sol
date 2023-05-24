@@ -101,9 +101,9 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         bool foundAvailableCluster = false;
 
         //prioritize inactive cluster to add groups to 
-        if (s.inActiveClusters.length > 0) {
-            availableClusterId = s.inActiveClusters[s.inActiveClusters.length - 1];
-            s.inActiveClusters.pop();
+        if (s.inactiveClusters.length > 0) {
+            availableClusterId = s.inactiveClusters[s.inactiveClusters.length - 1];
+            s.inactiveClusters.pop();
             s.groupsCluster[availableClusterId].isActive = true;
             foundAvailableCluster = true;
             emit ActivateInactiveCluster(availableClusterId);
@@ -192,7 +192,7 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         
         if (s.groupsCluster[clusterId].groupCount == 0) {
             s.groupsCluster[clusterId].isActive = false;
-            s.inActiveClusters.push(clusterId);
+            s.inactiveClusters.push(clusterId);
             moveIngestersToAvailableClusters(s.groupsCluster[clusterId].ingesterAddresses);
             s.groupsCluster[clusterId].ingesterAddresses = new address[](0);
             emit InactivateCluster(clusterId);

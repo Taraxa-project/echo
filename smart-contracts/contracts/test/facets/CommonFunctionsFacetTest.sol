@@ -26,22 +26,31 @@ contract CommonFunctionsFacetTest {
     */
     function getUnallocatedGroups() external view returns(string[] memory) {
         uint256 groupCount = 0;
-        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+        for (uint256 i = 0; i < s.clusterIds.length;) {
             if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length == 0) {
                 groupCount += s.groupsCluster[s.clusterIds[i]].groupCount;
+            }
+            unchecked {
+                ++i;
             }
         }
 
         string[] memory groups = new string[](groupCount);
         uint256 index = 0;
 
-        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+        for (uint256 i = 0; i < s.clusterIds.length;) {
             if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length == 0) {
                 uint256 groupsLength = s.groupsCluster[s.clusterIds[i]].groupUsernames.length;
-                for ( uint256 j = 0; j < groupsLength; j++) {
+                for ( uint256 j = 0; j < groupsLength;) {
                     groups[index] = s.groupsCluster[s.clusterIds[i]].groupUsernames[j];
                     ++index;
+                    unchecked {
+                        ++j;
+                    }
                 }
+            }
+            unchecked {
+                ++i;
             }
         }
         
@@ -62,19 +71,25 @@ contract CommonFunctionsFacetTest {
     */
     function getActiveClusters() external view returns (uint256[] memory) {
         uint256 activeCount = 0;
-        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+        for (uint256 i = 0; i < s.clusterIds.length;) {
             if (s.groupsCluster[s.clusterIds[i]].isActive) {
                 activeCount++;
+            }
+            unchecked {
+                ++i;
             }
         }
 
         uint256[] memory clusterIds = new uint256[](activeCount);
         
         uint256 index = 0;
-        for (uint256 i = 0; i < s.clusterIds.length; i++) {
+        for (uint256 i = 0; i < s.clusterIds.length;) {
             if (s.groupsCluster[s.clusterIds[i]].isActive) {
                 clusterIds[index] = s.clusterIds[i];
                 index++;
+            }
+            unchecked {
+                ++i;
             }
         }
         
@@ -93,8 +108,8 @@ contract CommonFunctionsFacetTest {
     * @notice Retrieves the list of inactive cluster IDs.
     * @return An array of inactive cluster IDs.
     */
-    function getInActiveClusters() external view returns (uint256[] memory){
-        return s.inActiveClusters;
+    function getinactiveClusters() external view returns (uint256[] memory){
+        return s.inactiveClusters;
     }
 
     /**

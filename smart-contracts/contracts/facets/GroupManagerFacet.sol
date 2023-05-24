@@ -101,19 +101,22 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         bool foundAvailableCluster = false;
 
         //prioritize inactive cluster to add groups to 
-        if (s.inActiveClusters.length > 0) {
-            availableClusterId = s.inActiveClusters[s.inActiveClusters.length - 1];
-            s.inActiveClusters.pop();
+        if (s.inactiveClusters.length > 0) {
+            availableClusterId = s.inactiveClusters[s.inactiveClusters.length - 1];
+            s.inactiveClusters.pop();
             s.groupsCluster[availableClusterId].isActive = true;
             foundAvailableCluster = true;
             emit ActivateInactiveCluster(availableClusterId);
         }
         else {
-            for (uint256 i = 0; i < s.clusterIds.length; i++) {
+            for (uint256 i = 0; i < s.clusterIds.length;) {
                 if (s.groupsCluster[s.clusterIds[i]].groupCount < s.maxClusterSize) {
                     availableClusterId = s.clusterIds[i];
                     foundAvailableCluster = true;
                     break;
+                }
+                unchecked {
+                    ++i;
                 }
             }
             
@@ -180,26 +183,36 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     * @param groupUsername The username of the group to remove.
     */
     function removeGroupFromCluster(uint256 clusterId, string memory groupUsername) internal {
+
+        removeGroupFromGroupUsernames(clusterId, groupUsername);
+        --s.groupsCluster[clusterId].groupCount;
+        
+        if (s.groupsCluster[clusterId].groupCount == 0) {
+            s.groupsCluster[clusterId].isActive = false;
+            s.inactiveClusters.push(clusterId);
+            moveIngestersToAvailableClusters(s.groupsCluster[clusterId].ingesterAddresses);
+            s.groupsCluster[clusterId].ingesterAddresses = new address[](0);
+            emit InactivateCluster(clusterId);
+        }
+
+        emit IIngesterGroupManager.GroupRemovedFromCluster(clusterId, groupUsername);
+    }
+
+    /**
+    * @dev Removes a group from a groupUsernames array.
+    * @param clusterId The ID of the cluster to remove the group from.
+    * @param groupUsername The username of the group to remove.
+    */
+    function removeGroupFromGroupUsernames(uint256 clusterId, string memory groupUsername) internal {
         uint256 groupUsernameClusterIndex = s.groups[groupUsername].groupUsernameClusterIndex;
         uint256 numGroups = s.groupsCluster[clusterId].groupUsernames.length;
+
         if (groupUsernameClusterIndex != numGroups - 1) {
             string memory groupToMove = s.groupsCluster[clusterId].groupUsernames[numGroups - 1];
             s.groupsCluster[clusterId].groupUsernames[groupUsernameClusterIndex] = groupToMove;
             s.groups[groupToMove].groupUsernameClusterIndex = groupUsernameClusterIndex;
         }
         s.groupsCluster[clusterId].groupUsernames.pop();
-        --s.groupsCluster[clusterId].groupCount;
-        
-        if (s.groupsCluster[clusterId].groupCount == 0) {
-            s.groupsCluster[clusterId].isActive = false;
-            s.inActiveClusters.push(clusterId);
-            moveIngestersToAvailableClusters(s.groupsCluster[clusterId].ingesterAddresses);
-            s.groupsCluster[clusterId].ingesterAddresses = new address[](0);
-            emit InactivateCluster(clusterId);
-        }
-
-        //TODO: may need to re-adjust the ingesters assigned to this cluster and assign them to a non-empty cluster
-        emit IIngesterGroupManager.GroupRemovedFromCluster(clusterId, groupUsername);
     }
 
     /**
