@@ -1,6 +1,6 @@
 
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.18;
 
 import "@solidstate/contracts/access/access_control/AccessControl.sol";
 import "../../libraries/LibDiamond.sol";
