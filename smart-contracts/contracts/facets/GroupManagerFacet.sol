@@ -18,7 +18,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         s.groupUsernames.push(groupUsername);
         s.groups[groupUsername].isAdded = true;
         s.groups[groupUsername].groupUsernameIndex = s.groupUsernames.length -1;
-        ++s.groupCount;
         uint256 clusterId = addGroupToCluster(groupUsername);
         checkUnallocatedIngesters(clusterId);
         balanceIngesters(clusterId);
@@ -82,7 +81,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         }
 
         s.groupsCluster[clusterId].groupUsernames.push(groupUsername);
-        ++s.groupsCluster[clusterId].groupCount;
         s.groups[groupUsername].groupUsernameClusterIndex = s.groupsCluster[clusterId].groupUsernames.length - 1;
         s.groups[groupUsername].clusterId = clusterId;
         
@@ -110,7 +108,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         }
         else {
             for (uint256 i = 0; i < s.clusterIds.length;) {
-                if (s.groupsCluster[s.clusterIds[i]].groupCount < s.maxClusterSize) {
+                if (s.groupsCluster[s.clusterIds[i]].groupUsernames.length < s.maxClusterSize) {
                     availableClusterId = s.clusterIds[i];
                     foundAvailableCluster = true;
                     break;
@@ -154,8 +152,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
         removeGroupFromStorage(groupUsername);
 
-        --s.groupCount;
-
         emit IIngesterGroupManager.GroupRemoved(groupUsername);
     }
 
@@ -171,8 +167,6 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
         removeGroupFromStorage(groupUsername);
 
-        --s.groupCount;
-
         emit IIngesterGroupManager.GroupRemoved(groupUsername);
     }
 
@@ -185,9 +179,8 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     function removeGroupFromCluster(uint256 clusterId, string memory groupUsername) internal {
 
         removeGroupFromGroupUsernames(clusterId, groupUsername);
-        --s.groupsCluster[clusterId].groupCount;
         
-        if (s.groupsCluster[clusterId].groupCount == 0) {
+        if (s.groupsCluster[clusterId].groupUsernames.length == 0) {
             s.groupsCluster[clusterId].isActive = false;
             s.inactiveClusters.push(clusterId);
             moveIngestersToAvailableClusters(s.groupsCluster[clusterId].ingesterAddresses);

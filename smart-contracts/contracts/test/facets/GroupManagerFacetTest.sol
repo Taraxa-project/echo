@@ -18,7 +18,6 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         s.groupUsernames.push(groupUsername);
         s.groups[groupUsername].isAdded = true;
         s.groups[groupUsername].groupUsernameIndex = s.groupUsernames.length -1;
-        ++s.groupCount;
         uint256 clusterId = addGroupToCluster(groupUsername);
         checkUnallocatedIngesters(clusterId);
         balanceIngesters(clusterId);
@@ -82,7 +81,6 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         }
 
         s.groupsCluster[clusterId].groupUsernames.push(groupUsername);
-        ++s.groupsCluster[clusterId].groupCount;
         s.groups[groupUsername].groupUsernameClusterIndex = s.groupsCluster[clusterId].groupUsernames.length - 1;
         s.groups[groupUsername].clusterId = clusterId;
         
@@ -110,7 +108,7 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         }
         else {
             for (uint256 i = 0; i < s.clusterIds.length; i++) {
-                if (s.groupsCluster[s.clusterIds[i]].groupCount < s.maxClusterSize) {
+                if (s.groupsCluster[s.clusterIds[i]].groupUsernames.length < s.maxClusterSize) {
                     availableClusterId = s.clusterIds[i];
                     foundAvailableCluster = true;
                     break;
@@ -151,8 +149,6 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
         removeGroupFromStorage(groupUsername);
 
-        --s.groupCount;
-
         emit IIngesterGroupManager.GroupRemoved(groupUsername);
     }
 
@@ -167,8 +163,6 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
 
         removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
         removeGroupFromStorage(groupUsername);
-
-        --s.groupCount;
 
         emit IIngesterGroupManager.GroupRemoved(groupUsername);
     }
@@ -188,9 +182,8 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
             s.groups[groupToMove].groupUsernameClusterIndex = groupUsernameClusterIndex;
         }
         s.groupsCluster[clusterId].groupUsernames.pop();
-        --s.groupsCluster[clusterId].groupCount;
         
-        if (s.groupsCluster[clusterId].groupCount == 0) {
+        if (s.groupsCluster[clusterId].groupUsernames.length == 0) {
             s.groupsCluster[clusterId].isActive = false;
             s.inactiveClusters.push(clusterId);
             moveIngestersToAvailableClusters(s.groupsCluster[clusterId].ingesterAddresses);

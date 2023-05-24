@@ -18,7 +18,7 @@ contract CommonFunctionsFacet {
         uint256 groupCount = 0;
         for (uint256 i = 0; i < s.clusterIds.length;) {
             if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length == 0) {
-                groupCount += s.groupsCluster[s.clusterIds[i]].groupCount;
+                groupCount += s.groupsCluster[s.clusterIds[i]].groupUsernames.length;
             }
             unchecked {
                 ++i;
@@ -116,7 +116,7 @@ contract CommonFunctionsFacet {
     * @return The count of total registered ingesters.
     */
     function getIngesterCount() external view returns(uint256) {
-        return s.ingesterCount;
+        return s.ingesterAddresses.length;
     }
 
     /**

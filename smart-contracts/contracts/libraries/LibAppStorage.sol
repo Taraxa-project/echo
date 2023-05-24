@@ -11,7 +11,6 @@ struct AppStorage {
     mapping(address => IIngesterRegistration.IngesterToController) ingesterToController;
     mapping(address => IIngesterRegistration.Ingester[]) controllerToIngesters;
     address[] ingesterAddresses;
-    uint256 ingesterCount;
     address[] unAllocatedIngesters;
 
 
@@ -22,7 +21,6 @@ struct AppStorage {
     uint256[] clusterIds;
     mapping(string => IIngesterGroupManager.Group) groups;
     string[] groupUsernames;
-    uint256 groupCount;
     string[] unAllocatedGroups;
     uint256[] inactiveClusters;
 

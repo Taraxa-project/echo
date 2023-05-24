@@ -22,7 +22,6 @@ interface IIngesterGroupManager {
         bool isActive;
         string[] groupUsernames;
         address[] ingesterAddresses;
-        uint256 groupCount;
         uint256 clusterIndex;
     }
 
