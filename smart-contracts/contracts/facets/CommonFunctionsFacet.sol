@@ -155,7 +155,6 @@ contract CommonFunctionsFacet {
             string[] memory assignedGroups = new string[](0);
             IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
                 ingesterAddress,
-                ingester.verified,
                 ingester.isAllocated,
                 ingester.clusterId,
                 assignedGroups
@@ -165,7 +164,6 @@ contract CommonFunctionsFacet {
              string[] memory assignedGroups = s.groupsCluster[ingester.clusterId].groupUsernames;
             IIngesterRegistration.IngesterWithGroups memory ingesterWithAssignedGroups = IIngesterRegistration.IngesterWithGroups(
                 ingesterAddress,
-                ingester.verified,
                 ingester.isAllocated,
                 ingester.clusterId,
                 assignedGroups

@@ -11,7 +11,7 @@ import "./CommonFunctionsFacetTest.sol";
 contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, CommonFunctionsFacetTest {
 
     function getIngester(address ingesterAddress) public view override returns (IIngesterRegistration.Ingester memory) {
-        IIngesterRegistration.Ingester memory ingester = Ingester(ingesterAddress, true, false, 999);
+        IIngesterRegistration.Ingester memory ingester = Ingester(ingesterAddress, false, 999);
         return ingester;
     }
 
@@ -41,7 +41,7 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
         _grantRole(LibAppStorageTest.INGESTER_ROLE, ingesterAddress);
         _grantRole(LibAppStorageTest.CONTROLLER_ROLE, controllerAddress);
 
-        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, true, false, 0);
+        Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, false, 0);
 
         s.controllerToIngesters[controllerAddress].push(ingester);
 
