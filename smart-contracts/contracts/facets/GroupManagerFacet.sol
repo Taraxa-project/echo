@@ -5,6 +5,7 @@ import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "./AccessControlFacet.sol";
 import "./CommonFunctionsFacet.sol";
+import "hardhat/console.sol";
 
 contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngesterGroupManager {
 
@@ -19,8 +20,8 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         s.groups[groupUsername].isAdded = true;
         s.groups[groupUsername].groupUsernameIndex = s.groupUsernames.length -1;
         uint256 clusterId = addGroupToCluster(groupUsername);
-        checkUnallocatedIngesters(clusterId);
-        balanceIngesters(clusterId);
+        bool allocated = checkUnallocatedIngesters(clusterId);
+        if (!allocated) balanceIngesters(clusterId);
         emit IIngesterGroupManager.GroupAdded(groupUsername);
     }
 
@@ -32,6 +33,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         uint256 clusterId = s.clusterIds.length;
         s.clusterIds.push(clusterId);
         s.groupsCluster[clusterId].isActive = true;
+        s.groupsCluster[clusterId].clusterIndex = s.clusterIds.length - 1;
         emit ClusterAdded(clusterId);
         return clusterId;
     }
@@ -40,12 +42,14 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     * @dev Checks for unallocated ingesters and assigns them to a specified cluster if possible.
     * @param clusterId The ID of the cluster to assign unallocated ingesters to.
     */
-    function checkUnallocatedIngesters(uint256 clusterId) internal {
+    function checkUnallocatedIngesters(uint256 clusterId) internal returns(bool) {
         //if newly unavailable ingesters, attempt to assign any unregistered ingester
         if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxIngestersPerGroup) {
             address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
             LibAppStorage.addIngesterToClusterId(unAllocatedIngester, clusterId);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -55,7 +59,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     function balanceIngesters(uint256 clusterId) internal {
         //if there replication and cluster is currently empty, allocatiion from other clusters should be done
         if (s.groupsCluster[clusterId].ingesterAddresses.length == 0 && s.maxIngestersPerGroup > 1) {
-            (uint clusterIdAvailable, bool foundAvailableCluster) = LibAppStorage.getClusterWithIngesterReplication();
+            (uint clusterIdAvailable, bool foundAvailableCluster) = LibAppStorage.getClusterWithMostIngesterReplication();
             //if available cluster, then steal ingester from available cluster and put it into empty cluster
             if (foundAvailableCluster) {
                 LibAppStorage.fetchIngesterFromAvailableCluster(clusterIdAvailable, clusterId);
@@ -76,10 +80,17 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         } else {
             (clusterId, foundAvailableCluster) = getAvailableClusterForGroups();
             if (!foundAvailableCluster) {
-                clusterId = addNewCluster();
+                if (s.inactiveClusters.length > 0) {
+                    clusterId = s.inactiveClusters[s.inactiveClusters.length - 1];
+                    s.inactiveClusters.pop();
+                    s.groupsCluster[clusterId].isActive = true;
+                    foundAvailableCluster = true;
+                    emit ActivateInactiveCluster(clusterId);
+                } else {
+                    clusterId = addNewCluster();
+                }
             }
         }
-
         s.groupsCluster[clusterId].groupUsernames.push(groupUsername);
         s.groups[groupUsername].groupUsernameClusterIndex = s.groupsCluster[clusterId].groupUsernames.length - 1;
         s.groups[groupUsername].clusterId = clusterId;
@@ -98,27 +109,17 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         uint256 availableClusterId = 0;
         bool foundAvailableCluster = false;
 
-        //prioritize inactive cluster to add groups to 
-        if (s.inactiveClusters.length > 0) {
-            availableClusterId = s.inactiveClusters[s.inactiveClusters.length - 1];
-            s.inactiveClusters.pop();
-            s.groupsCluster[availableClusterId].isActive = true;
-            foundAvailableCluster = true;
-            emit ActivateInactiveCluster(availableClusterId);
-        }
-        else {
-            for (uint256 i = 0; i < s.clusterIds.length;) {
-                if (s.groupsCluster[s.clusterIds[i]].groupUsernames.length < s.maxClusterSize) {
-                    availableClusterId = s.clusterIds[i];
-                    foundAvailableCluster = true;
-                    break;
-                }
-                unchecked {
-                    ++i;
-                }
+        for (uint256 i = 0; i < s.clusterIds.length;) {
+            if (s.groupsCluster[s.clusterIds[i]].groupUsernames.length < s.maxClusterSize && s.groupsCluster[s.clusterIds[i]].isActive) {
+                availableClusterId = s.clusterIds[i];
+                foundAvailableCluster = true;
+                break;
             }
-            
+            unchecked {
+                ++i;
+            }
         }
+        
 
         return (availableClusterId, foundAvailableCluster);
     }
@@ -149,7 +150,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         require(bytes(groupUsername).length != 0, "GroupUsername is empty");
         require(s.groups[groupUsername].isAdded, "Group does not exist.");
 
-        removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
+        removeGroupFromCluster(groupUsername);
         removeGroupFromStorage(groupUsername);
 
         emit IIngesterGroupManager.GroupRemoved(groupUsername);
@@ -164,7 +165,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         string memory groupUsername = s.groupUsernames[groupIndex];
         require(s.groups[groupUsername].isAdded, "Group does not exist.");
 
-        removeGroupFromCluster(s.groups[groupUsername].clusterId, groupUsername);
+        removeGroupFromCluster(groupUsername);
         removeGroupFromStorage(groupUsername);
 
         emit IIngesterGroupManager.GroupRemoved(groupUsername);
@@ -173,18 +174,17 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
 
     /**
     * @dev Removes a group from a specified cluster.
-    * @param clusterId The ID of the cluster to remove the group from.
     * @param groupUsername The username of the group to remove.
     */
-    function removeGroupFromCluster(uint256 clusterId, string memory groupUsername) internal {
-
-        removeGroupFromGroupUsernames(clusterId, groupUsername);
+    function removeGroupFromCluster(string memory groupUsername) internal {
+        uint256 clusterId = s.groups[groupUsername].clusterId;
+        removeGroupFromClusterGroupUsernames(clusterId, groupUsername);
         
         if (s.groupsCluster[clusterId].groupUsernames.length == 0) {
             s.groupsCluster[clusterId].isActive = false;
             s.inactiveClusters.push(clusterId);
             moveIngestersToAvailableClusters(s.groupsCluster[clusterId].ingesterAddresses);
-            s.groupsCluster[clusterId].ingesterAddresses = new address[](0);
+            delete s.groupsCluster[clusterId].ingesterAddresses;
             emit InactivateCluster(clusterId);
         }
 
@@ -196,7 +196,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     * @param clusterId The ID of the cluster to remove the group from.
     * @param groupUsername The username of the group to remove.
     */
-    function removeGroupFromGroupUsernames(uint256 clusterId, string memory groupUsername) internal {
+    function removeGroupFromClusterGroupUsernames(uint256 clusterId, string memory groupUsername) internal {
         uint256 groupUsernameClusterIndex = s.groups[groupUsername].groupUsernameClusterIndex;
         uint256 numGroups = s.groupsCluster[clusterId].groupUsernames.length;
 
