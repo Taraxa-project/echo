@@ -19,9 +19,17 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         s.groupUsernames.push(groupUsername);
         s.groups[groupUsername].isAdded = true;
         s.groups[groupUsername].groupUsernameIndex = s.groupUsernames.length -1;
-        uint256 clusterId = addGroupToCluster(groupUsername);
-        bool allocated = checkUnallocatedIngesters(clusterId);
-        if (!allocated) balanceIngesters(clusterId);
+        
+        (uint256 clusterId, bool addedNewCluster) = addGroupToCluster(groupUsername);
+        
+        bool allocated = false;
+        if (addedNewCluster) {
+            allocated = checkUnallocatedIngesters(clusterId);
+        }
+        if (!allocated) {
+            balanceIngesters(clusterId);
+        }
+
         emit IIngesterGroupManager.GroupAdded(groupUsername);
     }
 
@@ -59,6 +67,8 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     function balanceIngesters(uint256 clusterId) internal {
         //if there replication and cluster is currently empty, allocatiion from other clusters should be done
         if (s.groupsCluster[clusterId].ingesterAddresses.length == 0 && s.maxIngestersPerGroup > 1) {
+            //TODO: add sortGroup of cluster ids in descending order so you can add multiple ingesters and check if they do not belong to the same controller
+
             (uint clusterIdAvailable, bool foundAvailableCluster) = LibAppStorage.getClusterWithMostIngesterReplication();
             //if available cluster, then steal ingester from available cluster and put it into empty cluster
             if (foundAvailableCluster) {
@@ -72,11 +82,13 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     * @param groupUsername The username of the group to add.
     * @return uint256 The ID of the cluster the group was added to.
     */
-    function addGroupToCluster(string calldata groupUsername) internal returns(uint256){
+    function addGroupToCluster(string calldata groupUsername) internal returns(uint256, bool){
         uint256 clusterId = 0;
         bool foundAvailableCluster = false;
+        bool addedNewCluster = false;
         if (s.clusterIds.length == 0) {
             clusterId = addNewCluster();
+            addedNewCluster = true;
         } else {
             (clusterId, foundAvailableCluster) = getAvailableClusterForGroups();
             if (!foundAvailableCluster) {
@@ -85,9 +97,11 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
                     s.inactiveClusters.pop();
                     s.groupsCluster[clusterId].isActive = true;
                     foundAvailableCluster = true;
+                    addedNewCluster = true;
                     emit ActivateInactiveCluster(clusterId);
                 } else {
                     clusterId = addNewCluster();
+                    addedNewCluster = true;
                 }
             }
         }
@@ -97,7 +111,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         
         emit GroupAddedToCluster(groupUsername, clusterId);
         
-        return clusterId;
+        return (clusterId, addedNewCluster);
     }
 
     /**

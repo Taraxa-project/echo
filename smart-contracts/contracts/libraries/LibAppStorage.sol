@@ -155,7 +155,7 @@ library LibAppStorage {
     }
 
     /**
-    * @notice Retrieves the ID of a cluster with ingester replication.
+    * @notice Retrieves the ID of a cluster with the most ingester replication.
     * @return uint256 The ID of the cluster.
     * @return bool A boolean value indicating if a cluster with ingester replication was found.
     */
@@ -178,67 +178,79 @@ library LibAppStorage {
         return (availableClusterId, foundAvailableCluster);
     }
 
-    /**
-    * @notice Retrieves the ID of an available cluster for ingesters.
-    * @param ingesterAddress The address of the ingester.
-    * @param controllerAddress The address of the controller of the ingester.
-    * @return uint256 The ID of the available cluster.
-    * @return bool A boolean value indicating if an available cluster for ingesters was found.
-    */
-    function getAvailableClusterForIngesters(address ingesterAddress, address controllerAddress) internal view returns(uint256, bool) {
+    function sortGroupClustersByIngesterAvailability(bool isAscending) internal view returns(uint256[] memory) {
         AppStorage storage s = appStorage();
-
-        uint256 availableClusterId = 0;
-        bool foundAvailableCluster = false;
         uint256 numClusters = s.clusterIds.length;
-        uint256 minNumIngesters = type(uint256).max;
 
-        // First find the absolute minimum number of ingestors across all clusters
+        uint256[] memory sortedClusterIds = new uint256[](numClusters);
         for (uint256 i = 0; i < numClusters; i++) {
-            IIngesterGroupManager.GroupsCluster storage currentCluster = s.groupsCluster[s.clusterIds[i]];
-            uint256 numIngesters = currentCluster.ingesterAddresses.length;
-            if (numIngesters < minNumIngesters) {
-                minNumIngesters = numIngesters;
+            sortedClusterIds[i] = s.clusterIds[i];
+        }
+
+        // Sort the clusters by the number of ingesters
+        for (uint256 i = 0; i < numClusters; i++) {
+            for (uint256 j = 0; j < numClusters - i - 1; j++) {
+                // Sort in ascending order if isAscending is true, otherwise sort in descending order
+                if ((isAscending && s.groupsCluster[sortedClusterIds[j]].ingesterAddresses.length > s.groupsCluster[sortedClusterIds[j + 1]].ingesterAddresses.length)
+                    || (!isAscending && s.groupsCluster[sortedClusterIds[j]].ingesterAddresses.length < s.groupsCluster[sortedClusterIds[j + 1]].ingesterAddresses.length)) {
+                    uint256 temp = sortedClusterIds[j];
+                    sortedClusterIds[j] = sortedClusterIds[j + 1];
+                    sortedClusterIds[j + 1] = temp;
+                }
             }
         }
 
-        // Then assign the ingestor to the cluster with minimum number of ingestors and without any ingestor controlled by the same controller wallet
-        for (uint256 i = 0; i < numClusters; i++) {
-            IIngesterGroupManager.GroupsCluster storage currentCluster = s.groupsCluster[s.clusterIds[i]];
-            uint256 numIngesters = currentCluster.ingesterAddresses.length;
+        return sortedClusterIds;
+    }
 
-            // If the cluster is active and has the minimum number of ingestors
-            if (numIngesters == minNumIngesters && numIngesters < s.maxIngestersPerGroup && currentCluster.isActive) {
-                bool hasSameControllerIngester = false;
+    function getAvailableClusterForIngesters(address ingesterAddress, address controllerAddress) internal view returns(uint256, bool) {
+        AppStorage storage s = appStorage();
+        bool ascendingOrder = true;
+        uint256[] memory sortedClusterIds = sortGroupClustersByIngesterAvailability(ascendingOrder);
 
-                // If there is more than one controller wallet owning one ingester per cluster, check for same controller ingestor
+        uint256 availableClusterId = 0;
+        bool foundAvailableCluster = false;
+        
+        for (uint256 i = 0; i < sortedClusterIds.length; i++) {
+            availableClusterId = sortedClusterIds[i];
+            IIngesterGroupManager.GroupsCluster storage currentCluster = s.groupsCluster[availableClusterId];
+
+            // Check if the cluster is active and has space for an additional ingester
+            if (currentCluster.isActive && currentCluster.ingesterAddresses.length < s.maxIngestersPerGroup) {
                 if (s.maxIngestersPerGroup > 1) {
-                    IIngesterRegistration.Ingester[] storage controllerIngesters = s.controllerToIngesters[controllerAddress];
-
-                    for (uint j = 0; j < numIngesters; j++) {
-                        for (uint k = 0; k < controllerIngesters.length; k++) {
-                            if (currentCluster.ingesterAddresses[j] == controllerIngesters[k].ingesterAddress) {
-                                hasSameControllerIngester = true;
-                                break;
-                            }
-                        }
-
-                        if (hasSameControllerIngester) {
-                            break;
-                        }
+                    bool hasSameControllerIngester = hasSameControllerIngester(availableClusterId, controllerAddress);
+                    
+                    // If the cluster doesn't have the same controller ingester, it's a candidate
+                    if (!hasSameControllerIngester) {
+                        return (availableClusterId, true);
                     }
-                }
-
-                // If the cluster doesn't have the same controller ingester, it's a candidate
-                if (!hasSameControllerIngester) {
-                    availableClusterId = s.clusterIds[i];
-                    foundAvailableCluster = true;
-                    break;
+                } else {
+                    return (availableClusterId, true);
                 }
             }
         }
 
         return (availableClusterId, foundAvailableCluster);
+    }
+
+    function hasSameControllerIngester(uint256 clusterId, address controllerAddress) internal view returns(bool) {
+        AppStorage storage s = appStorage();
+        IIngesterGroupManager.GroupsCluster storage currentCluster = s.groupsCluster[clusterId];
+        uint256 numIngesters = currentCluster.ingesterAddresses.length;
+
+        // If there is more than one controller wallet owning one ingester per cluster, check for same controller ingestor
+        if (s.maxIngestersPerGroup > 1) {
+            IIngesterRegistration.Ingester[] storage controllerIngesters = s.controllerToIngesters[controllerAddress];
+
+            for (uint j = 0; j < numIngesters; j++) {
+                for (uint k = 0; k < controllerIngesters.length; k++) {
+                    if (currentCluster.ingesterAddresses[j] == controllerIngesters[k].ingesterAddress) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
 
