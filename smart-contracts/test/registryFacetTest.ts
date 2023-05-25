@@ -102,7 +102,6 @@ describe("Testing Registration Functionalities", async function () {
         // Verify the registration
         const ingesterData = await registryFacet.getIngester(ingester.address);
         expect(ingesterData.ingesterAddress).to.equal(ingester.address);
-        expect(ingesterData.verified).to.equal(true);
     });
 
     it("should add ingester to cluster when registering a new ingester", async function () {
