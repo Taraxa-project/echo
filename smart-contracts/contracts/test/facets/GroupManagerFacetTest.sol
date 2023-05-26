@@ -19,7 +19,7 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
         s.groups[groupUsername].isAdded = true;
         s.groups[groupUsername].groupUsernameIndex = s.groupUsernames.length -1;
         uint256 clusterId = addGroupToCluster(groupUsername);
-        checkUnallocatedIngesters(clusterId);
+        checkunallocatedIngesters(clusterId);
         balanceIngesters(clusterId);
         emit IIngesterGroupManager.GroupAdded(groupUsername);
     }
@@ -40,10 +40,10 @@ contract GroupManagerFacetTest is AccessControlFacetTest, CommonFunctionsFacetTe
     * @dev Checks for unallocated ingesters and assigns them to a specified cluster if possible.
     * @param clusterId The ID of the cluster to assign unallocated ingesters to.
     */
-    function checkUnallocatedIngesters(uint256 clusterId) internal {
+    function checkunallocatedIngesters(uint256 clusterId) internal {
         //if newly unavailable ingesters, attempt to assign any unregistered ingester
-        if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxIngestersPerGroup) {
-            address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
+        if (s.unallocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxIngestersPerGroup) {
+            address unAllocatedIngester = s.unallocatedIngesters[s.unallocatedIngesters.length - 1];
             LibAppStorageTest.addIngesterToClusterId(unAllocatedIngester, clusterId);
         }
     }

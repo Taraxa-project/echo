@@ -24,7 +24,7 @@ contract CommonFunctionsFacetTest {
     * @notice Retrieves the list of unallocated groups.
     * @return An array of unallocated group usernames.
     */
-    function getUnallocatedGroups() external view returns(string[] memory) {
+    function getunallocatedGroups() external view returns(string[] memory) {
         uint256 groupCount = 0;
         for (uint256 i = 0; i < s.clusterIds.length;) {
             if (s.groupsCluster[s.clusterIds[i]].ingesterAddresses.length == 0) {
@@ -187,8 +187,8 @@ contract CommonFunctionsFacetTest {
     * @notice Retrieves the list of unallocated ingesters.
     * @return An array of unallocated ingester addresses.
     */
-    function getUnAllocatedIngesters() public view returns (address[] memory) {
-        return  s.unAllocatedIngesters;
+    function getunallocatedIngesters() public view returns (address[] memory) {
+        return  s.unallocatedIngesters;
     }
 
     /**

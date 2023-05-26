@@ -11,8 +11,7 @@ struct AppStorageTest {
     mapping(address => IIngesterRegistration.IngesterToController) ingesterToController;
     mapping(address => IIngesterRegistration.Ingester[]) controllerToIngesters;
     address[] ingesterAddresses;
-    uint256 ingesterCount;
-    address[] unAllocatedIngesters;
+    address[] unallocatedIngesters;
 
 
     //Groups & Clusters
@@ -22,8 +21,7 @@ struct AppStorageTest {
     uint256[] clusterIds;
     mapping(string => IIngesterGroupManager.Group) groups;
     string[] groupUsernames;
-    uint256 groupCount;
-    string[] unAllocatedGroups;
+    string[] unallocatedGroups;
     uint256[] inactiveClusters;
 
     //IPFS Storage
@@ -35,8 +33,8 @@ struct AppStorageTest {
 
 library LibAppStorageTest {
 
-    bytes32 internal constant INGESTER_ROLE = keccak256("INGESTER_ROLE");
-    bytes32 internal constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
+    bytes32 internal constant _INGESTER_ROLE = keccak256("INGESTER_ROLE");
+    bytes32 internal constant _CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
     
     event IngesterAddedToCluster(uint256 indexed clusterId, address indexed ingesterAddress);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
@@ -84,9 +82,9 @@ library LibAppStorageTest {
 
                 if (s.groupsCluster[clusterId].ingesterAddresses.length == 0) {
                     //check if there is unallocated ingesters to assign
-                    if (s.unAllocatedIngesters.length > 0) {
-                        address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
-                        s.unAllocatedIngesters.pop();
+                    if (s.unallocatedIngesters.length > 0) {
+                        address unAllocatedIngester = s.unallocatedIngesters[s.unallocatedIngesters.length - 1];
+                        s.unallocatedIngesters.pop();
                         addIngesterToClusterId(unAllocatedIngester, clusterId);
                     } else if (s.maxIngestersPerGroup > 1) {
                         (uint clusterIdAvailable, bool foundAvailableCluster) = getClusterWithIngesterReplication();
@@ -156,7 +154,7 @@ library LibAppStorageTest {
         if (!foundAvailableCluster) {
             uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
             s.controllerToIngesters[controllerAddress][ingesterIndex].isAllocated = false;
-            s.unAllocatedIngesters.push(ingesterAddress);
+            s.unallocatedIngesters.push(ingesterAddress);
             emit UnAllocatedIngesterAdded(ingesterAddress);
         } else {
             s.groupsCluster[clusterId].ingesterAddresses.push(ingesterAddress);

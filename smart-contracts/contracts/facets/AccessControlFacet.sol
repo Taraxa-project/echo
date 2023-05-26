@@ -20,7 +20,7 @@ contract AccessControlFacet is AccessControl {
     * @notice Modifier to enforce that the caller is a registered ingester.
     */
     modifier onlyRegisteredIngester() {
-        require(_hasRole(LibAppStorage.INGESTER_ROLE, msg.sender), "LibAppStorage: Not a registered ingester");
+        require(_hasRole(LibAppStorage._INGESTER_ROLE, msg.sender), "LibAppStorage: Not a registered ingester");
         _;
     }
 
@@ -28,7 +28,7 @@ contract AccessControlFacet is AccessControl {
     * @notice Modifier to enforce that the caller is a registered controller.
     */
     modifier onlyRegisteredController() {
-        require(_hasRole(LibAppStorage.CONTROLLER_ROLE, msg.sender), "LibAppStorage: Not a registered controller");
+        require(_hasRole(LibAppStorage._CONTROLLER_ROLE, msg.sender), "LibAppStorage: Not a registered controller");
         _;
     }
 
@@ -38,7 +38,7 @@ contract AccessControlFacet is AccessControl {
     * @return A boolean indicating if the address is a registered ingester.
     */
     function isRegisteredIngester(address ingesterAddress) public view returns (bool) {
-        return _hasRole(LibAppStorage.INGESTER_ROLE, ingesterAddress);
+        return _hasRole(LibAppStorage._INGESTER_ROLE, ingesterAddress);
     }
 
     /**
@@ -47,7 +47,7 @@ contract AccessControlFacet is AccessControl {
     * @return A boolean indicating if the address is a registered controller.
     */
     function isRegisteredController(address controller) public view returns (bool) {
-        return _hasRole(LibAppStorage.INGESTER_ROLE, controller);
+        return _hasRole(LibAppStorage._INGESTER_ROLE, controller);
     }
 
     /**

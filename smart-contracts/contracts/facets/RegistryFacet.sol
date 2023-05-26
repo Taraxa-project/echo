@@ -4,7 +4,6 @@ pragma solidity 0.8.18;
 import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 import "../interfaces/IIngesterRegistration.sol";
 import "@solidstate/contracts/cryptography/ECDSA.sol";
-import "@solidstate/contracts/access/access_control/AccessControl.sol";
 import "./AccessControlFacet.sol";
 import "./CommonFunctionsFacet.sol";
 
@@ -34,8 +33,8 @@ contract RegistryFacet is IIngesterRegistration, AccessControlFacet, CommonFunct
 
         require(ECDSA.recover(ethSignedMessageHash, sig) == controllerAddress, "Invalid signature.");
         
-        _grantRole(LibAppStorage.INGESTER_ROLE, ingesterAddress);
-        _grantRole(LibAppStorage.CONTROLLER_ROLE, controllerAddress);
+        _grantRole(LibAppStorage._INGESTER_ROLE, ingesterAddress);
+        _grantRole(LibAppStorage._CONTROLLER_ROLE, controllerAddress);
 
         s.controllerToIngesters[controllerAddress].push().ingesterAddress = ingesterAddress;
         s.ingesterAddresses.push(ingesterAddress);

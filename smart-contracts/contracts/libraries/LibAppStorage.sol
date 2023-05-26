@@ -11,7 +11,7 @@ struct AppStorage {
     mapping(address => IIngesterRegistration.IngesterToController) ingesterToController;
     mapping(address => IIngesterRegistration.Ingester[]) controllerToIngesters;
     address[] ingesterAddresses;
-    address[] unAllocatedIngesters;
+    address[] unallocatedIngesters;
 
 
     //Groups & Clusters
@@ -21,7 +21,7 @@ struct AppStorage {
     uint256[] clusterIds;
     mapping(string => IIngesterGroupManager.Group) groups;
     string[] groupUsernames;
-    string[] unAllocatedGroups;
+    string[] unallocatedGroups;
     uint256[] inactiveClusters;
 
     //IPFS Storage
@@ -30,8 +30,8 @@ struct AppStorage {
 
 library LibAppStorage {
 
-    bytes32 internal constant INGESTER_ROLE = keccak256("INGESTER_ROLE");
-    bytes32 internal constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
+    bytes32 internal constant _INGESTER_ROLE = keccak256("INGESTER_ROLE");
+    bytes32 internal constant _CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
     
     event IngesterAddedToCluster(uint256 indexed clusterId, address indexed ingesterAddress);
     event UnAllocatedIngesterAdded(address indexed ingesterAddress);
@@ -67,9 +67,9 @@ library LibAppStorage {
                 emit IngesterRemovedFromCluster(clusterId, ingesterAddress);
 
                 //check if there is unallocated ingesters to assign
-                if (s.unAllocatedIngesters.length > 0) {
-                    address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
-                    s.unAllocatedIngesters.pop();
+                if (s.unallocatedIngesters.length > 0) {
+                    address unAllocatedIngester = s.unallocatedIngesters[s.unallocatedIngesters.length - 1];
+                    s.unallocatedIngesters.pop();
                     addIngesterToClusterId(unAllocatedIngester, clusterId);
                 }
                 else if (s.groupsCluster[clusterId].ingesterAddresses.length == 0) {
@@ -146,7 +146,7 @@ library LibAppStorage {
         if (!foundAvailableCluster) {
             uint256 ingesterIndex = s.ingesterToController[ingesterAddress].ingesterIndex;
             s.controllerToIngesters[controllerAddress][ingesterIndex].isAllocated = false;
-            s.unAllocatedIngesters.push(ingesterAddress);
+            s.unallocatedIngesters.push(ingesterAddress);
             emit UnAllocatedIngesterAdded(ingesterAddress);
         } else {
             addIngesterToClusterId(ingesterAddress, clusterId);

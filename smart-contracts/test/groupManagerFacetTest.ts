@@ -334,7 +334,7 @@ describe("Testing Group Manager", async function () {
         let cluster2AfterUnregistration = await registryFacet.getCluster(1);
         expect( cluster2AfterUnregistration.ingesterAddresses.length == 0);
 
-        let unallocatedGroups = await groupManagerFacet.getUnallocatedGroups();
+        let unallocatedGroups = await groupManagerFacet.getunallocatedGroups();
         assert.sameMembers(unallocatedGroups, cluster2AfterUnregistration.groupUsernames);
     });
 
@@ -348,6 +348,7 @@ describe("Testing Group Manager", async function () {
             numGroupsWithReplication = maxAllocatableGroups; 
             await groupManagerFacet.setMaxIngestersPerGroup(newMaxIngestersPerGroup);
 
+            console.log("🚀 ~ file: groupManagerFacetTest.ts:352 ~ numGroupsWithReplication:", numGroupsWithReplication)
             for (let i = 0; i < numGroupsWithReplication; i++) {
                 await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
                 const group = await groupManagerFacet.getGroup(`group${i}`);
@@ -490,7 +491,7 @@ describe("Testing Group Manager", async function () {
             expect(emptyClusterFilled.ingesterAddresses.length == newMaxIngestersPerGroup);
 
             //one ingester should be unallocated
-            let unallocatedIngester = await registryFacet.getUnAllocatedIngesters();
+            let unallocatedIngester = await registryFacet.getunallocatedIngesters();
             expect(unallocatedIngester.length == 1);
             expect(ingestersToMove).to.include(unallocatedIngester[0]);
         });
@@ -589,6 +590,68 @@ describe("Testing Group Manager", async function () {
             }
             let cluster = await groupManagerFacet.getCluster(clusterIdToEmpty);
             expect(cluster.ingesterAddresses.length == 1);            
+        });
+
+
+        it("should fetch all possible unAllocated ingesters when group cluster is created and not allow duplicate controllers within cluster", async () => {
+            let numIngesterUnallocated = 3;
+            let numIngesters = newMaxIngestersPerGroup + numIngesterUnallocated; 
+            
+            // add the ingesters
+            ingesters = []
+            ingesterToController = {}
+            let controller = accounts[accounts.length-1];
+            let ingestersWithSameController: string[] = [];
+            for (let i = 1; i <= numIngesters; i++ ) {
+                let hash = await registryFacet.hash(accounts[i].address, message, nonce);
+                if (i >= numIngesters - 1){
+                    const sig = await controller.signMessage(ethers.utils.arrayify(hash));
+                    await registryFacet.connect(controller).registerIngester(accounts[i].address, message, nonce, sig);
+                    ingesterToController[accounts[i].address] = controller;
+                    ingestersWithSameController.push(accounts[i].address);
+                } else {
+                    const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
+                    await registryFacet.connect(accounts[i-1]).registerIngester(accounts[i].address, message, nonce, sig);
+                    ingesterToController[accounts[i].address] = accounts[i-1];
+                    ingesters.push(accounts[i]);
+                }
+            }
+            let clusters = await groupManagerFacet.getClusters();
+           
+            //remove last two clusters
+            let groupsToRemove: string[] = []
+            for (let i = clusters.length - 1; i > clusters.length - numIngesterUnallocated; i--) {
+                groupsToRemove = [];
+                let cluster = await groupManagerFacet.getCluster(clusters[i]);
+                groupsToRemove = cluster.groupUsernames;
+                for (let j = 0; j < groupsToRemove.length ; j++) {
+                    await groupManagerFacet.removeGroup(groupsToRemove[j]);
+                }
+            }
+
+            let unallocatedIngesters = await groupManagerFacet.getunallocatedIngesters();
+            expect(unallocatedIngesters.length == numIngesterUnallocated);
+
+            //add groups back in
+            for (let i = 0; i < groupsToRemove.length; i++ ) {
+                await groupManagerFacet.addGroup(groupsToRemove[i]);
+            }
+
+            clusters = await groupManagerFacet.getClusters();
+            for (let i =0; i < clusters.length; i++) {
+                let cluster = await groupManagerFacet.getCluster(clusters[i]);
+                //last cluster should not have anything allocated, but the other two should have an ingester allocated to them
+                if (i != cluster.length - 1) {
+                    expect(cluster.ingesterAddresses.length == 3 );
+                }
+            }
+
+            //1 ingester should remain as 2 ingesters have the same controller
+            //check if the remaining ingester is within ingestersWithSameController array
+            let unallocatedIngestersAfter = await groupManagerFacet.getunallocatedIngesters();
+            expect(unallocatedIngestersAfter.length == 1);
+            const isIncluded = unallocatedIngestersAfter.some(r=> ingestersWithSameController.includes(r));
+            expect(isIncluded).to.be.true;
         });
 
         it("should restrict one controller wallet owning more than one ingester per cluster", async () => {

@@ -38,8 +38,8 @@ contract RegistryFacetTest is IIngesterRegistration, AccessControlFacetTest, Com
 
         require(ECDSA.recover(ethSignedMessageHash, sig) == controllerAddress, "Invalid signature.");
         
-        _grantRole(LibAppStorageTest.INGESTER_ROLE, ingesterAddress);
-        _grantRole(LibAppStorageTest.CONTROLLER_ROLE, controllerAddress);
+        _grantRole(LibAppStorageTest._INGESTER_ROLE, ingesterAddress);
+        _grantRole(LibAppStorageTest._CONTROLLER_ROLE, controllerAddress);
 
         Ingester memory ingester = IIngesterRegistration.Ingester(ingesterAddress, false, 0);
 

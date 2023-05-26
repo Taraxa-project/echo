@@ -24,7 +24,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
         
         bool allocated = false;
         if (addedNewCluster) {
-            allocated = checkUnallocatedIngesters(clusterId);
+            allocated = checkunallocatedIngesters(clusterId);
         }
         if (!allocated) {
             balanceIngesters(clusterId);
@@ -50,15 +50,42 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     * @dev Checks for unallocated ingesters and assigns them to a specified cluster if possible.
     * @param clusterId The ID of the cluster to assign unallocated ingesters to.
     */
-    function checkUnallocatedIngesters(uint256 clusterId) internal returns(bool) {
-        //if newly unavailable ingesters, attempt to assign any unregistered ingester
-        if (s.unAllocatedIngesters.length > 0 && s.groupsCluster[clusterId].ingesterAddresses.length < s.maxIngestersPerGroup) {
-            address unAllocatedIngester = s.unAllocatedIngesters[s.unAllocatedIngesters.length - 1];
-            LibAppStorage.addIngesterToClusterId(unAllocatedIngester, clusterId);
-            return true;
+    function checkunallocatedIngesters(uint256 clusterId) internal returns(bool) {
+        bool allocated = false;
+        uint256 numIngestersAllocated = 0;
+
+        if (s.unallocatedIngesters.length > 0) {
+            for (uint256 i = s.unallocatedIngesters.length; i > 0 && numIngestersAllocated < s.maxIngestersPerGroup; i--) {
+                uint256 currentInd = i - 1;
+                address unAllocatedIngester = s.unallocatedIngesters[currentInd];
+                address controllerAddress = s.ingesterToController[unAllocatedIngester].controllerAddress;
+
+                if (numIngestersAllocated == 0) {
+                    LibAppStorage.addIngesterToClusterId(unAllocatedIngester, clusterId);
+
+                    removeUnallocatedIngester(currentInd);
+                    numIngestersAllocated++;
+                    allocated = true;
+                } else if (!LibAppStorage.hasSameControllerIngester(clusterId, controllerAddress)) {
+                    LibAppStorage.addIngesterToClusterId(unAllocatedIngester, clusterId);
+
+                    removeUnallocatedIngester(currentInd);
+                    allocated = true;
+                    numIngestersAllocated++;
+                }
+            }
         }
-        return false;
+        return allocated;
     }
+
+    function removeUnallocatedIngester(uint256 unallocatedIngesterIndex) internal {
+        if (unallocatedIngesterIndex != s.unallocatedIngesters.length - 1) {
+            address ingesterToMove = s.unallocatedIngesters[s.unallocatedIngesters.length - 1];
+            s.unallocatedIngesters[unallocatedIngesterIndex] = ingesterToMove;
+        }
+        s.unallocatedIngesters.pop();
+    }
+
 
     /**
     * @dev Attempts to balance the distribution of ingesters among clusters.
