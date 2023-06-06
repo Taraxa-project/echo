@@ -36,8 +36,4 @@ interface IIngesterRegistration {
     event ClusterHasNoIngesters(uint256 clusterId);
     event IngesterAddedToCluster(uint256 indexed clusterId, address indexed ingesterAddress);
     event IngesterRemovedFromCluster(uint256 indexed clusterId, address indexed ingesterAddress);
-
-
-
 }
-

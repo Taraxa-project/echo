@@ -218,10 +218,10 @@ library LibAppStorage {
             // Check if the cluster is active and has space for an additional ingester
             if (currentCluster.isActive && currentCluster.ingesterAddresses.length < s.maxIngestersPerGroup) {
                 if (s.maxIngestersPerGroup > 1) {
-                    bool hasSameControllerIngester = hasSameControllerIngester(availableClusterId, controllerAddress);
+                    bool isSameControllerIngester = hasSameControllerIngester(availableClusterId, controllerAddress);
                     
                     // If the cluster doesn't have the same controller ingester, it's a candidate
-                    if (!hasSameControllerIngester) {
+                    if (!isSameControllerIngester) {
                         return (availableClusterId, true);
                     }
                 } else {

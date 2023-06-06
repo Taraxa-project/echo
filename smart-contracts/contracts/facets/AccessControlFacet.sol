@@ -47,7 +47,7 @@ contract AccessControlFacet is AccessControl {
     * @return A boolean indicating if the address is a registered controller.
     */
     function isRegisteredController(address controller) public view returns (bool) {
-        return _hasRole(LibAppStorage._INGESTER_ROLE, controller);
+        return _hasRole(LibAppStorage._CONTROLLER_ROLE, controller);
     }
 
     /**

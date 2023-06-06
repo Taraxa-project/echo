@@ -5,7 +5,6 @@ import { LibAppStorage, AppStorage } from  "../libraries/LibAppStorage.sol";
 import "../interfaces/IIngesterGroupManager.sol";
 import "./AccessControlFacet.sol";
 import "./CommonFunctionsFacet.sol";
-import "hardhat/console.sol";
 
 contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngesterGroupManager {
 
@@ -64,8 +63,8 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
                     LibAppStorage.addIngesterToClusterId(unAllocatedIngester, clusterId);
 
                     removeUnallocatedIngester(currentInd);
-                    numIngestersAllocated++;
                     allocated = true;
+                    numIngestersAllocated++;
                 } else if (!LibAppStorage.hasSameControllerIngester(clusterId, controllerAddress)) {
                     LibAppStorage.addIngesterToClusterId(unAllocatedIngester, clusterId);
 
@@ -146,7 +145,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     * @return uint256 The ID of the available cluster.
     * @return bool A boolean value indicating if an available cluster was found.
     */
-    function getAvailableClusterForGroups() internal returns(uint256, bool) {
+    function getAvailableClusterForGroups() internal view returns(uint256, bool) {
         uint256 availableClusterId = 0;
         bool foundAvailableCluster = false;
 
@@ -267,6 +266,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     * @return GroupWithIngesters struct containing the group's details and the associated ingesters.
     */
     function getGroup(string calldata groupUsername) external view returns (IIngesterGroupManager.GroupWithIngesters memory) {
+        require(s.groups[groupUsername].isAdded, 'Group does not exist.');
         IIngesterGroupManager.Group memory group = s.groups[groupUsername];
         IIngesterGroupManager.GroupWithIngesters memory groups = GroupWithIngesters(
             group.isAdded,
@@ -319,6 +319,7 @@ contract GroupManagerFacet is AccessControlFacet, CommonFunctionsFacet, IIngeste
     * @return string The groupUsername of the group corresponding to the provided index.
     */
     function getGroupUsernameByIndex(uint256 groupIndex) external view returns (string memory) {
+        require(groupIndex < s.groupUsernames.length, "Group index exceeds the groupUsernames array length.");
         return s.groupUsernames[groupIndex];
     }
 }

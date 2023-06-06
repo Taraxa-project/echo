@@ -174,7 +174,7 @@ describe("Testing Registration Functionalities", async function () {
         registryFacet = await ethers.getContractAt("RegistryFacet", diamondAddress);
         
         let isRegistered = await registryFacet.isRegisteredIngester(ingester.address);
-        expect(isRegistered).to.not.false;
+        expect(isRegistered).to.be.false;
     });
 });
 

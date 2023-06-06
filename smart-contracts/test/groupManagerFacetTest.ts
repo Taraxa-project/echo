@@ -143,8 +143,7 @@ describe("Testing Group Manager", async function () {
         await expect(groupManagerFacet.connect(contractOwner).removeGroup("group1"))
         .and.to.emit(groupManagerFacet, "GroupRemoved").withArgs("group1")
         .and.to.emit(groupManagerFacet, "GroupRemovedFromCluster").withArgs(0, "group1");
-        const group = await groupManagerFacet.getGroup("group1");
-        expect(group.isAdded).to.be.false;
+        await expect(groupManagerFacet.getGroup("group1")).to.be.reverted;
     });
 
     it("should add and remove all groups", async () => {
@@ -160,9 +159,7 @@ describe("Testing Group Manager", async function () {
         
         for (let i = 0; i < maxAllocatableGroups; i++) {
             await groupManagerFacet.connect(contractOwner).removeGroup(`group${i}`);
-            const group = await groupManagerFacet.getGroup(`group${i}`);
-            expect(group.isAdded).to.be.false;
-            expect(group.ingesterAddresses.length <= maxIngestersPerGroup)
+            await expect(groupManagerFacet.getGroup(`group${i}`)).to.be.reverted;
         }
 
         let inactiveClusters = await groupManagerFacet.getinactiveClusters();
@@ -392,10 +389,7 @@ describe("Testing Group Manager", async function () {
             await expect(groupManagerFacet.connect(contractOwner).removeGroup(groupName)) 
             .to.emit(groupManagerFacet, "GroupRemovedFromCluster").withArgs(0, groupName)
             .and.to.emit(groupManagerFacet, "GroupRemoved").withArgs(groupName);
-            const groupAfterRemoval = await groupManagerFacet.getGroup(groupName);
-
-            expect(groupAfterRemoval.isAdded).to.be.false;
-            expect(groupAfterRemoval.ingesterAddresses.length == 0);
+            await expect(groupManagerFacet.getGroup(groupName)).to.be.reverted;
 
             for (let i = 0; i < ingestersToCheck.length; i++) {
                 let ingester = await groupManagerFacet.getIngesterWithGroups(ingestersToCheck[i]);
@@ -422,9 +416,6 @@ describe("Testing Group Manager", async function () {
             expect(emptyCluster.ingesterAddresses.length == 0);
 
             let clusters = await groupManagerFacet.getClusters();
-            for (let i = 0; i < clusters.length; i++) {
-                let clusterDetails = await groupManagerFacet.getCluster(clusters[i]);
-            }
             let clusterToEmpty = await groupManagerFacet.getCluster(clusterIdRemove);
             let groupsToRemove = clusterToEmpty.groupUsernames;
             let ingestersToMove = clusterToEmpty.ingesterAddresses;

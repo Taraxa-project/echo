@@ -189,12 +189,30 @@ contract CommonFunctionsFacet {
         return s.controllerToIngesters[controllerAddress];
     }
 
+
+    /**
+    * @notice Retrieves the controller of an ingester.
+    * @param ingesterAddress The address of the ingester.
+    * @return The address of the controller
+    */
+    function getIngesterController(address ingesterAddress) public view returns (address) {
+        return s.ingesterToController[ingesterAddress].controllerAddress;
+    }
+
     /**
     * @notice Retrieves the total number of groups.
     * @return The count of total groups.
     */
     function getGroupCount() external view returns(uint256) {
         return s.groupUsernames.length;
+    }
+
+    /**
+    * @notice Retrieves the groups usernames.
+    * @return An array with all the added groups
+    */
+    function getGroups() external view returns(string[] memory) {
+        return s.groupUsernames;
     }
 
 }
