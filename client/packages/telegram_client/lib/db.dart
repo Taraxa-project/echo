@@ -226,24 +226,42 @@ class Db implements DbInterface {
     final minId = fromId ?? _selectLastUploadedId(tableName) ?? 0;
     final parameters = [minId];
 
-    final rs = _select(_sqlSelectDataForExport(tableName), parameters);
-    if (rs.isNotEmpty) {
-      await _exportResultSet(rs, fileName);
-      _updateLastExportedId(tableName, rs.last['rowid']);
+    final stmt = _database.prepare(_sqlSelectDataForExport(tableName));
+
+    var rowCount = 0;
+    try {
+      final cursor = stmt.selectCursor(parameters);
+      final result = await _exportCursor(cursor, fileName);
+      rowCount = result[0];
+      if (rowCount > 0) _updateLastExportedId(tableName, result[1]);
+    } on Object {
+      rethrow;
+    } finally {
+      stmt.dispose();
     }
 
-    logger.fine('exported ${rs.length} records from $tableName');
-    return rs.length;
+    logger.fine('exported $rowCount records from $tableName');
+    return rowCount;
   }
 
   Future<int> exportMeta(String tableName, String fileName) async {
     final parameters = [tableName];
 
-    final rs = _select(SqlIpfsHash.selectForExport, parameters);
-    if (rs.isNotEmpty) await _exportResultSet(rs, fileName);
+    final stmt = _database.prepare(SqlIpfsHash.selectForExport);
 
-    logger.fine('exported ${rs.length} ipfs hashes for $tableName');
-    return rs.length;
+    var rowCount = 0;
+    try {
+      final cursor = stmt.selectCursor(parameters);
+      final result = await _exportCursor(cursor, fileName);
+      rowCount = result[0];
+    } on Object {
+      rethrow;
+    } finally {
+      stmt.dispose();
+    }
+
+    logger.fine('exported $rowCount ipfs hashes from $tableName');
+    return rowCount;
   }
 
   void insertIpfsHash(String tableName, String fileHash) {
@@ -351,17 +369,34 @@ class Db implements DbInterface {
     }
   }
 
-  Future<void> _exportResultSet(ResultSet rs, String fileName) async {
+  Future<List<int>> _exportCursor(
+      IteratingCursor cursor, String fileName) async {
     final file = new io.File(fileName);
     file.createSync();
 
     final sink = file.openWrite(mode: io.FileMode.write);
-    sink.write(jsonEncode(rs.columnNames) + '\n');
 
-    for (final row in rs) sink.write(jsonEncode(row.values) + '\n');
+    var rowCount = 0;
+    var rowId = 0;
 
-    await sink.flush();
-    await sink.close();
+    try {
+      sink.write(jsonEncode(cursor.columnNames) + '\n');
+
+      final flushCount = 100;
+      while (cursor.moveNext()) {
+        sink.write(jsonEncode(cursor.current.values) + '\n');
+        rowCount++;
+        rowId = cursor.current['rowid'];
+        if (rowCount % flushCount == 0) await sink.flush();
+      }
+    } on Object {
+      rethrow;
+    } finally {
+      await sink.flush();
+      await sink.close();
+    }
+
+    return [rowCount, rowId];
   }
 
   void _updateLastExportedId(String tableName, int exportedId) {
