@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.18;
 
 /******************************************************************************\
 * Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
@@ -27,7 +27,6 @@ contract DiamondInit {
 
     struct Args{
         uint256 maxClusterSize;
-        uint256 maxGroupsPerIngester;
         uint256 maxIngestersPerGroup;
     }
 
@@ -42,7 +41,6 @@ contract DiamondInit {
         ds.supportedInterfaces[type(IERC173).interfaceId] = true;
 
         s.maxClusterSize = _args.maxClusterSize;
-        s.maxGroupsPerIngester = _args.maxGroupsPerIngester;
         s.maxIngestersPerGroup = _args.maxIngestersPerGroup;
 
         // add your own state variables 

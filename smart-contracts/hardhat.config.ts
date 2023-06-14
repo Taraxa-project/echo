@@ -1,9 +1,10 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import 'hardhat-docgen';
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.14",
+    version: "0.8.18",
     settings: {
       optimizer: {
         enabled: true,
@@ -16,6 +17,11 @@ const config: HardhatUserConfig = {
   },
   gasReporter: {
     enabled:true
+  },
+  docgen: {
+    path: './docs',
+    clear: true,
+    runOnCompile: true,
   },
   networks: {
     mainnet: {

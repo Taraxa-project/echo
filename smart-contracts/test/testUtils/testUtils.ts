@@ -157,12 +157,12 @@ export async function addFacetsToDiamond(addresses: string[], diamondCutFacet: D
 export async function checkClusterIsWithinConstraints(groupManagerFacet: GroupManagerFacet, registryFacet: RegistryFacet, maxClusterSize: number) {
     //check each cluster is within constraints
     let clusterIds = await groupManagerFacet.getClusters();
-    let getMaxGroupsPerIngester = BigNumber.from(await groupManagerFacet.getMaxGroupsPerIngester()).toNumber();
+    let getMaxClusterSize = BigNumber.from(await groupManagerFacet.getMaxClusterSize()).toNumber();
     for (let i = 0; i < clusterIds.length; i++) {
         let cluster = await groupManagerFacet.getCluster(clusterIds[i]);
 
         //Calculate the inner cluster contraint for this particular cluster
-        let clusterGroupCount = BigNumber.from(cluster.clusterGroupCount).toNumber();
+        let clusterGroupCount = BigNumber.from(cluster.groupCount).toNumber();
         let maxGroupsPerIngesterWithinCluster = Math.ceil((clusterGroupCount + cluster.ingesterAddresses.length -1) / cluster.ingesterAddresses.length);
         
         let ingesterToGroup: IngesterToGroups = {};
@@ -187,14 +187,14 @@ export async function checkClusterIsWithinConstraints(groupManagerFacet: GroupMa
         //check that the amount of addresses per group abides by the global constraint
         expect(cluster.ingesterAddresses.length < maxClusterSize);
         //Check that the amount of groups is lower than the global constraint
-        expect(clusterGroups.length < getMaxGroupsPerIngester);
+        expect(clusterGroups.length < getMaxClusterSize);
     }
 
 }
 
 export async function getClusterMaxGroupsPerIngester(groupManagerFacet: GroupManagerFacet, clusterId: number) {
     let clusterDetails = await groupManagerFacet.getCluster(clusterId);
-    let clusterGroupCount = BigNumber.from(clusterDetails.clusterGroupCount).toNumber();
+    let clusterGroupCount = BigNumber.from(clusterDetails.groupCount).toNumber();
     let clusterIngesterCount = BigNumber.from(clusterDetails.ingesterAddresses.length).toNumber();
     let maxGroupsPerIngesterAfterUnregistering = (clusterGroupCount + clusterIngesterCount - 1) / clusterIngesterCount;
     return maxGroupsPerIngesterAfterUnregistering

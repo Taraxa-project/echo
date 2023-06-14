@@ -9,13 +9,10 @@ import {
 import {
     DiamondCutFacet,
     DiamondLoupeFacet,
-    GroupManagerFacet,
     OwnershipFacet,
     RegistryFacet,
-    Test1Facet,
-    NotContractOwner
     } from "../typechain-types";
-import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
+import { deployDiamondTest } from "../scripts/deployDiamondTest";
 
 import { ethers } from "hardhat";
 
@@ -24,6 +21,9 @@ import { assert, expect } from "chai";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { addFacetsToDiamond, removeFacetsFromDiamond } from "./testUtils/testUtils";
   
+const maxClusterSize = 50;
+const maxIngestersPerGroup = 1;
+
 describe("Ingester Orchestrator Diamond Tests", async function () {
     let diamondCutFacet: DiamondCutFacet;
     let diamondLoupeFacet: DiamondLoupeFacet;
@@ -43,7 +43,7 @@ describe("Ingester Orchestrator Diamond Tests", async function () {
         controller = accounts[0];
         ingester = accounts[1];
 
-        const diamonDeployed = await deployDiamondTest();
+        const diamonDeployed = await deployDiamondTest(false, maxClusterSize, maxIngestersPerGroup);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
         

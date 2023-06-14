@@ -1,34 +1,28 @@
 
 import { ethers } from "hardhat";
 
-import { BigNumber } from "ethers";
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
-import {IngesterControllerMapping,
-    IngesterToGroups,
-    allUnique,
+import {
     addFacetsToDiamond,
-    checkClusterIsWithinConstraints,
-    getClusterMaxGroupsPerIngester
  } from "./testUtils/testUtils";
 
  import {
-    Diamond,
     DiamondCutFacet,
     DiamondLoupeFacet,
-    GroupManagerFacet,
     OwnershipFacet,
     RegistryFacet,
     DataGatheringFacet
     } from "../typechain-types";
-import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
+import { deployDiamondTest} from "../scripts/deployDiamondTest";
+
+const maxClusterSize = 300;
+const maxIngestersPerGroup = 1;
 
 describe('Add IPFS Hashes', function () {
     //Diamond related storage
     let diamondCutFacet: DiamondCutFacet;
-    let diamondLoupeFacet: DiamondLoupeFacet;
-    let ownershipFacet: OwnershipFacet;
     let addresses: string[] = [];
     let diamondAddress: string;
     let registryFacet: RegistryFacet;
@@ -38,9 +32,6 @@ describe('Add IPFS Hashes', function () {
     let accounts: SignerWithAddress[];
     let ingester: SignerWithAddress;
     let controller: SignerWithAddress;
-    
-    //testing storage variables
-    let ingesterToController: IngesterControllerMapping = {}
     
     //constants
     const message = "Test message";
@@ -57,7 +48,7 @@ describe('Add IPFS Hashes', function () {
         controller = accounts[0];
         ingester = accounts[1];
 
-        const diamonDeployed = await deployDiamondTest(verbose);
+        const diamonDeployed = await deployDiamondTest(verbose, maxClusterSize, maxIngestersPerGroup);
         diamondAddress = diamonDeployed.diamondAddress;
         contractOwner = diamonDeployed.contractOwner;
 
