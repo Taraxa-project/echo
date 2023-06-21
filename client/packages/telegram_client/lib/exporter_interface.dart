@@ -1,4 +1,8 @@
-abstract class ExporterInterface {}
+import 'dart:async';
+
+abstract class ExporterInterface {
+  FutureOr<void> export();
+}
 
 class IpfsParams {
   String ipfsScheme;

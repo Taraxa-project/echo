@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
-import 'package:cron/cron.dart';
 import 'package:path/path.dart' as p;
 
 import 'exporter_interface.dart';
@@ -18,11 +17,7 @@ class Exporter implements ExporterInterface {
 
   final IpfsParams ipfsParams;
 
-  String cronFormat;
-  Schedule schedule;
   String tableDumpPath;
-
-  final _cron = Cron();
 
   static const tableNames = ['chat', 'message', 'user'];
   static const tableNamesUploadFull = ['chat'];
@@ -37,20 +32,12 @@ class Exporter implements ExporterInterface {
 
   bool _exportInProgress = false;
 
-  Exporter(
-      this.logger,
-      this.db,
-      this.cronFormat,
-      this.schedule,
-      this.tableDumpPath,
-      this.ipfsParams,
+  Exporter(this.logger, this.db, this.tableDumpPath, this.ipfsParams,
       IngesterContractParams ingesterContractParams) {
     ingesterContract = IngesterContract(
       logger,
       ingesterContractParams,
     );
-    logger.info('scheduled export to IPFS at $cronFormat.');
-    _cron.schedule(schedule, _export);
   }
 
   Future<void> _export() async {
@@ -207,5 +194,28 @@ class Exporter implements ExporterInterface {
     }
 
     return null;
+  }
+
+  @override
+  Future<void> export() async {
+    var lastExportDateTime = await db.selectLastExportDateTime();
+
+    var doExport = false;
+    if (lastExportDateTime == null) {
+      doExport = true;
+    } else {
+      final now = DateTime.now().toUtc();
+      if (now.year > lastExportDateTime.year) {
+        doExport = true;
+      } else if (now.month > lastExportDateTime.month) {
+        doExport = true;
+      } else if (now.day > lastExportDateTime.day) {
+        doExport = true;
+      } else {
+        logger.info('last exported at $lastExportDateTime. Skipping...');
+      }
+    }
+
+    if (doExport) await _export();
   }
 }

@@ -7,7 +7,6 @@ import 'exporter_interface.dart';
 
 import 'package:telegram_client/log_isolated.dart';
 import 'package:telegram_client/db_isolated.dart';
-import 'package:cron/cron.dart';
 
 import 'ingester_contract.dart';
 
@@ -21,15 +20,13 @@ class ExporterIsolated implements ExporterInterface {
   static Future<ExporterIsolated> spawn(
     LogIsolated log,
     DbIsolated db,
-    String cronFormat,
-    Schedule schedule,
     String tableDumpPath,
     IpfsParams ifpsParams,
     IngesterContractParams ingesterContractParams, [
     String? debugName,
   ]) async {
-    final init = Init(log, db, cronFormat, schedule, tableDumpPath, ifpsParams,
-        ingesterContractParams);
+    final init =
+        Init(log, db, tableDumpPath, ifpsParams, ingesterContractParams);
     final sendPort =
         await Isolater.spawn(ExporterIsolated._entryPoint, init, debugName);
     final isolatedProxy = IsolatedProxy(sendPort);
@@ -47,8 +44,8 @@ class ExporterIsolated implements ExporterInterface {
       ..onRecord.listen((event) {
         init.log.logExternal(event);
       });
-    final exporter = Exporter(logger, init.db, init.cronFormat, init.schedule,
-        init.tableDumpPath, init.ifpsParams, init.ingesterContractParams);
+    final exporter = Exporter(logger, init.db, init.tableDumpPath,
+        init.ifpsParams, init.ingesterContractParams);
     final isolatedDispatch = ExporterIsolatedDispatch(exporter);
 
     isolateSpawnMessage.sendPort.send(isolatedDispatch.receivePort.sendPort);
@@ -57,19 +54,30 @@ class ExporterIsolated implements ExporterInterface {
   void exit() {
     isolatedProxy.exit();
   }
+
+  @override
+  Future<void> export() async {
+    await isolatedProxy.call(Export());
+  }
 }
 
 class ExporterIsolatedDispatch extends IsolatedDispatch {
   final Exporter exporter;
 
   ExporterIsolatedDispatch(this.exporter) {}
+
+  dynamic dispatch(message) async {
+    if (message is Export) {
+      await exporter.export();
+    } else {
+      return super.dispatch(message);
+    }
+  }
 }
 
 class Init {
   final LogIsolated log;
   final DbIsolated db;
-  final String cronFormat;
-  final Schedule schedule;
   final String tableDumpPath;
   final IpfsParams ifpsParams;
   final IngesterContractParams ingesterContractParams;
@@ -77,8 +85,6 @@ class Init {
   Init(
     this.log,
     this.db,
-    this.cronFormat,
-    this.schedule,
     this.tableDumpPath,
     this.ifpsParams,
     this.ingesterContractParams,
