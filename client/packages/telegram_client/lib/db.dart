@@ -300,6 +300,16 @@ class Db implements DbInterface {
     return hashes;
   }
 
+  DateTime? selectLastExportDateTime() {
+    final updatedAt = _select(SqlIpfsUpload.selectMaxUpdatedAt, [])
+        .firstOrNull?['updated_at'];
+    if (updatedAt == null) {
+      return null;
+    } else {
+      return DateTime.parse(updatedAt);
+    }
+  }
+
   void _insertIpfsHash(String tableName, String fileHash) {
     final now = _now();
     final parameters = [tableName, fileHash, now, now];

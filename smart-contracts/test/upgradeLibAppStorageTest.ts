@@ -11,13 +11,17 @@ import {
     } from "../typechain-types";
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { deployDiamondTest, maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup } from "../scripts/deployDiamondTest";
+import { deployDiamondTest} from "../scripts/deployDiamondTest";
 import {
     addFacetsToDiamond,
     IngesterControllerMapping,
     removeFacetsFromDiamond
  } from "./testUtils/testUtils";
 import { BigNumber } from "ethers";
+
+
+const maxClusterSize = 50;
+const maxIngestersPerGroup = 1;
 
 describe("Diamond Upgrade", () => {
   //Diamond related storage
@@ -42,11 +46,12 @@ describe("Diamond Upgrade", () => {
   const verbose = false;
 
 
+
   beforeEach(async () => {
     // Set up the initial Diamond and its facets (including the initial LibAppStorage and IngesterFacet)
     accounts = await ethers.getSigners();
 
-    const diamonDeployed = await deployDiamondTest(verbose);
+    const diamonDeployed = await deployDiamondTest(verbose, maxClusterSize, maxIngestersPerGroup);
     diamondAddress = diamonDeployed.diamondAddress;
     contractOwner = diamonDeployed.contractOwner;
     
@@ -74,8 +79,13 @@ describe("Diamond Upgrade", () => {
     registryFacet = await ethers.getContractAt('RegistryFacet', diamondAddress);
     groupManagerFacet = await ethers.getContractAt('GroupManagerFacet', diamondAddress);
 
-    ingesters = [];
+    let numGroups = 150;
+    for (let i = 0; i < numGroups; i++) {
+        await groupManagerFacet.connect(contractOwner).addGroup(`group${i}`);
+        const group = await groupManagerFacet.getGroup(`group${i}`);
+    }
 
+    ingesters = [];
     for (let i = 1; i <= numIngesters; i++ ) {
         let hash = await registryFacet.hash(accounts[i].address, message, nonce);
         const sig = await accounts[i-1].signMessage(ethers.utils.arrayify(hash));
@@ -83,7 +93,6 @@ describe("Diamond Upgrade", () => {
         ingesterToController[accounts[i].address] = accounts[i-1];
         ingesters.push(accounts[i]);
     }
-    // ...
   });
 
   it("upgrades LibAppStorage only with only one facet", async () => {
@@ -93,7 +102,7 @@ describe("Diamond Upgrade", () => {
     for (let i = 0; i < ingesters.length; i++) {
         const ingesterBeforeUpgrade = await registryFacet.getIngester(ingesters[i].address);
         ingestersBeforeUpgrade.push(ingesterBeforeUpgrade);
-        expect(ingesterBeforeUpgrade.verified).to.be.true;
+        assert.equal(ingesterBeforeUpgrade.ingesterAddress, ingesters[i].address )
     }
 
     // Remove the existing facets
@@ -128,7 +137,7 @@ describe("Diamond Upgrade", () => {
     for (let i = 0; i < ingesters.length; i++) {
         const ingesterAfterUpgrade = await newCommonFunctionsFacet.getIngester(ingesters[i].address);
         ingestersAfterUpgrade.push(ingesterAfterUpgrade);
-        expect(ingesterAfterUpgrade.verified).to.be.true;
+        assert.equal(ingesterAfterUpgrade.ingesterAddress, ingesters[i].address )
     }
     assert.sameDeepMembers(ingestersAfterUpgrade, ingestersBeforeUpgrade);
   });
@@ -140,7 +149,7 @@ describe("Diamond Upgrade", () => {
     for (let i = 0; i < ingesters.length; i++) {
         const ingesterBeforeUpgrade = await registryFacet.getIngester(ingesters[i].address);
         ingestersBeforeUpgrade.push(ingesterBeforeUpgrade);
-        expect(ingesterBeforeUpgrade.verified).to.be.true;
+        assert.equal(ingesterBeforeUpgrade.ingesterAddress, ingesters[i].address )
     }
 
     // Remove the existing facets
@@ -175,7 +184,8 @@ describe("Diamond Upgrade", () => {
     for (let i = 0; i < ingesters.length; i++) {
         const ingesterAfterUpgrade = await newCommonFunctionsFacet.getIngester(ingesters[i].address);
         ingestersAfterUpgrade.push(ingesterAfterUpgrade);
-        expect(ingesterAfterUpgrade.verified).to.be.true;
+        assert.equal(ingesterAfterUpgrade.ingesterAddress, ingesters[i].address )
+        
     }
     assert.sameDeepMembers(ingestersAfterUpgrade, ingestersBeforeUpgrade);
   });
@@ -187,7 +197,7 @@ describe("Diamond Upgrade", () => {
     for (let i = 0; i < ingesters.length; i++) {
         const ingesterBeforeUpgrade = await registryFacet.getIngester(ingesters[i].address);
         ingestersBeforeUpgrade.push(ingesterBeforeUpgrade);
-        expect(ingesterBeforeUpgrade.verified).to.be.true;
+        assert.equal(ingesterBeforeUpgrade.ingesterAddress, ingesters[i].address )
     }
 
     // Remove the existing facets
@@ -216,17 +226,15 @@ describe("Diamond Upgrade", () => {
     let newTestProperty = await newCommonFunctionsFacet.getTestProperty();
     assert.isTrue(newTestProperty);
 
-
     // Check that the new LibAppStorage is being used and any related state changes
     // Check that ingester data is still the same after upgrade
     let ingestersAfterUpgrade = []
     for (let i = 0; i < ingesters.length; i++) {
         const ingesterAfterUpgrade = await newCommonFunctionsFacet.getIngester(ingesters[i].address);
         ingestersAfterUpgrade.push(ingesterAfterUpgrade);
-        expect(ingesterAfterUpgrade.verified).to.be.true;
+        assert.equal(ingesterAfterUpgrade.ingesterAddress, ingesters[i].address);
     }
     assert.sameDeepMembers(ingestersAfterUpgrade, ingestersBeforeUpgrade);
-
 });
 
 });

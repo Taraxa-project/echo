@@ -28,6 +28,8 @@ abstract class DbInterface {
 
   FutureOr<int> exportData(String tableName, String fileName, int? fromId);
   FutureOr<int> exportMeta(String tableName, String fileName);
+
+  FutureOr<DateTime?> selectLastExportDateTime();
 }
 
 class IfpsFileHashesMeta {

@@ -130,6 +130,11 @@ class DbIsolated implements DbInterface {
     await isolatedProxy
         .call(InsertMessagesUsers(messages, users, onlineMembersCount));
   }
+
+  @override
+  Future<DateTime?> selectLastExportDateTime() async {
+    return await isolatedProxy.call(SelectLastExportDateTime());
+  }
 }
 
 class DbIsolatedDispatch extends IsolatedDispatch {
@@ -174,6 +179,8 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       db.updateMetaFileHash(message.tableName, message.fileHash);
     } else if (message is SelectMetaFileHahes) {
       return db.selectMetaFileHahes();
+    } else if (message is SelectLastExportDateTime) {
+      return db.selectLastExportDateTime();
     } else {
       return super.dispatch(message);
     }
@@ -287,3 +294,5 @@ class UpdateMetaFileHash {
 }
 
 class SelectMetaFileHahes {}
+
+class SelectLastExportDateTime {}

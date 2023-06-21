@@ -37,8 +37,6 @@ class TelegramSaveChatHistoryCommand extends Command {
     final logLevel = _parseLogLevel();
     final logLevelLibTdJson = _parseLogLevelLibtdjson();
     final fileNameDb = globalResults!.command!['message-database-path'];
-    final exporterCronFormat = globalResults!.command!['ipfs-cron-schedule'];
-    final exporterCronSchedule = _parseExporterCron(exporterCronFormat);
     final exportPath = globalResults!.command!['table-dump-path'];
     final ipfsParams = _buildIpfsParams();
     final ingesterContractParams = _buildIngesterContractParams();
@@ -48,20 +46,27 @@ class TelegramSaveChatHistoryCommand extends Command {
 
     try {
       log = await LogIsolated.spawn(logLevel);
-      db = await DbIsolated.spawn(log, fileNameDb);
-      exporter = await ExporterIsolated.spawn(log, db, exporterCronFormat,
-          exporterCronSchedule, exportPath, ipfsParams, ingesterContractParams);
       telegramClient = await TelegramClientIsolated.spawn(
           log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
 
       await telegramClient.login(loginParams);
 
       while (true) {
+        db = await DbIsolated.spawn(log, fileNameDb);
+
         final dateTimeFrom = _twoWeeksAgo();
         await telegramClient.saveChatsHistory(
             dateTimeFrom, ingesterContractParams, db);
 
+        exporter = await ExporterIsolated.spawn(
+            log, db, exportPath, ipfsParams, ingesterContractParams);
+        await exporter.export();
+
         if (!doLoop) break;
+
+        exporter.exit();
+        await db.close();
+
         await Future.delayed(const Duration(seconds: 60));
       }
     } on Object {
@@ -184,13 +189,5 @@ class TelegramSaveChatHistoryCommand extends Command {
     }
 
     return uri;
-  }
-
-  Schedule _parseExporterCron(String cronFormat) {
-    try {
-      return Schedule.parse(cronFormat);
-    } on ScheduleParseException catch (ex) {
-      throw Exception('Invalid ipsf-cron-schedule: $ex');
-    }
   }
 }

@@ -8,8 +8,7 @@ import { DiamondCutFacet, DiamondInit } from "../typechain-types";
 import { getSelectors, FacetCutAction } from "./libraries/diamond";
 
 export let DiamondAddress: string;
-export const maxClusterSize = 3;
-export const maxGroupsPerIngester = 200;
+export const maxClusterSize = 300;
 export const maxIngestersPerGroup = 1;
 
 export async function deployDiamond() {
@@ -58,7 +57,7 @@ export async function deployDiamond() {
     // Creating a function call
     // This call gets executed during deployment and can also be executed in upgrades
     // It is executed with delegatecall on the DiamondInit address.
-    let initArgs: DiamondInit.ArgsStruct = {maxClusterSize, maxGroupsPerIngester, maxIngestersPerGroup};
+    let initArgs: DiamondInit.ArgsStruct = {maxClusterSize, maxIngestersPerGroup};
 
     let functionCall = diamondInit.interface.encodeFunctionData('init', [initArgs]);
 

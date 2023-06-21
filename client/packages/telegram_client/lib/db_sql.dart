@@ -265,6 +265,16 @@ SET
 WHERE
   table_name = ?;
 ''';
+
+  static const selectMaxUpdatedAt = '''
+SELECT
+  max(updated_at) updated_at
+FROM
+  ipfs_upload
+WHERE
+  table_name = 'user' AND
+  last_exported_id > 0
+''';
 }
 
 class SqlIpfsHash {
