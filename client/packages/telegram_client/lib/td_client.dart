@@ -23,8 +23,9 @@ class TdClient {
   static const int tgTimeoutDelayMilliseconds = 50;
   static const int delayTimeoutSeconds = 15;
 
-  static const int delayParseErrorSeconds = 60 * 60 * 24;
-  static const int delayFloodWaitMultiplier = 2;
+  static const int delayParseErrorSeconds = 60 * 60;
+  static const int delayFloodWaitMultiply = 2;
+  static const int delayFloodWaitAdd = 60 * 60;
 
   TdClient(
     this.logger,
@@ -245,7 +246,7 @@ class TdClient {
             'Using default: $delayParseErrorSeconds seconds.');
         throw TgFloodWaiException(delayParseErrorSeconds);
       } else {
-        throw TgFloodWaiException(floodWaitSeconds * delayFloodWaitMultiplier);
+        throw TgFloodWaiException(_floodWaitSecondsDelay(floodWaitSeconds));
       }
     } else if (error.code == 429) {
       final floodWaitSeconds = _parseTooManyRequestsSeconds(error.message);
@@ -255,7 +256,7 @@ class TdClient {
             'Using default: $delayParseErrorSeconds seconds.');
         throw TgFloodWaiException(delayParseErrorSeconds);
       } else {
-        throw TgFloodWaiException(floodWaitSeconds * delayFloodWaitMultiplier);
+        throw TgFloodWaiException(_floodWaitSecondsDelay(floodWaitSeconds));
       }
     } else if (error.code == 404) {
       throw TgNotFoundException(
@@ -273,6 +274,14 @@ class TdClient {
         error.message,
         error.code,
       );
+    }
+  }
+
+  int _floodWaitSecondsDelay(int floodWaitSeconds) {
+    if (floodWaitSeconds < 60 * 30) {
+      return floodWaitSeconds * delayFloodWaitMultiply;
+    } else {
+      return floodWaitSeconds + delayFloodWaitAdd;
     }
   }
 }
