@@ -133,7 +133,7 @@ class TelegramClient implements TelegramClientInterface {
       api_id: loginParams.apiId,
       api_hash: loginParams.apiHash,
       database_directory: loginParams.databasePath,
-      use_message_database: false,
+      use_message_database: true,
       device_model: 'Desktop',
       application_version: '1.0',
       system_language_code: 'en',
@@ -173,11 +173,26 @@ class TelegramClient implements TelegramClientInterface {
 
   Future<void> _saveChatHistory(
       DateTime dateTimeFrom, String chatName, DbIsolated db) async {
-    final chat = await _searchPublicChat(chatName);
-    final chatId = WrapId.unwrapChatId(chat.id);
-    logger.info('[$chatName] unwrapped chat id is $chatId.');
+    var chatId = 0;
 
-    await db.updateChat(chatName, chat);
+    final chatInfo = await db.selectChat(chatName);
+    if (chatInfo != null) {
+      if (chatInfo['blacklisted'] == 1) {
+        logger.info('[$chatName] blacklisted, skipping...');
+        return;
+      }
+      chatId = chatInfo['id'] ?? 0;
+    }
+
+    if (chatId == 0) {
+      final chat = await _searchPublicChat(chatName);
+      chatId = WrapId.unwrapChatId(chat.id);
+      logger.info('[$chatName] unwrapped chat id is $chatId.');
+      await db.updateChat(chatName, chat);
+    }
+
+    await _openChat(chatName, chatId);
+    await Future.delayed(const Duration(seconds: 2));
 
     final supergroupFullInfo = await _getSupergroupFullInfo(chatName, chatId);
     await _updateChatMembersCount(chatName, chatId, db, supergroupFullInfo);
@@ -185,9 +200,9 @@ class TelegramClient implements TelegramClientInterface {
     final subscriptionOnlineMemberCount =
         _subscribeUpdateChatOnlineMemberCount(chatName, chatId, db);
 
-    await _openChat(chatName, chatId);
     if (supergroupFullInfo.can_get_members == true)
       await _updateChatBotsCount(chatName, chatId, db);
+
     await _closeChat(chatName, chatId);
 
     await subscriptionOnlineMemberCount.cancel();

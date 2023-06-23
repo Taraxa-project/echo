@@ -5,6 +5,7 @@ import 'package:td_json_client/td_api.dart';
 abstract class DbInterface {
   FutureOr<void> close();
 
+  FutureOr<Map<String, dynamic>?> selectChat(String username);
   FutureOr<void> insertChats(List<String> usernames);
   FutureOr<void> blacklistChat(String username, String reason);
   FutureOr<void> updateChat(String username, Chat chat);
