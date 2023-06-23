@@ -88,7 +88,11 @@ class TelegramClient implements TelegramClientInterface {
     logger.info('adding groups to db...');
     await db.insertChats(chatsNames);
 
+    var chatIndex = 0;
+    var chatCount = chatsNames.length;
     for (final chatName in chatsNames) {
+      chatIndex++;
+      logger.info('[$chatName] chat index $chatIndex of $chatCount.');
       logger.info('[$chatName] reading group history...');
       try {
         await _saveChatHistory(dateTimeFrom, chatName, db);
