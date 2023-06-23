@@ -46,6 +46,22 @@ class Db implements DbInterface {
     }
   }
 
+  Map<String, dynamic>? selectChat(String username) {
+    final parameters = [username];
+
+    logger.fine('selecting chat for $parameters...');
+    final resultSet = _database.select(SqlChat.select, parameters);
+
+    if (resultSet.isEmpty) return null;
+
+    final row = resultSet.first;
+    final chatInfo = Map<String, dynamic>();
+    for (var columnName in resultSet.columnNames) {
+      chatInfo[columnName] = row[columnName];
+    }
+    return chatInfo;
+  }
+
   void blacklistChat(String username, String reason) {
     final now = _now();
     final parameters = [reason, now, username];

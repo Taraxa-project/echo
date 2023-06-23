@@ -62,7 +62,7 @@ class DbIsolated implements DbInterface {
 
   @override
   Future<void> blacklistChat(String username, String reason) async {
-    await isolatedProxy.call(BlacklistChat(username, username));
+    await isolatedProxy.call(BlacklistChat(username, reason));
   }
 
   @override
@@ -135,6 +135,11 @@ class DbIsolated implements DbInterface {
   Future<DateTime?> selectLastExportDateTime() async {
     return await isolatedProxy.call(SelectLastExportDateTime());
   }
+
+  @override
+  Future<Map<String, dynamic>?> selectChat(String username) async {
+    return await isolatedProxy.call(SelectChat(username));
+  }
 }
 
 class DbIsolatedDispatch extends IsolatedDispatch {
@@ -181,6 +186,8 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       return db.selectMetaFileHahes();
     } else if (message is SelectLastExportDateTime) {
       return db.selectLastExportDateTime();
+    } else if (message is SelectChat) {
+      return db.selectChat(message.username);
     } else {
       return super.dispatch(message);
     }
@@ -200,6 +207,12 @@ class InsertChats {
   final List<String> usernames;
 
   InsertChats(this.usernames);
+}
+
+class SelectChat {
+  final String username;
+
+  SelectChat(this.username);
 }
 
 class BlacklistChat {
