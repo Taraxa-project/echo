@@ -86,6 +86,7 @@ class Exporter implements ExporterInterface {
       await db.insertIpfsHash(tableName, fileHash);
 
       if (recordsCount < exportRecordLimit) return;
+      if (tableNamesUploadFull.contains(tableName)) return;
     }
   }
 
