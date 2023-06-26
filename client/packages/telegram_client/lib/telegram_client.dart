@@ -188,14 +188,40 @@ class TelegramClient implements TelegramClientInterface {
       chatId = chatInfo['id'] ?? 0;
     }
 
-    if (chatId == 0) {
+    var doSearchPublicChat = chatId == 0;
+
+    if (doSearchPublicChat) {
       final chat = await _searchPublicChat(chatName);
       chatId = WrapId.unwrapChatId(chat.id);
       logger.info('[$chatName] unwrapped chat id is $chatId.');
       await db.updateChat(chatName, chat);
+      doSearchPublicChat = false;
+
+      await Future.delayed(const Duration(seconds: 20));
     }
 
-    await _openChat(chatName, chatId);
+    try {
+      await _openChat(chatName, chatId);
+    } on TgBadRequestException catch (ex) {
+      if (ex.code == 400 && ex.message == 'Chat not found') {
+        doSearchPublicChat = true;
+      } else {
+        rethrow;
+      }
+    }
+
+    if (doSearchPublicChat) {
+      final chat = await _searchPublicChat(chatName);
+      chatId = WrapId.unwrapChatId(chat.id);
+      logger.info('[$chatName] unwrapped chat id is $chatId.');
+      await db.updateChat(chatName, chat);
+      doSearchPublicChat = false;
+
+      await Future.delayed(const Duration(seconds: 20));
+
+      await _openChat(chatName, chatId);
+    }
+
     await Future.delayed(const Duration(seconds: 2));
 
     final supergroupFullInfo = await _getSupergroupFullInfo(chatName, chatId);
@@ -431,7 +457,7 @@ class TelegramClient implements TelegramClientInterface {
 }
 
 class TelegramClientConfig {
-  static const int delayUntilNextChatSeconds = 10;
+  static const int delayUntilNextChatSeconds = 15;
   static const int delayUntilNextMessageBatchSeconds = 5;
   static const int delayUntilNextUserSeconds = 2;
 
