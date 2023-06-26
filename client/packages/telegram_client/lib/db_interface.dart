@@ -27,7 +27,8 @@ abstract class DbInterface {
 
   FutureOr<void> insertIpfsHash(String tableName, String fileHash);
 
-  FutureOr<int> exportData(String tableName, String fileName, int? fromId);
+  FutureOr<int> exportData(
+      String tableName, String fileName, int? fromId, int limit);
   FutureOr<int> exportMeta(String tableName, String fileName);
 
   FutureOr<DateTime?> selectLastExportDateTime();

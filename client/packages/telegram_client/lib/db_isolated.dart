@@ -95,8 +95,10 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<int> exportData(String tableName, String fileName, int? fromId) async {
-    return await isolatedProxy.call(ExportData(tableName, fileName, fromId));
+  Future<int> exportData(
+      String tableName, String fileName, int? fromId, int limit) async {
+    return await isolatedProxy
+        .call(ExportData(tableName, fileName, fromId, limit));
   }
 
   @override
@@ -175,7 +177,7 @@ class DbIsolatedDispatch extends IsolatedDispatch {
           message.messages, message.users, message.onlineMembersCount);
     } else if (message is ExportData) {
       return await db.exportData(
-          message.tableName, message.fileName, message.fromId);
+          message.tableName, message.fileName, message.fromId, message.limit);
     } else if (message is InsertIpfsHash) {
       db.insertIpfsHash(message.tableName, message.fileHash);
     } else if (message is ExportMeta) {
@@ -281,8 +283,9 @@ class ExportData {
   final String tableName;
   final String fileName;
   int? fromId;
+  int limit;
 
-  ExportData(this.tableName, this.fileName, this.fromId);
+  ExportData(this.tableName, this.fileName, this.fromId, this.limit);
 }
 
 class InsertIpfsHash {

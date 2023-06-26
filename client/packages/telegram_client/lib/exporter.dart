@@ -30,6 +30,8 @@ class Exporter implements ExporterInterface {
   static const int ipfsRequestRetryDelaySeconds = 30;
   static const int ipfsRequestTimeoutSeconds = 60;
 
+  static const int exportRecordLimit = 100000;
+
   bool _exportInProgress = false;
 
   Exporter(this.logger, this.db, this.tableDumpPath, this.ipfsParams,
@@ -67,19 +69,24 @@ class Exporter implements ExporterInterface {
 
   Future<void> _exportTableData(
       http.Client client, Uri ipfsUri, String tableName) async {
-    var fileName = p.joinAll([tableDumpPath, '$tableName.$fileExtTypeData']);
+    final fileName = p.joinAll([tableDumpPath, '$tableName.$fileExtTypeData']);
     final fromId = tableNamesUploadFull.contains(tableName) ? 0 : null;
 
-    final recordsCount = await db.exportData(tableName, fileName, fromId);
-    logger.info('exported $recordsCount data records for $tableName.');
+    while (true) {
+      final recordsCount =
+          await db.exportData(tableName, fileName, fromId, exportRecordLimit);
+      logger.info('exported $recordsCount data records for $tableName.');
 
-    if (recordsCount == 0) return;
+      if (recordsCount == 0) return;
 
-    var fileHash = await _ipfsAdd(client, ipfsUri, tableName, fileName);
-    if (fileHash == null) return;
-    logger.info('uploaded $tableName data records with hash $fileHash.');
+      final fileHash = await _ipfsAdd(client, ipfsUri, tableName, fileName);
+      if (fileHash == null) return;
+      logger.info('uploaded $tableName data records with hash $fileHash.');
 
-    await db.insertIpfsHash(tableName, fileHash);
+      await db.insertIpfsHash(tableName, fileHash);
+
+      if (recordsCount < exportRecordLimit) return;
+    }
   }
 
   Future<void> _exportTableMeta(
