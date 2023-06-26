@@ -195,10 +195,9 @@ class TelegramClient implements TelegramClientInterface {
     var doSearchPublicChat = chatId == 0;
 
     if (doSearchPublicChat) {
-      final delaySeconds = Random().nextInt(searchPublicChatDelaySecondsMax -
-              searchPublicChatDelaySecondsMin) +
-          searchPublicChatDelaySecondsMin;
+      final delaySeconds = _searchPublicChatDelaySeconds();
       await Future.delayed(Duration(seconds: delaySeconds));
+
       final chat = await _searchPublicChat(chatName);
       chatId = WrapId.unwrapChatId(chat.id);
       logger.info('[$chatName] unwrapped chat id is $chatId.');
@@ -217,9 +216,7 @@ class TelegramClient implements TelegramClientInterface {
     }
 
     if (doSearchPublicChat) {
-      final delaySeconds = Random().nextInt(searchPublicChatDelaySecondsMax -
-              searchPublicChatDelaySecondsMin) +
-          searchPublicChatDelaySecondsMin;
+      final delaySeconds = _searchPublicChatDelaySeconds();
       await Future.delayed(Duration(seconds: delaySeconds));
 
       final chat = await _searchPublicChat(chatName);
@@ -462,6 +459,12 @@ class TelegramClient implements TelegramClientInterface {
     return await tdClient.retryTdCall(GetUser(
       user_id: userId,
     )) as User;
+  }
+
+  int _searchPublicChatDelaySeconds() {
+    return Random().nextInt(
+            searchPublicChatDelaySecondsMax - searchPublicChatDelaySecondsMin) +
+        searchPublicChatDelaySecondsMin;
   }
 }
 
