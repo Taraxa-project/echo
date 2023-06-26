@@ -238,9 +238,10 @@ class Db implements DbInterface {
     return rs.isNotEmpty;
   }
 
-  Future<int> exportData(String tableName, String fileName, int? fromId) async {
+  Future<int> exportData(
+      String tableName, String fileName, int? fromId, int limit) async {
     final minId = fromId ?? _selectLastUploadedId(tableName) ?? 0;
-    final parameters = [minId];
+    final parameters = [minId, limit];
 
     final stmt = _database.prepare(_sqlSelectDataForExport(tableName));
 

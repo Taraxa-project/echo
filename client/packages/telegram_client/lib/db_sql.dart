@@ -145,7 +145,9 @@ FROM
 WHERE
   a.rowid > ?
 ORDER BY
-  a.rowid ASC;
+  a.rowid ASC
+LIMIT
+  ?;
 ''';
 }
 
@@ -182,7 +184,9 @@ FROM
 WHERE
   a.rowid > ?
 ORDER BY
-  a.rowid ASC;
+  a.rowid ASC
+LIMIT
+  ?;
 ''';
 }
 
@@ -215,7 +219,9 @@ FROM
 WHERE
   a.id > ?
 ORDER BY
-  a.id ASC;
+  a.id ASC
+LIMIT
+  ?;
 ''';
 }
 
