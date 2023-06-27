@@ -18,6 +18,9 @@ class TelegramClient implements TelegramClientInterface {
   static const int searchPublicChatDelaySecondsMin = 30;
   static const int searchPublicChatDelaySecondsMax = 60;
 
+  SearchPublicChatFloodWait searchPublicChatFloodWait =
+      SearchPublicChatFloodWait();
+
   TelegramClient(this.logger, String libtdjsonlcPath, Level logLevelLibTdJson,
       Uri? proxyUri) {
     tdClient = TdClient(
@@ -271,6 +274,11 @@ class TelegramClient implements TelegramClientInterface {
 
   Future<Chat> _searchPublicChat(String chatName) async {
     logger.info('[$chatName] searching public chat... ');
+
+    final floodWaitSeconds = searchPublicChatFloodWait.getFloodWaitSeconds();
+    if (floodWaitSeconds > 0)
+      throw SearchPublicChatFloodWaiException(floodWaitSeconds);
+
     try {
       final Chat chat = await tdClient.retryTdCall(
           SearchPublicChat(username: chatName), false) as Chat;
@@ -286,6 +294,7 @@ class TelegramClient implements TelegramClientInterface {
 
       return chat;
     } on TgFloodWaiException catch (ex) {
+      searchPublicChatFloodWait.newFloodWait(ex);
       throw SearchPublicChatFloodWaiException(ex.waitSeconds);
     } on TgBadRequestException catch (ex) {
       throw TgChatNotFoundException(ex.toString());
@@ -479,4 +488,21 @@ class TelegramClientConfig {
   static const int delayUntilNextUserSeconds = 2;
 
   static const int getChatHistoryLimit = 99;
+}
+
+class SearchPublicChatFloodWait {
+  DateTime? dateTime;
+  int? floodWaitSeconds;
+
+  void newFloodWait(TgFloodWaiException tgFloodWaiException) {
+    dateTime = DateTime.now().toUtc();
+    floodWaitSeconds = tgFloodWaiException.waitSeconds;
+  }
+
+  int getFloodWaitSeconds() {
+    if (dateTime == null) return 0;
+    if (floodWaitSeconds == null) return 0;
+    return DateTime.now().toUtc().difference(dateTime!).inSeconds -
+        floodWaitSeconds!;
+  }
 }

@@ -30,7 +30,7 @@ class Exporter implements ExporterInterface {
   static const int ipfsRequestRetryDelaySeconds = 30;
   static const int ipfsRequestTimeoutSeconds = 60;
 
-  static const int exportRecordLimit = 100000;
+  static const int exportRecordLimit = 10000;
 
   bool _exportInProgress = false;
 
