@@ -44,7 +44,8 @@ class TdClient {
     await tdEvents.close();
   }
 
-  Future<TdObject> retryTdCall(TdFunction tdFunction) async {
+  Future<TdObject> retryTdCall(TdFunction tdFunction,
+      [bool sleepOnFloodWait = true]) async {
     var retryCountIndex = 0;
     while (retryCountIndex < tgRetryCountMax) {
       retryCountIndex += 1;
@@ -54,6 +55,7 @@ class TdClient {
         logger.warning('received flood wait for '
             '${tdFunction.runtimeType.toString()}. '
             'Retrying in ${ex.waitSeconds} seconds.');
+        if (!sleepOnFloodWait) rethrow;
         await Future.delayed(Duration(seconds: ex.waitSeconds));
       } on TgTimeOutException {
         logger.warning('time out for '
@@ -437,5 +439,17 @@ class TgTimeOutException implements Exception {
     return '${runtimeType.toString()}'
         'request $request timed out '
         'after ${millisenconds / 1000} seconds.';
+  }
+}
+
+class SearchPublicChatFloodWaiException implements Exception {
+  final int waitSeconds;
+
+  SearchPublicChatFloodWaiException(
+    this.waitSeconds,
+  );
+
+  String toString() {
+    return '${runtimeType.toString()}: $waitSeconds';
   }
 }
