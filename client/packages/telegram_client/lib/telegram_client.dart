@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:logging/logging.dart';
 import 'package:td_json_client/td_api.dart';
@@ -13,6 +14,9 @@ class TelegramClient implements TelegramClientInterface {
   final Logger logger;
 
   late final TdClient tdClient;
+
+  static const int searchPublicChatDelaySecondsMin = 30;
+  static const int searchPublicChatDelaySecondsMax = 60;
 
   TelegramClient(this.logger, String libtdjsonlcPath, Level logLevelLibTdJson,
       Uri? proxyUri) {
@@ -191,13 +195,14 @@ class TelegramClient implements TelegramClientInterface {
     var doSearchPublicChat = chatId == 0;
 
     if (doSearchPublicChat) {
+      final delaySeconds = _searchPublicChatDelaySeconds();
+      await Future.delayed(Duration(seconds: delaySeconds));
+
       final chat = await _searchPublicChat(chatName);
       chatId = WrapId.unwrapChatId(chat.id);
       logger.info('[$chatName] unwrapped chat id is $chatId.');
       await db.updateChat(chatName, chat);
       doSearchPublicChat = false;
-
-      await Future.delayed(const Duration(seconds: 20));
     }
 
     try {
@@ -211,13 +216,14 @@ class TelegramClient implements TelegramClientInterface {
     }
 
     if (doSearchPublicChat) {
+      final delaySeconds = _searchPublicChatDelaySeconds();
+      await Future.delayed(Duration(seconds: delaySeconds));
+
       final chat = await _searchPublicChat(chatName);
       chatId = WrapId.unwrapChatId(chat.id);
       logger.info('[$chatName] unwrapped chat id is $chatId.');
       await db.updateChat(chatName, chat);
       doSearchPublicChat = false;
-
-      await Future.delayed(const Duration(seconds: 20));
 
       await _openChat(chatName, chatId);
     }
@@ -455,6 +461,12 @@ class TelegramClient implements TelegramClientInterface {
     return await tdClient.retryTdCall(GetUser(
       user_id: userId,
     )) as User;
+  }
+
+  int _searchPublicChatDelaySeconds() {
+    return Random().nextInt(
+            searchPublicChatDelaySecondsMax - searchPublicChatDelaySecondsMin) +
+        searchPublicChatDelaySecondsMin;
   }
 }
 
