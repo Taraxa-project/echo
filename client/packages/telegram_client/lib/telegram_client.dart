@@ -105,6 +105,8 @@ class TelegramClient implements TelegramClientInterface {
         await db.blacklistChat(chatName, ex.message ?? 'Group not found');
       } on TgTimeOutException catch (ex) {
         logger.warning('[$chatName] $ex.');
+      } on SearchPublicChatFloodWaiException catch (ex) {
+        logger.warning('[$chatName] $ex. Skipping...');
       } on TgMaxRetriesExcedeedException catch (ex) {
         logger.warning('[$chatName] $ex.');
       } on TgBadRequestException catch (ex) {
@@ -270,9 +272,8 @@ class TelegramClient implements TelegramClientInterface {
   Future<Chat> _searchPublicChat(String chatName) async {
     logger.info('[$chatName] searching public chat... ');
     try {
-      final Chat chat = await tdClient.retryTdCall(SearchPublicChat(
-        username: chatName,
-      )) as Chat;
+      final Chat chat = await tdClient.retryTdCall(
+          SearchPublicChat(username: chatName), false) as Chat;
 
       if (chat.id == null) {
         throw TgChatNotFoundException('Chat.id is null');
@@ -284,6 +285,8 @@ class TelegramClient implements TelegramClientInterface {
       }
 
       return chat;
+    } on TgFloodWaiException catch (ex) {
+      throw SearchPublicChatFloodWaiException(ex.waitSeconds);
     } on TgBadRequestException catch (ex) {
       throw TgChatNotFoundException(ex.toString());
     }
