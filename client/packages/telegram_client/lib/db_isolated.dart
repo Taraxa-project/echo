@@ -46,7 +46,7 @@ class DbIsolated implements DbInterface {
 
   @override
   Future<void> close() async {
-    await isolatedProxy.call(Close());
+    await isolatedProxy.call(DbClose());
     isolatedProxy.exit();
   }
 
@@ -150,7 +150,7 @@ class DbIsolatedDispatch extends IsolatedDispatch {
   DbIsolatedDispatch(this.db) {}
 
   dynamic dispatch(message) async {
-    if (message is Close) {
+    if (message is DbClose) {
       db.close();
     } else if (message is InsertChats) {
       db.insertChats(message.usernames);
@@ -203,7 +203,7 @@ class Init {
   Init(this.filename, this.log);
 }
 
-class Close {}
+class DbClose {}
 
 class InsertChats {
   final List<String> usernames;

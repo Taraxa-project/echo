@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
-import 'package:cron/cron.dart';
 
 import 'package:echo_cli/callback/cli.dart';
 import 'package:telegram_client/log_isolated.dart';
@@ -45,13 +44,14 @@ class TelegramSaveChatHistoryCommand extends Command {
     final loginParams = _buildLoginParams();
 
     try {
-      log = await LogIsolated.spawn(logLevel);
-      telegramClient = await TelegramClientIsolated.spawn(
-          log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
-
-      await telegramClient.login(loginParams);
-
       while (true) {
+        log = await LogIsolated.spawn(logLevel);
+
+        telegramClient = await TelegramClientIsolated.spawn(
+            log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
+
+        await telegramClient.login(loginParams);
+
         db = await DbIsolated.spawn(log, fileNameDb);
 
         final dateTimeFrom = _twoWeeksAgo();
@@ -62,10 +62,12 @@ class TelegramSaveChatHistoryCommand extends Command {
             log, db, exportPath, ipfsParams, ingesterContractParams);
         await exporter.export();
 
-        if (!doLoop) break;
-
         exporter.exit();
+        await telegramClient.close();
         await db.close();
+        log.exit();
+
+        if (!doLoop) break;
 
         await Future.delayed(const Duration(seconds: 60));
       }
