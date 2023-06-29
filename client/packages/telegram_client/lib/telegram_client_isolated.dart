@@ -81,7 +81,7 @@ class TgIsolatedDispatch extends IsolatedDispatch {
 
   dynamic dispatch(message) async {
     if (message is Close) {
-      return await tg.close();
+      await tg.close();
     } else if (message is Login) {
       return await tg.login(message.loginParams);
     } else if (message is ReadChatsHistory) {

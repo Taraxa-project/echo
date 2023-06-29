@@ -15,9 +15,6 @@ class TelegramClient implements TelegramClientInterface {
 
   late final TdClient tdClient;
 
-  static const int searchPublicChatDelaySecondsMin = 30;
-  static const int searchPublicChatDelaySecondsMax = 60;
-
   SearchPublicChatFloodWait searchPublicChatFloodWait =
       SearchPublicChatFloodWait();
 
@@ -122,8 +119,10 @@ class TelegramClient implements TelegramClientInterface {
         logger.severe('[$chatName] $ex.');
       }
 
-      await Future.delayed(const Duration(
-          seconds: TelegramClientConfig.delayUntilNextChatSeconds));
+      await Future.delayed(Duration(
+          seconds: _randomBetween(
+              TelegramClientConfig.delayUntilNextChatSecondsMin,
+              TelegramClientConfig.delayUntilNextChatSecondsMax)));
     }
   }
 
@@ -264,10 +263,10 @@ class TelegramClient implements TelegramClientInterface {
 
       if (messages.length < TelegramClientConfig.getChatHistoryLimit) break;
 
-      if (messages.length < TelegramClientConfig.getChatHistoryLimit) break;
-
-      await Future.delayed(const Duration(
-        seconds: TelegramClientConfig.delayUntilNextMessageBatchSeconds,
+      await Future.delayed(Duration(
+        seconds: _randomBetween(
+            TelegramClientConfig.delayUntilNextMessageBatchSecondsMin,
+            TelegramClientConfig.delayUntilNextMessageBatchSecondsMax),
       ));
     }
   }
@@ -454,8 +453,10 @@ class TelegramClient implements TelegramClientInterface {
       final user = await _getUser(userId);
       users[userId] = user;
 
-      await Future.delayed(const Duration(
-          seconds: TelegramClientConfig.delayUntilNextUserSeconds));
+      await Future.delayed(Duration(
+          seconds: _randomBetween(
+              TelegramClientConfig.delayUntilNextUserSecondsMin,
+              TelegramClientConfig.delayUntilNextUserSecondsMax)));
     }
 
     if (msgs.length == 0) return;
@@ -476,18 +477,29 @@ class TelegramClient implements TelegramClientInterface {
   }
 
   int _searchPublicChatDelaySeconds() {
-    return Random().nextInt(
-            searchPublicChatDelaySecondsMax - searchPublicChatDelaySecondsMin) +
-        searchPublicChatDelaySecondsMin;
+    return _randomBetween(TelegramClientConfig.searchPublicChatDelaySecondsMin,
+        TelegramClientConfig.searchPublicChatDelaySecondsMax);
+  }
+
+  int _randomBetween(int min, int max) {
+    return Random().nextInt(max - min) + min;
   }
 }
 
 class TelegramClientConfig {
-  static const int delayUntilNextChatSeconds = 15;
-  static const int delayUntilNextMessageBatchSeconds = 5;
-  static const int delayUntilNextUserSeconds = 2;
+  static const int delayUntilNextChatSecondsMin = 10;
+  static const int delayUntilNextChatSecondsMax = 20;
+
+  static const int delayUntilNextMessageBatchSecondsMin = 5;
+  static const int delayUntilNextMessageBatchSecondsMax = 10;
+
+  static const int delayUntilNextUserSecondsMin = 2;
+  static const int delayUntilNextUserSecondsMax = 5;
 
   static const int getChatHistoryLimit = 99;
+
+  static const int searchPublicChatDelaySecondsMin = 30;
+  static const int searchPublicChatDelaySecondsMax = 60;
 }
 
 class SearchPublicChatFloodWait {

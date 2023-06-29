@@ -40,8 +40,10 @@ class TdClient {
 
   Future<void> close() async {
     logger.info('closing...');
+
+    await tdCall(Close());
+    tdEvents.close();
     _tdJsonClient.exit();
-    await tdEvents.close();
   }
 
   Future<TdObject> retryTdCall(TdFunction tdFunction,
