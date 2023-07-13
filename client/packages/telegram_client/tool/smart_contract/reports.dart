@@ -26,7 +26,12 @@ class Report {
   late final IpfsParams _ipfsParams;
   late final Database _db;
 
+  late final int _daysAgo;
+
   Report() {
+    _logger.onRecord.listen((event) {
+      print(event);
+    });
     _ipfsParams = _buildIpfsParams();
     _web3client = Web3Client(String.fromEnvironment('rpc_url'), _httpClient);
     _ingesterContractAddress =
@@ -36,6 +41,7 @@ class Report {
       client: _web3client,
     );
     _db = sqlite3.open(String.fromEnvironment('sqlite-db'));
+    _daysAgo = int.parse(String.fromEnvironment('import-from-days-ago'));
   }
 
   Future<void> run() async {
@@ -52,6 +58,7 @@ class Report {
   }
 
   void _runDbMigrations() {
+    _logger.info('running migrations...');
     _db.execute(SqlChatIpfs.dropIndexUsername);
     _db.execute(SqlChatIpfs.dropTable);
     _db.execute(SqlChatIpfs.createTable);
@@ -66,23 +73,28 @@ class Report {
   }
 
   Future<void> _addAll() async {
-    for (final privateKeyIngester in _privateKeysIngesters()) {
-      await _add(privateKeyIngester);
+    final _privateKeysIngesters = _readPrivateKeysIngesters();
+    _logger.info('processing ${_privateKeysIngesters.length} ingester...');
+    for (final privateKeyIngester in _privateKeysIngesters) {
+      await _addFromIngester(privateKeyIngester);
     }
   }
 
-  Future<void> _add(String privateKeyIngester) async {
+  Future<void> _addFromIngester(String privateKeyIngester) async {
     final credentialsIngester = EthPrivateKey.fromHex(privateKeyIngester);
     final ingesterAddress = credentialsIngester.address;
+
+    _logger.info('processing ingester $ingesterAddress...');
     final ipfsHashesMeta =
         await _contractDataGatheringFacet.getIpfsHashes(ingesterAddress);
     final ipfsHashMetaChat = ipfsHashesMeta[1];
     final ipfsHashMetaMessages = ipfsHashesMeta[2];
+
     await _addChats(ipfsHashMetaChat);
     await _addMessages(ipfsHashMetaMessages);
   }
 
-  dynamic _privateKeysIngesters() {
+  dynamic _readPrivateKeysIngesters() {
     final privateKeysIngestersFile =
         new io.File(String.fromEnvironment('private_keys_ingesters_file'));
     final privateKeysIngestersJson =
@@ -91,6 +103,8 @@ class Report {
   }
 
   Future<void> _addChats(String ipfsHash) async {
+    _logger.info('chat hash meta: $ipfsHash');
+
     var ipfsFile = await _ipfsCat(ipfsHash);
     var metas = ipfsFile.split('\n');
 
@@ -98,10 +112,14 @@ class Report {
       var metaJson = metas[i];
       if (metaJson.isEmpty) continue;
       var meta = jsonDecode(metaJson);
+
+      var dataHash = meta[1];
       var dateTimeUploaded = DateTime.parse(meta[2]);
+
       var dateDiff = _now.difference(dateTimeUploaded).inDays;
-      if (dateDiff <= 10) {
-        await _insertChats(meta[1]);
+      if (dateDiff <= _daysAgo) {
+        _logger.info('chat hash data from $dateTimeUploaded: $dataHash');
+        await _insertChats(dataHash);
       }
     }
   }
@@ -122,6 +140,8 @@ class Report {
   }
 
   Future<void> _addMessages(String ipfsHash) async {
+    _logger.info('message hash meta: $ipfsHash');
+
     var ipfsFile = await _ipfsCat(ipfsHash);
     var metas = ipfsFile.split('\n');
 
@@ -129,15 +149,19 @@ class Report {
       var metaJson = metas[i];
       if (metaJson.isEmpty) continue;
       var meta = jsonDecode(metaJson);
+
+      var dataHash = meta[1];
       var dateTimeUploaded = DateTime.parse(meta[2]);
+
       var dateDiff = _now.difference(dateTimeUploaded).inDays;
-      if (dateDiff <= 1) {
-        await _insertMessagesFromIpfs(meta[1]);
+      if (dateDiff <= _daysAgo) {
+        _logger.info('message hash data from $dateTimeUploaded: $dataHash');
+        await _insertMessages(meta[1]);
       }
     }
   }
 
-  Future<void> _insertMessagesFromIpfs(String ipfsHash) async {
+  Future<void> _insertMessages(String ipfsHash) async {
     var ipfsFile = await _ipfsCat(ipfsHash);
     var datas = ipfsFile.split('\n');
 
