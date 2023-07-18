@@ -170,10 +170,16 @@ class Db implements DbInterface {
   List<dynamic> _extractMessageInfo(Message message, int? onlineMembersCount) {
     final now = _now();
 
-    int? userId;
-    if (message.sender_id != null &&
-        message.sender_id.runtimeType == MessageSenderUser) {
-      userId = (message.sender_id as MessageSenderUser).user_id;
+    int? senderId;
+    String? senderType;
+    if (message.sender_id != null) {
+      senderType = message.sender_id.runtimeType.toString();
+      if (message.sender_id.runtimeType == MessageSenderUser) {
+        senderId = (message.sender_id as MessageSenderUser).user_id;
+      } else if (message.sender_id.runtimeType == MessageSenderChat) {
+        senderId = WrapId.unwrapChatId(
+            (message.sender_id as MessageSenderChat).chat_id);
+      }
     }
 
     String? text;
@@ -202,7 +208,8 @@ class Db implements DbInterface {
       DateTime.fromMillisecondsSinceEpoch(message.date! * 1000)
           .toUtc()
           .toIso8601String(),
-      userId,
+      senderId,
+      senderType,
       text,
       onlineMembersCount,
       message.interaction_info?.view_count,
@@ -347,6 +354,9 @@ class Db implements DbInterface {
     _createTables();
     _createIndexes();
     _initIpfsUpload();
+
+    _renameMessageUserIdToSenderId();
+    _addMessageSenderType();
   }
 
   void _createTables() {
@@ -375,6 +385,18 @@ class Db implements DbInterface {
     } finally {
       stmt.dispose();
     }
+  }
+
+  void _renameMessageUserIdToSenderId() {
+    try {
+      _database.execute(SqlMigration.renameMessageUserIdToSenderId);
+    } on Object {}
+  }
+
+  void _addMessageSenderType() {
+    try {
+      _database.execute(SqlMigration.addMessageSenderType);
+    } on Object {}
   }
 
   int? _selectLastUploadedId(String tableName) {

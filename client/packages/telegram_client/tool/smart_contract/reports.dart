@@ -259,6 +259,7 @@ class Report {
       _reportStartDate.toIso8601String(),
       _reportEndDate.toIso8601String()
     ];
+
     _db.execute(SqlReportChatCover.insertUpdated, params);
     _db.execute(SqlReportChatCover.updateMessageCount, params);
     _db.execute(SqlReportChatCover.updateUserCount, params);
@@ -267,9 +268,12 @@ class Report {
 
     final stmt = _db.prepare(SqlReportChatCover.report);
     final cursor = stmt.selectCursor();
+
     final fileName = 'chat-cover-${_reportStartDate.toIso8601String()}.csv';
     final fileNameFullPath = p.join(_reportDir, fileName);
+
     await _writeReportFromCursor(fileNameFullPath, cursor);
+
     stmt.dispose();
   }
 
@@ -301,11 +305,19 @@ class Report {
   }
 
   Future<void> _runReportChatActivity() async {
+    final params = [
+      _reportStartDate.toIso8601String(),
+      _reportEndDate.toIso8601String()
+    ];
+
     final stmt = _db.prepare(SqlReportChatActivity.report);
-    final cursor = stmt.selectCursor();
+    final cursor = stmt.selectCursor(params);
+
     final fileName = 'chat-activity-${_reportStartDate.toIso8601String()}.csv';
     final fileNameFullPath = p.join(_reportDir, fileName);
+
     await _writeReportFromCursor(fileNameFullPath, cursor);
+
     stmt.dispose();
   }
 }
@@ -419,7 +431,8 @@ CREATE TABLE IF NOT EXISTS message_ingester (
   chat_id INTEGER NOT NULL,
   id INTEGER NOT NULL,
   date TEXT,
-  user_id INTEGER,
+  sender_id INTEGER,
+  sender_type TEXT,
   text TEXT,
   member_online_count INTEGER,
   views INTEGER,
@@ -443,12 +456,12 @@ ON message_ingester (date);
 ''';
 
   static const insert = '''INSERT INTO message_ingester (
-  chat_id, id, date, user_id, text, 
+  chat_id, id, date, sender_id, sender_type, text, 
   member_online_count, views, replies, forwards, reply_to_id, 
   created_at, updated_at, ingester_address
 )
 VALUES (
-  ?, ?, ?, ?, ?,
+  ?, ?, ?, ?, ?, ?,
   ?, ?, ?, ?, ?,
   ?, ?, ?
 ) ON CONFLICT DO NOTHING;
@@ -527,7 +540,7 @@ FROM (
   SELECT
     chat_id,
     ingester_address,
-    count(distinct user_id) count
+    count(distinct sender_id) count
   FROM
     message_ingester
   WHERE
@@ -588,7 +601,7 @@ SELECT
 FROM
   message_ingester
 WHERE
-  "date" >= '2023-07-10T00:00:00.000Z' and "date" < '2023-07-17T00:00:00.000Z'
+  "date" >= ? and "date" < ?
 GROUP BY chat_id, ingester_address
 ) a
 INNER JOIN chat_ingester b on a.chat_id = b.id
