@@ -76,6 +76,16 @@ CREATE INDEX IF NOT EXISTS idx_ipfs_hash_table_name ON
 CREATE UNIQUE INDEX IF NOT EXISTS idx_message_chat_id_message_id ON
   message(chat_id, id);
 ''';
+
+  static const renameMessageUserIdToSenderId = '''
+ALTER TABLE message
+RENAME user_id TO sender_id;
+''';
+
+  static const addMessageSenderType = '''
+ALTER TABLE message
+ADD COLUMN sender_type TEXT;
+''';
 }
 
 class SqlChat {
@@ -164,12 +174,12 @@ WHERE
 
   static const insert = '''
 INSERT INTO message (
-  chat_id, id, date, user_id, text, 
+  chat_id, id, date, sender_id, sender_type, text, 
   member_online_count, views, replies, forwards, reply_to_id, 
   created_at, updated_at
 )
 VALUES (
-  ?, ?, ?, ?, ?,
+  ?, ?, ?, ?, ?, ?,
   ?, ?, ?, ?, ?,
   ?, ?
 ) ON CONFLICT DO NOTHING;
