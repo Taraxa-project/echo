@@ -459,7 +459,7 @@ class Db implements DbInterface {
     return DateTime.now().toUtc().toIso8601String();
   }
 
-  void execute(String sql, List<Object?> parameters) {
+  void execute(String sql, [List<Object?> parameters = const <Object>[]]) {
     final stmt = _database.prepare(sql);
     try {
       stmt.execute(parameters);
@@ -470,7 +470,7 @@ class Db implements DbInterface {
     }
   }
 
-  ResultSet select(String sql, List<Object?> parameters) {
+  ResultSet select(String sql, [List<Object?> parameters = const <Object>[]]) {
     final stmt = _database.prepare(sql);
     try {
       return stmt.select(parameters);

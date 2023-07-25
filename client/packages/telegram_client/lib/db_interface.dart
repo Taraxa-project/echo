@@ -9,8 +9,10 @@ abstract class DbInterface {
 
   FutureOr<void> runMigrations();
 
-  FutureOr<void> execute(String sql, List<Object?> parameters);
-  FutureOr<ResultSet> select(String sql, List<Object?> parameters);
+  FutureOr<void> execute(String sql,
+      [List<Object?> parameters = const <Object>[]]);
+  FutureOr<ResultSet> select(String sql,
+      [List<Object?> parameters = const <Object>[]]);
 
   FutureOr<Map<String, dynamic>?> selectChat(String username);
   FutureOr<void> insertChats(List<String> usernames);

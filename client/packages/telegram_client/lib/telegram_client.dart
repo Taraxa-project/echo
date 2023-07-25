@@ -89,6 +89,8 @@ class TelegramClient implements TelegramClientInterface {
         .where((element) => element.isNotEmpty)
         .toList();
 
+    if (chatsNames.length == 0) return;
+
     logger.info('adding groups to db...');
     await db.insertChats(chatsNames);
 

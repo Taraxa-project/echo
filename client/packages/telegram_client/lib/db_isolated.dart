@@ -149,11 +149,13 @@ class DbIsolated implements DbInterface {
     await isolatedProxy.call(RunMigrations());
   }
 
-  Future<void> execute(String sql, List<Object?> parameters) async {
+  Future<void> execute(String sql,
+      [List<Object?> parameters = const <Object>[]]) async {
     await isolatedProxy.call(Execute(sql, parameters));
   }
 
-  Future<ResultSet> select(String sql, List<Object?> parameters) async {
+  Future<ResultSet> select(String sql,
+      [List<Object?> parameters = const <Object>[]]) async {
     return await isolatedProxy.call(Select(sql, parameters));
   }
 }
@@ -339,12 +341,12 @@ class Execute {
   final String sql;
   final List<Object?> parameters;
 
-  Execute(this.sql, this.parameters);
+  Execute(this.sql, [this.parameters = const <Object>[]]);
 }
 
 class Select {
   final String sql;
   final List<Object?> parameters;
 
-  Select(this.sql, this.parameters);
+  Select(this.sql, [this.parameters = const <Object>[]]);
 }
