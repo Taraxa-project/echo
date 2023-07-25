@@ -19,9 +19,6 @@ class Db implements DbInterface {
   Db(this.logger, String filename) {
     logger.info('opening database $filename...');
     _database = sqlite3.open(filename);
-
-    logger.info('running migrations...');
-    _runMigrations();
   }
 
   void close() {
@@ -67,7 +64,7 @@ class Db implements DbInterface {
     final parameters = [reason, now, username];
 
     logger.fine('updating chat $parameters...');
-    _execute(SqlChat.blacklist, parameters);
+    execute(SqlChat.blacklist, parameters);
   }
 
   void updateChat(String username, Chat chat) {
@@ -76,7 +73,7 @@ class Db implements DbInterface {
     final parameters = [chatId, chat.title, now, username];
 
     logger.fine('updating chat $parameters...');
-    _execute(SqlChat.update, parameters);
+    execute(SqlChat.update, parameters);
   }
 
   void updateChatMembersCount(String username, int membersCount) {
@@ -84,7 +81,7 @@ class Db implements DbInterface {
     final parameters = [membersCount, now, username];
 
     logger.fine('updating chat $parameters...');
-    _execute(SqlChat.updateMembersCount, parameters);
+    execute(SqlChat.updateMembersCount, parameters);
   }
 
   void updateChatMembersOnlineCount(String username, int membersOnlineCount) {
@@ -92,7 +89,7 @@ class Db implements DbInterface {
     final parameters = [membersOnlineCount, now, username];
 
     logger.fine('updating chat $parameters...');
-    _execute(SqlChat.updateMemberOnlineCount, parameters);
+    execute(SqlChat.updateMemberOnlineCount, parameters);
   }
 
   void updateChatBotsCount(String username, int botsCount) {
@@ -100,7 +97,7 @@ class Db implements DbInterface {
     final parameters = [botsCount, now, username];
 
     logger.fine('updating chat $parameters...');
-    _execute(SqlChat.updateBotCount, parameters);
+    execute(SqlChat.updateBotCount, parameters);
   }
 
   int? selectChatOnlineMembersCount(String username) {
@@ -241,7 +238,7 @@ class Db implements DbInterface {
     final parameters = [userId];
 
     logger.fine('checking if user exists $parameters...');
-    final rs = _select(SqlUser.select, parameters);
+    final rs = select(SqlUser.select, parameters);
     return rs.isNotEmpty;
   }
 
@@ -305,7 +302,7 @@ class Db implements DbInterface {
     final parameters = [fileHash, now, tableName];
 
     logger.fine('updating ipfs meta $parameters...');
-    _execute(SqlIpfsUpload.updateMetaFileHash, parameters);
+    execute(SqlIpfsUpload.updateMetaFileHash, parameters);
   }
 
   IfpsFileHashesMeta selectMetaFileHahes() {
@@ -325,8 +322,8 @@ class Db implements DbInterface {
   }
 
   DateTime? selectLastExportDateTime() {
-    final updatedAt = _select(SqlIpfsUpload.selectMaxUpdatedAt, [])
-        .firstOrNull?['updated_at'];
+    final updatedAt =
+        select(SqlIpfsUpload.selectMaxUpdatedAt, []).firstOrNull?['updated_at'];
     if (updatedAt == null) {
       return null;
     } else {
@@ -339,7 +336,7 @@ class Db implements DbInterface {
     final parameters = [tableName, fileHash, now, now];
 
     logger.fine('inserting ipfs hash $parameters...');
-    _execute(SqlIpfsHash.insert, parameters);
+    execute(SqlIpfsHash.insert, parameters);
   }
 
   void _updateLastUploadedId(String tableName) {
@@ -347,10 +344,12 @@ class Db implements DbInterface {
     final parameters = [now, tableName];
 
     logger.fine('inserting ipfs hash $parameters...');
-    _execute(SqlIpfsUpload.updateLastUploadedId, parameters);
+    execute(SqlIpfsUpload.updateLastUploadedId, parameters);
   }
 
-  void _runMigrations() {
+  void runMigrations() {
+    logger.info('running migrations...');
+
     _createTables();
     _createIndexes();
     _initIpfsUpload();
@@ -453,14 +452,14 @@ class Db implements DbInterface {
     final parameters = [exportedId, now, tableName];
 
     logger.fine('updating last exported id $parameters...');
-    _execute(SqlIpfsUpload.updateLastExportedId, parameters);
+    execute(SqlIpfsUpload.updateLastExportedId, parameters);
   }
 
   String _now() {
     return DateTime.now().toUtc().toIso8601String();
   }
 
-  void _execute(String sql, List<Object?> parameters) {
+  void execute(String sql, List<Object?> parameters) {
     final stmt = _database.prepare(sql);
     try {
       stmt.execute(parameters);
@@ -471,7 +470,7 @@ class Db implements DbInterface {
     }
   }
 
-  ResultSet _select(String sql, List<Object?> parameters) {
+  ResultSet select(String sql, List<Object?> parameters) {
     final stmt = _database.prepare(sql);
     try {
       return stmt.select(parameters);

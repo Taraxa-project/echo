@@ -53,6 +53,7 @@ class TelegramSaveChatHistoryCommand extends Command {
         await telegramClient.login(loginParams);
 
         db = await DbIsolated.spawn(log, fileNameDb);
+        await db.runMigrations();
 
         final dateTimeFrom = _twoWeeksAgo();
         await telegramClient.saveChatsHistory(
