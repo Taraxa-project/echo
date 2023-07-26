@@ -141,6 +141,22 @@ class TelegramClient implements TelegramClientInterface {
     ) as Message;
   }
 
+  StreamController<dynamic> subscribe() {
+    final streamController = StreamController<dynamic>();
+
+    streamController.onListen = () {
+      tdClient.tdEvents.stream.listen((message) {
+        streamController.add(message);
+      });
+    };
+
+    return streamController;
+  }
+
+  Future<dynamic> callTdFunction(TdFunction tdFunction) async {
+    return await tdClient.tdCall(tdFunction);
+  }
+
   Future<TdObject> _setTdlibParameters(LoginParams loginParams) async {
     logger.info('sending SetTdlibParameters...');
     return await tdClient.retryTdCall(SetTdlibParameters(

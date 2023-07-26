@@ -11,6 +11,8 @@ abstract class TelegramClientInterface {
   FutureOr<Message> readChatMessage(String chatName, int messageId);
   FutureOr<void> saveChatsHistory(DateTime dateTimeFrom,
       IngesterContractParams ingesterContractParams, DbIsolated db);
+  StreamController<dynamic> subscribe();
+  Future<dynamic> callTdFunction(TdFunction tdFunction);
 }
 
 class LoginParams {

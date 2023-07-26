@@ -1,4 +1,6 @@
 import 'dart:io' as io;
+import 'dart:async';
+import 'dart:math';
 
 import 'package:path/path.dart' as p;
 import 'package:logging/logging.dart';
@@ -9,6 +11,8 @@ import 'package:telegram_client/db_isolated.dart';
 import 'package:telegram_client/log_isolated.dart';
 import 'package:telegram_client/telegram_client_interface.dart';
 import 'package:telegram_client/telegram_client_isolated.dart';
+import 'package:telegram_client/wrap_id.dart';
+import 'package:td_json_client/td_api.dart';
 
 final workDir = String.fromEnvironment('work-dir');
 final dbFileName = p.join(workDir, 'check.sqlite');
@@ -33,9 +37,9 @@ void main() async {
     db = await DbIsolated.spawn(log, dbFileName);
 
     var check = Check(log, db, workDir);
-    await check.runMigrations();
-    await check.importChats();
-    await check.importAccounts();
+    // await check.runMigrations();
+    // await check.importChats();
+    // await check.importAccounts();
     await check.run();
   } on Object {
     rethrow;
@@ -154,25 +158,18 @@ class Check {
   Future<void> run() async {
     final accounts = await _db.select(SqlAccount.select);
     for (final account in accounts) {
-      await runAccount(account);
+      await _runAccount(account);
     }
   }
 
-  Future<void> runAccount(Row account) async {
+  Future<void> _runAccount(Row account) async {
+    int accountId = account['id'];
+    _logger.info('[$accountId] start checking...');
+
     final telegramDatabasePath = _telegramDatabasePath(account);
+    _createTelegramDatabasePathDir(telegramDatabasePath);
 
-    final dir = io.Directory(telegramDatabasePath);
-    if (!dir.existsSync()) {
-      dir.createSync();
-    }
-
-    Uri? proxyUri;
-    if (account['proxy'] != null && account['proxy'] != '') {
-      try {
-        proxyUri = Uri.parse(account['proxy']);
-      } on Object {}
-    }
-
+    final proxyUri = _buildProxyUri(account);
     final loginParams = _buildLoginParams(account, telegramDatabasePath);
 
     TelegramClientIsolated? telegramClient;
@@ -180,13 +177,193 @@ class Check {
     try {
       telegramClient = await TelegramClientIsolated.spawn(
           _log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
-
       await telegramClient.login(loginParams);
+
+      while (true) {
+        var rs = await _db.select(SqlChat.selectCountForAccount, [accountId]);
+        var row = rs.first;
+
+        int chatCount = row['count'];
+        _logger.info('[$accountId] checked $chatCount/$chatsPerAccount');
+
+        if (chatCount >= chatsPerAccount) {
+          _logger.info('[$accountId] max chat count $chatsPerAccount reached');
+          break;
+        }
+
+        rs = await _db.select(SqlChat.selectNext);
+        if (rs.length == 0) {
+          _logger.info('[$accountId] no more chats to check');
+        }
+
+        row = rs.first;
+
+        await _db.execute(
+            SqlChat.updateStatusInProgress, [accountId, row['username']]);
+
+        await _checkChat(telegramClient, accountId, row);
+
+        await _db
+            .execute(SqlChat.updateStatusChecked, [accountId, row['username']]);
+
+        int chatId = row['id'];
+        String chatUsername = row['username'];
+        int sleepSeconds = _randomBetween(40, 60);
+        _logger.info('[$accountId][$chatId][$chatUsername]'
+            ' sleeping for $sleepSeconds until next chat...');
+        await Future.delayed(Duration(seconds: sleepSeconds));
+
+        // break;
+      }
+
+      await Future.delayed(const Duration(seconds: 10));
     } on Object catch (ex) {
       _logger.severe(ex);
     } finally {
       await telegramClient?.close();
     }
+  }
+
+  Future<void> _checkChat(
+      TelegramClientIsolated telegramClient, int accountId, Row chat) async {
+    int sleepSeconds = 2;
+
+    int chatId = chat['id'];
+    String chatUsername = chat['username'];
+    _logger.info('[$accountId][$chatId][$chatUsername] checking...');
+
+    var tdResponse = await telegramClient
+        .callTdFunction(SearchPublicChat(username: chatUsername));
+    if (tdResponse is Error) {
+      _logger.severe('[$accountId][$chatId][$chatUsername]'
+          ' SearchPublicChat error $tdResponse');
+      return;
+    }
+    _logger.info('[$accountId][$chatId][$chatUsername]'
+        ' sleeping for $sleepSeconds seconds'
+        ' after searching public chat');
+    await Future.delayed(const Duration(seconds: 2));
+
+    StreamController<dynamic>? tdEvents;
+    StreamSubscription? tdEventsSubscription;
+    try {
+      _logger.info('[$accountId][$chatId][$chatUsername]'
+          ' subscribing for new messages...');
+      tdEvents = telegramClient.subscribe();
+      tdEventsSubscription = tdEvents.stream
+          .listen(_updateNewMessage(telegramClient, accountId, chat));
+
+      var tdResponse = await telegramClient
+          .callTdFunction(JoinChat(chat_id: WrapId.wrapChatId(chatId)));
+      if (tdResponse is Error) {
+        _logger.severe('[$accountId][$chatId][$chatUsername]'
+            ' search public chat error $tdResponse');
+      }
+
+      sleepSeconds = 20;
+      _logger.info('[$accountId][$chatId][$chatUsername]'
+          ' sleeping for $sleepSeconds seconds'
+          ' to wait for new messages...');
+      await Future.delayed(Duration(seconds: sleepSeconds));
+    } on Object catch (ex) {
+      _logger.severe(ex);
+      rethrow;
+    } finally {
+      await tdEventsSubscription?.cancel();
+      await tdEvents?.close();
+      sleepSeconds = 2;
+      _logger.info('[$accountId][$chatId][$chatUsername]'
+          ' sleeping for $sleepSeconds seconds'
+          ' after canceling subscription for td events...');
+      await Future.delayed(Duration(seconds: sleepSeconds));
+    }
+  }
+
+  dynamic Function(dynamic event) _updateNewMessage(
+      TelegramClientIsolated telegramClient, int accountId, Row chat) {
+    return (dynamic event) async {
+      try {
+        // _logger.info(event);
+
+        int chatId = chat['id'];
+        String chatUsername = chat['username'];
+
+        if (event is! UpdateNewMessage) return;
+        if (event.message == null) return;
+
+        final message = event.message!;
+        if (message.chat_id == null) return;
+        int chatIdUnwrapped = WrapId.unwrapChatId(message.chat_id);
+        if (chatIdUnwrapped != chatId) return;
+        if (message.sender_id == null) return;
+
+        final messageSender = message.sender_id!;
+        if (messageSender is! MessageSenderUser) return;
+        if (messageSender.user_id == null) return;
+
+        final userId = messageSender.user_id!;
+
+        final user =
+            await telegramClient.callTdFunction(GetUser(user_id: userId));
+        if (user is Error) {
+          _logger.severe('[$accountId][$chatId][$chatUsername]'
+              ' GetUser error $user');
+          return;
+        }
+
+        if (user.type is! UserTypeBot) return;
+
+        String? text;
+        if (message.content != null) {
+          if (message.content is MessageText) {
+            var formattedText = (message.content as MessageText).text;
+            if (formattedText != null) {
+              text = formattedText.text;
+            }
+          } else if (message.content is MessagePhoto) {
+            var formattedText = (message.content as MessagePhoto).caption;
+            if (formattedText != null) {
+              text = formattedText.text;
+            }
+          }
+        }
+
+        final now = _now();
+
+        var parameters = [
+          chatId,
+          message.id,
+          DateTime.fromMillisecondsSinceEpoch(message.date! * 1000)
+              .toUtc()
+              .toIso8601String(),
+          userId,
+          messageSender.runtimeType.toString(),
+          text,
+          now,
+          now
+        ];
+        await _db.execute(SqlMessage.insert, parameters);
+
+        String? username;
+        if (user.usernames != null &&
+            user.usernames.active_usernames != null &&
+            user.usernames.active_usernames.length > 0) {
+          username = user.usernames.active_usernames[0];
+        }
+        parameters = [
+          user.id,
+          user.first_name,
+          user.last_name,
+          username,
+          user.type is UserTypeBot,
+          now,
+          now,
+        ];
+        await _db.execute(SqlUser.insert, parameters);
+      } on Object catch (ex) {
+        _logger.severe(ex);
+      }
+    };
   }
 
   LoginParams _buildLoginParams(Row account, String telegramDatabasePath) {
@@ -203,12 +380,33 @@ class Check {
     );
   }
 
+  Uri? _buildProxyUri(Row account) {
+    Uri? proxyUri;
+    if (account['proxy'] != null && account['proxy'] != '') {
+      try {
+        proxyUri = Uri.parse(account['proxy']);
+      } on Object {}
+    }
+    return proxyUri;
+  }
+
+  void _createTelegramDatabasePathDir(String telegramDatabasePath) {
+    final dir = io.Directory(telegramDatabasePath);
+    if (!dir.existsSync()) {
+      dir.createSync();
+    }
+  }
+
   String _telegramDatabasePath(Row account) {
     return p.joinAll([workDir, 'account_${account['id']}']);
   }
 
   String _now() {
     return DateTime.now().toUtc().toIso8601String();
+  }
+
+  int _randomBetween(int min, int max) {
+    return Random().nextInt(max - min) + min;
   }
 }
 
@@ -270,7 +468,7 @@ WHERE
   status = 0 AND
   is_crypto = 1
 ORDER BY
-  weekly_message_count DESC, row_id ASC
+  weekly_message_count DESC, rowid ASC
 LIMIT 1;
 ''';
 
