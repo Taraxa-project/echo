@@ -37,9 +37,9 @@ void main() async {
     db = await DbIsolated.spawn(log, dbFileName);
 
     var check = Check(log, db, workDir);
-    // await check.runMigrations();
-    // await check.importChats();
-    // await check.importAccounts();
+    await check.runMigrations();
+    await check.importChats();
+    await check.importAccounts();
     await check.run();
   } on Object {
     rethrow;
