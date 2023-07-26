@@ -91,7 +91,14 @@ class Check {
 
     final now = _now();
     for (var record in records) {
-      final parameters = record.split('\t');
+      final recordValues = record.split('\t');
+      final parameters = recordValues.map((e) {
+        try {
+          return int.parse(e);
+        } on Object {
+          return e;
+        }
+      }).toList();
       parameters.addAll([now, now]);
       await _db.execute(SqlChat.insert, parameters);
     }
@@ -213,6 +220,8 @@ CREATE TABLE IF NOT EXISTS chat (
   blacklisted INTEGER DEFAULT 0, /* 0 - false; 1 - true; */
   blacklist_reason TEXT,
   status INTEGER NOT NULL DEFAULT 0, /* 0 - not checked; 1 - check in progress; 2 - checked; */
+  is_crypto INTEGER DEFAULT 1, /* 0 - false; 1 - true; */
+  weekly_message_count INTEGER DEFAULT 0,
   account_id INTEGER,
   created_at TEXT,
   updated_at TEXT);
@@ -220,9 +229,9 @@ CREATE TABLE IF NOT EXISTS chat (
 
   static const insert = '''
 INSERT INTO chat
-  (username, id, blacklisted, blacklist_reason, created_at, updated_at)
+  (username, id, blacklisted, blacklist_reason, is_crypto, weekly_message_count, created_at, updated_at)
 VALUES
-  (?, ?, ?, ?, ?, ?);
+  (?, ?, ?, ?, ?, ?, ?, ?);
 ''';
 
   static const selectCount = '''
@@ -258,9 +267,10 @@ SELECT
 FROM
   chat
 WHERE
-  status = 0
+  status = 0 AND
+  is_crypto = 1
 ORDER BY
-  row_id ASC
+  weekly_message_count DESC, row_id ASC
 LIMIT 1;
 ''';
 
