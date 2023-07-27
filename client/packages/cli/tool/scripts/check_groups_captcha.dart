@@ -233,6 +233,15 @@ class Check {
           await _sleepUntilNextChat(accountId);
 
           continue;
+        } on TgTimeOutException catch (ex) {
+          _logger.warning(ex);
+
+          await _db.execute(SqlChat.updateStatusOther,
+              [ex.toString(), accountId, row['username']]);
+
+          await _sleepUntilNextChat(accountId);
+
+          continue;
         }
 
         await _db
