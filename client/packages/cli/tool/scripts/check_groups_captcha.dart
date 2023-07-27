@@ -185,11 +185,11 @@ class Check {
     TelegramClientIsolated? telegramClient;
 
     try {
-      telegramClient = await TelegramClientIsolated.spawn(
-          _log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
-      await telegramClient.login(loginParams);
-
       while (true) {
+        telegramClient = await TelegramClientIsolated.spawn(
+            _log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
+        await telegramClient.login(loginParams);
+
         var rs = await _db.select(SqlChat.selectCountForAccount, [accountId]);
         var row = rs.first;
 
@@ -204,6 +204,7 @@ class Check {
         rs = await _db.select(SqlChat.selectNext);
         if (rs.length == 0) {
           _logger.info('[$accountId] no more chats to check');
+          break;
         }
 
         row = rs.first;
@@ -219,6 +220,8 @@ class Check {
           await _db.execute(
               SqlChat.updateStatusNotChecked, [accountId, row['username']]);
 
+          await telegramClient.close();
+
           final waitSeconds = ex.waitSeconds + floodWaitSecondsAdd;
           _logger.warning('[$accountId] flood wait for $waitSeconds');
           await Future.delayed(Duration(seconds: waitSeconds));
@@ -230,6 +233,8 @@ class Check {
           await _db.execute(SqlChat.updateStatusOther,
               [ex.toString(), accountId, row['username']]);
 
+          await telegramClient.close();
+
           await _sleepUntilNextChat(accountId);
 
           continue;
@@ -239,6 +244,8 @@ class Check {
           await _db.execute(SqlChat.updateStatusOther,
               [ex.toString(), accountId, row['username']]);
 
+          await telegramClient.close();
+
           await _sleepUntilNextChat(accountId);
 
           continue;
@@ -247,14 +254,15 @@ class Check {
         await _db
             .execute(SqlChat.updateStatusChecked, [accountId, row['username']]);
 
+        await telegramClient.close();
+
         await _sleepUntilNextChat(accountId);
-        // break;
       }
 
       await Future.delayed(const Duration(seconds: 10));
     } on Object catch (ex) {
       _logger.severe(ex);
-    } finally {
+
       await telegramClient?.close();
     }
   }
