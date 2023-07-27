@@ -227,7 +227,7 @@ class Check {
 
         int chatId = row['id'];
         String chatUsername = row['username'];
-        int sleepSeconds = _randomBetween(40, 60);
+        int sleepSeconds = _randomBetween(60 * 7, 60 * 10);
         _logger.info('[$accountId][$chatId][$chatUsername]'
             ' sleeping for $sleepSeconds until next chat...');
         await Future.delayed(Duration(seconds: sleepSeconds));
