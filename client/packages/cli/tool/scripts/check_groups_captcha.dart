@@ -9,6 +9,7 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:echo_cli/callback/cli.dart';
 import 'package:telegram_client/db_isolated.dart';
 import 'package:telegram_client/log_isolated.dart';
+import 'package:telegram_client/td_client.dart';
 import 'package:telegram_client/telegram_client_interface.dart';
 import 'package:telegram_client/telegram_client_isolated.dart';
 import 'package:telegram_client/wrap_id.dart';
@@ -28,6 +29,8 @@ const logLevel = Level.INFO;
 final logLevelLibTdJson = Level.WARNING;
 final fileNameLibTdJson =
     envVars['libtdjson_path'] ?? '/usr/local/lib/libtdjsonlc.so';
+
+const int floodWaitSecondsAdd = 10 * 60;
 
 void main() async {
   hierarchicalLoggingEnabled = true;
@@ -204,7 +207,20 @@ class Check {
         await _db.execute(
             SqlChat.updateStatusInProgress, [accountId, row['username']]);
 
-        await _checkChat(telegramClient, accountId, row);
+        try {
+          await _checkChat(telegramClient, accountId, row);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning(ex);
+
+          await _db.execute(
+              SqlChat.updateStatusNotChecked, [accountId, row['username']]);
+
+          final waitSeconds = ex.waitSeconds + floodWaitSecondsAdd;
+          _logger.warning('[$accountId] flood wait for $waitSeconds');
+          await Future.delayed(Duration(seconds: waitSeconds));
+
+          continue;
+        }
 
         await _db
             .execute(SqlChat.updateStatusChecked, [accountId, row['username']]);
@@ -483,6 +499,17 @@ UPDATE
   chat
 SET
   status = 1,
+  account_id = ?
+WHERE
+  account_id IS NULL AND
+  username = ?;
+''';
+
+  static const updateStatusNotChecked = '''
+UPDATE
+  chat
+SET
+  status = 0,
   account_id = ?
 WHERE
   account_id IS NULL AND
