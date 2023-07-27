@@ -49,9 +49,11 @@ COPY --from=builder /app-temp/lib/libtdjson.so*  /usr/local/lib/
 RUN ldconfig
 
 COPY --from=builder /app/packages/cli/bin/main.sh /app/
+COPY --from=builder /app/packages/cli/bin/echo_check_groups_captcha.sh /app/
 
 # Copy compiled executable
 COPY --from=builder /app/echo /app/echo
 COPY --from=builder /app/echo_check_groups_captcha /app/echo_check_groups_captcha
 
-CMD ["sh", "-c", "/app/main.sh"]
+# CMD ["sh", "-c", "/app/main.sh"]
+CMD ["sh", "-c", "/app/echo_check_groups_captcha.sh"]

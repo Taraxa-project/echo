@@ -14,7 +14,9 @@ import 'package:telegram_client/telegram_client_isolated.dart';
 import 'package:telegram_client/wrap_id.dart';
 import 'package:td_json_client/td_api.dart';
 
-final workDir = String.fromEnvironment('work-dir');
+Map<String, String> envVars = io.Platform.environment;
+
+final workDir = envVars['work_dir'] ?? '/var/lib/tdlib';
 final dbFileName = p.join(workDir, 'check.sqlite');
 
 const chatsFileName = 'chats.csv';
@@ -24,7 +26,8 @@ const accountsFileName = 'accounts.csv';
 
 const logLevel = Level.INFO;
 final logLevelLibTdJson = Level.WARNING;
-final fileNameLibTdJson = String.fromEnvironment('libtdjson-path');
+final fileNameLibTdJson =
+    envVars['libtdjson_path'] ?? '/usr/local/lib/libtdjsonlc.so';
 
 void main() async {
   hierarchicalLoggingEnabled = true;
@@ -371,7 +374,8 @@ class Check {
       account['api_id'],
       account['api_hash'],
       account['phone_number'],
-      telegramDatabasePath,
+      workDir,
+      // telegramDatabasePath,
       readTelegramCode,
       writeQrCodeLink,
       readUserFirstName,
