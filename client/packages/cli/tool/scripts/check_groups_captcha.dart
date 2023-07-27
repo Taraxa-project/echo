@@ -81,6 +81,10 @@ class Check {
     await _db.execute(SqlAccount.createIndexPhoneNumber);
 
     await _db.execute(SqlChat.resetStatusInProgress);
+
+    try {
+      await _db.execute(SqlChat.addColumnOther);
+    } on Object {}
   }
 
   Future<void> importChats() async {
@@ -220,18 +224,21 @@ class Check {
           await Future.delayed(Duration(seconds: waitSeconds));
 
           continue;
+        } on TgBadRequestException catch (ex) {
+          _logger.warning(ex);
+
+          await _db.execute(SqlChat.updateStatusOther,
+              [ex.toString(), accountId, row['username']]);
+
+          await _sleepUntilNextChat(accountId);
+
+          continue;
         }
 
         await _db
             .execute(SqlChat.updateStatusChecked, [accountId, row['username']]);
 
-        int chatId = row['id'];
-        String chatUsername = row['username'];
-        int sleepSeconds = _randomBetween(60 * 7, 60 * 10);
-        _logger.info('[$accountId][$chatId][$chatUsername]'
-            ' sleeping for $sleepSeconds until next chat...');
-        await Future.delayed(Duration(seconds: sleepSeconds));
-
+        await _sleepUntilNextChat(accountId);
         // break;
       }
 
@@ -241,6 +248,13 @@ class Check {
     } finally {
       await telegramClient?.close();
     }
+  }
+
+  Future<void> _sleepUntilNextChat(int accountId) async {
+    int sleepSeconds = _randomBetween(60 * 7, 60 * 10);
+    _logger.info('[$accountId]'
+        ' sleeping for $sleepSeconds until next chat...');
+    await Future.delayed(Duration(seconds: sleepSeconds));
   }
 
   Future<void> _checkChat(
@@ -286,8 +300,7 @@ class Check {
           ' sleeping for $sleepSeconds seconds'
           ' to wait for new messages...');
       await Future.delayed(Duration(seconds: sleepSeconds));
-    } on Object catch (ex) {
-      _logger.severe(ex);
+    } on Object {
       rethrow;
     } finally {
       await tdEventsSubscription?.cancel();
@@ -439,12 +452,17 @@ CREATE TABLE IF NOT EXISTS chat (
   id INTEGER,
   blacklisted INTEGER DEFAULT 0, /* 0 - false; 1 - true; */
   blacklist_reason TEXT,
-  status INTEGER NOT NULL DEFAULT 0, /* 0 - not checked; 1 - check in progress; 2 - checked; */
+  status INTEGER NOT NULL DEFAULT 0, /* 0 - not checked; 1 - check in progress; 2 - checked; 3 - other; */
   is_crypto INTEGER DEFAULT 1, /* 0 - false; 1 - true; */
   weekly_message_count INTEGER DEFAULT 0,
   account_id INTEGER,
   created_at TEXT,
   updated_at TEXT);
+''';
+
+  static const addColumnOther = '''
+ALTER TABLE chat
+ADD COLUMN other TEXT;
 ''';
 
   static const insert = '''
@@ -521,6 +539,17 @@ UPDATE
   chat
 SET
   status = 2
+WHERE
+  account_id = ? AND
+  username = ?;
+''';
+
+  static const updateStatusOther = '''
+UPDATE
+  chat
+SET
+  status = 3,
+  other = ?
 WHERE
   account_id = ? AND
   username = ?;
