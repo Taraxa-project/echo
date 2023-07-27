@@ -235,6 +235,7 @@ class Check {
     String chatUsername = chat['username'];
     _logger.info('[$accountId][$chatId][$chatUsername] checking...');
 
+    _logger.info('[$accountId][$chatId][$chatUsername] SearchPublicChat...');
     var tdResponse = await telegramClient
         .callTdFunction(SearchPublicChat(username: chatUsername));
     if (tdResponse is Error) {
@@ -256,11 +257,12 @@ class Check {
       tdEventsSubscription = tdEvents.stream
           .listen(_updateNewMessage(telegramClient, accountId, chat));
 
+      _logger.info('[$accountId][$chatId][$chatUsername] JoinChat...');
       var tdResponse = await telegramClient
           .callTdFunction(JoinChat(chat_id: WrapId.wrapChatId(chatId)));
       if (tdResponse is Error) {
         _logger.severe('[$accountId][$chatId][$chatUsername]'
-            ' search public chat error $tdResponse');
+            ' JoinChat error $tdResponse');
       }
 
       sleepSeconds = 20;
