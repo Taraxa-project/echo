@@ -89,6 +89,8 @@ class TelegramClient implements TelegramClientInterface {
         .where((element) => element.isNotEmpty)
         .toList();
 
+    if (chatsNames.length == 0) return;
+
     logger.info('adding groups to db...');
     await db.insertChats(chatsNames);
 
@@ -137,6 +139,22 @@ class TelegramClient implements TelegramClientInterface {
         message_id: WrapId.wrapMessageId(messageId),
       ),
     ) as Message;
+  }
+
+  StreamController<dynamic> subscribe() {
+    final streamController = StreamController<dynamic>();
+
+    streamController.onListen = () {
+      tdClient.tdEvents.stream.listen((message) {
+        streamController.add(message);
+      });
+    };
+
+    return streamController;
+  }
+
+  Future<dynamic> callTdFunction(TdFunction tdFunction) async {
+    return await tdClient.tdCall(tdFunction);
   }
 
   Future<TdObject> _setTdlibParameters(LoginParams loginParams) async {

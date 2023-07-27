@@ -1,9 +1,18 @@
 import 'dart:async';
 
+import 'package:sqlite3/sqlite3.dart';
+
 import 'package:td_json_client/td_api.dart';
 
 abstract class DbInterface {
   FutureOr<void> close();
+
+  FutureOr<void> runMigrations();
+
+  FutureOr<void> execute(String sql,
+      [List<Object?> parameters = const <Object>[]]);
+  FutureOr<ResultSet> select(String sql,
+      [List<Object?> parameters = const <Object>[]]);
 
   FutureOr<Map<String, dynamic>?> selectChat(String username);
   FutureOr<void> insertChats(List<String> usernames);
