@@ -55,5 +55,4 @@ COPY --from=builder /app/packages/cli/bin/check_groups_captcha.sh /app/
 COPY --from=builder /app/echo /app/echo
 COPY --from=builder /app/echo_check_groups_captcha /app/echo_check_groups_captcha
 
-# CMD ["sh", "-c", "/app/main.sh"]
-CMD ["sh", "-c", "/app/check_groups_captcha.sh"]
+CMD ["sh", "-c", "/app/main.sh"]
