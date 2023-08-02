@@ -9,12 +9,15 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:echo_cli/callback/cli.dart';
 import 'package:telegram_client/db_isolated.dart';
 import 'package:telegram_client/log_isolated.dart';
+import 'package:telegram_client/td_client.dart';
 import 'package:telegram_client/telegram_client_interface.dart';
 import 'package:telegram_client/telegram_client_isolated.dart';
 import 'package:telegram_client/wrap_id.dart';
 import 'package:td_json_client/td_api.dart';
 
-final workDir = String.fromEnvironment('work-dir');
+Map<String, String> envVars = io.Platform.environment;
+
+final workDir = envVars['work_dir'] ?? '/var/lib/tdlib';
 final dbFileName = p.join(workDir, 'check.sqlite');
 
 const chatsFileName = 'chats.csv';
@@ -24,7 +27,10 @@ const accountsFileName = 'accounts.csv';
 
 const logLevel = Level.INFO;
 final logLevelLibTdJson = Level.WARNING;
-final fileNameLibTdJson = String.fromEnvironment('libtdjson-path');
+final fileNameLibTdJson =
+    envVars['libtdjson_path'] ?? '/usr/local/lib/libtdjsonlc.so';
+
+const int floodWaitSecondsAdd = 10 * 60;
 
 void main() async {
   hierarchicalLoggingEnabled = true;
@@ -75,6 +81,10 @@ class Check {
     await _db.execute(SqlAccount.createIndexPhoneNumber);
 
     await _db.execute(SqlChat.resetStatusInProgress);
+
+    try {
+      await _db.execute(SqlChat.addColumnOther);
+    } on Object {}
   }
 
   Future<void> importChats() async {
@@ -175,11 +185,11 @@ class Check {
     TelegramClientIsolated? telegramClient;
 
     try {
-      telegramClient = await TelegramClientIsolated.spawn(
-          _log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
-      await telegramClient.login(loginParams);
-
       while (true) {
+        telegramClient = await TelegramClientIsolated.spawn(
+            _log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
+        await telegramClient.login(loginParams);
+
         var rs = await _db.select(SqlChat.selectCountForAccount, [accountId]);
         var row = rs.first;
 
@@ -194,34 +204,75 @@ class Check {
         rs = await _db.select(SqlChat.selectNext);
         if (rs.length == 0) {
           _logger.info('[$accountId] no more chats to check');
+          break;
         }
 
         row = rs.first;
 
+        final now = _now();
+
         await _db.execute(
-            SqlChat.updateStatusInProgress, [accountId, row['username']]);
+            SqlChat.updateStatusInProgress, [accountId, now, row['username']]);
 
-        await _checkChat(telegramClient, accountId, row);
+        try {
+          await _checkChat(telegramClient, accountId, row);
+        } on TgFloodWaiException catch (ex) {
+          _logger.warning(ex);
 
-        await _db
-            .execute(SqlChat.updateStatusChecked, [accountId, row['username']]);
+          await _db.execute(SqlChat.updateStatusNotChecked,
+              [accountId, now, row['username']]);
 
-        int chatId = row['id'];
-        String chatUsername = row['username'];
-        int sleepSeconds = _randomBetween(40, 60);
-        _logger.info('[$accountId][$chatId][$chatUsername]'
-            ' sleeping for $sleepSeconds until next chat...');
-        await Future.delayed(Duration(seconds: sleepSeconds));
+          await telegramClient.close();
 
-        // break;
+          final waitSeconds = ex.waitSeconds + floodWaitSecondsAdd;
+          _logger.warning('[$accountId] flood wait for $waitSeconds');
+          await Future.delayed(Duration(seconds: waitSeconds));
+
+          continue;
+        } on TgBadRequestException catch (ex) {
+          _logger.warning(ex);
+
+          await _db.execute(SqlChat.updateStatusOther,
+              [ex.toString(), now, accountId, row['username']]);
+
+          await telegramClient.close();
+
+          await _sleepUntilNextChat(accountId);
+
+          continue;
+        } on TgTimeOutException catch (ex) {
+          _logger.warning(ex);
+
+          await _db.execute(SqlChat.updateStatusOther,
+              [ex.toString(), now, accountId, row['username']]);
+
+          await telegramClient.close();
+
+          await _sleepUntilNextChat(accountId);
+
+          continue;
+        }
+
+        await _db.execute(
+            SqlChat.updateStatusChecked, [now, accountId, row['username']]);
+
+        await telegramClient.close();
+
+        await _sleepUntilNextChat(accountId);
       }
 
       await Future.delayed(const Duration(seconds: 10));
     } on Object catch (ex) {
       _logger.severe(ex);
-    } finally {
       await telegramClient?.close();
     }
+  }
+
+  Future<void> _sleepUntilNextChat(int accountId) async {
+    int sleepSeconds = _randomBetween(60 * 18, 60 * 22);
+    _logger.info('[$accountId]'
+        ' sleeping for $sleepSeconds seconds until next chat...');
+    await Future.delayed(Duration(seconds: sleepSeconds));
   }
 
   Future<void> _checkChat(
@@ -232,6 +283,7 @@ class Check {
     String chatUsername = chat['username'];
     _logger.info('[$accountId][$chatId][$chatUsername] checking...');
 
+    _logger.info('[$accountId][$chatId][$chatUsername] SearchPublicChat...');
     var tdResponse = await telegramClient
         .callTdFunction(SearchPublicChat(username: chatUsername));
     if (tdResponse is Error) {
@@ -253,20 +305,20 @@ class Check {
       tdEventsSubscription = tdEvents.stream
           .listen(_updateNewMessage(telegramClient, accountId, chat));
 
+      _logger.info('[$accountId][$chatId][$chatUsername] JoinChat...');
       var tdResponse = await telegramClient
           .callTdFunction(JoinChat(chat_id: WrapId.wrapChatId(chatId)));
       if (tdResponse is Error) {
         _logger.severe('[$accountId][$chatId][$chatUsername]'
-            ' search public chat error $tdResponse');
+            ' JoinChat error $tdResponse');
       }
 
-      sleepSeconds = 20;
+      sleepSeconds = 10;
       _logger.info('[$accountId][$chatId][$chatUsername]'
           ' sleeping for $sleepSeconds seconds'
           ' to wait for new messages...');
       await Future.delayed(Duration(seconds: sleepSeconds));
-    } on Object catch (ex) {
-      _logger.severe(ex);
+    } on Object {
       rethrow;
     } finally {
       await tdEventsSubscription?.cancel();
@@ -332,7 +384,7 @@ class Check {
 
         var parameters = [
           chatId,
-          message.id,
+          WrapId.unwrapMessageId(message.id),
           DateTime.fromMillisecondsSinceEpoch(message.date! * 1000)
               .toUtc()
               .toIso8601String(),
@@ -417,12 +469,17 @@ CREATE TABLE IF NOT EXISTS chat (
   id INTEGER,
   blacklisted INTEGER DEFAULT 0, /* 0 - false; 1 - true; */
   blacklist_reason TEXT,
-  status INTEGER NOT NULL DEFAULT 0, /* 0 - not checked; 1 - check in progress; 2 - checked; */
+  status INTEGER NOT NULL DEFAULT 0, /* 0 - not checked; 1 - check in progress; 2 - checked; 3 - other; */
   is_crypto INTEGER DEFAULT 1, /* 0 - false; 1 - true; */
   weekly_message_count INTEGER DEFAULT 0,
   account_id INTEGER,
   created_at TEXT,
   updated_at TEXT);
+''';
+
+  static const addColumnOther = '''
+ALTER TABLE chat
+ADD COLUMN other TEXT;
 ''';
 
   static const insert = '''
@@ -477,7 +534,20 @@ UPDATE
   chat
 SET
   status = 1,
-  account_id = ?
+  account_id = ?,
+  updated_at = ?
+WHERE
+  account_id IS NULL AND
+  username = ?;
+''';
+
+  static const updateStatusNotChecked = '''
+UPDATE
+  chat
+SET
+  status = 0,
+  account_id = ?,
+  updated_at = ?
 WHERE
   account_id IS NULL AND
   username = ?;
@@ -487,7 +557,20 @@ WHERE
 UPDATE
   chat
 SET
-  status = 2
+  status = 2,
+  updated_at = ?
+WHERE
+  account_id = ? AND
+  username = ?;
+''';
+
+  static const updateStatusOther = '''
+UPDATE
+  chat
+SET
+  status = 3,
+  other = ?,
+  updated_at = ?
 WHERE
   account_id = ? AND
   username = ?;
@@ -560,7 +643,7 @@ CREATE TABLE IF NOT EXISTS account (
   api_hash TEXT NOT NULL,
   phone_number TEXT NOT NULL,
   proxy TEXT,
-  status INTEGER NOT NULL DEFAULT 0, /* 0 - banned; 1 - active; */
+  status INTEGER NOT NULL DEFAULT 1, /* 0 - banned; 1 - active; */
   status_text TEXT,
   created_at TEXT,
   updated_at TEXT
@@ -593,7 +676,7 @@ SELECT
 FROM
   account 
 WHERE
-  status = 0
+  status = 1
 ORDER BY
   id ASC;
 ''';
