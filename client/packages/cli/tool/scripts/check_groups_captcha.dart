@@ -209,16 +209,18 @@ class Check {
 
         row = rs.first;
 
+        final now = _now();
+
         await _db.execute(
-            SqlChat.updateStatusInProgress, [accountId, row['username']]);
+            SqlChat.updateStatusInProgress, [accountId, now, row['username']]);
 
         try {
           await _checkChat(telegramClient, accountId, row);
         } on TgFloodWaiException catch (ex) {
           _logger.warning(ex);
 
-          await _db.execute(
-              SqlChat.updateStatusNotChecked, [accountId, row['username']]);
+          await _db.execute(SqlChat.updateStatusNotChecked,
+              [accountId, now, row['username']]);
 
           await telegramClient.close();
 
@@ -231,7 +233,7 @@ class Check {
           _logger.warning(ex);
 
           await _db.execute(SqlChat.updateStatusOther,
-              [ex.toString(), accountId, row['username']]);
+              [ex.toString(), now, accountId, row['username']]);
 
           await telegramClient.close();
 
@@ -242,7 +244,7 @@ class Check {
           _logger.warning(ex);
 
           await _db.execute(SqlChat.updateStatusOther,
-              [ex.toString(), accountId, row['username']]);
+              [ex.toString(), now, accountId, row['username']]);
 
           await telegramClient.close();
 
@@ -251,8 +253,8 @@ class Check {
           continue;
         }
 
-        await _db
-            .execute(SqlChat.updateStatusChecked, [accountId, row['username']]);
+        await _db.execute(
+            SqlChat.updateStatusChecked, [now, accountId, row['username']]);
 
         await telegramClient.close();
 
@@ -533,7 +535,8 @@ UPDATE
   chat
 SET
   status = 1,
-  account_id = ?
+  account_id = ?,
+  updated_at = ?
 WHERE
   account_id IS NULL AND
   username = ?;
@@ -544,7 +547,8 @@ UPDATE
   chat
 SET
   status = 0,
-  account_id = ?
+  account_id = ?,
+  updated_at = ?
 WHERE
   account_id IS NULL AND
   username = ?;
@@ -554,7 +558,8 @@ WHERE
 UPDATE
   chat
 SET
-  status = 2
+  status = 2,
+  updated_at = ?
 WHERE
   account_id = ? AND
   username = ?;
@@ -565,7 +570,8 @@ UPDATE
   chat
 SET
   status = 3,
-  other = ?
+  other = ?,
+  updated_at = ?
 WHERE
   account_id = ? AND
   username = ?;
