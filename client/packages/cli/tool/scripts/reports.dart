@@ -10,6 +10,8 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:telegram_client/src/smart_contract/DataGatheringFacet.g.dart';
 import 'package:telegram_client/src/smart_contract/GroupManagerFacet.g.dart';
 
+Map<String, String> envVars = io.Platform.environment;
+
 void main() async {
   hierarchicalLoggingEnabled = true;
   final report = Report();
@@ -29,16 +31,15 @@ class Report {
 
   late final DateTime _reportStartDate;
   late final DateTime _reportEndDate;
-  late final String _reportDir;
+  late final String _workDir;
 
   Report() {
     _logger.onRecord.listen((event) {
       print(event);
     });
     _ipfsParams = _buildIpfsParams();
-    _web3client = Web3Client(String.fromEnvironment('rpc_url'), _httpClient);
-    _ingesterContractAddress =
-        String.fromEnvironment('ingester_contract_address');
+    _web3client = Web3Client(envVars['rpc_url']!, _httpClient);
+    _ingesterContractAddress = envVars['ingester_contract_address']!;
     _contractDataGatheringFacet = DataGatheringFacet(
       address: EthereumAddress.fromHex(_ingesterContractAddress),
       client: _web3client,
@@ -48,14 +49,16 @@ class Report {
       client: _web3client,
     );
 
-    _db = sqlite3.open(String.fromEnvironment('sqlite-db'));
-
-    _reportStartDate =
-        DateTime.parse(String.fromEnvironment('report-start-date'));
+    _reportStartDate = DateTime.parse(envVars['report_start_date']!);
     _logger.info('report start date is $_reportStartDate');
     _reportEndDate = _reportStartDate.add(Duration(days: 7));
     _logger.info('report end date is $_reportEndDate');
-    _reportDir = String.fromEnvironment('report-dir');
+
+    _workDir = envVars['work_dir']!;
+    final dir = io.Directory(_workDir);
+    if (!dir.existsSync()) dir.createSync(recursive: true);
+
+    _db = sqlite3.open(p.join(_workDir, 'reports.sqlite'));
   }
 
   Future<void> run() async {
@@ -239,11 +242,9 @@ class Report {
 
   IpfsParams _buildIpfsParams() {
     return IpfsParams(
-      String.fromEnvironment('ipfs-scheme'),
-      String.fromEnvironment('ipfs-host'),
-      String.fromEnvironment('ipfs-port'),
-      // String.fromEnvironment('ipfs-username'),
-      // String.fromEnvironment('ipfs-password'),
+      envVars['ipfs_scheme']!,
+      envVars['ipfs_host']!,
+      envVars['ipfs_port']!,
     );
   }
 
@@ -270,7 +271,7 @@ class Report {
     final cursor = stmt.selectCursor();
 
     final fileName = 'chat-cover-${_reportStartDate.toIso8601String()}.csv';
-    final fileNameFullPath = p.join(_reportDir, fileName);
+    final fileNameFullPath = p.join(_workDir, fileName);
 
     await _writeReportFromCursor(fileNameFullPath, cursor);
 
@@ -314,7 +315,7 @@ class Report {
     final cursor = stmt.selectCursor(params);
 
     final fileName = 'chat-activity-${_reportStartDate.toIso8601String()}.csv';
-    final fileNameFullPath = p.join(_reportDir, fileName);
+    final fileNameFullPath = p.join(_workDir, fileName);
 
     await _writeReportFromCursor(fileNameFullPath, cursor);
 
