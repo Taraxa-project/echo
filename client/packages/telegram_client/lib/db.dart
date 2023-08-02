@@ -356,6 +356,8 @@ class Db implements DbInterface {
 
     _renameMessageUserIdToSenderId();
     _addMessageSenderType();
+
+    _runMigrationAddChatRead();
   }
 
   void _createTables() {
@@ -384,6 +386,13 @@ class Db implements DbInterface {
     } finally {
       stmt.dispose();
     }
+  }
+
+  void _runMigrationAddChatRead() {
+    _database.execute(SqlChatRead.createTable);
+    _database.execute(SqlChatRead.createIndexChatId);
+    _database.execute(SqlChatRead.createIndexChatId);
+    _database.execute(SqlChatRead.createIndexChatId);
   }
 
   void _renameMessageUserIdToSenderId() {
@@ -457,6 +466,24 @@ class Db implements DbInterface {
 
   String _now() {
     return DateTime.now().toUtc().toIso8601String();
+  }
+
+  int logChatReadStarted(int chatId, DateTime dateTimeStarted) {
+    final parameters = [chatId, dateTimeStarted.toUtc().toIso8601String()];
+    execute(SqlChatRead.started, parameters);
+
+    var rs = select(SqlChatRead.selectLast, parameters);
+    return rs.first['id'];
+  }
+
+  void logChatReadFinished(
+      int id, int messageCount, DateTime dateTimeFinished) {
+    final parameters = [
+      messageCount,
+      dateTimeFinished.toUtc().toIso8601String(),
+      id
+    ];
+    execute(SqlChatRead.finished, parameters);
   }
 
   void execute(String sql, [List<Object?> parameters = const <Object>[]]) {

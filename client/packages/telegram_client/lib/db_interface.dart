@@ -41,6 +41,10 @@ abstract class DbInterface {
   FutureOr<int> exportMeta(String tableName, String fileName);
 
   FutureOr<DateTime?> selectLastExportDateTime();
+
+  FutureOr<int> logChatReadStarted(int chatId, DateTime dateTimeStarted);
+  FutureOr<void> logChatReadFinished(
+      int id, int messageCount, DateTime dateTimeFinished);
 }
 
 class IfpsFileHashesMeta {

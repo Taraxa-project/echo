@@ -303,6 +303,10 @@ class TelegramClient implements TelegramClientInterface {
 
     final onlineMembersCount = await db.selectChatOnlineMembersCount(chatName);
 
+    final chatReadId =
+        await db.logChatReadStarted(chatId, DateTime.now().toUtc());
+
+    int messageCount = 0;
     while (true) {
       final messageIdLast =
           await _findMessageIdLast(chatName, chatId, dateTimeFrom, db) ?? 0;
@@ -311,6 +315,8 @@ class TelegramClient implements TelegramClientInterface {
       final history = await _getChatHistory(chatName, chatId, messageIdFrom);
       final messages = history.messages;
       if (messages == null || messages.length == 0) break;
+
+      messageCount += messages.length;
 
       await _saveMessagesUsers(
           chatName, chatId, messages, onlineMembersCount, db);
@@ -323,6 +329,9 @@ class TelegramClient implements TelegramClientInterface {
             TelegramClientConfig.delayUntilNextMessageBatchSecondsMax),
       ));
     }
+
+    await db.logChatReadFinished(
+        chatReadId, messageCount, DateTime.now().toUtc());
   }
 
   Future<Chat> _searchPublicChat(String chatName) async {
