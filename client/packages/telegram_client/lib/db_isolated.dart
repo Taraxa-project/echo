@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 import 'package:td_json_client/td_api.dart';
 
@@ -142,6 +143,21 @@ class DbIsolated implements DbInterface {
   Future<Map<String, dynamic>?> selectChat(String username) async {
     return await isolatedProxy.call(SelectChat(username));
   }
+
+  @override
+  Future<void> runMigrations() async {
+    await isolatedProxy.call(RunMigrations());
+  }
+
+  Future<void> execute(String sql,
+      [List<Object?> parameters = const <Object>[]]) async {
+    await isolatedProxy.call(Execute(sql, parameters));
+  }
+
+  Future<ResultSet> select(String sql,
+      [List<Object?> parameters = const <Object>[]]) async {
+    return await isolatedProxy.call(Select(sql, parameters));
+  }
 }
 
 class DbIsolatedDispatch extends IsolatedDispatch {
@@ -190,6 +206,12 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       return db.selectLastExportDateTime();
     } else if (message is SelectChat) {
       return db.selectChat(message.username);
+    } else if (message is RunMigrations) {
+      return db.runMigrations();
+    } else if (message is Execute) {
+      db.execute(message.sql, message.parameters);
+    } else if (message is Select) {
+      return db.select(message.sql, message.parameters);
     } else {
       return super.dispatch(message);
     }
@@ -312,3 +334,19 @@ class UpdateMetaFileHash {
 class SelectMetaFileHahes {}
 
 class SelectLastExportDateTime {}
+
+class RunMigrations {}
+
+class Execute {
+  final String sql;
+  final List<Object?> parameters;
+
+  Execute(this.sql, [this.parameters = const <Object>[]]);
+}
+
+class Select {
+  final String sql;
+  final List<Object?> parameters;
+
+  Select(this.sql, [this.parameters = const <Object>[]]);
+}

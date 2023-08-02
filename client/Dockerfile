@@ -14,8 +14,8 @@ WORKDIR /app-temp/build
 
 RUN \
     cmake \
-        -DCMAKE_INSTALL_PREFIX:PATH=/app-temp \
-        /app-temp && \
+    -DCMAKE_INSTALL_PREFIX:PATH=/app-temp \
+    /app-temp && \
     cmake --build . --target install
 
 # Copy Dart application and compile as an executable
@@ -32,6 +32,7 @@ RUN dart pub global activate melos
 RUN melos bootstrap 
 
 RUN dart compile exe packages/cli/bin/main.dart --output=echo
+RUN dart compile exe packages/cli/tool/scripts/check_groups_captcha.dart --output=echo_check_groups_captcha
 
 ### main application image ###
 FROM dart:stable
@@ -48,8 +49,10 @@ COPY --from=builder /app-temp/lib/libtdjson.so*  /usr/local/lib/
 RUN ldconfig
 
 COPY --from=builder /app/packages/cli/bin/main.sh /app/
+COPY --from=builder /app/packages/cli/bin/check_groups_captcha.sh /app/
 
 # Copy compiled executable
 COPY --from=builder /app/echo /app/echo
+COPY --from=builder /app/echo_check_groups_captcha /app/echo_check_groups_captcha
 
 CMD ["sh", "-c", "/app/main.sh"]

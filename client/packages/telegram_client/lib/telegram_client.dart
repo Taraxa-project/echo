@@ -80,6 +80,42 @@ class TelegramClient implements TelegramClientInterface {
     logger.info('login success.');
   }
 
+  Future<void> logout() async {
+    logger.info('loging out...');
+
+    var isLoggedOut = false;
+    var exception;
+
+    var sub = tdClient.tdEvents.stream
+        .where((event) => event is UpdateAuthorizationState)
+        .listen((event) async {
+      final authorizationState = event.authorization_state;
+      logger.info('received ${authorizationState.runtimeType}.');
+
+      try {
+        if (authorizationState is AuthorizationStateClosed) {
+          isLoggedOut = true;
+        }
+      } on Object catch (ex) {
+        exception = ex;
+      }
+    });
+
+    logger.info('sending Logout...');
+    tdClient.tdSend(LogOut());
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    while (true) {
+      if (isLoggedOut || exception != null) break;
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    sub.cancel();
+
+    if (exception != null) throw exception;
+
+    logger.info('logout success.');
+  }
+
   Future<void> saveChatsHistory(DateTime dateTimeFrom,
       IngesterContractParams ingesterContractParams, DbIsolated db) async {
     logger.info('reading groups history... ');
@@ -88,6 +124,8 @@ class TelegramClient implements TelegramClientInterface {
     final chatsNames = (await ingesterContract.getChatsNames())
         .where((element) => element.isNotEmpty)
         .toList();
+
+    if (chatsNames.length == 0) return;
 
     logger.info('adding groups to db...');
     await db.insertChats(chatsNames);
@@ -137,6 +175,22 @@ class TelegramClient implements TelegramClientInterface {
         message_id: WrapId.wrapMessageId(messageId),
       ),
     ) as Message;
+  }
+
+  StreamController<dynamic> subscribe() {
+    final streamController = StreamController<dynamic>();
+
+    streamController.onListen = () {
+      tdClient.tdEvents.stream.listen((message) {
+        streamController.add(message);
+      });
+    };
+
+    return streamController;
+  }
+
+  Future<dynamic> callTdFunction(TdFunction tdFunction) async {
+    return await tdClient.tdCall(tdFunction);
   }
 
   Future<TdObject> _setTdlibParameters(LoginParams loginParams) async {

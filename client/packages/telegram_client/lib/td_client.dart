@@ -439,8 +439,8 @@ class TgTimeOutException implements Exception {
 
   String toString() {
     return '${runtimeType.toString()}'
-        'request $request timed out '
-        'after ${millisenconds / 1000} seconds.';
+        ' request $request timed out'
+        ' after ${millisenconds / 1000} seconds.';
   }
 }
 
