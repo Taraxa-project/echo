@@ -80,6 +80,42 @@ class TelegramClient implements TelegramClientInterface {
     logger.info('login success.');
   }
 
+  Future<void> logout() async {
+    logger.info('loging out...');
+
+    var isLoggedOut = false;
+    var exception;
+
+    var sub = tdClient.tdEvents.stream
+        .where((event) => event is UpdateAuthorizationState)
+        .listen((event) async {
+      final authorizationState = event.authorization_state;
+      logger.info('received ${authorizationState.runtimeType}.');
+
+      try {
+        if (authorizationState is AuthorizationStateClosed) {
+          isLoggedOut = true;
+        }
+      } on Object catch (ex) {
+        exception = ex;
+      }
+    });
+
+    logger.info('sending Logout...');
+    tdClient.tdSend(LogOut());
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    while (true) {
+      if (isLoggedOut || exception != null) break;
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    sub.cancel();
+
+    if (exception != null) throw exception;
+
+    logger.info('logout success.');
+  }
+
   Future<void> saveChatsHistory(DateTime dateTimeFrom,
       IngesterContractParams ingesterContractParams, DbIsolated db) async {
     logger.info('reading groups history... ');

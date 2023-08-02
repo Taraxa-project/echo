@@ -56,6 +56,7 @@ class TelegramClientIsolated implements TelegramClientInterface {
   Future<void> close() async {
     await isolatedProxy.call(Close());
     isolatedProxy.exit();
+    await Future.delayed(const Duration(seconds: 2));
   }
 
   @override
@@ -101,6 +102,11 @@ class TelegramClientIsolated implements TelegramClientInterface {
   Future<dynamic> callTdFunction(TdFunction tdFunction) async {
     return await isolatedProxy.call(CallTdFunction(tdFunction));
   }
+
+  @override
+  Future<void> logout() async {
+    await isolatedProxy.call(Logout());
+  }
 }
 
 class TgIsolatedDispatch extends IsolatedDispatch {
@@ -130,8 +136,11 @@ class TgIsolatedDispatch extends IsolatedDispatch {
       });
     } else if (message is IsolateUnsubscribe) {
       await streamSubscriptions[message.uuid]?.cancel();
+      streamSubscriptions.remove(message.uuid);
     } else if (message is CallTdFunction) {
       return await tg.callTdFunction(message.tdFunction);
+    } else if (message is Logout) {
+      await tg.logout();
     } else {
       return super.dispatch(message);
     }
@@ -154,6 +163,8 @@ class Login {
 
   Login(this.loginParams);
 }
+
+class Logout {}
 
 class ReadChatsHistory {
   DateTime dateTimeFrom;

@@ -268,9 +268,9 @@ class Check {
   }
 
   Future<void> _sleepUntilNextChat(int accountId) async {
-    int sleepSeconds = _randomBetween(60 * 7, 60 * 10);
+    int sleepSeconds = _randomBetween(60 * 18, 60 * 22);
     _logger.info('[$accountId]'
-        ' sleeping for $sleepSeconds until next chat...');
+        ' sleeping for $sleepSeconds seconds until next chat...');
     await Future.delayed(Duration(seconds: sleepSeconds));
   }
 
@@ -312,7 +312,7 @@ class Check {
             ' JoinChat error $tdResponse');
       }
 
-      sleepSeconds = 20;
+      sleepSeconds = 10;
       _logger.info('[$accountId][$chatId][$chatUsername]'
           ' sleeping for $sleepSeconds seconds'
           ' to wait for new messages...');
@@ -383,7 +383,7 @@ class Check {
 
         var parameters = [
           chatId,
-          message.id,
+          WrapId.unwrapMessageId(message.id),
           DateTime.fromMillisecondsSinceEpoch(message.date! * 1000)
               .toUtc()
               .toIso8601String(),
@@ -422,8 +422,7 @@ class Check {
       account['api_id'],
       account['api_hash'],
       account['phone_number'],
-      workDir,
-      // telegramDatabasePath,
+      telegramDatabasePath,
       readTelegramCode,
       writeQrCodeLink,
       readUserFirstName,
@@ -639,7 +638,7 @@ CREATE TABLE IF NOT EXISTS account (
   api_hash TEXT NOT NULL,
   phone_number TEXT NOT NULL,
   proxy TEXT,
-  status INTEGER NOT NULL DEFAULT 0, /* 0 - banned; 1 - active; */
+  status INTEGER NOT NULL DEFAULT 1, /* 0 - banned; 1 - active; */
   status_text TEXT,
   created_at TEXT,
   updated_at TEXT
@@ -672,7 +671,7 @@ SELECT
 FROM
   account 
 WHERE
-  status = 0
+  status = 1
 ORDER BY
   id ASC;
 ''';
