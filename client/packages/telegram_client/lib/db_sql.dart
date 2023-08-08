@@ -147,11 +147,24 @@ WHERE
 ''';
 
   static const selectForExport = '''
+
 SELECT
   a.*,
-  a.rowid
+  a.rowid,
+  c.file_hash file_hash_chat_read
 FROM
-  chat a
+  chat a LEFT JOIN (
+	SELECT
+		CAST(REPLACE(ba."table_name", 'chat.', '') AS INTEGER) chat_id,
+	  max(rowid) rowid
+	FROM
+	  	ipfs_hash ba
+	WHERE
+		ba."table_name" like 'chat.%'
+	GROUP BY
+	  	ba."table_name"
+  ) b on a.id = b.chat_id LEFT JOIN 
+  ipfs_hash c ON b.rowid = c.rowid
 WHERE
   a.rowid > ?
 ORDER BY
