@@ -96,10 +96,8 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<int> exportData(
-      String tableName, String fileName, int? fromId, int limit) async {
-    return await isolatedProxy
-        .call(ExportData(tableName, fileName, fromId, limit));
+  Future<int> exportData(ExportType exportType) async {
+    return await isolatedProxy.call(ExportData(exportType));
   }
 
   @override
@@ -108,8 +106,8 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<int> exportMeta(String tableName, String fileName) async {
-    return await isolatedProxy.call(ExportMeta(tableName, fileName));
+  Future<int> exportMeta(ExportType exportType) async {
+    return await isolatedProxy.call(ExportMeta(exportType));
   }
 
   @override
@@ -207,12 +205,11 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       db.insertMessagesUsers(
           message.messages, message.users, message.onlineMembersCount);
     } else if (message is ExportData) {
-      return await db.exportData(
-          message.tableName, message.fileName, message.fromId, message.limit);
+      return await db.exportData(message.exportType);
     } else if (message is InsertIpfsHash) {
       db.insertIpfsHash(message.tableName, message.fileHash);
     } else if (message is ExportMeta) {
-      return await db.exportMeta(message.tableName, message.fileName);
+      return await db.exportMeta(message.exportType);
     } else if (message is UpdateMetaFileHash) {
       db.updateMetaFileHash(message.tableName, message.fileHash);
     } else if (message is SelectMetaFileHahes) {
@@ -322,12 +319,9 @@ class InsertMessagesUsers {
 }
 
 class ExportData {
-  final String tableName;
-  final String fileName;
-  int? fromId;
-  int limit;
+  final ExportType exportType;
 
-  ExportData(this.tableName, this.fileName, this.fromId, this.limit);
+  ExportData(this.exportType);
 }
 
 class InsertIpfsHash {
@@ -338,10 +332,9 @@ class InsertIpfsHash {
 }
 
 class ExportMeta {
-  final String tableName;
-  final String fileName;
+  final ExportType exportType;
 
-  ExportMeta(this.tableName, this.fileName);
+  ExportMeta(this.exportType);
 }
 
 class UpdateMetaFileHash {

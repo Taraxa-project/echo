@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
-import 'package:path/path.dart' as p;
+import 'package:telegram_client/db_interface.dart';
+import 'package:telegram_client/db_sql.dart';
 
 import 'exporter_interface.dart';
 import 'ingester_contract.dart';
@@ -19,18 +20,12 @@ class Exporter implements ExporterInterface {
 
   String tableDumpPath;
 
-  static const tableNames = ['chat', 'message', 'user'];
+  static const tableNames = ['chat_read', 'chat', 'message', 'user'];
   static const tableNamesUploadFull = ['chat'];
-
-  static const String fileExtTypeData = 'json_lines';
-  static const String fileExtTypeMeta = 'json_lines';
-  static const String fileExtTypeHash = 'hash';
 
   static const int ipfsRequestRetryCountMax = 5;
   static const int ipfsRequestRetryDelaySeconds = 30;
   static const int ipfsRequestTimeoutSeconds = 60;
-
-  static const int exportRecordLimit = 10000;
 
   bool _exportInProgress = false;
 
@@ -48,8 +43,12 @@ class Exporter implements ExporterInterface {
 
     final client = http.Client();
     final ipfsUri = _buildIpfsUri('/api/v0/add');
-    for (final tableName in tableNames)
-      await _exportTable(client, ipfsUri, tableName);
+
+    await _exportChatsRead(client, ipfsUri);
+    await _exportChat(client, ipfsUri);
+    await _exportMessage(client, ipfsUri);
+    await _exportUser(client, ipfsUri);
+
     client.close();
 
     final hashes = await db.selectMetaFileHahes();
@@ -61,50 +60,74 @@ class Exporter implements ExporterInterface {
     _exportInProgress = false;
   }
 
-  Future<void> _exportTable(
-      http.Client client, Uri ipfsUri, String tableName) async {
-    await _exportTableData(client, ipfsUri, tableName);
-    await _exportTableMeta(client, ipfsUri, tableName);
-  }
-
-  Future<void> _exportTableData(
-      http.Client client, Uri ipfsUri, String tableName) async {
-    final fileName = p.joinAll([tableDumpPath, '$tableName.$fileExtTypeData']);
-    final fromId = tableNamesUploadFull.contains(tableName) ? 0 : null;
-
-    while (true) {
-      final recordsCount =
-          await db.exportData(tableName, fileName, fromId, exportRecordLimit);
-      logger.info('exported $recordsCount data records for $tableName.');
-
-      if (recordsCount == 0) return;
-
-      final fileHash = await _ipfsAdd(client, ipfsUri, tableName, fileName);
-      if (fileHash == null) return;
-      logger.info('uploaded $tableName data records with hash $fileHash.');
-
-      await db.insertIpfsHash(tableName, fileHash);
-
-      if (recordsCount < exportRecordLimit) return;
-      if (tableNamesUploadFull.contains(tableName)) return;
+  Future<void> _exportChatsRead(http.Client client, Uri ipfsUri) async {
+    final chats = await db.select(SqlChat.selectAll);
+    for (final chat in chats) {
+      final exportType = ExportTypeChatRead(chat['username'], tableDumpPath);
+      await _exportChatRead(client, ipfsUri, exportType);
     }
   }
 
-  Future<void> _exportTableMeta(
-      http.Client client, Uri ipfsUri, String tableName) async {
-    var fileName =
-        p.joinAll([tableDumpPath, '$tableName.meta.$fileExtTypeData']);
+  Future<void> _exportChatRead(
+      http.Client client, Uri ipfsUri, ExportType exportType) async {
+    await _exportData(client, ipfsUri, exportType);
+  }
 
-    final recordsCount = await db.exportMeta(tableName, fileName);
-    logger.info('exported $recordsCount meta records for $tableName.');
+  Future<void> _exportChat(http.Client client, Uri ipfsUri) async {
+    await _exportDataMeta(client, ipfsUri, ExportTypeChat(tableDumpPath));
+  }
+
+  Future<void> _exportMessage(http.Client client, Uri ipfsUri) async {
+    await _exportDataMeta(client, ipfsUri, ExportTypeMessage(tableDumpPath));
+  }
+
+  Future<void> _exportUser(http.Client client, Uri ipfsUri) async {
+    await _exportDataMeta(client, ipfsUri, ExportTypeUser(tableDumpPath));
+  }
+
+  Future<void> _exportDataMeta(
+      http.Client client, Uri ipfsUri, ExportType exportType) async {
+    await _exportData(client, ipfsUri, exportType);
+    await _exportMeta(client, ipfsUri, exportType);
+  }
+
+  Future<void> _exportData(
+      http.Client client, Uri ipfsUri, ExportType exportType) async {
+    while (true) {
+      final recordsCount = await db.exportData(exportType);
+      logger.info(
+          'exported $recordsCount data records for ${exportType.dataType}.');
+
+      if (recordsCount == 0) return;
+
+      final fileHash = await _ipfsAdd(client, ipfsUri, exportType.dataType,
+          exportType.fileNameFullPathData);
+      if (fileHash == null) return;
+      logger.info(
+          'uploaded ${exportType.dataType} data records with hash $fileHash.');
+
+      await db.insertIpfsHash(exportType.dataType, fileHash);
+
+      if (recordsCount < exportRecordLimit) return;
+      if (tableNamesUploadFull.contains(exportType.dataType)) return;
+    }
+  }
+
+  Future<void> _exportMeta(
+      http.Client client, Uri ipfsUri, ExportType exportType) async {
+    final recordsCount = await db.exportMeta(exportType);
+    logger.info(
+        'exported $recordsCount meta records for ${exportType.dataType}.');
 
     if (recordsCount == 0) return;
 
-    var fileHash = await _ipfsAdd(client, ipfsUri, tableName, fileName);
+    var fileHash = await _ipfsAdd(
+        client, ipfsUri, exportType.dataType, exportType.fileNameFullPathMeta);
     if (fileHash == null) return;
-    logger.info('uploaded $tableName meta records with hash $fileHash.');
+    logger.info(
+        'uploaded ${exportType.dataType} meta records with hash $fileHash.');
 
-    await db.updateMetaFileHash(tableName, fileHash);
+    await db.updateMetaFileHash(exportType.dataType, fileHash);
   }
 
   Uri _buildIpfsUri(

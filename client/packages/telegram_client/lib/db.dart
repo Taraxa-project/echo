@@ -242,38 +242,42 @@ class Db implements DbInterface {
     return rs.isNotEmpty;
   }
 
-  Future<int> exportData(
-      String tableName, String fileName, int? fromId, int limit) async {
-    final minId = fromId ?? _selectLastUploadedId(tableName) ?? 0;
-    final parameters = [minId, limit];
+  Future<int> exportData(ExportType exportType) async {
+    var minId = 0;
+    if (exportType is! ExportTypeChat) {
+      minId = _selectLastUploadedId(exportType.dataType) ?? 0;
+    }
+    final parameters = [minId, exportType.limit];
 
-    final stmt = _database.prepare(_sqlSelectDataForExport(tableName));
+    final stmt = _database.prepare(_sqlSelectDataForExport(exportType));
 
     var rowCount = 0;
     try {
       final cursor = stmt.selectCursor(parameters);
-      final result = await _exportCursor(cursor, fileName);
+      final result =
+          await _exportCursor(cursor, exportType.fileNameFullPathData);
       rowCount = result[0];
-      if (rowCount > 0) _updateLastExportedId(tableName, result[1]);
+      if (rowCount > 0) _updateLastExportedId(exportType.dataType, result[1]);
     } on Object {
       rethrow;
     } finally {
       stmt.dispose();
     }
 
-    logger.fine('exported $rowCount records from $tableName');
+    logger.fine('exported $rowCount records from ${exportType.dataType}');
     return rowCount;
   }
 
-  Future<int> exportMeta(String tableName, String fileName) async {
-    final parameters = [tableName];
+  Future<int> exportMeta(ExportType exportType) async {
+    final parameters = [exportType.dataType];
 
     final stmt = _database.prepare(SqlIpfsHash.selectForExport);
 
     var rowCount = 0;
     try {
       final cursor = stmt.selectCursor(parameters);
-      final result = await _exportCursor(cursor, fileName);
+      final result =
+          await _exportCursor(cursor, exportType.fileNameFullPathMeta);
       rowCount = result[0];
     } on Object {
       rethrow;
@@ -281,7 +285,7 @@ class Db implements DbInterface {
       stmt.dispose();
     }
 
-    logger.fine('exported $rowCount ipfs hashes from $tableName');
+    logger.fine('exported $rowCount ipfs hashes from ${exportType.dataType}');
     return rowCount;
   }
 
@@ -416,10 +420,12 @@ class Db implements DbInterface {
     return null;
   }
 
-  String _sqlSelectDataForExport(String tableName) {
-    if (tableName == 'chat') {
+  String _sqlSelectDataForExport(ExportType exportData) {
+    if (exportData is ExportTypeChat) {
+      return SqlChatRead.selectForExport;
+    } else if (exportData is ExportTypeChat) {
       return SqlChat.selectForExport;
-    } else if (tableName == 'message') {
+    } else if (exportData is ExportTypeMessage) {
       return SqlMessage.selectForExport;
     } else {
       return SqlUser.selectForExport;

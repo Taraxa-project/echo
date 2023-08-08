@@ -159,6 +159,17 @@ ORDER BY
 LIMIT
   ?;
 ''';
+
+  static const selectAll = '''
+SELECT
+  a.*
+FROM
+  chat a
+WHERE 
+  username = ?
+ORDER BY
+  a.rowid ASC;
+''';
 }
 
 class SqlMessage {
@@ -377,5 +388,18 @@ WHERE
 ORDER BY
   id DESC
 LIMIT 1;
+''';
+
+  static const selectForExport = '''
+SELECT
+  a.*
+FROM
+  chat_read a
+WHERE
+  a.id > ?
+ORDER BY
+  a.id ASC
+LIMIT
+  ?;
 ''';
 }
