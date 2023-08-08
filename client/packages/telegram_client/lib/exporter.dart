@@ -61,10 +61,14 @@ class Exporter implements ExporterInterface {
   }
 
   Future<void> _exportChatsRead(http.Client client, Uri ipfsUri) async {
+    final dateTimeFrom =
+        DateTime.now().toUtc().subtract(const Duration(days: 14));
+
     final chats = await db.select(SqlChat.selectAll);
     for (final chat in chats) {
-      final exportType = ExportTypeChatRead(chat['username'], tableDumpPath);
-      await _exportChatRead(client, ipfsUri, exportType);
+      if (chat['id'] == null) continue;
+      await _exportChatRead(client, ipfsUri,
+          ExportTypeChatRead(tableDumpPath, chat['id'], dateTimeFrom));
     }
   }
 
@@ -106,7 +110,7 @@ class Exporter implements ExporterInterface {
       logger.info(
           'uploaded ${exportType.dataType} data records with hash $fileHash.');
 
-      await db.insertIpfsHash(exportType.dataType, fileHash);
+      await db.insertIpfsHash(exportType, fileHash);
 
       if (recordsCount < exportRecordLimit) return;
       if (tableNamesUploadFull.contains(exportType.dataType)) return;

@@ -165,8 +165,6 @@ SELECT
   a.*
 FROM
   chat a
-WHERE 
-  username = ?
 ORDER BY
   a.rowid ASC;
 ''';
@@ -392,11 +390,14 @@ LIMIT 1;
 
   static const selectForExport = '''
 SELECT
-  a.*
+  a.*,
+  a.id rowid
 FROM
   chat_read a
 WHERE
-  a.id > ?
+  a.id > ? AND
+  a.chat_id = ? AND
+  a.started_at >= ?
 ORDER BY
   a.id ASC
 LIMIT

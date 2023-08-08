@@ -35,7 +35,7 @@ abstract class DbInterface {
   FutureOr<void> updateMetaFileHash(String tableName, String fileHash);
   FutureOr<IfpsFileHashesMeta> selectMetaFileHahes();
 
-  FutureOr<void> insertIpfsHash(String tableName, String fileHash);
+  FutureOr<void> insertIpfsHash(ExportType exportType, String fileHash);
 
   FutureOr<int> exportData(ExportType exportType);
   FutureOr<int> exportMeta(ExportType exportType);
@@ -94,10 +94,11 @@ class ExportTypeUser extends ExportType {
 }
 
 class ExportTypeChatRead extends ExportType {
-  String get dataType => 'chat_${chatUsername}';
+  String get dataType => 'chat.${chatId}';
 
-  final String chatUsername;
+  final int chatId;
+  final DateTime dateTimeFrom;
 
-  ExportTypeChatRead(super.exportDataTypeFile, String this.chatUsername,
+  ExportTypeChatRead(super.exportDataTypeFile, this.chatId, this.dateTimeFrom,
       [super.limit = exportRecordLimit]);
 }

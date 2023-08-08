@@ -243,11 +243,21 @@ class Db implements DbInterface {
   }
 
   Future<int> exportData(ExportType exportType) async {
+    _initIpfsUpload(exportType);
+
     var minId = 0;
     if (exportType is! ExportTypeChat) {
       minId = _selectLastUploadedId(exportType.dataType) ?? 0;
     }
-    final parameters = [minId, exportType.limit];
+
+    List<dynamic> parameters = [minId];
+    if (exportType is ExportTypeChatRead) {
+      parameters.addAll([
+        exportType.chatId,
+        exportType.dateTimeFrom.toUtc().toIso8601String()
+      ]);
+    }
+    parameters.add(exportType.limit);
 
     final stmt = _database.prepare(_sqlSelectDataForExport(exportType));
 
@@ -289,11 +299,11 @@ class Db implements DbInterface {
     return rowCount;
   }
 
-  void insertIpfsHash(String tableName, String fileHash) {
+  void insertIpfsHash(ExportType exportType, String fileHash) {
     try {
       _database.execute('BEGIN');
-      _insertIpfsHash(tableName, fileHash);
-      _updateLastUploadedId(tableName);
+      _insertIpfsHash(exportType.dataType, fileHash);
+      _updateLastUploadedId(exportType.dataType);
       _database.execute('COMMIT');
     } on Object {
       _database.execute('ROLLBACK');
@@ -335,9 +345,9 @@ class Db implements DbInterface {
     }
   }
 
-  void _insertIpfsHash(String tableName, String fileHash) {
+  void _insertIpfsHash(String type, String fileHash) {
     final now = _now();
-    final parameters = [tableName, fileHash, now, now];
+    final parameters = [type, fileHash, now, now];
 
     logger.fine('inserting ipfs hash $parameters...');
     execute(SqlIpfsHash.insert, parameters);
@@ -356,7 +366,6 @@ class Db implements DbInterface {
 
     _createTables();
     _createIndexes();
-    _initIpfsUpload();
 
     _renameMessageUserIdToSenderId();
     _addMessageSenderType();
@@ -377,14 +386,12 @@ class Db implements DbInterface {
     _database.execute(SqlMigration.createIndexIpfsHashTableName);
   }
 
-  void _initIpfsUpload() {
+  void _initIpfsUpload(ExportType exportType) {
     final now = _now();
-    final tableNames = ['chat', 'message', 'user'];
 
     final stmt = _database.prepare(SqlIpfsUpload.insert);
     try {
-      for (var tableName in tableNames)
-        stmt.execute([tableName, 0, 0, now, now]);
+      stmt.execute([exportType.dataType, 0, 0, now, now]);
     } on Object {
       rethrow;
     } finally {
@@ -421,7 +428,7 @@ class Db implements DbInterface {
   }
 
   String _sqlSelectDataForExport(ExportType exportData) {
-    if (exportData is ExportTypeChat) {
+    if (exportData is ExportTypeChatRead) {
       return SqlChatRead.selectForExport;
     } else if (exportData is ExportTypeChat) {
       return SqlChat.selectForExport;
