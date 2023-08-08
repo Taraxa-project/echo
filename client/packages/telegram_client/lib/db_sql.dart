@@ -147,11 +147,10 @@ WHERE
 ''';
 
   static const selectForExport = '''
-
 SELECT
   a.*,
-  a.rowid,
-  c.file_hash file_hash_chat_read
+  c.file_hash file_hash_chat_read,
+  a.rowid
 FROM
   chat a LEFT JOIN (
 	SELECT
