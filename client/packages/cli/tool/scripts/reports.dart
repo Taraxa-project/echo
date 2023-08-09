@@ -366,20 +366,20 @@ class Report {
   }
 
   Future<void> _runReportChatKeepUp() async {
-    // final params = [
-    //   _reportStartDate.toIso8601String(),
-    //   _reportEndDate.toIso8601String()
-    // ];
+    final params = [
+      _reportStartDate.toIso8601String(),
+      _reportEndDate.toIso8601String()
+    ];
 
-    // final stmt = _db.prepare(SqlReportChatActivity.report);
-    // final cursor = stmt.selectCursor(params);
+    final stmt = _db.prepare(SqlReportChatKeepUp.report);
+    final cursor = stmt.selectCursor(params);
 
-    // final fileName = 'chat-keep-up-${_reportStartDate.toIso8601String()}.csv';
-    // final fileNameFullPath = p.join(_workDir, fileName);
+    final fileName = 'chat-keep-up-${_reportStartDate.toIso8601String()}.csv';
+    final fileNameFullPath = p.join(_workDir, fileName);
 
-    // await _writeReportFromCursor(fileNameFullPath, cursor);
+    await _writeReportFromCursor(fileNameFullPath, cursor);
 
-    // stmt.dispose();
+    stmt.dispose();
   }
 }
 
@@ -710,7 +710,7 @@ CREATE TABLE IF NOT EXISTS chat_read_ingester (
 
   static const createIndexChatId = '''
 CREATE INDEX IF NOT EXISTS idx_chat_read_ingester_chat_id ON
-  chat_read_ingester (chat_id);
+  chat_read_ingester (chat_id, ingester_address);
 ''';
 
   static const createIndexStartedAt = '''
@@ -733,5 +733,26 @@ INSERT INTO chat_read_ingester (
 ) VALUES (
   ?, ?, ?, ?, ?
 );
+''';
+}
+
+class SqlReportChatKeepUp {
+  static const report = '''
+SELECT
+	b.id "Chat ID",
+	b.username "Chat Name",
+	b.title "Chat Title",
+	a.started_at "Start Timestamp",
+	a.finished_at "Finish Timestamp",
+	a.message_count "Messages",
+	a.ingester_address "Ingester Address"
+FROM
+	chat_read_ingester a
+	INNER JOIN chat_ingester b ON a.chat_id = b.id AND a.ingester_address = b.ingester_address
+WHERE
+	a.started_at >= ? AND
+	a.started_at < ?
+ORDER BY
+	a.started_at ASC;
 ''';
 }
