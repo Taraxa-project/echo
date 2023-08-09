@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:path/path.dart' as p;
 import 'package:sqlite3/sqlite3.dart';
 
 import 'package:td_json_client/td_api.dart';
@@ -34,17 +35,70 @@ abstract class DbInterface {
   FutureOr<void> updateMetaFileHash(String tableName, String fileHash);
   FutureOr<IfpsFileHashesMeta> selectMetaFileHahes();
 
-  FutureOr<void> insertIpfsHash(String tableName, String fileHash);
+  FutureOr<void> insertIpfsHash(ExportType exportType, String fileHash);
 
-  FutureOr<int> exportData(
-      String tableName, String fileName, int? fromId, int limit);
-  FutureOr<int> exportMeta(String tableName, String fileName);
+  FutureOr<int> exportData(ExportType exportType);
+  FutureOr<int> exportMeta(ExportType exportType);
 
   FutureOr<DateTime?> selectLastExportDateTime();
+
+  FutureOr<int> logChatReadStarted(int chatId, DateTime dateTimeStarted);
+  FutureOr<void> logChatReadFinished(
+      int id, int messageCount, DateTime dateTimeFinished);
 }
 
 class IfpsFileHashesMeta {
   String? chat;
   String? message;
   String? user;
+}
+
+const int exportRecordLimit = 10000;
+
+abstract class ExportType {
+  final String workDir;
+  final String fileExtensionName = 'json_lines';
+
+  String get dataType;
+
+  int limit;
+
+  ExportType(this.workDir, [this.limit = exportRecordLimit]);
+
+  String get fileNameFullPathData {
+    return p.joinAll([workDir, '${dataType}.${fileExtensionName}']);
+  }
+
+  String get fileNameFullPathMeta {
+    return p.joinAll([workDir, '${dataType}.meta.${fileExtensionName}']);
+  }
+}
+
+class ExportTypeChat extends ExportType {
+  String get dataType => 'chat';
+
+  ExportTypeChat(super.exportDataTypeFile, [super.limit = exportRecordLimit]);
+}
+
+class ExportTypeMessage extends ExportType {
+  String get dataType => 'message';
+
+  ExportTypeMessage(super.exportDataTypeFile,
+      [super.limit = exportRecordLimit]);
+}
+
+class ExportTypeUser extends ExportType {
+  String get dataType => 'user';
+
+  ExportTypeUser(super.exportDataTypeFile, [super.limit = exportRecordLimit]);
+}
+
+class ExportTypeChatRead extends ExportType {
+  String get dataType => 'chat.${chatId}';
+
+  final int chatId;
+  final DateTime dateTimeFrom;
+
+  ExportTypeChatRead(super.exportDataTypeFile, this.chatId, this.dateTimeFrom,
+      [super.limit = exportRecordLimit]);
 }

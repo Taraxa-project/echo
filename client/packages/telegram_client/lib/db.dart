@@ -242,38 +242,52 @@ class Db implements DbInterface {
     return rs.isNotEmpty;
   }
 
-  Future<int> exportData(
-      String tableName, String fileName, int? fromId, int limit) async {
-    final minId = fromId ?? _selectLastUploadedId(tableName) ?? 0;
-    final parameters = [minId, limit];
+  Future<int> exportData(ExportType exportType) async {
+    _initIpfsUpload(exportType);
 
-    final stmt = _database.prepare(_sqlSelectDataForExport(tableName));
+    var minId = 0;
+    if (exportType is! ExportTypeChat) {
+      minId = _selectLastUploadedId(exportType.dataType) ?? 0;
+    }
+
+    List<dynamic> parameters = [minId];
+    if (exportType is ExportTypeChatRead) {
+      parameters.addAll([
+        exportType.chatId,
+        exportType.dateTimeFrom.toUtc().toIso8601String()
+      ]);
+    }
+    parameters.add(exportType.limit);
+
+    final stmt = _database.prepare(_sqlSelectDataForExport(exportType));
 
     var rowCount = 0;
     try {
       final cursor = stmt.selectCursor(parameters);
-      final result = await _exportCursor(cursor, fileName);
+      final result =
+          await _exportCursor(cursor, exportType.fileNameFullPathData);
       rowCount = result[0];
-      if (rowCount > 0) _updateLastExportedId(tableName, result[1]);
+      if (rowCount > 0) _updateLastExportedId(exportType.dataType, result[1]);
     } on Object {
       rethrow;
     } finally {
       stmt.dispose();
     }
 
-    logger.fine('exported $rowCount records from $tableName');
+    logger.fine('exported $rowCount records from ${exportType.dataType}');
     return rowCount;
   }
 
-  Future<int> exportMeta(String tableName, String fileName) async {
-    final parameters = [tableName];
+  Future<int> exportMeta(ExportType exportType) async {
+    final parameters = [exportType.dataType];
 
     final stmt = _database.prepare(SqlIpfsHash.selectForExport);
 
     var rowCount = 0;
     try {
       final cursor = stmt.selectCursor(parameters);
-      final result = await _exportCursor(cursor, fileName);
+      final result =
+          await _exportCursor(cursor, exportType.fileNameFullPathMeta);
       rowCount = result[0];
     } on Object {
       rethrow;
@@ -281,15 +295,15 @@ class Db implements DbInterface {
       stmt.dispose();
     }
 
-    logger.fine('exported $rowCount ipfs hashes from $tableName');
+    logger.fine('exported $rowCount ipfs hashes from ${exportType.dataType}');
     return rowCount;
   }
 
-  void insertIpfsHash(String tableName, String fileHash) {
+  void insertIpfsHash(ExportType exportType, String fileHash) {
     try {
       _database.execute('BEGIN');
-      _insertIpfsHash(tableName, fileHash);
-      _updateLastUploadedId(tableName);
+      _insertIpfsHash(exportType.dataType, fileHash);
+      _updateLastUploadedId(exportType.dataType);
       _database.execute('COMMIT');
     } on Object {
       _database.execute('ROLLBACK');
@@ -331,9 +345,9 @@ class Db implements DbInterface {
     }
   }
 
-  void _insertIpfsHash(String tableName, String fileHash) {
+  void _insertIpfsHash(String type, String fileHash) {
     final now = _now();
-    final parameters = [tableName, fileHash, now, now];
+    final parameters = [type, fileHash, now, now];
 
     logger.fine('inserting ipfs hash $parameters...');
     execute(SqlIpfsHash.insert, parameters);
@@ -352,10 +366,11 @@ class Db implements DbInterface {
 
     _createTables();
     _createIndexes();
-    _initIpfsUpload();
 
     _renameMessageUserIdToSenderId();
     _addMessageSenderType();
+
+    _runMigrationAddChatRead();
   }
 
   void _createTables() {
@@ -371,19 +386,24 @@ class Db implements DbInterface {
     _database.execute(SqlMigration.createIndexIpfsHashTableName);
   }
 
-  void _initIpfsUpload() {
+  void _initIpfsUpload(ExportType exportType) {
     final now = _now();
-    final tableNames = ['chat', 'message', 'user'];
 
     final stmt = _database.prepare(SqlIpfsUpload.insert);
     try {
-      for (var tableName in tableNames)
-        stmt.execute([tableName, 0, 0, now, now]);
+      stmt.execute([exportType.dataType, 0, 0, now, now]);
     } on Object {
       rethrow;
     } finally {
       stmt.dispose();
     }
+  }
+
+  void _runMigrationAddChatRead() {
+    _database.execute(SqlChatRead.createTable);
+    _database.execute(SqlChatRead.createIndexChatId);
+    _database.execute(SqlChatRead.createIndexChatId);
+    _database.execute(SqlChatRead.createIndexChatId);
   }
 
   void _renameMessageUserIdToSenderId() {
@@ -407,10 +427,12 @@ class Db implements DbInterface {
     return null;
   }
 
-  String _sqlSelectDataForExport(String tableName) {
-    if (tableName == 'chat') {
+  String _sqlSelectDataForExport(ExportType exportData) {
+    if (exportData is ExportTypeChatRead) {
+      return SqlChatRead.selectForExport;
+    } else if (exportData is ExportTypeChat) {
       return SqlChat.selectForExport;
-    } else if (tableName == 'message') {
+    } else if (exportData is ExportTypeMessage) {
       return SqlMessage.selectForExport;
     } else {
       return SqlUser.selectForExport;
@@ -457,6 +479,24 @@ class Db implements DbInterface {
 
   String _now() {
     return DateTime.now().toUtc().toIso8601String();
+  }
+
+  int logChatReadStarted(int chatId, DateTime dateTimeStarted) {
+    final parameters = [chatId, dateTimeStarted.toUtc().toIso8601String()];
+    execute(SqlChatRead.started, parameters);
+
+    var rs = select(SqlChatRead.selectLast, parameters);
+    return rs.first['id'];
+  }
+
+  void logChatReadFinished(
+      int id, int messageCount, DateTime dateTimeFinished) {
+    final parameters = [
+      messageCount,
+      dateTimeFinished.toUtc().toIso8601String(),
+      id
+    ];
+    execute(SqlChatRead.finished, parameters);
   }
 
   void execute(String sql, [List<Object?> parameters = const <Object>[]]) {

@@ -12,8 +12,6 @@ import 'package:telegram_client/src/smart_contract/DataGatheringFacet.g.dart';
 void main() async {
   final now = DateTime.now().toUtc();
 
-  final credentialsOwner =
-      EthPrivateKey.fromHex(String.fromEnvironment('private_key_owner'));
   final credentialsIngester =
       EthPrivateKey.fromHex(String.fromEnvironment('private_key_ingester'));
 
@@ -41,7 +39,6 @@ void main() async {
 
   final db = sqlite3.open(String.fromEnvironment('sqlite-db'));
 
-  final ipfsHashMetaUser = ipfsHashesMeta[0];
   final ipfsHashMetaChat = ipfsHashesMeta[1];
   final ipfsHashMetaMessages = ipfsHashesMeta[2];
 
