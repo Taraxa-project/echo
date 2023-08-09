@@ -96,20 +96,18 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<int> exportData(
-      String tableName, String fileName, int? fromId, int limit) async {
-    return await isolatedProxy
-        .call(ExportData(tableName, fileName, fromId, limit));
+  Future<int> exportData(ExportType exportType) async {
+    return await isolatedProxy.call(ExportData(exportType));
   }
 
   @override
-  Future<void> insertIpfsHash(String tableName, String fileHash) async {
-    await isolatedProxy.call(InsertIpfsHash(tableName, fileHash));
+  Future<void> insertIpfsHash(ExportType exportType, String fileHash) async {
+    await isolatedProxy.call(InsertIpfsHash(exportType, fileHash));
   }
 
   @override
-  Future<int> exportMeta(String tableName, String fileName) async {
-    return await isolatedProxy.call(ExportMeta(tableName, fileName));
+  Future<int> exportMeta(ExportType exportType) async {
+    return await isolatedProxy.call(ExportMeta(exportType));
   }
 
   @override
@@ -149,14 +147,29 @@ class DbIsolated implements DbInterface {
     await isolatedProxy.call(RunMigrations());
   }
 
+  @override
   Future<void> execute(String sql,
       [List<Object?> parameters = const <Object>[]]) async {
     await isolatedProxy.call(Execute(sql, parameters));
   }
 
+  @override
   Future<ResultSet> select(String sql,
       [List<Object?> parameters = const <Object>[]]) async {
     return await isolatedProxy.call(Select(sql, parameters));
+  }
+
+  @override
+  Future<int> logChatReadStarted(int chatId, DateTime dateTimeStarted) async {
+    return await isolatedProxy
+        .call(LogChatReadStarted(chatId, dateTimeStarted));
+  }
+
+  @override
+  Future<void> logChatReadFinished(
+      int id, int messageCount, DateTime dateTimeFinished) async {
+    await isolatedProxy
+        .call(LogChatReadFinished(id, messageCount, dateTimeFinished));
   }
 }
 
@@ -192,12 +205,11 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       db.insertMessagesUsers(
           message.messages, message.users, message.onlineMembersCount);
     } else if (message is ExportData) {
-      return await db.exportData(
-          message.tableName, message.fileName, message.fromId, message.limit);
+      return await db.exportData(message.exportType);
     } else if (message is InsertIpfsHash) {
-      db.insertIpfsHash(message.tableName, message.fileHash);
+      db.insertIpfsHash(message.exportType, message.fileHash);
     } else if (message is ExportMeta) {
-      return await db.exportMeta(message.tableName, message.fileName);
+      return await db.exportMeta(message.exportType);
     } else if (message is UpdateMetaFileHash) {
       db.updateMetaFileHash(message.tableName, message.fileHash);
     } else if (message is SelectMetaFileHahes) {
@@ -212,6 +224,11 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       db.execute(message.sql, message.parameters);
     } else if (message is Select) {
       return db.select(message.sql, message.parameters);
+    } else if (message is LogChatReadStarted) {
+      return db.logChatReadStarted(message.chatId, message.dateTimeStarted);
+    } else if (message is LogChatReadFinished) {
+      db.logChatReadFinished(
+          message.id, message.messageCount, message.dateTimeFinished);
     } else {
       return super.dispatch(message);
     }
@@ -302,26 +319,22 @@ class InsertMessagesUsers {
 }
 
 class ExportData {
-  final String tableName;
-  final String fileName;
-  int? fromId;
-  int limit;
+  final ExportType exportType;
 
-  ExportData(this.tableName, this.fileName, this.fromId, this.limit);
+  ExportData(this.exportType);
 }
 
 class InsertIpfsHash {
-  final String tableName;
+  final ExportType exportType;
   final String fileHash;
 
-  InsertIpfsHash(this.tableName, this.fileHash);
+  InsertIpfsHash(this.exportType, this.fileHash);
 }
 
 class ExportMeta {
-  final String tableName;
-  final String fileName;
+  final ExportType exportType;
 
-  ExportMeta(this.tableName, this.fileName);
+  ExportMeta(this.exportType);
 }
 
 class UpdateMetaFileHash {
@@ -349,4 +362,19 @@ class Select {
   final List<Object?> parameters;
 
   Select(this.sql, [this.parameters = const <Object>[]]);
+}
+
+class LogChatReadStarted {
+  final int chatId;
+  final DateTime dateTimeStarted;
+
+  LogChatReadStarted(this.chatId, this.dateTimeStarted);
+}
+
+class LogChatReadFinished {
+  final int id;
+  final int messageCount;
+  final DateTime dateTimeFinished;
+
+  LogChatReadFinished(this.id, this.messageCount, this.dateTimeFinished);
 }

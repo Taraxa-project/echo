@@ -10,6 +10,8 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:telegram_client/src/smart_contract/DataGatheringFacet.g.dart';
 import 'package:telegram_client/src/smart_contract/GroupManagerFacet.g.dart';
 
+Map<String, String> envVars = io.Platform.environment;
+
 void main() async {
   hierarchicalLoggingEnabled = true;
   final report = Report();
@@ -29,16 +31,15 @@ class Report {
 
   late final DateTime _reportStartDate;
   late final DateTime _reportEndDate;
-  late final String _reportDir;
+  late final String _workDir;
 
   Report() {
     _logger.onRecord.listen((event) {
       print(event);
     });
     _ipfsParams = _buildIpfsParams();
-    _web3client = Web3Client(String.fromEnvironment('rpc_url'), _httpClient);
-    _ingesterContractAddress =
-        String.fromEnvironment('ingester_contract_address');
+    _web3client = Web3Client(envVars['rpc_url']!, _httpClient);
+    _ingesterContractAddress = envVars['ingester_contract_address']!;
     _contractDataGatheringFacet = DataGatheringFacet(
       address: EthereumAddress.fromHex(_ingesterContractAddress),
       client: _web3client,
@@ -48,14 +49,16 @@ class Report {
       client: _web3client,
     );
 
-    _db = sqlite3.open(String.fromEnvironment('sqlite-db'));
-
-    _reportStartDate =
-        DateTime.parse(String.fromEnvironment('report-start-date'));
+    _reportStartDate = DateTime.parse(envVars['report_start_date']!);
     _logger.info('report start date is $_reportStartDate');
     _reportEndDate = _reportStartDate.add(Duration(days: 7));
     _logger.info('report end date is $_reportEndDate');
-    _reportDir = String.fromEnvironment('report-dir');
+
+    _workDir = envVars['work_dir']!;
+    final dir = io.Directory(_workDir);
+    if (!dir.existsSync()) dir.createSync(recursive: true);
+
+    _db = sqlite3.open(p.join(_workDir, 'reports.sqlite'));
   }
 
   Future<void> run() async {
@@ -65,6 +68,7 @@ class Report {
       await _collectDataForIngesters();
       await _runReportChatCover();
       await _runReportChatActivity();
+      await _runReportChatKeepUp();
     } on Object {
       rethrow;
     } finally {
@@ -93,6 +97,15 @@ class Report {
     _db.execute(SqlMessageIngester.createTable);
     _db.execute(SqlMessageIngester.createIndexChatIdId);
     _db.execute(SqlMessageIngester.createIndexDate);
+
+    _db.execute(SqlChatReadIngester.dropIndexFinishedAt);
+    _db.execute(SqlChatReadIngester.dropIndexStartedAt);
+    _db.execute(SqlChatReadIngester.dropIndexChatId);
+    _db.execute(SqlChatReadIngester.dropTable);
+    _db.execute(SqlChatReadIngester.createTable);
+    _db.execute(SqlChatReadIngester.createIndexChatId);
+    _db.execute(SqlChatReadIngester.createIndexStartedAt);
+    _db.execute(SqlChatReadIngester.createIndexFinishedAt);
   }
 
   Future<void> _collectChats() async {
@@ -132,7 +145,8 @@ class Report {
     final ipfsHashMetaMessages = ipfsHashesMeta[2];
 
     await _collectChatsForIngester(ingesterAddress, ipfsHashMetaChat);
-    await _collectMessagesForIngeser(ingesterAddress, ipfsHashMetaMessages);
+    await _collectMessagesForIngester(ingesterAddress, ipfsHashMetaMessages);
+    await _collectChatsReadForIngester(ingesterAddress);
   }
 
   Future<void> _collectChatsForIngester(
@@ -169,13 +183,14 @@ class Report {
       var dataJson = datas[i];
       if (dataJson.isEmpty) continue;
       var data = jsonDecode(dataJson);
-      var params = data.getRange(0, data.length - 1).toList();
+      List<dynamic> params = data.getRange(0, data.length - 1).toList();
+      if (params.length == 10) params.add(null);
       params.add(ingesterAddress.hex);
       stmt.execute(params);
     }
   }
 
-  Future<void> _collectMessagesForIngeser(
+  Future<void> _collectMessagesForIngester(
       EthereumAddress ingesterAddress, String ipfsHash) async {
     _logger.info('message hash meta: $ipfsHash');
 
@@ -216,6 +231,37 @@ class Report {
     stmt.dispose();
   }
 
+  Future<void> _collectChatsReadForIngester(
+      EthereumAddress ingesterAddress) async {
+    final chats = await _db
+        .select(SqlChatIngester.selectAllForIngester, [ingesterAddress.hex]);
+    for (final chat in chats) {
+      final ipfsHash = chat['file_hash_chat_read'];
+      if (ipfsHash == null) continue;
+      _logger.info('chat read hash data from : $ipfsHash');
+      await _insertChatReadForIngester(ingesterAddress, ipfsHash);
+    }
+  }
+
+  Future<void> _insertChatReadForIngester(
+      EthereumAddress ingesterAddress, String ipfsHash) async {
+    var ipfsFile = await _ipfsCat(ipfsHash);
+    var datas = ipfsFile.split('\n');
+
+    final stmt = _db.prepare(SqlChatReadIngester.insert);
+
+    for (var i = 1; i < datas.length; i++) {
+      var dataJson = datas[i];
+      if (dataJson.isEmpty) continue;
+      var data = jsonDecode(dataJson);
+      var params = data.getRange(1, data.length - 1).toList();
+      params.add(ingesterAddress.hex);
+      stmt.execute(params);
+    }
+
+    stmt.dispose();
+  }
+
   Future<String> _ipfsCat(String ipfsHash) async {
     var ipfsUri = _buildIpfsUri(_ipfsParams, '/api/v0/cat/$ipfsHash');
     var request = http.Request('POST', ipfsUri);
@@ -239,11 +285,9 @@ class Report {
 
   IpfsParams _buildIpfsParams() {
     return IpfsParams(
-      String.fromEnvironment('ipfs-scheme'),
-      String.fromEnvironment('ipfs-host'),
-      String.fromEnvironment('ipfs-port'),
-      // String.fromEnvironment('ipfs-username'),
-      // String.fromEnvironment('ipfs-password'),
+      envVars['ipfs_scheme']!,
+      envVars['ipfs_host']!,
+      envVars['ipfs_port']!,
     );
   }
 
@@ -270,7 +314,7 @@ class Report {
     final cursor = stmt.selectCursor();
 
     final fileName = 'chat-cover-${_reportStartDate.toIso8601String()}.csv';
-    final fileNameFullPath = p.join(_reportDir, fileName);
+    final fileNameFullPath = p.join(_workDir, fileName);
 
     await _writeReportFromCursor(fileNameFullPath, cursor);
 
@@ -314,7 +358,24 @@ class Report {
     final cursor = stmt.selectCursor(params);
 
     final fileName = 'chat-activity-${_reportStartDate.toIso8601String()}.csv';
-    final fileNameFullPath = p.join(_reportDir, fileName);
+    final fileNameFullPath = p.join(_workDir, fileName);
+
+    await _writeReportFromCursor(fileNameFullPath, cursor);
+
+    stmt.dispose();
+  }
+
+  Future<void> _runReportChatKeepUp() async {
+    final params = [
+      _reportStartDate.toIso8601String(),
+      _reportEndDate.toIso8601String()
+    ];
+
+    final stmt = _db.prepare(SqlReportChatKeepUp.report);
+    final cursor = stmt.selectCursor(params);
+
+    final fileName = 'chat-keep-up-${_reportStartDate.toIso8601String()}.csv';
+    final fileNameFullPath = p.join(_workDir, fileName);
 
     await _writeReportFromCursor(fileNameFullPath, cursor);
 
@@ -389,6 +450,7 @@ CREATE TABLE IF NOT EXISTS chat_ingester (
   blacklist_reason TEXT,
   created_at TEXT,
   updated_at TEXT,
+  file_hash_chat_read TEXT,
   ingester_address TEXT
 );
 ''';
@@ -404,13 +466,22 @@ INSERT INTO
     username, id, title,
     member_count, member_online_count, bot_count,
     blacklisted, blacklist_reason,
-    created_at, updated_at, ingester_address)
+    created_at, updated_at, file_hash_chat_read, ingester_address)
 VALUES (
     ?, ?, ?,
     ?, ?, ?,
     ?, ?,
-    ?, ?, ?)
+    ?, ?, ?, ?)
 ON CONFLICT DO NOTHING;
+''';
+
+  static const selectAllForIngester = '''
+SELECT
+  *
+FROM
+  chat_ingester
+WHERE
+  ingester_address = ?
 ''';
 }
 
@@ -607,5 +678,81 @@ GROUP BY chat_id, ingester_address
 INNER JOIN chat_ingester b on a.chat_id = b.id
 GROUP BY a.chat_id
 ORDER BY count DESC;
+''';
+}
+
+class SqlChatReadIngester {
+  static const dropIndexChatId = '''
+DROP INDEX IF EXISTS idx_chat_read_ingester_chat_id;
+''';
+
+  static const dropIndexStartedAt = '''
+DROP INDEX IF EXISTS idx_chat_read_ingester_started_at;
+''';
+
+  static const dropIndexFinishedAt = '''
+DROP INDEX IF EXISTS idx_chat_read_ingester_finished_at;
+''';
+
+  static const dropTable = '''
+DROP TABLE IF EXISTS chat_read_ingester;
+''';
+
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS chat_read_ingester (
+  chat_id INTEGER NOT NULL,
+  message_count INTEGER,
+  started_at TEXT,
+  finished_at TEXT,
+  ingester_address TEXT
+);
+''';
+
+  static const createIndexChatId = '''
+CREATE INDEX IF NOT EXISTS idx_chat_read_ingester_chat_id ON
+  chat_read_ingester (chat_id, ingester_address);
+''';
+
+  static const createIndexStartedAt = '''
+CREATE INDEX IF NOT EXISTS idx_chat_read_ingester_started_at ON
+  chat_read_ingester (started_at);
+''';
+
+  static const createIndexFinishedAt = '''
+CREATE INDEX IF NOT EXISTS idx_chat_read_ingester_finished_at ON
+  chat_read_ingester (finished_at);
+''';
+
+  static const insert = '''
+INSERT INTO chat_read_ingester (
+  chat_id,
+  message_count,
+  started_at,
+  finished_at,
+  ingester_address
+) VALUES (
+  ?, ?, ?, ?, ?
+);
+''';
+}
+
+class SqlReportChatKeepUp {
+  static const report = '''
+SELECT
+	b.id "Chat ID",
+	b.username "Chat Name",
+	b.title "Chat Title",
+	a.started_at "Start Timestamp",
+	a.finished_at "Finish Timestamp",
+	a.message_count "Messages",
+	a.ingester_address "Ingester Address"
+FROM
+	chat_read_ingester a
+	INNER JOIN chat_ingester b ON a.chat_id = b.id AND a.ingester_address = b.ingester_address
+WHERE
+	a.started_at >= ? AND
+	a.started_at < ?
+ORDER BY
+	a.started_at ASC;
 ''';
 }

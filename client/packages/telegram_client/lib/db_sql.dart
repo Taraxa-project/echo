@@ -149,15 +149,36 @@ WHERE
   static const selectForExport = '''
 SELECT
   a.*,
+  c.file_hash file_hash_chat_read,
   a.rowid
 FROM
-  chat a
+  chat a LEFT JOIN (
+	SELECT
+		CAST(REPLACE(ba."table_name", 'chat.', '') AS INTEGER) chat_id,
+	  max(rowid) rowid
+	FROM
+	  	ipfs_hash ba
+	WHERE
+		ba."table_name" like 'chat.%'
+	GROUP BY
+	  	ba."table_name"
+  ) b on a.id = b.chat_id LEFT JOIN 
+  ipfs_hash c ON b.rowid = c.rowid
 WHERE
   a.rowid > ?
 ORDER BY
   a.rowid ASC
 LIMIT
   ?;
+''';
+
+  static const selectAll = '''
+SELECT
+  a.*
+FROM
+  chat a
+ORDER BY
+  a.rowid ASC;
 ''';
 }
 
@@ -316,5 +337,82 @@ WHERE
   a.table_name = ?
 ORDER BY
   a.rowid ASC;
+''';
+}
+
+class SqlChatRead {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS chat_read (
+  id INTEGER NOT NULL PRIMARY KEY,
+  chat_id INTEGER NOT NULL,
+  message_count INTEGER,
+  started_at TEXT,
+  finished_at TEXT
+);
+''';
+
+  static const createIndexChatId = '''
+CREATE INDEX IF NOT EXISTS idx_chat_read_chat_id ON
+  chat_read (chat_id);
+''';
+
+  static const createIndexStartedAt = '''
+CREATE INDEX IF NOT EXISTS idx_chat_read_started_at ON
+  chat_read (started_at);
+''';
+
+  static const createIndexFinishedAt = '''
+CREATE INDEX IF NOT EXISTS idx_chat_read_finished_at ON
+  chat_read (finished_at);
+''';
+
+  static const started = '''
+INSERT INTO chat_read (
+  chat_id,
+  started_at
+) VALUES (
+  ?, ?
+);
+''';
+
+  static const finished = '''
+UPDATE
+  chat_read
+SET
+  message_count = ?,
+  finished_at = ?
+WHERE
+  id = ?
+''';
+
+  static const selectLast = '''
+SELECT
+  *
+FROM
+  chat_read
+WHERE
+  chat_id = ? AND
+  started_at = ? AND
+  message_count IS NULL AND
+  finished_at IS NULL
+ORDER BY
+  id DESC
+LIMIT 1;
+''';
+
+  static const selectForExport = '''
+SELECT
+  a.*,
+  a.id rowid
+FROM
+  chat_read a
+WHERE
+  a.id > ? AND
+  a.chat_id = ? AND
+  a.started_at >= ?
+ORDER BY
+  a.id ASC
+LIMIT
+  ?;
 ''';
 }

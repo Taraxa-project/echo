@@ -33,6 +33,7 @@ RUN melos bootstrap
 
 RUN dart compile exe packages/cli/bin/main.dart --output=echo
 RUN dart compile exe packages/cli/tool/scripts/check_groups_captcha.dart --output=echo_check_groups_captcha
+RUN dart compile exe packages/cli/tool/scripts/reports.dart --output=reports
 
 ### main application image ###
 FROM dart:stable
@@ -51,8 +52,9 @@ RUN ldconfig
 COPY --from=builder /app/packages/cli/bin/main.sh /app/
 COPY --from=builder /app/packages/cli/bin/check_groups_captcha.sh /app/
 
-# Copy compiled executable
+# Copy compiled executables
 COPY --from=builder /app/echo /app/echo
 COPY --from=builder /app/echo_check_groups_captcha /app/echo_check_groups_captcha
+COPY --from=builder /app/reports /app/reports
 
 CMD ["sh", "-c", "/app/main.sh"]
