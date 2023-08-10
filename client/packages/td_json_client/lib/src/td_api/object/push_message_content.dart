@@ -576,6 +576,39 @@ class PushMessageContentSticker extends PushMessageContent {
   }
 }
 
+/// A message with a story
+class PushMessageContentStory extends PushMessageContent {
+  String get tdType => 'pushMessageContentStory';
+
+  /// True, if the message is a pinned message with the specified content
+  Bool? is_pinned;
+
+  PushMessageContentStory({
+    super.extra,
+    super.client_id,
+    this.is_pinned,
+  });
+
+  PushMessageContentStory.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    is_pinned = map['is_pinned'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'is_pinned': is_pinned?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A text message
 class PushMessageContentText extends PushMessageContent {
   String get tdType => 'pushMessageContentText';
@@ -882,6 +915,39 @@ class PushMessageContentChatChangeTitle extends PushMessageContent {
   }
 }
 
+/// A chat background was edited
+class PushMessageContentChatSetBackground extends PushMessageContent {
+  String get tdType => 'pushMessageContentChatSetBackground';
+
+  /// True, if the set background is the same as the background of the current user
+  Bool? is_same;
+
+  PushMessageContentChatSetBackground({
+    super.extra,
+    super.client_id,
+    this.is_same,
+  });
+
+  PushMessageContentChatSetBackground.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    is_same = map['is_same'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'is_same': is_same?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A chat theme was edited
 class PushMessageContentChatSetTheme extends PushMessageContent {
   String get tdType => 'pushMessageContentChatSetTheme';
@@ -1014,7 +1080,7 @@ class PushMessageContentChatJoinByRequest extends PushMessageContent {
   }
 }
 
-/// A new recurrent payment was made by the current user
+/// A new recurring payment was made by the current user
 class PushMessageContentRecurringPayment extends PushMessageContent {
   String get tdType => 'pushMessageContentRecurringPayment';
 

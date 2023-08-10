@@ -1,6 +1,7 @@
 import 'package:td_json_client/src/td_api/td.dart';
 import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/email_address_authentication_code_info.dart';
+import 'package:td_json_client/src/td_api/object/email_address_reset_state.dart';
 import 'package:td_json_client/src/td_api/object/authentication_code_info.dart';
 import 'package:td_json_client/src/td_api/object/terms_of_service.dart';
 
@@ -9,7 +10,7 @@ abstract class AuthorizationState extends TdObject {
   AuthorizationState({super.extra, super.client_id});
 }
 
-/// Initializetion parameters are needed. Call setTdlibParameters to provide them
+/// Initialization parameters are needed. Call setTdlibParameters to provide them
 class AuthorizationStateWaitTdlibParameters extends AuthorizationState {
   String get tdType => 'authorizationStateWaitTdlibParameters';
 
@@ -115,8 +116,8 @@ class AuthorizationStateWaitEmailCode extends AuthorizationState {
   /// Information about the sent authentication code
   EmailAddressAuthenticationCodeInfo? code_info;
 
-  /// Point in time (Unix timestamp) when the user will be able to authorize with a code sent to the user's phone number; 0 if unknown
-  int32? next_phone_number_authorization_date;
+  /// Reset state of the email address; may be null if the email address can't be reset
+  EmailAddressResetState? email_address_reset_state;
 
   AuthorizationStateWaitEmailCode({
     super.extra,
@@ -124,7 +125,7 @@ class AuthorizationStateWaitEmailCode extends AuthorizationState {
     this.allow_apple_id,
     this.allow_google_id,
     this.code_info,
-    this.next_phone_number_authorization_date,
+    this.email_address_reset_state,
   });
 
   AuthorizationStateWaitEmailCode.fromMap(Map<String, dynamic> map) {
@@ -135,7 +136,9 @@ class AuthorizationStateWaitEmailCode extends AuthorizationState {
     if (map['code_info'] != null) {
       code_info = TdApiMap.fromMap(map['code_info']) as EmailAddressAuthenticationCodeInfo;
     }
-    next_phone_number_authorization_date = map['next_phone_number_authorization_date'];
+    if (map['email_address_reset_state'] != null) {
+      email_address_reset_state = TdApiMap.fromMap(map['email_address_reset_state']) as EmailAddressResetState;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -146,7 +149,7 @@ class AuthorizationStateWaitEmailCode extends AuthorizationState {
       'allow_apple_id': allow_apple_id?.toMap(skipNulls: skipNulls),
       'allow_google_id': allow_google_id?.toMap(skipNulls: skipNulls),
       'code_info': code_info?.toMap(skipNulls: skipNulls),
-      'next_phone_number_authorization_date': next_phone_number_authorization_date?.toMap(skipNulls: skipNulls),
+      'email_address_reset_state': email_address_reset_state?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -269,6 +272,9 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
   /// True, if a recovery email address has been set up
   Bool? has_recovery_email_address;
 
+  /// True, if some Telegram Passport elements were saved
+  Bool? has_passport_data;
+
   /// Pattern of the email address to which the recovery email was sent; empty until a recovery email has been sent
   string? recovery_email_address_pattern;
 
@@ -277,6 +283,7 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
     super.client_id,
     this.password_hint,
     this.has_recovery_email_address,
+    this.has_passport_data,
     this.recovery_email_address_pattern,
   });
 
@@ -285,6 +292,7 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
     client_id = map['@client_id'];
     password_hint = map['password_hint'];
     has_recovery_email_address = map['has_recovery_email_address'];
+    has_passport_data = map['has_passport_data'];
     recovery_email_address_pattern = map['recovery_email_address_pattern'];
   }
 
@@ -295,6 +303,7 @@ class AuthorizationStateWaitPassword extends AuthorizationState {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'password_hint': password_hint?.toMap(skipNulls: skipNulls),
       'has_recovery_email_address': has_recovery_email_address?.toMap(skipNulls: skipNulls),
+      'has_passport_data': has_passport_data?.toMap(skipNulls: skipNulls),
       'recovery_email_address_pattern': recovery_email_address_pattern?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

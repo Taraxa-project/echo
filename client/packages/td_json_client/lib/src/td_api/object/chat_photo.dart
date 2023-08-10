@@ -3,6 +3,7 @@ import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/minithumbnail.dart';
 import 'package:td_json_client/src/td_api/object/photo_size.dart';
 import 'package:td_json_client/src/td_api/object/animated_chat_photo.dart';
+import 'package:td_json_client/src/td_api/object/chat_photo_sticker.dart';
 
 /// Describes a chat or user profile photo
 class ChatPhoto extends TdObject {
@@ -20,11 +21,14 @@ class ChatPhoto extends TdObject {
   /// Available variants of the photo in JPEG format, in different size
   vector<PhotoSize>? sizes;
 
-  /// A big (640x640) animated variant of the photo in MPEG4 format; may be null
+  /// A big (up to 1280x1280) animated variant of the photo in MPEG4 format; may be null
   AnimatedChatPhoto? animation;
 
   /// A small (160x160) animated variant of the photo in MPEG4 format; may be null even the big animation is available
   AnimatedChatPhoto? small_animation;
+
+  /// Sticker-based version of the chat photo; may be null
+  ChatPhotoSticker? sticker;
 
   ChatPhoto({
     super.extra,
@@ -35,6 +39,7 @@ class ChatPhoto extends TdObject {
     this.sizes,
     this.animation,
     this.small_animation,
+    this.sticker,
   });
 
   ChatPhoto.fromMap(Map<String, dynamic> map) {
@@ -59,6 +64,9 @@ class ChatPhoto extends TdObject {
     if (map['small_animation'] != null) {
       small_animation = TdApiMap.fromMap(map['small_animation']) as AnimatedChatPhoto;
     }
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as ChatPhotoSticker;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -72,6 +80,7 @@ class ChatPhoto extends TdObject {
       'sizes': sizes?.toMap(skipNulls: skipNulls),
       'animation': animation?.toMap(skipNulls: skipNulls),
       'small_animation': small_animation?.toMap(skipNulls: skipNulls),
+      'sticker': sticker?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

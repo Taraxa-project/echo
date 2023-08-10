@@ -40,6 +40,9 @@ class User extends TdObject {
   /// The user is a contact of the current user and the current user is a contact of the user
   Bool? is_mutual_contact;
 
+  /// The user is a close friend of the current user; implies that the user is a contact
+  Bool? is_close_friend;
+
   /// True, if the user is verified
   Bool? is_verified;
 
@@ -57,6 +60,12 @@ class User extends TdObject {
 
   /// True, if many users reported this user as a fake account
   Bool? is_fake;
+
+  /// True, if the user has non-expired stories available to the current user
+  Bool? has_active_stories;
+
+  /// True, if the user has unread non-expired stories available to the current user
+  Bool? has_unread_active_stories;
 
   /// If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method
   Bool? have_access;
@@ -83,12 +92,15 @@ class User extends TdObject {
     this.emoji_status,
     this.is_contact,
     this.is_mutual_contact,
+    this.is_close_friend,
     this.is_verified,
     this.is_premium,
     this.is_support,
     this.restriction_reason,
     this.is_scam,
     this.is_fake,
+    this.has_active_stories,
+    this.has_unread_active_stories,
     this.have_access,
     this.type,
     this.language_code,
@@ -116,12 +128,15 @@ class User extends TdObject {
     }
     is_contact = map['is_contact'];
     is_mutual_contact = map['is_mutual_contact'];
+    is_close_friend = map['is_close_friend'];
     is_verified = map['is_verified'];
     is_premium = map['is_premium'];
     is_support = map['is_support'];
     restriction_reason = map['restriction_reason'];
     is_scam = map['is_scam'];
     is_fake = map['is_fake'];
+    has_active_stories = map['has_active_stories'];
+    has_unread_active_stories = map['has_unread_active_stories'];
     have_access = map['have_access'];
     if (map['type'] != null) {
       type = TdApiMap.fromMap(map['type']) as UserType;
@@ -145,12 +160,15 @@ class User extends TdObject {
       'emoji_status': emoji_status?.toMap(skipNulls: skipNulls),
       'is_contact': is_contact?.toMap(skipNulls: skipNulls),
       'is_mutual_contact': is_mutual_contact?.toMap(skipNulls: skipNulls),
+      'is_close_friend': is_close_friend?.toMap(skipNulls: skipNulls),
       'is_verified': is_verified?.toMap(skipNulls: skipNulls),
       'is_premium': is_premium?.toMap(skipNulls: skipNulls),
       'is_support': is_support?.toMap(skipNulls: skipNulls),
       'restriction_reason': restriction_reason?.toMap(skipNulls: skipNulls),
       'is_scam': is_scam?.toMap(skipNulls: skipNulls),
       'is_fake': is_fake?.toMap(skipNulls: skipNulls),
+      'has_active_stories': has_active_stories?.toMap(skipNulls: skipNulls),
+      'has_unread_active_stories': has_unread_active_stories?.toMap(skipNulls: skipNulls),
       'have_access': have_access?.toMap(skipNulls: skipNulls),
       'type': type?.toMap(skipNulls: skipNulls),
       'language_code': language_code?.toMap(skipNulls: skipNulls),

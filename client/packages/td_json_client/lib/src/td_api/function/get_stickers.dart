@@ -2,7 +2,7 @@ import 'package:td_json_client/src/td_api/td.dart';
 import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/sticker_type.dart';
 
-/// Returns stickers from the installed sticker sets that correspond to a given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned
+/// Returns stickers from the installed sticker sets that correspond to any of the given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned
 class GetStickers extends TdFunction {
   String get tdType => 'getStickers';
   String get tdReturnType => 'Stickers';
@@ -10,7 +10,7 @@ class GetStickers extends TdFunction {
   /// Type of the stickers to return
   StickerType? sticker_type;
 
-  /// Search query; an emoji or a keyword prefix. If empty, returns all known installed stickers
+  /// Search query; a space-separated list of emoji or a keyword prefix. If empty, returns all known installed stickers
   string? query;
 
   /// The maximum number of stickers to be returned

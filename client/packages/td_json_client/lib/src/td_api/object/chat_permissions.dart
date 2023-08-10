@@ -4,19 +4,34 @@ import 'package:td_json_client/src/td_api/td.dart';
 class ChatPermissions extends TdObject {
   String get tdType => 'chatPermissions';
 
-  /// True, if the user can send text messages, contacts, locations, and venues
-  Bool? can_send_messages;
+  /// True, if the user can send text messages, contacts, invoices, locations, and venues
+  Bool? can_send_basic_messages;
 
-  /// True, if the user can send audio files, documents, photos, videos, video notes, and voice notes. Implies can_send_messages permissions
-  Bool? can_send_media_messages;
+  /// True, if the user can send music files
+  Bool? can_send_audios;
 
-  /// True, if the user can send polls. Implies can_send_messages permissions
+  /// True, if the user can send documents
+  Bool? can_send_documents;
+
+  /// True, if the user can send audio photos
+  Bool? can_send_photos;
+
+  /// True, if the user can send audio videos
+  Bool? can_send_videos;
+
+  /// True, if the user can send video notes
+  Bool? can_send_video_notes;
+
+  /// True, if the user can send voice notes
+  Bool? can_send_voice_notes;
+
+  /// True, if the user can send polls
   Bool? can_send_polls;
 
-  /// True, if the user can send animations, games, stickers, and dice and use inline bots. Implies can_send_messages permissions
+  /// True, if the user can send animations, games, stickers, and dice and use inline bots
   Bool? can_send_other_messages;
 
-  /// True, if the user may add a web page preview to their messages. Implies can_send_messages permissions
+  /// True, if the user may add a web page preview to their messages
   Bool? can_add_web_page_previews;
 
   /// True, if the user can change the chat title, photo, and other settings
@@ -34,8 +49,13 @@ class ChatPermissions extends TdObject {
   ChatPermissions({
     super.extra,
     super.client_id,
-    this.can_send_messages,
-    this.can_send_media_messages,
+    this.can_send_basic_messages,
+    this.can_send_audios,
+    this.can_send_documents,
+    this.can_send_photos,
+    this.can_send_videos,
+    this.can_send_video_notes,
+    this.can_send_voice_notes,
     this.can_send_polls,
     this.can_send_other_messages,
     this.can_add_web_page_previews,
@@ -48,8 +68,13 @@ class ChatPermissions extends TdObject {
   ChatPermissions.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    can_send_messages = map['can_send_messages'];
-    can_send_media_messages = map['can_send_media_messages'];
+    can_send_basic_messages = map['can_send_basic_messages'];
+    can_send_audios = map['can_send_audios'];
+    can_send_documents = map['can_send_documents'];
+    can_send_photos = map['can_send_photos'];
+    can_send_videos = map['can_send_videos'];
+    can_send_video_notes = map['can_send_video_notes'];
+    can_send_voice_notes = map['can_send_voice_notes'];
     can_send_polls = map['can_send_polls'];
     can_send_other_messages = map['can_send_other_messages'];
     can_add_web_page_previews = map['can_add_web_page_previews'];
@@ -64,8 +89,13 @@ class ChatPermissions extends TdObject {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'can_send_messages': can_send_messages?.toMap(skipNulls: skipNulls),
-      'can_send_media_messages': can_send_media_messages?.toMap(skipNulls: skipNulls),
+      'can_send_basic_messages': can_send_basic_messages?.toMap(skipNulls: skipNulls),
+      'can_send_audios': can_send_audios?.toMap(skipNulls: skipNulls),
+      'can_send_documents': can_send_documents?.toMap(skipNulls: skipNulls),
+      'can_send_photos': can_send_photos?.toMap(skipNulls: skipNulls),
+      'can_send_videos': can_send_videos?.toMap(skipNulls: skipNulls),
+      'can_send_video_notes': can_send_video_notes?.toMap(skipNulls: skipNulls),
+      'can_send_voice_notes': can_send_voice_notes?.toMap(skipNulls: skipNulls),
       'can_send_polls': can_send_polls?.toMap(skipNulls: skipNulls),
       'can_send_other_messages': can_send_other_messages?.toMap(skipNulls: skipNulls),
       'can_add_web_page_previews': can_add_web_page_previews?.toMap(skipNulls: skipNulls),

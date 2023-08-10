@@ -9,14 +9,19 @@ abstract class MessageSendingState extends TdObject {
 class MessageSendingStatePending extends MessageSendingState {
   String get tdType => 'messageSendingStatePending';
 
+  /// Non-persistent message sending identifier, specified by the application
+  int32? sending_id;
+
   MessageSendingStatePending({
     super.extra,
     super.client_id,
+    this.sending_id,
   });
 
   MessageSendingStatePending.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
+    sending_id = map['sending_id'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -24,6 +29,7 @@ class MessageSendingStatePending extends MessageSendingState {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'sending_id': sending_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

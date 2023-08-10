@@ -1,6 +1,6 @@
 import 'package:td_json_client/src/td_api/td.dart';
 
-/// Represents a single rule for managing privacy settings
+/// Represents a single rule for managing user privacy settings
 abstract class UserPrivacySettingRule extends TdObject {
   UserPrivacySettingRule({super.extra, super.client_id});
 }
@@ -32,7 +32,7 @@ class UserPrivacySettingRuleAllowAll extends UserPrivacySettingRule {
   }
 }
 
-/// A rule to allow all of a user's contacts to do something
+/// A rule to allow all contacts of the user to do something
 class UserPrivacySettingRuleAllowContacts extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleAllowContacts';
 
@@ -162,7 +162,7 @@ class UserPrivacySettingRuleRestrictAll extends UserPrivacySettingRule {
   }
 }
 
-/// A rule to restrict all contacts of a user from doing something
+/// A rule to restrict all contacts of the user from doing something
 class UserPrivacySettingRuleRestrictContacts extends UserPrivacySettingRule {
   String get tdType => 'userPrivacySettingRuleRestrictContacts';
 

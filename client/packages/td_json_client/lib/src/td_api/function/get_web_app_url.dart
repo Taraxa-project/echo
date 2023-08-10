@@ -2,7 +2,7 @@ import 'package:td_json_client/src/td_api/td.dart';
 import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/theme_parameters.dart';
 
-/// Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp button is pressed
+/// Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button is pressed
 class GetWebAppUrl extends TdFunction {
   String get tdType => 'getWebAppUrl';
   String get tdReturnType => 'HttpUrl';
@@ -10,7 +10,7 @@ class GetWebAppUrl extends TdFunction {
   /// Identifier of the target bot
   int53? bot_user_id;
 
-  /// The URL from the keyboardButtonTypeWebApp button
+  /// The URL from the keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button
   string? url;
 
   /// Preferred Web App theme; pass null to use the default theme

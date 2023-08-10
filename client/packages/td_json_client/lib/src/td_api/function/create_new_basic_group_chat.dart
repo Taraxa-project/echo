@@ -5,7 +5,7 @@ class CreateNewBasicGroupChat extends TdFunction {
   String get tdType => 'createNewBasicGroupChat';
   String get tdReturnType => 'Chat';
 
-  /// Identifiers of users to be added to the basic group
+  /// Identifiers of users to be added to the basic group; may be empty to create a basic group without other members
   vector<int53>? user_ids;
 
   /// Title of the new basic group; 1-128 characters

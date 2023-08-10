@@ -7,7 +7,7 @@ include(ExternalProject)
 ExternalProject_Add(
     dartsdk
     GIT_REPOSITORY https://github.com/dart-lang/sdk.git
-    GIT_TAG 2.17.7
+    GIT_TAG 2.18.6
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
@@ -21,10 +21,11 @@ else()
 	set(BUILD_TOOL_CHAIN "")
 endif (WIN32)
 
+# Tdlib 1.8.15 https://github.com/tdlib/td/blob/2e5319ff360cd2d6dab638a7e0370fe959e4201b/CMakeLists.txt#L9
 ExternalProject_Add(
     tdlib
     GIT_REPOSITORY https://github.com/tdlib/td.git
-    GIT_TAG 93c42f6d7c1209937431469f80427d48907f1b8d
+    GIT_TAG 2e5319ff360cd2d6dab638a7e0370fe959e4201b
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=Release
         -DOPENSSL_ROOT_DIR=/opt/homebrew/opt/openssl/

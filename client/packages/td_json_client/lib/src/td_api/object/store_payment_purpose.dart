@@ -12,16 +12,21 @@ class StorePaymentPurposePremiumSubscription extends StorePaymentPurpose {
   /// Pass true if this is a restore of a Telegram Premium purchase; only for App Store
   Bool? is_restore;
 
+  /// Pass true if this is an upgrade from a monthly subscription to early subscription; only for App Store
+  Bool? is_upgrade;
+
   StorePaymentPurposePremiumSubscription({
     super.extra,
     super.client_id,
     this.is_restore,
+    this.is_upgrade,
   });
 
   StorePaymentPurposePremiumSubscription.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     is_restore = map['is_restore'];
+    is_upgrade = map['is_upgrade'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -30,6 +35,7 @@ class StorePaymentPurposePremiumSubscription extends StorePaymentPurpose {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'is_restore': is_restore?.toMap(skipNulls: skipNulls),
+      'is_upgrade': is_upgrade?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

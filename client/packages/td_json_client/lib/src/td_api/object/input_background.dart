@@ -74,3 +74,36 @@ class InputBackgroundRemote extends InputBackground {
     return map;
   }
 }
+
+/// A background previously set in the chat; for chat backgrounds only
+class InputBackgroundPrevious extends InputBackground {
+  String get tdType => 'inputBackgroundPrevious';
+
+  /// Identifier of the message with the background
+  int53? message_id;
+
+  InputBackgroundPrevious({
+    super.extra,
+    super.client_id,
+    this.message_id,
+  });
+
+  InputBackgroundPrevious.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    message_id = map['message_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'message_id': message_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}

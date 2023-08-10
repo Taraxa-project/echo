@@ -2,7 +2,7 @@ import 'package:td_json_client/src/td_api/td.dart';
 import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/bot_command_scope.dart';
 
-/// Returns the list of commands supported by the bot for the given user scope and language; for bots only
+/// Returns list of commands supported by the bot for the given user scope and language; for bots only
 class GetCommands extends TdFunction {
   String get tdType => 'getCommands';
   String get tdReturnType => 'BotCommands';

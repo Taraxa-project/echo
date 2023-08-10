@@ -20,8 +20,10 @@ import 'package:td_json_client/src/td_api/object/poll.dart';
 import 'package:td_json_client/src/td_api/object/message_extended_media.dart';
 import 'package:td_json_client/src/td_api/object/call_discard_reason.dart';
 import 'package:td_json_client/src/td_api/object/chat_photo.dart';
+import 'package:td_json_client/src/td_api/object/chat_background.dart';
 import 'package:td_json_client/src/td_api/object/forum_topic_icon.dart';
 import 'package:td_json_client/src/td_api/object/order_info.dart';
+import 'package:td_json_client/src/td_api/object/web_app.dart';
 import 'package:td_json_client/src/td_api/object/passport_element_type.dart';
 import 'package:td_json_client/src/td_api/object/encrypted_passport_element.dart';
 import 'package:td_json_client/src/td_api/object/encrypted_credentials.dart';
@@ -818,7 +820,52 @@ class MessagePoll extends MessageContent {
   }
 }
 
-/// A message with an invoice from a bot
+/// A message with a forwarded story
+class MessageStory extends MessageContent {
+  String get tdType => 'messageStory';
+
+  /// Identifier of the chat that posted the story
+  int53? story_sender_chat_id;
+
+  /// Story identifier
+  int32? story_id;
+
+  /// True, if the story was automatically forwarded because of a mention of the user
+  Bool? via_mention;
+
+  MessageStory({
+    super.extra,
+    super.client_id,
+    this.story_sender_chat_id,
+    this.story_id,
+    this.via_mention,
+  });
+
+  MessageStory.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    story_sender_chat_id = map['story_sender_chat_id'];
+    story_id = map['story_id'];
+    via_mention = map['via_mention'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'story_sender_chat_id': story_sender_chat_id?.toMap(skipNulls: skipNulls),
+      'story_id': story_id?.toMap(skipNulls: skipNulls),
+      'via_mention': via_mention?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A message with an invoice from a bot. Use getInternalLink with internalLinkTypeBotStart to share the invoice
 class MessageInvoice extends MessageContent {
   String get tdType => 'messageInvoice';
 
@@ -836,7 +883,7 @@ class MessageInvoice extends MessageContent {
   /// Product total price in the smallest units of the currency
   int53? total_amount;
 
-  /// Unique invoice bot start_parameter. To share an invoice use the URL https://t.me/{bot_username}?start={start_parameter}
+  /// Unique invoice bot start_parameter to be passed to getInternalLink
   string? start_parameter;
 
   /// True, if the invoice is a test invoice
@@ -1535,6 +1582,47 @@ class MessageScreenshotTaken extends MessageContent {
   }
 }
 
+/// A new background was set in the chat
+class MessageChatSetBackground extends MessageContent {
+  String get tdType => 'messageChatSetBackground';
+
+  /// Identifier of the message with a previously set same background; 0 if none. Can be an identifier of a deleted message
+  int53? old_background_message_id;
+
+  /// The new background
+  ChatBackground? background;
+
+  MessageChatSetBackground({
+    super.extra,
+    super.client_id,
+    this.old_background_message_id,
+    this.background,
+  });
+
+  MessageChatSetBackground.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    old_background_message_id = map['old_background_message_id'];
+    if (map['background'] != null) {
+      background = TdApiMap.fromMap(map['background']) as ChatBackground;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'old_background_message_id': old_background_message_id?.toMap(skipNulls: skipNulls),
+      'background': background?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A theme in the chat has been changed
 class MessageChatSetTheme extends MessageContent {
   String get tdType => 'messageChatSetTheme';
@@ -2028,11 +2116,20 @@ class MessagePaymentSuccessfulBot extends MessageContent {
 class MessageGiftedPremium extends MessageContent {
   String get tdType => 'messageGiftedPremium';
 
+  /// The identifier of a user that gifted Telegram Premium; 0 if the gift was anonymous
+  int53? gifter_user_id;
+
   /// Currency for the paid amount
   string? currency;
 
   /// The paid amount, in the smallest units of the currency
   int53? amount;
+
+  /// Cryptocurrency used to pay for the gift; may be empty if none
+  string? cryptocurrency;
+
+  /// The paid amount, in the smallest units of the cryptocurrency
+  int64? cryptocurrency_amount;
 
   /// Number of month the Telegram Premium subscription will be active
   int32? month_count;
@@ -2043,8 +2140,11 @@ class MessageGiftedPremium extends MessageContent {
   MessageGiftedPremium({
     super.extra,
     super.client_id,
+    this.gifter_user_id,
     this.currency,
     this.amount,
+    this.cryptocurrency,
+    this.cryptocurrency_amount,
     this.month_count,
     this.sticker,
   });
@@ -2052,8 +2152,11 @@ class MessageGiftedPremium extends MessageContent {
   MessageGiftedPremium.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
+    gifter_user_id = map['gifter_user_id'];
     currency = map['currency'];
     amount = map['amount'];
+    cryptocurrency = map['cryptocurrency'];
+    cryptocurrency_amount = map['cryptocurrency_amount'];
     month_count = map['month_count'];
     if (map['sticker'] != null) {
       sticker = TdApiMap.fromMap(map['sticker']) as Sticker;
@@ -2065,8 +2168,11 @@ class MessageGiftedPremium extends MessageContent {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'gifter_user_id': gifter_user_id?.toMap(skipNulls: skipNulls),
       'currency': currency?.toMap(skipNulls: skipNulls),
       'amount': amount?.toMap(skipNulls: skipNulls),
+      'cryptocurrency': cryptocurrency?.toMap(skipNulls: skipNulls),
+      'cryptocurrency_amount': cryptocurrency_amount?.toMap(skipNulls: skipNulls),
       'month_count': month_count?.toMap(skipNulls: skipNulls),
       'sticker': sticker?.toMap(skipNulls: skipNulls),
     };
@@ -2096,6 +2202,84 @@ class MessageContactRegistered extends MessageContent {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The current user shared a user, which was requested by the bot
+class MessageUserShared extends MessageContent {
+  String get tdType => 'messageUserShared';
+
+  /// Identifier of the shared user
+  int53? user_id;
+
+  /// Identifier of the keyboard button with the request
+  int32? button_id;
+
+  MessageUserShared({
+    super.extra,
+    super.client_id,
+    this.user_id,
+    this.button_id,
+  });
+
+  MessageUserShared.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    user_id = map['user_id'];
+    button_id = map['button_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'user_id': user_id?.toMap(skipNulls: skipNulls),
+      'button_id': button_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The current user shared a chat, which was requested by the bot
+class MessageChatShared extends MessageContent {
+  String get tdType => 'messageChatShared';
+
+  /// Identifier of the shared chat
+  int53? chat_id;
+
+  /// Identifier of the keyboard button with the request
+  int32? button_id;
+
+  MessageChatShared({
+    super.extra,
+    super.client_id,
+    this.chat_id,
+    this.button_id,
+  });
+
+  MessageChatShared.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    button_id = map['button_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'button_id': button_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -2141,14 +2325,21 @@ class MessageWebsiteConnected extends MessageContent {
 class MessageBotWriteAccessAllowed extends MessageContent {
   String get tdType => 'messageBotWriteAccessAllowed';
 
+  /// Information about the Web App, which requested the access; may be null if none or the Web App was opened from the attachment menu
+  WebApp? web_app;
+
   MessageBotWriteAccessAllowed({
     super.extra,
     super.client_id,
+    this.web_app,
   });
 
   MessageBotWriteAccessAllowed.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
+    if (map['web_app'] != null) {
+      web_app = TdApiMap.fromMap(map['web_app']) as WebApp;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -2156,6 +2347,7 @@ class MessageBotWriteAccessAllowed extends MessageContent {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'web_app': web_app?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -2204,7 +2396,7 @@ class MessageWebAppDataReceived extends MessageContent {
   /// Text of the keyboardButtonTypeWebApp button, which opened the Web App
   string? button_text;
 
-  /// Received data
+  /// The data
   string? data;
 
   MessageWebAppDataReceived({
@@ -2373,7 +2565,7 @@ class MessageProximityAlertTriggered extends MessageContent {
   }
 }
 
-/// Message content that is not supported in the current TDLib version
+/// A message content that is not supported in the current TDLib version
 class MessageUnsupported extends MessageContent {
   String get tdType => 'messageUnsupported';
 

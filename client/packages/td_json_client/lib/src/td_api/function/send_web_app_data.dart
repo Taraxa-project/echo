@@ -11,7 +11,7 @@ class SendWebAppData extends TdFunction {
   /// Text of the keyboardButtonTypeWebApp button, which opened the Web App
   string? button_text;
 
-  /// Received data
+  /// The data
   string? data;
 
   SendWebAppData({

@@ -404,3 +404,42 @@ class DeviceTokenTizenPush extends DeviceToken {
     return map;
   }
 }
+
+/// A token for HUAWEI Push Service
+class DeviceTokenHuaweiPush extends DeviceToken {
+  String get tdType => 'deviceTokenHuaweiPush';
+
+  /// Device registration token; may be empty to deregister a device
+  string? token;
+
+  /// True, if push notifications must be additionally encrypted
+  Bool? encrypt;
+
+  DeviceTokenHuaweiPush({
+    super.extra,
+    super.client_id,
+    this.token,
+    this.encrypt,
+  });
+
+  DeviceTokenHuaweiPush.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    token = map['token'];
+    encrypt = map['encrypt'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'token': token?.toMap(skipNulls: skipNulls),
+      'encrypt': encrypt?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}

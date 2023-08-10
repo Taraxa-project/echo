@@ -5,7 +5,7 @@ abstract class ChatActionBar extends TdObject {
   ChatActionBar({super.extra, super.client_id});
 }
 
-/// The chat can be reported as spam using the method reportChat with the reason chatReportReasonSpam. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown
+/// The chat can be reported as spam using the method reportChat with the reason reportReasonSpam. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown
 class ChatActionBarReportSpam extends ChatActionBar {
   String get tdType => 'chatActionBarReportSpam';
 
@@ -38,7 +38,7 @@ class ChatActionBarReportSpam extends ChatActionBar {
   }
 }
 
-/// The chat is a location-based supergroup, which can be reported as having unrelated location using the method reportChat with the reason chatReportReasonUnrelatedLocation
+/// The chat is a location-based supergroup, which can be reported as having unrelated location using the method reportChat with the reason reportReasonUnrelatedLocation
 class ChatActionBarReportUnrelatedLocation extends ChatActionBar {
   String get tdType => 'chatActionBarReportUnrelatedLocation';
 

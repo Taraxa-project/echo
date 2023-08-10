@@ -5,13 +5,14 @@ import 'package:td_json_client/src/td_api/object/animation.dart';
 import 'package:td_json_client/src/td_api/object/bot_menu_button.dart';
 import 'package:td_json_client/src/td_api/object/bot_command.dart';
 import 'package:td_json_client/src/td_api/object/chat_administrator_rights.dart';
+import 'package:td_json_client/src/td_api/object/internal_link_type.dart';
 
 /// Contains information about a bot
 class BotInfo extends TdObject {
   String get tdType => 'botInfo';
 
   /// The text that is shown on the bot's profile page and is sent together with the link when users share the bot
-  string? share_text;
+  string? short_description;
 
   string? description;
 
@@ -33,10 +34,22 @@ class BotInfo extends TdObject {
   /// Default administrator rights for adding the bot to channels; may be null
   ChatAdministratorRights? default_channel_administrator_rights;
 
+  /// The internal link, which can be used to edit bot commands; may be null
+  InternalLinkType? edit_commands_link;
+
+  /// The internal link, which can be used to edit bot description; may be null
+  InternalLinkType? edit_description_link;
+
+  /// The internal link, which can be used to edit the photo or animation shown in the chat with the bot if the chat is empty; may be null
+  InternalLinkType? edit_description_media_link;
+
+  /// The internal link, which can be used to edit bot settings; may be null
+  InternalLinkType? edit_settings_link;
+
   BotInfo({
     super.extra,
     super.client_id,
-    this.share_text,
+    this.short_description,
     this.description,
     this.photo,
     this.animation,
@@ -44,12 +57,16 @@ class BotInfo extends TdObject {
     this.commands,
     this.default_group_administrator_rights,
     this.default_channel_administrator_rights,
+    this.edit_commands_link,
+    this.edit_description_link,
+    this.edit_description_media_link,
+    this.edit_settings_link,
   });
 
   BotInfo.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    share_text = map['share_text'];
+    short_description = map['short_description'];
     description = map['description'];
     if (map['photo'] != null) {
       photo = TdApiMap.fromMap(map['photo']) as Photo;
@@ -74,6 +91,18 @@ class BotInfo extends TdObject {
     if (map['default_channel_administrator_rights'] != null) {
       default_channel_administrator_rights = TdApiMap.fromMap(map['default_channel_administrator_rights']) as ChatAdministratorRights;
     }
+    if (map['edit_commands_link'] != null) {
+      edit_commands_link = TdApiMap.fromMap(map['edit_commands_link']) as InternalLinkType;
+    }
+    if (map['edit_description_link'] != null) {
+      edit_description_link = TdApiMap.fromMap(map['edit_description_link']) as InternalLinkType;
+    }
+    if (map['edit_description_media_link'] != null) {
+      edit_description_media_link = TdApiMap.fromMap(map['edit_description_media_link']) as InternalLinkType;
+    }
+    if (map['edit_settings_link'] != null) {
+      edit_settings_link = TdApiMap.fromMap(map['edit_settings_link']) as InternalLinkType;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -81,7 +110,7 @@ class BotInfo extends TdObject {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'share_text': share_text?.toMap(skipNulls: skipNulls),
+      'short_description': short_description?.toMap(skipNulls: skipNulls),
       'description': description?.toMap(skipNulls: skipNulls),
       'photo': photo?.toMap(skipNulls: skipNulls),
       'animation': animation?.toMap(skipNulls: skipNulls),
@@ -89,6 +118,10 @@ class BotInfo extends TdObject {
       'commands': commands?.toMap(skipNulls: skipNulls),
       'default_group_administrator_rights': default_group_administrator_rights?.toMap(skipNulls: skipNulls),
       'default_channel_administrator_rights': default_channel_administrator_rights?.toMap(skipNulls: skipNulls),
+      'edit_commands_link': edit_commands_link?.toMap(skipNulls: skipNulls),
+      'edit_description_link': edit_description_link?.toMap(skipNulls: skipNulls),
+      'edit_description_media_link': edit_description_media_link?.toMap(skipNulls: skipNulls),
+      'edit_settings_link': edit_settings_link?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

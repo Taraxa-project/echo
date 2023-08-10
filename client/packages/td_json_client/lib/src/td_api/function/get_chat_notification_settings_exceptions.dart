@@ -2,7 +2,7 @@ import 'package:td_json_client/src/td_api/td.dart';
 import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/notification_settings_scope.dart';
 
-/// Returns list of chats with non-default notification settings
+/// Returns list of chats with non-default notification settings for new messages
 class GetChatNotificationSettingsExceptions extends TdFunction {
   String get tdType => 'getChatNotificationSettingsExceptions';
   String get tdReturnType => 'Chats';

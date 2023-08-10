@@ -153,6 +153,49 @@ class InternalLinkTypeBackground extends InternalLinkType {
   }
 }
 
+/// The link is a link to a Telegram bot, which is supposed to be added to a channel chat as an administrator. Call searchPublicChat with the given bot username and check that the user is a bot,
+/// ask the current user to select a channel chat to add the bot to as an administrator. Then, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator,
+/// check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights
+class InternalLinkTypeBotAddToChannel extends InternalLinkType {
+  String get tdType => 'internalLinkTypeBotAddToChannel';
+
+  /// Username of the bot
+  string? bot_username;
+
+  /// Expected administrator rights for the bot
+  ChatAdministratorRights? administrator_rights;
+
+  InternalLinkTypeBotAddToChannel({
+    super.extra,
+    super.client_id,
+    this.bot_username,
+    this.administrator_rights,
+  });
+
+  InternalLinkTypeBotAddToChannel.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    bot_username = map['bot_username'];
+    if (map['administrator_rights'] != null) {
+      administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'bot_username': bot_username?.toMap(skipNulls: skipNulls),
+      'administrator_rights': administrator_rights?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// The link is a link to a chat with a Telegram bot. Call searchPublicChat with the given bot username, check that the user is a bot, show START button in the chat with the bot,
 /// and then call sendBotStartMessage with the given start parameter after the button is pressed
 class InternalLinkTypeBotStart extends InternalLinkType {
@@ -251,49 +294,6 @@ class InternalLinkTypeBotStartInGroup extends InternalLinkType {
   }
 }
 
-/// The link is a link to a Telegram bot, which is supposed to be added to a channel chat as an administrator. Call searchPublicChat with the given bot username and check that the user is a bot,
-/// ask the current user to select a channel chat to add the bot to as an administrator. Then, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator,
-/// check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights
-class InternalLinkTypeBotAddToChannel extends InternalLinkType {
-  String get tdType => 'internalLinkTypeBotAddToChannel';
-
-  /// Username of the bot
-  string? bot_username;
-
-  /// Expected administrator rights for the bot
-  ChatAdministratorRights? administrator_rights;
-
-  InternalLinkTypeBotAddToChannel({
-    super.extra,
-    super.client_id,
-    this.bot_username,
-    this.administrator_rights,
-  });
-
-  InternalLinkTypeBotAddToChannel.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    bot_username = map['bot_username'];
-    if (map['administrator_rights'] != null) {
-      administrator_rights = TdApiMap.fromMap(map['administrator_rights']) as ChatAdministratorRights;
-    }
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'bot_username': bot_username?.toMap(skipNulls: skipNulls),
-      'administrator_rights': administrator_rights?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
 /// The link is a link to the change phone number section of the app
 class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
   String get tdType => 'internalLinkTypeChangePhoneNumber';
@@ -304,6 +304,66 @@ class InternalLinkTypeChangePhoneNumber extends InternalLinkType {
   });
 
   InternalLinkTypeChangePhoneNumber.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The link is an invite link to a chat folder. Call checkChatFolderInviteLink with the given invite link to process the link
+class InternalLinkTypeChatFolderInvite extends InternalLinkType {
+  String get tdType => 'internalLinkTypeChatFolderInvite';
+
+  /// Internal representation of the invite link
+  string? invite_link;
+
+  InternalLinkTypeChatFolderInvite({
+    super.extra,
+    super.client_id,
+    this.invite_link,
+  });
+
+  InternalLinkTypeChatFolderInvite.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    invite_link = map['invite_link'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'invite_link': invite_link?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The link is a link to the folder section of the app settings
+class InternalLinkTypeChatFolderSettings extends InternalLinkType {
+  String get tdType => 'internalLinkTypeChatFolderSettings';
+
+  InternalLinkTypeChatFolderSettings({
+    super.extra,
+    super.client_id,
+  });
+
+  InternalLinkTypeChatFolderSettings.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }
@@ -391,33 +451,6 @@ class InternalLinkTypeEditProfileSettings extends InternalLinkType {
   });
 
   InternalLinkTypeEditProfileSettings.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// The link is a link to the filter section of the app settings
-class InternalLinkTypeFilterSettings extends InternalLinkType {
-  String get tdType => 'internalLinkTypeFilterSettings';
-
-  InternalLinkTypeFilterSettings({
-    super.extra,
-    super.client_id,
-  });
-
-  InternalLinkTypeFilterSettings.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }
@@ -777,7 +810,7 @@ class InternalLinkTypePhoneNumberConfirmation extends InternalLinkType {
   }
 }
 
-/// The link is a link to the Premium features screen of the applcation from which the user can subscribe to Telegram Premium. Call getPremiumFeatures with the given referrer to process the link
+/// The link is a link to the Premium features screen of the application from which the user can subscribe to Telegram Premium. Call getPremiumFeatures with the given referrer to process the link
 class InternalLinkTypePremiumFeatures extends InternalLinkType {
   String get tdType => 'internalLinkTypePremiumFeatures';
 
@@ -1038,6 +1071,45 @@ class InternalLinkTypeStickerSet extends InternalLinkType {
   }
 }
 
+/// The link is a link to a story. Call searchPublicChat with the given sender username, then call getStory with the received chat identifier and the given story identifier
+class InternalLinkTypeStory extends InternalLinkType {
+  String get tdType => 'internalLinkTypeStory';
+
+  /// Username of the sender of the story
+  string? story_sender_username;
+
+  /// Story identifier
+  int32? story_id;
+
+  InternalLinkTypeStory({
+    super.extra,
+    super.client_id,
+    this.story_sender_username,
+    this.story_id,
+  });
+
+  InternalLinkTypeStory.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    story_sender_username = map['story_sender_username'];
+    story_id = map['story_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'story_sender_username': story_sender_username?.toMap(skipNulls: skipNulls),
+      'story_id': story_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// The link is a link to a theme. TDLib has no theme support yet
 class InternalLinkTypeTheme extends InternalLinkType {
   String get tdType => 'internalLinkTypeTheme';
@@ -1261,6 +1333,52 @@ class InternalLinkTypeVideoChat extends InternalLinkType {
       'chat_username': chat_username?.toMap(skipNulls: skipNulls),
       'invite_hash': invite_hash?.toMap(skipNulls: skipNulls),
       'is_live_stream': is_live_stream?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The link is a link to a Web App. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web_app_short_name.
+/// Process received foundWebApp by showing a confirmation dialog if needed, then calling getWebAppLinkUrl and opening the returned URL
+class InternalLinkTypeWebApp extends InternalLinkType {
+  String get tdType => 'internalLinkTypeWebApp';
+
+  /// Username of the bot that owns the Web App
+  string? bot_username;
+
+  /// Short name of the Web App
+  string? web_app_short_name;
+
+  /// Start parameter to be passed to getWebAppLinkUrl
+  string? start_parameter;
+
+  InternalLinkTypeWebApp({
+    super.extra,
+    super.client_id,
+    this.bot_username,
+    this.web_app_short_name,
+    this.start_parameter,
+  });
+
+  InternalLinkTypeWebApp.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    bot_username = map['bot_username'];
+    web_app_short_name = map['web_app_short_name'];
+    start_parameter = map['start_parameter'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'bot_username': bot_username?.toMap(skipNulls: skipNulls),
+      'web_app_short_name': web_app_short_name?.toMap(skipNulls: skipNulls),
+      'start_parameter': start_parameter?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

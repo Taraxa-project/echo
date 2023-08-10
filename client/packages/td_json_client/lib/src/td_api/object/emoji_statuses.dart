@@ -1,29 +1,25 @@
 import 'package:td_json_client/src/td_api/td.dart';
-import 'package:td_json_client/src/td_api/td_api_map.dart';
-import 'package:td_json_client/src/td_api/object/emoji_status.dart';
 
-/// Contains a list of emoji statuses
+/// Contains a list of custom emoji identifiers, which can be set as emoji statuses
 class EmojiStatuses extends TdObject {
   String get tdType => 'emojiStatuses';
 
-  /// The list of emoji statuses
-  vector<EmojiStatus>? emoji_statuses;
+  /// The list of custom emoji identifiers
+  vector<int64>? custom_emoji_ids;
 
   EmojiStatuses({
     super.extra,
     super.client_id,
-    this.emoji_statuses,
+    this.custom_emoji_ids,
   });
 
   EmojiStatuses.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['emoji_statuses'] != null) {
-      emoji_statuses = [];
-      for (var someValue in map['emoji_statuses']) {
-        if (someValue != null) {
-          emoji_statuses?.add(TdApiMap.fromMap(someValue) as EmojiStatus);
-        }
+    if (map['custom_emoji_ids'] != null) {
+      custom_emoji_ids = [];
+      for (var someValue in map['custom_emoji_ids']) {
+        custom_emoji_ids?.add(someValue);
       }
     }
   }
@@ -33,7 +29,7 @@ class EmojiStatuses extends TdObject {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'emoji_statuses': emoji_statuses?.toMap(skipNulls: skipNulls),
+      'custom_emoji_ids': custom_emoji_ids?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -5,7 +5,7 @@ abstract class SuggestedAction extends TdObject {
   SuggestedAction({super.extra, super.client_id});
 }
 
-/// Suggests the user to enable "archive_and_mute_new_chats_from_unknown_users" option
+/// Suggests the user to enable archive_and_mute_new_chats_from_unknown_users setting in archiveChatListSettings
 class SuggestedActionEnableArchiveAndMuteNewChats extends SuggestedAction {
   String get tdType => 'suggestedActionEnableArchiveAndMuteNewChats';
 
@@ -150,7 +150,7 @@ class SuggestedActionConvertToBroadcastGroup extends SuggestedAction {
 class SuggestedActionSetPassword extends SuggestedAction {
   String get tdType => 'suggestedActionSetPassword';
 
-  /// The number of days to pass between consecutive authorizations if the user declines to set password
+  /// The number of days to pass between consecutive authorizations if the user declines to set password; if 0, then the user is advised to set the password for security reasons
   int32? authorization_delay;
 
   SuggestedActionSetPassword({
@@ -171,6 +171,87 @@ class SuggestedActionSetPassword extends SuggestedAction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'authorization_delay': authorization_delay?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Suggests the user to upgrade the Premium subscription from monthly payments to annual payments
+class SuggestedActionUpgradePremium extends SuggestedAction {
+  String get tdType => 'suggestedActionUpgradePremium';
+
+  SuggestedActionUpgradePremium({
+    super.extra,
+    super.client_id,
+  });
+
+  SuggestedActionUpgradePremium.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Suggests the user to restore a recently expired Premium subscription
+class SuggestedActionRestorePremium extends SuggestedAction {
+  String get tdType => 'suggestedActionRestorePremium';
+
+  SuggestedActionRestorePremium({
+    super.extra,
+    super.client_id,
+  });
+
+  SuggestedActionRestorePremium.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Suggests the user to subscribe to the Premium subscription with annual payments
+class SuggestedActionSubscribeToAnnualPremium extends SuggestedAction {
+  String get tdType => 'suggestedActionSubscribeToAnnualPremium';
+
+  SuggestedActionSubscribeToAnnualPremium({
+    super.extra,
+    super.client_id,
+  });
+
+  SuggestedActionSubscribeToAnnualPremium.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -167,6 +167,33 @@ class FileTypePhoto extends FileType {
   }
 }
 
+/// The file is a photo published as a story
+class FileTypePhotoStory extends FileType {
+  String get tdType => 'fileTypePhotoStory';
+
+  FileTypePhotoStory({
+    super.extra,
+    super.client_id,
+  });
+
+  FileTypePhotoStory.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// The file is a profile photo
 class FileTypeProfilePhoto extends FileType {
   String get tdType => 'fileTypeProfilePhoto';
@@ -393,6 +420,33 @@ class FileTypeVideoNote extends FileType {
   });
 
   FileTypeVideoNote.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The file is a video published as a story
+class FileTypeVideoStory extends FileType {
+  String get tdType => 'fileTypeVideoStory';
+
+  FileTypeVideoStory({
+    super.extra,
+    super.client_id,
+  });
+
+  FileTypeVideoStory.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

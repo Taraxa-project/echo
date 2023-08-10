@@ -21,6 +21,9 @@ class MessageSendOptions extends TdObject {
   /// Message scheduling state; pass null to send message immediately. Messages sent to a secret chat, live location messages and self-destructing messages can't be scheduled
   MessageSchedulingState? scheduling_state;
 
+  /// Non-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates
+  int32? sending_id;
+
   MessageSendOptions({
     super.extra,
     super.client_id,
@@ -29,6 +32,7 @@ class MessageSendOptions extends TdObject {
     this.protect_content,
     this.update_order_of_installed_sticker_sets,
     this.scheduling_state,
+    this.sending_id,
   });
 
   MessageSendOptions.fromMap(Map<String, dynamic> map) {
@@ -41,6 +45,7 @@ class MessageSendOptions extends TdObject {
     if (map['scheduling_state'] != null) {
       scheduling_state = TdApiMap.fromMap(map['scheduling_state']) as MessageSchedulingState;
     }
+    sending_id = map['sending_id'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -53,6 +58,7 @@ class MessageSendOptions extends TdObject {
       'protect_content': protect_content?.toMap(skipNulls: skipNulls),
       'update_order_of_installed_sticker_sets': update_order_of_installed_sticker_sets?.toMap(skipNulls: skipNulls),
       'scheduling_state': scheduling_state?.toMap(skipNulls: skipNulls),
+      'sending_id': sending_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

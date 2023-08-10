@@ -25,6 +25,9 @@ class AutoDownloadSettings extends TdObject {
   /// True, if the next audio track needs to be preloaded while the user is listening to an audio file
   Bool? preload_next_audio;
 
+  /// True, if stories needs to be preloaded
+  Bool? preload_stories;
+
   /// True, if "use less data for calls" option needs to be enabled
   Bool? use_less_data_for_calls;
 
@@ -38,6 +41,7 @@ class AutoDownloadSettings extends TdObject {
     this.video_upload_bitrate,
     this.preload_large_videos,
     this.preload_next_audio,
+    this.preload_stories,
     this.use_less_data_for_calls,
   });
 
@@ -51,6 +55,7 @@ class AutoDownloadSettings extends TdObject {
     video_upload_bitrate = map['video_upload_bitrate'];
     preload_large_videos = map['preload_large_videos'];
     preload_next_audio = map['preload_next_audio'];
+    preload_stories = map['preload_stories'];
     use_less_data_for_calls = map['use_less_data_for_calls'];
   }
 
@@ -66,6 +71,7 @@ class AutoDownloadSettings extends TdObject {
       'video_upload_bitrate': video_upload_bitrate?.toMap(skipNulls: skipNulls),
       'preload_large_videos': preload_large_videos?.toMap(skipNulls: skipNulls),
       'preload_next_audio': preload_next_audio?.toMap(skipNulls: skipNulls),
+      'preload_stories': preload_stories?.toMap(skipNulls: skipNulls),
       'use_less_data_for_calls': use_less_data_for_calls?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

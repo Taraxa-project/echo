@@ -1,6 +1,6 @@
 import 'package:td_json_client/src/td_api/td.dart';
 
-/// Returns all user contacts
+/// Returns all contacts of the user
 class GetContacts extends TdFunction {
   String get tdType => 'getContacts';
   String get tdReturnType => 'Users';

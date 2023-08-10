@@ -16,7 +16,7 @@ class ForumTopicInfo extends TdObject {
   /// Icon of the topic
   ForumTopicIcon? icon;
 
-  /// Date the topic was created
+  /// Point in time (Unix timestamp) when the topic was created
   int32? creation_date;
 
   /// Identifier of the creator of the topic

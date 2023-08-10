@@ -77,7 +77,7 @@ class SpeechRecognitionResultText extends SpeechRecognitionResult {
 class SpeechRecognitionResultError extends SpeechRecognitionResult {
   String get tdType => 'speechRecognitionResultError';
 
-  /// Received error
+  /// Recognition error
   Error? error;
 
   SpeechRecognitionResultError({

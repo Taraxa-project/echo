@@ -1,4 +1,6 @@
 import 'package:td_json_client/src/td_api/td.dart';
+import 'package:td_json_client/src/td_api/td_api_map.dart';
+import 'package:td_json_client/src/td_api/object/target_chat.dart';
 
 /// Describes the type of an inline keyboard button
 abstract class InlineKeyboardButtonType extends TdObject {
@@ -216,21 +218,23 @@ class InlineKeyboardButtonTypeSwitchInline extends InlineKeyboardButtonType {
   /// Inline query to be sent to the bot
   string? query;
 
-  /// True, if the inline query must be sent from the current chat
-  Bool? in_current_chat;
+  /// Target chat from which to send the inline query
+  TargetChat? target_chat;
 
   InlineKeyboardButtonTypeSwitchInline({
     super.extra,
     super.client_id,
     this.query,
-    this.in_current_chat,
+    this.target_chat,
   });
 
   InlineKeyboardButtonTypeSwitchInline.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     query = map['query'];
-    in_current_chat = map['in_current_chat'];
+    if (map['target_chat'] != null) {
+      target_chat = TdApiMap.fromMap(map['target_chat']) as TargetChat;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -239,7 +243,7 @@ class InlineKeyboardButtonTypeSwitchInline extends InlineKeyboardButtonType {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'query': query?.toMap(skipNulls: skipNulls),
-      'in_current_chat': in_current_chat?.toMap(skipNulls: skipNulls),
+      'target_chat': target_chat?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
