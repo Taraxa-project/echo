@@ -16,8 +16,9 @@ import 'package:td_json_client/src/td_api/object/draft_message.dart';
 import 'package:td_json_client/src/td_api/object/message_sender.dart';
 import 'package:td_json_client/src/td_api/object/chat_notification_settings.dart';
 import 'package:td_json_client/src/td_api/object/chat_join_requests_info.dart';
+import 'package:td_json_client/src/td_api/object/chat_background.dart';
 import 'package:td_json_client/src/td_api/object/video_chat.dart';
-import 'package:td_json_client/src/td_api/object/chat_filter_info.dart';
+import 'package:td_json_client/src/td_api/object/chat_folder_info.dart';
 import 'package:td_json_client/src/td_api/object/forum_topic_info.dart';
 import 'package:td_json_client/src/td_api/object/notification_settings_scope.dart';
 import 'package:td_json_client/src/td_api/object/scope_notification_settings.dart';
@@ -42,6 +43,9 @@ import 'package:td_json_client/src/td_api/object/group_call_participant.dart';
 import 'package:td_json_client/src/td_api/object/user_privacy_setting.dart';
 import 'package:td_json_client/src/td_api/object/user_privacy_setting_rules.dart';
 import 'package:td_json_client/src/td_api/object/chat_list.dart';
+import 'package:td_json_client/src/td_api/object/story.dart';
+import 'package:td_json_client/src/td_api/object/chat_active_stories.dart';
+import 'package:td_json_client/src/td_api/object/story_list.dart';
 import 'package:td_json_client/src/td_api/object/option_value.dart';
 import 'package:td_json_client/src/td_api/object/sticker_set.dart';
 import 'package:td_json_client/src/td_api/object/sticker_type.dart';
@@ -56,6 +60,8 @@ import 'package:td_json_client/src/td_api/object/attachment_menu_bot.dart';
 import 'package:td_json_client/src/td_api/object/reaction_type.dart';
 import 'package:td_json_client/src/td_api/object/sticker.dart';
 import 'package:td_json_client/src/td_api/object/suggested_action.dart';
+import 'package:td_json_client/src/td_api/object/autosave_settings_scope.dart';
+import 'package:td_json_client/src/td_api/object/scope_autosave_settings.dart';
 import 'package:td_json_client/src/td_api/object/location.dart';
 import 'package:td_json_client/src/td_api/object/chat_type.dart';
 import 'package:td_json_client/src/td_api/object/callback_query_payload.dart';
@@ -1320,6 +1326,47 @@ class UpdateChatReplyMarkup extends Update {
   }
 }
 
+/// The chat background was changed
+class UpdateChatBackground extends Update {
+  String get tdType => 'updateChatBackground';
+
+  /// Chat identifier
+  int53? chat_id;
+
+  /// The new chat background; may be null if background was reset to default
+  ChatBackground? background;
+
+  UpdateChatBackground({
+    super.extra,
+    super.client_id,
+    this.chat_id,
+    this.background,
+  });
+
+  UpdateChatBackground.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    if (map['background'] != null) {
+      background = TdApiMap.fromMap(map['background']) as ChatBackground;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'background': background?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// The chat theme was changed
 class UpdateChatTheme extends Update {
   String get tdType => 'updateChatTheme';
@@ -1556,28 +1603,28 @@ class UpdateChatHasProtectedContent extends Update {
   }
 }
 
-/// A chat's has_scheduled_messages field has changed
-class UpdateChatHasScheduledMessages extends Update {
-  String get tdType => 'updateChatHasScheduledMessages';
+/// Translation of chat messages was enabled or disabled
+class UpdateChatIsTranslatable extends Update {
+  String get tdType => 'updateChatIsTranslatable';
 
   /// Chat identifier
   int53? chat_id;
 
-  /// New value of has_scheduled_messages
-  Bool? has_scheduled_messages;
+  /// New value of is_translatable
+  Bool? is_translatable;
 
-  UpdateChatHasScheduledMessages({
+  UpdateChatIsTranslatable({
     super.extra,
     super.client_id,
     this.chat_id,
-    this.has_scheduled_messages,
+    this.is_translatable,
   });
 
-  UpdateChatHasScheduledMessages.fromMap(Map<String, dynamic> map) {
+  UpdateChatIsTranslatable.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     chat_id = map['chat_id'];
-    has_scheduled_messages = map['has_scheduled_messages'];
+    is_translatable = map['is_translatable'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -1586,46 +1633,7 @@ class UpdateChatHasScheduledMessages extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'has_scheduled_messages': has_scheduled_messages?.toMap(skipNulls: skipNulls),
-    };
-    if (skipNulls) {
-      map.removeWhere((key, value) => value == null);
-    }
-    return map;
-  }
-}
-
-/// A chat was blocked or unblocked
-class UpdateChatIsBlocked extends Update {
-  String get tdType => 'updateChatIsBlocked';
-
-  /// Chat identifier
-  int53? chat_id;
-
-  /// New value of is_blocked
-  Bool? is_blocked;
-
-  UpdateChatIsBlocked({
-    super.extra,
-    super.client_id,
-    this.chat_id,
-    this.is_blocked,
-  });
-
-  UpdateChatIsBlocked.fromMap(Map<String, dynamic> map) {
-    extra = map['@extra'];
-    client_id = map['@client_id'];
-    chat_id = map['chat_id'];
-    is_blocked = map['is_blocked'];
-  }
-
-  Map<String, dynamic> toMap({skipNulls = true}) {
-    Map<String, dynamic> map = {
-      '@type': tdType,
-      '@extra': extra?.toMap(skipNulls: skipNulls),
-      '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
-      'is_blocked': is_blocked?.toMap(skipNulls: skipNulls),
+      'is_translatable': is_translatable?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -1673,31 +1681,109 @@ class UpdateChatIsMarkedAsUnread extends Update {
   }
 }
 
-/// The list of chat filters or a chat filter has changed
-class UpdateChatFilters extends Update {
-  String get tdType => 'updateChatFilters';
+/// A chat was blocked or unblocked
+class UpdateChatIsBlocked extends Update {
+  String get tdType => 'updateChatIsBlocked';
 
-  /// The new list of chat filters
-  vector<ChatFilterInfo>? chat_filters;
+  /// Chat identifier
+  int53? chat_id;
 
-  /// Position of the main chat list among chat filters, 0-based
-  int32? main_chat_list_position;
+  /// New value of is_blocked
+  Bool? is_blocked;
 
-  UpdateChatFilters({
+  UpdateChatIsBlocked({
     super.extra,
     super.client_id,
-    this.chat_filters,
+    this.chat_id,
+    this.is_blocked,
+  });
+
+  UpdateChatIsBlocked.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    is_blocked = map['is_blocked'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'is_blocked': is_blocked?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A chat's has_scheduled_messages field has changed
+class UpdateChatHasScheduledMessages extends Update {
+  String get tdType => 'updateChatHasScheduledMessages';
+
+  /// Chat identifier
+  int53? chat_id;
+
+  /// New value of has_scheduled_messages
+  Bool? has_scheduled_messages;
+
+  UpdateChatHasScheduledMessages({
+    super.extra,
+    super.client_id,
+    this.chat_id,
+    this.has_scheduled_messages,
+  });
+
+  UpdateChatHasScheduledMessages.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    has_scheduled_messages = map['has_scheduled_messages'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'has_scheduled_messages': has_scheduled_messages?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The list of chat folders or a chat folder has changed
+class UpdateChatFolders extends Update {
+  String get tdType => 'updateChatFolders';
+
+  /// The new list of chat folders
+  vector<ChatFolderInfo>? chat_folders;
+
+  /// Position of the main chat list among chat folders, 0-based
+  int32? main_chat_list_position;
+
+  UpdateChatFolders({
+    super.extra,
+    super.client_id,
+    this.chat_folders,
     this.main_chat_list_position,
   });
 
-  UpdateChatFilters.fromMap(Map<String, dynamic> map) {
+  UpdateChatFolders.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    if (map['chat_filters'] != null) {
-      chat_filters = [];
-      for (var someValue in map['chat_filters']) {
+    if (map['chat_folders'] != null) {
+      chat_folders = [];
+      for (var someValue in map['chat_folders']) {
         if (someValue != null) {
-          chat_filters?.add(TdApiMap.fromMap(someValue) as ChatFilterInfo);
+          chat_folders?.add(TdApiMap.fromMap(someValue) as ChatFolderInfo);
         }
       }
     }
@@ -1709,7 +1795,7 @@ class UpdateChatFilters extends Update {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'chat_filters': chat_filters?.toMap(skipNulls: skipNulls),
+      'chat_folders': chat_folders?.toMap(skipNulls: skipNulls),
       'main_chat_list_position': main_chat_list_position?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -3114,6 +3200,156 @@ class UpdateUnreadChatCount extends Update {
   }
 }
 
+/// A story was changed
+class UpdateStory extends Update {
+  String get tdType => 'updateStory';
+
+  /// The new information about the story
+  Story? story;
+
+  UpdateStory({
+    super.extra,
+    super.client_id,
+    this.story,
+  });
+
+  UpdateStory.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['story'] != null) {
+      story = TdApiMap.fromMap(map['story']) as Story;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'story': story?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A story became inaccessible
+class UpdateStoryDeleted extends Update {
+  String get tdType => 'updateStoryDeleted';
+
+  /// Identifier of the chat that posted the story
+  int53? story_sender_chat_id;
+
+  /// Story identifier
+  int32? story_id;
+
+  UpdateStoryDeleted({
+    super.extra,
+    super.client_id,
+    this.story_sender_chat_id,
+    this.story_id,
+  });
+
+  UpdateStoryDeleted.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    story_sender_chat_id = map['story_sender_chat_id'];
+    story_id = map['story_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'story_sender_chat_id': story_sender_chat_id?.toMap(skipNulls: skipNulls),
+      'story_id': story_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The list of active stories posted by a specific chat has changed
+class UpdateChatActiveStories extends Update {
+  String get tdType => 'updateChatActiveStories';
+
+  /// The new list of active stories
+  ChatActiveStories? active_stories;
+
+  UpdateChatActiveStories({
+    super.extra,
+    super.client_id,
+    this.active_stories,
+  });
+
+  UpdateChatActiveStories.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['active_stories'] != null) {
+      active_stories = TdApiMap.fromMap(map['active_stories']) as ChatActiveStories;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'active_stories': active_stories?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Number of chats in a story list has changed
+class UpdateStoryListChatCount extends Update {
+  String get tdType => 'updateStoryListChatCount';
+
+  /// The story list
+  StoryList? story_list;
+
+  /// Approximate total number of chats with active stories in the list
+  int32? chat_count;
+
+  UpdateStoryListChatCount({
+    super.extra,
+    super.client_id,
+    this.story_list,
+    this.chat_count,
+  });
+
+  UpdateStoryListChatCount.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['story_list'] != null) {
+      story_list = TdApiMap.fromMap(map['story_list']) as StoryList;
+    }
+    chat_count = map['chat_count'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'story_list': story_list?.toMap(skipNulls: skipNulls),
+      'chat_count': chat_count?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// An option changed its value
 class UpdateOption extends Update {
   String get tdType => 'updateOption';
@@ -3528,7 +3764,7 @@ class UpdateLanguagePackStrings extends Update {
   /// Identifier of the updated language pack
   string? language_pack_id;
 
-  /// List of changed language pack strings
+  /// List of changed language pack strings; empty if all strings have changed
   vector<LanguagePackString>? strings;
 
   UpdateLanguagePackStrings({
@@ -4006,6 +4242,93 @@ class UpdateSuggestedActions extends Update {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'added_actions': added_actions?.toMap(skipNulls: skipNulls),
       'removed_actions': removed_actions?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Adding users to a chat has failed because of their privacy settings. An invite link can be shared with the users if appropriate
+class UpdateAddChatMembersPrivacyForbidden extends Update {
+  String get tdType => 'updateAddChatMembersPrivacyForbidden';
+
+  /// Chat identifier
+  int53? chat_id;
+
+  /// Identifiers of users, which weren't added because of their privacy settings
+  vector<int53>? user_ids;
+
+  UpdateAddChatMembersPrivacyForbidden({
+    super.extra,
+    super.client_id,
+    this.chat_id,
+    this.user_ids,
+  });
+
+  UpdateAddChatMembersPrivacyForbidden.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    chat_id = map['chat_id'];
+    if (map['user_ids'] != null) {
+      user_ids = [];
+      for (var someValue in map['user_ids']) {
+        user_ids?.add(someValue);
+      }
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'chat_id': chat_id?.toMap(skipNulls: skipNulls),
+      'user_ids': user_ids?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Autosave settings for some type of chats were updated
+class UpdateAutosaveSettings extends Update {
+  String get tdType => 'updateAutosaveSettings';
+
+  /// Type of chats for which autosave settings were updated
+  AutosaveSettingsScope? scope;
+
+  /// The new autosave settings; may be null if the settings are reset to default
+  ScopeAutosaveSettings? settings;
+
+  UpdateAutosaveSettings({
+    super.extra,
+    super.client_id,
+    this.scope,
+    this.settings,
+  });
+
+  UpdateAutosaveSettings.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['scope'] != null) {
+      scope = TdApiMap.fromMap(map['scope']) as AutosaveSettingsScope;
+    }
+    if (map['settings'] != null) {
+      settings = TdApiMap.fromMap(map['settings']) as ScopeAutosaveSettings;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'scope': scope?.toMap(skipNulls: skipNulls),
+      'settings': settings?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -4508,8 +4831,8 @@ class UpdatePollAnswer extends Update {
   /// Unique poll identifier
   int64? poll_id;
 
-  /// The user, who changed the answer to the poll
-  int53? user_id;
+  /// Identifier of the message sender that changed the answer to the poll
+  MessageSender? voter_id;
 
   /// 0-based identifiers of answer options, chosen by the user
   vector<int32>? option_ids;
@@ -4518,7 +4841,7 @@ class UpdatePollAnswer extends Update {
     super.extra,
     super.client_id,
     this.poll_id,
-    this.user_id,
+    this.voter_id,
     this.option_ids,
   });
 
@@ -4526,7 +4849,9 @@ class UpdatePollAnswer extends Update {
     extra = map['@extra'];
     client_id = map['@client_id'];
     poll_id = map['poll_id'];
-    user_id = map['user_id'];
+    if (map['voter_id'] != null) {
+      voter_id = TdApiMap.fromMap(map['voter_id']) as MessageSender;
+    }
     if (map['option_ids'] != null) {
       option_ids = [];
       for (var someValue in map['option_ids']) {
@@ -4541,7 +4866,7 @@ class UpdatePollAnswer extends Update {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'poll_id': poll_id?.toMap(skipNulls: skipNulls),
-      'user_id': user_id?.toMap(skipNulls: skipNulls),
+      'voter_id': voter_id?.toMap(skipNulls: skipNulls),
       'option_ids': option_ids?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
@@ -4567,6 +4892,9 @@ class UpdateChatMember extends Update {
   /// If user has joined the chat using an invite link, the invite link; may be null
   ChatInviteLink? invite_link;
 
+  /// True, if the user has joined the chat using an invite link for a chat folder
+  Bool? via_chat_folder_invite_link;
+
   /// Previous chat member
   ChatMember? old_chat_member;
 
@@ -4580,6 +4908,7 @@ class UpdateChatMember extends Update {
     this.actor_user_id,
     this.date,
     this.invite_link,
+    this.via_chat_folder_invite_link,
     this.old_chat_member,
     this.new_chat_member,
   });
@@ -4593,6 +4922,7 @@ class UpdateChatMember extends Update {
     if (map['invite_link'] != null) {
       invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
     }
+    via_chat_folder_invite_link = map['via_chat_folder_invite_link'];
     if (map['old_chat_member'] != null) {
       old_chat_member = TdApiMap.fromMap(map['old_chat_member']) as ChatMember;
     }
@@ -4610,6 +4940,7 @@ class UpdateChatMember extends Update {
       'actor_user_id': actor_user_id?.toMap(skipNulls: skipNulls),
       'date': date?.toMap(skipNulls: skipNulls),
       'invite_link': invite_link?.toMap(skipNulls: skipNulls),
+      'via_chat_folder_invite_link': via_chat_folder_invite_link?.toMap(skipNulls: skipNulls),
       'old_chat_member': old_chat_member?.toMap(skipNulls: skipNulls),
       'new_chat_member': new_chat_member?.toMap(skipNulls: skipNulls),
     };
@@ -4630,6 +4961,9 @@ class UpdateNewChatJoinRequest extends Update {
   /// Join request
   ChatJoinRequest? request;
 
+  /// Chat identifier of the private chat with the user
+  int53? user_chat_id;
+
   /// The invite link, which was used to send join request; may be null
   ChatInviteLink? invite_link;
 
@@ -4638,6 +4972,7 @@ class UpdateNewChatJoinRequest extends Update {
     super.client_id,
     this.chat_id,
     this.request,
+    this.user_chat_id,
     this.invite_link,
   });
 
@@ -4648,6 +4983,7 @@ class UpdateNewChatJoinRequest extends Update {
     if (map['request'] != null) {
       request = TdApiMap.fromMap(map['request']) as ChatJoinRequest;
     }
+    user_chat_id = map['user_chat_id'];
     if (map['invite_link'] != null) {
       invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
     }
@@ -4660,6 +4996,7 @@ class UpdateNewChatJoinRequest extends Update {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'chat_id': chat_id?.toMap(skipNulls: skipNulls),
       'request': request?.toMap(skipNulls: skipNulls),
+      'user_chat_id': user_chat_id?.toMap(skipNulls: skipNulls),
       'invite_link': invite_link?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

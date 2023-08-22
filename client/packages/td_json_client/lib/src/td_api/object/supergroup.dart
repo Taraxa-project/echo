@@ -22,7 +22,7 @@ class Supergroup extends TdObject {
   ChatMemberStatus? status;
 
   /// Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received
-  /// through searchPublicChats, searchChatsNearby, getInactiveSupergroupChats, getSuitableDiscussionChats, getGroupsInCommon, or getUserPrivacySettingRules
+  /// through searchPublicChats, searchChatsNearby, getInactiveSupergroupChats, getSuitableDiscussionChats, getGroupsInCommon, getUserPrivacySettingRules, or in chatFolderInviteLinkInfo.missing_chat_ids
   int32? member_count;
 
   /// True, if the channel has a discussion group, or the supergroup is the designated discussion group for a channel

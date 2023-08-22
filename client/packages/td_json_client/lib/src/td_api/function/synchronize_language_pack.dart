@@ -1,6 +1,7 @@
 import 'package:td_json_client/src/td_api/td.dart';
 
-/// Fetches the latest versions of all strings from a language pack in the current localization target from the server. This method doesn't need to be called explicitly for the current used/base language packs. Can be called before authorization
+/// Fetches the latest versions of all strings from a language pack in the current localization target from the server.
+/// This method doesn't need to be called explicitly for the current used/base language packs. Can be called before authorization
 class SynchronizeLanguagePack extends TdFunction {
   String get tdType => 'synchronizeLanguagePack';
   String get tdReturnType => 'Ok';

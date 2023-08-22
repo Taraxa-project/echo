@@ -5,7 +5,7 @@ class GetTextEntities extends TdFunction {
   String get tdType => 'getTextEntities';
   String get tdReturnType => 'TextEntities';
 
-  /// The text in which to look for entites
+  /// The text in which to look for entities
   string? text;
 
   GetTextEntities({

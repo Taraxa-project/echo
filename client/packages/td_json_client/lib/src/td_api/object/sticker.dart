@@ -10,7 +10,10 @@ import 'package:td_json_client/src/td_api/object/file.dart';
 class Sticker extends TdObject {
   String get tdType => 'sticker';
 
-  /// The identifier of the sticker set to which the sticker belongs; 0 if none
+  /// Unique sticker identifier within the set; 0 if none
+  int64? id;
+
+  /// Identifier of the sticker set to which the sticker belongs; 0 if none
   int64? set_id;
 
   /// Sticker width; as defined by the sender
@@ -40,6 +43,7 @@ class Sticker extends TdObject {
   Sticker({
     super.extra,
     super.client_id,
+    this.id,
     this.set_id,
     this.width,
     this.height,
@@ -54,6 +58,7 @@ class Sticker extends TdObject {
   Sticker.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
+    id = map['id'];
     set_id = map['set_id'];
     width = map['width'];
     height = map['height'];
@@ -85,6 +90,7 @@ class Sticker extends TdObject {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'id': id?.toMap(skipNulls: skipNulls),
       'set_id': set_id?.toMap(skipNulls: skipNulls),
       'width': width?.toMap(skipNulls: skipNulls),
       'height': height?.toMap(skipNulls: skipNulls),

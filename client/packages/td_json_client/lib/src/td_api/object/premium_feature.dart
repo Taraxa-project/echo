@@ -356,7 +356,7 @@ class PremiumFeatureForumTopicIcon extends PremiumFeature {
   }
 }
 
-/// Allowed to set a premium appllication icons
+/// Allowed to set a premium application icons
 class PremiumFeatureAppIcons extends PremiumFeature {
   String get tdType => 'premiumFeatureAppIcons';
 
@@ -366,6 +366,33 @@ class PremiumFeatureAppIcons extends PremiumFeature {
   });
 
   PremiumFeatureAppIcons.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// Allowed to translate chat messages real-time
+class PremiumFeatureRealTimeChatTranslation extends PremiumFeature {
+  String get tdType => 'premiumFeatureRealTimeChatTranslation';
+
+  PremiumFeatureRealTimeChatTranslation({
+    super.extra,
+    super.client_id,
+  });
+
+  PremiumFeatureRealTimeChatTranslation.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

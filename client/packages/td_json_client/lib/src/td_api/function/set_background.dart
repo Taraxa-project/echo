@@ -8,7 +8,7 @@ class SetBackground extends TdFunction {
   String get tdType => 'setBackground';
   String get tdReturnType => 'Background';
 
-  /// The input background to use; pass null to create a new filled backgrounds or to remove the current background
+  /// The input background to use; pass null to create a new filled background or to remove the current background
   InputBackground? background;
 
   /// Background type; pass null to use the default type of the remote background or to remove the current background

@@ -59,23 +59,23 @@ class ChatListArchive extends ChatList {
   }
 }
 
-/// A list of chats belonging to a chat filter
-class ChatListFilter extends ChatList {
-  String get tdType => 'chatListFilter';
+/// A list of chats added to a chat folder
+class ChatListFolder extends ChatList {
+  String get tdType => 'chatListFolder';
 
-  /// Chat filter identifier
-  int32? chat_filter_id;
+  /// Chat folder identifier
+  int32? chat_folder_id;
 
-  ChatListFilter({
+  ChatListFolder({
     super.extra,
     super.client_id,
-    this.chat_filter_id,
+    this.chat_folder_id,
   });
 
-  ChatListFilter.fromMap(Map<String, dynamic> map) {
+  ChatListFolder.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
-    chat_filter_id = map['chat_filter_id'];
+    chat_folder_id = map['chat_folder_id'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -83,7 +83,7 @@ class ChatListFilter extends ChatList {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
-      'chat_filter_id': chat_filter_id?.toMap(skipNulls: skipNulls),
+      'chat_folder_id': chat_folder_id?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -1,6 +1,7 @@
 import 'package:td_json_client/src/td_api/td.dart';
 import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/input_file.dart';
+import 'package:td_json_client/src/td_api/object/chat_photo_sticker.dart';
 
 /// Describes a photo to be set as a user profile or chat photo
 abstract class InputChatPhoto extends TdObject {
@@ -75,7 +76,7 @@ class InputChatPhotoStatic extends InputChatPhoto {
   }
 }
 
-/// An animation in MPEG4 format; must be square, at most 10 seconds long, have width between 160 and 800 and be at most 2MB in size
+/// An animation in MPEG4 format; must be square, at most 10 seconds long, have width between 160 and 1280 and be at most 2MB in size
 class InputChatPhotoAnimation extends InputChatPhoto {
   String get tdType => 'inputChatPhotoAnimation';
 
@@ -108,6 +109,41 @@ class InputChatPhotoAnimation extends InputChatPhoto {
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'animation': animation?.toMap(skipNulls: skipNulls),
       'main_frame_timestamp': main_frame_timestamp?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// A sticker on a custom background
+class InputChatPhotoSticker extends InputChatPhoto {
+  String get tdType => 'inputChatPhotoSticker';
+
+  /// Information about the sticker
+  ChatPhotoSticker? sticker;
+
+  InputChatPhotoSticker({
+    super.extra,
+    super.client_id,
+    this.sticker,
+  });
+
+  InputChatPhotoSticker.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    if (map['sticker'] != null) {
+      sticker = TdApiMap.fromMap(map['sticker']) as ChatPhotoSticker;
+    }
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'sticker': sticker?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -238,10 +238,14 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
   /// Invite link used to join the chat
   ChatInviteLink? invite_link;
 
+  /// True, if the user has joined the chat using an invite link for a chat folder
+  Bool? via_chat_folder_invite_link;
+
   ChatEventMemberJoinedByInviteLink({
     super.extra,
     super.client_id,
     this.invite_link,
+    this.via_chat_folder_invite_link,
   });
 
   ChatEventMemberJoinedByInviteLink.fromMap(Map<String, dynamic> map) {
@@ -250,6 +254,7 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
     if (map['invite_link'] != null) {
       invite_link = TdApiMap.fromMap(map['invite_link']) as ChatInviteLink;
     }
+    via_chat_folder_invite_link = map['via_chat_folder_invite_link'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -258,6 +263,7 @@ class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'invite_link': invite_link?.toMap(skipNulls: skipNulls),
+      'via_chat_folder_invite_link': via_chat_folder_invite_link?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

@@ -7,7 +7,7 @@ class GetInlineQueryResults extends TdFunction {
   String get tdType => 'getInlineQueryResults';
   String get tdReturnType => 'InlineQueryResults';
 
-  /// The identifier of the target bot
+  /// Identifier of the target bot
   int53? bot_user_id;
 
   /// Identifier of the chat where the query was sent

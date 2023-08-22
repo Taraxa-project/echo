@@ -85,7 +85,7 @@ class StickerFullTypeCustomEmoji extends StickerFullType {
   /// Identifier of the custom emoji
   int64? custom_emoji_id;
 
-  /// True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, or another appropriate color in other places
+  /// True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, white color on chat photos, or another appropriate color in other places
   Bool? needs_repainting;
 
   StickerFullTypeCustomEmoji({

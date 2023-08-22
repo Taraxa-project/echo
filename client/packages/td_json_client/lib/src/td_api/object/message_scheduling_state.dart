@@ -9,7 +9,7 @@ abstract class MessageSchedulingState extends TdObject {
 class MessageSchedulingStateSendAtDate extends MessageSchedulingState {
   String get tdType => 'messageSchedulingStateSendAtDate';
 
-  /// Date the message will be sent. The date must be within 367 days in the future
+  /// Point in time (Unix timestamp) when the message will be sent. The date must be within 367 days in the future
   int32? send_date;
 
   MessageSchedulingStateSendAtDate({

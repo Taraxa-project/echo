@@ -10,7 +10,10 @@ class CreateNewSupergroupChat extends TdFunction {
   /// Title of the new chat; 1-128 characters
   string? title;
 
-  /// Pass true to create a channel chat
+  /// Pass true to create a forum supergroup chat
+  Bool? is_forum;
+
+  /// Pass true to create a channel chat; ignored if a forum is created
   Bool? is_channel;
 
   string? description;
@@ -28,6 +31,7 @@ class CreateNewSupergroupChat extends TdFunction {
     super.extra,
     super.client_id,
     this.title,
+    this.is_forum,
     this.is_channel,
     this.description,
     this.location,
@@ -39,6 +43,7 @@ class CreateNewSupergroupChat extends TdFunction {
     extra = map['@extra'];
     client_id = map['@client_id'];
     title = map['title'];
+    is_forum = map['is_forum'];
     is_channel = map['is_channel'];
     description = map['description'];
     if (map['location'] != null) {
@@ -54,6 +59,7 @@ class CreateNewSupergroupChat extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'title': title?.toMap(skipNulls: skipNulls),
+      'is_forum': is_forum?.toMap(skipNulls: skipNulls),
       'is_channel': is_channel?.toMap(skipNulls: skipNulls),
       'description': description?.toMap(skipNulls: skipNulls),
       'location': location?.toMap(skipNulls: skipNulls),

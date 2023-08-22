@@ -157,7 +157,7 @@ class MessageExtendedMediaVideo extends MessageExtendedMedia {
   }
 }
 
-/// The media is unuspported
+/// The media is unsupported
 class MessageExtendedMediaUnsupported extends MessageExtendedMedia {
   String get tdType => 'messageExtendedMediaUnsupported';
 

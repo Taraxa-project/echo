@@ -1006,6 +1006,45 @@ class InputMessagePoll extends InputMessageContent {
   }
 }
 
+/// A message with a forwarded story. Stories can't be sent to secret chats. A story can be forwarded only if story.can_be_forwarded
+class InputMessageStory extends InputMessageContent {
+  String get tdType => 'inputMessageStory';
+
+  /// Identifier of the chat that posted the story
+  int53? story_sender_chat_id;
+
+  /// Story identifier
+  int32? story_id;
+
+  InputMessageStory({
+    super.extra,
+    super.client_id,
+    this.story_sender_chat_id,
+    this.story_id,
+  });
+
+  InputMessageStory.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    story_sender_chat_id = map['story_sender_chat_id'];
+    story_id = map['story_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'story_sender_chat_id': story_sender_chat_id?.toMap(skipNulls: skipNulls),
+      'story_id': story_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
 /// A forwarded message
 class InputMessageForwarded extends InputMessageContent {
   String get tdType => 'inputMessageForwarded';

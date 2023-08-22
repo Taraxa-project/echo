@@ -4,13 +4,13 @@ import 'package:td_json_client/src/td_api/td.dart';
 class Usernames extends TdObject {
   String get tdType => 'usernames';
 
-  /// List of active usernames; the first one must be shown as the primary username. The order of active usernames can be changed with reorderActiveUsernames or reorderSupergroupActiveUsernames
+  /// List of active usernames; the first one must be shown as the primary username. The order of active usernames can be changed with reorderActiveUsernames, reorderBotActiveUsernames or reorderSupergroupActiveUsernames
   vector<string>? active_usernames;
 
-  /// List of currently disabled usernames; the username can be activated with toggleUsernameIsActive/toggleSupergroupUsernameIsActive
+  /// List of currently disabled usernames; the username can be activated with toggleUsernameIsActive, toggleBotUsernameIsActive, or toggleSupergroupUsernameIsActive
   vector<string>? disabled_usernames;
 
-  /// The active username, which can be changed with setUsername/setSupergroupUsername
+  /// The active username, which can be changed with setUsername or setSupergroupUsername
   string? editable_username;
 
   Usernames({

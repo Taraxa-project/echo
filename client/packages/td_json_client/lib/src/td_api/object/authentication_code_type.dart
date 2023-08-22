@@ -38,7 +38,7 @@ class AuthenticationCodeTypeTelegramMessage extends AuthenticationCodeType {
   }
 }
 
-/// An authentication code is delivered via an SMS message to the specified phone number
+/// An authentication code is delivered via an SMS message to the specified phone number; applications may not receive this type of code
 class AuthenticationCodeTypeSms extends AuthenticationCodeType {
   String get tdType => 'authenticationCodeTypeSms';
 
@@ -206,6 +206,90 @@ class AuthenticationCodeTypeFragment extends AuthenticationCodeType {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'url': url?.toMap(skipNulls: skipNulls),
+      'length': length?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// An authentication code is delivered via Firebase Authentication to the official Android application
+class AuthenticationCodeTypeFirebaseAndroid extends AuthenticationCodeType {
+  String get tdType => 'authenticationCodeTypeFirebaseAndroid';
+
+  /// Nonce to pass to the SafetyNet Attestation API
+  bytes? nonce;
+
+  /// Length of the code
+  int32? length;
+
+  AuthenticationCodeTypeFirebaseAndroid({
+    super.extra,
+    super.client_id,
+    this.nonce,
+    this.length,
+  });
+
+  AuthenticationCodeTypeFirebaseAndroid.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    nonce = map['nonce'];
+    length = map['length'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'nonce': nonce?.toMap(skipNulls: skipNulls),
+      'length': length?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// An authentication code is delivered via Firebase Authentication to the official iOS application
+class AuthenticationCodeTypeFirebaseIos extends AuthenticationCodeType {
+  String get tdType => 'authenticationCodeTypeFirebaseIos';
+
+  /// Receipt of successful application token validation to compare with receipt from push notification
+  string? receipt;
+
+  /// Time after the next authentication method is supposed to be used if verification push notification isn't received, in seconds
+  int32? push_timeout;
+
+  /// Length of the code
+  int32? length;
+
+  AuthenticationCodeTypeFirebaseIos({
+    super.extra,
+    super.client_id,
+    this.receipt,
+    this.push_timeout,
+    this.length,
+  });
+
+  AuthenticationCodeTypeFirebaseIos.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+    receipt = map['receipt'];
+    push_timeout = map['push_timeout'];
+    length = map['length'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'receipt': receipt?.toMap(skipNulls: skipNulls),
+      'push_timeout': push_timeout?.toMap(skipNulls: skipNulls),
       'length': length?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

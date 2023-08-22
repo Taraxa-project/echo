@@ -39,6 +39,9 @@ class UserFullInfo extends TdObject {
   /// True, if voice and video notes can't be sent or forwarded to the user
   Bool? has_restricted_voice_and_video_note_messages;
 
+  /// True, if the user has pinned stories
+  Bool? has_pinned_stories;
+
   /// True, if the current user needs to explicitly allow to share their phone number with the user when the method addContact is used
   Bool? need_phone_number_privacy_exception;
 
@@ -66,6 +69,7 @@ class UserFullInfo extends TdObject {
     this.has_private_calls,
     this.has_private_forwards,
     this.has_restricted_voice_and_video_note_messages,
+    this.has_pinned_stories,
     this.need_phone_number_privacy_exception,
     this.bio,
     this.premium_gift_options,
@@ -91,6 +95,7 @@ class UserFullInfo extends TdObject {
     has_private_calls = map['has_private_calls'];
     has_private_forwards = map['has_private_forwards'];
     has_restricted_voice_and_video_note_messages = map['has_restricted_voice_and_video_note_messages'];
+    has_pinned_stories = map['has_pinned_stories'];
     need_phone_number_privacy_exception = map['need_phone_number_privacy_exception'];
     if (map['bio'] != null) {
       bio = TdApiMap.fromMap(map['bio']) as FormattedText;
@@ -123,6 +128,7 @@ class UserFullInfo extends TdObject {
       'has_private_calls': has_private_calls?.toMap(skipNulls: skipNulls),
       'has_private_forwards': has_private_forwards?.toMap(skipNulls: skipNulls),
       'has_restricted_voice_and_video_note_messages': has_restricted_voice_and_video_note_messages?.toMap(skipNulls: skipNulls),
+      'has_pinned_stories': has_pinned_stories?.toMap(skipNulls: skipNulls),
       'need_phone_number_privacy_exception': need_phone_number_privacy_exception?.toMap(skipNulls: skipNulls),
       'bio': bio?.toMap(skipNulls: skipNulls),
       'premium_gift_options': premium_gift_options?.toMap(skipNulls: skipNulls),

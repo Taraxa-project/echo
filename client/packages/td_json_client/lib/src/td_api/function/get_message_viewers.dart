@@ -3,7 +3,7 @@ import 'package:td_json_client/src/td_api/td.dart';
 /// Returns viewers of a recent outgoing message in a basic group or a supergroup chat. For video notes and voice notes only users, opened content of the message, are returned. The method can be called if message.can_get_viewers == true
 class GetMessageViewers extends TdFunction {
   String get tdType => 'getMessageViewers';
-  String get tdReturnType => 'Users';
+  String get tdReturnType => 'MessageViewers';
 
   /// Chat identifier
   int53? chat_id;

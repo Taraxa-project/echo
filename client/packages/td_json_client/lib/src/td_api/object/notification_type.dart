@@ -114,7 +114,7 @@ class NotificationTypeNewCall extends NotificationType {
 class NotificationTypeNewPushMessage extends NotificationType {
   String get tdType => 'notificationTypeNewPushMessage';
 
-  /// The message identifier. The message will not be available in the chat history, but the ID can be used in viewMessages, or as reply_to_message_id
+  /// The message identifier. The message will not be available in the chat history, but the ID can be used in viewMessages, or as a message to reply
   int53? message_id;
 
   /// Identifier of the sender of the message. Corresponding user or chat may be inaccessible

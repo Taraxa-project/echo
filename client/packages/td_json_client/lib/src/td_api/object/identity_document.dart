@@ -10,8 +10,8 @@ class IdentityDocument extends TdObject {
   /// Document number; 1-24 characters
   string? number;
 
-  /// Document expiry date; may be null if not applicable
-  Date? expiry_date;
+  /// Document expiration date; may be null if not applicable
+  Date? expiration_date;
 
   /// Front side of the document
   DatedFile? front_side;
@@ -29,7 +29,7 @@ class IdentityDocument extends TdObject {
     super.extra,
     super.client_id,
     this.number,
-    this.expiry_date,
+    this.expiration_date,
     this.front_side,
     this.reverse_side,
     this.selfie,
@@ -40,8 +40,8 @@ class IdentityDocument extends TdObject {
     extra = map['@extra'];
     client_id = map['@client_id'];
     number = map['number'];
-    if (map['expiry_date'] != null) {
-      expiry_date = TdApiMap.fromMap(map['expiry_date']) as Date;
+    if (map['expiration_date'] != null) {
+      expiration_date = TdApiMap.fromMap(map['expiration_date']) as Date;
     }
     if (map['front_side'] != null) {
       front_side = TdApiMap.fromMap(map['front_side']) as DatedFile;
@@ -68,7 +68,7 @@ class IdentityDocument extends TdObject {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'number': number?.toMap(skipNulls: skipNulls),
-      'expiry_date': expiry_date?.toMap(skipNulls: skipNulls),
+      'expiration_date': expiration_date?.toMap(skipNulls: skipNulls),
       'front_side': front_side?.toMap(skipNulls: skipNulls),
       'reverse_side': reverse_side?.toMap(skipNulls: skipNulls),
       'selfie': selfie?.toMap(skipNulls: skipNulls),

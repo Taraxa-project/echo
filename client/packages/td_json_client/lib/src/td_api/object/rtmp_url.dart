@@ -1,6 +1,6 @@
 import 'package:td_json_client/src/td_api/td.dart';
 
-/// Represents an RTMP url
+/// Represents an RTMP URL
 class RtmpUrl extends TdObject {
   String get tdType => 'rtmpUrl';
 

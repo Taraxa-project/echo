@@ -140,16 +140,16 @@ class PremiumLimitTypeFavoriteStickerCount extends PremiumLimitType {
   }
 }
 
-/// The maximum number of chat filters
-class PremiumLimitTypeChatFilterCount extends PremiumLimitType {
-  String get tdType => 'premiumLimitTypeChatFilterCount';
+/// The maximum number of chat folders
+class PremiumLimitTypeChatFolderCount extends PremiumLimitType {
+  String get tdType => 'premiumLimitTypeChatFolderCount';
 
-  PremiumLimitTypeChatFilterCount({
+  PremiumLimitTypeChatFolderCount({
     super.extra,
     super.client_id,
   });
 
-  PremiumLimitTypeChatFilterCount.fromMap(Map<String, dynamic> map) {
+  PremiumLimitTypeChatFolderCount.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }
@@ -167,16 +167,16 @@ class PremiumLimitTypeChatFilterCount extends PremiumLimitType {
   }
 }
 
-/// The maximum number of pinned and always included, or always excluded chats in a chat filter
-class PremiumLimitTypeChatFilterChosenChatCount extends PremiumLimitType {
-  String get tdType => 'premiumLimitTypeChatFilterChosenChatCount';
+/// The maximum number of pinned and always included, or always excluded chats in a chat folder
+class PremiumLimitTypeChatFolderChosenChatCount extends PremiumLimitType {
+  String get tdType => 'premiumLimitTypeChatFolderChosenChatCount';
 
-  PremiumLimitTypeChatFilterChosenChatCount({
+  PremiumLimitTypeChatFolderChosenChatCount({
     super.extra,
     super.client_id,
   });
 
-  PremiumLimitTypeChatFilterChosenChatCount.fromMap(Map<String, dynamic> map) {
+  PremiumLimitTypeChatFolderChosenChatCount.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }
@@ -258,6 +258,87 @@ class PremiumLimitTypeBioLength extends PremiumLimitType {
   });
 
   PremiumLimitTypeBioLength.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The maximum number of invite links for a chat folder
+class PremiumLimitTypeChatFolderInviteLinkCount extends PremiumLimitType {
+  String get tdType => 'premiumLimitTypeChatFolderInviteLinkCount';
+
+  PremiumLimitTypeChatFolderInviteLinkCount({
+    super.extra,
+    super.client_id,
+  });
+
+  PremiumLimitTypeChatFolderInviteLinkCount.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The maximum number of added shareable chat folders
+class PremiumLimitTypeShareableChatFolderCount extends PremiumLimitType {
+  String get tdType => 'premiumLimitTypeShareableChatFolderCount';
+
+  PremiumLimitTypeShareableChatFolderCount({
+    super.extra,
+    super.client_id,
+  });
+
+  PremiumLimitTypeShareableChatFolderCount.fromMap(Map<String, dynamic> map) {
+    extra = map['@extra'];
+    client_id = map['@client_id'];
+  }
+
+  Map<String, dynamic> toMap({skipNulls = true}) {
+    Map<String, dynamic> map = {
+      '@type': tdType,
+      '@extra': extra?.toMap(skipNulls: skipNulls),
+      '@client_id': client_id?.toMap(skipNulls: skipNulls),
+    };
+    if (skipNulls) {
+      map.removeWhere((key, value) => value == null);
+    }
+    return map;
+  }
+}
+
+/// The maximum number of active stories
+class PremiumLimitTypeActiveStoryCount extends PremiumLimitType {
+  String get tdType => 'premiumLimitTypeActiveStoryCount';
+
+  PremiumLimitTypeActiveStoryCount({
+    super.extra,
+    super.client_id,
+  });
+
+  PremiumLimitTypeActiveStoryCount.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
   }

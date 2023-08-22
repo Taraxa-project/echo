@@ -63,6 +63,9 @@ class UserTypeDeleted extends UserType {
 class UserTypeBot extends UserType {
   String get tdType => 'userTypeBot';
 
+  /// True, if the bot is owned by the current user and can be edited using the methods toggleBotUsernameIsActive, reorderBotActiveUsernames, setBotProfilePhoto, setBotName, setBotInfoDescription, and setBotInfoShortDescription
+  Bool? can_be_edited;
+
   /// True, if the bot can be invited to basic group and supergroup chats
   Bool? can_join_groups;
 
@@ -84,6 +87,7 @@ class UserTypeBot extends UserType {
   UserTypeBot({
     super.extra,
     super.client_id,
+    this.can_be_edited,
     this.can_join_groups,
     this.can_read_all_group_messages,
     this.is_inline,
@@ -95,6 +99,7 @@ class UserTypeBot extends UserType {
   UserTypeBot.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
+    can_be_edited = map['can_be_edited'];
     can_join_groups = map['can_join_groups'];
     can_read_all_group_messages = map['can_read_all_group_messages'];
     is_inline = map['is_inline'];
@@ -108,6 +113,7 @@ class UserTypeBot extends UserType {
       '@type': tdType,
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
+      'can_be_edited': can_be_edited?.toMap(skipNulls: skipNulls),
       'can_join_groups': can_join_groups?.toMap(skipNulls: skipNulls),
       'can_read_all_group_messages': can_read_all_group_messages?.toMap(skipNulls: skipNulls),
       'is_inline': is_inline?.toMap(skipNulls: skipNulls),

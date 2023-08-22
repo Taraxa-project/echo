@@ -5,7 +5,7 @@ class AddCustomServerLanguagePack extends TdFunction {
   String get tdType => 'addCustomServerLanguagePack';
   String get tdReturnType => 'Ok';
 
-  /// Identifier of a language pack to be added; may be different from a name that is used in an "https://t.me/setlanguage/" link
+  /// Identifier of a language pack to be added
   string? language_pack_id;
 
   AddCustomServerLanguagePack({

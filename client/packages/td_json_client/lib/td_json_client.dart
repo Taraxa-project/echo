@@ -58,7 +58,13 @@ class TdJsonClient {
     final responseDecoded = jsonDecode(responseJson);
 
     final response = TdApiMap.fromMap(responseDecoded);
-    if (response == null) throw LibTdJsonLCUnknownResponse(responseDecoded);
+    if (response == null) {
+      logger?.warning({
+        "warning": "could not create Td instance",
+        "method": "receive",
+        "value": "$responseJson"
+      });
+    }
 
     return response;
   }

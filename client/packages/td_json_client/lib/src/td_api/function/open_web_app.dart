@@ -1,6 +1,7 @@
 import 'package:td_json_client/src/td_api/td.dart';
 import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/theme_parameters.dart';
+import 'package:td_json_client/src/td_api/object/message_reply_to.dart';
 
 /// Informs TDLib that a Web App is being opened from attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button.
 /// For each bot, a confirmation alert about data sent to the bot must be shown once
@@ -8,7 +9,7 @@ class OpenWebApp extends TdFunction {
   String get tdType => 'openWebApp';
   String get tdReturnType => 'WebAppInfo';
 
-  /// Identifier of the chat in which the Web App is opened
+  /// Identifier of the chat in which the Web App is opened. The Web App can't be opened in secret chats
   int53? chat_id;
 
   /// Identifier of the bot, providing the Web App
@@ -26,8 +27,8 @@ class OpenWebApp extends TdFunction {
   /// If not 0, a message thread identifier in which the message will be sent
   int53? message_thread_id;
 
-  /// Identifier of the replied message for the message sent by the Web App; 0 if none
-  int53? reply_to_message_id;
+  /// Identifier of the replied message or story for the message sent by the Web App; pass null if none
+  MessageReplyTo? reply_to;
 
   OpenWebApp({
     super.extra,
@@ -38,7 +39,7 @@ class OpenWebApp extends TdFunction {
     this.theme,
     this.application_name,
     this.message_thread_id,
-    this.reply_to_message_id,
+    this.reply_to,
   });
 
   OpenWebApp.fromMap(Map<String, dynamic> map) {
@@ -52,7 +53,9 @@ class OpenWebApp extends TdFunction {
     }
     application_name = map['application_name'];
     message_thread_id = map['message_thread_id'];
-    reply_to_message_id = map['reply_to_message_id'];
+    if (map['reply_to'] != null) {
+      reply_to = TdApiMap.fromMap(map['reply_to']) as MessageReplyTo;
+    }
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -66,7 +69,7 @@ class OpenWebApp extends TdFunction {
       'theme': theme?.toMap(skipNulls: skipNulls),
       'application_name': application_name?.toMap(skipNulls: skipNulls),
       'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),
-      'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
+      'reply_to': reply_to?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

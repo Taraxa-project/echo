@@ -73,6 +73,12 @@ class WebPage extends TdObject {
   /// Preview of the content as a voice note, if available; may be null
   VoiceNote? voice_note;
 
+  /// The identifier of the sender of the previewed story; 0 if none
+  int53? story_sender_chat_id;
+
+  /// The identifier of the previewed story; 0 if none
+  int32? story_id;
+
   /// Version of web page instant view (currently, can be 1 or 2); 0 if none
   int32? instant_view_version;
 
@@ -99,6 +105,8 @@ class WebPage extends TdObject {
     this.video,
     this.video_note,
     this.voice_note,
+    this.story_sender_chat_id,
+    this.story_id,
     this.instant_view_version,
   });
 
@@ -143,6 +151,8 @@ class WebPage extends TdObject {
     if (map['voice_note'] != null) {
       voice_note = TdApiMap.fromMap(map['voice_note']) as VoiceNote;
     }
+    story_sender_chat_id = map['story_sender_chat_id'];
+    story_id = map['story_id'];
     instant_view_version = map['instant_view_version'];
   }
 
@@ -171,6 +181,8 @@ class WebPage extends TdObject {
       'video': video?.toMap(skipNulls: skipNulls),
       'video_note': video_note?.toMap(skipNulls: skipNulls),
       'voice_note': voice_note?.toMap(skipNulls: skipNulls),
+      'story_sender_chat_id': story_sender_chat_id?.toMap(skipNulls: skipNulls),
+      'story_id': story_id?.toMap(skipNulls: skipNulls),
       'instant_view_version': instant_view_version?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

@@ -1,4 +1,6 @@
 import 'package:td_json_client/src/td_api/td.dart';
+import 'package:td_json_client/src/td_api/td_api_map.dart';
+import 'package:td_json_client/src/td_api/object/firebase_authentication_settings.dart';
 
 /// Contains settings for the authentication of the user's phone number
 class PhoneNumberAuthenticationSettings extends TdObject {
@@ -16,6 +18,9 @@ class PhoneNumberAuthenticationSettings extends TdObject {
   /// For official applications only. True, if the application can use Android SMS Retriever API (requires Google Play Services >= 10.2) to automatically receive the authentication code from the SMS. See https://developers.google.com/identity/sms-retriever/ for more details
   Bool? allow_sms_retriever_api;
 
+  /// For official Android and iOS applications only; pass null otherwise. Settings for Firebase Authentication
+  FirebaseAuthenticationSettings? firebase_authentication_settings;
+
   /// List of up to 20 authentication tokens, recently received in updateOption("authentication_token") in previously logged out sessions
   vector<string>? authentication_tokens;
 
@@ -26,6 +31,7 @@ class PhoneNumberAuthenticationSettings extends TdObject {
     this.allow_missed_call,
     this.is_current_phone_number,
     this.allow_sms_retriever_api,
+    this.firebase_authentication_settings,
     this.authentication_tokens,
   });
 
@@ -36,6 +42,9 @@ class PhoneNumberAuthenticationSettings extends TdObject {
     allow_missed_call = map['allow_missed_call'];
     is_current_phone_number = map['is_current_phone_number'];
     allow_sms_retriever_api = map['allow_sms_retriever_api'];
+    if (map['firebase_authentication_settings'] != null) {
+      firebase_authentication_settings = TdApiMap.fromMap(map['firebase_authentication_settings']) as FirebaseAuthenticationSettings;
+    }
     if (map['authentication_tokens'] != null) {
       authentication_tokens = [];
       for (var someValue in map['authentication_tokens']) {
@@ -53,6 +62,7 @@ class PhoneNumberAuthenticationSettings extends TdObject {
       'allow_missed_call': allow_missed_call?.toMap(skipNulls: skipNulls),
       'is_current_phone_number': is_current_phone_number?.toMap(skipNulls: skipNulls),
       'allow_sms_retriever_api': allow_sms_retriever_api?.toMap(skipNulls: skipNulls),
+      'firebase_authentication_settings': firebase_authentication_settings?.toMap(skipNulls: skipNulls),
       'authentication_tokens': authentication_tokens?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {

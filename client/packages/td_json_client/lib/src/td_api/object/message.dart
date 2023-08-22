@@ -6,6 +6,7 @@ import 'package:td_json_client/src/td_api/object/message_scheduling_state.dart';
 import 'package:td_json_client/src/td_api/object/message_forward_info.dart';
 import 'package:td_json_client/src/td_api/object/message_interaction_info.dart';
 import 'package:td_json_client/src/td_api/object/unread_reaction.dart';
+import 'package:td_json_client/src/td_api/object/message_reply_to.dart';
 import 'package:td_json_client/src/td_api/object/message_content.dart';
 import 'package:td_json_client/src/td_api/object/reply_markup.dart';
 
@@ -94,11 +95,8 @@ class Message extends TdObject {
   /// Information about unread reactions added to the message
   vector<UnreadReaction>? unread_reactions;
 
-  /// If non-zero, the identifier of the chat to which the replied message belongs; Currently, only messages in the Replies chat can have different reply_in_chat_id and chat_id
-  int53? reply_in_chat_id;
-
-  /// If non-zero, the identifier of the message this message is replying to; can be the identifier of a deleted message
-  int53? reply_to_message_id;
+  /// Information about the message or the story this message is replying to; may be null if none
+  MessageReplyTo? reply_to;
 
   /// If non-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs
   int53? message_thread_id;
@@ -160,8 +158,7 @@ class Message extends TdObject {
     this.forward_info,
     this.interaction_info,
     this.unread_reactions,
-    this.reply_in_chat_id,
-    this.reply_to_message_id,
+    this.reply_to,
     this.message_thread_id,
     this.self_destruct_time,
     this.self_destruct_in,
@@ -221,8 +218,9 @@ class Message extends TdObject {
         }
       }
     }
-    reply_in_chat_id = map['reply_in_chat_id'];
-    reply_to_message_id = map['reply_to_message_id'];
+    if (map['reply_to'] != null) {
+      reply_to = TdApiMap.fromMap(map['reply_to']) as MessageReplyTo;
+    }
     message_thread_id = map['message_thread_id'];
     self_destruct_time = map['self_destruct_time'];
     self_destruct_in = map['self_destruct_in'];
@@ -271,8 +269,7 @@ class Message extends TdObject {
       'forward_info': forward_info?.toMap(skipNulls: skipNulls),
       'interaction_info': interaction_info?.toMap(skipNulls: skipNulls),
       'unread_reactions': unread_reactions?.toMap(skipNulls: skipNulls),
-      'reply_in_chat_id': reply_in_chat_id?.toMap(skipNulls: skipNulls),
-      'reply_to_message_id': reply_to_message_id?.toMap(skipNulls: skipNulls),
+      'reply_to': reply_to?.toMap(skipNulls: skipNulls),
       'message_thread_id': message_thread_id?.toMap(skipNulls: skipNulls),
       'self_destruct_time': self_destruct_time?.toMap(skipNulls: skipNulls),
       'self_destruct_in': self_destruct_in?.toMap(skipNulls: skipNulls),

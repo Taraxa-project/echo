@@ -10,14 +10,10 @@ class SetEmojiStatus extends TdFunction {
   /// New emoji status; pass null to switch to the default badge
   EmojiStatus? emoji_status;
 
-  /// Duration of the status, in seconds; pass 0 to keep the status active until it will be changed manually
-  int32? duration;
-
   SetEmojiStatus({
     super.extra,
     super.client_id,
     this.emoji_status,
-    this.duration,
   });
 
   SetEmojiStatus.fromMap(Map<String, dynamic> map) {
@@ -26,7 +22,6 @@ class SetEmojiStatus extends TdFunction {
     if (map['emoji_status'] != null) {
       emoji_status = TdApiMap.fromMap(map['emoji_status']) as EmojiStatus;
     }
-    duration = map['duration'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -35,7 +30,6 @@ class SetEmojiStatus extends TdFunction {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'emoji_status': emoji_status?.toMap(skipNulls: skipNulls),
-      'duration': duration?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);

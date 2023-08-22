@@ -1,7 +1,7 @@
 import 'package:td_json_client/src/td_api/td.dart';
 
-/// Changes the login email address of the user. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode.
-/// To use Apple ID/Google ID instead of a email address, call checkLoginEmailAddressCode directly
+/// Changes the login email address of the user. The email address can be changed only if the current user already has login email and passwordState.login_email_address_pattern is non-empty.
+/// The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode. To use Apple ID/Google ID instead of a email address, call checkLoginEmailAddressCode directly
 class SetLoginEmailAddress extends TdFunction {
   String get tdType => 'setLoginEmailAddress';
   String get tdReturnType => 'EmailAddressAuthenticationCodeInfo';

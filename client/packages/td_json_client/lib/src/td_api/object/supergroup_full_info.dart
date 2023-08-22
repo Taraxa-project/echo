@@ -44,9 +44,6 @@ class SupergroupFullInfo extends TdObject {
   /// True, if non-administrators and non-bots can be hidden in responses to getSupergroupMembers and searchChatMembers for non-administrators
   Bool? can_hide_members;
 
-  /// True, if the chat username can be changed
-  Bool? can_set_username;
-
   /// True, if the supergroup sticker set can be changed
   Bool? can_set_sticker_set;
 
@@ -99,7 +96,6 @@ class SupergroupFullInfo extends TdObject {
     this.can_get_members,
     this.has_hidden_members,
     this.can_hide_members,
-    this.can_set_username,
     this.can_set_sticker_set,
     this.can_set_location,
     this.can_get_statistics,
@@ -131,7 +127,6 @@ class SupergroupFullInfo extends TdObject {
     can_get_members = map['can_get_members'];
     has_hidden_members = map['has_hidden_members'];
     can_hide_members = map['can_hide_members'];
-    can_set_username = map['can_set_username'];
     can_set_sticker_set = map['can_set_sticker_set'];
     can_set_location = map['can_set_location'];
     can_get_statistics = map['can_get_statistics'];
@@ -174,7 +169,6 @@ class SupergroupFullInfo extends TdObject {
       'can_get_members': can_get_members?.toMap(skipNulls: skipNulls),
       'has_hidden_members': has_hidden_members?.toMap(skipNulls: skipNulls),
       'can_hide_members': can_hide_members?.toMap(skipNulls: skipNulls),
-      'can_set_username': can_set_username?.toMap(skipNulls: skipNulls),
       'can_set_sticker_set': can_set_sticker_set?.toMap(skipNulls: skipNulls),
       'can_set_location': can_set_location?.toMap(skipNulls: skipNulls),
       'can_get_statistics': can_get_statistics?.toMap(skipNulls: skipNulls),

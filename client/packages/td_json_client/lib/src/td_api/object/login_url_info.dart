@@ -5,28 +5,28 @@ abstract class LoginUrlInfo extends TdObject {
   LoginUrlInfo({super.extra, super.client_id});
 }
 
-/// An HTTP url needs to be open
+/// An HTTP URL needs to be open
 class LoginUrlInfoOpen extends LoginUrlInfo {
   String get tdType => 'loginUrlInfoOpen';
 
   /// The URL to open
   string? url;
 
-  /// True, if there is no need to show an ordinary open URL confirm
-  Bool? skip_confirm;
+  /// True, if there is no need to show an ordinary open URL confirmation
+  Bool? skip_confirmation;
 
   LoginUrlInfoOpen({
     super.extra,
     super.client_id,
     this.url,
-    this.skip_confirm,
+    this.skip_confirmation,
   });
 
   LoginUrlInfoOpen.fromMap(Map<String, dynamic> map) {
     extra = map['@extra'];
     client_id = map['@client_id'];
     url = map['url'];
-    skip_confirm = map['skip_confirm'];
+    skip_confirmation = map['skip_confirmation'];
   }
 
   Map<String, dynamic> toMap({skipNulls = true}) {
@@ -35,7 +35,7 @@ class LoginUrlInfoOpen extends LoginUrlInfo {
       '@extra': extra?.toMap(skipNulls: skipNulls),
       '@client_id': client_id?.toMap(skipNulls: skipNulls),
       'url': url?.toMap(skipNulls: skipNulls),
-      'skip_confirm': skip_confirm?.toMap(skipNulls: skipNulls),
+      'skip_confirmation': skip_confirmation?.toMap(skipNulls: skipNulls),
     };
     if (skipNulls) {
       map.removeWhere((key, value) => value == null);
@@ -57,7 +57,7 @@ class LoginUrlInfoRequestConfirmation extends LoginUrlInfo {
   /// User identifier of a bot linked with the website
   int53? bot_user_id;
 
-  /// True, if the user needs to be requested to give the permission to the bot to send them messages
+  /// True, if the user must be asked for the permission to the bot to send them messages
   Bool? request_write_access;
 
   LoginUrlInfoRequestConfirmation({

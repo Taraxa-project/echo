@@ -195,8 +195,11 @@ class Db implements DbInterface {
     }
 
     int? replyToId;
-    if (message.reply_to_message_id != null) {
-      replyToId = WrapId.unwrapMessageId(message.reply_to_message_id);
+    if (message.reply_to != null && message.reply_to is MessageReplyToMessage) {
+      final messageReplyToMessage = message.reply_to as MessageReplyToMessage;
+      if (messageReplyToMessage.message_id != null) {
+        replyToId = WrapId.unwrapMessageId(messageReplyToMessage.message_id);
+      }
     }
 
     return [

@@ -1,6 +1,7 @@
 import 'package:td_json_client/src/td_api/td.dart';
 import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/poll_option.dart';
+import 'package:td_json_client/src/td_api/object/message_sender.dart';
 import 'package:td_json_client/src/td_api/object/poll_type.dart';
 
 /// Describes a poll
@@ -19,8 +20,8 @@ class Poll extends TdObject {
   /// Total number of voters, participating in the poll
   int32? total_voter_count;
 
-  /// User identifiers of recent voters, if the poll is non-anonymous
-  vector<int53>? recent_voter_user_ids;
+  /// Identifiers of recent voters, if the poll is non-anonymous
+  vector<MessageSender>? recent_voter_ids;
 
   /// True, if the poll is anonymous
   Bool? is_anonymous;
@@ -44,7 +45,7 @@ class Poll extends TdObject {
     this.question,
     this.options,
     this.total_voter_count,
-    this.recent_voter_user_ids,
+    this.recent_voter_ids,
     this.is_anonymous,
     this.type,
     this.open_period,
@@ -66,10 +67,12 @@ class Poll extends TdObject {
       }
     }
     total_voter_count = map['total_voter_count'];
-    if (map['recent_voter_user_ids'] != null) {
-      recent_voter_user_ids = [];
-      for (var someValue in map['recent_voter_user_ids']) {
-        recent_voter_user_ids?.add(someValue);
+    if (map['recent_voter_ids'] != null) {
+      recent_voter_ids = [];
+      for (var someValue in map['recent_voter_ids']) {
+        if (someValue != null) {
+          recent_voter_ids?.add(TdApiMap.fromMap(someValue) as MessageSender);
+        }
       }
     }
     is_anonymous = map['is_anonymous'];
@@ -90,7 +93,7 @@ class Poll extends TdObject {
       'question': question?.toMap(skipNulls: skipNulls),
       'options': options?.toMap(skipNulls: skipNulls),
       'total_voter_count': total_voter_count?.toMap(skipNulls: skipNulls),
-      'recent_voter_user_ids': recent_voter_user_ids?.toMap(skipNulls: skipNulls),
+      'recent_voter_ids': recent_voter_ids?.toMap(skipNulls: skipNulls),
       'is_anonymous': is_anonymous?.toMap(skipNulls: skipNulls),
       'type': type?.toMap(skipNulls: skipNulls),
       'open_period': open_period?.toMap(skipNulls: skipNulls),

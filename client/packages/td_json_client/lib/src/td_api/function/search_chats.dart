@@ -1,6 +1,6 @@
 import 'package:td_json_client/src/td_api/td.dart';
 
-/// Searches for the specified query in the title and username of already known chats, this is an offline request. Returns chats in the order seen in the main chat list
+/// Searches for the specified query in the title and username of already known chats; this is an offline request. Returns chats in the order seen in the main chat list
 class SearchChats extends TdFunction {
   String get tdType => 'searchChats';
   String get tdReturnType => 'Chats';

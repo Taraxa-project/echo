@@ -2,7 +2,7 @@ import 'package:td_json_client/src/td_api/td.dart';
 import 'package:td_json_client/src/td_api/td_api_map.dart';
 import 'package:td_json_client/src/td_api/object/phone_number_authentication_settings.dart';
 
-/// Changes the phone number of the user and sends an authentication code to the user's new phone number. On success, returns information about the sent code
+/// Changes the phone number of the user and sends an authentication code to the user's new phone number; for official Android and iOS applications only. On success, returns information about the sent code
 class ChangePhoneNumber extends TdFunction {
   String get tdType => 'changePhoneNumber';
   String get tdReturnType => 'AuthenticationCodeInfo';
