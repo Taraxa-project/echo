@@ -21,7 +21,7 @@ WALLET_PRIVATE_KEY_VAR_NAME="WALLET_PRIVATE_KEY_$HOSTNAME_INDEX"
 WALLET_PRIVATE_KEY=${!WALLET_PRIVATE_KEY_VAR_NAME}
 
 
-echo /app/echo \
+/app/echo \
     --api-id $API_ID \
     --api-hash $API_HASH \
     --phone-number $PHONE \
@@ -44,6 +44,4 @@ echo /app/echo \
     --ipfs-host $IPFS_HOST \
     --ipfs-port $IPFS_PORT \
     $IPFS_USERNAME \
-    $IPFS_PASSWORD
-
-tail -f /dev/null
+    $IPFS_PASSWORD 
