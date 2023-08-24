@@ -43,8 +43,8 @@ class TelegramSaveChatHistoryCommand extends Command {
     final proxyUri = _parseProxyUri();
     final loginParams = _buildLoginParams();
 
-    try {
-      while (true) {
+    while (true) {
+      try {
         log = await LogIsolated.spawn(logLevel);
 
         telegramClient = await TelegramClientIsolated.spawn(
@@ -63,21 +63,16 @@ class TelegramSaveChatHistoryCommand extends Command {
             log, db, exportPath, ipfsParams, ingesterContractParams);
         await exporter.export();
 
-        exporter.exit();
-        await telegramClient.close();
-        await db.close();
-        log.exit();
-
         if (!doLoop) break;
-
+      } on Object catch (ex) {
+        print(ex);
+      } finally {
         await Future.delayed(const Duration(seconds: 60));
+        _exitIsolates(log, db, exporter, telegramClient);
       }
-    } on Object {
-      rethrow;
-    } finally {
-      subscriptionSignalHandler.cancel();
-      _exitIsolates(log, db, exporter, telegramClient);
     }
+
+    subscriptionSignalHandler.cancel();
   }
 
   StreamSubscription _initSignalHandler(LogIsolated? log, DbIsolated? db,
