@@ -82,7 +82,26 @@ configEnvs:
   CONFIG_PATH: /var/lib/config
   INGESTER_CONTRACT_RPC_URL: ""
   INGESTER_CONTRACT_ADDRESS: ""
-  INGESTER_CONTRACT_MAX_GAS: "1000000"
+  INGESTER_CONTRACT_MAX_GAS: "25000000"
+
+  DRY_RUN_0: false
+  DRY_RUN_1: false
+  DRY_RUN_2: false
+  DRY_RUN_3: false
+  DRY_RUN_4: false
+  DRY_RUN_5: false
+  DRY_RUN_6: false
+  DRY_RUN_7: false
+  DRY_RUN_8: false
+  DRY_RUN_9: false
+  DRY_RUN_10: false
+  DRY_RUN_11: false
+  DRY_RUN_12: false
+  DRY_RUN_13: false
+  DRY_RUN_14: false
+  DRY_RUN_15: false
+  DRY_RUN_16: false
+  DRY_RUN_17: false
 
 secretEnvs:
   IPFS_SCHEME: http
@@ -95,28 +114,92 @@ secretEnvs:
   API_ID_1: "0"
   API_ID_2: "0"
   API_ID_3: "0"
-  API_ID_4: "0"
+  API_ID_5: "0"
+  API_ID_6: "0"
+  API_ID_7: "0"
+  API_ID_8: "0"
+  API_ID_9: "0"
+  API_ID_10: "0"
+  API_ID_11: "0"
+  API_ID_12: "0"
+  API_ID_13: "0"
+  API_ID_14: "0"
+  API_ID_15: "0"
+  API_ID_16: "0"
+  API_ID_17: "0"
 
   API_HASH_0: "0"
   API_HASH_1: "0"
   API_HASH_2: "0"
   API_HASH_3: "0"
   API_HASH_4: "0"
+  API_HASH_5: "0"
+  API_HASH_6: "0"
+  API_HASH_7: "0"
+  API_HASH_8: "0"
+  API_HASH_9: "0"
+  API_HASH_10: "0"
+  API_HASH_11: "0"
+  API_HASH_12: "0"
+  API_HASH_13: "0"
+  API_HASH_14: "0"
+  API_HASH_15: "0"
+  API_HASH_16: "0"
+  API_HASH_17: "0"
 
   PHONE_0: "0"
   PHONE_1: "0"
   PHONE_2: "0"
   PHONE_3: "0"
   PHONE_4: "0"
+  PHONE_5: "0"
+  PHONE_6: "0"
+  PHONE_7: "0"
+  PHONE_8: "0"
+  PHONE_9: "0"
+  PHONE_10: "0"
+  PHONE_11: "0"
+  PHONE_12: "0"
+  PHONE_13: "0"
+  PHONE_14: "0"
+  PHONE_15: "0"
+  PHONE_16: "0"
+  PHONE_17: "0"
 
   PROXY_OPTION_0: ""
   PROXY_OPTION_1: ""
   PROXY_OPTION_2: ""
   PROXY_OPTION_3: ""
   PROXY_OPTION_4: ""
+  PROXY_OPTION_5: ""
+  PROXY_OPTION_6: ""
+  PROXY_OPTION_7: ""
+  PROXY_OPTION_8: ""
+  PROXY_OPTION_9: ""
+  PROXY_OPTION_10: ""
+  PROXY_OPTION_11: ""
+  PROXY_OPTION_12: ""
+  PROXY_OPTION_13: ""
+  PROXY_OPTION_14: ""
+  PROXY_OPTION_15: ""
+  PROXY_OPTION_16: ""
+  PROXY_OPTION_17: ""
 
   WALLET_PRIVATE_KEY_0: ""
   WALLET_PRIVATE_KEY_1: ""
   WALLET_PRIVATE_KEY_2: ""
   WALLET_PRIVATE_KEY_3: ""
   WALLET_PRIVATE_KEY_4: ""
+  WALLET_PRIVATE_KEY_5: ""
+  WALLET_PRIVATE_KEY_6: ""
+  WALLET_PRIVATE_KEY_7: ""
+  WALLET_PRIVATE_KEY_8: ""
+  WALLET_PRIVATE_KEY_9: ""
+  WALLET_PRIVATE_KEY_10: ""
+  WALLET_PRIVATE_KEY_11: ""
+  WALLET_PRIVATE_KEY_12: ""
+  WALLET_PRIVATE_KEY_13: ""
+  WALLET_PRIVATE_KEY_14: ""
+  WALLET_PRIVATE_KEY_15: ""
+  WALLET_PRIVATE_KEY_16: ""
+  WALLET_PRIVATE_KEY_17: ""

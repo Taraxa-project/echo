@@ -20,6 +20,9 @@ PROXY_OPTION=${!PROXY_OPTION_VAR_NAME}
 WALLET_PRIVATE_KEY_VAR_NAME="WALLET_PRIVATE_KEY_$HOSTNAME_INDEX"
 WALLET_PRIVATE_KEY=${!WALLET_PRIVATE_KEY_VAR_NAME}
 
+DRY_RUN_VAR_NAME="DRY_RUN_$HOSTNAME_INDEX"
+DRY_RUN=${!DRY_RUN_VAR_NAME}
+
 
 /app/echo \
     --api-id $API_ID \
@@ -31,6 +34,7 @@ WALLET_PRIVATE_KEY=${!WALLET_PRIVATE_KEY_VAR_NAME}
     --database-path $PATH_TD_JSON_LIB_DATA \
     $PROXY_OPTION \
     messages \
+    --dry-run $DRY_RUN \
     --run-forever $RUN_FOREVER \
     --message-database-path $PATH_DB_MESSAGE \
     --table-dump-path $TABLE_DUMP_PATH \
