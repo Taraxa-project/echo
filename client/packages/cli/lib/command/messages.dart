@@ -33,6 +33,7 @@ class TelegramSaveChatHistoryCommand extends Command {
         _initSignalHandler(log, db, exporter, telegramClient);
 
     final doLoop = _parseBool(globalResults!.command!['run-forever']);
+    final dryRun = _parseBool(globalResults!.command!['dry-run']);
     final logLevel = _parseLogLevel();
     final logLevelLibTdJson = _parseLogLevelLibtdjson();
     final fileNameDb = globalResults!.command!['message-database-path'];
@@ -44,6 +45,11 @@ class TelegramSaveChatHistoryCommand extends Command {
     final loginParams = _buildLoginParams();
 
     while (true) {
+      if (dryRun) {
+        await Future.delayed(const Duration(seconds: 60));
+        continue;
+      }
+
       try {
         log = await LogIsolated.spawn(logLevel);
 
