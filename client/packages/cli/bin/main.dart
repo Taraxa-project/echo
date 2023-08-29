@@ -120,6 +120,11 @@ void main(List<String> arguments) {
       'ingester-contract-max-gas',
       help: 'Ingester contract max gas to use',
       defaultsTo: '25000000',
+    )
+    ..addOption(
+      'dry-run',
+      help: 'If true, the main loop does nothing',
+      defaultsTo: 'false',
     );
 
   final telegramCommandChatMessage = TelegramGetMessageCommand();

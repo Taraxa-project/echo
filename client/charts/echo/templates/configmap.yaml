@@ -19,3 +19,22 @@ data:
   INGESTER_CONTRACT_RPC_URL: {{ .Values.configEnvs.INGESTER_CONTRACT_RPC_URL | quote }}
   INGESTER_CONTRACT_ADDRESS: {{ .Values.configEnvs.INGESTER_CONTRACT_ADDRESS | quote }}
   INGESTER_CONTRACT_MAX_GAS: {{ .Values.configEnvs.INGESTER_CONTRACT_MAX_GAS | quote }}
+
+  DRY_RUN_0: {{ .Values.configEnvs.DRY_RUN_0 | quote }}
+  DRY_RUN_1: {{ .Values.configEnvs.DRY_RUN_1 | quote }}
+  DRY_RUN_2: {{ .Values.configEnvs.DRY_RUN_2 | quote }}
+  DRY_RUN_3: {{ .Values.configEnvs.DRY_RUN_3 | quote }}
+  DRY_RUN_4: {{ .Values.configEnvs.DRY_RUN_4 | quote }}
+  DRY_RUN_5: {{ .Values.configEnvs.DRY_RUN_5 | quote }}
+  DRY_RUN_6: {{ .Values.configEnvs.DRY_RUN_6 | quote }}
+  DRY_RUN_7: {{ .Values.configEnvs.DRY_RUN_7 | quote }}
+  DRY_RUN_8: {{ .Values.configEnvs.DRY_RUN_8 | quote }}
+  DRY_RUN_9: {{ .Values.configEnvs.DRY_RUN_9 | quote }}
+  DRY_RUN_10: {{ .Values.configEnvs.DRY_RUN_10 | quote }}
+  DRY_RUN_11: {{ .Values.configEnvs.DRY_RUN_11 | quote }}
+  DRY_RUN_12: {{ .Values.configEnvs.DRY_RUN_12 | quote }}
+  DRY_RUN_13: {{ .Values.configEnvs.DRY_RUN_13 | quote }}
+  DRY_RUN_14: {{ .Values.configEnvs.DRY_RUN_14 | quote }}
+  DRY_RUN_15: {{ .Values.configEnvs.DRY_RUN_15 | quote }}
+  DRY_RUN_16: {{ .Values.configEnvs.DRY_RUN_16 | quote }}
+  DRY_RUN_17: {{ .Values.configEnvs.DRY_RUN_17 | quote }}
