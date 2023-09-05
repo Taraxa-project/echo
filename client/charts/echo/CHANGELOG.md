@@ -3,6 +3,12 @@
 This file documents all notable changes to `echo` Helm Chart. The release
 numbering uses [semantic versioning](http://semver.org).
 
+## v0.1.8
+
+### Patch changes
+
+* More config map values (up to 31 pods)
+
 ## v0.1.7
 
 ### Patch changes
