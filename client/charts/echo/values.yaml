@@ -102,6 +102,19 @@ configEnvs:
   DRY_RUN_15: false
   DRY_RUN_16: false
   DRY_RUN_17: false
+  DRY_RUN_18: false
+  DRY_RUN_19: false
+  DRY_RUN_20: false
+  DRY_RUN_21: false
+  DRY_RUN_22: false
+  DRY_RUN_23: false
+  DRY_RUN_24: false
+  DRY_RUN_25: false
+  DRY_RUN_26: false
+  DRY_RUN_27: false
+  DRY_RUN_28: false
+  DRY_RUN_29: false
+  DRY_RUN_30: false
 
 secretEnvs:
   IPFS_SCHEME: http

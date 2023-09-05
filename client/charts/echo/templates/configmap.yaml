@@ -38,3 +38,16 @@ data:
   DRY_RUN_15: {{ .Values.configEnvs.DRY_RUN_15 | quote }}
   DRY_RUN_16: {{ .Values.configEnvs.DRY_RUN_16 | quote }}
   DRY_RUN_17: {{ .Values.configEnvs.DRY_RUN_17 | quote }}
+  DRY_RUN_18: {{ .Values.configEnvs.DRY_RUN_18 | quote }}
+  DRY_RUN_19: {{ .Values.configEnvs.DRY_RUN_19 | quote }}
+  DRY_RUN_20: {{ .Values.configEnvs.DRY_RUN_20 | quote }}
+  DRY_RUN_21: {{ .Values.configEnvs.DRY_RUN_21 | quote }}
+  DRY_RUN_22: {{ .Values.configEnvs.DRY_RUN_22 | quote }}
+  DRY_RUN_23: {{ .Values.configEnvs.DRY_RUN_23 | quote }}
+  DRY_RUN_24: {{ .Values.configEnvs.DRY_RUN_24 | quote }}
+  DRY_RUN_25: {{ .Values.configEnvs.DRY_RUN_25 | quote }}
+  DRY_RUN_26: {{ .Values.configEnvs.DRY_RUN_26 | quote }}
+  DRY_RUN_27: {{ .Values.configEnvs.DRY_RUN_27 | quote }}
+  DRY_RUN_28: {{ .Values.configEnvs.DRY_RUN_28 | quote }}
+  DRY_RUN_29: {{ .Values.configEnvs.DRY_RUN_29 | quote }}
+  DRY_RUN_30: {{ .Values.configEnvs.DRY_RUN_30 | quote }}
