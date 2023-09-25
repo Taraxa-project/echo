@@ -286,22 +286,16 @@ class TelegramClient implements TelegramClientInterface {
       await _openChat(chatName, chatId);
     }
 
-    await Future.delayed(const Duration(seconds: 2));
+    final subscriptionOnlineMemberCount =
+        _subscribeUpdateChatOnlineMemberCount(chatName, chatId, db);
+
+    await Future.delayed(const Duration(seconds: 10));
 
     final supergroupFullInfo = await _getSupergroupFullInfo(chatName, chatId);
     await _updateChatMembersCount(chatName, chatId, db, supergroupFullInfo);
 
-    final subscriptionOnlineMemberCount =
-        _subscribeUpdateChatOnlineMemberCount(chatName, chatId, db);
-
     if (supergroupFullInfo.can_get_members == true)
       await _updateChatBotsCount(chatName, chatId, db);
-
-    await _closeChat(chatName, chatId);
-
-    await subscriptionOnlineMemberCount.cancel();
-
-    final onlineMembersCount = await db.selectChatOnlineMembersCount(chatName);
 
     final chatReadId =
         await db.logChatReadStarted(chatId, DateTime.now().toUtc());
@@ -318,6 +312,9 @@ class TelegramClient implements TelegramClientInterface {
 
       messageCount += messages.length;
 
+      final onlineMembersCount =
+          await db.selectChatOnlineMembersCount(chatName);
+
       await _saveMessagesUsers(
           chatName, chatId, messages, onlineMembersCount, db);
 
@@ -329,6 +326,10 @@ class TelegramClient implements TelegramClientInterface {
             TelegramClientConfig.delayUntilNextMessageBatchSecondsMax),
       ));
     }
+
+    await _closeChat(chatName, chatId);
+
+    await subscriptionOnlineMemberCount.cancel();
 
     await db.logChatReadFinished(
         chatReadId, messageCount, DateTime.now().toUtc());
