@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 
+import 'package:path/path.dart' as p;
 import 'package:args/command_runner.dart';
 import 'package:logging/logging.dart';
 
@@ -38,6 +39,7 @@ class TelegramSaveChatHistoryCommand extends Command {
     final logLevelLibTdJson = _parseLogLevelLibtdjson();
     final fileNameDb = globalResults!.command!['message-database-path'];
     final exportPath = globalResults!.command!['table-dump-path'];
+    final chatsNewFullFileName = _buildChatsNewFullFileName();
     final ipfsParams = _buildIpfsParams();
     final ingesterContractParams = _buildIngesterContractParams();
     final fileNameLibTdJson = globalResults!['libtdjson-path'];
@@ -64,6 +66,10 @@ class TelegramSaveChatHistoryCommand extends Command {
         final dateTimeFrom = _twoWeeksAgo();
         await telegramClient.saveChatsHistory(
             dateTimeFrom, ingesterContractParams, db);
+
+        final dateTimeFromNewChats = DateTime(2023);
+        await telegramClient.saveNewChatsHistory(
+            dateTimeFromNewChats, chatsNewFullFileName, db);
 
         exporter = await ExporterIsolated.spawn(
             log, db, exportPath, ipfsParams, ingesterContractParams);
@@ -193,5 +199,12 @@ class TelegramSaveChatHistoryCommand extends Command {
     }
 
     return uri;
+  }
+
+  String _buildChatsNewFullFileName() {
+    return p.joinAll([
+      globalResults!.command!['config-path'],
+      globalResults!.command!['new-chats-file-name']
+    ]);
   }
 }

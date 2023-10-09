@@ -171,6 +171,37 @@ class DbIsolated implements DbInterface {
     await isolatedProxy
         .call(LogChatReadFinished(id, messageCount, dateTimeFinished));
   }
+
+  @override
+  Future<int> insertNewChats(String newChatsFullFileName) async {
+    return await isolatedProxy.call(InsertNewChats(newChatsFullFileName));
+  }
+
+  @override
+  Future<bool> isNewChat(String username) async {
+    return await isolatedProxy.call(IsNewChat(username));
+  }
+
+  @override
+  Future<int?> selectNewChatMessageIdLast(String username) async {
+    return await isolatedProxy.call(SelectNewChatMessageIdLast(username));
+  }
+
+  @override
+  Future<bool> messageExists(int chatId, int id) async {
+    return await isolatedProxy.call(MessageExists(chatId, id));
+  }
+
+  @override
+  Future<int?> selectNewChatStatus(String username) async {
+    return await isolatedProxy.call(SelectNewChatStatus(username));
+  }
+
+  @override
+  Future<void> updateNewChat(
+      String username, int messageIdLast, int status) async {
+    await isolatedProxy.call(UpdateNewChat(username, messageIdLast, status));
+  }
 }
 
 class DbIsolatedDispatch extends IsolatedDispatch {
@@ -229,6 +260,19 @@ class DbIsolatedDispatch extends IsolatedDispatch {
     } else if (message is LogChatReadFinished) {
       db.logChatReadFinished(
           message.id, message.messageCount, message.dateTimeFinished);
+    } else if (message is InsertNewChats) {
+      return db.insertNewChats(message.newChatsFullFileName);
+    } else if (message is IsNewChat) {
+      return db.isNewChat(message.username);
+    } else if (message is SelectNewChatMessageIdLast) {
+      return db.selectNewChatMessageIdLast(message.username);
+    } else if (message is MessageExists) {
+      return db.messageExists(message.chatId, message.id);
+    } else if (message is SelectNewChatStatus) {
+      return db.selectNewChatStatus(message.username);
+    } else if (message is UpdateNewChat) {
+      return db.updateNewChat(
+          message.username, message.messageIdLast, message.status);
     } else {
       return super.dispatch(message);
     }
@@ -377,4 +421,43 @@ class LogChatReadFinished {
   final DateTime dateTimeFinished;
 
   LogChatReadFinished(this.id, this.messageCount, this.dateTimeFinished);
+}
+
+class InsertNewChats {
+  final String newChatsFullFileName;
+
+  InsertNewChats(this.newChatsFullFileName);
+}
+
+class IsNewChat {
+  final String username;
+
+  IsNewChat(this.username);
+}
+
+class SelectNewChatStatus {
+  final String username;
+
+  SelectNewChatStatus(this.username);
+}
+
+class SelectNewChatMessageIdLast {
+  final String username;
+
+  SelectNewChatMessageIdLast(this.username);
+}
+
+class MessageExists {
+  final int chatId;
+  final int id;
+
+  MessageExists(this.chatId, this.id);
+}
+
+class UpdateNewChat {
+  final String username;
+  final int messageIdLast;
+  final int status;
+
+  UpdateNewChat(this.username, this.messageIdLast, this.status);
 }
