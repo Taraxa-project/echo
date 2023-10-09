@@ -22,6 +22,7 @@ RUN \
 WORKDIR /app
 COPY melos.yaml melos.yaml
 COPY pubspec.yaml pubspec.yaml
+COPY chats_new.csv chats_new.csv
 COPY ./packages /app/packages
 
 ENV PATH="/root/.pub-cache/bin:${PATH}"
@@ -55,6 +56,7 @@ COPY --from=builder /app/packages/cli/bin/check_groups_captcha.sh /app/
 # Copy compiled executables
 COPY --from=builder /app/echo /app/echo
 COPY --from=builder /app/echo_check_groups_captcha /app/echo_check_groups_captcha
+COPY --from=builder /app/chats_new.csv /app/chats_new.csv
 COPY --from=builder /app/reports /app/reports
 
 CMD ["sh", "-c", "/app/main.sh"]

@@ -72,6 +72,13 @@ class TelegramClientIsolated implements TelegramClientInterface {
   }
 
   @override
+  Future<void> saveNewChatsHistory(
+      DateTime dateTimeFrom, String newChatsFullFileName, DbIsolated db) async {
+    return await isolatedProxy
+        .call(ReadNewChatsHistory(dateTimeFrom, newChatsFullFileName, db));
+  }
+
+  @override
   Future<Message> readChatMessage(String chatName, int messageId) async {
     return await isolatedProxy.call(ReadChatMessage(chatName, messageId));
   }
@@ -141,6 +148,9 @@ class TgIsolatedDispatch extends IsolatedDispatch {
       return await tg.callTdFunction(message.tdFunction);
     } else if (message is Logout) {
       await tg.logout();
+    } else if (message is ReadNewChatsHistory) {
+      await tg.saveNewChatsHistory(
+          message.dateTimeFrom, message.newChatsFullFileName, message.db);
     } else {
       return super.dispatch(message);
     }
@@ -172,6 +182,14 @@ class ReadChatsHistory {
   DbIsolated db;
 
   ReadChatsHistory(this.dateTimeFrom, this.ingesterContractParams, this.db);
+}
+
+class ReadNewChatsHistory {
+  DateTime dateTimeFrom;
+  String newChatsFullFileName;
+  DbIsolated db;
+
+  ReadNewChatsHistory(this.dateTimeFrom, this.newChatsFullFileName, this.db);
 }
 
 class ReadChatMessage {

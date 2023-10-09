@@ -43,7 +43,6 @@ DRY_RUN=${!DRY_RUN_VAR_NAME}
     --ingester-contract-rpc-url $INGESTER_CONTRACT_RPC_URL \
     --ingester-contract-address $INGESTER_CONTRACT_ADDRESS \
     --ingester-contract-max-gas $INGESTER_CONTRACT_MAX_GAS \
-    --ipfs-cron-schedule "$IPFS_CRON_SCHEDULE" \
     --ipfs-scheme $IPFS_SCHEME \
     --ipfs-host $IPFS_HOST \
     --ipfs-port $IPFS_PORT \

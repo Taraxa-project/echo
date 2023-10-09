@@ -18,6 +18,8 @@ class TelegramClient implements TelegramClientInterface {
   SearchPublicChatFloodWait searchPublicChatFloodWait =
       SearchPublicChatFloodWait();
 
+  List<String> chatsNames = [];
+
   TelegramClient(this.logger, String libtdjsonlcPath, Level logLevelLibTdJson,
       Uri? proxyUri) {
     tdClient = TdClient(
@@ -121,7 +123,7 @@ class TelegramClient implements TelegramClientInterface {
     logger.info('reading groups history... ');
 
     final ingesterContract = IngesterContract(logger, ingesterContractParams);
-    final chatsNames = (await ingesterContract.getChatsNames())
+    chatsNames = (await ingesterContract.getChatsNames())
         .where((element) => element.isNotEmpty)
         .toList();
 
@@ -145,6 +147,59 @@ class TelegramClient implements TelegramClientInterface {
         logger.warning('[$chatName] $ex.');
       } on SearchPublicChatFloodWaiException catch (ex) {
         logger.warning('[$chatName] $ex. Skipping...');
+      } on TgMaxRetriesExcedeedException catch (ex) {
+        logger.warning('[$chatName] $ex.');
+      } on TgBadRequestException catch (ex) {
+        logger.severe('[$chatName] $ex.');
+      } on UnWrapIdxception catch (ex) {
+        logger.warning('[$chatName] $ex.');
+      } on TgErrorCodeNotHandledException catch (ex) {
+        logger.severe('[$chatName] $ex.');
+      } on TgException catch (ex) {
+        logger.severe('[$chatName] $ex.');
+      }
+
+      await Future.delayed(Duration(
+          seconds: _randomBetween(
+              TelegramClientConfig.delayUntilNextChatSecondsMin,
+              TelegramClientConfig.delayUntilNextChatSecondsMax)));
+    }
+  }
+
+  Future<void> saveNewChatsHistory(
+      DateTime dateTimeFrom, String newChatsFullFileName, DbIsolated db) async {
+    logger.info('reading new groups history... ');
+
+    logger.info('adding new groups to db...');
+    final newChatsCount = await db.insertNewChats(newChatsFullFileName);
+    logger.info('added $newChatsCount new groups to db.');
+
+    var chatIndex = 0;
+    var chatCount = chatsNames.length;
+    for (final chatName in chatsNames) {
+      chatIndex++;
+      logger.info('[$chatName] new chat index $chatIndex of $chatCount.');
+
+      final isNewChat = await db.isNewChat(chatName);
+      if (!isNewChat) {
+        logger.info('[$chatName] is not new... skipping.');
+        continue;
+      }
+
+      final newChatStatus = await db.selectNewChatStatus(chatName);
+      if (newChatStatus == null) {
+        logger.warning('[$chatName] new chat not found in db.. skipping.');
+        continue;
+      }
+      if (newChatStatus == 1) {
+        logger.info('[$chatName] new chat history completed.. skipping.');
+        continue;
+      }
+
+      try {
+        await _saveNewChatHistory(dateTimeFrom, chatName, db);
+      } on TgTimeOutException catch (ex) {
+        logger.warning('[$chatName] $ex.');
       } on TgMaxRetriesExcedeedException catch (ex) {
         logger.warning('[$chatName] $ex.');
       } on TgBadRequestException catch (ex) {
@@ -335,6 +390,90 @@ class TelegramClient implements TelegramClientInterface {
         chatReadId, messageCount, DateTime.now().toUtc());
   }
 
+  Future<void> _saveNewChatHistory(
+      DateTime dateTimeFrom, String chatName, DbIsolated db) async {
+    var chatId = 0;
+
+    final chatInfo = await db.selectChat(chatName);
+    if (chatInfo != null) {
+      if (chatInfo['blacklisted'] == 1) {
+        logger.info('[$chatName] blacklisted, skipping...');
+        return;
+      }
+      chatId = chatInfo['id'] ?? 0;
+    }
+
+    if (chatId == 0) {
+      logger.warning('[$chatName] chat id is 0, skipping...');
+      return;
+    }
+
+    int messageCount = 0;
+    while (true) {
+      final messageIdLast =
+          await _findMessageIdLastChatNew(chatName, chatId, dateTimeFrom, db) ??
+              0;
+      final messageIdFrom = messageIdLast + 1;
+
+      final history = await _getChatHistory(chatName, chatId, messageIdFrom);
+      final messages = history.messages;
+      if (messages == null || messages.length == 0) break;
+
+      messageCount += messages.length;
+
+      final onlineMembersCount =
+          await db.selectChatOnlineMembersCount(chatName);
+
+      if (messages.length < TelegramClientConfig.getChatHistoryLimit) break;
+      if (messageCount > TelegramClientConfig.getNewChatHistoryBatchLimit)
+        break;
+
+      final messagesExist = await _messagesExist(chatId, messages, db);
+      final maxMessageId = _maxMessageId(messages);
+
+      await _saveMessagesUsers(
+          chatName, chatId, messages, onlineMembersCount, db);
+
+      int newChatStatus = 0;
+      if (messagesExist) newChatStatus = 1;
+      await db.updateNewChat(chatName, maxMessageId, newChatStatus);
+
+      if (messagesExist) {
+        logger.info('[$chatName] done reading new chat history...');
+        break;
+      }
+
+      await Future.delayed(Duration(
+        seconds: _randomBetween(
+            TelegramClientConfig.delayUntilNextMessageBatchSecondsMin,
+            TelegramClientConfig.delayUntilNextMessageBatchSecondsMax),
+      ));
+    }
+  }
+
+  Future<bool> _messagesExist(
+      int chatId, List<Message> messages, DbIsolated db) async {
+    for (final Message message in messages) {
+      if (message.chat_id == null || message.id == null || message.date == null)
+        continue;
+      final messageId = WrapId.unwrapMessageId(message.id);
+      final messageExists = await db.messageExists(chatId, messageId);
+      if (messageExists) return true;
+    }
+    return false;
+  }
+
+  int _maxMessageId(List<Message> messages) {
+    int maxId = 0;
+    for (final Message message in messages) {
+      if (message.chat_id == null || message.id == null || message.date == null)
+        continue;
+      final messageId = WrapId.unwrapMessageId(message.id);
+      if (messageId > maxId) maxId = messageId;
+    }
+    return maxId;
+  }
+
   Future<Chat> _searchPublicChat(String chatName) async {
     logger.info('[$chatName] searching public chat... ');
 
@@ -438,6 +577,26 @@ class TelegramClient implements TelegramClientInterface {
     logger.fine('[$chatName] searching last local message...');
     final messageIdLastLocal =
         await db.selectMaxMessageIdFromDate(chatId, dateTimeFrom);
+    if (messageIdLastLocal != null) {
+      logger.fine('[$chatName] found local message id $messageIdLastLocal');
+      return messageIdLastLocal;
+    }
+
+    logger.fine('[$chatName] searching last remote message...');
+    final messageIdLastRemote =
+        await _searchMessageIdLastRemote(chatName, chatId, dateTimeFrom);
+    if (messageIdLastRemote != null) {
+      logger.fine('[$chatName] found remote message id $messageIdLastRemote');
+      return messageIdLastRemote;
+    }
+
+    return null;
+  }
+
+  Future<int?> _findMessageIdLastChatNew(
+      String chatName, int chatId, DateTime dateTimeFrom, DbIsolated db) async {
+    logger.fine('[new][$chatName] searching last local message...');
+    final messageIdLastLocal = await db.selectNewChatMessageIdLast(chatName);
     if (messageIdLastLocal != null) {
       logger.fine('[$chatName] found local message id $messageIdLastLocal');
       return messageIdLastLocal;
@@ -561,6 +720,7 @@ class TelegramClientConfig {
   static const int delayUntilNextUserSecondsMax = 5;
 
   static const int getChatHistoryLimit = 99;
+  static const int getNewChatHistoryBatchLimit = 99 * 10;
 
   static const int searchPublicChatDelaySecondsMin = 30;
   static const int searchPublicChatDelaySecondsMax = 60;

@@ -68,11 +68,6 @@ void main(List<String> arguments) {
       defaultsTo: '.',
     )
     ..addOption(
-      'ipfs-cron-schedule',
-      help: 'Cron format for scheduling the export to IPFS',
-      defaultsTo: '0 8 * * *',
-    )
-    ..addOption(
       'ipfs-scheme',
       help: 'Ipfs API scheme',
       defaultsTo: 'http',
@@ -125,6 +120,11 @@ void main(List<String> arguments) {
       'dry-run',
       help: 'If true, the main loop does nothing',
       defaultsTo: 'false',
+    )
+    ..addOption(
+      'new-chats-file-name',
+      help: 'The file containing the list of new chats to read old messages',
+      defaultsTo: 'chats_new.csv',
     );
 
   final telegramCommandChatMessage = TelegramGetMessageCommand();

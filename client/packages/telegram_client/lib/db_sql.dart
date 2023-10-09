@@ -219,6 +219,17 @@ ORDER BY
 LIMIT
   ?;
 ''';
+
+  static const select = '''
+SELECT
+  a.*,
+  a.id rowid
+FROM
+  message a
+WHERE
+  a.chat_id = ? AND
+  a.id = ?;
+''';
 }
 
 class SqlUser {
@@ -414,5 +425,43 @@ ORDER BY
   a.id ASC
 LIMIT
   ?;
+''';
+}
+
+class SqlChatNew {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS chat_new (
+  username TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
+  message_id_last INTEGER,
+  status INTEGER DEFAULT 0, /* 0 - in progress; 1 - done reading history; */
+  updated_at TEXT,
+  created_at TEXT
+);
+''';
+
+  static const insert = '''
+INSERT INTO
+  chat_new (username, created_at, updated_at)
+VALUES (?, ?, ?)
+ON CONFLICT DO NOTHING;
+''';
+
+  static const select = '''
+SELECT
+  *
+FROM
+  chat_new
+WHERE
+  username = ?;
+''';
+
+  static const update = '''
+UPDATE
+  chat_new
+SET
+  message_id_last = ?,
+  status = ?
+WHERE
+  username = ?;
 ''';
 }
