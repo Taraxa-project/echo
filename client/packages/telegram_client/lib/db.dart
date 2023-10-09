@@ -374,6 +374,8 @@ class Db implements DbInterface {
     _addMessageSenderType();
 
     _runMigrationAddChatRead();
+
+    _runMigrationChatsNew();
   }
 
   void _createTables() {
@@ -407,6 +409,10 @@ class Db implements DbInterface {
     _database.execute(SqlChatRead.createIndexChatId);
     _database.execute(SqlChatRead.createIndexChatId);
     _database.execute(SqlChatRead.createIndexChatId);
+  }
+
+  void _runMigrationChatsNew() {
+    _database.execute(SqlChatNew.createTable);
   }
 
   void _renameMessageUserIdToSenderId() {
@@ -500,6 +506,65 @@ class Db implements DbInterface {
       id
     ];
     execute(SqlChatRead.finished, parameters);
+  }
+
+  int insertNewChats(String newChatsFullFileName) {
+    final file = new io.File(newChatsFullFileName);
+    if (!file.existsSync()) return 0;
+
+    final fileLines = file.readAsLinesSync();
+
+    final now = _now();
+    var newChatsCount = 0;
+    for (var fileLine in fileLines) {
+      if (fileLine.isEmpty) continue;
+      final parameters = [fileLine, now, now];
+      execute(SqlChatNew.insert, parameters);
+      newChatsCount++;
+    }
+    return newChatsCount;
+  }
+
+  @override
+  bool isNewChat(String username) {
+    final parameters = [username];
+    final rs = select(SqlChatNew.select, parameters);
+    if (rs.isEmpty) return false;
+    return true;
+  }
+
+  @override
+  int? selectNewChatStatus(String username) {
+    final parameters = [username];
+    final rs = select(SqlChatNew.select, parameters);
+    if (rs.isEmpty) return null;
+    final row = rs.first;
+    return row['status'];
+  }
+
+  @override
+  int? selectNewChatMessageIdLast(String username) {
+    final parameters = [username];
+    final rs = select(SqlChatNew.select, parameters);
+    if (rs.isEmpty) return null;
+    final row = rs.first;
+    return row['message_id_last'];
+  }
+
+  @override
+  bool messageExists(int chatId, int id) {
+    final parameters = [chatId, id];
+
+    logger.fine('checking if messages exists $parameters...');
+    final rs = select(SqlMessage.select, parameters);
+    return rs.isNotEmpty;
+  }
+
+  @override
+  void updateNewChat(String username, int messageIdLast, int status) {
+    final parameters = [messageIdLast, status, username];
+    logger.fine('updating new chat $parameters...');
+    execute(SqlChatNew.update, parameters);
   }
 
   void execute(String sql, [List<Object?> parameters = const <Object>[]]) {

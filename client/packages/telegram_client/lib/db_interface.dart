@@ -45,6 +45,13 @@ abstract class DbInterface {
   FutureOr<int> logChatReadStarted(int chatId, DateTime dateTimeStarted);
   FutureOr<void> logChatReadFinished(
       int id, int messageCount, DateTime dateTimeFinished);
+
+  FutureOr<int> insertNewChats(String newChatsFullFileName);
+  FutureOr<bool> isNewChat(String username);
+  FutureOr<int?> selectNewChatMessageIdLast(String username);
+  FutureOr<bool> messageExists(int chatId, int id);
+  FutureOr<int?> selectNewChatStatus(String username);
+  FutureOr<void> updateNewChat(String username, int messageIdLast, int status);
 }
 
 class IfpsFileHashesMeta {
