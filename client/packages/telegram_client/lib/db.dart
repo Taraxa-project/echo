@@ -245,13 +245,16 @@ class Db implements DbInterface {
     return rs.isNotEmpty;
   }
 
-  Future<int> exportData(ExportType exportType) async {
+  Future<ExportResult> exportData(ExportType exportType) async {
+    ExportResult exportResult = ExportResult(exportType);
+
     _initIpfsUpload(exportType);
 
     var minId = 0;
     if (exportType is! ExportTypeChat) {
       minId = _selectLastUploadedId(exportType.dataType) ?? 0;
     }
+    exportResult.idMin = minId;
 
     List<dynamic> parameters = [minId];
     if (exportType is ExportTypeChatRead) {
@@ -270,21 +273,26 @@ class Db implements DbInterface {
       final result =
           await _exportCursor(cursor, exportType.fileNameFullPathData);
       rowCount = result[0];
-      if (rowCount > 0) _updateLastExportedId(exportType.dataType, result[1]);
+      exportResult.recordCount = rowCount;
+
+      if (rowCount > 0) {
+        _updateLastExportedId(exportType.dataType, result[1]);
+        exportResult.idMax = result[1];
+      }
     } on Object {
       rethrow;
     } finally {
       stmt.dispose();
     }
-
     logger.fine('exported $rowCount records from ${exportType.dataType}');
-    return rowCount;
+
+    return exportResult;
   }
 
   Future<int> exportMeta(ExportType exportType) async {
     final parameters = [exportType.dataType];
 
-    final stmt = _database.prepare(SqlIpfsHash.selectForExport);
+    final stmt = _database.prepare(_sqlSelectMetaForExport(exportType));
 
     var rowCount = 0;
     try {
@@ -302,11 +310,11 @@ class Db implements DbInterface {
     return rowCount;
   }
 
-  void insertIpfsHash(ExportType exportType, String fileHash) {
+  void insertIpfsHash(ExportResult exportResult, String fileHash) {
     try {
       _database.execute('BEGIN');
-      _insertIpfsHash(exportType.dataType, fileHash);
-      _updateLastUploadedId(exportType.dataType);
+      _insertIpfsHash(exportResult, fileHash);
+      _updateLastUploadedId(exportResult.exportType.dataType);
       _database.execute('COMMIT');
     } on Object {
       _database.execute('ROLLBACK');
@@ -348,9 +356,16 @@ class Db implements DbInterface {
     }
   }
 
-  void _insertIpfsHash(String type, String fileHash) {
+  void _insertIpfsHash(ExportResult exportResult, String fileHash) {
     final now = _now();
-    final parameters = [type, fileHash, now, now];
+    final parameters = [
+      exportResult.exportType.dataType,
+      fileHash,
+      exportResult.idMin,
+      exportResult.idMax,
+      now,
+      now
+    ];
 
     logger.fine('inserting ipfs hash $parameters...');
     execute(SqlIpfsHash.insert, parameters);
@@ -376,6 +391,9 @@ class Db implements DbInterface {
     _runMigrationAddChatRead();
 
     _runMigrationChatsNew();
+
+    _addIpfsHashIdMin();
+    _addIpfsHashIdMax();
   }
 
   void _createTables() {
@@ -427,6 +445,18 @@ class Db implements DbInterface {
     } on Object {}
   }
 
+  void _addIpfsHashIdMin() {
+    try {
+      _database.execute(SqlMigration.addIfpsHashIdMin);
+    } on Object {}
+  }
+
+  void _addIpfsHashIdMax() {
+    try {
+      _database.execute(SqlMigration.addIfpsHashIdMax);
+    } on Object {}
+  }
+
   int? _selectLastUploadedId(String tableName) {
     final parameters = [tableName];
 
@@ -436,15 +466,23 @@ class Db implements DbInterface {
     return null;
   }
 
-  String _sqlSelectDataForExport(ExportType exportData) {
-    if (exportData is ExportTypeChatRead) {
+  String _sqlSelectDataForExport(ExportType exportType) {
+    if (exportType is ExportTypeChatRead) {
       return SqlChatRead.selectForExport;
-    } else if (exportData is ExportTypeChat) {
+    } else if (exportType is ExportTypeChat) {
       return SqlChat.selectForExport;
-    } else if (exportData is ExportTypeMessage) {
+    } else if (exportType is ExportTypeMessage) {
       return SqlMessage.selectForExport;
     } else {
       return SqlUser.selectForExport;
+    }
+  }
+
+  String _sqlSelectMetaForExport(ExportType exportType) {
+    if (exportType is ExportTypeMessage) {
+      return SqlIpfsHash.selectMessageForExport;
+    } else {
+      return SqlIpfsHash.selectForExport;
     }
   }
 

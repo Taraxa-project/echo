@@ -98,11 +98,11 @@ class Exporter implements ExporterInterface {
   Future<void> _exportData(
       http.Client client, Uri ipfsUri, ExportType exportType) async {
     while (true) {
-      final recordsCount = await db.exportData(exportType);
-      logger.info(
-          'exported $recordsCount data records for ${exportType.dataType}.');
+      final exportResult = await db.exportData(exportType);
+      logger.info('exported ${exportResult.recordCount} data records '
+          'for ${exportType.dataType}.');
 
-      if (recordsCount == 0) return;
+      if (exportResult.recordCount == 0) return;
 
       final fileHash = await _ipfsAdd(client, ipfsUri, exportType.dataType,
           exportType.fileNameFullPathData);
@@ -110,9 +110,9 @@ class Exporter implements ExporterInterface {
       logger.info(
           'uploaded ${exportType.dataType} data records with hash $fileHash.');
 
-      await db.insertIpfsHash(exportType, fileHash);
+      await db.insertIpfsHash(exportResult, fileHash);
 
-      if (recordsCount < exportRecordLimit) return;
+      if (exportResult.recordCount < exportRecordLimit) return;
       if (tableNamesUploadFull.contains(exportType.dataType)) return;
     }
   }
