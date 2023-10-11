@@ -96,13 +96,14 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<int> exportData(ExportType exportType) async {
+  Future<ExportResult> exportData(ExportType exportType) async {
     return await isolatedProxy.call(ExportData(exportType));
   }
 
   @override
-  Future<void> insertIpfsHash(ExportType exportType, String fileHash) async {
-    await isolatedProxy.call(InsertIpfsHash(exportType, fileHash));
+  Future<void> insertIpfsHash(
+      ExportResult exportResult, String fileHash) async {
+    await isolatedProxy.call(InsertIpfsHash(exportResult, fileHash));
   }
 
   @override
@@ -238,7 +239,7 @@ class DbIsolatedDispatch extends IsolatedDispatch {
     } else if (message is ExportData) {
       return await db.exportData(message.exportType);
     } else if (message is InsertIpfsHash) {
-      db.insertIpfsHash(message.exportType, message.fileHash);
+      db.insertIpfsHash(message.exportResult, message.fileHash);
     } else if (message is ExportMeta) {
       return await db.exportMeta(message.exportType);
     } else if (message is UpdateMetaFileHash) {
@@ -369,10 +370,10 @@ class ExportData {
 }
 
 class InsertIpfsHash {
-  final ExportType exportType;
+  final ExportResult exportResult;
   final String fileHash;
 
-  InsertIpfsHash(this.exportType, this.fileHash);
+  InsertIpfsHash(this.exportResult, this.fileHash);
 }
 
 class ExportMeta {

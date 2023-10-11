@@ -86,6 +86,16 @@ RENAME user_id TO sender_id;
 ALTER TABLE message
 ADD COLUMN sender_type TEXT;
 ''';
+
+  static const addIfpsHashIdMin = '''
+ALTER TABLE ipfs_hash
+ADD COLUMN id_min INTEGER;
+''';
+
+  static const addIfpsHashIdMax = '''
+ALTER TABLE ipfs_hash
+ADD COLUMN id_max INTEGER;
+''';
 }
 
 class SqlChat {
@@ -331,19 +341,53 @@ INSERT INTO
   ipfs_hash (
     table_name,
     file_hash,
+    id_min,
+    id_max,
     created_at,
     updated_at
   )
 VALUES
-  (?, ?, ?, ?)
+  (?, ?, ?, ?, ?, ?)
 ''';
 
   static const selectForExport = '''
 SELECT
-  a.*,
+  a.file_hash,
+  a.created_at,
+  a.updated_at,
   a.rowid
 FROM
   ipfs_hash a
+WHERE
+  a.table_name = ?
+ORDER BY
+  a.rowid ASC;
+''';
+
+  static const selectMessageForExport = '''
+SELECT
+  a.file_hash,
+  a.created_at,
+  a.updated_at,
+  b.message_date_min,
+  b.message_date_max,
+  a.rowid
+FROM
+  ipfs_hash a
+LEFT JOIN (
+  SELECT
+    aa.rowid,
+    min(ab.date) message_date_min,
+    max(ab.date) message_date_max
+  FROM
+    ipfs_hash aa,
+    message ab
+  WHERE
+    aa.id_min <= ab.rowid
+    AND aa.id_max >= ab.rowid
+  GROUP BY
+    aa.rowid
+) b ON a.rowid = b.rowid
 WHERE
   a.table_name = ?
 ORDER BY
