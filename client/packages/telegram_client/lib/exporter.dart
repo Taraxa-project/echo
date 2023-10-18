@@ -233,24 +233,6 @@ class Exporter implements ExporterInterface {
 
   @override
   Future<void> export() async {
-    var lastExportDateTime = await db.selectLastExportDateTime();
-
-    var doExport = false;
-    if (lastExportDateTime == null) {
-      doExport = true;
-    } else {
-      final now = DateTime.now().toUtc();
-      if (now.year > lastExportDateTime.year) {
-        doExport = true;
-      } else if (now.month > lastExportDateTime.month) {
-        doExport = true;
-      } else if (now.day > lastExportDateTime.day) {
-        doExport = true;
-      } else {
-        logger.info('last exported at $lastExportDateTime. Skipping...');
-      }
-    }
-
-    if (doExport) await _export();
+    await _export();
   }
 }
