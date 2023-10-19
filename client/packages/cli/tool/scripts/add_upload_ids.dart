@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:sqlite3/sqlite3.dart';
 
 import 'package:telegram_client/src/smart_contract/DataGatheringFacet.g.dart';
-import 'package:telegram_client/src/smart_contract/GroupManagerFacet.g.dart';
 
 import 'check_groups_captcha.dart';
 
@@ -27,7 +26,6 @@ class AddUploadIds {
   late final Web3Client _web3client;
   late final _ingesterContractAddress;
   late final DataGatheringFacet _contractDataGatheringFacet;
-  late final GroupManagerFacet _contracGroupManagerFacet;
   late final IpfsParams _ipfsParams;
   late final Database _db;
 
@@ -35,9 +33,6 @@ class AddUploadIds {
 
   static const podNumberMax = 30;
   List<String> _ingesterWallets = [];
-
-  late final DateTime _reportStartDate;
-  late final DateTime _reportEndDate;
 
   AddUploadIds() {
     _logger.onRecord.listen((event) {
@@ -47,10 +42,6 @@ class AddUploadIds {
     _web3client = Web3Client(envVars['rpc_url']!, _httpClient);
     _ingesterContractAddress = envVars['ingester_contract_address']!;
     _contractDataGatheringFacet = DataGatheringFacet(
-      address: EthereumAddress.fromHex(_ingesterContractAddress),
-      client: _web3client,
-    );
-    _contracGroupManagerFacet = GroupManagerFacet(
       address: EthereumAddress.fromHex(_ingesterContractAddress),
       client: _web3client,
     );
@@ -188,257 +179,12 @@ class AddUploadIds {
     }
   }
 
-  Future<void> _collectChats() async {
-    _logger.info('collecting chats...');
-
-    final groupCountBigInt = await _contracGroupManagerFacet.getGroupCount();
-    final groupCount = groupCountBigInt.toInt();
-    _logger.info('found $groupCount chats...');
-
-    final stmt = _db.prepare(SqlChat.insert);
-
-    for (var groupIndex = 0; groupIndex < groupCount; groupIndex++) {
-      final groupIndexBigInt = BigInt.from(groupIndex);
-      final groupUsername = await _contracGroupManagerFacet
-          .getGroupUsernameByIndex(groupIndexBigInt);
-      final params = [groupUsername];
-      stmt.execute(params);
-    }
-
-    stmt.dispose();
-  }
-
-  Future<void> _collectDataForIngesters() async {
-    final ingestersAddresses = await _contractDataGatheringFacet.getIngesters();
-    _logger.info('processing ${ingestersAddresses.length} ingesters...');
-    for (final ingesterAddress in ingestersAddresses) {
-      await _collectDataForIngester(ingesterAddress);
-    }
-  }
-
-  Future<void> _collectDataForIngester(EthereumAddress ingesterAddress) async {
-    _logger.info('collecting data for ingester $ingesterAddress...');
-
-    final ipfsHashesMeta =
-        await _contractDataGatheringFacet.getIpfsHashes(ingesterAddress);
-    final ipfsHashMetaChat = ipfsHashesMeta[1];
-    final ipfsHashMetaMessages = ipfsHashesMeta[2];
-
-    await _collectChatsForIngester(ingesterAddress, ipfsHashMetaChat);
-    await _collectMessagesForIngester(ingesterAddress, ipfsHashMetaMessages);
-    await _collectChatsReadForIngester(ingesterAddress);
-  }
-
-  Future<void> _collectChatsForIngester(
-      EthereumAddress ingesterAddress, String ipfsHash) async {
-    _logger.info('chat hash meta: $ipfsHash');
-
-    var ipfsFile = await _ipfsCat(ipfsHash);
-    var metas = ipfsFile.split('\n');
-
-    for (var i = metas.length - 1; i > 1; i--) {
-      var metaJson = metas[i];
-      if (metaJson.isEmpty) continue;
-      var meta = jsonDecode(metaJson);
-
-      var dataHash = meta[1];
-      var dateTimeUploaded = DateTime.parse(meta[2]);
-
-      var dateDiff = dateTimeUploaded.difference(_reportStartDate).inDays;
-      if (dateDiff >= 0) {
-        _logger.info('chat hash data from $dateTimeUploaded: $dataHash');
-        await _insertChatsForIngeser(ingesterAddress, dataHash);
-      }
-    }
-  }
-
-  Future<void> _insertChatsForIngeser(
-      EthereumAddress ingesterAddress, String ipfsHash) async {
-    var ipfsFile = await _ipfsCat(ipfsHash);
-    var datas = ipfsFile.split('\n');
-
-    final stmt = _db.prepare(SqlChatIngester.insert);
-
-    for (var i = 1; i < datas.length; i++) {
-      var dataJson = datas[i];
-      if (dataJson.isEmpty) continue;
-      var data = jsonDecode(dataJson);
-      List<dynamic> params = data.getRange(0, data.length - 1).toList();
-      if (params.length == 10) params.add(null);
-      params.add(ingesterAddress.hex);
-      stmt.execute(params);
-    }
-  }
-
-  Future<void> _collectMessagesForIngester(
-      EthereumAddress ingesterAddress, String ipfsHash) async {
-    _logger.info('message hash meta: $ipfsHash');
-
-    var ipfsFile = await _ipfsCat(ipfsHash);
-    var metas = ipfsFile.split('\n');
-
-    for (var i = 1; i < metas.length; i++) {
-      var metaJson = metas[i];
-      if (metaJson.isEmpty) continue;
-      var meta = jsonDecode(metaJson);
-
-      var dataHash = meta[1];
-      var dateTimeUploaded = DateTime.parse(meta[2]);
-
-      var dateDiff = dateTimeUploaded.difference(_reportStartDate).inDays;
-      if (dateDiff >= 0) {
-        _logger.info('message hash data from $dateTimeUploaded: $dataHash');
-        await _insertMessagesForIngester(ingesterAddress, meta[1]);
-      }
-    }
-  }
-
-  Future<void> _insertMessagesForIngester(
-      EthereumAddress ingesterAddress, String ipfsHash) async {
-    var ipfsFile = await _ipfsCat(ipfsHash);
-    var datas = ipfsFile.split('\n');
-
-    final stmt = _db.prepare(SqlMessageIngester.insert);
-
-    for (var i = 1; i < datas.length; i++) {
-      var dataJson = datas[i];
-      if (dataJson.isEmpty) continue;
-      var data = jsonDecode(dataJson);
-      var params = data.getRange(0, data.length - 1).toList();
-      params.add(ingesterAddress.hex);
-      stmt.execute(params);
-    }
-    stmt.dispose();
-  }
-
-  Future<void> _collectChatsReadForIngester(
-      EthereumAddress ingesterAddress) async {
-    final chats = await _db
-        .select(SqlChatIngester.selectAllForIngester, [ingesterAddress.hex]);
-    for (final chat in chats) {
-      final ipfsHash = chat['file_hash_chat_read'];
-      if (ipfsHash == null) continue;
-      _logger.info('chat read hash data from : $ipfsHash');
-      await _insertChatReadForIngester(ingesterAddress, ipfsHash);
-    }
-  }
-
-  Future<void> _insertChatReadForIngester(
-      EthereumAddress ingesterAddress, String ipfsHash) async {
-    var ipfsFile = await _ipfsCat(ipfsHash);
-    var datas = ipfsFile.split('\n');
-
-    final stmt = _db.prepare(SqlChatReadIngester.insert);
-
-    for (var i = 1; i < datas.length; i++) {
-      var dataJson = datas[i];
-      if (dataJson.isEmpty) continue;
-      var data = jsonDecode(dataJson);
-      var params = data.getRange(1, data.length - 1).toList();
-      params.add(ingesterAddress.hex);
-      stmt.execute(params);
-    }
-
-    stmt.dispose();
-  }
-
   Future<String> _ipfsCat(String ipfsHash) async {
     var ipfsUri = _buildIpfsUri(_ipfsParams, '/api/v0/cat/$ipfsHash');
     var request = http.Request('POST', ipfsUri);
     var response =
         await _httpClient.send(request).timeout(const Duration(seconds: 15));
     return await response.stream.bytesToString();
-  }
-
-  Future<void> _runReportChatCover() async {
-    _db.execute(SqlReportChatCover.dropIndexUsername);
-    _db.execute(SqlReportChatCover.dropIndexId);
-    _db.execute(SqlReportChatCover.dropTable);
-    _db.execute(SqlReportChatCover.createTable);
-    _db.execute(SqlReportChatCover.createIndexUsername);
-    _db.execute(SqlReportChatCover.createIndexId);
-
-    final params = [
-      _reportStartDate.toIso8601String(),
-      _reportEndDate.toIso8601String()
-    ];
-
-    _db.execute(SqlReportChatCover.insertUpdated, params);
-    _db.execute(SqlReportChatCover.updateMessageCount, params);
-    _db.execute(SqlReportChatCover.updateUserCount, params);
-    _db.execute(SqlReportChatCover.insertNotUpdate);
-    _db.execute(SqlReportChatCover.updateBlacklisted);
-
-    final stmt = _db.prepare(SqlReportChatCover.report);
-    final cursor = stmt.selectCursor();
-
-    final fileName = 'chat-cover-${_reportStartDate.toIso8601String()}.csv';
-    final fileNameFullPath = p.join(_workDir, fileName);
-
-    await _writeReportFromCursor(fileNameFullPath, cursor);
-
-    stmt.dispose();
-  }
-
-  Future<void> _writeReportFromCursor(
-      String fileNameFullPath, IteratingCursor cursor) async {
-    final file = new io.File(fileNameFullPath);
-    file.createSync();
-
-    final sink = file.openWrite(mode: io.FileMode.write);
-
-    var rowCount = 0;
-
-    try {
-      sink.write(cursor.columnNames.join('\t') + '\n');
-
-      final flushCount = 100;
-      while (cursor.moveNext()) {
-        var fileRow = cursor.current.values.join('\t');
-        sink.write(fileRow + '\n');
-        rowCount++;
-        if (rowCount % flushCount == 0) await sink.flush();
-      }
-    } on Object {
-      rethrow;
-    } finally {
-      await sink.flush();
-      await sink.close();
-    }
-  }
-
-  Future<void> _runReportChatActivity() async {
-    final params = [
-      _reportStartDate.toIso8601String(),
-      _reportEndDate.toIso8601String()
-    ];
-
-    final stmt = _db.prepare(SqlReportChatActivity.report);
-    final cursor = stmt.selectCursor(params);
-
-    final fileName = 'chat-activity-${_reportStartDate.toIso8601String()}.csv';
-    final fileNameFullPath = p.join(_workDir, fileName);
-
-    await _writeReportFromCursor(fileNameFullPath, cursor);
-
-    stmt.dispose();
-  }
-
-  Future<void> _runReportChatKeepUp() async {
-    final params = [
-      _reportStartDate.toIso8601String(),
-      _reportEndDate.toIso8601String()
-    ];
-
-    final stmt = _db.prepare(Sql.report);
-    final cursor = stmt.selectCursor(params);
-
-    final fileName = 'chat-keep-up-${_reportStartDate.toIso8601String()}.csv';
-    final fileNameFullPath = p.join(_workDir, fileName);
-
-    await _writeReportFromCursor(fileNameFullPath, cursor);
-
-    stmt.dispose();
   }
 }
 
