@@ -111,31 +111,4 @@ void main(List<String> arguments) {
   runtime.wasm_engine_delete(wasmEngine);
 
   print('gcd of $a and $b is $result');
-
-  // final watModuleFile = io.File(envVars['wat_module_path']!);
-  // final wasmModuleBytes = watModuleFile.readAsBytesSync();
-
-  // String s = new String.fromCharCodes(wasmModuleBytes);
-  // print(s);
-
-  // ffi.Pointer<ffi.Char> watModulePointer =
-  //     malloc.allocate<ffi.Char>(wasmModuleBytes.length);
-  // for (var i = 0; i < wasmModuleBytes.length; i++) {
-  //   watModulePointer.elementAt(i).value = wasmModuleBytes[i];
-  // }
-
-  // for (var i = 0; i < wasmModuleBytes.length; i++) {
-  //   io.stdout.write(String.fromCharCode(watModulePointer.elementAt(i).value));
-  // }
-  // io.stdout.flush();
-
-  // ffi.Pointer<wasmtime_error_t> wasmtimeError = ffi.nullptr;
-
-  // ffi.Pointer<wasm_byte_vec_t> wasm = malloc();
-  // wasmtimeError =
-  //     runtime.wasmtime_wat2wasm(watModulePointer, wasmModuleBytes.length, wasm);
-  // if (wasmtimeError != ffi.nullptr) {
-  //   throw Exception('Error compiling wat module: $wasmtimeError');
-  // }
-  // malloc.free(watModulePointer);
 }
