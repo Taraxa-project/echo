@@ -1,0 +1,31 @@
+name: wasmtimme
+version: 0.0.1
+description: Dart wasmtime bindings
+homepage: https://github.com/Taraxa-project/echo/tree/main/packages/wasmtime
+repository: https://github.com/Taraxa-project/echo/tree/main/packages/wasmtime
+environment:
+  sdk: '>=2.17.0 <3.0.0'
+false_secrets:
+  - /lib/src/blobs/*
+platforms:
+  linux:
+  macos:
+  windows:
+dependencies:
+  ffi: ^2.0.0
+  path: ^1.8.0
+  logging: ^1.0.2
+  quiver: ^3.1.0
+dev_dependencies: 
+  ffigen: ^7.2.7
+  lints: ^2.0.0
+  recase: ^4.0.0
+  args: ^2.3.1
+ffigen:
+  name: Wasmtime
+  output: 'lib/src/wasmtime.dart'
+  headers:
+    entry-points:
+      - 'wasmtime/crates/c-api/wasm-c-api/include/wasm.h'
+      - 'wasmtime/crates/c-api/include/wasmtime.h'
+
