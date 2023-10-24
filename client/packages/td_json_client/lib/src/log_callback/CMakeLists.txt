@@ -7,7 +7,7 @@ include(ExternalProject)
 ExternalProject_Add(
     dartsdk
     GIT_REPOSITORY https://github.com/dart-lang/sdk.git
-    GIT_TAG 2.18.6
+    GIT_TAG 3.1.4
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
