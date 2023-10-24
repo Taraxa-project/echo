@@ -1,5 +1,5 @@
 ### helper builder image (for tdlib build) ###
-FROM dart:stable as builder
+FROM dart:3.1.4 as builder
 
 # Install packages
 RUN apt-get update && \
