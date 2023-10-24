@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:io' as io;
 import 'dart:ffi' as ffi;
 
-import 'package:ffi/ffi.dart';
 import 'package:wasmtimme/src/wasmtime.dart';
-
+import 'package:ffi/ffi.dart';
 import 'package:logging/logging.dart';
 
 Map<String, String> envVars = io.Platform.environment;

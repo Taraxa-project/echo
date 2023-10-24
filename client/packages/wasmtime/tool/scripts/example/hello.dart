@@ -51,8 +51,8 @@ void main(List<String> arguments) {
   ffi.Pointer<wasmtime_func_t> hello = calloc();
 
   //TODO: build the callback pointer
-  runtime.wasmtime_func_new(
-      context, helloTy, helloCallback, ffi.nullptr, ffi.nullptr, hello);
+  // runtime.wasmtime_func_new(
+  //     context, helloTy, helloCallback, ffi.nullptr, ffi.nullptr, hello);
 
   ffi.Pointer<wasmtime_extern_t> imports = calloc.allocate(1);
   imports.ref.kind = WASMTIME_EXTERN_FUNC;
