@@ -10,23 +10,23 @@ typedef bytes = String;
 typedef string = String;
 
 extension BoolMap on bool {
-  bool toMap({skipNulls: true}) => this;
+  bool toMap({skipNulls = true}) => this;
 }
 
 extension IntMap on int {
-  int toMap({skipNulls: true}) => this;
+  int toMap({skipNulls = true}) => this;
 }
 
 extension DoubleMap on double {
-  double toMap({skipNulls: true}) => this;
+  double toMap({skipNulls = true}) => this;
 }
 
 extension StringMap on String {
-  String toMap({skipNulls: true}) => this;
+  String toMap({skipNulls = true}) => this;
 }
 
 extension ListMap on List {
-  List toMap({skipNulls: true}) => this;
+  List toMap({skipNulls = true}) => this;
 }
 
 /// The base class for Telegram API objects and functions.
@@ -46,7 +46,7 @@ abstract class Td {
   Td.fromMap(Map<String, dynamic> map);
 
   /// Create a [Map] from a [Td] instance.
-  Map<String, dynamic> toMap({skipNulls: true});
+  Map<String, dynamic> toMap({skipNulls = true});
 
   /// Serialize a [Td] instance to a JSON string.
   /// If [skipNulls] is [true] the fields with null values are not serialized.
@@ -69,6 +69,6 @@ abstract class TdFunction extends Td {
   /// The return type as String for this function.
   /// Currently not used.
   String get tdReturnType;
-  
+
   TdFunction({super.extra, super.client_id});
 }

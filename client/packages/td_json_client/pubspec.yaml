@@ -4,7 +4,7 @@ description: Dart TDLib JSON client
 homepage: https://github.com/Taraxa-project/echo/tree/main/packages/td_json_client
 repository: https://github.com/Taraxa-project/echo/tree/main/packages/td_json_client
 environment:
-  sdk: '>=3.0.0'
+  sdk: ^3.1.4
 false_secrets:
   - /lib/src/blobs/*
 platforms:

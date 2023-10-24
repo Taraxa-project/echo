@@ -52,8 +52,9 @@ class LibTdJsonLC {
   }
 
   late final _td_send_lcPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Char>)>>('td_send_lc');
+          ffi
+          .NativeFunction<ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Char>)>>(
+      'td_send_lc');
   late final _td_send_lc =
       _td_send_lcPtr.asFunction<void Function(int, ffi.Pointer<ffi.Char>)>();
 
@@ -104,7 +105,7 @@ class LibTdJsonLC {
           .asFunction<void Function(int, int)>();
 }
 
-class log_message_t extends ffi.Struct {
+base class log_message_t extends ffi.Struct {
   @ffi.Int()
   external int verbosity_level;
 

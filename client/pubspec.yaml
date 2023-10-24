@@ -1,6 +1,6 @@
 name: echo_workspace
 
 environment:
-  sdk: '>=3.0.0'
+  sdk: ^3.1.4
 dev_dependencies:
   melos: ^3.0.0
