@@ -323,16 +323,6 @@ SET
 WHERE
   table_name = ?;
 ''';
-
-  static const selectMaxUpdatedAt = '''
-SELECT
-  max(updated_at) updated_at
-FROM
-  ipfs_upload
-WHERE
-  table_name = 'user' AND
-  last_exported_id > 0
-''';
 }
 
 class SqlIpfsHash {
@@ -507,5 +497,143 @@ SET
   status = ?
 WHERE
   username = ?;
+''';
+}
+
+class SqlIpfsMeta {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_meta (
+  type TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
+  id_max_exported INTEGER,
+  id_max_uploaded INTEGER,
+  cid TEXT,
+  cid_old TEXT,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_meta
+  (type, id_max_exported, id_max_exported, cid, created_at, updated_at)
+VALUES
+  (?, ?, ?, ?, ?, ?);
+''';
+
+  static const selectType = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_meta a
+WHERE
+  a.type = ?;
+''';
+
+  static const selectExport = '''
+SELECT
+  a.cid
+FROM
+  ipfs_meta a
+WHERE
+  a.type = ?
+ORDER BY
+  a.rowid ASC;
+''';
+
+  static const updateIdExportedLast = '''
+UPDATE
+  ipfs_meta
+SET
+  id_max_exported = ?,
+  updated_at = ?
+WHERE
+  type = ?;
+''';
+
+  static const updateIdUploadedLast = '''
+UPDATE
+  ipfs_meta
+SET
+  id_max_uploaded = id_max_exported,
+  updated_at = ?
+WHERE
+  type = ?;
+''';
+
+  static const updateCid = '''
+UPDATE
+  ipfs_meta
+SET
+  cid = ?,
+  updated_at = ?
+WHERE
+  type = ?;
+''';
+}
+
+class SqlIpfsData {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_data (
+  type TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
+  cid TEXT,
+  cid_old TEXT,
+  date TEXT,
+  record_count INTEGER,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+  static const createIdxIpfsData = '''
+CREATE INDEX IF NOT EXISTS idx_ipfs_data ON
+  ipfs_data(type);
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_data
+  (type, cid, date, id_min, id_max, created_at, updated_at)
+VALUES
+  (?, ?, ?, ?, ?, ?, ?);
+''';
+
+  static const selectExport = '''
+SELECT
+  a.cid
+FROM
+  ipfs_data a
+WHERE
+  a.type = ?
+ORDER BY
+  a.rowid ASC;
+''';
+}
+
+class SqlIpfsDataMessage {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_data_message (
+  id_ipfs_data INTEGER,
+  id_message INTEGER,
+  created_at TEXT
+);
+''';
+
+  static const createIdxIpfsDataMessage = '''
+CREATE INDEX IF NOT EXISTS idx_ipfs_data_message ON
+  ipfs_data_message(id_ipsf_data, id_message);
+''';
+}
+
+class SqlIpfsDataUser {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_data_user (
+  id_ipfs_data INTEGER,
+  id_user INTEGER,
+  created_at TEXT
+);
+''';
+
+  static const createIdxIpfsDataUser = '''
+CREATE INDEX IF NOT EXISTS idx_ipfs_data_user ON
+  ipfs_data_user(id_ipsf_data, id_user);
 ''';
 }

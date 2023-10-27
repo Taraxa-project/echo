@@ -40,8 +40,6 @@ abstract class DbInterface {
   FutureOr<ExportResult> exportData(ExportType exportType);
   FutureOr<int> exportMeta(ExportType exportType);
 
-  FutureOr<DateTime?> selectLastExportDateTime();
-
   FutureOr<int> logChatReadStarted(int chatId, DateTime dateTimeStarted);
   FutureOr<void> logChatReadFinished(
       int id, int messageCount, DateTime dateTimeFinished);

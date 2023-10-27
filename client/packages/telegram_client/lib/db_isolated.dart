@@ -134,11 +134,6 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<DateTime?> selectLastExportDateTime() async {
-    return await isolatedProxy.call(SelectLastExportDateTime());
-  }
-
-  @override
   Future<Map<String, dynamic>?> selectChat(String username) async {
     return await isolatedProxy.call(SelectChat(username));
   }
@@ -246,8 +241,6 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       db.updateMetaFileHash(message.tableName, message.fileHash);
     } else if (message is SelectMetaFileHahes) {
       return db.selectMetaFileHahes();
-    } else if (message is SelectLastExportDateTime) {
-      return db.selectLastExportDateTime();
     } else if (message is SelectChat) {
       return db.selectChat(message.username);
     } else if (message is RunMigrations) {
@@ -390,8 +383,6 @@ class UpdateMetaFileHash {
 }
 
 class SelectMetaFileHahes {}
-
-class SelectLastExportDateTime {}
 
 class RunMigrations {}
 

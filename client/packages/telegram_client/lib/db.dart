@@ -346,16 +346,6 @@ class Db implements DbInterface {
     return hashes;
   }
 
-  DateTime? selectLastExportDateTime() {
-    final updatedAt =
-        select(SqlIpfsUpload.selectMaxUpdatedAt, []).firstOrNull?['updated_at'];
-    if (updatedAt == null) {
-      return null;
-    } else {
-      return DateTime.parse(updatedAt);
-    }
-  }
-
   void _insertIpfsHash(ExportResult exportResult, String fileHash) {
     final now = _now();
     final parameters = [
@@ -394,6 +384,8 @@ class Db implements DbInterface {
 
     _addIpfsHashIdMin();
     _addIpfsHashIdMax();
+
+    _runMigrationGroupByMessageDate();
   }
 
   void _createTables() {
@@ -454,6 +446,18 @@ class Db implements DbInterface {
   void _addIpfsHashIdMax() {
     try {
       _database.execute(SqlMigration.addIfpsHashIdMax);
+    } on Object {}
+  }
+
+  void _runMigrationGroupByMessageDate() {
+    try {
+      _database.execute(SqlIpfsMeta.createTable);
+      _database.execute(SqlIpfsData.createTable);
+      _database.execute(SqlIpfsData.createIdxIpfsData);
+      _database.execute(SqlIpfsDataMessage.createTable);
+      _database.execute(SqlIpfsDataMessage.createIdxIpfsDataMessage);
+      _database.execute(SqlIpfsDataMessage.createTable);
+      _database.execute(SqlIpfsDataUser.createIdxIpfsDataUser);
     } on Object {}
   }
 
