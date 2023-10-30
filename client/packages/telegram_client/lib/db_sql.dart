@@ -190,6 +190,24 @@ FROM
 ORDER BY
   a.rowid ASC;
 ''';
+
+  static const selectMaxRowid = '''
+SELECT
+  max(rowid) rowid
+FROM
+  chat;
+''';
+
+  static const selectPrepareExport = '''
+SELECT
+  a.rowid rowid_chat
+FROM
+  chat a
+WHERE
+  a.rowid > ?
+ORDER BY
+  a.rowid ASC; 
+''';
 }
 
 class SqlMessage {
@@ -621,13 +639,26 @@ FROM
   ipfs_data a
 WHERE
   a.type = ? AND
-  a.date = ? AND
   a.record_count < ?
 ORDER BY
   a.rowid ASC
 LIMIT 1;
 ''';
 
+  static const selectPrepareWithDate = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_data a
+WHERE
+  a.type = ? AND
+  a.date = ? AND
+  a.record_count < ?
+ORDER BY
+  a.rowid ASC
+LIMIT 1;
+''';
   static const updateCidOld = '''
 UPDATE
   ipfs_data
@@ -649,6 +680,16 @@ WHERE
   rowid = ?;
 ''';
 
+  static const updateRecordCountChat = '''
+UPDATE
+  ipfs_data
+SET
+  record_count = (SELECT count(*) FROM ipfs_data_chat WHERE id_ipfs_data = ?),
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
   static const updateRecordCountUser = '''
 UPDATE
   ipfs_data
@@ -657,6 +698,18 @@ SET
   updated_at = ?
 WHERE
   rowid = ?;
+''';
+
+  static const updateCidOldChat = '''
+UPDATE
+  ipfs_data
+SET
+  cid_old = cid,
+  cid = null,
+  updated_at = ?
+WHERE
+  type = 'chat' AND
+  cid <> null;
 ''';
 }
 
@@ -710,5 +763,35 @@ INSERT INTO ipfs_data_user
 VALUES
   (?, ?, ?)
 ON CONFLICT DO NOTHING;
+''';
+}
+
+class SqlIpfsDataChat {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_data_chat (
+  id_ipfs_data INTEGER,
+  rowid_chat INTEGER,
+  created_at TEXT
+);
+''';
+
+  static const createIdxIpfsDataChat = '''
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ipfs_data_chat ON
+  ipfs_data_chat(id_ipfs_data, rowid_chat);
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_data_chat
+  (id_ipfs_data, rowid_chat, created_at)
+VALUES
+  (?, ?, ?)
+ON CONFLICT DO NOTHING;
+''';
+
+  static const selectRowidMessageMax = '''
+SELECT
+  max(rowid_chat) rowid_chat
+FROM
+  ipfs_data_chat;
 ''';
 }

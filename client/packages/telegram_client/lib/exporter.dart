@@ -44,12 +44,12 @@ class Exporter implements ExporterInterface {
     await db.exportPrepare();
 
     // final client = http.Client();
-    // final ipfsUri = _buildIpfsUri('/api/v0/add');
+    // final ipfsUriAdd = _buildIpfsUri('/api/v0/add');
 
-    // await _exportChatsRead(client, ipfsUri);
-    // await _exportChat(client, ipfsUri);
-    // await _exportMessage(client, ipfsUri);
-    // await _exportUser(client, ipfsUri);
+    // await _exportChatsRead(client, ipfsUriAdd);
+    // await _exportChat(client, ipfsUriAdd);
+    // await _exportMessage(client, ipfsUriAdd);
+    // await _exportUser(client, ipfsUriAdd);
 
     // client.close();
 
@@ -62,22 +62,22 @@ class Exporter implements ExporterInterface {
     _exportInProgress = false;
   }
 
-  Future<void> _exportChatsRead(http.Client client, Uri ipfsUri) async {
-    final dateTimeFrom =
-        DateTime.now().toUtc().subtract(const Duration(days: 14));
+  // Future<void> _exportChatsRead(http.Client client, Uri ipfsUri) async {
+  //   final dateTimeFrom =
+  //       DateTime.now().toUtc().subtract(const Duration(days: 14));
 
-    final chats = await db.select(SqlChat.selectAll);
-    for (final chat in chats) {
-      if (chat['id'] == null) continue;
-      await _exportChatRead(client, ipfsUri,
-          ExportTypeChatRead(tableDumpPath, chat['id'], dateTimeFrom));
-    }
-  }
+  //   final chats = await db.select(SqlChat.selectAll);
+  //   for (final chat in chats) {
+  //     if (chat['id'] == null) continue;
+  //     await _exportChatRead(client, ipfsUri,
+  //         ExportTypeChatRead(tableDumpPath, chat['id'], dateTimeFrom));
+  //   }
+  // }
 
-  Future<void> _exportChatRead(
-      http.Client client, Uri ipfsUri, ExportType exportType) async {
-    await _exportData(client, ipfsUri, exportType);
-  }
+  // Future<void> _exportChatRead(
+  //     http.Client client, Uri ipfsUri, ExportType exportType) async {
+  //   await _exportData(client, ipfsUri, exportType);
+  // }
 
   Future<void> _exportChat(http.Client client, Uri ipfsUri) async {
     await _exportDataMeta(client, ipfsUri, ExportTypeChat(tableDumpPath));

@@ -247,46 +247,76 @@ class Db implements DbInterface {
   }
 
   Future<ExportResult> exportData(ExportType exportType) async {
+    if (exportType is ExportTypeChat) {
+      return _exportDataTypeChat(exportType);
+    } else if (exportType is ExportTypeMessage) {
+      return _exportDataTypeMessage(exportType);
+    } else if (exportType is ExportTypeUser) {
+      return _exportDataTypeUser(exportType);
+    } else {
+      return _exportDataTypeChatRead(exportType);
+    }
+
+    // ExportResult exportResult = ExportResult(exportType);
+
+    // _initIpfsUpload(exportType);
+
+    // var minId = 0;
+    // if (exportType is! ExportTypeChat) {
+    //   minId = _selectLastUploadedId(exportType.dataType) ?? 0;
+    // }
+    // exportResult.idMin = minId;
+
+    // List<dynamic> parameters = [minId];
+    // if (exportType is ExportTypeChatRead) {
+    //   parameters.addAll([
+    //     exportType.chatId,
+    //     exportType.dateTimeFrom.toUtc().toIso8601String()
+    //   ]);
+    // }
+    // parameters.add(exportType.limit);
+
+    // final stmt = _database.prepare(_sqlSelectDataForExport(exportType));
+
+    // var rowCount = 0;
+    // try {
+    //   final cursor = stmt.selectCursor(parameters);
+    //   final result =
+    //       await _exportCursor(cursor, exportType.fileNameFullPathData);
+    //   rowCount = result[0];
+    //   exportResult.recordCount = rowCount;
+
+    //   if (rowCount > 0) {
+    //     _updateLastExportedId(exportType.dataType, result[1]);
+    //     exportResult.idMax = result[1];
+    //   }
+    // } on Object {
+    //   rethrow;
+    // } finally {
+    //   stmt.dispose();
+    // }
+    // logger.fine('exported $rowCount records from ${exportType.dataType}');
+
+    // return exportResult;
+  }
+
+  Future<ExportResult> _exportDataTypeChat(ExportType exportType) async {
     ExportResult exportResult = ExportResult(exportType);
+    return exportResult;
+  }
 
-    _initIpfsUpload(exportType);
+  Future<ExportResult> _exportDataTypeMessage(ExportType exportType) async {
+    ExportResult exportResult = ExportResult(exportType);
+    return exportResult;
+  }
 
-    var minId = 0;
-    if (exportType is! ExportTypeChat) {
-      minId = _selectLastUploadedId(exportType.dataType) ?? 0;
-    }
-    exportResult.idMin = minId;
+  Future<ExportResult> _exportDataTypeUser(ExportType exportType) async {
+    ExportResult exportResult = ExportResult(exportType);
+    return exportResult;
+  }
 
-    List<dynamic> parameters = [minId];
-    if (exportType is ExportTypeChatRead) {
-      parameters.addAll([
-        exportType.chatId,
-        exportType.dateTimeFrom.toUtc().toIso8601String()
-      ]);
-    }
-    parameters.add(exportType.limit);
-
-    final stmt = _database.prepare(_sqlSelectDataForExport(exportType));
-
-    var rowCount = 0;
-    try {
-      final cursor = stmt.selectCursor(parameters);
-      final result =
-          await _exportCursor(cursor, exportType.fileNameFullPathData);
-      rowCount = result[0];
-      exportResult.recordCount = rowCount;
-
-      if (rowCount > 0) {
-        _updateLastExportedId(exportType.dataType, result[1]);
-        exportResult.idMax = result[1];
-      }
-    } on Object {
-      rethrow;
-    } finally {
-      stmt.dispose();
-    }
-    logger.fine('exported $rowCount records from ${exportType.dataType}');
-
+  Future<ExportResult> _exportDataTypeChatRead(ExportType exportType) async {
+    ExportResult exportResult = ExportResult(exportType);
     return exportResult;
   }
 
@@ -459,6 +489,8 @@ class Db implements DbInterface {
       _database.execute(SqlIpfsDataMessage.createIdxIpfsDataMessage);
       _database.execute(SqlIpfsDataUser.createTable);
       _database.execute(SqlIpfsDataUser.createIdxIpfsDataUser);
+      _database.execute(SqlIpfsDataChat.createTable);
+      _database.execute(SqlIpfsDataChat.createIdxIpfsDataChat);
       _database.execute(SqlMessage.createIndexSenderId);
     } on Object {}
   }
@@ -613,7 +645,57 @@ class Db implements DbInterface {
 
   @override
   void exportPrepare() {
-    logger.info('preparing export...');
+    _exportPrepareChat();
+    _exportPrepareMessageUser();
+  }
+
+  void _exportPrepareChat() {
+    logger.info('preparing chats export...');
+
+    final rsSelectRowidChatMaxx = select(SqlChat.selectMaxRowid);
+    final rowidChatMax = rsSelectRowidChatMaxx.first['rowid'] ?? 0;
+
+    final rsSelectRowidChatLastPrepared =
+        select(SqlIpfsDataChat.selectRowidMessageMax);
+    final rowidChatLastPrepared =
+        rsSelectRowidChatLastPrepared.first['rowid_chat'] ?? 0;
+
+    final stmtExportPrepareChat =
+        _database.prepare(SqlChat.selectPrepareExport);
+    final paramExportPrepareMessage = [rowidChatLastPrepared];
+    final cursorExportPrepareChat =
+        stmtExportPrepareChat.selectCursor(paramExportPrepareMessage);
+
+    var currentChatCount = 0;
+    var chatCount = rowidChatMax - rowidChatLastPrepared;
+
+    while (cursorExportPrepareChat.moveNext()) {
+      currentChatCount++;
+
+      final rowExportPrepareChat = cursorExportPrepareChat.current;
+
+      if (currentChatCount % exportRecordLimit == 0) {
+        logger.info('prepared [$currentChatCount/$chatCount] new chats.');
+      }
+
+      final ifpsDataRowChat = _getNextIpfsDataRow('chat');
+      if (ifpsDataRowChat == null)
+        throw ExportException('Could not get next ipfs_data_rowid for chat');
+
+      _exportPrepareRowChat(rowExportPrepareChat, ifpsDataRowChat);
+    }
+
+    execute(SqlIpfsData.updateCidOldChat, [_now()]);
+
+    if (currentChatCount % exportRecordLimit != 0) {
+      logger.info('prepared [$currentChatCount/$chatCount] new chats.');
+    }
+
+    logger.info('preparing chats export... done.');
+  }
+
+  void _exportPrepareMessageUser() {
+    logger.info('preparing messages and users export...');
 
     final rsSelectRowidMessageMax = select(SqlMessage.selectMaxRowid);
     final rowidMessageMax = rsSelectRowidMessageMax.first['rowid'] ?? 0;
@@ -629,8 +711,6 @@ class Db implements DbInterface {
     final cursorExportPrepareMessage =
         stmtExportPrepareMessage.selectCursor(paramExportPrepareMessage);
 
-    final now = _now();
-
     var currentMessageCount = 0;
     var messageCount = rowidMessageMax - rowidMessageLastPrepared;
 
@@ -641,50 +721,80 @@ class Db implements DbInterface {
       final date = rowExportPrepareMessage['date'];
 
       if (currentMessageCount % exportRecordLimit == 0) {
-        logger.info('prepared [$currentMessageCount/$messageCount] messages.');
+        logger.info(
+            'prepared [$currentMessageCount/$messageCount] new messages.');
       }
 
-      final ifpsDataRowMessage = _getNextIpfsDataRow('message', date, now);
+      final ifpsDataRowMessage = _getNextIpfsDataRow('message', date);
       if (ifpsDataRowMessage == null)
         throw ExportException('Could not get next ipfs_data_rowid for message');
 
-      final ifpsDataRowUser = _getNextIpfsDataRow('user', date, now);
+      final ifpsDataRowUser = _getNextIpfsDataRow('user', date);
       if (ifpsDataRowUser == null)
         throw ExportException('Could not get next ipfs_data_rowid for user');
 
-      _exportPrepareRow(
-          rowExportPrepareMessage, ifpsDataRowMessage, ifpsDataRowUser, now);
+      _exportPrepareRowMessage(
+          rowExportPrepareMessage, ifpsDataRowMessage, ifpsDataRowUser);
     }
 
     if (currentMessageCount % exportRecordLimit != 0) {
-      logger.info('prepared [$currentMessageCount/$messageCount] messages.');
+      logger
+          .info('prepared [$currentMessageCount/$messageCount] new messages.');
     }
-    logger.info('preparing export... done.');
+    logger.info('preparing messages and users export... done.');
   }
 
-  Row? _getNextIpfsDataRow(String type, String date, String now) {
+  Row? _getNextIpfsDataRow(String type, [String? date = null]) {
     final ipfsDataRow = _selectIpfsDataRow(type, date);
     if (ipfsDataRow != null) return ipfsDataRow;
 
-    _insertIpfsData(type, date, now);
+    _insertIpfsData(type, date);
     return _selectIpfsDataRow(type, date);
   }
 
-  Row? _selectIpfsDataRow(String type, String date) {
-    final paramsSelectIpfsDataRow = [type, date, exportRecordLimit];
-    final rsSelectIpfsDataRow =
-        select(SqlIpfsData.selectPrepare, paramsSelectIpfsDataRow);
-    if (rsSelectIpfsDataRow.isNotEmpty) return rsSelectIpfsDataRow.first;
+  Row? _selectIpfsDataRow(String type, [String? date = null]) {
+    if (date == null) {
+      final paramsSelectIpfsDataRow = [type, exportRecordLimit];
+      final rsSelectIpfsDataRow =
+          select(SqlIpfsData.selectPrepare, paramsSelectIpfsDataRow);
+      if (rsSelectIpfsDataRow.isNotEmpty) return rsSelectIpfsDataRow.first;
+    } else {
+      final paramsSelectIpfsDataRow = [type, date, exportRecordLimit];
+      final rsSelectIpfsDataRow =
+          select(SqlIpfsData.selectPrepareWithDate, paramsSelectIpfsDataRow);
+      if (rsSelectIpfsDataRow.isNotEmpty) return rsSelectIpfsDataRow.first;
+    }
     return null;
   }
 
-  void _insertIpfsData(String type, String date, String now) {
+  void _insertIpfsData(String type, [String? date = null]) {
+    final now = _now();
     final paramsInsertIpfsDataRow = [type, null, null, date, 0, now, now];
     execute(SqlIpfsData.insert, paramsInsertIpfsDataRow);
   }
 
-  void _exportPrepareRow(
-      Row row, Row ifpsDataRowMessage, Row ifpsDataRowUser, String now) {
+  void _exportPrepareRowChat(Row row, Row ifpsDataRowChat) {
+    final now = _now();
+    try {
+      execute('BEGIN');
+
+      execute(SqlIpfsDataChat.insert,
+          [ifpsDataRowChat['rowid'], row['rowid_chat'], now]);
+      execute(SqlIpfsData.updateRecordCountChat,
+          [ifpsDataRowChat['rowid'], now, ifpsDataRowChat['rowid']]);
+      if (ifpsDataRowChat['cid'] != null)
+        execute(SqlIpfsData.updateCidOld, [now, ifpsDataRowChat['rowid']]);
+
+      execute('COMMIT');
+    } on Object {
+      execute('ROLLBACK');
+      rethrow;
+    }
+  }
+
+  void _exportPrepareRowMessage(
+      Row row, Row ifpsDataRowMessage, Row ifpsDataRowUser) {
+    final now = _now();
     try {
       execute('BEGIN');
 
