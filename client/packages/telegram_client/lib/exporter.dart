@@ -41,21 +41,23 @@ class Exporter implements ExporterInterface {
     if (_exportInProgress) return;
     _exportInProgress = true;
 
-    final client = http.Client();
-    final ipfsUri = _buildIpfsUri('/api/v0/add');
+    await db.exportPrepare();
 
-    await _exportChatsRead(client, ipfsUri);
-    await _exportChat(client, ipfsUri);
-    await _exportMessage(client, ipfsUri);
-    await _exportUser(client, ipfsUri);
+    // final client = http.Client();
+    // final ipfsUri = _buildIpfsUri('/api/v0/add');
 
-    client.close();
+    // await _exportChatsRead(client, ipfsUri);
+    // await _exportChat(client, ipfsUri);
+    // await _exportMessage(client, ipfsUri);
+    // await _exportUser(client, ipfsUri);
 
-    final hashes = await db.selectMetaFileHahes();
-    if (hashes.chat != null && hashes.message != null && hashes.user != null) {
-      await ingesterContract.writeHashes(
-          hashes.chat!, hashes.message!, hashes.user!);
-    }
+    // client.close();
+
+    // final hashes = await db.selectMetaFileHahes();
+    // if (hashes.chat != null && hashes.message != null && hashes.user != null) {
+    //   await ingesterContract.writeHashes(
+    //       hashes.chat!, hashes.message!, hashes.user!);
+    // }
 
     _exportInProgress = false;
   }

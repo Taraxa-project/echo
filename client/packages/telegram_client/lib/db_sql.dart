@@ -233,12 +233,39 @@ LIMIT
   static const select = '''
 SELECT
   a.*,
-  a.id rowid
+  a.rowid rowid
 FROM
   message a
 WHERE
   a.chat_id = ? AND
   a.id = ?;
+''';
+
+  static const selectPrepareExport = '''
+SELECT
+  a.rowid rowid_message,
+  b.id rowid_user,
+  date(a.date) date
+FROM
+  message a
+LEFT JOIN
+  "user" b on a.sender_id = b.user_id
+WHERE
+  a.rowid > ?
+ORDER BY
+  a.rowid ASC; 
+''';
+
+  static const createIndexSenderId = '''
+CREATE INDEX IF NOT EXISTS idx_message_sender_id ON
+  message(sender_id);
+''';
+
+  static const selectMaxRowid = '''
+SELECT
+  max(rowid) rowid
+FROM
+  message;
 ''';
 }
 
@@ -504,8 +531,6 @@ class SqlIpfsMeta {
   static const createTable = '''
 CREATE TABLE IF NOT EXISTS ipfs_meta (
   type TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
-  id_max_exported INTEGER,
-  id_max_uploaded INTEGER,
   cid TEXT,
   cid_old TEXT,
   created_at TEXT,
@@ -515,9 +540,9 @@ CREATE TABLE IF NOT EXISTS ipfs_meta (
 
   static const insert = '''
 INSERT INTO ipfs_meta
-  (type, id_max_exported, id_max_exported, cid, created_at, updated_at)
+  (type, cid, cid_old, created_at, updated_at)
 VALUES
-  (?, ?, ?, ?, ?, ?);
+  (?, ?, ?, ?, ?);
 ''';
 
   static const selectType = '''
@@ -541,30 +566,11 @@ ORDER BY
   a.rowid ASC;
 ''';
 
-  static const updateIdExportedLast = '''
-UPDATE
-  ipfs_meta
-SET
-  id_max_exported = ?,
-  updated_at = ?
-WHERE
-  type = ?;
-''';
-
-  static const updateIdUploadedLast = '''
-UPDATE
-  ipfs_meta
-SET
-  id_max_uploaded = id_max_exported,
-  updated_at = ?
-WHERE
-  type = ?;
-''';
-
   static const updateCid = '''
 UPDATE
   ipfs_meta
 SET
+  cid_old = cid,
   cid = ?,
   updated_at = ?
 WHERE
@@ -575,7 +581,7 @@ WHERE
 class SqlIpfsData {
   static const createTable = '''
 CREATE TABLE IF NOT EXISTS ipfs_data (
-  type TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
+  type TEXT,
   cid TEXT,
   cid_old TEXT,
   date TEXT,
@@ -591,7 +597,7 @@ CREATE INDEX IF NOT EXISTS idx_ipfs_data ON
 
   static const insert = '''
 INSERT INTO ipfs_data
-  (type, cid, date, id_min, id_max, created_at, updated_at)
+  (type, cid, cid_old, date, record_count, created_at, updated_at)
 VALUES
   (?, ?, ?, ?, ?, ?, ?);
 ''';
@@ -606,20 +612,81 @@ WHERE
 ORDER BY
   a.rowid ASC;
 ''';
+
+  static const selectPrepare = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_data a
+WHERE
+  a.type = ? AND
+  a.date = ? AND
+  a.record_count < ?
+ORDER BY
+  a.rowid ASC
+LIMIT 1;
+''';
+
+  static const updateCidOld = '''
+UPDATE
+  ipfs_data
+SET
+  cid_old = cid,
+  cid = null,
+  updated_at = ?
+WHERE
+  a.rowid = ?;
+''';
+
+  static const updateRecordCountMessage = '''
+UPDATE
+  ipfs_data
+SET
+  record_count = (SELECT count(*) FROM ipfs_data_message WHERE id_ipfs_data = ?),
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const updateRecordCountUser = '''
+UPDATE
+  ipfs_data
+SET
+  record_count = (SELECT count(*) FROM ipfs_data_user WHERE id_ipfs_data = ?),
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
 }
 
 class SqlIpfsDataMessage {
   static const createTable = '''
 CREATE TABLE IF NOT EXISTS ipfs_data_message (
   id_ipfs_data INTEGER,
-  id_message INTEGER,
+  rowid_message INTEGER,
   created_at TEXT
 );
 ''';
 
   static const createIdxIpfsDataMessage = '''
-CREATE INDEX IF NOT EXISTS idx_ipfs_data_message ON
-  ipfs_data_message(id_ipsf_data, id_message);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ipfs_data_message ON
+  ipfs_data_message(id_ipfs_data, rowid_message);
+''';
+
+  static const selectRowidMessageMax = '''
+SELECT
+  max(rowid_message) rowid_message
+FROM
+  ipfs_data_message;
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_data_message
+  (id_ipfs_data, rowid_message, created_at)
+VALUES
+  (?, ?, ?)
+ON CONFLICT DO NOTHING;;
 ''';
 }
 
@@ -627,13 +694,21 @@ class SqlIpfsDataUser {
   static const createTable = '''
 CREATE TABLE IF NOT EXISTS ipfs_data_user (
   id_ipfs_data INTEGER,
-  id_user INTEGER,
+  rowid_user INTEGER,
   created_at TEXT
 );
 ''';
 
   static const createIdxIpfsDataUser = '''
-CREATE INDEX IF NOT EXISTS idx_ipfs_data_user ON
-  ipfs_data_user(id_ipsf_data, id_user);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ipfs_data_user ON
+  ipfs_data_user(id_ipfs_data, rowid_user);
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_data_user
+  (id_ipfs_data, rowid_user, created_at)
+VALUES
+  (?, ?, ?)
+ON CONFLICT DO NOTHING;
 ''';
 }

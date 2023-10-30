@@ -50,6 +50,8 @@ abstract class DbInterface {
   FutureOr<bool> messageExists(int chatId, int id);
   FutureOr<int?> selectNewChatStatus(String username);
   FutureOr<void> updateNewChat(String username, int messageIdLast, int status);
+
+  FutureOr<void> exportPrepare();
 }
 
 class IfpsFileHashesMeta {
@@ -116,4 +118,18 @@ class ExportResult {
 
   ExportResult(this.exportType,
       [this.recordCount = 0, this.idMin = 0, this.idMax = 0]);
+}
+
+class ExportException implements Exception {
+  final String? message;
+
+  ExportException([this.message = '']);
+
+  String toString() {
+    var report = 'ExportException';
+    if (message != null) {
+      report += ': $message';
+    }
+    return report;
+  }
 }

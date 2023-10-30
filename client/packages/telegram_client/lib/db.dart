@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' as io;
 import 'dart:convert';
 
@@ -456,8 +457,9 @@ class Db implements DbInterface {
       _database.execute(SqlIpfsData.createIdxIpfsData);
       _database.execute(SqlIpfsDataMessage.createTable);
       _database.execute(SqlIpfsDataMessage.createIdxIpfsDataMessage);
-      _database.execute(SqlIpfsDataMessage.createTable);
+      _database.execute(SqlIpfsDataUser.createTable);
       _database.execute(SqlIpfsDataUser.createIdxIpfsDataUser);
+      _database.execute(SqlMessage.createIndexSenderId);
     } on Object {}
   }
 
@@ -607,6 +609,104 @@ class Db implements DbInterface {
     final parameters = [messageIdLast, status, username];
     logger.fine('updating new chat $parameters...');
     execute(SqlChatNew.update, parameters);
+  }
+
+  @override
+  void exportPrepare() {
+    logger.info('preparing export...');
+
+    final rsSelectRowidMessageMax = select(SqlMessage.selectMaxRowid);
+    final rowidMessageMax = rsSelectRowidMessageMax.first['rowid'] ?? 0;
+
+    final rsSelectRowidMessageLastPrepared =
+        select(SqlIpfsDataMessage.selectRowidMessageMax);
+    final rowidMessageLastPrepared =
+        rsSelectRowidMessageLastPrepared.first['rowid_message'] ?? 0;
+
+    final stmtExportPrepareMessage =
+        _database.prepare(SqlMessage.selectPrepareExport);
+    final paramExportPrepareMessage = [rowidMessageLastPrepared];
+    final cursorExportPrepareMessage =
+        stmtExportPrepareMessage.selectCursor(paramExportPrepareMessage);
+
+    final now = _now();
+
+    var currentMessageCount = 0;
+    var messageCount = rowidMessageMax - rowidMessageLastPrepared;
+
+    while (cursorExportPrepareMessage.moveNext()) {
+      currentMessageCount++;
+
+      final rowExportPrepareMessage = cursorExportPrepareMessage.current;
+      final date = rowExportPrepareMessage['date'];
+
+      if (currentMessageCount % exportRecordLimit == 0) {
+        logger.info('prepared [$currentMessageCount/$messageCount] messages.');
+      }
+
+      final ifpsDataRowMessage = _getNextIpfsDataRow('message', date, now);
+      if (ifpsDataRowMessage == null)
+        throw ExportException('Could not get next ipfs_data_rowid for message');
+
+      final ifpsDataRowUser = _getNextIpfsDataRow('user', date, now);
+      if (ifpsDataRowUser == null)
+        throw ExportException('Could not get next ipfs_data_rowid for user');
+
+      _exportPrepareRow(
+          rowExportPrepareMessage, ifpsDataRowMessage, ifpsDataRowUser, now);
+    }
+
+    if (currentMessageCount % exportRecordLimit != 0) {
+      logger.info('prepared [$currentMessageCount/$messageCount] messages.');
+    }
+    logger.info('preparing export... done.');
+  }
+
+  Row? _getNextIpfsDataRow(String type, String date, String now) {
+    final ipfsDataRow = _selectIpfsDataRow(type, date);
+    if (ipfsDataRow != null) return ipfsDataRow;
+
+    _insertIpfsData(type, date, now);
+    return _selectIpfsDataRow(type, date);
+  }
+
+  Row? _selectIpfsDataRow(String type, String date) {
+    final paramsSelectIpfsDataRow = [type, date, exportRecordLimit];
+    final rsSelectIpfsDataRow =
+        select(SqlIpfsData.selectPrepare, paramsSelectIpfsDataRow);
+    if (rsSelectIpfsDataRow.isNotEmpty) return rsSelectIpfsDataRow.first;
+    return null;
+  }
+
+  void _insertIpfsData(String type, String date, String now) {
+    final paramsInsertIpfsDataRow = [type, null, null, date, 0, now, now];
+    execute(SqlIpfsData.insert, paramsInsertIpfsDataRow);
+  }
+
+  void _exportPrepareRow(
+      Row row, Row ifpsDataRowMessage, Row ifpsDataRowUser, String now) {
+    try {
+      execute('BEGIN');
+
+      execute(SqlIpfsDataMessage.insert,
+          [ifpsDataRowMessage['rowid'], row['rowid_message'], now]);
+      execute(SqlIpfsData.updateRecordCountMessage,
+          [ifpsDataRowMessage['rowid'], now, ifpsDataRowMessage['rowid']]);
+      if (ifpsDataRowMessage['cid'] != null)
+        execute(SqlIpfsData.updateCidOld, [now, ifpsDataRowMessage['rowid']]);
+
+      execute(SqlIpfsDataUser.insert,
+          [ifpsDataRowUser['rowid'], row['rowid_user'], now]);
+      execute(SqlIpfsData.updateRecordCountUser,
+          [ifpsDataRowUser['rowid'], now, ifpsDataRowUser['rowid']]);
+      if (ifpsDataRowUser['cid'] != null)
+        execute(SqlIpfsData.updateCidOld, [now, ifpsDataRowUser['rowid']]);
+
+      execute('COMMIT');
+    } on Object {
+      execute('ROLLBACK');
+      rethrow;
+    }
   }
 
   void execute(String sql, [List<Object?> parameters = const <Object>[]]) {

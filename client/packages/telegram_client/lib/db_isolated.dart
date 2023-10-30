@@ -198,6 +198,11 @@ class DbIsolated implements DbInterface {
       String username, int messageIdLast, int status) async {
     await isolatedProxy.call(UpdateNewChat(username, messageIdLast, status));
   }
+
+  @override
+  Future<void> exportPrepare() async {
+    await isolatedProxy.call(ExportPrepare());
+  }
 }
 
 class DbIsolatedDispatch extends IsolatedDispatch {
@@ -267,6 +272,8 @@ class DbIsolatedDispatch extends IsolatedDispatch {
     } else if (message is UpdateNewChat) {
       return db.updateNewChat(
           message.username, message.messageIdLast, message.status);
+    } else if (message is ExportPrepare) {
+      db.exportPrepare();
     } else {
       return super.dispatch(message);
     }
@@ -453,3 +460,5 @@ class UpdateNewChat {
 
   UpdateNewChat(this.username, this.messageIdLast, this.status);
 }
+
+class ExportPrepare {}
