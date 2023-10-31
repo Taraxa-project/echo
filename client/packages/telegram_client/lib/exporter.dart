@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
-import 'package:telegram_client/db_interface.dart';
-import 'package:telegram_client/db_sql.dart';
 
 import 'exporter_interface.dart';
 import 'ingester_contract.dart';
@@ -24,7 +23,7 @@ class Exporter implements ExporterInterface {
   static const tableNamesUploadFull = ['chat'];
 
   static const int ipfsRequestRetryCountMax = 5;
-  static const int ipfsRequestRetryDelaySeconds = 30;
+  static const int ipfsRequestRetryDelaySeconds = 10;
   static const int ipfsRequestTimeoutSeconds = 60;
 
   bool _exportInProgress = false;
@@ -43,97 +42,68 @@ class Exporter implements ExporterInterface {
 
     await db.exportPrepare();
 
-    // final client = http.Client();
-    // final ipfsUriAdd = _buildIpfsUri('/api/v0/add');
+    final httpClient = http.Client();
+    final fileName = p.join(tableDumpPath, 'export.json_lines');
 
-    // await _exportChatsRead(client, ipfsUriAdd);
-    // await _exportChat(client, ipfsUriAdd);
-    // await _exportMessage(client, ipfsUriAdd);
-    // await _exportUser(client, ipfsUriAdd);
+    while (true) {
+      final exportResult = await db.exportNextData(fileName);
+      if (exportResult == null) break;
 
-    // client.close();
+      final ipfsUriAdd = _buildIpfsUri('/api/v0/add');
+      final cid = await _ipfsAdd(httpClient, ipfsUriAdd, fileName);
+      if (cid == null) return;
 
-    // final hashes = await db.selectMetaFileHahes();
-    // if (hashes.chat != null && hashes.message != null && hashes.user != null) {
-    //   await ingesterContract.writeHashes(
-    //       hashes.chat!, hashes.message!, hashes.user!);
-    // }
+      final type = exportResult.type;
+      logger.info('uploaded $type data records with hash $cid.');
+
+      await db.updateDataCid(exportResult.rowid, cid);
+
+      if (exportResult.cid_old != null && exportResult.cid_old != cid) {
+        final ipfsUriUnpin =
+            _buildIpfsUri('/api/v0/pin/rm', {'arg': exportResult.cid_old!});
+        await _ipfsUnpin(httpClient, ipfsUriUnpin);
+        logger.info('unpinned $type data hash ${exportResult.cid_old!}.');
+      }
+
+      await Future.delayed(const Duration(seconds: 1));
+    }
+
+    while (true) {
+      final exportResult = await db.exportNextMeta(fileName);
+      if (exportResult == null) break;
+
+      final ipfsUriAdd = _buildIpfsUri('/api/v0/add');
+      final cid = await _ipfsAdd(httpClient, ipfsUriAdd, fileName);
+      if (cid == null) return;
+
+      final type = exportResult.type;
+      logger.info('uploaded $type meta records with hash $cid.');
+
+      await db.updateMetaCid(exportResult.rowid, cid);
+
+      if (exportResult.cid_old != null && exportResult.cid_old != cid) {
+        final ipfsUriUnpin =
+            _buildIpfsUri('/api/v0/pin/rm', {'arg': exportResult.cid_old!});
+        await _ipfsUnpin(httpClient, ipfsUriUnpin);
+        logger.info('unpinned $type data hash ${exportResult.cid_old!}.');
+      }
+
+      await Future.delayed(const Duration(seconds: 1));
+    }
+
+    final ipfsUriGc = _buildIpfsUri('/api/v0/repo/gc');
+    await _ipfsGc(httpClient, ipfsUriGc);
+    logger.info('called gc.');
+
+    httpClient.close();
+
+    final hashes = await db.selectMetaFileHahes();
+    if (hashes.chat != null && hashes.message != null && hashes.user != null) {
+      await ingesterContract.writeHashes(
+          hashes.chat!, hashes.message!, hashes.user!);
+    }
 
     _exportInProgress = false;
-  }
-
-  // Future<void> _exportChatsRead(http.Client client, Uri ipfsUri) async {
-  //   final dateTimeFrom =
-  //       DateTime.now().toUtc().subtract(const Duration(days: 14));
-
-  //   final chats = await db.select(SqlChat.selectAll);
-  //   for (final chat in chats) {
-  //     if (chat['id'] == null) continue;
-  //     await _exportChatRead(client, ipfsUri,
-  //         ExportTypeChatRead(tableDumpPath, chat['id'], dateTimeFrom));
-  //   }
-  // }
-
-  // Future<void> _exportChatRead(
-  //     http.Client client, Uri ipfsUri, ExportType exportType) async {
-  //   await _exportData(client, ipfsUri, exportType);
-  // }
-
-  Future<void> _exportChat(http.Client client, Uri ipfsUri) async {
-    await _exportDataMeta(client, ipfsUri, ExportTypeChat(tableDumpPath));
-  }
-
-  Future<void> _exportMessage(http.Client client, Uri ipfsUri) async {
-    await _exportDataMeta(client, ipfsUri, ExportTypeMessage(tableDumpPath));
-  }
-
-  Future<void> _exportUser(http.Client client, Uri ipfsUri) async {
-    await _exportDataMeta(client, ipfsUri, ExportTypeUser(tableDumpPath));
-  }
-
-  Future<void> _exportDataMeta(
-      http.Client client, Uri ipfsUri, ExportType exportType) async {
-    await _exportData(client, ipfsUri, exportType);
-    await _exportMeta(client, ipfsUri, exportType);
-  }
-
-  Future<void> _exportData(
-      http.Client client, Uri ipfsUri, ExportType exportType) async {
-    while (true) {
-      final exportResult = await db.exportData(exportType);
-      logger.info('exported ${exportResult.recordCount} data records '
-          'for ${exportType.dataType}.');
-
-      if (exportResult.recordCount == 0) return;
-
-      final fileHash = await _ipfsAdd(client, ipfsUri, exportType.dataType,
-          exportType.fileNameFullPathData);
-      if (fileHash == null) return;
-      logger.info(
-          'uploaded ${exportType.dataType} data records with hash $fileHash.');
-
-      await db.insertIpfsHash(exportResult, fileHash);
-
-      if (exportResult.recordCount < exportRecordLimit) return;
-      if (tableNamesUploadFull.contains(exportType.dataType)) return;
-    }
-  }
-
-  Future<void> _exportMeta(
-      http.Client client, Uri ipfsUri, ExportType exportType) async {
-    final recordsCount = await db.exportMeta(exportType);
-    logger.info(
-        'exported $recordsCount meta records for ${exportType.dataType}.');
-
-    if (recordsCount == 0) return;
-
-    var fileHash = await _ipfsAdd(
-        client, ipfsUri, exportType.dataType, exportType.fileNameFullPathMeta);
-    if (fileHash == null) return;
-    logger.info(
-        'uploaded ${exportType.dataType} meta records with hash $fileHash.');
-
-    await db.updateMetaFileHash(exportType.dataType, fileHash);
   }
 
   Uri _buildIpfsUri(
@@ -157,10 +127,9 @@ class Exporter implements ExporterInterface {
     return request;
   }
 
-  Future<String?> _ipfsAdd(http.Client httpClient, Uri ipfsUri,
-      String tableName, String fileName) async {
-    final responseBody =
-        await _ipfsAddRetry(httpClient, ipfsUri, tableName, fileName);
+  Future<String?> _ipfsAdd(
+      http.Client httpClient, Uri ipfsUri, String fileName) async {
+    final responseBody = await _ipfsAddRetry(httpClient, ipfsUri, fileName);
     if (responseBody == null) return null;
 
     var responseBodyDecoded;
@@ -188,8 +157,8 @@ class Exporter implements ExporterInterface {
     return responseBodyDecoded['Hash'];
   }
 
-  Future<String?> _ipfsAddRetry(http.Client httpClient, Uri ipfsUri,
-      String dataName, String fileName) async {
+  Future<String?> _ipfsAddRetry(
+      http.Client httpClient, Uri ipfsUri, String fileName) async {
     var ipfsRequestRetryCountIndex = 1;
 
     while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
@@ -224,6 +193,128 @@ class Exporter implements ExporterInterface {
           'body=${responseBody}.');
 
       logger.info('ipfs add: '
+          'retrying in $ipfsRequestRetryDelaySeconds seconds.');
+      await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+
+      ipfsRequestRetryCountIndex += 1;
+    }
+
+    return null;
+  }
+
+  Future<void> _ipfsUnpin(http.Client httpClient, Uri ipfsUri) async {
+    final responseBody = await _ipfsUnpinRetry(httpClient, ipfsUri);
+    if (responseBody == null || responseBody.isEmpty) return null;
+
+    var responseBodyDecoded;
+    try {
+      responseBodyDecoded = jsonDecode(responseBody);
+    } on Object catch (ex) {
+      logger.warning(ex);
+      return null;
+    }
+
+    if (responseBodyDecoded is! Map) {
+      logger.warning('ipfs add error: '
+          'reponse body is not a Map '
+          'body=${responseBody}.');
+      return null;
+    }
+  }
+
+  Future<String?> _ipfsUnpinRetry(http.Client httpClient, Uri ipfsUri) async {
+    var ipfsRequestRetryCountIndex = 1;
+
+    while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
+      var request = http.Request('POST', ipfsUri);
+      request = _ipfsRequestAddAuth(request);
+
+      var response;
+      try {
+        response = await httpClient
+            .send(request)
+            .timeout(const Duration(seconds: ipfsRequestTimeoutSeconds));
+      } on Object catch (ex) {
+        logger.warning(ex);
+
+        logger.info('ipfs unpin: '
+            'retrying in $ipfsRequestRetryDelaySeconds seconds.');
+        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+        ipfsRequestRetryCountIndex += 1;
+        continue;
+      }
+
+      var responseBody = await response.stream.bytesToString();
+      if (response.statusCode == 200) {
+        return responseBody;
+      }
+
+      logger.warning('ipfs unpin error: '
+          'code=${response.statusCode} '
+          'body=${responseBody}.');
+
+      logger.info('ipfs unpin: '
+          'retrying in $ipfsRequestRetryDelaySeconds seconds.');
+      await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+
+      ipfsRequestRetryCountIndex += 1;
+    }
+
+    return null;
+  }
+
+  Future<void> _ipfsGc(http.Client httpClient, Uri ipfsUri) async {
+    final responseBody = await _ipfsGcRetry(httpClient, ipfsUri);
+    if (responseBody == null || responseBody.isEmpty) return null;
+
+    var responseBodyDecoded;
+    try {
+      responseBodyDecoded = jsonDecode(responseBody);
+    } on Object catch (ex) {
+      logger.warning(ex);
+      return null;
+    }
+
+    if (responseBodyDecoded is! Map) {
+      logger.warning('ipfs gc error: '
+          'reponse body is not a Map '
+          'body=${responseBody}.');
+      return null;
+    }
+  }
+
+  Future<String?> _ipfsGcRetry(http.Client httpClient, Uri ipfsUri) async {
+    var ipfsRequestRetryCountIndex = 1;
+
+    while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
+      var request = http.Request('POST', ipfsUri);
+      request = _ipfsRequestAddAuth(request);
+
+      var response;
+      try {
+        response = await httpClient
+            .send(request)
+            .timeout(const Duration(seconds: ipfsRequestTimeoutSeconds));
+      } on Object catch (ex) {
+        logger.warning(ex);
+
+        logger.info('ipfs gc: '
+            'retrying in $ipfsRequestRetryDelaySeconds seconds.');
+        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
+        ipfsRequestRetryCountIndex += 1;
+        continue;
+      }
+
+      var responseBody = await response.stream.bytesToString();
+      if (response.statusCode == 200) {
+        return responseBody;
+      }
+
+      logger.warning('ipfs gc error: '
+          'code=${response.statusCode} '
+          'body=${responseBody}.');
+
+      logger.info('ipfs gc: '
           'retrying in $ipfsRequestRetryDelaySeconds seconds.');
       await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
 

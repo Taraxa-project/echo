@@ -32,13 +32,7 @@ abstract class DbInterface {
   FutureOr<void> insertMessagesUsers(
       List<Message> messages, List<User> users, int? onlineMembersCount);
 
-  FutureOr<void> updateMetaFileHash(String tableName, String fileHash);
   FutureOr<IfpsFileHashesMeta> selectMetaFileHahes();
-
-  FutureOr<void> insertIpfsHash(ExportResult exportResult, String fileHash);
-
-  FutureOr<ExportResult> exportData(ExportType exportType);
-  FutureOr<int> exportMeta(ExportType exportType);
 
   FutureOr<int> logChatReadStarted(int chatId, DateTime dateTimeStarted);
   FutureOr<void> logChatReadFinished(
@@ -52,6 +46,10 @@ abstract class DbInterface {
   FutureOr<void> updateNewChat(String username, int messageIdLast, int status);
 
   FutureOr<void> exportPrepare();
+  FutureOr<ExportDataResult?> exportNextData(String fileName);
+  FutureOr<ExportDataResult?> exportNextMeta(String fileName);
+  FutureOr<void> updateDataCid(int rowid, String cid);
+  FutureOr<void> updateMetaCid(int rowid, String cid);
 }
 
 class IfpsFileHashesMeta {
@@ -61,64 +59,6 @@ class IfpsFileHashesMeta {
 }
 
 const int exportRecordLimit = 10000;
-
-abstract class ExportType {
-  final String workDir;
-  final String fileExtensionName = 'json_lines';
-
-  String get dataType;
-
-  int limit;
-
-  ExportType(this.workDir, [this.limit = exportRecordLimit]);
-
-  String get fileNameFullPathData {
-    return p.joinAll([workDir, '${dataType}.${fileExtensionName}']);
-  }
-
-  String get fileNameFullPathMeta {
-    return p.joinAll([workDir, '${dataType}.meta.${fileExtensionName}']);
-  }
-}
-
-class ExportTypeChat extends ExportType {
-  String get dataType => 'chat';
-
-  ExportTypeChat(super.exportDataTypeFile, [super.limit = exportRecordLimit]);
-}
-
-class ExportTypeMessage extends ExportType {
-  String get dataType => 'message';
-
-  ExportTypeMessage(super.exportDataTypeFile,
-      [super.limit = exportRecordLimit]);
-}
-
-class ExportTypeUser extends ExportType {
-  String get dataType => 'user';
-
-  ExportTypeUser(super.exportDataTypeFile, [super.limit = exportRecordLimit]);
-}
-
-class ExportTypeChatRead extends ExportType {
-  String get dataType => 'chat.${chatId}';
-
-  final int chatId;
-  final DateTime dateTimeFrom;
-
-  ExportTypeChatRead(super.exportDataTypeFile, this.chatId, this.dateTimeFrom,
-      [super.limit = exportRecordLimit]);
-}
-
-class ExportResult {
-  final ExportType exportType;
-  int recordCount = 0;
-  int idMin = 0;
-  int idMax = 0;
-
-  ExportResult(this.exportType,
-      [this.recordCount = 0, this.idMin = 0, this.idMax = 0]);
-}
 
 class ExportException implements Exception {
   final String? message;
@@ -132,4 +72,12 @@ class ExportException implements Exception {
     }
     return report;
   }
+}
+
+class ExportDataResult {
+  final String type;
+  final int rowid;
+  final String? cid_old;
+
+  ExportDataResult(this.type, this.rowid, this.cid_old);
 }

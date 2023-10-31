@@ -246,121 +246,6 @@ class Db implements DbInterface {
     return rs.isNotEmpty;
   }
 
-  Future<ExportResult> exportData(ExportType exportType) async {
-    if (exportType is ExportTypeChat) {
-      return _exportDataTypeChat(exportType);
-    } else if (exportType is ExportTypeMessage) {
-      return _exportDataTypeMessage(exportType);
-    } else if (exportType is ExportTypeUser) {
-      return _exportDataTypeUser(exportType);
-    } else {
-      return _exportDataTypeChatRead(exportType);
-    }
-
-    // ExportResult exportResult = ExportResult(exportType);
-
-    // _initIpfsUpload(exportType);
-
-    // var minId = 0;
-    // if (exportType is! ExportTypeChat) {
-    //   minId = _selectLastUploadedId(exportType.dataType) ?? 0;
-    // }
-    // exportResult.idMin = minId;
-
-    // List<dynamic> parameters = [minId];
-    // if (exportType is ExportTypeChatRead) {
-    //   parameters.addAll([
-    //     exportType.chatId,
-    //     exportType.dateTimeFrom.toUtc().toIso8601String()
-    //   ]);
-    // }
-    // parameters.add(exportType.limit);
-
-    // final stmt = _database.prepare(_sqlSelectDataForExport(exportType));
-
-    // var rowCount = 0;
-    // try {
-    //   final cursor = stmt.selectCursor(parameters);
-    //   final result =
-    //       await _exportCursor(cursor, exportType.fileNameFullPathData);
-    //   rowCount = result[0];
-    //   exportResult.recordCount = rowCount;
-
-    //   if (rowCount > 0) {
-    //     _updateLastExportedId(exportType.dataType, result[1]);
-    //     exportResult.idMax = result[1];
-    //   }
-    // } on Object {
-    //   rethrow;
-    // } finally {
-    //   stmt.dispose();
-    // }
-    // logger.fine('exported $rowCount records from ${exportType.dataType}');
-
-    // return exportResult;
-  }
-
-  Future<ExportResult> _exportDataTypeChat(ExportType exportType) async {
-    ExportResult exportResult = ExportResult(exportType);
-    return exportResult;
-  }
-
-  Future<ExportResult> _exportDataTypeMessage(ExportType exportType) async {
-    ExportResult exportResult = ExportResult(exportType);
-    return exportResult;
-  }
-
-  Future<ExportResult> _exportDataTypeUser(ExportType exportType) async {
-    ExportResult exportResult = ExportResult(exportType);
-    return exportResult;
-  }
-
-  Future<ExportResult> _exportDataTypeChatRead(ExportType exportType) async {
-    ExportResult exportResult = ExportResult(exportType);
-    return exportResult;
-  }
-
-  Future<int> exportMeta(ExportType exportType) async {
-    final parameters = [exportType.dataType];
-
-    final stmt = _database.prepare(_sqlSelectMetaForExport(exportType));
-
-    var rowCount = 0;
-    try {
-      final cursor = stmt.selectCursor(parameters);
-      final result =
-          await _exportCursor(cursor, exportType.fileNameFullPathMeta);
-      rowCount = result[0];
-    } on Object {
-      rethrow;
-    } finally {
-      stmt.dispose();
-    }
-
-    logger.fine('exported $rowCount ipfs hashes from ${exportType.dataType}');
-    return rowCount;
-  }
-
-  void insertIpfsHash(ExportResult exportResult, String fileHash) {
-    try {
-      _database.execute('BEGIN');
-      _insertIpfsHash(exportResult, fileHash);
-      _updateLastUploadedId(exportResult.exportType.dataType);
-      _database.execute('COMMIT');
-    } on Object {
-      _database.execute('ROLLBACK');
-      rethrow;
-    }
-  }
-
-  void updateMetaFileHash(String tableName, String fileHash) {
-    final now = _now();
-    final parameters = [fileHash, now, tableName];
-
-    logger.fine('updating ipfs meta $parameters...');
-    execute(SqlIpfsUpload.updateMetaFileHash, parameters);
-  }
-
   IfpsFileHashesMeta selectMetaFileHahes() {
     logger.fine('selecting meta hashes...');
 
@@ -375,29 +260,6 @@ class Db implements DbInterface {
     if (row != null) hashes.user = row['meta_file_hash'];
 
     return hashes;
-  }
-
-  void _insertIpfsHash(ExportResult exportResult, String fileHash) {
-    final now = _now();
-    final parameters = [
-      exportResult.exportType.dataType,
-      fileHash,
-      exportResult.idMin,
-      exportResult.idMax,
-      now,
-      now
-    ];
-
-    logger.fine('inserting ipfs hash $parameters...');
-    execute(SqlIpfsHash.insert, parameters);
-  }
-
-  void _updateLastUploadedId(String tableName) {
-    final now = _now();
-    final parameters = [now, tableName];
-
-    logger.fine('inserting ipfs hash $parameters...');
-    execute(SqlIpfsUpload.updateLastUploadedId, parameters);
   }
 
   void runMigrations() {
@@ -430,19 +292,6 @@ class Db implements DbInterface {
   void _createIndexes() {
     _database.execute(SqlMigration.createIndexMessageChatIdMessageId);
     _database.execute(SqlMigration.createIndexIpfsHashTableName);
-  }
-
-  void _initIpfsUpload(ExportType exportType) {
-    final now = _now();
-
-    final stmt = _database.prepare(SqlIpfsUpload.insert);
-    try {
-      stmt.execute([exportType.dataType, 0, 0, now, now]);
-    } on Object {
-      rethrow;
-    } finally {
-      stmt.dispose();
-    }
   }
 
   void _runMigrationAddChatRead() {
@@ -492,47 +341,22 @@ class Db implements DbInterface {
       _database.execute(SqlIpfsDataChat.createTable);
       _database.execute(SqlIpfsDataChat.createIdxIpfsDataChat);
       _database.execute(SqlMessage.createIndexSenderId);
+
+      final now = _now();
+      for (var type in ['chat', 'message', 'user']) {
+        final params = [type, null, null, now, now];
+        _database.execute(SqlIpfsMeta.insert, params);
+      }
     } on Object {}
   }
 
-  int? _selectLastUploadedId(String tableName) {
-    final parameters = [tableName];
-
-    logger.fine('selecting last uploaded id for $parameters...');
-    final resultSet = _database.select(SqlIpfsUpload.select, parameters);
-    if (resultSet.isNotEmpty) return resultSet.first['last_uploaded_id'];
-    return null;
-  }
-
-  String _sqlSelectDataForExport(ExportType exportType) {
-    if (exportType is ExportTypeChatRead) {
-      return SqlChatRead.selectForExport;
-    } else if (exportType is ExportTypeChat) {
-      return SqlChat.selectForExport;
-    } else if (exportType is ExportTypeMessage) {
-      return SqlMessage.selectForExport;
-    } else {
-      return SqlUser.selectForExport;
-    }
-  }
-
-  String _sqlSelectMetaForExport(ExportType exportType) {
-    if (exportType is ExportTypeMessage) {
-      return SqlIpfsHash.selectMessageForExport;
-    } else {
-      return SqlIpfsHash.selectForExport;
-    }
-  }
-
-  Future<List<int>> _exportCursor(
-      IteratingCursor cursor, String fileName) async {
+  Future<int> _exportCursor(IteratingCursor cursor, String fileName) async {
     final file = new io.File(fileName);
     file.createSync();
 
     final sink = file.openWrite(mode: io.FileMode.write);
 
     var rowCount = 0;
-    var rowId = 0;
 
     try {
       sink.write(jsonEncode(cursor.columnNames) + '\n');
@@ -541,7 +365,6 @@ class Db implements DbInterface {
       while (cursor.moveNext()) {
         sink.write(jsonEncode(cursor.current.values) + '\n');
         rowCount++;
-        rowId = cursor.current['rowid'];
         if (rowCount % flushCount == 0) await sink.flush();
       }
     } on Object {
@@ -551,15 +374,7 @@ class Db implements DbInterface {
       await sink.close();
     }
 
-    return [rowCount, rowId];
-  }
-
-  void _updateLastExportedId(String tableName, int exportedId) {
-    final now = _now();
-    final parameters = [exportedId, now, tableName];
-
-    logger.fine('updating last exported id $parameters...');
-    execute(SqlIpfsUpload.updateLastExportedId, parameters);
+    return rowCount;
   }
 
   String _now() {
@@ -647,6 +462,7 @@ class Db implements DbInterface {
   void exportPrepare() {
     _exportPrepareChat();
     _exportPrepareMessageUser();
+    _exportPrepareMeta();
   }
 
   void _exportPrepareChat() {
@@ -744,6 +560,12 @@ class Db implements DbInterface {
     logger.info('preparing messages and users export... done.');
   }
 
+  void _exportPrepareMeta() {
+    final now = _now();
+    execute(SqlIpfsMeta.updateCidOld, [now]);
+    execute(SqlIpfsMeta.clearCid, [now]);
+  }
+
   Row? _getNextIpfsDataRow(String type, [String? date = null]) {
     final ipfsDataRow = _selectIpfsDataRow(type, date);
     if (ipfsDataRow != null) return ipfsDataRow;
@@ -817,6 +639,108 @@ class Db implements DbInterface {
       execute('ROLLBACK');
       rethrow;
     }
+  }
+
+  @override
+  Future<ExportDataResult?> exportNextData(String fileName) async {
+    final rs = select(SqlIpfsData.selectNextForExport);
+    if (rs.isEmpty) return null;
+
+    final row = rs.first;
+    final type = row['type'];
+
+    if (type == 'chat') {
+      return await _exportDataChat(fileName, row);
+    } else if (type == 'message') {
+      return await _exportDataMessage(fileName, row);
+    } else if (type == 'user') {
+      return await _exportDataUser(fileName, row);
+    } else {
+      logger.warning('invalid export data type');
+      return null;
+    }
+  }
+
+  Future<ExportDataResult?> _exportDataChat(String fileName, Row row) async {
+    final stmt = _database.prepare(SqlChat.selectForExport);
+    final parameters = [row['rowid']];
+    try {
+      final cursor = stmt.selectCursor(parameters);
+      final rowCount = await _exportCursor(cursor, fileName);
+      logger.info('exported $rowCount chats.');
+    } on Object {
+      rethrow;
+    } finally {
+      stmt.dispose();
+    }
+    return ExportDataResult(row['type'], row['rowid'], row['cid_old']);
+  }
+
+  Future<ExportDataResult?> _exportDataMessage(String fileName, Row row) async {
+    final stmt = _database.prepare(SqlMessage.selectForExport);
+    final parameters = [row['rowid']];
+    try {
+      final cursor = stmt.selectCursor(parameters);
+      final rowCount = await _exportCursor(cursor, fileName);
+      logger.info('exported $rowCount messages for ${row['date']}.');
+    } on Object {
+      rethrow;
+    } finally {
+      stmt.dispose();
+    }
+    return ExportDataResult(row['type'], row['rowid'], row['cid_old']);
+  }
+
+  Future<ExportDataResult?> _exportDataUser(String fileName, Row row) async {
+    final stmt = _database.prepare(SqlUser.selectForExport);
+    final parameters = [row['rowid']];
+    try {
+      final cursor = stmt.selectCursor(parameters);
+      final rowCount = await _exportCursor(cursor, fileName);
+      logger.info('exported $rowCount users for ${row['date']}.');
+    } on Object {
+      rethrow;
+    } finally {
+      stmt.dispose();
+    }
+    return ExportDataResult(row['type'], row['rowid'], row['cid_old']);
+  }
+
+  @override
+  Future<ExportDataResult?> exportNextMeta(String fileName) async {
+    final rs = select(SqlIpfsMeta.selectNextForExport);
+    if (rs.isEmpty) return null;
+
+    final row = rs.first;
+    final type = row['type'];
+
+    var sql = SqlIpfsData.selectExportCidDate;
+    if (type == 'chat') sql = SqlIpfsData.selectExportCid;
+
+    final stmt = _database.prepare(sql);
+    final parameters = [type];
+    try {
+      final cursor = stmt.selectCursor(parameters);
+      final rowCount = await _exportCursor(cursor, fileName);
+      logger.info('exported $rowCount meta records for $type.');
+    } on Object {
+      rethrow;
+    } finally {
+      stmt.dispose();
+    }
+    return ExportDataResult(row['type'], row['rowid'], row['cid_old']);
+  }
+
+  @override
+  void updateDataCid(int rowid, String cid) {
+    final parameters = [cid, _now(), rowid];
+    execute(SqlIpfsData.updateCid, parameters);
+  }
+
+  @override
+  void updateMetaCid(int rowid, String cid) {
+    final parameters = [cid, _now(), rowid];
+    execute(SqlIpfsMeta.updateCid, parameters);
   }
 
   void execute(String sql, [List<Object?> parameters = const <Object>[]]) {
