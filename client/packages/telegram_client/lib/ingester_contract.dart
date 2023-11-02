@@ -51,6 +51,9 @@ class IngesterContract {
   Future<void> writeHashes(
       String chatHash, String messageHash, String userHash) async {
     logger.info('writing hashes in smart contract...');
+    logger.info('chat $chatHash');
+    logger.info('message $messageHash');
+    logger.info('user $userHash');
 
     final web3client =
         Web3Client(ingesterContractParams.contractRpcUrl, Client());

@@ -156,30 +156,48 @@ WHERE
   username = ?;
 ''';
 
+//   static const selectForExport = '''
+// SELECT
+//   a.*,
+//   c.file_hash file_hash_chat_read,
+//   a.rowid
+// FROM
+//   chat a LEFT JOIN (
+// 	SELECT
+// 		CAST(REPLACE(ba."table_name", 'chat.', '') AS INTEGER) chat_id,
+// 	  max(rowid) rowid
+// 	FROM
+// 	  	ipfs_hash ba
+// 	WHERE
+// 		ba."table_name" like 'chat.%'
+// 	GROUP BY
+// 	  	ba."table_name"
+//   ) b on a.id = b.chat_id LEFT JOIN
+//   ipfs_hash c ON b.rowid = c.rowid
+// WHERE
+//   a.rowid > ?
+// ORDER BY
+//   a.rowid ASC
+// LIMIT
+//   ?;
+// ''';
+
   static const selectForExport = '''
 SELECT
-  a.*,
-  c.file_hash file_hash_chat_read,
-  a.rowid
+  c.username,
+  c.id,
+  c.title,
+  c.member_count, 
+  c.member_online_count,
+  c.bot_count,
+  c.blacklisted,
+  c.blacklist_reason
 FROM
-  chat a LEFT JOIN (
-	SELECT
-		CAST(REPLACE(ba."table_name", 'chat.', '') AS INTEGER) chat_id,
-	  max(rowid) rowid
-	FROM
-	  	ipfs_hash ba
-	WHERE
-		ba."table_name" like 'chat.%'
-	GROUP BY
-	  	ba."table_name"
-  ) b on a.id = b.chat_id LEFT JOIN 
-  ipfs_hash c ON b.rowid = c.rowid
+  ipfs_data a INNER JOIN
+  ipfs_data_chat b on a.rowid = b.id_ipfs_data INNER JOIN
+  chat c on b.rowid_chat = c.rowid
 WHERE
-  a.rowid > ?
-ORDER BY
-  a.rowid ASC
-LIMIT
-  ?;
+  a.rowid = ?
 ''';
 
   static const selectAll = '''
@@ -189,6 +207,24 @@ FROM
   chat a
 ORDER BY
   a.rowid ASC;
+''';
+
+  static const selectMaxRowid = '''
+SELECT
+  max(rowid) rowid
+FROM
+  chat;
+''';
+
+  static const selectPrepareExport = '''
+SELECT
+  a.rowid rowid_chat
+FROM
+  chat a
+WHERE
+  a.rowid > ?
+ORDER BY
+  a.rowid ASC; 
 ''';
 }
 
@@ -216,29 +252,77 @@ VALUES (
 ) ON CONFLICT DO NOTHING;
 ''';
 
+//   static const selectForExport = '''
+// SELECT
+//   a.*,
+//   a.rowid
+// FROM
+//   message a
+// WHERE
+//   a.rowid > ?
+// ORDER BY
+//   a.rowid ASC
+// LIMIT
+//   ?;
+// ''';
+
   static const selectForExport = '''
 SELECT
-  a.*,
-  a.rowid
+  c.chat_id,
+  c.id,
+  c.date,
+  c.sender_id,
+  c.sender_type,
+  c.text,
+  c.member_online_count,
+  c.views,
+  c.replies,
+  c.forwards,
+  c.reply_to_id
 FROM
-  message a
+  ipfs_data a INNER JOIN
+  ipfs_data_message b on a.rowid = b.id_ipfs_data INNER JOIN
+  message c on b.rowid_message = c.rowid
 WHERE
-  a.rowid > ?
-ORDER BY
-  a.rowid ASC
-LIMIT
-  ?;
+  a.rowid = ?
 ''';
 
   static const select = '''
 SELECT
   a.*,
-  a.id rowid
+  a.rowid rowid
 FROM
   message a
 WHERE
   a.chat_id = ? AND
   a.id = ?;
+''';
+
+  static const selectPrepareExport = '''
+SELECT
+  a.rowid rowid_message,
+  b.id rowid_user,
+  date(a.date) date
+FROM
+  message a
+LEFT JOIN
+  "user" b on a.sender_id = b.user_id
+WHERE
+  a.rowid > ?
+ORDER BY
+  a.rowid ASC; 
+''';
+
+  static const createIndexSenderId = '''
+CREATE INDEX IF NOT EXISTS idx_message_sender_id ON
+  message(sender_id);
+''';
+
+  static const selectMaxRowid = '''
+SELECT
+  max(rowid) rowid
+FROM
+  message;
 ''';
 }
 
@@ -264,16 +348,20 @@ VALUES (
 
   static const selectForExport = '''
 SELECT
-  a.*,
-  a.id rowid
+  c.user_id id,
+  c.first_name,
+  c.last_name,
+  c.username,
+  c.bot,
+  c.verified,
+  c.scam,
+  c.fake
 FROM
-  user a
+  ipfs_data a INNER JOIN
+  ipfs_data_user b on a.rowid = b.id_ipfs_data INNER JOIN
+  "user" c on b.rowid_user = c.id
 WHERE
-  a.id > ?
-ORDER BY
-  a.id ASC
-LIMIT
-  ?;
+  a.rowid = ?
 ''';
 }
 
@@ -322,16 +410,6 @@ SET
   updated_at = ?
 WHERE
   table_name = ?;
-''';
-
-  static const selectMaxUpdatedAt = '''
-SELECT
-  max(updated_at) updated_at
-FROM
-  ipfs_upload
-WHERE
-  table_name = 'user' AND
-  last_exported_id > 0
 ''';
 }
 
@@ -507,5 +585,326 @@ SET
   status = ?
 WHERE
   username = ?;
+''';
+}
+
+class SqlIpfsMeta {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_meta (
+  type TEXT UNIQUE ON CONFLICT IGNORE NOT NULL,
+  cid TEXT,
+  cid_old TEXT,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_meta
+  (type, cid, cid_old, created_at, updated_at)
+VALUES
+  (?, ?, ?, ?, ?)
+ON CONFLICT DO NOTHING;
+''';
+
+  static const selectType = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_meta a
+WHERE
+  a.type = ?;
+''';
+
+  static const selectExport = '''
+SELECT
+  a.cid
+FROM
+  ipfs_meta a
+WHERE
+  a.type = ?
+ORDER BY
+  a.rowid ASC;
+''';
+
+  static const updateCidOld = '''
+UPDATE
+  ipfs_meta
+SET
+  cid_old = cid,
+  updated_at = ?
+WHERE
+  cid is not null;
+''';
+
+  static const clearCid = '''
+UPDATE
+  ipfs_meta
+SET
+  cid = null,
+  updated_at = ?;
+''';
+
+  static const updateCid = '''
+UPDATE
+  ipfs_meta
+SET
+  cid = ?,
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const selectNextForExport = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_meta a
+WHERE
+  a.cid is null
+ORDER BY
+  a.rowid ASC
+LIMIT 1;
+''';
+}
+
+class SqlIpfsData {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_data (
+  type TEXT,
+  cid TEXT,
+  cid_old TEXT,
+  date TEXT,
+  record_count INTEGER,
+  created_at TEXT,
+  updated_at TEXT
+);
+''';
+  static const createIdxIpfsData = '''
+CREATE INDEX IF NOT EXISTS idx_ipfs_data ON
+  ipfs_data(type);
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_data
+  (type, cid, cid_old, date, record_count, created_at, updated_at)
+VALUES
+  (?, ?, ?, ?, ?, ?, ?);
+''';
+
+  static const selectExportCidDate = '''
+SELECT
+  a.cid,
+  a.date
+FROM
+  ipfs_data a
+WHERE
+  a.type = ? AND
+  a.cid is not null
+ORDER BY
+  a.date ASC;
+''';
+
+  static const selectExportCid = '''
+SELECT
+  a.cid
+FROM
+  ipfs_data a
+WHERE
+  a.type = ? AND
+  a.cid is not null
+ORDER BY
+  a.rowid ASC;
+''';
+
+  static const selectPrepare = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_data a
+WHERE
+  a.type = ? AND
+  a.record_count < ?
+ORDER BY
+  a.rowid ASC
+LIMIT 1;
+''';
+
+  static const selectPrepareWithDate = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_data a
+WHERE
+  a.type = ? AND
+  a.date = ? AND
+  a.record_count < ?
+ORDER BY
+  a.rowid ASC
+LIMIT 1;
+''';
+
+  static const updateCidOld = '''
+UPDATE
+  ipfs_data
+SET
+  cid_old = cid,
+  cid = null,
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const updateRecordCountMessage = '''
+UPDATE
+  ipfs_data
+SET
+  record_count = (SELECT count(*) FROM ipfs_data_message WHERE id_ipfs_data = ?),
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const updateRecordCountChat = '''
+UPDATE
+  ipfs_data
+SET
+  record_count = (SELECT count(*) FROM ipfs_data_chat WHERE id_ipfs_data = ?),
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const updateRecordCountUser = '''
+UPDATE
+  ipfs_data
+SET
+  record_count = (SELECT count(*) FROM ipfs_data_user WHERE id_ipfs_data = ?),
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const updateCidOldChat = '''
+UPDATE
+  ipfs_data
+SET
+  cid_old = cid,
+  cid = null,
+  updated_at = ?
+WHERE
+  type = 'chat' AND
+  cid is not null;
+''';
+
+  static const selectNextForExport = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_data a
+WHERE
+  a.cid is null AND
+  a.record_count > 0
+ORDER BY
+  a.rowid ASC
+LIMIT 1;
+''';
+
+  static const updateCid = '''
+UPDATE
+  ipfs_data
+SET
+  cid = ?,
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+}
+
+class SqlIpfsDataMessage {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_data_message (
+  id_ipfs_data INTEGER,
+  rowid_message INTEGER,
+  created_at TEXT
+);
+''';
+
+  static const createIdxIpfsDataMessage = '''
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ipfs_data_message ON
+  ipfs_data_message(id_ipfs_data, rowid_message);
+''';
+
+  static const selectRowidMessageMax = '''
+SELECT
+  max(rowid_message) rowid_message
+FROM
+  ipfs_data_message;
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_data_message
+  (id_ipfs_data, rowid_message, created_at)
+VALUES
+  (?, ?, ?)
+ON CONFLICT DO NOTHING;
+''';
+}
+
+class SqlIpfsDataUser {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_data_user (
+  id_ipfs_data INTEGER,
+  rowid_user INTEGER,
+  created_at TEXT
+);
+''';
+
+  static const createIdxIpfsDataUser = '''
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ipfs_data_user ON
+  ipfs_data_user(id_ipfs_data, rowid_user);
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_data_user
+  (id_ipfs_data, rowid_user, created_at)
+VALUES
+  (?, ?, ?)
+ON CONFLICT DO NOTHING;
+''';
+}
+
+class SqlIpfsDataChat {
+  static const createTable = '''
+CREATE TABLE IF NOT EXISTS ipfs_data_chat (
+  id_ipfs_data INTEGER,
+  rowid_chat INTEGER,
+  created_at TEXT
+);
+''';
+
+  static const createIdxIpfsDataChat = '''
+CREATE UNIQUE INDEX IF NOT EXISTS idx_ipfs_data_chat ON
+  ipfs_data_chat(id_ipfs_data, rowid_chat);
+''';
+
+  static const insert = '''
+INSERT INTO ipfs_data_chat
+  (id_ipfs_data, rowid_chat, created_at)
+VALUES
+  (?, ?, ?)
+ON CONFLICT DO NOTHING;
+''';
+
+  static const selectRowidMessageMax = '''
+SELECT
+  max(rowid_chat) rowid_chat
+FROM
+  ipfs_data_chat;
 ''';
 }

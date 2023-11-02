@@ -96,27 +96,6 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<ExportResult> exportData(ExportType exportType) async {
-    return await isolatedProxy.call(ExportData(exportType));
-  }
-
-  @override
-  Future<void> insertIpfsHash(
-      ExportResult exportResult, String fileHash) async {
-    await isolatedProxy.call(InsertIpfsHash(exportResult, fileHash));
-  }
-
-  @override
-  Future<int> exportMeta(ExportType exportType) async {
-    return await isolatedProxy.call(ExportMeta(exportType));
-  }
-
-  @override
-  Future<void> updateMetaFileHash(String tableName, String fileHash) async {
-    await isolatedProxy.call(UpdateMetaFileHash(tableName, fileHash));
-  }
-
-  @override
   Future<IfpsFileHashesMeta> selectMetaFileHahes() async {
     return await isolatedProxy.call(SelectMetaFileHahes());
   }
@@ -131,11 +110,6 @@ class DbIsolated implements DbInterface {
       List<Message> messages, List<User> users, int? onlineMembersCount) async {
     await isolatedProxy
         .call(InsertMessagesUsers(messages, users, onlineMembersCount));
-  }
-
-  @override
-  Future<DateTime?> selectLastExportDateTime() async {
-    return await isolatedProxy.call(SelectLastExportDateTime());
   }
 
   @override
@@ -203,6 +177,31 @@ class DbIsolated implements DbInterface {
       String username, int messageIdLast, int status) async {
     await isolatedProxy.call(UpdateNewChat(username, messageIdLast, status));
   }
+
+  @override
+  Future<void> exportPrepare() async {
+    await isolatedProxy.call(ExportPrepare());
+  }
+
+  @override
+  Future<ExportDataResult?> exportNextData(String fileName) async {
+    return await isolatedProxy.call(ExportNextData(fileName));
+  }
+
+  @override
+  Future<ExportDataResult?> exportNextMeta(String fileName) async {
+    return await isolatedProxy.call(ExportNextMeta(fileName));
+  }
+
+  @override
+  Future<void> updateDataCid(int rowid, String cid) async {
+    await isolatedProxy.call(UpdateDataCid(rowid, cid));
+  }
+
+  @override
+  Future<void> updateMetaCid(int rowid, String cid) async {
+    await isolatedProxy.call(UpdateMetaCid(rowid, cid));
+  }
 }
 
 class DbIsolatedDispatch extends IsolatedDispatch {
@@ -236,18 +235,8 @@ class DbIsolatedDispatch extends IsolatedDispatch {
     } else if (message is InsertMessagesUsers) {
       db.insertMessagesUsers(
           message.messages, message.users, message.onlineMembersCount);
-    } else if (message is ExportData) {
-      return await db.exportData(message.exportType);
-    } else if (message is InsertIpfsHash) {
-      db.insertIpfsHash(message.exportResult, message.fileHash);
-    } else if (message is ExportMeta) {
-      return await db.exportMeta(message.exportType);
-    } else if (message is UpdateMetaFileHash) {
-      db.updateMetaFileHash(message.tableName, message.fileHash);
     } else if (message is SelectMetaFileHahes) {
       return db.selectMetaFileHahes();
-    } else if (message is SelectLastExportDateTime) {
-      return db.selectLastExportDateTime();
     } else if (message is SelectChat) {
       return db.selectChat(message.username);
     } else if (message is RunMigrations) {
@@ -274,6 +263,16 @@ class DbIsolatedDispatch extends IsolatedDispatch {
     } else if (message is UpdateNewChat) {
       return db.updateNewChat(
           message.username, message.messageIdLast, message.status);
+    } else if (message is ExportPrepare) {
+      db.exportPrepare();
+    } else if (message is ExportNextData) {
+      return await db.exportNextData(message.fileName);
+    } else if (message is ExportNextMeta) {
+      return await db.exportNextMeta(message.fileName);
+    } else if (message is UpdateDataCid) {
+      db.updateDataCid(message.rowid, message.cid);
+    } else if (message is UpdateMetaCid) {
+      db.updateMetaCid(message.rowid, message.cid);
     } else {
       return super.dispatch(message);
     }
@@ -363,35 +362,7 @@ class InsertMessagesUsers {
   InsertMessagesUsers(this.messages, this.users, this.onlineMembersCount);
 }
 
-class ExportData {
-  final ExportType exportType;
-
-  ExportData(this.exportType);
-}
-
-class InsertIpfsHash {
-  final ExportResult exportResult;
-  final String fileHash;
-
-  InsertIpfsHash(this.exportResult, this.fileHash);
-}
-
-class ExportMeta {
-  final ExportType exportType;
-
-  ExportMeta(this.exportType);
-}
-
-class UpdateMetaFileHash {
-  final String tableName;
-  final String fileHash;
-
-  UpdateMetaFileHash(this.tableName, this.fileHash);
-}
-
 class SelectMetaFileHahes {}
-
-class SelectLastExportDateTime {}
 
 class RunMigrations {}
 
@@ -461,4 +432,32 @@ class UpdateNewChat {
   final int status;
 
   UpdateNewChat(this.username, this.messageIdLast, this.status);
+}
+
+class ExportPrepare {}
+
+class ExportNextData {
+  String fileName;
+
+  ExportNextData(this.fileName);
+}
+
+class ExportNextMeta {
+  String fileName;
+
+  ExportNextMeta(this.fileName);
+}
+
+class UpdateDataCid {
+  final int rowid;
+  final String cid;
+
+  UpdateDataCid(this.rowid, this.cid);
+}
+
+class UpdateMetaCid {
+  final int rowid;
+  final String cid;
+
+  UpdateMetaCid(this.rowid, this.cid);
 }
