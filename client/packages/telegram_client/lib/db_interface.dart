@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:path/path.dart' as p;
 import 'package:sqlite3/sqlite3.dart';
 
 import 'package:td_json_client/td_api.dart';

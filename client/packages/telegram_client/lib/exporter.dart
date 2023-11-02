@@ -85,7 +85,7 @@ class Exporter implements ExporterInterface {
         final ipfsUriUnpin =
             _buildIpfsUri('/api/v0/pin/rm', {'arg': exportResult.cid_old!});
         await _ipfsUnpin(httpClient, ipfsUriUnpin);
-        logger.info('unpinned $type data hash ${exportResult.cid_old!}.');
+        logger.info('unpinned $type meta hash ${exportResult.cid_old!}.');
       }
 
       await Future.delayed(const Duration(seconds: 1));

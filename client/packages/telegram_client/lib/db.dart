@@ -252,12 +252,12 @@ class Db implements DbInterface {
     var hashes = IfpsFileHashesMeta();
 
     Row? row;
-    row = _database.select(SqlIpfsUpload.select, ['chat']).firstOrNull;
-    if (row != null) hashes.chat = row['meta_file_hash'];
-    row = _database.select(SqlIpfsUpload.select, ['message']).firstOrNull;
-    if (row != null) hashes.message = row['meta_file_hash'];
-    row = _database.select(SqlIpfsUpload.select, ['user']).firstOrNull;
-    if (row != null) hashes.user = row['meta_file_hash'];
+    row = _database.select(SqlIpfsMeta.selectType, ['chat']).firstOrNull;
+    if (row != null) hashes.chat = row['cid'];
+    row = _database.select(SqlIpfsMeta.selectType, ['message']).firstOrNull;
+    if (row != null) hashes.message = row['cid'];
+    row = _database.select(SqlIpfsMeta.selectType, ['user']).firstOrNull;
+    if (row != null) hashes.user = row['cid'];
 
     return hashes;
   }

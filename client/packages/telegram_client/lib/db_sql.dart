@@ -346,20 +346,6 @@ VALUES (
   ?, ?, ?, ?, ?, ?);
 ''';
 
-//   static const selectForExport = '''
-// SELECT
-//   a.*,
-//   a.id rowid
-// FROM
-//   user a
-// WHERE
-//   a.id > ?
-// ORDER BY
-//   a.id ASC
-// LIMIT
-//   ?;
-// ''';
-
   static const selectForExport = '''
 SELECT
   c.user_id id,
@@ -770,7 +756,7 @@ SET
   cid = null,
   updated_at = ?
 WHERE
-  a.rowid = ?;
+  rowid = ?;
 ''';
 
   static const updateRecordCountMessage = '''
@@ -812,7 +798,7 @@ SET
   updated_at = ?
 WHERE
   type = 'chat' AND
-  cid <> null;
+  cid is not null;
 ''';
 
   static const selectNextForExport = '''
