@@ -91,10 +91,6 @@ class Exporter implements ExporterInterface {
       await Future.delayed(const Duration(seconds: 1));
     }
 
-    final ipfsUriGc = _buildIpfsUri('/api/v0/repo/gc');
-    await _ipfsGc(httpClient, ipfsUriGc);
-    logger.info('called gc.');
-
     httpClient.close();
 
     final hashes = await db.selectMetaFileHahes();
@@ -254,67 +250,6 @@ class Exporter implements ExporterInterface {
           'body=${responseBody}.');
 
       logger.info('ipfs unpin: '
-          'retrying in $ipfsRequestRetryDelaySeconds seconds.');
-      await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-
-      ipfsRequestRetryCountIndex += 1;
-    }
-
-    return null;
-  }
-
-  Future<void> _ipfsGc(http.Client httpClient, Uri ipfsUri) async {
-    final responseBody = await _ipfsGcRetry(httpClient, ipfsUri);
-    if (responseBody == null || responseBody.isEmpty) return null;
-
-    var responseBodyDecoded;
-    try {
-      responseBodyDecoded = jsonDecode(responseBody);
-    } on Object catch (ex) {
-      logger.warning(ex);
-      return null;
-    }
-
-    if (responseBodyDecoded is! Map) {
-      logger.warning('ipfs gc error: '
-          'reponse body is not a Map '
-          'body=${responseBody}.');
-      return null;
-    }
-  }
-
-  Future<String?> _ipfsGcRetry(http.Client httpClient, Uri ipfsUri) async {
-    var ipfsRequestRetryCountIndex = 1;
-
-    while (ipfsRequestRetryCountIndex <= ipfsRequestRetryCountMax) {
-      var request = http.Request('POST', ipfsUri);
-      request = _ipfsRequestAddAuth(request);
-
-      var response;
-      try {
-        response = await httpClient
-            .send(request)
-            .timeout(const Duration(seconds: ipfsRequestTimeoutSeconds));
-      } on Object catch (ex) {
-        logger.warning(ex);
-
-        logger.info('ipfs gc: '
-            'retrying in $ipfsRequestRetryDelaySeconds seconds.');
-        await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
-        ipfsRequestRetryCountIndex += 1;
-        continue;
-      }
-
-      var responseBody = await response.stream.bytesToString();
-      if (response.statusCode == 200) {
-        return responseBody;
-      }
-
-      logger.warning('ipfs gc error: '
-          'code=${response.statusCode} '
-          'body=${responseBody}.');
-
-      logger.info('ipfs gc: '
           'retrying in $ipfsRequestRetryDelaySeconds seconds.');
       await Future.delayed(Duration(seconds: ipfsRequestRetryDelaySeconds));
 
