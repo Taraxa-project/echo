@@ -7,7 +7,7 @@ numbering uses [semantic versioning](http://semver.org).
 
 ### Patch changes
 
-* More config map values (up to 31 pods)
+* Added full-export optional param
 
 ## v0.1.7
 

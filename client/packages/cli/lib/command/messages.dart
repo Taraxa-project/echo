@@ -35,6 +35,8 @@ class TelegramSaveChatHistoryCommand extends Command {
 
     final doLoop = _parseBool(globalResults!.command!['run-forever']);
     final dryRun = _parseBool(globalResults!.command!['dry-run']);
+    final unpinOld = _parseBool(globalResults!.command!['unpin-old']);
+    final fullExport = _parseBool(globalResults!.command!['full-export']);
     final logLevel = _parseLogLevel();
     final logLevelLibTdJson = _parseLogLevelLibtdjson();
     final fileNameDb = globalResults!.command!['message-database-path'];
@@ -46,6 +48,8 @@ class TelegramSaveChatHistoryCommand extends Command {
     final proxyUri = _parseProxyUri();
     final loginParams = _buildLoginParams();
 
+    var fullExportDone = false;
+
     while (true) {
       if (dryRun) {
         await Future.delayed(const Duration(seconds: 60));
@@ -55,13 +59,28 @@ class TelegramSaveChatHistoryCommand extends Command {
       try {
         log = await LogIsolated.spawn(logLevel);
 
+        db = await DbIsolated.spawn(log, fileNameDb);
+        await db.runMigrations();
+
+        if (fullExport && !fullExportDone) {
+          fullExportDone = true;
+
+          exporter = await ExporterIsolated.spawn(
+              log, db, exportPath, ipfsParams, ingesterContractParams);
+
+          if (unpinOld) await exporter.unpinOld();
+
+          await db.clearCids();
+
+          await exporter.export();
+
+          exporter.exit();
+        }
+
         telegramClient = await TelegramClientIsolated.spawn(
             log, fileNameLibTdJson, logLevelLibTdJson, proxyUri);
 
         await telegramClient.login(loginParams);
-
-        db = await DbIsolated.spawn(log, fileNameDb);
-        await db.runMigrations();
 
         final dateTimeFrom = _twoWeeksAgo();
         await telegramClient.saveChatsHistory(

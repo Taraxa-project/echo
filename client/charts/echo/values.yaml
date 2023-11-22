@@ -76,6 +76,8 @@ configEnvs:
   LIBTDJSON_LOGLEVEL: warning
  
   RUN_FOREVER: true
+  UNPIN_OLD: false
+  FULL_EXPORT: false
   TABLE_DUMP_PATH: /var/lib/sqlite
   IPFS_CRON_SCHEDULE: "0 8 * * *"
 

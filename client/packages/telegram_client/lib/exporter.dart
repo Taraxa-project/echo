@@ -24,7 +24,7 @@ class Exporter implements ExporterInterface {
 
   static const int ipfsRequestRetryCountMax = 5;
   static const int ipfsRequestRetryDelaySeconds = 10;
-  static const int ipfsRequestTimeoutSeconds = 60;
+  static const int ipfsRequestTimeoutSeconds = 15;
 
   bool _exportInProgress = false;
 
@@ -34,72 +34,6 @@ class Exporter implements ExporterInterface {
       logger,
       ingesterContractParams,
     );
-  }
-
-  Future<void> _export() async {
-    if (_exportInProgress) return;
-    _exportInProgress = true;
-
-    await db.exportPrepare();
-
-    final httpClient = http.Client();
-    final fileName = p.join(tableDumpPath, 'export.json_lines');
-
-    while (true) {
-      final exportResult = await db.exportNextData(fileName);
-      if (exportResult == null) break;
-
-      final ipfsUriAdd = _buildIpfsUri('/api/v0/add');
-      final cid = await _ipfsAdd(httpClient, ipfsUriAdd, fileName);
-      if (cid == null) return;
-
-      final type = exportResult.type;
-      logger.info('uploaded $type data records with hash $cid.');
-
-      await db.updateDataCid(exportResult.rowid, cid);
-
-      if (exportResult.cid_old != null && exportResult.cid_old != cid) {
-        final ipfsUriUnpin =
-            _buildIpfsUri('/api/v0/pin/rm', {'arg': exportResult.cid_old!});
-        await _ipfsUnpin(httpClient, ipfsUriUnpin);
-        logger.info('unpinned $type data hash ${exportResult.cid_old!}.');
-      }
-
-      await Future.delayed(const Duration(seconds: 1));
-    }
-
-    while (true) {
-      final exportResult = await db.exportNextMeta(fileName);
-      if (exportResult == null) break;
-
-      final ipfsUriAdd = _buildIpfsUri('/api/v0/add');
-      final cid = await _ipfsAdd(httpClient, ipfsUriAdd, fileName);
-      if (cid == null) return;
-
-      final type = exportResult.type;
-      logger.info('uploaded $type meta records with hash $cid.');
-
-      await db.updateMetaCid(exportResult.rowid, cid);
-
-      if (exportResult.cid_old != null && exportResult.cid_old != cid) {
-        final ipfsUriUnpin =
-            _buildIpfsUri('/api/v0/pin/rm', {'arg': exportResult.cid_old!});
-        await _ipfsUnpin(httpClient, ipfsUriUnpin);
-        logger.info('unpinned $type meta hash ${exportResult.cid_old!}.');
-      }
-
-      await Future.delayed(const Duration(seconds: 1));
-    }
-
-    httpClient.close();
-
-    final hashes = await db.selectMetaFileHahes();
-    if (hashes.chat != null && hashes.message != null && hashes.user != null) {
-      await ingesterContract.writeHashes(
-          hashes.chat!, hashes.message!, hashes.user!);
-    }
-
-    _exportInProgress = false;
   }
 
   Uri _buildIpfsUri(
@@ -261,6 +195,139 @@ class Exporter implements ExporterInterface {
 
   @override
   Future<void> export() async {
-    await _export();
+    if (_exportInProgress) return;
+    _exportInProgress = true;
+
+    await db.exportPrepare();
+
+    final httpClient = http.Client();
+    final fileName = p.join(tableDumpPath, 'export.json_lines');
+
+    while (true) {
+      final exportResult = await db.exportNextData(fileName);
+      if (exportResult == null) break;
+
+      final ipfsUriAdd = _buildIpfsUri('/api/v0/add');
+      final cid = await _ipfsAdd(httpClient, ipfsUriAdd, fileName);
+      if (cid == null) return;
+
+      final type = exportResult.type;
+      logger.info('uploaded $type data records with hash $cid.');
+
+      await db.updateDataCid(exportResult.rowid, cid);
+
+      if (exportResult.cid_old != null && exportResult.cid_old != cid) {
+        final ipfsUriUnpin =
+            _buildIpfsUri('/api/v0/pin/rm', {'arg': exportResult.cid_old!});
+        await _ipfsUnpin(httpClient, ipfsUriUnpin);
+        logger.info('unpinned $type data hash ${exportResult.cid_old!}.');
+      }
+
+      await Future.delayed(const Duration(seconds: 1));
+    }
+
+    while (true) {
+      final exportResult = await db.exportNextMeta(fileName);
+      if (exportResult == null) break;
+
+      final ipfsUriAdd = _buildIpfsUri('/api/v0/add');
+      final cid = await _ipfsAdd(httpClient, ipfsUriAdd, fileName);
+      if (cid == null) return;
+
+      final type = exportResult.type;
+      logger.info('uploaded $type meta records with hash $cid.');
+
+      await db.updateMetaCid(exportResult.rowid, cid);
+
+      if (exportResult.cid_old != null && exportResult.cid_old != cid) {
+        final ipfsUriUnpin =
+            _buildIpfsUri('/api/v0/pin/rm', {'arg': exportResult.cid_old!});
+        await _ipfsUnpin(httpClient, ipfsUriUnpin);
+        logger.info('unpinned $type meta hash ${exportResult.cid_old!}.');
+      }
+
+      await Future.delayed(const Duration(seconds: 1));
+    }
+
+    httpClient.close();
+
+    final hashes = await db.selectMetaFileHahes();
+    if (hashes.chat != null && hashes.message != null && hashes.user != null) {
+      await ingesterContract.writeHashes(
+          hashes.chat!, hashes.message!, hashes.user!);
+    }
+
+    _exportInProgress = false;
+  }
+
+  @override
+  Future<void> unpinOld() async {
+    final httpClient = http.Client();
+
+    while (true) {
+      final unpinResult = await db.unpinNextData();
+      if (unpinResult == null) break;
+
+      final type = unpinResult.type;
+      final rowid = unpinResult.rowid;
+
+      if (unpinResult.cid != null) {
+        final ipfsUriUnpin =
+            _buildIpfsUri('/api/v0/pin/rm', {'arg': unpinResult.cid!});
+        await _ipfsUnpin(httpClient, ipfsUriUnpin);
+
+        logger.info('unpinned $type data hash ${unpinResult.cid!}.');
+
+        await Future.delayed(const Duration(seconds: 1));
+      }
+
+      await db.clearDataCid(rowid);
+
+      if (unpinResult.cid_old != null &&
+          unpinResult.cid_old != unpinResult.cid) {
+        final ipfsUriUnpin =
+            _buildIpfsUri('/api/v0/pin/rm', {'arg': unpinResult.cid_old!});
+        await _ipfsUnpin(httpClient, ipfsUriUnpin);
+        logger.info('unpinned $type data hash ${unpinResult.cid_old!}.');
+
+        await Future.delayed(const Duration(seconds: 1));
+      }
+
+      await db.clearDataCidOld(rowid);
+    }
+
+    while (true) {
+      final unpinResult = await db.unpinNextMeta();
+      if (unpinResult == null) break;
+
+      final type = unpinResult.type;
+      final rowid = unpinResult.rowid;
+
+      if (unpinResult.cid != null) {
+        final ipfsUriUnpin =
+            _buildIpfsUri('/api/v0/pin/rm', {'arg': unpinResult.cid!});
+        await _ipfsUnpin(httpClient, ipfsUriUnpin);
+
+        logger.info('unpinned $type meta hash ${unpinResult.cid!}.');
+
+        await Future.delayed(const Duration(seconds: 1));
+      }
+
+      await db.clearMetaCid(rowid);
+
+      if (unpinResult.cid_old != null &&
+          unpinResult.cid_old != unpinResult.cid) {
+        final ipfsUriUnpin =
+            _buildIpfsUri('/api/v0/pin/rm', {'arg': unpinResult.cid_old!});
+        await _ipfsUnpin(httpClient, ipfsUriUnpin);
+        logger.info('unpinned $type meta hash ${unpinResult.cid_old!}.');
+
+        await Future.delayed(const Duration(seconds: 1));
+      }
+
+      await db.clearMetaCidOld(rowid);
+    }
+
+    httpClient.close();
   }
 }
