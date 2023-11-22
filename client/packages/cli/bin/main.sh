@@ -35,6 +35,8 @@ DRY_RUN=${!DRY_RUN_VAR_NAME}
     $PROXY_OPTION \
     messages \
     --dry-run $DRY_RUN \
+    --unpin-old $UNPIN_OLD \
+    --full-export $FULL_EXPORT \
     --run-forever $RUN_FOREVER \
     --message-database-path $PATH_DB_MESSAGE \
     --table-dump-path $TABLE_DUMP_PATH \

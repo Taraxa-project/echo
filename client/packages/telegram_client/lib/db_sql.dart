@@ -638,14 +638,6 @@ WHERE
   cid is not null;
 ''';
 
-  static const clearCid = '''
-UPDATE
-  ipfs_meta
-SET
-  cid = null,
-  updated_at = ?;
-''';
-
   static const updateCid = '''
 UPDATE
   ipfs_meta
@@ -667,6 +659,57 @@ WHERE
 ORDER BY
   a.rowid ASC
 LIMIT 1;
+''';
+
+  static const selectNextForUnpin = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_meta a
+WHERE
+  a.cid is not null OR
+  a.cid_old is not null
+ORDER BY
+  a.rowid ASC
+LIMIt 1;
+''';
+
+  static const clearCidAll = '''
+UPDATE
+  ipfs_meta
+SET
+  cid = null,
+  updated_at = ?;
+''';
+
+  static const clearCid = '''
+UPDATE
+  ipfs_meta
+SET
+  cid = null,
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const clearCidOld = '''
+UPDATE
+  ipfs_meta
+SET
+  cid_old = null,
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const clearCids = '''
+UPDATE
+  ipfs_meta
+SET
+  cid = null,
+  cid_old = null,
+  updated_at = ?;
 ''';
 }
 
@@ -823,6 +866,49 @@ SET
   updated_at = ?
 WHERE
   rowid = ?;
+''';
+
+  static const selectNextForUnpin = '''
+SELECT
+  a.*,
+  a.rowid
+FROM
+  ipfs_data a
+WHERE
+  a.cid is not null OR
+  a.cid_old is not null
+ORDER BY
+  a.rowid ASC
+LIMIt 1;
+''';
+
+  static const clearCid = '''
+UPDATE
+  ipfs_data
+SET
+  cid = null,
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const clearCidOld = '''
+UPDATE
+  ipfs_data
+SET
+  cid_old = null,
+  updated_at = ?
+WHERE
+  rowid = ?;
+''';
+
+  static const clearCids = '''
+UPDATE
+  ipfs_data
+SET
+  cid = null,
+  cid_old = null,
+  updated_at = ?;
 ''';
 }
 

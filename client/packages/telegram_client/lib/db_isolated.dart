@@ -184,12 +184,12 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<ExportDataResult?> exportNextData(String fileName) async {
+  Future<ExportResult?> exportNextData(String fileName) async {
     return await isolatedProxy.call(ExportNextData(fileName));
   }
 
   @override
-  Future<ExportDataResult?> exportNextMeta(String fileName) async {
+  Future<ExportResult?> exportNextMeta(String fileName) async {
     return await isolatedProxy.call(ExportNextMeta(fileName));
   }
 
@@ -201,6 +201,41 @@ class DbIsolated implements DbInterface {
   @override
   Future<void> updateMetaCid(int rowid, String cid) async {
     await isolatedProxy.call(UpdateMetaCid(rowid, cid));
+  }
+
+  @override
+  Future<UnpinNextResult?> unpinNextData() async {
+    return await isolatedProxy.call(UnpinNextData());
+  }
+
+  @override
+  Future<UnpinNextResult?> unpinNextMeta() async {
+    return await isolatedProxy.call(UnpinNextMeta());
+  }
+
+  @override
+  Future<void> clearDataCid(int rowid) async {
+    await isolatedProxy.call(ClearDataCid(rowid));
+  }
+
+  @override
+  Future<void> clearDataCidOld(int rowid) async {
+    await isolatedProxy.call(ClearDataCidOld(rowid));
+  }
+
+  @override
+  Future<void> clearMetaCid(int rowid) async {
+    await isolatedProxy.call(ClearMetaCid(rowid));
+  }
+
+  @override
+  Future<void> clearMetaCidOld(int rowid) async {
+    await isolatedProxy.call(ClearMetaCidOld(rowid));
+  }
+
+  @override
+  Future<void> clearCids() async {
+    await isolatedProxy.call(ClearCids());
   }
 }
 
@@ -273,6 +308,20 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       db.updateDataCid(message.rowid, message.cid);
     } else if (message is UpdateMetaCid) {
       db.updateMetaCid(message.rowid, message.cid);
+    } else if (message is UnpinNextData) {
+      return db.unpinNextData();
+    } else if (message is UnpinNextMeta) {
+      return db.unpinNextMeta();
+    } else if (message is ClearDataCid) {
+      db.clearDataCid(message.rowid);
+    } else if (message is ClearDataCidOld) {
+      db.clearDataCidOld(message.rowid);
+    } else if (message is ClearMetaCid) {
+      db.clearMetaCid(message.rowid);
+    } else if (message is ClearMetaCidOld) {
+      db.clearMetaCidOld(message.rowid);
+    } else if (message is ClearCids) {
+      db.clearCids();
     } else {
       return super.dispatch(message);
     }
@@ -461,3 +510,33 @@ class UpdateMetaCid {
 
   UpdateMetaCid(this.rowid, this.cid);
 }
+
+class UnpinNextData {}
+
+class UnpinNextMeta {}
+
+class ClearDataCid {
+  final int rowid;
+
+  ClearDataCid(this.rowid);
+}
+
+class ClearDataCidOld {
+  final int rowid;
+
+  ClearDataCidOld(this.rowid);
+}
+
+class ClearMetaCid {
+  final int rowid;
+
+  ClearMetaCid(this.rowid);
+}
+
+class ClearMetaCidOld {
+  final int rowid;
+
+  ClearMetaCidOld(this.rowid);
+}
+
+class ClearCids {}

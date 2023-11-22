@@ -125,6 +125,16 @@ void main(List<String> arguments) {
       'new-chats-file-name',
       help: 'The file containing the list of new chats to read old messages',
       defaultsTo: 'chats_new.csv',
+    )
+    ..addOption(
+      'unpin-old',
+      help: 'If true, unpin old cids',
+      defaultsTo: 'false',
+    )
+    ..addOption(
+      'full-export',
+      help: 'If true, all the data is exported before the first iterration',
+      defaultsTo: 'false',
     );
 
   final telegramCommandChatMessage = TelegramGetMessageCommand();

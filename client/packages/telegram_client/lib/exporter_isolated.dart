@@ -59,6 +59,11 @@ class ExporterIsolated implements ExporterInterface {
   Future<void> export() async {
     await isolatedProxy.call(Export());
   }
+
+  @override
+  Future<void> unpinOld() async {
+    await isolatedProxy.call(UnpinOld());
+  }
 }
 
 class ExporterIsolatedDispatch extends IsolatedDispatch {
@@ -69,6 +74,8 @@ class ExporterIsolatedDispatch extends IsolatedDispatch {
   dynamic dispatch(message) async {
     if (message is Export) {
       await exporter.export();
+    } else if (message is UnpinOld) {
+      await exporter.unpinOld();
     } else {
       return super.dispatch(message);
     }
@@ -92,3 +99,5 @@ class Init {
 }
 
 class Export {}
+
+class UnpinOld {}

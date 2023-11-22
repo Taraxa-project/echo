@@ -563,7 +563,7 @@ class Db implements DbInterface {
   void _exportPrepareMeta() {
     final now = _now();
     execute(SqlIpfsMeta.updateCidOld, [now]);
-    execute(SqlIpfsMeta.clearCid, [now]);
+    execute(SqlIpfsMeta.clearCidAll, [now]);
   }
 
   Row? _getNextIpfsDataRow(String type, [String? date = null]) {
@@ -642,7 +642,7 @@ class Db implements DbInterface {
   }
 
   @override
-  Future<ExportDataResult?> exportNextData(String fileName) async {
+  Future<ExportResult?> exportNextData(String fileName) async {
     final rs = select(SqlIpfsData.selectNextForExport);
     if (rs.isEmpty) return null;
 
@@ -661,7 +661,7 @@ class Db implements DbInterface {
     }
   }
 
-  Future<ExportDataResult?> _exportDataChat(String fileName, Row row) async {
+  Future<ExportResult?> _exportDataChat(String fileName, Row row) async {
     final stmt = _database.prepare(SqlChat.selectForExport);
     final parameters = [row['rowid']];
     try {
@@ -673,10 +673,10 @@ class Db implements DbInterface {
     } finally {
       stmt.dispose();
     }
-    return ExportDataResult(row['type'], row['rowid'], row['cid_old']);
+    return ExportResult(row['type'], row['rowid'], row['cid_old']);
   }
 
-  Future<ExportDataResult?> _exportDataMessage(String fileName, Row row) async {
+  Future<ExportResult?> _exportDataMessage(String fileName, Row row) async {
     final stmt = _database.prepare(SqlMessage.selectForExport);
     final parameters = [row['rowid']];
     try {
@@ -688,10 +688,10 @@ class Db implements DbInterface {
     } finally {
       stmt.dispose();
     }
-    return ExportDataResult(row['type'], row['rowid'], row['cid_old']);
+    return ExportResult(row['type'], row['rowid'], row['cid_old']);
   }
 
-  Future<ExportDataResult?> _exportDataUser(String fileName, Row row) async {
+  Future<ExportResult?> _exportDataUser(String fileName, Row row) async {
     final stmt = _database.prepare(SqlUser.selectForExport);
     final parameters = [row['rowid']];
     try {
@@ -703,11 +703,11 @@ class Db implements DbInterface {
     } finally {
       stmt.dispose();
     }
-    return ExportDataResult(row['type'], row['rowid'], row['cid_old']);
+    return ExportResult(row['type'], row['rowid'], row['cid_old']);
   }
 
   @override
-  Future<ExportDataResult?> exportNextMeta(String fileName) async {
+  Future<ExportResult?> exportNextMeta(String fileName) async {
     final rs = select(SqlIpfsMeta.selectNextForExport);
     if (rs.isEmpty) return null;
 
@@ -728,7 +728,7 @@ class Db implements DbInterface {
     } finally {
       stmt.dispose();
     }
-    return ExportDataResult(row['type'], row['rowid'], row['cid_old']);
+    return ExportResult(row['type'], row['rowid'], row['cid_old']);
   }
 
   @override
@@ -741,6 +741,28 @@ class Db implements DbInterface {
   void updateMetaCid(int rowid, String cid) {
     final parameters = [cid, _now(), rowid];
     execute(SqlIpfsMeta.updateCid, parameters);
+  }
+
+  @override
+  UnpinNextResult? unpinNextData() {
+    final rs = select(SqlIpfsData.selectNextForUnpin);
+    if (rs.isEmpty) return null;
+
+    final row = rs.first;
+    final type = row['type'];
+
+    return UnpinNextResult(type, row['rowid'], row['cid'], row['cid_old']);
+  }
+
+  @override
+  UnpinNextResult? unpinNextMeta() {
+    final rs = select(SqlIpfsMeta.selectNextForUnpin);
+    if (rs.isEmpty) return null;
+
+    final row = rs.first;
+    final type = row['type'];
+
+    return UnpinNextResult(type, row['rowid'], row['cid'], row['cid_old']);
   }
 
   void execute(String sql, [List<Object?> parameters = const <Object>[]]) {
@@ -763,5 +785,36 @@ class Db implements DbInterface {
     } finally {
       stmt.dispose();
     }
+  }
+
+  @override
+  void clearDataCid(int rowid) {
+    final parameters = [_now(), rowid];
+    execute(SqlIpfsData.clearCid, parameters);
+  }
+
+  @override
+  void clearDataCidOld(int rowid) {
+    final parameters = [_now(), rowid];
+    execute(SqlIpfsData.clearCidOld, parameters);
+  }
+
+  @override
+  void clearMetaCid(int rowid) {
+    final parameters = [_now(), rowid];
+    execute(SqlIpfsMeta.clearCid, parameters);
+  }
+
+  @override
+  void clearMetaCidOld(int rowid) {
+    final parameters = [_now(), rowid];
+    execute(SqlIpfsMeta.clearCidOld, parameters);
+  }
+
+  @override
+  void clearCids() {
+    final parameters = [_now()];
+    execute(SqlIpfsData.clearCids, parameters);
+    execute(SqlIpfsMeta.clearCids, parameters);
   }
 }

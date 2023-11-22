@@ -45,10 +45,17 @@ abstract class DbInterface {
   FutureOr<void> updateNewChat(String username, int messageIdLast, int status);
 
   FutureOr<void> exportPrepare();
-  FutureOr<ExportDataResult?> exportNextData(String fileName);
-  FutureOr<ExportDataResult?> exportNextMeta(String fileName);
+  FutureOr<ExportResult?> exportNextData(String fileName);
+  FutureOr<ExportResult?> exportNextMeta(String fileName);
   FutureOr<void> updateDataCid(int rowid, String cid);
   FutureOr<void> updateMetaCid(int rowid, String cid);
+  FutureOr<UnpinNextResult?> unpinNextData();
+  FutureOr<UnpinNextResult?> unpinNextMeta();
+  FutureOr<void> clearDataCid(int rowid);
+  FutureOr<void> clearDataCidOld(int rowid);
+  FutureOr<void> clearMetaCid(int rowid);
+  FutureOr<void> clearMetaCidOld(int rowid);
+  FutureOr<void> clearCids();
 }
 
 class IfpsFileHashesMeta {
@@ -73,10 +80,19 @@ class ExportException implements Exception {
   }
 }
 
-class ExportDataResult {
+class ExportResult {
   final String type;
   final int rowid;
   final String? cid_old;
 
-  ExportDataResult(this.type, this.rowid, this.cid_old);
+  ExportResult(this.type, this.rowid, this.cid_old);
+}
+
+class UnpinNextResult {
+  final String type;
+  final int rowid;
+  final String? cid;
+  final String? cid_old;
+
+  UnpinNextResult(this.type, this.rowid, this.cid, this.cid_old);
 }

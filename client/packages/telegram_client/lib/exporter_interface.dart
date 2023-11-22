@@ -2,6 +2,7 @@ import 'dart:async';
 
 abstract class ExporterInterface {
   FutureOr<void> export();
+  FutureOr<void> unpinOld();
 }
 
 class IpfsParams {
