@@ -18,7 +18,9 @@ abstract class DbInterface {
   FutureOr<void> insertChats(List<String> usernames);
   FutureOr<void> blacklistChat(String username, String reason);
   FutureOr<void> updateChat(String username, Chat chat);
-  FutureOr<void> updateChatMembersCount(String username, int membersCount);
+  FutureOr<void> updateChatSupergroupFullInfo(
+      String username, SupergroupFullInfo supergroupFullInfo);
+  FutureOr<void> updateChatSupergroup(String username, Supergroup supergroup);
   FutureOr<void> updateChatMembersOnlineCount(
       String username, int membersOnlineCount);
   FutureOr<void> updateChatBotsCount(String username, int botsCount);

@@ -347,7 +347,11 @@ class TelegramClient implements TelegramClientInterface {
     await Future.delayed(const Duration(seconds: 10));
 
     final supergroupFullInfo = await _getSupergroupFullInfo(chatName, chatId);
-    await _updateChatMembersCount(chatName, chatId, db, supergroupFullInfo);
+    await _updateChatSupergroupFullInfo(
+        chatName, chatId, db, supergroupFullInfo);
+
+    final supergroup = await _getSupergroup(chatName, chatId);
+    await _updateChatSupergroup(chatName, chatId, db, supergroup);
 
     if (supergroupFullInfo.can_get_members == true)
       await _updateChatBotsCount(chatName, chatId, db);
@@ -503,13 +507,18 @@ class TelegramClient implements TelegramClientInterface {
     }
   }
 
-  Future<void> _updateChatMembersCount(String chatName, int chatId,
+  Future<void> _updateChatSupergroupFullInfo(String chatName, int chatId,
       DbIsolated db, SupergroupFullInfo supergroupFullInfo) async {
     final memberCount = supergroupFullInfo.member_count;
     if (memberCount != null && memberCount != 0) {
       logger.info('[$chatName] member count is $memberCount.');
-      await db.updateChatMembersCount(chatName, memberCount);
     }
+    await db.updateChatSupergroupFullInfo(chatName, supergroupFullInfo);
+  }
+
+  Future<void> _updateChatSupergroup(
+      String chatName, int chatId, DbIsolated db, Supergroup supergroup) async {
+    await db.updateChatSupergroup(chatName, supergroup);
   }
 
   Future<SupergroupFullInfo> _getSupergroupFullInfo(
@@ -518,6 +527,13 @@ class TelegramClient implements TelegramClientInterface {
     return await tdClient.retryTdCall(GetSupergroupFullInfo(
       supergroup_id: chatId,
     )) as SupergroupFullInfo;
+  }
+
+  Future<Supergroup> _getSupergroup(String chatName, int chatId) async {
+    logger.info('[$chatName] reading supergroup ... ');
+    return await tdClient.retryTdCall(GetSupergroup(
+      supergroup_id: chatId,
+    )) as Supergroup;
   }
 
   Future<void> _updateChatBotsCount(

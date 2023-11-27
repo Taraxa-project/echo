@@ -77,14 +77,6 @@ class Db implements DbInterface {
     execute(SqlChat.update, parameters);
   }
 
-  void updateChatMembersCount(String username, int membersCount) {
-    final now = _now();
-    final parameters = [membersCount, now, username];
-
-    logger.fine('updating chat $parameters...');
-    execute(SqlChat.updateMembersCount, parameters);
-  }
-
   void updateChatMembersOnlineCount(String username, int membersOnlineCount) {
     final now = _now();
     final parameters = [membersOnlineCount, now, username];
@@ -279,6 +271,8 @@ class Db implements DbInterface {
     _addIpfsHashIdMax();
 
     _runMigrationGroupByMessageDate();
+
+    _runMigrationChatsNewFields();
   }
 
   void _createTables() {
@@ -347,6 +341,18 @@ class Db implements DbInterface {
         final params = [type, null, null, now, now];
         _database.execute(SqlIpfsMeta.insert, params);
       }
+    } on Object {}
+  }
+
+  void _runMigrationChatsNewFields() {
+    try {
+      _database.execute(SqlChat.addColumnDescription);
+      _database.execute(SqlChat.addColumnAdministratorCount);
+      _database.execute(SqlChat.addColumnRestrictedCount);
+      _database.execute(SqlChat.addColumnBannedCount);
+      _database.execute(SqlChat.addColumnIsVerified);
+      _database.execute(SqlChat.addColumnIsScam);
+      _database.execute(SqlChat.addColumnIsFake);
     } on Object {}
   }
 
@@ -816,5 +822,35 @@ class Db implements DbInterface {
     final parameters = [_now()];
     execute(SqlIpfsData.clearCids, parameters);
     execute(SqlIpfsMeta.clearCids, parameters);
+  }
+
+  @override
+  void updateChatSupergroupFullInfo(
+      String username, SupergroupFullInfo supergroupFullInfo) {
+    final parameters = [
+      supergroupFullInfo.member_count ?? 0,
+      supergroupFullInfo.description ?? '',
+      supergroupFullInfo.administrator_count ?? 0,
+      supergroupFullInfo.restricted_count ?? 0,
+      supergroupFullInfo.banned_count ?? 0,
+      _now(),
+      username
+    ];
+    logger.fine('updating supergroupfullinfo $parameters...');
+    execute(SqlChat.updateSupergroupFullInfo, parameters);
+  }
+
+  @override
+  void updateChatSupergroup(String username, Supergroup supergroup) {
+    var is_verified = 0;
+    if (supergroup.is_verified == true) is_verified = 1;
+    var is_scam = 0;
+    if (supergroup.is_scam == true) is_scam = 1;
+    var is_fake = 0;
+    if (supergroup.is_fake == true) is_fake = 1;
+
+    final parameters = [is_verified, is_scam, is_fake, _now(), username];
+    logger.fine('updating supergroup $parameters...');
+    execute(SqlChat.updateSupergroup, parameters);
   }
 }
