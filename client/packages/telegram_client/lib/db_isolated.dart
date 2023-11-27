@@ -67,11 +67,6 @@ class DbIsolated implements DbInterface {
   }
 
   @override
-  Future<void> updateChatMembersCount(String username, int membersCount) async {
-    await isolatedProxy.call(UpdateChatMembersCount(username, membersCount));
-  }
-
-  @override
   Future<void> updateChatMembersOnlineCount(
       String username, int membersOnlineCount) async {
     await isolatedProxy
@@ -237,6 +232,19 @@ class DbIsolated implements DbInterface {
   Future<void> clearCids() async {
     await isolatedProxy.call(ClearCids());
   }
+
+  @override
+  Future<void> updateChatSupergroupFullInfo(
+      String username, SupergroupFullInfo supergroupFullInfo) async {
+    await isolatedProxy
+        .call(UpdateChatSupergroupFullInfo(username, supergroupFullInfo));
+  }
+
+  @override
+  Future<void> updateChatSupergroup(
+      String username, Supergroup supergroup) async {
+    await isolatedProxy.call(UpdateChatSupergroup(username, supergroup));
+  }
 }
 
 class DbIsolatedDispatch extends IsolatedDispatch {
@@ -253,8 +261,6 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       db.blacklistChat(message.username, message.reason);
     } else if (message is UpdateChat) {
       db.updateChat(message.username, message.chat);
-    } else if (message is UpdateChatMembersCount) {
-      db.updateChatMembersCount(message.username, message.membersCount);
     } else if (message is UpdateChatMembersOnlineCount) {
       db.updateChatMembersOnlineCount(
           message.username, message.membersOnlineCount);
@@ -322,6 +328,11 @@ class DbIsolatedDispatch extends IsolatedDispatch {
       db.clearMetaCidOld(message.rowid);
     } else if (message is ClearCids) {
       db.clearCids();
+    } else if (message is UpdateChatSupergroupFullInfo) {
+      db.updateChatSupergroupFullInfo(
+          message.username, message.supergroupFullInfo);
+    } else if (message is UpdateChatSupergroup) {
+      db.updateChatSupergroup(message.username, message.supergroup);
     } else {
       return super.dispatch(message);
     }
@@ -361,13 +372,6 @@ class UpdateChat {
   final Chat chat;
 
   UpdateChat(this.username, this.chat);
-}
-
-class UpdateChatMembersCount {
-  final String username;
-  final int membersCount;
-
-  UpdateChatMembersCount(this.username, this.membersCount);
 }
 
 class UpdateChatMembersOnlineCount {
@@ -540,3 +544,17 @@ class ClearMetaCidOld {
 }
 
 class ClearCids {}
+
+class UpdateChatSupergroupFullInfo {
+  final String username;
+  final SupergroupFullInfo supergroupFullInfo;
+
+  UpdateChatSupergroupFullInfo(this.username, this.supergroupFullInfo);
+}
+
+class UpdateChatSupergroup {
+  final String username;
+  final Supergroup supergroup;
+
+  UpdateChatSupergroup(this.username, this.supergroup);
+}

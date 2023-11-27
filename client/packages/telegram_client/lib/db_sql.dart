@@ -122,11 +122,28 @@ WHERE
   username = ?;
 ''';
 
-  static const updateMembersCount = '''
+  static const updateSupergroupFullInfo = '''
 UPDATE
   chat
 SET
-  member_count = ?, updated_at = ?
+  member_count = ?,
+  description = ?,
+  administrator_count = ?,
+  restricted_count = ?,
+  banned_count = ?,
+  updated_at = ?
+WHERE
+  username = ?;
+''';
+
+  static const updateSupergroup = '''
+UPDATE
+  chat
+SET
+  is_verified = ?,
+  is_scam = ?,
+  is_fake = ?,
+  updated_at = ?
 WHERE
   username = ?;
 ''';
@@ -156,32 +173,6 @@ WHERE
   username = ?;
 ''';
 
-//   static const selectForExport = '''
-// SELECT
-//   a.*,
-//   c.file_hash file_hash_chat_read,
-//   a.rowid
-// FROM
-//   chat a LEFT JOIN (
-// 	SELECT
-// 		CAST(REPLACE(ba."table_name", 'chat.', '') AS INTEGER) chat_id,
-// 	  max(rowid) rowid
-// 	FROM
-// 	  	ipfs_hash ba
-// 	WHERE
-// 		ba."table_name" like 'chat.%'
-// 	GROUP BY
-// 	  	ba."table_name"
-//   ) b on a.id = b.chat_id LEFT JOIN
-//   ipfs_hash c ON b.rowid = c.rowid
-// WHERE
-//   a.rowid > ?
-// ORDER BY
-//   a.rowid ASC
-// LIMIT
-//   ?;
-// ''';
-
   static const selectForExport = '''
 SELECT
   c.username,
@@ -191,7 +182,14 @@ SELECT
   c.member_online_count,
   c.bot_count,
   c.blacklisted,
-  c.blacklist_reason
+  c.blacklist_reason,
+  c.description,
+  c.administrator_count,
+  c.restricted_count,
+  c.banned_count,
+  c.is_verified,
+  c.is_scam,
+  c.is_fake
 FROM
   ipfs_data a INNER JOIN
   ipfs_data_chat b on a.rowid = b.id_ipfs_data INNER JOIN
@@ -225,6 +223,41 @@ WHERE
   a.rowid > ?
 ORDER BY
   a.rowid ASC; 
+''';
+
+  static const addColumnDescription = '''
+ALTER TABLE chat
+ADD COLUMN description TEXT;
+''';
+
+  static const addColumnAdministratorCount = '''
+ALTER TABLE chat
+ADD COLUMN administrator_count INTEGER;
+''';
+
+  static const addColumnRestrictedCount = '''
+ALTER TABLE chat
+ADD COLUMN restricted_count INTEGER;
+''';
+
+  static const addColumnBannedCount = '''
+ALTER TABLE chat
+ADD COLUMN banned_count INTEGER;
+''';
+
+  static const addColumnIsVerified = '''
+ALTER TABLE chat
+ADD COLUMN is_verified INTEGER;
+''';
+
+  static const addColumnIsScam = '''
+ALTER TABLE chat
+ADD COLUMN is_scam INTEGER;
+''';
+
+  static const addColumnIsFake = '''
+ALTER TABLE chat
+ADD COLUMN is_fake INTEGER;
 ''';
 }
 
