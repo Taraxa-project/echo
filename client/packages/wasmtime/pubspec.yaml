@@ -21,11 +21,16 @@ dev_dependencies:
   lints: ^2.0.0
   recase: ^4.0.0
   args: ^2.3.1
+# ffigen:
+#   name: Wasmtime
+#   output: 'lib/src/wasmtime.dart'
+#   headers:
+#     entry-points:
+#       - 'wasmtime/crates/c-api/wasm-c-api/include/wasm.h'
+#       - 'wasmtime/crates/c-api/include/wasmtime.h'
 ffigen:
-  name: Wasmtime
-  output: 'lib/src/wasmtime.dart'
+  name: hellocallback
+  output: 'tool/scripts/example/hellocallback.dart'
   headers:
     entry-points:
-      - 'wasmtime/crates/c-api/wasm-c-api/include/wasm.h'
-      - 'wasmtime/crates/c-api/include/wasmtime.h'
-
+      - 'tool/scripts/example/hello/hello.h'
