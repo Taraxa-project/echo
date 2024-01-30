@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io' as io;
 import 'dart:ffi' as ffi;
 
-import 'package:wasmtimme/src/wasmtime.dart';
+import 'package:wasmtime/wasmtime.dart';
 import 'package:ffi/ffi.dart';
 import 'package:logging/logging.dart';
 

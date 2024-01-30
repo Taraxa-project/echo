@@ -5,6 +5,7 @@ import 'package:args/command_runner.dart';
 
 import 'package:echo_cli/command/messages.dart';
 import 'package:echo_cli/command/message.dart';
+import 'package:echo_cli/command/wasm.dart';
 
 void main(List<String> arguments) {
   hierarchicalLoggingEnabled = true;
@@ -140,9 +141,25 @@ void main(List<String> arguments) {
       defaultsTo: '1',
     );
 
+  final wasmCommand = WasmCommand();
+  wasmCommand.argParser
+    ..addOption(
+      'libwasmtime_path',
+      help: 'libwasmtime path',
+    )
+    ..addOption(
+      'libapiimports_path',
+      help: 'lib api imports path',
+    )
+    ..addOption(
+      'wasm_module_path',
+      help: 'wasm module path',
+    );
+
   commandRunner
     ..addCommand(telegramSaveChatHistoryCommand)
     ..addCommand(telegramCommandChatMessage)
+    ..addCommand(wasmCommand)
     ..run(arguments).catchError((error) {
       if (error is! UsageException) throw error;
       print(error);

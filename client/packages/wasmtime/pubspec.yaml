@@ -1,4 +1,4 @@
-name: wasmtimme
+name: wasmtime
 version: 0.0.1
 description: Dart wasmtime bindings
 homepage: https://github.com/Taraxa-project/echo/tree/main/packages/wasmtime
@@ -21,16 +21,16 @@ dev_dependencies:
   lints: ^2.0.0
   recase: ^4.0.0
   args: ^2.3.1
-# ffigen:
-#   name: Wasmtime
-#   output: 'lib/src/wasmtime.dart'
-#   headers:
-#     entry-points:
-#       - 'wasmtime/crates/c-api/wasm-c-api/include/wasm.h'
-#       - 'wasmtime/crates/c-api/include/wasmtime.h'
 ffigen:
-  name: hellocallback
-  output: 'tool/scripts/example/hellocallback.dart'
+  name: Wasmtime
+  output: 'lib/wasmtime.dart'
   headers:
     entry-points:
-      - 'tool/scripts/example/hello/hello.h'
+      - 'wasmtime/crates/c-api/wasm-c-api/include/wasm.h'
+      - 'wasmtime/crates/c-api/include/wasmtime.h'
+# ffigen:
+#   name: hellocallback
+#   output: 'tool/scripts/example/hellocallback.dart'
+#   headers:
+#     entry-points:
+#       - 'tool/scripts/example/hello/hello.h'

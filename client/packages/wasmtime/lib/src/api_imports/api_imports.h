@@ -12,9 +12,9 @@ typedef struct message_t
 
 intptr_t init_dart_api_dl(void *data);
 
-wasm_trap_t *hello_callback(void *env, wasmtime_caller_t *caller,
-                            const wasmtime_val_t *args, size_t nargs,
-                            wasmtime_val_t *results, size_t nresults);
+wasm_trap_t *callback(void *env, wasmtime_caller_t *caller,
+                      const wasmtime_val_t *args, size_t nargs,
+                      wasmtime_val_t *results, size_t nresults);
 
 void register_callback_sendport(Dart_Port send_port);
 

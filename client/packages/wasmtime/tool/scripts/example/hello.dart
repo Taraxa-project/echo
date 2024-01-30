@@ -4,7 +4,7 @@ import 'dart:ffi' as ffi;
 import 'dart:isolate';
 
 import 'package:ffi/ffi.dart';
-import 'package:wasmtimme/src/wasmtime.dart';
+import 'package:wasmtime/wasmtime.dart';
 import 'package:logging/logging.dart';
 
 import 'hellocallback.dart';
@@ -14,6 +14,9 @@ Map<String, String> envVars = io.Platform.environment;
 void main(List<String> arguments) async {
   hierarchicalLoggingEnabled = true;
   Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((event) {
+    print(event);
+  });
 
   final runtime =
       Wasmtime(ffi.DynamicLibrary.open(envVars['libwasmtime_path']!));
@@ -54,6 +57,7 @@ void main(List<String> arguments) async {
 
   final libhellocallback =
       hellocallback(ffi.DynamicLibrary.open(envVars['libhellocallback_path']!));
+
   if (libhellocallback.init_dart_api_dl(ffi.NativeApi.initializeApiDLData) !=
       0) {
     throw Exception('Dart API not initialized');
@@ -64,7 +68,9 @@ void main(List<String> arguments) async {
   final subscription = receivePort.listen((message) {
     var messagePointer = ffi.Pointer<message_t>.fromAddress(message);
     var messageValue = messagePointer.ref;
-    print("${messageValue.message.cast<Utf8>().toDartString()}");
+
+    Logger.root.shout('${messageValue.message.cast<Utf8>().toDartString()}');
+
     // malloc.free(messageValue.message);
     malloc.free(messagePointer);
   });
@@ -119,7 +125,10 @@ void main(List<String> arguments) async {
     throw Exception(
         'Error calling wasmtime function: $funcCallError $funcCallTrap');
   }
+
   await Future.delayed(const Duration(seconds: 5));
+  await subscription.cancel();
+  receivePort.close();
 
   calloc.free(funcCallTrap);
   calloc.free(funcCallError);
@@ -130,10 +139,7 @@ void main(List<String> arguments) async {
   runtime.wasmtime_store_delete(store);
   runtime.wasm_engine_delete(engine);
 
-  await subscription.cancel();
-  receivePort.close();
-
-  print('done');
+  Logger.root.info('Done');
 }
 
 ffi.Pointer<wasm_functype_t> wasm_functype_new_0_0(Wasmtime runtime) {
@@ -143,15 +149,3 @@ ffi.Pointer<wasm_functype_t> wasm_functype_new_0_0(Wasmtime runtime) {
   runtime.wasm_valtype_vec_new_empty(results);
   return runtime.wasm_functype_new(params, results);
 }
-
-// ffi.Pointer<wasm_trap_t> helloCallback(
-//     ffi.Pointer<ffi.Void> env,
-//     ffi.Pointer<wasmtime_caller_t> caller,
-//     ffi.Pointer<wasmtime_val_t> args,
-//     ffi.Size nargs,
-//     ffi.Pointer<wasmtime_val_t> results,
-//     ffi.Size nresults) {
-//   print("Calling back...\n");
-//   print("> Hello World!\n");
-//   return ffi.nullptr;
-// }
