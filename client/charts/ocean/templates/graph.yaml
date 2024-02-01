@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: taraxa-graph-node
+  name: taraxa-graph-node
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: taraxa-graph-node
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: taraxa-graph-node
+    spec:
+      containers:
+      - env:
+        - name: ipfs
+          value: ipfs.ocean.svc.cluster.local:5001
+        - name: postgres_host
+          value: postgresql.ocean.svc.cluster.local
+        - name: postgres_user
+          value: postgres
+        - name: postgres_pass
+          value: <postgres password>
+        - name: postgres_db
+          value: postgres
+        - name: ethereum
+          value: taraxa:https://taraxa.infura.io/v3/< INFURA ID>
+        - name: GRAPH_KILL_IF_UNRESPONSIVE
+          value: "false"
+        image: graphprotocol/graph-node:v0.28.2
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8000
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: taraxa-graph-node
+        ports:
+        - containerPort: 8000
+          name: graphql
+          protocol: TCP
+        - containerPort: 8020
+          name: jsonrpc
+          protocol: TCP
+        - containerPort: 8030
+          name: indexnode
+          protocol: TCP
+        - containerPort: 8040
+          name: metrics
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8000
+            scheme: HTTP
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: "2"
+            memory: 80Mi
+          requests:
+            cpu: 1500m
+            memory: 80Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: taraxa-graph-node
+  name:  taraxa-graph-node
+spec:
+  clusterIP:
+  clusterIPs:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: graphql
+    port: 8000
+  - name: jsonrpc
+    port: 8020
+  - name: indexnode
+    port: 8030
+  - name: metrics
+    port: 8040
+  selector:
+    app: taraxa-graph-nodeyam

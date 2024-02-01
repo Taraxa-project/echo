@@ -1,0 +1,11 @@
+apiVersion: v2
+name: ocean
+description: Kubernetes helm chart for Taraxa's echo oceanprotocol project.
+type: application
+version: 0.0.1
+keywords:
+  - taraxa
+  - echo
+  - ocean
+  - oceanprotocol
+appVersion: "latest"
