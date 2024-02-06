@@ -54,6 +54,53 @@ appSecret:
   create: true
 
 configEnvs:
-  PROVIDER_VERSION: 2
+  # elasticsearch
+  AQUARIUS_DB_HOSTNAME: https://elasticsearch-master
+  AQUARIUS_DB_MODULE: elasticsearch
+  AQUARIUS_DB_NAME: aquarius
+  AQUARIUS_DB_PORT: "9200"
+  AQUARIUS_DB_SCHEME: https
+  AQUARIUS_DB_SSL: "true"
+  # aquarius
+  AQUARIUS_URL: http://0.0.0.0:5000
+  AQUARIUS_LOG_LEVEL: DEBUG
+  AQUARIUS_WORKERS: "4"
+ 
+  # provider
+  PROVIDER_LOG_LEVEL: DEBUG
+  PROVIDER_URL: http://0.0.0.0:8030
+  PROVIDER_WORKERS: "4"
+  PROVIDER_VERSION: "2"
+  PROVIDER_IPFS_GATEWAY: ipfs.ocean.svc.cluster.local:5001
+  PROVIDER_OPERATOR_SERVICE_URL: < Operator service URL>
+  PROVIDER_AQUARIUS_URL: aquarius.ocean.svc.cluster.local:5000
+ 
+  # postgres
+  POSTGRES_HOST: postgresql.ocean.svc.cluster.local
+  POSTGRES_DB: postgres
+  # ipfs
+  # graph
+  GRAPH_IPFS: ipfs.ocean.svc.cluster.local:5001
+  # subgraph
+  SUBGRAPH_URL_0: https://v4.subgraph.mumbai.oceanprotocol.com
 
-secretEnvs: {}
+  # chain 0 
+  # taraxa
+  CHAIN_ID_0: "80001"
+  CHAIN_NAME_0: taraxa
+  CHAIN_EVENTS_RPC_0: https://polygon-mumbai.infura.io/v3/ID
+  CHAIN_OCEAN_ADDRESS_0: contract
+
+secretEnvs:
+  # elasticsearch
+  AQUARIUS_DB_USERNAME: ""
+  AQUARIUS_DB_PASSWORD: ""
+
+  #provider
+  PROVIDER_PRIVATE_KEY_0: ""
+  PROVIDER_UNIVERSAL_PRIVATE_KEY: <your universal private key>
+
+  #postres
+  POSTGRES_USER: ""
+  POSTGRES_PASS: ""
+

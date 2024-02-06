@@ -26,27 +26,27 @@ spec:
       containers:
       - env:
         - name: LOG_LEVEL
-          value: DEBUG
+          value: {{ .Values.configEnvs.AQUARIUS_LOG_LEVEL | quote }}
         - name: AQUARIUS_URL
-          value: http://0.0.0.0:5000
+          value: {{ .Values.configEnvs.AQUARIUS_URL | quote }}
         - name: AQUARIUS_WORKERS
-          value: "4"
+          value: {{ .Values.configEnvs.AQUARIUS_WORKERS | quote }}
         - name: DB_HOSTNAME
-          value: https://elasticsearch-master
+          value: {{ .Values.configEnvs.AQUARIUS_DB_HOSTNAME | quote }}
         - name: DB_MODULE
-          value: elasticsearch
+          value: {{ .Values.configEnvs.AQUARIUS_DB_MODULE | quote }}
         - name: DB_NAME
-          value: aquarius
+          value: {{ .Values.configEnvs.AQUARIUS_DB_NAME | quote }}
         - name: DB_PORT
-          value: "9200"
+          value: {{ .Values.configEnvs.AQUARIUS_DB_PORT | quote }}
         - name: DB_SCHEME
-          value: https
+          value: {{ .Values.configEnvs.AQUARIUS_DB_SCHEME | quote }}
         - name: DB_USERNAME
-          value: elastic
+          value: {{ .Values.secretEnvs.AQUARIUS_DB_USERNAME | quote }}
         - name: DB_PASSWORD
-          value: <elastic password>
+          value: {{ .Values.secretEnvs.AQUARIUS_DB_PASSWORD | quote }}
         - name: DB_SSL
-          value: "true"
+          value: {{ .Values.configEnvs.AQUARIUS_DB_SSL | quote }}
         - name: RUN_AQUARIUS_SERVER
           value: "1"
         - name: RUN_EVENTS_MONITOR

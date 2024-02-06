@@ -26,17 +26,17 @@ spec:
       containers:
       - env:
         - name: ipfs
-          value: ipfs.ocean.svc.cluster.local:5001
+          value: {{ .Values.configEnvs.GRAPH_IPFS | quote }}
         - name: postgres_host
-          value: postgresql.ocean.svc.cluster.local
+          value: {{ .Values.configEnvs.POSTGRES_HOST | quote }}
         - name: postgres_user
-          value: postgres
+          value: {{ .Values.secretEnvs.POSTGRES_USER | quote }}
         - name: postgres_pass
-          value: <postgres password>
+          value: {{ .Values.secretEnvs.POSTGRES_PASS | quote }}
         - name: postgres_db
-          value: postgres
+          value: {{ .Values.configEnvs.POSTGRES_DB | quote }}
         - name: ethereum
-          value: taraxa:https://taraxa.infura.io/v3/< INFURA ID>
+          value: {{ .Values.configEnvs.CHAIN_NAME_0 }}:{{ .Values.configEnvs.CHAIN_EVENTS_RPC_0 }}
         - name: GRAPH_KILL_IF_UNRESPONSIVE
           value: "false"
         image: graphprotocol/graph-node:v0.28.2
