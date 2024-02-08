@@ -1,5 +1,23 @@
 replicaCount: 1
 
+image:
+  market:
+    repository: gcr.io/jovial-meridian-249123/market
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  subgraph:
+    repository: gcr.io/jovial-meridian-249123/subgraph
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  publish:
+    repository: gcr.io/jovial-meridian-249123/publish
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+imagePullSecrets: []
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -91,6 +109,11 @@ configEnvs:
   CHAIN_EVENTS_RPC_0: https://polygon-mumbai.infura.io/v3/ID
   CHAIN_OCEAN_ADDRESS_0: contract
 
+  #publish
+  PUBLISH_RPC_ENDPOINT: "https://rpc.mainnet.taraxa.io"
+  PUBLISH_CONTRACT_ADDRESS: ""
+  PUBLISH_IPFS_URI: "https://ipfs.infura.io:5001"
+ 
 secretEnvs:
   # elasticsearch
   AQUARIUS_DB_USERNAME: ""
@@ -100,7 +123,11 @@ secretEnvs:
   PROVIDER_PRIVATE_KEY_0: ""
   PROVIDER_UNIVERSAL_PRIVATE_KEY: <your universal private key>
 
-  #postres
+  #postgres
   POSTGRES_USER: ""
   POSTGRES_PASS: ""
 
+  #publish
+  PUBLISH_IPFS_USERNAME: ""
+  PUBLISH_IPFS_PASSWORD: ""
+  PUBLISH_FACTORY_DEPLOYER_PRIVATE_KEY: ""

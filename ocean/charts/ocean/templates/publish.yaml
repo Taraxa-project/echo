@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: publish
+spec:
+  schedule: "0 8 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: publish
+            image: "{{ .Values.image.publish.repository }}:{{ .Values.image.publish.tag }}"
+            imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
+          envFrom:
+            - secretRef:
+                name: {{ include "ocean.fullname" . }}
+            - configMapRef:
+                name: {{ include "ocean.fullname" . }}

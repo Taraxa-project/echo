@@ -1,4 +1,4 @@
-import json, requests, logging, web3, os, time
+import json, requests, logging, web3, os, time, datetime
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('publish')
@@ -162,8 +162,10 @@ def main():
     ipfs_password = os.environ['IPFS_PASSWORD']
     session.auth = (ipfs_username, ipfs_password)
   
-    date_min = os.environ['DATE_MIN']
-    date_max = os.environ['DATE_MAX']
+    yesterday = datetime.datetime.today() - datetime.timedelta(days=1)
+    yesterday_fmt = yesterday.strftime('%Y-%m-%d')
+    date_min = yesterday_fmt
+    date_max = yesterday_fmt
 
     write_file('message', session, ipfs_uri, date_min, date_max, hashes_meta_all)
     write_file('user', session, ipfs_uri, date_min, date_max, hashes_meta_all)

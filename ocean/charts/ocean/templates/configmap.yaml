@@ -4,5 +4,7 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     {{- include "ocean.labels" . | nindent 4 }}
-data: {}
-
+data:
+  PUBLISH_RPC_ENDPOINT: {{ .Values.configEnvs.PUBLISH_RPC_ENDPOINT | quote }}
+  PUBLISH_CONTRACT_ADDRESS: {{ .Values.configEnvs.PUBLISH_CONTRACT_ADDRESS | quote }}
+  PUBLISH_IPFS_URI: {{ .Values.configEnvs.PUBLISH_IPFS_URI | quote }}
